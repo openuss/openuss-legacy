@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
@@ -113,72 +112,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		// instead
 		user.setPassword(getUserDao().getPassword(user.getId()));
 		getUserDao().update(user);
-	}
-
-	@Override
-	protected void handleSaveUserProfile(UserInfo profile) throws Exception {
-		User user = getUserDao().load(profile.getId());
-		if (user.getProfile() == null) {
-			UserProfile userProfile;
-			if (profile.getProfile() != null) {
-				userProfile = getUserProfileDao().userProfileInfoToEntity(profile.getProfile());
-			} else {
-				userProfile = UserProfile.Factory.newInstance();
-			}
-			getUserProfileDao().create(userProfile);
-			user.setProfile(userProfile);
-			getUserDao().update(user);
-		} else {
-			UserProfile userProfile = user.getProfile();
-			if (profile.getProfile() != null) {
-				getUserProfileDao().userProfileInfoToEntity(profile.getProfile(), userProfile, false);
-			}
-			getUserProfileDao().update(userProfile);
-		}
-	}
-
-	@Override
-	protected void handleSaveUserContact(UserInfo contact) throws Exception {
-		User user = getUserDao().load(contact.getId());
-		if (user.getContact() == null) {
-			UserContact userContact;
-			if (contact.getContact() != null) {
-				userContact = getUserContactDao().userContactInfoToEntity(contact.getContact());
-			} else {
-				userContact = UserContact.Factory.newInstance();
-			}
-			getUserContactDao().create(userContact);
-			user.setContact(userContact);
-			getUserDao().update(user);
-		} else {
-			UserContact userContact = user.getContact();
-			if (contact.getContact() != null) {
-				getUserContactDao().userContactInfoToEntity(contact.getContact(), userContact, false);
-			}
-			getUserContactDao().update(userContact);
-		}
-	}
-
-	@Override
-	protected void handleSaveUserPreferences(UserInfo userInfo) throws Exception {
-		User user = getUserDao().load(userInfo.getId());
-		if (user.getPreferences() == null) {
-			UserPreferences userPreferences;
-			if (userInfo.getPreferences() != null) {
-				userPreferences = getUserPreferencesDao().userPreferencesInfoToEntity(userInfo.getPreferences());
-			} else {
-				userPreferences = UserPreferences.Factory.newInstance();
-			}
-			getUserPreferencesDao().create(userPreferences);
-			user.setPreferences(userPreferences);
-			getUserDao().update(user);
-		} else {
-			UserPreferences userPreferences = user.getPreferences();
-			if (userInfo.getPreferences() != null) {
-				getUserPreferencesDao().userPreferencesInfoToEntity(userInfo.getPreferences(), userPreferences, false);
-			}
-			getUserPreferencesDao().update(userPreferences);
-		}
 	}
 
 	@Override
@@ -506,42 +439,14 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected Object handleGetUserInfoDetails(UserInfo userInfo) throws Exception {
-		Validate.notNull(userInfo, "Parameter userInfo must not be empty.");
-		Validate.notNull(userInfo.getId(),"Parameter userInfo must contain a valid id.");
-		
+	protected String[] handleGetGrantedAuthorities(UserInfo userInfo) throws Exception {
+		Validate.notNull(userInfo, "Parameter userInfo must not be null.");
 		User user = getUserDao().load(userInfo.getId());
-		
-		UserInfoDetails userInfoDetails = userInfo2UserInfoDetails(userInfo);
-		
-		userInfoDetails.setPreferences((UserPreferencesInfo) getUserPreferencesDao().toUserPreferencesInfo(user.getPreferences()));
-		userInfoDetails.setContact((UserContactInfo) getUserContactDao().toUserContactInfo(user.getContact()));
-		userInfoDetails.setProfile((UserProfileInfo) getUserProfileDao().toUserProfileInfo(user.getProfile()));
-		
-		return userInfoDetails;
-	}
-	
-	private UserInfoDetails userInfo2UserInfoDetails(UserInfo userInfo){
-		UserInfoDetails uid = new UserInfoDetails();
-		uid.setAccountExpired(userInfo.isAccountExpired());
-		uid.setAccountLocked(userInfo.isAccountLocked());
-		uid.setContact(userInfo.getContact());
-		uid.setCredentialsExpired(userInfo.isCredentialsExpired());
-		uid.setDisplayName(userInfo.getDisplayName());
-		uid.setEmail(userInfo.getEmail());
-		uid.setEnabled(userInfo.isEnabled());
-		uid.setId(userInfo.getId());
-		uid.setImageId(userInfo.getImageId());
-		uid.setLastLogin(userInfo.getLastLogin());
-		uid.setPassword(userInfo.getPassword());
-		uid.setPreferences(userInfo.getPreferences());
-		uid.setProfile(userInfo.getProfile());
-		uid.setSmsNotification(userInfo.isSmsNotification());
-		uid.setUsername(userInfo.getUsername());
-		User source = getUserObject(userInfo);
-		List<Group> authorities = source.getGrantedGroups();
-		uid.setAuthorities((GrantedAuthority[]) authorities.toArray(new GrantedAuthority[authorities.size()]));
-		return uid;
+		if (user != null) {
+			return ((UserImpl) user).getGrantedAuthorities(); 
+		} else {
+			return new String[0];
+		}
 	}
 
 }

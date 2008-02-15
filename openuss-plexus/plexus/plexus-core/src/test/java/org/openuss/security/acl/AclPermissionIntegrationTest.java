@@ -176,6 +176,8 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		User user = User.Factory.newInstance();
 		user.setUsername(username);
 		user.setPassword(password);
+		user.setFirstName("firstName");
+		user.setLastName("lastName");
 		user.setEmail("email");
 		user.setEnabled(true);
 		
@@ -211,7 +213,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-aop.xml",
+//				"classpath*:applicationContext-aop.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};

@@ -9,13 +9,8 @@ import org.openuss.desktop.DesktopDao;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.User;
-import org.openuss.security.UserContactDao;
-import org.openuss.security.UserContactInfo;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
-import org.openuss.security.UserPreferencesDao;
-import org.openuss.security.UserPreferencesInfo;
 
 /**
  * JUnit Test for Spring Hibernate RegistrationService class.
@@ -25,38 +20,30 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 	
 	private DesktopDao desktopDao;
 	private UserDao userDao;
-	private UserPreferencesDao userPreferencesDao;
-	private UserContactDao userContactDao;
 	private GroupDao groupDao;
 	private User user;
 	private ActivationCodeDao activationCodeDao;
 	
 	public void testInjection() {
 		assertNotNull(userDao);
-		assertNotNull(userContactDao);
-		assertNotNull(userPreferencesDao);
 		assertNotNull(groupDao);
 		assertNotNull(desktopDao);
 	}
 	
 	public UserInfo createUserInfo() {
-		UserInfo userInfo = new UserInfoDetails();
+		UserInfo userInfo = new UserInfo();
 		userInfo.setPassword("masterkey");
 		userInfo.setEmail(testUtility.unique("openuss@openuss.org"));
 		userInfo.setUsername(testUtility.unique("username"));
 		
-		UserPreferencesInfo preferences = new UserPreferencesInfo();
-		preferences.setLocale("xyz");
-		preferences.setTimezone("Europa/Berlin+1");
-		userInfo.setPreferences(preferences);
+		userInfo.setLocale("xyz");
+		userInfo.setTimezone("Europa/Berlin+1");
 		
-		UserContactInfo contact = new UserContactInfo();
-		contact.setAddress("Address");
-		contact.setPostcode("postcode");
-		contact.setCity("city");
-		contact.setFirstName("firstName");
-		contact.setLastName("lastName");
-		userInfo.setContact(contact);
+		userInfo.setAddress("Address");
+		userInfo.setPostcode("postcode");
+		userInfo.setCity("city");
+		userInfo.setFirstName("firstName");
+		userInfo.setLastName("lastName");
 		
 		return userInfo;
 	}
@@ -111,22 +98,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		this.userDao = userDao;
 	}
 
-	public UserPreferencesDao getUserPreferencesDao() {
-		return userPreferencesDao;
-	}
-
-	public void setUserPreferencesDao(UserPreferencesDao userPreferencesDao) {
-		this.userPreferencesDao = userPreferencesDao;
-	}
-
-	public UserContactDao getUserContactDao() {
-		return userContactDao;
-	}
-
-	public void setPersonDao(UserContactDao personDao) {
-		this.userContactDao = personDao;
-	}
-
 	public GroupDao getRoleDao() {
 		return groupDao;
 	}
@@ -135,10 +106,6 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		this.groupDao = groupDao;
 	}
 	
-	public void setUserContactDao(UserContactDao userContactDao) {
-		this.userContactDao = userContactDao;
-	}
-
 	public DesktopDao getDesktopDao() {
 		return desktopDao;
 	}

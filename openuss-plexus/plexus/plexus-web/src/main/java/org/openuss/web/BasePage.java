@@ -12,11 +12,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.UserContactInfo;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
-import org.openuss.security.UserPreferencesInfo;
-import org.openuss.security.UserProfileInfo;
 
 /**
  * Abstract BasePage
@@ -70,11 +66,9 @@ public abstract class BasePage extends BaseBean {
 
 	@Prerender
 	public void prerender() throws Exception {
+		// FIXME Why are we doing this?
 		if ((user != null) && (user.getId() == null)) {
-			user = new UserInfoDetails();
-			user.setPreferences(new UserPreferencesInfo());
-			user.setProfile(new UserProfileInfo());
-			user.setContact(new UserContactInfo());
+			user = new UserInfo();
 			setSessionBean(Constants.USER, user);
 		}
 	}

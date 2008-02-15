@@ -22,10 +22,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
-import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
-import org.openuss.security.UserPreferences;
-import org.openuss.security.UserProfile;
 import org.openuss.security.acl.ObjectIdentityDao;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -219,68 +216,35 @@ public class UserImport extends DefaultImport {
 		user.setEmail(assistant.getEmailaddress());
 		user.setEnabled(false);
 		
-		user.setContact(assistantToUserContact(assistant));
-		user.setPreferences(assistantToUserPreferences(assistant));
-		user.setProfile(assistantToUserProfile(assistant));
-		return user;
-	}
+		user.setFirstName(assistant.getFirstname());
+		user.setLastName(assistant.getLastname());
+		user.setTitle(assistant.getTitle());
+		user.setProfession(assistant.getFfunction());
+		user.setAddress(assistant.getAddress());
+		user.setPostcode(assistant.getPostcode());
+		user.setCity(assistant.getCity());
+		user.setCountry(assistant.getLand());
+		user.setTelephone(assistant.getTelephone());
+		user.setSmsEmail(assistant.getEmailsmsgatewayaddress());
 
-	/**
-	 * Map assistant to UserProfile
-	 * 
-	 * @param assistant
-	 * @return
-	 */
-	private UserProfile assistantToUserProfile(Assistant2 assistant) {
-		UserProfile profile = UserProfile.Factory.newInstance();
 
+		user.setLocale(assistant.getLocale());
+		user.setTheme("plexus");
+		user.setTimezone("GMT+2");
+		
 		if (!assistant.getAssistantinformations().isEmpty()) {
 			Assistantinformation2 info = assistant.getAssistantinformations().iterator().next();
-			profile.setEmailPublic(ImportUtil.toBoolean(info.getEmail()));
-			profile.setAddressPublic(ImportUtil.toBoolean(info.getAddress()));
-			profile.setImagePublic(ImportUtil.toBoolean(info.getImage()));
-			profile.setPortraitPublic(ImportUtil.toBoolean(info.getDescription()));
-			profile.setProfilePublic(ImportUtil.toBoolean(info.getIspublic()));
-			profile.setTelephonePublic(ImportUtil.toBoolean(info.getTelephone()));
+			user.setEmailPublic(ImportUtil.toBoolean(info.getEmail()));
+			user.setAddressPublic(ImportUtil.toBoolean(info.getAddress()));
+			user.setImagePublic(ImportUtil.toBoolean(info.getImage()));
+			user.setPortraitPublic(ImportUtil.toBoolean(info.getDescription()));
+			user.setProfilePublic(ImportUtil.toBoolean(info.getIspublic()));
+			user.setTelephonePublic(ImportUtil.toBoolean(info.getTelephone()));
 
-			profile.setPortrait(info.getTtext());
+			user.setPortrait(info.getTtext());
 		}
-		return profile;
-	}
-
-	/**
-	 * Map assistant to user preferences
-	 * 
-	 * @param assistant
-	 * @return UserPreferences
-	 */
-	private UserPreferences assistantToUserPreferences(Assistant2 assistant) {
-		UserPreferences preferences = UserPreferences.Factory.newInstance();
-		preferences.setLocale(assistant.getLocale());
-		preferences.setTheme("plexus");
-		preferences.setTimezone("GMT+2");
-		return preferences;
-	}
-
-	/**
-	 * Map assistant to user contact
-	 * 
-	 * @param assistant
-	 * @return UserContact
-	 */
-	private UserContact assistantToUserContact(Assistant2 assistant) {
-		UserContact contact = UserContact.Factory.newInstance();
-		contact.setFirstName(assistant.getFirstname());
-		contact.setLastName(assistant.getLastname());
-		contact.setTitle(assistant.getTitle());
-		contact.setProfession(assistant.getFfunction());
-		contact.setAddress(assistant.getAddress());
-		contact.setPostcode(assistant.getPostcode());
-		contact.setCity(assistant.getCity());
-		contact.setCountry(assistant.getLand());
-		contact.setTelephone(assistant.getTelephone());
-		contact.setSmsEmail(assistant.getEmailsmsgatewayaddress());
-		return contact;
+		
+		return user;
 	}
 
 	private boolean existingUserName(User user) {
@@ -303,35 +267,33 @@ public class UserImport extends DefaultImport {
 		user.setEnabled(false);
 
 		// User Contact
-		// user.setContact(UserContact.Factory.newInstance());
-		user.getContact().setFirstName(student.getFirstname());
-		user.getContact().setLastName(student.getLastname());
-		user.getContact().setAddress(student.getAddress());
-		user.getContact().setCity(student.getCity());
-		user.getContact().setPostcode(student.getPostcode());
-		user.getContact().setCountry(student.getLand());
-		user.getContact().setSmsEmail(student.getEmailsmsgatewayaddress());
-		user.getContact().setTelephone(student.getTelephone());
+		user.setFirstName(student.getFirstname());
+		user.setLastName(student.getLastname());
+		user.setAddress(student.getAddress());
+		user.setCity(student.getCity());
+		user.setPostcode(student.getPostcode());
+		user.setCountry(student.getLand());
+		user.setSmsEmail(student.getEmailsmsgatewayaddress());
+		user.setTelephone(student.getTelephone());
 
 		// User Preferences
 		user.setLocale(student.getLocale());
 
-		user.setProfile(UserProfile.Factory.newInstance());
 		// User Profile
-		user.getProfile().setAgeGroup(student.getYyear());
-		user.getProfile().setMatriculation(student.getPersonalid());
-		user.getProfile().setStudies(student.getStudies());
+		user.setAgeGroup(student.getYyear());
+		user.setMatriculation(student.getPersonalid());
+		user.setStudies(student.getStudies());
 		if (info != null) {
-			user.getProfile().setPortrait(info.getTtext());
+			user.setPortrait(info.getTtext());
 		}
 
 		if (info != null) {
-			user.getProfile().setAddressPublic(ImportUtil.toBoolean(info.getAddress()));
-			user.getProfile().setTelephonePublic(ImportUtil.toBoolean(info.getTelephone()));
-			user.getProfile().setImagePublic(ImportUtil.toBoolean(info.getImage()));
-			user.getProfile().setEmailPublic(ImportUtil.toBoolean(info.getEmail()));
-			user.getProfile().setPortraitPublic(ImportUtil.toBoolean(info.getDescription()));
-			user.getProfile().setProfilePublic(ImportUtil.toBoolean(info.getIspublic()));
+			user.setAddressPublic(ImportUtil.toBoolean(info.getAddress()));
+			user.setTelephonePublic(ImportUtil.toBoolean(info.getTelephone()));
+			user.setImagePublic(ImportUtil.toBoolean(info.getImage()));
+			user.setEmailPublic(ImportUtil.toBoolean(info.getEmail()));
+			user.setPortraitPublic(ImportUtil.toBoolean(info.getDescription()));
+			user.setProfilePublic(ImportUtil.toBoolean(info.getIspublic()));
 		}
 
 		return user;

@@ -18,7 +18,6 @@ import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -51,7 +50,7 @@ public class UserProfilePage extends BasePage{
 		logger.debug("prerender");
 		
 		if (user != null) {
-			user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(user.getId()));
+			user = (UserInfo) securityService.getUser(user.getId());
 			setSessionBean(Constants.USER, user);
 		}
 		
@@ -76,7 +75,6 @@ public class UserProfilePage extends BasePage{
 	 */
 	public void saveProfile(ActionEvent event) throws DocumentApplicationException, IOException {
 		saveLogin(event);
-		savePreferences(event);
 		// fetch uploaded files and remove it from upload manager
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {
@@ -102,9 +100,8 @@ public class UserProfilePage extends BasePage{
 			removeSessionBean(Constants.UPLOADED_FILE);
 			uploadFileManager.removeDocument(uploaded);
 		}
-		user.getProfile().setPortrait(new HtmlInputFilter().filter(user.getProfile().getPortrait()) );
+		user.setPortrait(new HtmlInputFilter().filter(user.getPortrait()) );
 		securityService.saveUser(user);
-		securityService.saveUserContact(user);
 		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
 
@@ -123,13 +120,6 @@ public class UserProfilePage extends BasePage{
 		// persist user
 		securityService.saveUser(user);
 	}		
-	
-	/**
-	 * Persist User Preferences
-	 */
-	private void savePreferences(ActionEvent event) {
-		securityService.saveUserPreferences(user);		
-	}
 	
 	/**
 	 * Show Profile

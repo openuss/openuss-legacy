@@ -38,11 +38,8 @@ import org.openuss.security.MembershipDao;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.UserContact;
 import org.openuss.security.UserDao;
 import org.openuss.security.UserImpl;
-import org.openuss.security.UserPreferences;
-import org.openuss.security.UserProfile;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -90,9 +87,6 @@ public class TestUtility {
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
 		defaultUser.setGroups(new ArrayList<Group>());
-		defaultUser.setContact(UserContact.Factory.newInstance());
-		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
-		defaultUser.setProfile(UserProfile.Factory.newInstance());
 		userDao.create(defaultUser);
 		return defaultUser;
 	}
@@ -133,13 +127,11 @@ public class TestUtility {
 	 */
 	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
-		defaultUser.setContact(UserContact.Factory.newInstance());
 		defaultUser.setFirstName("firstName");
 		defaultUser.setLastName("lastName");
 		defaultUser.setTitle("title");
 		defaultUser.setEmail(unique("email"));
 		defaultUser.setLocale("de_DE");
-		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
 		
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
@@ -154,19 +146,6 @@ public class TestUtility {
 
 	public User createUniqueUserInDB() {
 		// Create a unique User
-		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
-		userPreferences.setLocale("de");
-		userPreferences.setTheme("plexus");
-		userPreferences.setTimezone(TimeZone.getDefault().getID());
-
-		UserContact userContact = UserContact.Factory.newInstance();
-		userContact.setFirstName("Unique");
-		userContact.setLastName("User");
-		userContact.setAddress("Leonardo Campus 5");
-		userContact.setCity("Münster");
-		userContact.setCountry("Germany");
-		userContact.setPostcode("48149");
-
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("username"));
 		user.setPassword("masterkey");
@@ -176,8 +155,17 @@ public class TestUtility {
 		user.setCredentialsExpired(false);
 		user.setAccountLocked(false);
 
-		user.setPreferences(userPreferences);
-		user.setContact(userContact);
+		user.setFirstName("Unique");
+		user.setLastName("User");
+		user.setAddress("Leonardo Campus 5");
+		user.setCity("Münster");
+		user.setCountry("Germany");
+		user.setPostcode("48149");
+
+		user.setLocale("de");
+		user.setTheme("plexus");
+		user.setTimezone(TimeZone.getDefault().getID());
+		
 		user.setGroups(new ArrayList<Group>());
 
 		userDao.create(user);
@@ -706,6 +694,8 @@ public class TestUtility {
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();
 		user.setUsername(unique("username"));
+		user.setFirstName("firstName");
+		user.setLastName("lastName");
 		user.setPassword("password");
 		user.setEmail(unique("email"));
 		user.setEnabled(true);

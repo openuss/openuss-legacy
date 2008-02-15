@@ -68,7 +68,7 @@ public class RegistrationController extends BaseBean {
 			return "failure";
 		}
 		// set default user time zone
-		user.getPreferences().setTimezone(TimeZone.getDefault().getID());
+		user.setTimezone(TimeZone.getDefault().getID());
 
 		registrationService.registrateUser(user);
 		String activationCode = registrationService.generateActivationCode(user);

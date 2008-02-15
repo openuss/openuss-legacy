@@ -32,20 +32,16 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	private static final Logger logger = Logger.getLogger(RegistrationServiceImpl.class);
 	
 	@Override
-	protected void handleRegistrateUser(UserInfo user) throws RegistrationException {
-		Validate.notNull(user, "User parameter must not be null!");
+	protected void handleRegistrateUser(UserInfo userInfo) throws RegistrationException {
+		Validate.notNull(userInfo, "User parameter must not be null!");
 
 		// ensure that user will not be activate
-		user.setEnabled(false);
+		userInfo.setEnabled(false);
 
-		getSecurityService().createUser(user);
-		
-		getSecurityService().saveUserPreferences(user);
-		getSecurityService().saveUserContact(user);
-		getSecurityService().saveUserProfile(user);
+		getSecurityService().createUser(userInfo);
 		
 		// asign roles to user
-		asignRolesToUser(getSecurityService().getUserObject(user));
+		asignRolesToUser(getSecurityService().getUserObject(userInfo));
 	}
 
 	@Override

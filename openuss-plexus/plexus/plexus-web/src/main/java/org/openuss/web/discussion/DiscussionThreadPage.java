@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.discussion.PostInfo;
@@ -13,7 +13,7 @@ import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.security.UserInfoDetails;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -27,7 +27,7 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	public Integer length;
 	
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
-	public UserInfoDetails profile;
+	public UserInfo profile;
 	
 	public boolean topicWatchState;
 	
@@ -197,11 +197,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		this.topicReadOnly = topicReadOnly;
 	}
 
-	public UserInfoDetails getProfile() {
+	public UserInfo getProfile() {
 		return profile;
 	}
 
-	public void setProfile(UserInfoDetails profile) {
+	public void setProfile(UserInfo profile) {
 		this.profile = profile;
 	}
 

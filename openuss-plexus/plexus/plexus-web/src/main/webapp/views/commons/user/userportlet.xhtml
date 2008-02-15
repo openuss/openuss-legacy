@@ -13,8 +13,8 @@
 	<s:authorize ifAllGranted="ROLE_USER">
 		<h:form id="userportletLogout">
 			<h:outputFormat value="#{msg.user_portlet_username}">
-				<f:param value="#{user.contact.firstName}"/>
-				<f:param value="#{user.contact.lastName}"/>
+				<f:param value="#{user.firstName}"/>
+				<f:param value="#{user.lastName}"/>
 			</h:outputFormat>
 			&#160;|&#160;
 			<h:commandLink action="user_profile" value="#{msg.user_portlet_command_profile}"/>

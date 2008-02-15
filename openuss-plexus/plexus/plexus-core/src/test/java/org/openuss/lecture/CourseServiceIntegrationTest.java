@@ -13,8 +13,6 @@ import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.acl.LectureAclEntry;
-import org.openuss.security.acl.Permission;
 
 /**
  * JUnit Test for Spring Hibernate CourseService class.

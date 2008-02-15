@@ -9,7 +9,7 @@
 		      Security
 	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
     
-    <bean id="user" class="org.openuss.security.UserInfoDetails" scope="prototype"/>
+    <bean id="user" class="org.openuss.security.UserInfo" scope="prototype"/>
     <bean id="userContact" class="org.openuss.security.UserContactInfo" scope="prototype"/>
     <bean id="userPreferences" class="org.openuss.security.UserPreferencesInfo" scope="prototype"/>
     <bean id="userProfile" class="org.openuss.security.UserProfileInfo" scope="prototype"/>

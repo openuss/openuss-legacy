@@ -5,7 +5,6 @@ import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -35,8 +34,10 @@ public class UserDetailsServiceAdapter implements UserDetailsService {
 		if (userInfo == null) {
 			throw new UsernameNotFoundException("Username not found!");
 		}
-		return (UserInfoDetails) getSecurityService().getUserInfoDetails(userInfo);
 		
+		String[] authorities = securityService.getGrantedAuthorities(userInfo);
+		
+		return new UserInfoDetailsAdapter(userInfo, authorities);
 	}
 
 }

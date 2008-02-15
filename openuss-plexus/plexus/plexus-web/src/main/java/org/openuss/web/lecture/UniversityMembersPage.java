@@ -22,7 +22,6 @@ import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -131,7 +130,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 
 		try {
 			logger.debug(username);
-			user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUserByName(username));
+			user = securityService.getUserByName(username);
 			logger.debug(universityInfo.getId());
 			logger.debug(user.getId());
 			organisationService.addMember(universityInfo.getId(), user.getId());
@@ -162,11 +161,9 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 	 * @return outcome
 	 */
 	public String showProfile() {
-
+		// FIXME do not use session attribute
 		UserInfo member = members.getRowData();
-		UserInfoDetails user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(member.getId()));
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-
+		setSessionBean(Constants.SHOW_USER_PROFILE, member);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 

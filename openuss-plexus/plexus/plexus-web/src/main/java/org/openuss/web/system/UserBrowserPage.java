@@ -19,7 +19,6 @@ import org.openuss.lecture.LectureException;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
 import org.openuss.statistics.SystemStatisticInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -85,14 +84,13 @@ public class UserBrowserPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
-
 	public String showProfile() {
+		// FIXME use request parameters instead 
 		UserInfo userInfo = dataModel.getRowData();
-		UserInfoDetails user = (UserInfoDetails) securityService.getUserInfoDetails(userInfo);
-		setSessionBean("showuser", user);
+		userInfo = securityService.getUser(userInfo.getId());
+		setSessionBean("showuser", userInfo);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-	
 	
 	public DataPage<UserInfo> fetchDataPage(int startRow, int pageSize) {
 		if (logger.isDebugEnabled()) {

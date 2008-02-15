@@ -15,12 +15,9 @@ public class SecurityTests {
 		suite.addTestSuite(GroupDaoTest.class);
 		suite.addTestSuite(GroupImplTest.class);
 		suite.addTestSuite(SecurityServiceIntegrationTest.class);
-		suite.addTestSuite(UserContactDaoTest.class);
 		suite.addTestSuite(UserDaoTest.class);
 		suite.addTestSuite(UserDetailsServiceAdapterTest.class);
 		suite.addTestSuite(UserImplTest.class);
-		suite.addTestSuite(UserPreferencesDaoTest.class);
-		suite.addTestSuite(UserProfileDaoTest.class);
 		// ACL package
 		suite.addTestSuite(AclPermissionIntegrationTest.class);
 		suite.addTestSuite(ObjectIdentityDaoTest.class);

@@ -48,18 +48,6 @@ public class UserDaoTest extends UserDaoTestBase {
 
 	public void testUserDaoCreate() {
 		// Create a User
-		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
-		userPreferences.setLocale("de");
-		userPreferences.setTheme("plexus");
-		userPreferences.setTimezone(TimeZone.getDefault().getID());
-		
-		UserContact userContact = UserContact.Factory.newInstance();
-		userContact.setFirstName("Unique");
-		userContact.setLastName("User");
-		userContact.setAddress("Leonardo Campus 5");
-		userContact.setCity("Münster");
-		userContact.setCountry("Germany");
-		userContact.setPostcode("48149");
 		
 		User user = User.Factory.newInstance();
 		user.setUsername(testUtility.unique("username"));
@@ -69,9 +57,17 @@ public class UserDaoTest extends UserDaoTestBase {
 		user.setAccountExpired(false);
 		user.setCredentialsExpired(false);
 		user.setAccountLocked(false);
+		user.setLocale("de");
+		user.setTheme("plexus");
+		user.setTimezone(TimeZone.getDefault().getID());
 		
-		user.setPreferences(userPreferences);
-		user.setContact(userContact);
+		user.setFirstName("Unique");
+		user.setLastName("User");
+		user.setAddress("Leonardo Campus 3");
+		user.setCity("Münster");
+		user.setCountry("Germany");
+		user.setPostcode("48149");
+
 		user.setGroups(new ArrayList<Group>());
 		
 		userDao.create(user);
@@ -87,32 +83,26 @@ public class UserDaoTest extends UserDaoTestBase {
 	
 	public void testGetPassword() {
 		// Create a User
-		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
-		userPreferences.setLocale("de");
-		userPreferences.setTheme("plexus");
-		userPreferences.setTimezone(TimeZone.getDefault().getID());
-		
-		UserContact userContact = UserContact.Factory.newInstance();
-		userContact.setFirstName("Unique");
-		userContact.setLastName("User");
-		userContact.setAddress("Leonardo Campus 5");
-		userContact.setCity("Münster");
-		userContact.setCountry("Germany");
-		userContact.setPostcode("48149");
-		
 		User user = User.Factory.newInstance();
 		user.setUsername(testUtility.unique("username"));
+		user.setPassword("masterkey");
 		user.setEmail(testUtility.unique("openuss")+"@e-learning.uni-muenster.de");
 		user.setEnabled(true);
 		user.setAccountExpired(false);
 		user.setCredentialsExpired(false);
 		user.setAccountLocked(false);
+		user.setLocale("de");
+		user.setTheme("plexus");
+		user.setTimezone(TimeZone.getDefault().getID());
 		
-		user.setPreferences(userPreferences);
-		user.setContact(userContact);
+		user.setFirstName("Unique");
+		user.setLastName("User");
+		user.setAddress("Leonardo Campus 3");
+		user.setCity("Münster");
+		user.setCountry("Germany");
+		user.setPostcode("48149");
+		
 		user.setGroups(new ArrayList<Group>());
-		
-		user.setPassword("password");
 		
 		userDao.create(user);
 		
@@ -190,9 +180,9 @@ public class UserDaoTest extends UserDaoTestBase {
 		
 		found = userDao.findUserByEmail("this cannot be found");
 		assertNull(found);
-		
-		
 	}
+	
+	
 
 	public TestUtility getTestUtility() {
 		return testUtility;

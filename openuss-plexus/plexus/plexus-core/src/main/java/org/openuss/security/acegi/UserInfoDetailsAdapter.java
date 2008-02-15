@@ -1,17 +1,32 @@
-package org.openuss.security;
+package org.openuss.security.acegi;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.lang.StringUtils;
+import org.openuss.security.UserInfo;
 
-public class UserInfoDetails extends UserInfo implements UserDetails{
+/**
+ * Adapter class between UserInfo and Acegi UserDetails
+ * @author Ingo Dueppe
+ *
+ */
+public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 
 	private static final long serialVersionUID = -1828012593245034508L;
 	
-	private GrantedAuthority[] authorities;
+	private GrantedAuthority[] grantedAuthorities;
+	
+	public UserInfoDetailsAdapter(UserInfo userInfo, String[] authorities) {
+		super(userInfo);
+		
+		grantedAuthorities = new StringGrantedAuthority[authorities.length];
+		for(int i = 0; i < authorities.length; i++) {
+			grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
+		}
+	}
 	
 	public GrantedAuthority[] getAuthorities() {
-		return this.authorities;
+		return this.grantedAuthorities;
 	}
 	
 	/**
@@ -60,9 +75,4 @@ public class UserInfoDetails extends UserInfo implements UserDetails{
 			return super.toString();
 		}
 	}
-
-
-	public void setAuthorities(GrantedAuthority[] authorities) {
-		this.authorities = authorities;
-	}	
 }

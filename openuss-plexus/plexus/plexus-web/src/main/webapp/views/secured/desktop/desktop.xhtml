@@ -26,7 +26,7 @@
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
 		<h:outputFormat value="#{msg.desktop_heading}">
-			<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
+			<f:param value="#{user.firstName} #{user.lastName}" />
 		</h:outputFormat>
 	</ui:define>
 	<ui:define name="navigation"> 
@@ -39,7 +39,7 @@
 	<ui:define name="content">
 		<o:block>
 			<h:outputFormat value="#{msg.desktop_heading}" styleClass="header_font_normal">
-				<f:param value="#{user.contact.firstName} #{user.contact.lastName}" />
+				<f:param value="#{user.firstName} #{user.lastName}" />
 			</h:outputFormat>
 		</o:block>
 		<h:form id="coursesForm" rendered="${!empty desktopcourses}">

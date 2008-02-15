@@ -175,9 +175,7 @@ public class AuthenticationController extends BasePage {
 	private void injectUserInformationIntoSession(Authentication auth) {
 		if (auth.getPrincipal() instanceof UserInfo) {
 			logger.debug("Principal is: "+auth.getPrincipal());
-			UserInfo details = (UserInfo) auth.getPrincipal();
-			user = (UserInfo) getSecurityService().getUserInfoDetails(details);
-			//	UserInfoDetails user = getSecurityService().getUserInfoDetails(securityService.getUserByName(details.getUsername()));
+			user = (UserInfo) auth.getPrincipal();
 			securityService.setLoginTime(user);
 			setSessionBean(Constants.USER_SESSION_KEY, user);
 			

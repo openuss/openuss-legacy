@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfoDetails;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -25,7 +25,7 @@ public class UniqueEmailValidator extends BaseBean implements Validator {
 		String email = (String) value;
 		if (StringUtils.isNotEmpty(email)) {
 			SecurityService service = (SecurityService) getBean("securityService");
-			UserInfoDetails user = (UserInfoDetails) getSessionBean(Constants.USER);
+			UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 			boolean unique = (service.isNonExistingEmailAddress(user, email)==null);
 			if (!unique) {
 				((UIInput)component).setValid(false);

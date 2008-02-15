@@ -19,10 +19,15 @@
 		<s:authorize ifNotGranted="ROLE_USER">
    			<o:block label="#{msg.login_headline}">
 		   		<h:form id="loginPortletLogin" >
-		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" title="${msg['login_username_hint']}" required="true"/>
-		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" title="${msg['login_password_hint']}" required="true" type="password"/>
+		   			<h:outputLabel for="j_username" value="#{msg.login_username}" styleClass="field_label"/> 
+		   			<t:inputText id="j_username" forceId="true" value="#{authenticationController.username}" title="${msg['login_username_hint']}" required="true" styleClass="field"/>
+		   			<h:message id="fieldError" for="j_username" styleClass="field_error" showDetail="true" showSummary="false" />
+		   			
+		   			<h:outputLabel for="j_username" value="#{msg.login_password}" styleClass="field_label"/> 
+		   			<t:inputSecret id="j_password" forceId="true" value="#{authenticationController.password}" title="${msg['login_password_hint']}" required="true" styleClass="field"/>
+		   			<h:message id="fieldError" for="j_password" styleClass="field_error" showDetail="true" showSummary="false" />
+		   		
 			    	<h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
-			    	
 		    	</h:form>
 				<h:form id="loginPortletRegister">
 					<ul class="int">
