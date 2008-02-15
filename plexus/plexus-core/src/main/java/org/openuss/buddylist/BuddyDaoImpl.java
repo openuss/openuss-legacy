@@ -4,6 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.buddylist;
+
+import java.util.*;
+
 /**
  * @see org.openuss.buddylist.Buddy
  */
@@ -17,9 +20,14 @@ public class BuddyDaoImpl
         org.openuss.buddylist.Buddy sourceEntity,
         org.openuss.buddylist.BuddyInfo targetVO)
     {
-        // @todo verify behavior of toBuddyInfo
-        super.toBuddyInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.tags (can't convert sourceEntity.getTags():org.openuss.buddylist.Tag to java.util.List
+        targetVO.setId(sourceEntity.getId());
+        LinkedList<String> tags = new LinkedList<String>();
+        for(Tag tag : sourceEntity.getTags()){
+        	tags.add(tag.getTag());
+        }
+        Collections.sort(tags);
+        targetVO.setTags(tags);
+        targetVO.setName(sourceEntity.getUser().getDisplayName());
     }
 
 
@@ -28,8 +36,9 @@ public class BuddyDaoImpl
      */
     public org.openuss.buddylist.BuddyInfo toBuddyInfo(final org.openuss.buddylist.Buddy entity)
     {
-        // @todo verify behavior of toBuddyInfo
-        return super.toBuddyInfo(entity);
+    	BuddyInfo buddyInfo = new BuddyInfo();
+        this.toBuddyInfo(entity, buddyInfo);
+        return buddyInfo;
     }
 
 
@@ -40,17 +49,12 @@ public class BuddyDaoImpl
      */
     private org.openuss.buddylist.Buddy loadBuddyFromBuddyInfo(org.openuss.buddylist.BuddyInfo buddyInfo)
     {
-        // @todo implement loadBuddyFromBuddyInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.loadBuddyFromBuddyInfo(org.openuss.buddylist.BuddyInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.buddylist.Buddy buddy = this.load(buddyInfo.getId());
         if (buddy == null)
         {
             buddy = org.openuss.buddylist.Buddy.Factory.newInstance();
         }
         return buddy;
-        */
     }
 
     

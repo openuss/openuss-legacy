@@ -39,17 +39,12 @@ public class BuddyListDaoImpl
      */
     private org.openuss.buddylist.BuddyList loadBuddyListFromBuddyListInfo(org.openuss.buddylist.BuddyListInfo buddyListInfo)
     {
-        // @todo implement loadBuddyListFromBuddyListInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.buddylist.loadBuddyListFromBuddyListInfo(org.openuss.buddylist.BuddyListInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.buddylist.BuddyList buddyList = this.load(buddyListInfo.getId());
         if (buddyList == null)
         {
             buddyList = org.openuss.buddylist.BuddyList.Factory.newInstance();
         }
         return buddyList;
-        */
     }
 
     

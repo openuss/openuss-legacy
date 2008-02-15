@@ -39,17 +39,12 @@ public class InternalMessageDaoImpl
      */
     private org.openuss.internalMessage.InternalMessage loadInternalMessageFromInternalMessageInfo(org.openuss.internalMessage.InternalMessageInfo internalMessageInfo)
     {
-        // @todo implement loadInternalMessageFromInternalMessageInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.internalMessage.loadInternalMessageFromInternalMessageInfo(org.openuss.internalMessage.InternalMessageInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.internalMessage.InternalMessage internalMessage = this.load(internalMessageInfo.getId());
         if (internalMessage == null)
         {
             internalMessage = org.openuss.internalMessage.InternalMessage.Factory.newInstance();
         }
         return internalMessage;
-        */
     }
 
     

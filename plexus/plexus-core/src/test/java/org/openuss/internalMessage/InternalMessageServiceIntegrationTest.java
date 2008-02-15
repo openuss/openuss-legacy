@@ -5,36 +5,71 @@
  */
 package org.openuss.internalMessage;
 
-import java.util.Date;
+import java.util.*;
+
+import org.acegisecurity.acl.AclManager;
+import org.openuss.TestUtility;
+import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.*;
 
 /**
  * JUnit Test for Spring Hibernate InternalMessageService class.
- * @see org.openuss.buddylist.InternalMessageService
+ * @see org.openuss.internalMessage.InternalMessageService
  */
 public class InternalMessageServiceIntegrationTest extends InternalMessageServiceIntegrationTestBase {
+	
+	private SecurityService securityService;
 	private UserDao userDao;
+	private InternalMessageDao internalMessageDao;
+	private MessageStatusDao messageStatusDao;
+	private DefaultDomainObject defaultDomainObject;
+	private AclManager aclManager;
 	
-	private InternalMessageDao messageDao;
 	
-	public void setUserDao(UserDao userDao){
+	@Override
+	protected void onSetUpInTransaction() throws Exception {
+		AcegiUtils.setAclManager(aclManager);
+		testUtility.createUserSecureContext();
+		defaultDomainObject = createDomainObject();
+		super.onSetUpInTransaction();
+	}
+	
+	private DefaultDomainObject createDomainObject() {
+		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
+		securityService.createObjectIdentity(defaultDomainObject, null);
+		return defaultDomainObject;
+	}
+	
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
-	public void setMessageDao(InternalMessageDao messageDao){
-		this.messageDao = messageDao;
-	}
-	
+
 	public void testInternalMessages(){
 		//create two users
-		User sender = userDao.create("user1", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
-		User recipient = userDao.create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
+		User sender = getSecurityService().getCurrentUser();
+		User recipient = getUserDao().create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
+		assertEquals(0, getInternalMessageService().getAllSentInternalMessages().size());
+		assertEquals(0, getInternalMessageService().getAllReceivedInternalMessages().size());
 		//create message
-//		InternalMessageInfo message = (InternalMessageInfo)messageDao.create(messageDao.TRANSFORM_INTERNALMESSAGEINFO, "content", new Date(), false, recipient, sender, "subject");
-//		message.setSenderId(sender.getId());
-//		message.setRecipientId(recipient.getId());
-//		internalMessageService.sendInternalMessage(message);
-//		assertEquals(1, internalMessageService.getAllInternalMessages(sender).size());
+		InternalMessageInfo im = new InternalMessageInfo();
+		im.setContent("content");
+		im.setSubject("subject");
+		im.setMessageDate(new Date());
+		im.setSenderDisplayName(sender.getDisplayName());
+		im.setSenderId(sender.getId());
+		im.setInternalMessageRecipientsInfos(new LinkedList<InternalMessageRecipientsInfo>());
+		InternalMessageRecipientsInfo rec = new InternalMessageRecipientsInfo();
+		rec.setRead(false);
+		rec.setRecipientDisplayName(recipient.getDisplayName());
+		rec.setRecipientId(recipient.getId());
+		im.getInternalMessageRecipientsInfos().add(rec);
+		internalMessageService.sendInternalMessage(im);
+		assertEquals(1, internalMessageService.getAllSentInternalMessages().size());
 //		assertEquals(1, internalMessageService.getAllReceivedInternalMessages(recipient).size());
 //		InternalMessageInfo message2 = messageDao.toInternalMessageInfo((InternalMessage)(internalMessageService.getAllReceivedInternalMessages(recipient).get(0)));
 //		assertEquals(false, message2.isMessageReadByRecipient());
@@ -52,4 +87,29 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 //		assertEquals(0, internalMessageService.getAllReceivedInternalMessages(recipient).size());
 //		assertEquals(0, internalMessageService.getAllInternalMessages(sender).size());
 	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
+	public InternalMessageDao getInternalMessageDao() {
+		return internalMessageDao;
+	}
+
+	public void setInternalMessageDao(InternalMessageDao internalMessageDao) {
+		this.internalMessageDao = internalMessageDao;
+	}
+
+	public MessageStatusDao getMessageStatusDao() {
+		return messageStatusDao;
+	}
+
+	public void setMessageStatusDao(MessageStatusDao messageStatusDao) {
+		this.messageStatusDao = messageStatusDao;
+	}
+
 }

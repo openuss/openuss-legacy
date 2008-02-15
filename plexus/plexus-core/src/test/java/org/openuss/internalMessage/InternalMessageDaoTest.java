@@ -16,7 +16,6 @@ public class InternalMessageDaoTest extends InternalMessageDaoTestBase {
 		InternalMessage internalMessage = InternalMessage.Factory.newInstance();
 		internalMessage.setContent(" ");
 		internalMessage.setSubject(" ");
-		internalMessage.setMessageReadByRecipient(false);
 		internalMessage.setMessageDate(null);
 		assertNull(internalMessage.getId());
 		internalMessageDao.create(internalMessage);
