@@ -38,23 +38,25 @@
   		<ui:define name="content">
 			<h:form id="openuss4us_usercalendar" enctype="multipart/form-data">
 				<o:block label="#{msg['openuss4us_navigation_header']}" styleClass="form_box">
-				<h:panelGrid columns="2">
-				
-					<h:panelGroup id="calendar_left"> 
-						<ui:include src="/views/commons/calendar/calendar.xhtml" />
-					</h:panelGroup>
-					<h:panelGroup id="calendar_right"> 
-						<ui:include src="/views/commons/calendar/appointmentstable.xhtml" />
-					</h:panelGroup>
-					
-				</h:panelGrid>
+					<ui:include src="/views/commons/calendar/calendar.xhtml" />
    			 	</o:block>
-   			 	
    			 	<o:block>
-					<h:commandButton value="#{msg.openuss4us_calendar_button_appointment_add}" title="#{msg.openuss4us_calendar_button_appointment_add}" action="openuss4us_calendar_add_appointment" styleClass="button" />
-					<h:commandButton value="#{msg.openuss4us_calendar_button_view_subscriptions}" title="#{msg.openuss4us_calendar_button_view_subscriptions}" action="openuss4us_calendar_export" styleClass="button" /> 
+   			 		<h:commandButton 
+   			 			value="Insert data"
+   			 			title="Insert data"
+   			 			actionListener="#{scheduleHandler2.addSampleEntries}"  
+   			 			styleClass="button"/>
+					<h:commandButton 
+						value="#{msg.openuss4us_calendar_button_appointment_add}" 
+						title="#{msg.openuss4us_calendar_button_appointment_add}" 
+						action="openuss4us_calendar_create_appointment" 
+						styleClass="button" />
+					<h:commandButton 
+						value="#{msg.openuss4us_calendar_button_view_subscriptions}" 
+						title="#{msg.openuss4us_calendar_button_view_subscriptions}" 
+						action="openuss4us_calendar_export" 
+						styleClass="button" /> 
 		 		</o:block>
-		 		
 	 		</h:form> 
   		</ui:define>
 	</ui:composition>

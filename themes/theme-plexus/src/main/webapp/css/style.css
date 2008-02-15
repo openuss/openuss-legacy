@@ -2144,3 +2144,38 @@ span.profile_text {
 	padding: 15px 15px 15px 15px;
 }
 
+.inactive-day workday {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}
+
+.day workday {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}
+
+.day weekend {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}
+
+td.inactive-day workday {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}
+
+td.day workday {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}
+
+td.day weekend {
+	height:121px;
+	width:16.6667%;
+	padding: 0px 0px 0px 0px;
+}

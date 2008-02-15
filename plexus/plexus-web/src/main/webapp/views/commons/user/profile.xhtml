@@ -27,22 +27,37 @@
 
 <address class="vcard" style="display: none">
 	<span class="fn" style="display: none">
-		<span class="family-name">#{showuser.contact.lastName}</span>
-		<span class="given-name">#{showuser.contact.firstName}</span>
-		<span class="adr type=home" style="display: none"></span>
-		<span class="street-address">#{showuser.contact.address}</span>
-		<span class="country-name">#{showuser.contact.country}</span>
-		<span class="postal-code">#{showuser.contact.postcode}</span>
-		<div class="tel home">#{showuser.contact.telephone}</div>
-		<div class="tel cell">#{showuser.contact.mobile}</div>
-		<div class="bday">#{showuser.contact.birthday}</div>
-		<div class="email">#{showuser.email}</div>
+		<c:if test="#{showuser.profile.profileContactPublic}">
+			<span class="family-name">#{showuser.contact.lastName}</span>
+			<span class="given-name">#{showuser.contact.firstName}</span>
+			<span class="adr type=home" style="display: none"></span>
+		</c:if>
+			
+		<c:if test="#{showuser.profile.addressPublic}">
+			<span class="street-address">#{showuser.contact.address}</span>
+			<span class="country-name">#{showuser.contact.country}</span>
+			<span class="postal-code">#{showuser.contact.postcode}</span>
+			<span class="locality">#{showuser.contact.city}</span>
+		</c:if>
+		
+		<c:if test="#{showuser.profile.telephonePublic}">
+			<div class="tel home">#{showuser.contact.telephone}</div>
+			<div class="tel cell">#{showuser.contact.mobile}</div>
+		</c:if>
+		
+		<c:if test="#{showuser.profile.profilePersonalPublic}">
+			<div class="bday">#{showuser.contact.birthday}</div>
+		</c:if>
+		
+		<c:if test="#{showuser.profile.emailPublic}">
+			<div class="email">#{showuser.email}</div>
+		</c:if>
 	</span>
 </address>
 			
 		<div class="content_normal">
 	
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="3" border="0">
 	
 				<h:panelGroup id="userimage">
 					<div class="userimage">
@@ -60,30 +75,37 @@
 						</c:if>
 					</div>
 				</h:panelGroup>
-				<h:outputText value="" />		
+				<h:outputText value="" />
+				<h:outputText value="" />
+				
 
 				<c:if test="#{showuser.profile.profileContactPublic}">
 					<h:outputText styleClass="profile_header"
 						value="#{msg.profile_address_header}" />
+					<h:outputText value="" />
 					<h:outputText value="" />	
 				</c:if>
 
 				<c:if test="#{showuser.profile.addressPublic}">
 					<c:if test="#{not empty showuser.contact.address}">
 						<h:outputText value="#{msg.user_contact_address}:" /> 
+						<h:outputText value="#{showuser.contact.address}" />
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.postcode}">
 						<h:outputText value="#{msg.user_contact_postcode}:" />
 						<h:outputText value="#{showuser.contact.postcode}" />
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.city}">
 						<h:outputText value="#{msg.user_contact_city}:" />
 						<h:outputText value="#{showuser.contact.city}" />
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.country}">
 						<h:outputText value="#{msg.user_contact_country}:" />
 						<h:outputText value="#{showuser.contact.country}" />
+						<h:outputText value="" />
 					</c:if>
 				</c:if> 
 		
@@ -92,6 +114,7 @@
 					<h:outputLink value="mailto://#{showuser.email}" styleClass="email">
 						<h:outputText value="#{showuser.email}" />
 					</h:outputLink>
+					<h:outputText value="" />
 				</c:if> 
 				
 				<c:if test="#{showuser.profile.profileContactPublic}">
@@ -101,14 +124,17 @@
 							<h:graphicImage value="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}" />
 							<h:outputText value=" #{showuser.contact.skype}" />
 						</h:outputLink>
+						<h:outputText value="" />
 					</c:if> 
 					<c:if test="#{not empty showuser.contact.icq}">
 						<h:outputText value="#{msg.user_contact_icq}:" />
 						<h:outputText value="#{showuser.contact.icq}" />
+						<h:outputText value="" />
 					</c:if> 
 					<c:if test="#{not empty showuser.contact.msn}">
 						<h:outputText value="#{msg.user_contact_msn}:" />
 						<h:outputText value="#{showuser.contact.msn}" />
+						<h:outputText value="" />
 					</c:if> 
 				</c:if>
 				
@@ -116,10 +142,12 @@
 					<c:if test="#{not empty showuser.contact.telephone}">
 						<h:outputText value="#{msg.user_contact_telephone}:" />
 						<h:outputText value="#{showuser.contact.telephone}" />
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.mobile}">
 						<h:outputText value="#{msg.user_contact_mobile}:" />
 						<h:outputText value="#{showuser.contact.mobile}" />
+						<h:outputText value="" />
 					</c:if>
 				</c:if>
 				
@@ -127,37 +155,45 @@
 					<h:outputText styleClass="profile_header"
 						value="#{msg.profile_personal_header}" />
 					<h:outputText value=""/>
+					<h:outputText value="" />
 					<c:if test="#{not empty showuser.contact.birthday}">
 						<h:outputText value="#{msg.user_contact_birthday}: " />
 						<h:outputText value="#{showuser.contact.birthday}">
 							<f:convertDateTime pattern="dd.MM.yyyy" />
 						</h:outputText>
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.searching}">
 						<h:outputText value="#{msg.user_contact_searching}:" />
 						<h:outputText value="#{showuser.contact.searching}" />
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.providing}">
 						<h:outputText value="#{msg.user_contact_providing}:" />
 					 	<h:outputText value="#{showuser.contact.providing}" />
+					 	<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.interests}">
 						<h:outputText value="#{msg.user_contact_interests}:" />
 						<h:outputText value="#{showuser.contact.interests}" />
+						<h:outputText value="" />
 					</c:if>
 				</c:if>
 		
 				<c:if test="#{showuser.profile.profileUniPublic}">
 					<h:outputText styleClass="profile_header"
 						value="#{msg.profile_uni_header}" />
+					<h:outputText value="" />
 					<h:outputText value="" />	
 					<c:if test="#{not empty showuser.profile.studies}">
 						<h:outputText value="#{msg.user_profile_studies}:" />
 						<h:outputText value="#{showuser.profile.studies}" />
+						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.profile.ageGroup}">
 						<h:outputText value="#{msg.user_profile_agegroup}:" />
 						<h:outputText value="#{showuser.profile.ageGroup}" />
+						<h:outputText value="" />
 					</c:if>
 				</c:if>
 

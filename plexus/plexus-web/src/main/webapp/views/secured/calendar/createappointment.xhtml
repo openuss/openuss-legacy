@@ -37,17 +37,16 @@
   		<ui:define name="content">
 			<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 				<o:block label="#{msg['openuss4us_navigation_header']}" styleClass="form_box">
-				
-					<o:input entity="appointmentInfo" property="starttime" maxlength="25" required="true"
-					<o:input entity="appointmentInfo" property="endtime" maxlength="25" required="true"
+					<o:input entity="appointmentInfo" property="starttime" maxlength="25" required="true"/>
+					<o:input entity="appointmentInfo" property="endtime" maxlength="25" required="true"/>
 					<o:input entity="appointmentInfo" property="subject" maxlength="50" required="true"/>
-					<o:input entity="appointmentInfo" property="description" maxlength="1000" required="true"/>
+					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
+					<h:inputTextarea id="descriptionTextField" styleClass="pulldown" value="#{appointmentInfo.description}" maxlength="1000" required="false"/>
 					<o:input entity="appointmentInfo" property="location" maxlength="50" required="false"/>
-							
 				</o:block>
    			 	<o:block>
-					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_back"/>
-					<h:commandButton actionListener="#{views$secured$calendar$calendar.createAppointment}" value="#{msg.save}" styleClass="button"/>
+					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_back" immediate="true" />
+					<h:commandButton action="#{views$secured$calendar$calendar.createAppointment}" value="#{msg.save}" styleClass="button"/>
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

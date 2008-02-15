@@ -168,17 +168,20 @@ public class CalendarServiceImpl extends
 				serialAppointmentInfo.getRecurrenceEndtime()))
 			throw new Exception("Recurrence endtime before first occurence");
 		Calendar cal = getCalendarDao().load(calendar.getId());
-		SerialAppointment serialAppointment = getSerialAppointmentDao().create(
-				serialAppointmentInfo.getRecurrenceType(),
-				serialAppointmentInfo.getRecurrencePeriod(),
-				serialAppointmentInfo.getRecurrenceEndtime(),
-				serialAppointmentInfo.getStarttime(),
-				serialAppointmentInfo.getEndtime(),
-				serialAppointmentInfo.getSubject(),
-				serialAppointmentInfo.getDescription(),
-				serialAppointmentInfo.getLocation(), true);
+
 		
-		//cal.addSerialAppointment(serialAppointment);
+		SerialAppointment serialAppointment = getSerialAppointmentDao().create(
+				getAppointmentTypeDao().load(serialAppointmentInfo.getAppointmentType().getId()),
+				serialAppointmentInfo.getDescription(),
+				serialAppointmentInfo.getEndtime(),
+				serialAppointmentInfo.getLocation(),
+				serialAppointmentInfo.getRecurrenceEndtime(),
+				serialAppointmentInfo.getRecurrencePeriod(),
+				serialAppointmentInfo.getRecurrenceType(), true, cal,
+				serialAppointmentInfo.getStarttime(),
+				serialAppointmentInfo.getSubject());
+
+		cal.addSerialAppointment(serialAppointment);
 	}
 
 	/**

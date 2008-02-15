@@ -144,7 +144,7 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		GregorianCalendar calculatedStart = new GregorianCalendar();
 		calculatedStart.setTime(serialAppointment.getStarttime());
 
-		// apply to recurrence type to gregorian calendar
+		// apply recurrence type to field used by gregorian calendar
 		int field = GregorianCalendar.MONTH;
 		if (serialAppointment.getRecurrenceType().equals(RecurrenceType.daily)) {
 			field = GregorianCalendar.DAY_OF_MONTH;
@@ -163,26 +163,24 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 				+ "to " + calculatedEnd.getTime());
 		
 		// calculate resulting appointments
-		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
-			// TODO Logger!
-			System.out.println("Generate Appointment "
-					+ calculatedStart.getTime().toGMTString() + " to "
-					+ calculatedEnd.getTime().toGMTString());
-			Appointment app = new AppointmentImpl();
-			app.setAppointmentType(serialAppointment.getAppointmentType());
-			app.setSubject(serialAppointment.getSubject());
-			app.setDescription(serialAppointment.getDescription());
-			app.setEndtime(new Timestamp(calculatedEnd.getTime().getTime()));
-			app
-					.setStarttime(new Timestamp(calculatedStart.getTime()
-							.getTime()));
-			app.setSerialAppointment(serialAppointment);
-			app.setLocation(serialAppointment.getLocation());
-			getAppointmentDao().create(app);
-			serialAppointment.addSingleAppointment(app);
-			calculatedStart.add(field, serialAppointment.getRecurrencePeriod());
-			calculatedEnd.add(field, serialAppointment.getRecurrencePeriod());
-		}
+//		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
+//			// TODO Logger!
+//			System.out.println("Generate Appointment "
+//					+ calculatedStart.getTime().toGMTString() + " to "
+//					+ calculatedEnd.getTime().toGMTString());
+//			Appointment app = new AppointmentImpl();
+//			app.setAppointmentType(serialAppointment.getAppointmentType());
+//			app.setSubject(serialAppointment.getSubject());
+//			app.setDescription(serialAppointment.getDescription());
+//			app.setEndtime(new Timestamp(calculatedEnd.getTime().getTime()));
+//			app	.setStarttime(new Timestamp(calculatedStart.getTime().getTime()));
+//			app.setSerialAppointment(serialAppointment);
+//			app.setLocation(serialAppointment.getLocation());
+//			getAppointmentDao().create(app);
+//			serialAppointment.addSingleAppointment(app);
+//			calculatedStart.add(field, serialAppointment.getRecurrencePeriod());
+//			calculatedEnd.add(field, serialAppointment.getRecurrencePeriod());
+//		}
 	}
 
 	public AppointmentDao getAppointmentDao() {

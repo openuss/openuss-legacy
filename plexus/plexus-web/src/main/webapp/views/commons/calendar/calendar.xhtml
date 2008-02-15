@@ -7,10 +7,27 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:s="http://www.openuss.org/jsf-security"
-      xmlns:c="http://java.sun.com/jstl/core">
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:sandbox="http://myfaces.apache.org/sandbox">
+      
+      <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 
-	<t:inputCalendar monthYearRowClass="jscalendar-WH-title-style" weekRowClass="jscalendar-WH-end-of-weekday-style"
-    	currentDayCellClass="jscalendar-WH-selected-day-style"  dayCellClass="jscalendar-WH-normal-day-style" value="#{views$secured$calendar$usercalendar.firstDate}"/>
+	<sandbox:schedule value="#{scheduleHandler2.model}" id="schedule1"
+					rendered="true" visibleEndHour="#{scheduleSettings2.visibleEndHour}"
+					visibleStartHour="#{scheduleSettings2.visibleStartHour}"
+					workingEndHour="#{scheduleSettings2.workingEndHour}"
+					workingStartHour="#{scheduleSettings2.workingStartHour}"
+					readonly="#{scheduleSettings2.readonly}"
+					theme="default"
+					tooltip="#{scheduleSettings2.tooltip}"
+					renderZeroLengthEntries="true"
+					expandToFitEntries="#{scheduleSettings2.expandToFitEntries}"
+					headerDateFormat="dd-MM-yyyy"
+					compactWeekRowHeight="#{scheduleSettings2.compactWeekRowHeight}"
+					compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
+					detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/> 
+	
+	
 	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
 
 </ui:composition>
