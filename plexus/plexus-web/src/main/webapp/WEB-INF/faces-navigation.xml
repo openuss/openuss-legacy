@@ -819,6 +819,16 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>admin_ldap_servers</from-outcome>
+			<to-view-id>/views/secured/system/ldap_servers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_ldap_domains</from-outcome>
+			<to-view-id>/views/secured/system/ldap_domains.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
 			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>
