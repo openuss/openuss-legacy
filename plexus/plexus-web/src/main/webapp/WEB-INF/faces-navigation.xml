@@ -206,7 +206,7 @@
 
 		<navigation-case>
 			<from-outcome>openuss4us_messagecenter</from-outcome>
-			<to-view-id>/views/secured/openuss4us/messagecenter.xhtml</to-view-id>
+			<to-view-id>/views/secured/internalMessages/messagecenter.xhtml</to-view-id>
 		</navigation-case>	
 		
 		<navigation-case>

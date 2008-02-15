@@ -19,6 +19,8 @@ public class InternalMessageDaoImpl
     {
         // @todo verify behavior of toInternalMessageInfo
         super.toInternalMessageInfo(sourceEntity, targetVO);
+        targetVO.setSenderId(sourceEntity.getSender().getUser().getId());
+        targetVO.setSenderDisplayName(sourceEntity.getSender().getUser().getDisplayName());
     }
 
 
@@ -28,7 +30,10 @@ public class InternalMessageDaoImpl
     public org.openuss.internalMessage.InternalMessageInfo toInternalMessageInfo(final org.openuss.internalMessage.InternalMessage entity)
     {
         // @todo verify behavior of toInternalMessageInfo
-        return super.toInternalMessageInfo(entity);
+    	InternalMessageInfo messageInfo = super.toInternalMessageInfo(entity);
+    	messageInfo.setSenderDisplayName(entity.getSender().getUser().getDisplayName());
+    	messageInfo.setId(entity.getSender().getUser().getId());
+    	return messageInfo;
     }
 
 

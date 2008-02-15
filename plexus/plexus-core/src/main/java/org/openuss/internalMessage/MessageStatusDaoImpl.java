@@ -19,6 +19,9 @@ public class MessageStatusDaoImpl
     {
         // @todo verify behavior of toInternalMessageRecipientsInfo
         super.toInternalMessageRecipientsInfo(sourceEntity, targetVO);
+        targetVO.setRead(sourceEntity.isMessageRead());
+        targetVO.setRecipientDisplayName(sourceEntity.getRecipient().getUser().getDisplayName());
+        targetVO.setRecipientId(sourceEntity.getRecipient().getUser().getId());
     }
 
 
@@ -28,7 +31,11 @@ public class MessageStatusDaoImpl
     public org.openuss.internalMessage.InternalMessageRecipientsInfo toInternalMessageRecipientsInfo(final org.openuss.internalMessage.MessageStatus entity)
     {
         // @todo verify behavior of toInternalMessageRecipientsInfo
-        return super.toInternalMessageRecipientsInfo(entity);
+        InternalMessageRecipientsInfo targetVO = super.toInternalMessageRecipientsInfo(entity);
+        targetVO.setRead(entity.isMessageRead());
+        targetVO.setRecipientDisplayName(entity.getRecipient().getUser().getDisplayName());
+        targetVO.setRecipientId(entity.getRecipient().getUser().getId());
+        return targetVO;
     }
 
 
@@ -39,17 +46,12 @@ public class MessageStatusDaoImpl
      */
     private org.openuss.internalMessage.MessageStatus loadMessageStatusFromInternalMessageRecipientsInfo(org.openuss.internalMessage.InternalMessageRecipientsInfo internalMessageRecipientsInfo)
     {
-        // @todo implement loadMessageStatusFromInternalMessageRecipientsInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.internalMessage.loadMessageStatusFromInternalMessageRecipientsInfo(org.openuss.internalMessage.InternalMessageRecipientsInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
         org.openuss.internalMessage.MessageStatus messageStatus = this.load(internalMessageRecipientsInfo.getId());
         if (messageStatus == null)
         {
             messageStatus = org.openuss.internalMessage.MessageStatus.Factory.newInstance();
         }
         return messageStatus;
-        */
     }
 
     

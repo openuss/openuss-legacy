@@ -24,13 +24,22 @@ public class InternalMessageServiceImpl
     {
         User user = getSecurityService().getCurrentUser();
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
+        LinkedList sentMessages = new LinkedList();
         if(imCenter==null){
         	imCenter = getInternalMessageCenterDao().create(user);
+        	return sentMessages;
         }
         Set<InternalMessage> sentMessagesSet = imCenter.getSentInternalMessage();
-        LinkedList sentMessages = new LinkedList();
         for(InternalMessage im : sentMessagesSet){
-        	sentMessages.add(getInternalMessageDao().toInternalMessageInfo(im));
+        	if(!im.getDeletedAtSender()){
+        		InternalMessageInfo imInfo = getInternalMessageDao().toInternalMessageInfo(im);
+        		List recipients = new LinkedList();
+        		recipients.addAll(im.getRecipients());
+        		System.out.println(im.getRecipients().size() + " " + im.getRecipients().get(0).getClass());
+        		getMessageStatusDao().toInternalMessageRecipientsInfoCollection(recipients);
+        		imInfo.setInternalMessageRecipientsInfos(recipients);
+        		sentMessages.add(imInfo);
+        	}
         }
         return sentMessages;
     }
@@ -38,11 +47,22 @@ public class InternalMessageServiceImpl
     /**
      * @see org.openuss.internalMessage.InternalMessageService#setRead(org.openuss.internalMessage.InternalMessageInfo)
      */
-    protected void handleSetRead(org.openuss.internalMessage.InternalMessageInfo message)
+    protected void handleSetRead(org.openuss.internalMessage.InternalMessageInfo messageInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleSetRead(org.openuss.internalMessage.InternalMessageInfo message)
-        throw new java.lang.UnsupportedOperationException("org.openuss.internalMessage.InternalMessageService.handleSetRead(org.openuss.internalMessage.InternalMessageInfo message) Not implemented!");
+    	User user = getSecurityService().getCurrentUser();
+        InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
+        InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
+        MessageStatus messageStatus = null;
+        for(MessageStatus messageStatusCandidate : message.getRecipients()){
+        	if(messageStatusCandidate.getRecipient() == imCenter){
+        		messageStatus = messageStatusCandidate;
+        		break;
+        	}
+        }
+        if(messageStatus==null)
+        	throw new Exception("Message not found");
+        messageStatus.setMessageRead(true);
     }
 
     /**
@@ -53,14 +73,20 @@ public class InternalMessageServiceImpl
     {
     	User user = getSecurityService().getCurrentUser();
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
+        LinkedList<InternalMessageInfo> recMessages = new LinkedList();
         if(imCenter==null){
         	imCenter = getInternalMessageCenterDao().create(user);
+        	return recMessages;
         }
         Set<MessageStatus> recMessagesSet = imCenter.getReceivedMessages();
-        LinkedList recMessages = new LinkedList();
         for(MessageStatus im : recMessagesSet){
         	if(!im.isDeleted()){
-        		recMessages.add(getInternalMessageDao().toInternalMessageInfo(im.getInternalMessage()));
+        		InternalMessageInfo imInfo = getInternalMessageDao().toInternalMessageInfo(im.getInternalMessage());
+        		List recipients = new LinkedList();
+        		recipients.addAll(im.getInternalMessage().getRecipients());
+        		getMessageStatusDao().toInternalMessageRecipientsInfoCollection(recipients);
+        		imInfo.setInternalMessageRecipientsInfos(recipients);
+        		recMessages.add(imInfo);
         	}
         }
         return recMessages;
@@ -72,8 +98,26 @@ public class InternalMessageServiceImpl
     protected void handleDeleteInternalMessage(org.openuss.internalMessage.InternalMessageInfo messageInfo)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleDeleteInternalMessage(org.openuss.internalMessage.InternalMessageInfo messageInfo)
-        throw new java.lang.UnsupportedOperationException("org.openuss.internalMessage.InternalMessageService.handleDeleteInternalMessage(org.openuss.internalMessage.InternalMessageInfo messageInfo) Not implemented!");
+    	User user = getSecurityService().getCurrentUser();
+    	if(messageInfo.getSenderId() == user.getId()){
+    		// User is sender
+            InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
+            message.setDeletedAtSender(true);
+    	} else {
+    		// user is recipient
+            InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
+            InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
+            MessageStatus messageStatus = null;
+            for(MessageStatus messageStatusCandidate : message.getRecipients()){
+            	if(messageStatusCandidate.getRecipient() == imCenter){
+            		messageStatus = messageStatusCandidate;
+            		break;
+            	}
+            }
+            if(messageStatus==null)
+            	throw new Exception("Message not found");
+            messageStatus.setDeleted(true);
+    	}
     }
 
     /**
@@ -89,15 +133,23 @@ public class InternalMessageServiceImpl
     	InternalMessageCenter sender = getInternalMessageCenterDao().findByUser(getUserDao().load(messageInfo.getSenderId()));
     	message.setSender(sender);
     	sender.getSentInternalMessage().add(message);
+    	getInternalMessageDao().create(message);
     	for(InternalMessageRecipientsInfo rec : messageInfo.getInternalMessageRecipientsInfos()){
     		MessageStatus messageStatus = MessageStatus.Factory.newInstance();
     		messageStatus.setDeleted(false);
     		messageStatus.setMessageRead(false);
     		messageStatus.setInternalMessage(message);
-    		messageStatus.setRecipient(getInternalMessageCenterDao().findByUser(getUserDao().load(rec.getRecipientId())));
+    		InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(getUserDao().load(rec.getRecipientId()));
+    		if(imCenter == null){
+    			imCenter = getInternalMessageCenterDao().create(getUserDao().load(rec.getRecipientId()));
+    		}
+    		messageStatus.setRecipient(imCenter);
+    		imCenter.getReceivedMessages().add(messageStatus);
     		message.getRecipients().add(messageStatus);
+    		getInternalMessageCenterDao().update(imCenter);
+    		getMessageStatusDao().create(messageStatus);
     	}
-    	getInternalMessageDao().create(message);
+    	getInternalMessageDao().update(message);
     }
 
 }

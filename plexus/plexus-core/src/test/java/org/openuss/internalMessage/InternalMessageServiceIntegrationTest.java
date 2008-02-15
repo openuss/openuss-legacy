@@ -53,6 +53,8 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 		//create two users
 		User sender = getSecurityService().getCurrentUser();
 		User recipient = getUserDao().create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
+		recipient.setFirstName("firstname");
+		getUserDao().update(recipient);
 		assertEquals(0, getInternalMessageService().getAllSentInternalMessages().size());
 		assertEquals(0, getInternalMessageService().getAllReceivedInternalMessages().size());
 		//create message
@@ -70,6 +72,8 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 		im.getInternalMessageRecipientsInfos().add(rec);
 		internalMessageService.sendInternalMessage(im);
 		assertEquals(1, internalMessageService.getAllSentInternalMessages().size());
+		System.out.println(((InternalMessageInfo)internalMessageService.getAllSentInternalMessages().get(0)).getInternalMessageRecipientsInfos().get(0).getRecipientDisplayName());
+		assertEquals(" firstname ", ((InternalMessageInfo)internalMessageService.getAllSentInternalMessages().get(0)).getInternalMessageRecipientsInfos().get(0).getRecipientDisplayName());
 //		assertEquals(1, internalMessageService.getAllReceivedInternalMessages(recipient).size());
 //		InternalMessageInfo message2 = messageDao.toInternalMessageInfo((InternalMessage)(internalMessageService.getAllReceivedInternalMessages(recipient).get(0)));
 //		assertEquals(false, message2.isMessageReadByRecipient());
