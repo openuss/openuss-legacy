@@ -215,6 +215,11 @@
 		</navigation-case>	
 		
 		<navigation-case>
+			<from-outcome>openuss4us_calendar_create_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createappointment.faces</to-view-id>
+		</navigation-case>	
+
+		<navigation-case>
 			<from-outcome>openuss4us_groups</from-outcome>
 			<to-view-id>/views/secured/groups/groups.xhtml</to-view-id>
 		</navigation-case>	
