@@ -10,10 +10,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Init;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.UserContactInfo;
-import org.openuss.security.UserInfoDetails;
-import org.openuss.security.UserPreferencesInfo;
-import org.openuss.security.UserProfileInfo;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -38,16 +35,10 @@ public class RegistrationData extends BaseBean {
 	public void init() {
 		logger.trace("init registration data");
 		
-		UserInfoDetails user = new UserInfoDetails();
-		user.setPreferences(new UserPreferencesInfo());
-		user.setProfile(new UserProfileInfo());
-		user.setContact(new UserContactInfo());
+		UserInfo user = new UserInfo();
 		
 		String locale = getFacesContext().getViewRoot().getLocale().toString();
-		if (user.getPreferences()==null){
-			user.setPreferences(new UserPreferencesInfo());
-		}
-		user.getPreferences().setLocale(locale);
+		user.setLocale(locale);
 		setSessionBean(Constants.USER_SESSION_KEY, user);
 	}
 	

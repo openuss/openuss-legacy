@@ -1,6 +1,5 @@
 package org.openuss.web.lecture;
 
-
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -23,7 +22,6 @@ import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.openuss.security.UserInfoDetails;
 import org.openuss.web.Constants;
 
 /**
@@ -135,7 +133,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		}
 		try{
 		logger.debug(username);
-		user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUserByName(username));
+		user = securityService.getUserByName(username);
 		logger.debug(departmentInfo.getId());
 		logger.debug(user.getId());
 		organisationService.addMember(departmentInfo.getId(), user.getId());
@@ -164,11 +162,10 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	 * @return outcome
 	 */
 	public String showProfile() {
-
+		// FIXME do not use session bean
 		UserInfo member = members.getRowData();
-		UserInfoDetails user = (UserInfoDetails) getSecurityService().getUserInfoDetails(securityService.getUser(member.getId()));
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-
+//		UserInfo user = securityService.getUser(member.getId());
+		setSessionBean(Constants.SHOW_USER_PROFILE, member);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 

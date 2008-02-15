@@ -115,7 +115,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 		Locale result = Locale.getDefault();
 		UserInfo user = getSecurityService().getCurrentUser();
 		if (user != null) {
-			result = new Locale(user.getPreferences().getLocale());
+			result = new Locale(user.getLocale());
 		}
 		return result;
 	}

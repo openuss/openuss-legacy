@@ -7,7 +7,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.newsletter.MailDetail;
-import org.openuss.security.UserInfoDetails;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -20,7 +20,7 @@ import org.openuss.web.Constants;
 public class NewsletterNewMailPage extends AbstractNewsletterPage{
 	
 	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfoDetails user;
+	private UserInfo user;
 	
 	@Property(value = "#{"+Constants.NEWSLETTER_MAIL+"}")
 	private MailDetail mail;
@@ -58,11 +58,11 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 	}
 	
 
-	public UserInfoDetails getUser() {
+	public UserInfo getUser() {
 		return user;
 	}
 
-	public void setUser(UserInfoDetails user) {
+	public void setUser(UserInfo user) {
 		this.user = user;
 	}
 

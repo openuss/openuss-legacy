@@ -16,8 +16,8 @@
 		    <div class="header_normal">
 		    	<p class="header_font_normal">
 					<h:outputFormat value="#{msg.user_profile_preview_heading}">
-						<f:param value="#{showuser.contact.firstName}" />
-						<f:param value="#{showuser.contact.lastName}" />
+						<f:param value="#{showuser.firstName}" />
+						<f:param value="#{showuser.lastName}" />
 						<f:param value="#{showuser.username}" />
 					</h:outputFormat>
 				</p>
@@ -28,8 +28,8 @@
 						<h:graphicImage styleClass="userphoto"
 							renderer="${not empty showuser.imageId}"
 							value="/files?fileid=#{showuser.imageId}"
-							alt="#{showuser.contact.firstName} #{showuser.contact.lastName}"
-							title="#{showuser.contact.firstName} #{showuser.contact.lastName}"/> 
+							alt="#{showuser.firstName} #{showuser.lastName}"
+							title="#{showuser.firstName} #{showuser.lastName}"/> 
 					</c:if>
 					<c:if test="#{empty showuser.imageId}">
 						<h:graphicImage 
@@ -41,28 +41,28 @@
 				</div>
 				<div class="usercontact">
 					<ul>
-						<c:if test="#{not empty showuser.contact.title}">
-							<li>#{showuser.contact.title}</li>
+						<c:if test="#{not empty showuser.title}">
+							<li>#{showuser.title}</li>
 						</c:if>
-						<li>#{showuser.contact.firstName} &#160; #{showuser.contact.lastName}</li>
-						<c:if test="#{not empty showuser.contact.profession}">
-							<li>#{showuser.contact.profession}</li>
+						<li>#{showuser.firstName} &#160; #{showuser.lastName}</li>
+						<c:if test="#{not empty showuser.profession}">
+							<li>#{showuser.profession}</li>
 						</c:if>
-						<c:if test="#{showuser.profile.addressPublic}">
-							<li>#{showuser.contact.address}</li>
-							<li>#{showuser.contact.postcode} #{showuser.contact.city}</li>
-							<li>#{showuser.contact.country}</li>
+						<c:if test="#{showuser.addressPublic}">
+							<li>#{showuser.address}</li>
+							<li>#{showuser.postcode} #{showuser.city}</li>
+							<li>#{showuser.country}</li>
 						</c:if>
-						<c:if test="#{showuser.profile.telephonePublic}">
-							<li>#{showuser.contact.telephone}</li>
+						<c:if test="#{showuser.telephonePublic}">
+							<li>#{showuser.telephone}</li>
 						</c:if>
-						<c:if test="#{showuser.profile.emailPublic}">
+						<c:if test="#{showuser.emailPublic}">
 							<li><h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink></li>
 						</c:if>
 					</ul>
 				</div>
 				<div class="content_font_normal">
-					<h:outputText value="#{showuser.profile.portrait}" escape="false"/>
+					<h:outputText value="#{showuser.portrait}" escape="false"/>
 				</div>
 		   </div>
 	       <div class="footer_normal_left_bg"/>

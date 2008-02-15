@@ -25,8 +25,8 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="title">
    			<h:outputFormat value="#{msg.user_profile_heading}">
-  				<f:param value="#{showuser.contact.firstName}"/>
-  				<f:param value="#{showuser.contact.lastName}"/>
+  				<f:param value="#{showuser.firstName}"/>
+  				<f:param value="#{showuser.lastName}"/>
   			</h:outputFormat>
   		</ui:define>
   		<ui:define name="content">

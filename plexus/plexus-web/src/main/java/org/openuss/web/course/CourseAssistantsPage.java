@@ -25,9 +25,8 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.UserComparator;
-import org.openuss.security.UserInfoDetails;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$course$courseassistants", scope = Scope.REQUEST)
@@ -98,7 +97,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String showProfile() {
 		CourseMemberInfo memberInfo = data.getRowData();
-		UserInfoDetails user = new UserInfoDetails();
+		UserInfo user = new UserInfo();
 		user.setId(memberInfo.getUserId());
 		setSessionBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
@@ -149,7 +148,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			Collections.sort(membersUser, userComparator);
 			instituteMembers = new ArrayList<SelectItem>();
 			for(UserInfo member : membersUser) {
-				instituteMembers.add(new SelectItem(member.getId(), member.getContact().getTitle()+" "+member.getContact().getLastName()+" "+member.getContact().getFirstName()));
+				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName()));
 			}
 
 			

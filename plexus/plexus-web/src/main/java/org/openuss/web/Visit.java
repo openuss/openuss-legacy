@@ -17,7 +17,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.UserInfoDetails;
+import org.openuss.security.UserInfo;
 
 /**
  * Represents a visit of a anonymous user. 
@@ -61,12 +61,13 @@ public class Visit extends BaseBean implements Serializable{
 	}
 
 	public String getTimeZone() {
-		UserInfoDetails user = (UserInfoDetails) getSessionBean(Constants.USER);
+		UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 		if (user != null) {
-			return user.getPreferences().getTimezone();
-		} 
-		if (timeZone == null)
+			timeZone = TimeZone.getTimeZone(user.getTimezone());
+		}  
+		if (timeZone == null) {
 			timeZone = TimeZone.getDefault();
+		}
 		return timeZone.getID();
 	}
 
@@ -79,11 +80,12 @@ public class Visit extends BaseBean implements Serializable{
 	}
 
 	public String getLocale() {
-		UserInfoDetails user = (UserInfoDetails) getSessionBean(Constants.USER_SESSION_KEY);
+		UserInfo user = (UserInfo) getSessionBean(Constants.USER_SESSION_KEY);
 		
 		if (user != null) {
-			locale = user.getPreferences().getLocale();
-		}
+			locale = user.getLocale();
+		} 
+		
 		if (locale == null) {
 			locale = getViewRoot().getLocale().toString();
 		}

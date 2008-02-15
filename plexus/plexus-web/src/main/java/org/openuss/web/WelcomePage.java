@@ -8,10 +8,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.LectureService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserContactInfo;
-import org.openuss.security.UserInfoDetails;
-import org.openuss.security.UserPreferencesInfo;
-import org.openuss.security.UserProfileInfo;
+import org.openuss.security.UserInfo;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.statistics.SystemStatisticInfo;
 
@@ -38,12 +35,10 @@ public class WelcomePage extends BasePage {
 		super.prerender();
 		logger.debug("starting method prerender");
 
+		// FIXME Factory - why we are doing this?
 		if (user != null && user.getId() == null) {
 			logger.debug("in user if clause");
-			user = new UserInfoDetails();
-			user.setPreferences(new UserPreferencesInfo());
-			user.setProfile(new UserProfileInfo());
-			user.setContact(new UserContactInfo());
+			user = new UserInfo();
 			setSessionBean(Constants.USER, null);
 		}
 		setRequestBean(Constants.BREADCRUMBS, null);

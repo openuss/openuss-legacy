@@ -20,11 +20,11 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	private static final long serialVersionUID = 4562337137383225187L;
 	
 	public UserImpl() {
-		setPreferences(UserPreferences.Factory.newInstance());
-		setContact(UserContact.Factory.newInstance());
-		setProfile(UserProfile.Factory.newInstance());
+		setLocale("de");
+		setTimezone("Europe/Berlin");
+		setTheme("plexus");
 	}
-
+	
 	@Override
 	public void setUsername(String username) {
 		super.setUsername(username.toLowerCase().trim());
@@ -91,58 +91,9 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public String getFirstName() {
-		if (getContact() == null) {
-			return null;
-		} else {
-			return getContact().getFirstName();
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public String getLastName() {
-		if (getContact() == null) {
-			return null;
-		} else {
-			return getContact().getLastName();
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public String getTitle() {
-		if (getContact() == null) {
-			return null;
-		} else {
-			return getContact().getTitle();
-		}
-	}
-
 	@Override
 	public String getName() {
 		return getUsername();
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public Long getImageId() {
-		if (getProfile() == null || getProfile().getImageFileId() == null) {
-			return null;
-		} else {
-			return getProfile().getImageFileId();
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void setImageId(Long imageId) {
-		if (getProfile() == null) {
-			setProfile(UserProfile.Factory.newInstance());
-		}
-		getProfile().setImageFileId(imageId);
 	}
 
 	@Override
@@ -151,65 +102,25 @@ public class UserImpl extends UserBase implements User, UserDetails {
 				+ StringUtils.trimToEmpty(getLastName());
 	}
 
-	@SuppressWarnings("deprecation")
-	public String getTimezone() {
-		return getPreferences().getTimezone();
-	}
-
-	@SuppressWarnings("deprecation")
-	public void setTimezone(String timezone) {
-		getPreferences().setTimezone(timezone);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public String getLocale() {
-		return getPreferences().getLocale();
-	}
-
-	@SuppressWarnings("deprecation")
-	public void setLocale(String locale) {
-		getPreferences().setLocale(locale);
-	}
-
-	@Override
-	public String getSmsEmail() {
-		if (getContact() != null) {
-			return getContact().getSmsEmail();
-		}
-		return null;
-	}
-
 	@Override
 	public boolean hasSmsNotification() {
 		return StringUtils.isNotBlank(getSmsEmail());
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public void setFirstName(String firstName) {
-		getContact().setFirstName(firstName);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void setLastName(String lastName) {
-		getContact().setLastName(lastName);
-	}
-
-	@Override
-	public void setTitle(String title) {
-		getContact().setTitle(title);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public UserContact getContact() {
-		if (super.getContact() == null) {
-			setContact(UserContact.Factory.newInstance());
+	public String[] getGrantedAuthorities() {
+		GrantedAuthority[] authorities = getAuthorities();
+		String[] authorityNames = new String[authorities.length];
+		for (int i = 0; i < authorities.length; i++) {
+			authorityNames[i] = authorities[i].getAuthority();
 		}
-		return super.getContact();
-
+		return authorityNames;
 	}
+
+	@Override
+	public String getPortrait() {
+		return super.getPortrait() != null ? super.getPortrait() : "";
+	}
+	
+	
 
 }
