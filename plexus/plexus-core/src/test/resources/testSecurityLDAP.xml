@@ -179,7 +179,7 @@
 
 <bean id="initialDirContextFactory" class="org.acegisecurity.ldap.DefaultInitialDirContextFactory">
 	<constructor-arg value="ldap://wwusv1.uni-muenster.de:389/"/>	
-	<property name="managerDn"><value>cn=j_debr01,ou=projekt-benutzer,dc=uni-muenster,dc=de</value></property>
+	<property name="managerDn"><value>cn=ziv_kennung,ou=projekt-benutzer,dc=uni-muenster,dc=de</value></property>
 	<property name="managerPassword"><value>...</value></property>
 	<property name="authenticationType"><value>DIGEST-MD5</value></property>
 </bean>
@@ -201,7 +201,7 @@
 	<constructor-arg>
 		<bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
 			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
-			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>
+			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>			
 		</bean>
 	</constructor-arg>
 
@@ -213,122 +213,6 @@
 		</bean>
 	</constructor-arg>
 </bean>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- !!!!!!!!!!!!!!!!!!!!!				confident					!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<bean id="ldapPswdAuthToken" class="org.acegisecurity.providers.UsernamePasswordAuthenticationToken">
-	<constructor-arg index="0"><value>j_debr01</value></constructor-arg>
-	<constructor-arg index="1"><value>...</value></constructor-arg>	
-</bean>
-
-
-
-
-
 
 
 

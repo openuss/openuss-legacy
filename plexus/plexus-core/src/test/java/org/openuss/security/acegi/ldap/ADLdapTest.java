@@ -5,10 +5,19 @@
  */
 package org.openuss.security.acegi.ldap;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
+
 import org.acegisecurity.Authentication;
+import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.providers.ProviderManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.ldap.LdapAuthenticationProvider;
+import org.acegisecurity.providers.ldap.LdapAuthenticator;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.apache.log4j.Logger;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
@@ -42,62 +51,141 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 		assertNotNull(authManager);
 	}
 	
-	 public void testNormalUsage() {
 
-	        //UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(ldapUser, ldapPswd);
-		 	//UsernamePasswordAuthenticationToken authRequest = ldapPswdAuthToken;
+	public void no_testLdapAuthenticationLive() {
+
 //		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
 		 										UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
-		 	
+		 										
 		 	Authentication authResult = authManager.authenticate(authRequest);		 	
-		 	
 		 	assertNotNull(authResult);
 		 	
-		 	logger.info("testNormalUsage - authResult.getPrincipal(): "+authResult.getPrincipal().toString());
-		 	logger.info(authResult);
-		 	/*
-		 	 
-		 	assertEquals("", authResult.getCredentials());	        
-	        
-	        
-	        
-	        UserDetails user = (UserDetails) authResult.getPrincipal();
-//	        assertEquals(2, user.getAuthorities().length);
-//	        assertEquals("{SHA}nFCebWjxfaLbHHG1Qk5UU4trbvQ=", user.getPassword());
-//	        assertEquals("ben", user.getUsername());
+//		 	Authentifizierungs mittels LDAP Server
+		 	if (authResult.getPrincipal() instanceof LdapUserDetails) {
+		 		
+		 		LdapUserDetails myLdapUserDetails = (LdapUserDetails) authResult.getPrincipal();
+				logger.info("User is authenticated by means of LDAP!");
+	 
+			 	
+			 	NamingEnumeration<String> myNamingEnu = myLdapUserDetails.getAttributes().getIDs();
+			 	Attributes myAttr = myLdapUserDetails.getAttributes();	 	
+			 	try {
+			 		while (myNamingEnu.hasMore()) {
+			 			String attrId = myNamingEnu.next().toString();
+		                logger.info("Attribute: "+myAttr.get(attrId));
+			 		}		 		
+			 	} catch(NamingException ex){
+			 		logger.info(ex);			 		
+			 	}
+			  	logger.info("myLdapUserDetails.getAttributes(): "+myLdapUserDetails.getAttributes());
+			  	
+			 	
 
-	        ArrayList authorities = new ArrayList();
-	        authorities.add(user.getAuthorities()[0].getAuthority());
-	        authorities.add(user.getAuthorities()[1].getAuthority());
+			 	logger.info("user DN: "+myLdapUserDetails.getDn());
+			 	
+
+			 	 
+		 	}
+	 }
+	 
+	  
+	
+	public void testNormalUsaage() {
+        LdapAuthenticationProvider ldapProvider = new LdapAuthenticationProvider(new MockAuthenticator());        
+        UsernamePasswordAuthenticationToken myUsernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("h_muster01", "testpassword");
+        LdapUserDetails myLdapUserDetails = (LdapUserDetails) ldapProvider.authenticate(myUsernamePasswordAuthenticationToken).getPrincipal();
+    	assertNotNull(myLdapUserDetails);    	
+        
+        logger.info("Test User is authenticated by means of LDAP server!");
+        
+        
+	 	NamingEnumeration<String> myNamingEnu = myLdapUserDetails.getAttributes().getIDs();
+	 	Attributes myAttr = myLdapUserDetails.getAttributes();	 	
+	 	try {
+	 		while (myNamingEnu.hasMore()) {
+	 			String attrId = myNamingEnu.next().toString();
+                logger.info("Attribute: "+myAttr.get(attrId));
+	 		}		 		
+	 	} catch(NamingException ex){
+	 		logger.info(ex);			 		
+	 	}
+	 	logger.info("user dn: "+myLdapUserDetails.getDn());
+	 	assertEquals("h_muster01", myLdapUserDetails.getUsername());
+        assertEquals("testpassword", myLdapUserDetails.getPassword());
+
+	}
+
+	public void testBadPasswordThrowsException() {
+        LdapAuthenticationProvider ldapProvider = new LdapAuthenticationProvider(new MockAuthenticator());
+
+        try {
+        	ldapProvider.authenticate(new UsernamePasswordAuthenticationToken("h_muster01", "badpassword"));
+            fail("Expected BadCredentialsException for bad password");
+        } catch (BadCredentialsException expected) {}
+        
+    }
+
+	
+    public void testEmptyOrNullUserNameThrowsException() {
+        LdapAuthenticationProvider ldapProvider = new LdapAuthenticationProvider(new MockAuthenticator());
+
+        try {
+        	ldapProvider.authenticate(new UsernamePasswordAuthenticationToken("", "testpassword"));
+            fail("Expected BadCredentialsException for empty username");
+        } catch (BadCredentialsException expected) {}
+
+        try {
+            ldapProvider.authenticate(new UsernamePasswordAuthenticationToken(null, "bobspassword"));
+            fail("Expected BadCredentialsException for null username");
+        } catch (BadCredentialsException expected) {}
+    }
+	
+    
+    
+	
+	 protected String[] getConfigLocations() {
+		 return new String[] {
+				 "classpath*:applicationContext-resources.xml",
+				 "classpath*:testSecurityLDAP2.xml"};
+	 }
+	 
+	 
+
+	    //~ Inner Classes ==================================================================================================
+
+	    class MockAuthenticator implements LdapAuthenticator {
 	        
-	        System.out.println("user: "+user.getUsername());	        
-	        
-//	        assertTrue(authorities.contains("ROLE_FROM_ENTRY"));
-//	        assertTrue(authorities.contains("ROLE_FROM_POPULATOR"));
- 
- */
+	    	Attributes userAttributes = new BasicAttributes();
+	    	
+
+	        public LdapUserDetails authenticate(String username, String password) {
+	            LdapUserDetailsImpl.Essence userEssence = new LdapUserDetailsImpl.Essence();
+	            userAttributes.put("cn", "h_muster01");
+	            userAttributes.put("mail", "h_muster01@uni-muenster.de");
+	            userAttributes.put("memberOf", "CN=u0dawin,OU=Projekt-Gruppen,DC=uni-muenster,DC=de");
+	            userAttributes.put("sn", "Mustermann");
+	            userAttributes.put("givenName", "Hans");
+	            userAttributes.put("displayName", "Herr Hans Mustermann");
+	            userAttributes.put("userPrincipalName", "h_muster01@uni-muenster.de");
+	            userAttributes.put("distinguishedName", "CN=h_muster01,OU=Projekt-Benutzer,DC=uni-muenster,DC=de");
+	            
+	            
+	            userEssence.setPassword("testpassword");
+	            userEssence.setAttributes(userAttributes);
+	            
+
+	            if (username.equals("h_muster01") && password.equals("testpassword")) {
+	                userEssence.setDn("CN=h_muster01,OU=Projekt-Benutzer,DC=uni-muenster,DC=de");
+
+	                return userEssence.createUserDetails();
+	                
+	            }
+	            // authentication fails if username or password are wrong
+	            throw new BadCredentialsException("Authentication failed.");
+	        }
 	    }
-	
-	
-	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext-resources.xml",
-			"classpath*:testSecurityLDAP2.xml"};
-	}	
-			
-	
-/*	protected String[] getConfigLocations() {
-		return new String[] { 
-			"classpath*:applicationContext.xml", 
-			"classpath*:applicationContext-beans.xml",
-			"classpath*:applicationContext-lucene.xml",
-			"classpath*:applicationContext-cache.xml", 
-			"classpath*:applicationContext-messaging.xml",
-			"classpath*:applicationContext-resources.xml",
-			"classpath*:applicationContext-aop.xml",
-			"classpath*:testContext.xml", 
-			"classpath*:testSecurityLDAP.xml", 
-			"classpath*:testDataSource.xml"};
-	}	*/
+	    
+	    
+	    
 	
 }

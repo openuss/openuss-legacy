@@ -36,26 +36,8 @@
 			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
 			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>
 		</bean>
-	</constructor-arg>
+	</constructor-arg>	
 </bean>
 
-<bean id="ldapAuthProvider" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider">
-	<constructor-arg>
-		<bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
-			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
-			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>
-		</bean>
-	</constructor-arg>
-
-<!-- since Acegi 1.0.6 optional -->
-	
-	<!-- <constructor-arg>
-		<bean class="org.acegisecurity.providers.ldap.populator.DefaultLdapAuthoritiesPopulator">
-			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
-			<constructor-arg><value>ou=Projekt-Gruppe</value></constructor-arg>
-			<property name="groupRoleAttribute"><value>cn</value></property>
-		</bean>
-	</constructor-arg>  -->
-</bean>
 
 </beans>
