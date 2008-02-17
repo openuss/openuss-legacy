@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import junit.framework.Assert;
+
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
@@ -74,7 +76,7 @@ public class TestUtility {
 	private ApplicationDao applicationDao;
 
 	private PeriodDao periodDao;
-	
+
 	private UserGroupDao userGroupDao;
 
 	private SecurityService securityService;
@@ -88,7 +90,8 @@ public class TestUtility {
 	private static long uniqueId = System.currentTimeMillis();
 
 	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	 *             <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUserInDB() {
 		defaultUser.setUsername(unique("username"));
@@ -101,7 +104,8 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	 *             <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createUserInDB() {
 		User user = createDefaultUser();
@@ -132,7 +136,8 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	 *             <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createPersistInstituteWithDefaultUser() {
 		defaultUser.setUsername(unique("username"));
@@ -143,7 +148,7 @@ public class TestUtility {
 		defaultUser.setEmail(unique("email"));
 		defaultUser.setLocale("de_DE");
 		defaultUser.setPreferences(UserPreferences.Factory.newInstance());
-		
+
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
 		defaultInstitute.setShortcut(unique("shortcut"));
@@ -276,14 +281,16 @@ public class TestUtility {
 		groupItemUni.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
 		groupItemUni.setLabel("autogroup_administrator_label");
 		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsUniId = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+		Long adminsUniId = this.getOrganisationService().createGroup(
+				university.getId(), groupItemUni);
 		Group adminsUni = this.getGroupDao().load(adminsUniId);
 
 		GroupItem groupItemDepart = new GroupItem();
 		groupItemDepart.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItemDepart.setLabel("autogroup_administrator_label");
 		groupItemDepart.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsDepartId = this.getOrganisationService().createGroup(department.getId(), groupItemDepart);
+		Long adminsDepartId = this.getOrganisationService().createGroup(
+				department.getId(), groupItemDepart);
 		Group adminsDepart = this.getGroupDao().load(adminsDepartId);
 
 		// Set ObjectIdentity for Security
@@ -292,14 +299,20 @@ public class TestUtility {
 		this.getSecurityService().createObjectIdentity(period, university);
 
 		// Set ACL permissions
-		this.getSecurityService().setPermissions(adminsUni, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
-		this.getSecurityService().setPermissions(adminsDepart, department, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
+		this.getSecurityService().setPermissions(adminsUni, university,
+				LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+		this.getSecurityService().setPermissions(adminsDepart, department,
+				LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(university.getId(), user.getId());
-		this.getOrganisationService().addMember(department.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), adminsUni.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), adminsDepart.getId());
+		this.getOrganisationService().addMember(university.getId(),
+				user.getId());
+		this.getOrganisationService().addMember(department.getId(),
+				user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(),
+				adminsUni.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(),
+				adminsDepart.getId());
 
 		return university;
 	}
@@ -336,18 +349,22 @@ public class TestUtility {
 		groupItemUni.setName("UNIVERSITY_" + university.getId() + "_ADMINS");
 		groupItemUni.setLabel("autogroup_administrator_label");
 		groupItemUni.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsUniId = this.getOrganisationService().createGroup(university.getId(), groupItemUni);
+		Long adminsUniId = this.getOrganisationService().createGroup(
+				university.getId(), groupItemUni);
 		Group adminsUni = this.getGroupDao().load(adminsUniId);
 
 		// Set ObjectIdentity for Security
 		this.getSecurityService().createObjectIdentity(university, null);
 
 		// Set ACL permissions
-		this.getSecurityService().setPermissions(adminsUni, university, LectureAclEntry.UNIVERSITY_ADMINISTRATION);
+		this.getSecurityService().setPermissions(adminsUni, university,
+				LectureAclEntry.UNIVERSITY_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(university.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), adminsUni.getId());
+		this.getOrganisationService().addMember(university.getId(),
+				user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(),
+				adminsUni.getId());
 
 		return university;
 	}
@@ -389,16 +406,20 @@ public class TestUtility {
 		groupItem.setName("DEPARTMENT_" + department.getId() + "_ADMINS");
 		groupItem.setLabel("autogroup_administrator_label");
 		groupItem.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsId = this.getOrganisationService().createGroup(department.getId(), groupItem);
+		Long adminsId = this.getOrganisationService().createGroup(
+				department.getId(), groupItem);
 		Group admins = this.getGroupDao().load(adminsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(department, university);
-		this.getSecurityService().setPermissions(admins, department, LectureAclEntry.DEPARTMENT_ADMINISTRATION);
+		this.getSecurityService().setPermissions(admins, department,
+				LectureAclEntry.DEPARTMENT_ADMINISTRATION);
 
 		// Add Owner to Members and Group of Administrators
-		this.getOrganisationService().addMember(department.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), admins.getId());
+		this.getOrganisationService().addMember(department.getId(),
+				user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(),
+				admins.getId());
 
 		return department;
 	}
@@ -433,7 +454,7 @@ public class TestUtility {
 		institute.setDepartment(department);
 
 		instituteDao.create(institute);
-		
+
 		// Create Application
 		Application application = Application.Factory.newInstance();
 		application.setApplicationDate(new Date());
@@ -445,38 +466,46 @@ public class TestUtility {
 		application.add(institute);
 		application.add(department);
 		this.getApplicationDao().create(application);
-		
+
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsId = this.getOrganisationService().createGroup(institute.getId(), admins);
+		Long adminsId = this.getOrganisationService().createGroup(
+				institute.getId(), admins);
 		Group adminsGroup = this.getGroupDao().load(adminsId);
 
 		GroupItem assistants = new GroupItem();
 		assistants.setName("INSTITUTE_" + institute.getId() + "_ASSISTANTS");
 		assistants.setLabel("autogroup_assistant_label");
 		assistants.setGroupType(GroupType.ASSISTANT);
-		Long assistantsId = this.getOrganisationService().createGroup(institute.getId(), assistants);
+		Long assistantsId = this.getOrganisationService().createGroup(
+				institute.getId(), assistants);
 		Group assistantsGroup = this.getGroupDao().load(assistantsId);
 
 		GroupItem tutors = new GroupItem();
 		tutors.setName("INSTITUTE_" + institute.getId() + "_TUTORS");
 		tutors.setLabel("autogroup_tutor_label");
 		tutors.setGroupType(GroupType.TUTOR);
-		Long tutorsId = this.getOrganisationService().createGroup(institute.getId(), tutors);
+		Long tutorsId = this.getOrganisationService().createGroup(
+				institute.getId(), tutors);
 		Group tutorsGroup = this.getGroupDao().load(tutorsId);
 
 		// Security
 		this.getSecurityService().createObjectIdentity(institute, null);
-		this.getSecurityService().setPermissions(adminsGroup, institute, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-		this.getSecurityService().setPermissions(assistantsGroup, institute, LectureAclEntry.INSTITUTE_ASSIST);
-		this.getSecurityService().setPermissions(tutorsGroup, institute, LectureAclEntry.INSTITUTE_TUTOR);
+		this.getSecurityService().setPermissions(adminsGroup, institute,
+				LectureAclEntry.INSTITUTE_ADMINISTRATION);
+		this.getSecurityService().setPermissions(assistantsGroup, institute,
+				LectureAclEntry.INSTITUTE_ASSIST);
+		this.getSecurityService().setPermissions(tutorsGroup, institute,
+				LectureAclEntry.INSTITUTE_TUTOR);
 
 		// Add Owner to Members and the group of Administrators
-		this.getOrganisationService().addMember(institute.getId(), user.getId());
-		this.getOrganisationService().addUserToGroup(user.getId(), adminsGroup.getId());
+		this.getOrganisationService()
+				.addMember(institute.getId(), user.getId());
+		this.getOrganisationService().addUserToGroup(user.getId(),
+				adminsGroup.getId());
 
 		return institute;
 	}
@@ -504,7 +533,8 @@ public class TestUtility {
 
 		// Create a unique CourseType and Period
 		CourseType courseType = this.createUniqueCourseTypeInDB();
-		Period period = this.createUniquePeriodInDB(courseType.getInstitute().getDepartment().getUniversity());
+		Period period = this.createUniquePeriodInDB(courseType.getInstitute()
+				.getDepartment().getUniversity());
 
 		// Create a unique CourseType
 		Course course = Course.Factory.newInstance();
@@ -642,7 +672,8 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	 *             <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createdDefaultInstituteWithStoredUser() {
 		defaultUser.setUsername(unique("username"));
@@ -685,7 +716,8 @@ public class TestUtility {
 		groupDao.update(group);
 
 		final UsernamePasswordAuthenticationToken authentication;
-		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user).getAuthorities());
+		authentication = new UsernamePasswordAuthenticationToken(user,
+				"[Protected]", ((UserImpl) user).getAuthorities());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
@@ -696,7 +728,8 @@ public class TestUtility {
 	}
 
 	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
+	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	 *             <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();
@@ -709,7 +742,7 @@ public class TestUtility {
 		user.setAccountLocked(true);
 		return user;
 	}
-	
+
 	public UserGroup createUniqueUserGroupInDB() {
 
 		// Create a unique CourseType
@@ -717,13 +750,15 @@ public class TestUtility {
 		userGroup.setName("UserGroup");
 		userGroup.setShortcut(unique("group"));
 		userGroup.setCreator(createUniqueUserInDB());
-		userGroup.setMembership(Membership.Factory.newInstance());
 		Group mod = Group.Factory.newInstance();
 		mod.setName(unique("moderator"));
+		getGroupDao().create(mod);
 		userGroup.setModeratorsGroup(mod);
 		Group mem = Group.Factory.newInstance();
 		mem.setName(unique("member"));
+		getGroupDao().create(mem);
 		userGroup.setMembersGroup(mem);
+		userGroup.setMembership(Membership.Factory.newInstance());
 		userGroup.setAccessType(GroupAccessType.OPEN);
 		userGroup.setForum(true);
 		userGroup.setNewsletter(true);
@@ -731,8 +766,7 @@ public class TestUtility {
 		userGroup.setDescription("A UserGroup");
 		userGroup.setDocuments(true);
 		userGroup.setCalendar(true);
-		
-		userGroupDao.create(userGroup);
+		this.getUserGroupDao().create(userGroup);
 		this.getSecurityService().createObjectIdentity(userGroup, null);
 
 		return userGroup;
@@ -858,12 +892,12 @@ public class TestUtility {
 		this.organisationService = organisationService;
 	}
 
-	public UserGroupDao getUserGroupDao() {
-		return userGroupDao;
-	}
-
 	public void setUserGroupDao(UserGroupDao userGroupDao) {
 		this.userGroupDao = userGroupDao;
+	}
+
+	public UserGroupDao getUserGroupDao() {
+		return userGroupDao;
 	}
 
 }

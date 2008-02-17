@@ -20,14 +20,6 @@ public class GroupServiceIntegrationTest extends
 
 	private TestUtility testUtility;
 
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
-
-	public void setTestUtility(TestUtility testUtility) {
-		this.testUtility = testUtility;
-	}
-
 	public void testCreateUserGroup() {
 		logger.debug("----> BEGIN access to create test <---- ");
 
@@ -295,4 +287,11 @@ public class GroupServiceIntegrationTest extends
 		
 	}
 
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
+	}
 }

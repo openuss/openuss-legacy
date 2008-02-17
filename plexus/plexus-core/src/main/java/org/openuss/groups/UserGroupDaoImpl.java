@@ -9,7 +9,7 @@ package org.openuss.groups;
  * @see org.openuss.groups.UserGroup
  * @author Lutz D. Kramer
  */
-public class UserGroupDaoImpl extends UserGroupDaoBase {
+public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
 
 	/**
 	 * @see org.openuss.groups.UserGroupDao#toUserGroupInfo(org.openuss.groups.UserGroup,
