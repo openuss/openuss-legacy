@@ -47,23 +47,7 @@ public class UserGroupDaoTest extends UserGroupDaoTestBase {
 	public void testUserGroupToGroupInfo() {
 		
 		// Create UserGroup Entity
-		UserGroup userGroup = new UserGroupImpl();
-		userGroup.setName("UserGroup");
-		userGroup.setShortcut("group");
-		userGroup.setCreator(testUtility.createUniqueUserInDB());
-		userGroup.setMembership(Membership.Factory.newInstance());
-		userGroup.setModeratorsGroup(generateGroup("moderator"));
-		userGroup.setMembersGroup(generateGroup("member"));
-		userGroup.setAccessType(GroupAccessType.OPEN);
-		userGroup.setForum(true);
-		userGroup.setNewsletter(true);
-		userGroup.setChat(false);
-		userGroup.setDescription("A UserGroup");
-		userGroup.setDocuments(true);
-		userGroup.setCalendar(true);
-		assertNull(userGroup.getId());
-		userGroupDao.create(userGroup);
-		// TODO - Lutz: TestUtility Checken
+        UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
 		assertNotNull(userGroup.getId());
 		
 		// Test

@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import junit.framework.Assert;
-
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.openuss.groups.GroupAccessType;
+import org.openuss.groups.GroupService;
+import org.openuss.groups.GroupServiceImpl;
 import org.openuss.groups.UserGroup;
 import org.openuss.groups.UserGroupDao;
 import org.openuss.lecture.AccessType;
@@ -54,6 +54,7 @@ import org.openuss.security.acl.LectureAclEntry;
  * @author Ingo Dueppe
  * @author Ron Haus
  * @author Florian Dondorf
+ * @author Lutz D. Kramer
  */
 public class TestUtility {
 
@@ -746,16 +747,19 @@ public class TestUtility {
 	public UserGroup createUniqueUserGroupInDB() {
 
 		// Create a unique CourseType
+		GroupService groupService = new GroupServiceImpl();
 		UserGroup userGroup = UserGroup.Factory.newInstance();
 		userGroup.setName("UserGroup");
 		userGroup.setShortcut(unique("group"));
 		userGroup.setCreator(createUniqueUserInDB());
 		Group mod = Group.Factory.newInstance();
 		mod.setName(unique("moderator"));
+		mod.setGroupType(GroupType.MODERATOR);
 		getGroupDao().create(mod);
 		userGroup.setModeratorsGroup(mod);
 		Group mem = Group.Factory.newInstance();
 		mem.setName(unique("member"));
+		mem.setGroupType(GroupType.MEMBER);
 		getGroupDao().create(mem);
 		userGroup.setMembersGroup(mem);
 		userGroup.setMembership(Membership.Factory.newInstance());
