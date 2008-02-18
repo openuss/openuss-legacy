@@ -37,7 +37,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.isTrue(groupInfo.getId() == null,
-				"The Group shouldn't have an ID yet");
+				"The Group shouldn't have an ID yet, the aktual ID is: " + groupInfo.getId());
 
 		// Transform VO to entity
 		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(groupInfo);
@@ -47,8 +47,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = Membership.Factory.newInstance();
 		getMembershipDao().create(membership);
 		groupEntity.setMembership(membership);
-				
-		
 		
 		// Create default SecurityGroups for UserGroup
 		GroupItem moderators = new GroupItem();
@@ -93,6 +91,10 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
+		
+		// Add Creator to Membership
+		membership.getMembers().add(creator);
+		getMembershipDao().update(membership);
 		
 		// Add Creator to Group of Moderators
 		this.addModerator(groupInfo, creator.getId());
@@ -267,6 +269,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
+		
+		// Test If User is Moderator
+		if (isModerator(groupInfo, userId)){
+			this.removeModerator(groupInfo, userId);
+		}
 
 		// Load Group Entitiy
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);

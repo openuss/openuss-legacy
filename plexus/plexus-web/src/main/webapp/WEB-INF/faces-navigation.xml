@@ -232,7 +232,7 @@
 		
 		<navigation-case>
 			<from-outcome>group_main</from-outcome>
-			<to-view-id>/views/secured/groups/main.xhtml</to-view-id>
+			<to-view-id>/views/secured/groups/components/main.xhtml</to-view-id>
 		</navigation-case>
 	
 		<navigation-case>

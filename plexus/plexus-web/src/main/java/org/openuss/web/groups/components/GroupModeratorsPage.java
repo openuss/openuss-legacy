@@ -1,4 +1,4 @@
-package org.openuss.web.groups;
+package org.openuss.web.groups.components;
 
 import java.util.HashSet;
 import java.util.List;

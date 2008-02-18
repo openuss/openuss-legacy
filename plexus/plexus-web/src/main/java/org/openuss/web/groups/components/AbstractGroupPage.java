@@ -1,4 +1,4 @@
-package org.openuss.web.groups;
+package org.openuss.web.groups.components;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;

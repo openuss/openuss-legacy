@@ -13,6 +13,7 @@ public class UserGroupTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(UserGroupDaoTest.class);
 		suite.addTestSuite(GroupServiceIntegrationTest.class);
+		suite.addTestSuite(GroupNewsletterServiceIntegrationTest.class);
 		return suite;
 	}
 

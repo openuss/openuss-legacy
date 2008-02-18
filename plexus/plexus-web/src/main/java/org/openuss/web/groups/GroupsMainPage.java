@@ -10,9 +10,11 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.desktop.MyUniDepartmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
+import org.openuss.groups.GroupService;
 import org.openuss.groups.GroupServiceImpl;
 import org.openuss.groups.UserGroupInfo;
 
@@ -29,7 +31,13 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
-public class GroupsMainPage extends AbstractGroupPage {
+public class GroupsMainPage extends BasePage {
+	
+	@Property(value = "#{groupInfo}")
+	protected UserGroupInfo groupInfo;
+	
+	@Property(value = "#{groupService}")
+	protected GroupService groupService;
 	
 	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
 
@@ -38,7 +46,7 @@ public class GroupsMainPage extends AbstractGroupPage {
 	private boolean groupListDataLoaded = false;
 	private boolean prerenderCalled = false;
 	private Map<Long, UserGroupInfo> groupData;
-	private static final String userGroupBasePath = "/views/secured/groups/main.faces";
+	private static final String userGroupBasePath = "/views/secured/groups/components/main.faces";
 	
 	private String password;
 
@@ -127,33 +135,37 @@ public class GroupsMainPage extends AbstractGroupPage {
 		}
 	}
 		
-		// Returns a list of ListItemDAOs that contain the information to be shown
-		// by the group flexlist
-	
+	// Returns a list of ListItemDAOs that contain the information to be shown
+	// by the group flexlist
 	private List<ListItemDAO> getGroupListItems(Long userId) {
-		logger.debug("Success4");
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-		logger.debug("Success5");
-		// GroupInfo groupInfo = groupData.get(userId);
-
+		List<UserGroupInfo> userGroups = groupService.getGroupsByUser(user.getId());
 		ListItemDAO newItem;
-		newItem = new ListItemDAO();
-		logger.debug("Success6");
-		// TODO Thomas: delete dummy links
-		newItem.setTitle("Socialising Muenster");
-		newItem.setUrl(contextPath() + userGroupBasePath + "?group=" + user.getId());
-		listItems.add(newItem);
-		
-//		userGroups = groupService.getGroupsByUser(user.getId());
-//		
-//		logger.debug(userGroups.toString());
-		
-		newItem = new ListItemDAO();
-		newItem.setTitle("OpenArena Test Group");
-		newItem.setUrl(contextPath()+userGroupBasePath);
-		listItems.add(newItem);
-		logger.debug("Success7");
+		for (UserGroupInfo groupInfo : userGroups) {
+			if (groupInfo != null) {
+				newItem = new ListItemDAO();
+				newItem.setTitle(groupInfo.getName() + " (" + groupInfo.getShortcut() + ")");
+				newItem.setUrl(contextPath() + userGroupBasePath + "?group=" + user.getId());
+				listItems.add(newItem);
+			}
+		}
 		return listItems;
+	}
+	
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
+	}
+
+	public UserGroupInfo getGroupInfo() {
+		return groupInfo;
+	}
+
+	public void setGroupInfo(UserGroupInfo GroupInfo) {
+		this.groupInfo = GroupInfo;
 	}
 	
 
