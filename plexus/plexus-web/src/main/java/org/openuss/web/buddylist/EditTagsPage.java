@@ -36,7 +36,7 @@ public class EditTagsPage extends BasePage {
 	@Property(value = "#{buddyService}")
 	private BuddyService buddyService;
 	
-	@Property(value = "#{buddyInfo}")
+	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
 	
 	public BuddyInfo getBuddyInfo() {
@@ -50,7 +50,6 @@ public class EditTagsPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		buddyInfo = (BuddyInfo)getSessionAttribute(Constants.OPENUSS4US_EDITTAGS);
 		addPageCrumb();
 	}
 
@@ -64,6 +63,7 @@ public class EditTagsPage extends BasePage {
 	}	
 	
 	public String addTag(){
+		logger.debug("Add tag " + newTag + " to " + buddyInfo.getName());
 		buddyService.addTag(buddyInfo, newTag);
 		return Constants.OPENUSS4US_CALENDAR;
 	}

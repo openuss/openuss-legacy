@@ -1,4 +1,4 @@
-package org.openuss.web.internalMessages;
+package org.openuss.web.internalmessage;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;

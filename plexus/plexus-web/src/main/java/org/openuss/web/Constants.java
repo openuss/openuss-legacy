@@ -266,10 +266,11 @@ public class Constants {
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
-	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
 	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
 	public static final String OPENUSS4US_GROUPS_LEAVE = "openuss4us_groups_leave";
+	// openuss4us constants
+	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 }

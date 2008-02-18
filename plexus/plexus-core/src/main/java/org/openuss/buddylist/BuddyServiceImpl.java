@@ -36,7 +36,8 @@ public class BuddyServiceImpl
         		throw new Exception("User is already added");
         }
         Buddy buddy = Buddy.Factory.newInstance();
-        buddy.setAuthorized(false);
+        //TODO CORRECT HERE
+        buddy.setAuthorized(true);
         buddy.setBuddyList(buddyList);
         buddy.setUser(getUserDao().load(userToAdd.getId()));
         buddy = getBuddyDao().create(buddy);
@@ -143,31 +144,10 @@ public class BuddyServiceImpl
         Set<Buddy> buddySet = buddyList.getBuddies();
         ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
         for(Buddy buddy : buddySet){
-        	if(buddy.isAuthorized())
+        	//TODO CORRECT AGAIN
+//        	if(buddy.isAuthorized())
         		buddys.add(getBuddyDao().toBuddyInfo(buddy));
-        }
-        
-        //TODO delete here
-        //Dummmy Buddy wird erstellt
-        BuddyInfo nfo = new BuddyInfo();
-        nfo.setId(12l);
-        nfo.setName("Mein Name");
-        List<String> tags = new LinkedList<String>();
-        tags.add("fussball");
-        nfo.setTags(tags);
-        nfo.setUserId(-10l);
-        buddys.add(nfo);
-        
-        BuddyInfo nfo2 = new BuddyInfo();
-        nfo2.setId(212l);
-        nfo2.setName("Mein Name2");
-        tags = new LinkedList<String>();
-        tags.add("fussball");
-        tags.add("handball");
-        nfo2.setTags(tags);
-        nfo2.setUserId(-11l);
-        buddys.add(nfo2);
-        
+        }    
         return buddys;
     }
 

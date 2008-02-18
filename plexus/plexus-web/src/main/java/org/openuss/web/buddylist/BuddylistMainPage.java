@@ -28,7 +28,7 @@ public class BuddylistMainPage extends BasePage {
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
 	public User profile;
 	
-	@Property(value = "#{buddyInfo}")
+	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
 	
 	private static final Logger logger = Logger.getLogger(BuddylistMainPage.class);
@@ -90,7 +90,7 @@ public class BuddylistMainPage extends BasePage {
 		profile.setId(this.data.getRowData().getUserId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		setBuddyInfo(this.data.getRowData());
-		setSessionAttribute(Constants.OPENUSS4US_EDITTAGS, buddyInfo);
+		setSessionBean(Constants.OPENUSS4US_CHOSEN_BUDDYINFO, buddyInfo);
 		return Constants.OPENUSS4US_EDITTAGS;
 	}
 
