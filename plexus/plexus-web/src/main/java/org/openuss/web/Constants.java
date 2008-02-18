@@ -264,6 +264,7 @@ public class Constants {
 
 	// openuss4us navigation outcomes
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
+	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
