@@ -424,7 +424,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 */
 	protected List<UserGroupInfo> handleGetAllGroups() throws Exception {
 		Collection<UserGroup> userGroups = getUserGroupDao().loadAll();
-		List<UserGroupInfo> group = null;
+		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
 		for (UserGroup userGroup : userGroups) {
 			group.add(getUserGroupDao().toUserGroupInfo(userGroup));
 
@@ -443,7 +443,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		Collection<Membership> memberships = getMembershipDao().loadAll();
-		List<UserGroupInfo> group = null;
+		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
 		for (Membership membership : memberships) {
 			List<User> members = membership.getMembers();
 			for (User member : members) {
@@ -537,7 +537,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		return !(group.getCreator().getId() == userId);
+		return (group.getCreator().getId() == userId);
 
 	}
 	
@@ -576,7 +576,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			List<User> users, UserGroup group, Group secGroups) {
 		Validate.notNull(users, "Parameter users must not be null.");
 		Validate.notNull(group, "Parameter group must not be null.");
-		Validate.notNull(secGroups, "Parameter secGroups must not be null.");
 		List<User> users2 = new ArrayList<User>();
 		if (secGroups != null) {
 			for (User user : users) {
