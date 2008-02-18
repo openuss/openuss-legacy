@@ -26,7 +26,10 @@ import org.openuss.web.BasePage;
 @View
 public class BuddylistMainPage extends BasePage {
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
-	public User profile;	
+	public User profile;
+	
+	@Property(value = "#{buddyInfo}")
+	private BuddyInfo buddyInfo;
 	
 	private static final Logger logger = Logger.getLogger(BuddylistMainPage.class);
 	
@@ -78,11 +81,17 @@ public class BuddylistMainPage extends BasePage {
 	}
 	
 	public String linkProfile(){
-		logger.debug("started");
 		profile.setId(this.data.getRowData().getUserId());
-		logger.debug("loading user profile: " + this.data.getRowData().getUserId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
+	}
+	
+	public String linkEditTags(){
+		profile.setId(this.data.getRowData().getUserId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		setBuddyInfo(this.data.getRowData());
+		setSessionAttribute(Constants.OPENUSS4US_EDITTAGS, buddyInfo);
+		return Constants.OPENUSS4US_EDITTAGS;
 	}
 
 	public void setBuddyService(BuddyService buddyService) {
@@ -95,6 +104,14 @@ public class BuddylistMainPage extends BasePage {
 
 	public void setProfile(User profile) {
 		this.profile = profile;
+	}
+
+	public BuddyInfo getBuddyInfo() {
+		return buddyInfo;
+	}
+
+	public void setBuddyInfo(BuddyInfo buddyInfo) {
+		this.buddyInfo = buddyInfo;
 	}
 	
 }

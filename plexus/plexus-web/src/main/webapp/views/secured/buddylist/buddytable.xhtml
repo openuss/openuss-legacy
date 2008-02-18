@@ -38,8 +38,8 @@
 			<h:commandButton id="removeBuddy" action="history:back"
 				onclick="history:back" value="remove buddy" title="remove buddy"
 				styleClass="button_remove" /><br />
-			<h:commandButton id="editTags" action="history:back"
-				onclick="history:back" value="edit tags" title="edit tags"
+			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddylist.linkEditTags}"
+				value="edit tags" title="edit tags"
 				styleClass="button_remove" />
 		</t:column>
 	</plexus:dataTable>

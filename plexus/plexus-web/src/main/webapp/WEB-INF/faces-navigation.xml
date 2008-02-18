@@ -205,6 +205,11 @@
 		</navigation-case>		
 		
 		<navigation-case>
+			<from-outcome>buddylist_edit_Tags</from-outcome>
+			<to-view-id>/views/secured/buddylist/edittags.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>openuss4us_addbuddy</from-outcome>
 			<to-view-id>/views/secured/buddylist/addbuddy.xhtml</to-view-id>
 		</navigation-case>	
