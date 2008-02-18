@@ -35,21 +35,10 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
   		</ui:define>
   		<ui:define name="content">
-			<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
-			<o:block label="#{msg['openuss4us_command_buddylist']}"
-				styleClass="form_box">
-					<t:dataList id="buddys"
-						value="#{views$secured$buddylist$buddylist.buddys}" var="currentbuddy"
-						styleClass="news">
-						<h:outputText value="#{currentbuddy.name}" styleClass="news_title" />
-					</t:dataList>
-
-			</o:block>
-			<o:block>
-
-		 		</o:block>
-	 		</h:form> 
-  		</ui:define>
+		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
+			<ui:include src="buddytable.xhtml" />
+		</h:form>
+	</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>

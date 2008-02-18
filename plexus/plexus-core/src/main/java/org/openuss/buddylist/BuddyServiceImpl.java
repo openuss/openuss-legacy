@@ -23,9 +23,17 @@ public class BuddyServiceImpl
         throws java.lang.Exception
     {
         User user = getSecurityService().getCurrentUser();
+        //test wether userToAdd equals current user
+        if(user.getId().equals(userToAdd.getId()))
+        	throw new Exception("You cannot add yourself");
         BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
         if(buddyList == null){
         	buddyList = getBuddyListDao().create(user.getId());
+        }
+    	//test wether user is already added
+        for(Buddy buddy : buddyList.getBuddies()){
+        	if(buddy.getUser().getId().equals(userToAdd.getId()))
+        		throw new Exception("User is already added");
         }
         Buddy buddy = Buddy.Factory.newInstance();
         buddy.setAuthorized(false);
@@ -129,12 +137,37 @@ public class BuddyServiceImpl
     {
         User user = getSecurityService().getCurrentUser();
         BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+        if(buddyList == null){
+        	buddyList = getBuddyListDao().create(user.getId());
+        }
         Set<Buddy> buddySet = buddyList.getBuddies();
         ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
         for(Buddy buddy : buddySet){
         	if(buddy.isAuthorized())
         		buddys.add(getBuddyDao().toBuddyInfo(buddy));
         }
+        
+        //TODO delete here
+        //Dummmy Buddy wird erstellt
+        BuddyInfo nfo = new BuddyInfo();
+        nfo.setId(12l);
+        nfo.setName("Mein Name");
+        List<String> tags = new LinkedList<String>();
+        tags.add("fussball");
+        nfo.setTags(tags);
+        nfo.setUserId(-10l);
+        buddys.add(nfo);
+        
+        BuddyInfo nfo2 = new BuddyInfo();
+        nfo2.setId(212l);
+        nfo2.setName("Mein Name2");
+        tags = new LinkedList<String>();
+        tags.add("fussball");
+        tags.add("handball");
+        nfo2.setTags(tags);
+        nfo2.setUserId(-11l);
+        buddys.add(nfo2);
+        
         return buddys;
     }
 

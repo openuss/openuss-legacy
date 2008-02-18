@@ -28,6 +28,8 @@ public class BuddyDaoImpl
         Collections.sort(tags);
         targetVO.setTags(tags);
         targetVO.setName(sourceEntity.getUser().getDisplayName());
+        targetVO.setUserId(sourceEntity.getUser().getId());
+        targetVO.setUserPicture(sourceEntity.getUser().getImageId());
     }
 
 
