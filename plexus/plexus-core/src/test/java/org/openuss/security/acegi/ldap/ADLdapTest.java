@@ -5,6 +5,8 @@
  */
 package org.openuss.security.acegi.ldap;
 
+import java.util.Enumeration;
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -12,6 +14,7 @@ import javax.naming.directory.BasicAttributes;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.BadCredentialsException;
+import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.providers.ProviderManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.ldap.LdapAuthenticationProvider;
@@ -52,7 +55,7 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 	}
 	
 
-	public void no_testLdapAuthenticationLive() {
+	public void testLdapAuthenticationLive() {
 
 //		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
 		 										UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
@@ -66,9 +69,11 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 		 		LdapUserDetails myLdapUserDetails = (LdapUserDetails) authResult.getPrincipal();
 				logger.info("User is authenticated by means of LDAP!");
 	 
-			 	
+			 	logger.info("getDetails: "+authResult.getDetails());
+				
 			 	NamingEnumeration<String> myNamingEnu = myLdapUserDetails.getAttributes().getIDs();
-			 	Attributes myAttr = myLdapUserDetails.getAttributes();	 	
+			 	Attributes myAttr = myLdapUserDetails.getAttributes();
+			 	
 			 	try {
 			 		while (myNamingEnu.hasMore()) {
 			 			String attrId = myNamingEnu.next().toString();
@@ -82,9 +87,14 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 			 	
 
 			 	logger.info("user DN: "+myLdapUserDetails.getDn());
-			 	
+//			 	logger.info("getAuthorities(): "+authResult.getAuthorities());
+			 	GrantedAuthority[] myGrantedAuthority = authResult.getAuthorities();
 
-			 	 
+			 	
+			 	for (GrantedAuthority grantedAuthority : myGrantedAuthority) {
+			 		logger.info("!!!! Authority: "+grantedAuthority.getAuthority());
+					
+				}			 	 
 		 	}
 	 }
 	 
