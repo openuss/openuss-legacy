@@ -18,8 +18,6 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-FCKConfig.Debug = true;
-
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
 
 // Wiki link plugin

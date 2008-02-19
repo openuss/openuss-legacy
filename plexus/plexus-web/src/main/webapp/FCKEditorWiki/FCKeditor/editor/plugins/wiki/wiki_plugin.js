@@ -31,11 +31,12 @@ FCKConfig.LinkDlgHideAdvanced = true;
 
 // Set the dialog tabs.
 window.parent.AddTab( 'Info', 'Link' ) ;
+window.parent.AddTab( 'Upload', FCKLang.DlgLnkUpload ) ;
 
 if ( !FCKConfig.LinkDlgHideTarget )
     window.parent.AddTab( 'Target', FCKLang.DlgLnkTargetTab, true ) ;
-
-if ( FCKConfig.LinkUpload )
+    
+if ( FCKConfig.LinkUpload ) 
     window.parent.AddTab( 'Upload', FCKLang.DlgLnkUpload, true ) ;
 
 if ( !FCKConfig.LinkDlgHideAdvanced )
@@ -150,7 +151,7 @@ window.onload = function()
     SetLinkType( GetE('cmbLinkType').value ) ;
 
     // Show/Hide the "Browse Server" button.
-    // GetE('divBrowseServer').style.display = FCKConfig.LinkBrowser ? '' : 'none' ;
+//    GetE('divBrowseServer').style.display = FCKConfig.LinkBrowser ? '' : 'none' ;
 
     // Show the initial dialog content.
     GetE('divInfo').style.display = '' ;

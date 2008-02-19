@@ -28,13 +28,12 @@ if (window.document.location.href.match(/Wiki/)) {
 	        {
 	        	var bInsideLink = ( tagName == 'A' || FCKSelection.HasAncestorNode( 'A' ) ) ;
 	        
-	        	alert('test "' + tagName + '", "' + tag + '" ,"' + menu + '" : ' + bInsideLink);
-	                // under what circumstances do we display this option
-	                if ( bInsideLink )
-	                {
-	                        // the command needs the registered command name, the title for the context menu, and the icon path
-	                        menu.AddItem( 'OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkContextMenuTitle'], oWikiLinkItem.IconPath ) ;
-	                }
+        	    // under what circumstances do we display this option
+                if ( bInsideLink )
+                {
+                        // the command needs the registered command name, the title for the context menu, and the icon path
+                        menu.AddItem( 'OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkContextMenuTitle'], oWikiLinkItem.IconPath ) ;
+                }
 	        }}
 	);
 	
