@@ -33,6 +33,8 @@ public class WikiEditPage extends AbstractWikiPage{
 			this.siteVersionInfo.setText("");
 			this.siteVersionInfo.setCreationDate(new Date());
 			this.siteVersionInfo.setUserId(user.getId());
+			
+			setSessionBean(Constants.WIKI_NEW_SITE_NAME, null);
 		} else {
 			this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
 			
@@ -47,17 +49,7 @@ public class WikiEditPage extends AbstractWikiPage{
 				if (this.siteVersionInfo != null) {
 					this.siteVersionInfo.setNote("");
 				}
-			} else {
-				this.siteInfo.setId(null);
-				this.siteInfo.setName(this.siteName);
-				this.siteInfo.setCourseId(courseInfo.getId());
-				
-				this.siteVersionInfo.setId(null);
-				this.siteVersionInfo.setWikiSiteId(null);
-				this.siteVersionInfo.setText("");
-				this.siteVersionInfo.setCreationDate(new Date());
-				this.siteVersionInfo.setUserId(user.getId());
-			}
+			} 
 		}
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);

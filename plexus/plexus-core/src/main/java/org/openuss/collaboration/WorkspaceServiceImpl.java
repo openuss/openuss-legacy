@@ -6,13 +6,13 @@
 package org.openuss.collaboration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseMember;
-import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.collaboration.WorkspaceService
@@ -22,76 +22,43 @@ public class WorkspaceServiceImpl extends
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceServiceImpl.class);
 
-	/**
-	 * @see org.openuss.collaboration.WorkspaceDocumentService#createWorkspace(org.openuss.collaboration.WorkspaceInfo,
-	 *      org.openuss.foundation.DomainObject)
-	 */
-	protected void handleCreateWorkspace(
-			org.openuss.collaboration.WorkspaceInfo workspaceInfo)
-			throws java.lang.Exception {
+	@Override
+	protected void handleCreateWorkspace(WorkspaceInfo workspaceInfo)
+			throws Exception {
 		Validate.notNull(workspaceInfo, "WorkspaceInfo cannot be null.");
-		Validate.notNull(workspaceInfo.getCourseId(), "GetCourseId cannot be null.");
+		Validate.notNull(workspaceInfo.getDomainId(), "domainId cannot be null.");
 		
 		// Transform VO to entity
 		Workspace workspaceEntity = this.getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		Validate.notNull(workspaceEntity, "Cannot transform workspaceInfo to entity.");
 
-		// Add workspace to course
-		Course course = this.getCourseDao().load(workspaceInfo.getCourseId());
-		course.getWorkspaces().add(workspaceEntity);
-		workspaceEntity.setCourse(course);
-		
 		// Save Entity
 		this.getWorkspaceDao().create(workspaceEntity);
 		Validate.notNull(workspaceEntity, "Id of workspace cannot be null.");
 		
-		// FIXME - Kai, Indexing should not base on VOs!
-		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects. 
 		workspaceInfo.setId(workspaceEntity.getId());
-
-		// add object identity to security
-		getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourse());
-		
-		this.getCourseDao().update(course);
-
-		// Set Security
-	//FIXME: don't know what this does:	this.getSecurityService().createObjectIdentity(workspaceEntity, workspaceEntity.getCourseType());
-		
-//		updateAccessTypePermission(workspaceEntity);
 	}
 
-	/**
-	 * @see org.openuss.collaboration.WorkspaceDocumentService#removeWorkspace(java.lang.Long)
-	 */
-	protected void handleRemoveWorkspace(java.lang.Long workspaceId)
-			throws java.lang.Exception {
-		Validate.notNull(workspaceId, "workspaceId cannot be null.");
-		
-		// Transform VO to entity
-		Workspace workspaceEntity = this.getWorkspaceDao().load(workspaceId);
-
-		getWorkspaceDao().remove(workspaceEntity);
-	}
-
-	/**
-	 * @see org.openuss.collaboration.WorkspaceDocumentService#getWorkspaceMembers(java.lang.Long)
-	 */
-	@SuppressWarnings("unchecked")
-	protected java.util.List handleGetWorkspaceMembers(
-			java.lang.Long workspaceId) throws java.lang.Exception {
-		// @todo implement protected java.util.List
-		// handleGetWorkspaceMembers(java.lang.Long workspaceId)
-		List list = new ArrayList();
-		return list;
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindWorkspacesByCourse(Long courseId) throws Exception {
-		Validate.notNull(courseId, "courseId cannot be null.");
-		Course course = this.getCourseDao().load(courseId);
-		return this.getWorkspaceDao().findByCourse(WorkspaceDao.TRANSFORM_WORKSPACEINFO, course);
+	protected List handleFindWorkspaceMembers(Long workspaceId)
+			throws Exception {
+		Validate.notNull(workspaceId, "workspaceId cannot be null.");
+		Workspace workspace = this.getWorkspaceDao().load(workspaceId);
+		Validate.notNull(workspace, "No workspace could be found with the workspaceId " + workspaceId);
+		
+		Collection<User> users = workspace.getUser();
+		List<UserInfo> members = new ArrayList<UserInfo>(users.size());
+		for (User u : users) {
+			members.add(this.getUserDao().toUserInfo(u));
+		}
+		return members;
+	}
+
+	@Override
+	protected List handleFindWorkspacesByDomain(Long domainId) throws Exception {
+		Validate.notNull(domainId, "domainId cannot be null.");
+		return this.getWorkspaceDao().findByDomainId(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId);
 	}
 
 	@Override
@@ -99,6 +66,16 @@ public class WorkspaceServiceImpl extends
 			throws Exception {
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null!");
 		return (WorkspaceInfo)getWorkspaceDao().load(WorkspaceDao.TRANSFORM_WORKSPACEINFO, workspaceId);
+	}
+
+	@Override
+	protected void handleRemoveWorkspace(Long workspaceId) throws Exception {
+		Validate.notNull(workspaceId, "workspaceId cannot be null.");
+		
+		// Transform VO to entity
+		Workspace workspaceEntity = this.getWorkspaceDao().load(workspaceId);
+
+		getWorkspaceDao().remove(workspaceEntity);
 	}
 
 	@Override
@@ -114,62 +91,35 @@ public class WorkspaceServiceImpl extends
 		getWorkspaceDao().update(workspaceEntity);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindWorkspaceMembers(Long workspaceId)
+	protected void handleUpdateWorkspaceMembers(List userId, Long workspaceId)
 			throws Exception {
-		Validate.notNull(workspaceId, "workspaceId cannot be null.");
-		Workspace workspace = this.getWorkspaceDao().load(workspaceId);
-		Validate.notNull(workspace, "No workspace could be found with the workspaceId " + workspaceId);
-		
-		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByWorkspace(workspace);
-		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(cmws.size());
-		for (CourseMemberWorkspace cmw : cmws) {
-			members.add(this.getCourseMemberDao().toCourseMemberInfo(cmw.getCourseMember()));
-		}
-		return members;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List handleFindWorkspacesByCourseAndCourseMember(Long courseId,
-			Long courseMemberId) throws Exception {
-		Validate.notNull(courseId, "courseId cannot be null.");
-		CourseMember courseMember = this.getCourseMemberDao().load(courseMemberId);
-		Validate.notNull(courseMember, "No courseMember could be found with the courseMemberId " + courseId);
-		
-		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByCourseMember(CourseMemberWorkspaceDao.TRANSFORM_NONE, courseMember);
-		List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>();
-		for (CourseMemberWorkspace cmw : cmws) {
-			workspaces.add(this.getWorkspaceDao().toWorkspaceInfo(cmw.getWorkspace()));
-		}
-		return workspaces;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void handleUpdateWorkspaceMembers(List courseMemberId,
-			Long workspaceId) throws Exception {
 		logger.debug("Starting method handleUpdateWorkspaceMembers");
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null.");
-		Validate.notNull(courseMemberId, "Parameter courseMemberId must not be null.");
+		Validate.notNull(userId, "Parameter userId must not be null.");
 
 		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
-		List<CourseMemberWorkspace> cmws = this.getCourseMemberWorkspaceDao().findByWorkspace(workspace);
-		getCourseMemberWorkspaceDao().remove(cmws);
+		workspace.getUser().clear();
 		
-		cmws = new ArrayList<CourseMemberWorkspace>(courseMemberId.size());		
-		for (Long id : (List<Long>)courseMemberId) {
-			CourseMember member = getCourseMemberDao().load(id); 
+		for (Long id : (List<Long>)userId) {
+			User member = getUserDao().load(id); 
 			
-			CourseMemberWorkspace cmw = CourseMemberWorkspace.Factory.newInstance();
-			cmw.setCourseMember(member);
-			cmw.setWorkspace(workspace);
-			
-			cmws.add(cmw);
+			workspace.getUser().add(member);
 		}
-		getCourseMemberWorkspaceDao().create(cmws);
 	}
 
+	@Override
+	protected List handleFindWorkspacesByDomainAndUser(Long domainId,
+			Long userId) throws Exception {
+		Validate.notNull(domainId, "domainId cannot be null.");
+		Validate.notNull(userId, "userId cannot be null.");
+		
+		User user = getUserDao().load(userId);
+		Validate.notNull(user, "No user could be found with the userId " + userId);
+		
+		return getWorkspaceDao().findByDomainIdAndUserId(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId, userId);
+	}
+
+	
 }
