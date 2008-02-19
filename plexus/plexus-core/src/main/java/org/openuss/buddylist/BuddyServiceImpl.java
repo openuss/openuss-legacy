@@ -36,8 +36,7 @@ public class BuddyServiceImpl
         		throw new Exception("User is already added");
         }
         Buddy buddy = Buddy.Factory.newInstance();
-        //TODO CORRECT HERE
-        buddy.setAuthorized(true);
+        buddy.setAuthorized(false);
         buddy.setBuddyList(buddyList);
         buddy.setUser(getUserDao().load(userToAdd.getId()));
         buddy = getBuddyDao().create(buddy);
@@ -144,8 +143,7 @@ public class BuddyServiceImpl
         Set<Buddy> buddySet = buddyList.getBuddies();
         ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
         for(Buddy buddy : buddySet){
-        	//TODO CORRECT AGAIN
-//        	if(buddy.isAuthorized())
+        	if(buddy.isAuthorized())
         		buddys.add(getBuddyDao().toBuddyInfo(buddy));
         }    
         return buddys;
@@ -172,13 +170,12 @@ public class BuddyServiceImpl
         throws java.lang.Exception
     {
     	User user = getSecurityService().getCurrentUser();
-        BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
-        Set<Buddy> buddySet = buddyList.getBuddies();
-        ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
-        for(Buddy buddy : buddySet){
+        List<Buddy> allRequests = getBuddyDao().findByUser(user);
+        List<BuddyInfo> requests = new ArrayList();
+        for(Buddy buddy : allRequests){
         	if(!buddy.isAuthorized())
-        		buddys.add(getBuddyDao().toBuddyInfo(buddy));
+        		requests.add(getBuddyDao().toBuddyInfo(buddy));
         }
-        return buddys;
+        return requests;
     }
 }
