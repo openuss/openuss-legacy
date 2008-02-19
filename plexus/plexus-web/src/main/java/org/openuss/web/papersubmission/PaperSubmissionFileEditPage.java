@@ -22,6 +22,7 @@ import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
@@ -89,11 +90,12 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		paperSubmissionInfo = new PaperSubmissionInfo();
 		List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
-		CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
-		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), memberInfo.getId());
+		//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
+		
+		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		if(paperInfos.isEmpty()){
 			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setUserId(memberInfo.getId());
+			paperSubmissionInfo.setUserId(user.getId());
 			//paperSubmissionInfo.setDeliverDate(System.currentTimeMillis());
 			paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
@@ -106,7 +108,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
 			paperSubmissionInfo.setId(paperInfos.get(0).getId());
 			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setUserId(memberInfo.getId());
+			paperSubmissionInfo.setUserId(user.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 			return true;
 		}
