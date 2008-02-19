@@ -9,7 +9,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
-import org.openuss.wiki.WikiSiteVersionInfo;
+import org.openuss.wiki.WikiSiteContentInfo;
 
 
 @Bean(name = "views$secured$wiki$wikiedit", scope = Scope.REQUEST)

@@ -252,9 +252,9 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
+				//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), 
-								memberInfo.getId()));
+								user.getId()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
