@@ -30,6 +30,7 @@ public class BuddyDaoImpl
         targetVO.setName(sourceEntity.getUser().getDisplayName());
         targetVO.setUserId(sourceEntity.getUser().getId());
         targetVO.setUserPicture(sourceEntity.getUser().getImageId());
+        targetVO.setRequesterId(sourceEntity.getBuddyList().getDomainIdentifier());           
     }
 
 

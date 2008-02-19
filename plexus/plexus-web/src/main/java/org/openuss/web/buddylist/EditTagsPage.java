@@ -28,8 +28,7 @@ public class EditTagsPage extends BasePage {
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
 	public User profile;
 	
-	@Property(value= "#{newTag}")
-	private String newTag = "neuer Tag";
+	private String newTag = "";
 	
 	private static final Logger logger = Logger.getLogger(EditTagsPage.class);
 	
@@ -63,7 +62,7 @@ public class EditTagsPage extends BasePage {
 	}	
 	
 	public String addTag(){
-		logger.debug("Add tag " + newTag + " to " + buddyInfo.getName());
+		logger.debug("Add tag '" + newTag + "' to " + buddyInfo.getName());
 		buddyService.addTag(buddyInfo, newTag);
 		return Constants.OPENUSS4US_CALENDAR;
 	}

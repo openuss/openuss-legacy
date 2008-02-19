@@ -80,13 +80,17 @@ public class BuddyServiceImpl
     		}
     	}
     	if(tag == null){
-    		tag = getTagDao().create(new ArrayList(), buddyList, tagString);
+    		tag = getTagDao().create(tagString);
     		buddyList.getTags().add(tag);
+    		tag.setBuddyList(buddyList);
     	} else if(buddy.getTags().contains(tag)){
     		return;
     	}
     	buddy.getTags().add(tag);
     	tag.getBuddies().add(buddy);
+    	getTagDao().update(tag);
+    	getBuddyDao().update(buddy);
+    	getBuddyListDao().update(buddyList);
     }
 
     /**
@@ -143,8 +147,12 @@ public class BuddyServiceImpl
         Set<Buddy> buddySet = buddyList.getBuddies();
         ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
         for(Buddy buddy : buddySet){
-        	if(buddy.isAuthorized())
-        		buddys.add(getBuddyDao().toBuddyInfo(buddy));
+        	if(buddy.isAuthorized()){
+        		BuddyInfo buddyToAdd = getBuddyDao().toBuddyInfo(buddy);
+        		buddyToAdd.setRequesterName(user.getDisplayName());
+        		buddyToAdd.setRequestingPictureId(user.getImageId());
+        		buddys.add(buddyToAdd);
+        	}
         }    
         return buddys;
     }

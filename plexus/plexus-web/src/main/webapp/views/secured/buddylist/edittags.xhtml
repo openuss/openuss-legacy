@@ -59,7 +59,10 @@
 				</t:dataList>
 				<br />
 				Neue Tags:<br />
-				<h:inputText id="aNewTag" styleClass="styleClass" value="#{views$secured$buddylist$edittags.newTag}"/>
+				<o:input entity="views$secured$buddylist$edittags" 
+									 property="newTag"
+									 label="#{msg.institute_members_command_user}" 
+									 styleClass="field" />
 				<br />
 				Vorschlagsliste
 			</o:block>
@@ -67,9 +70,9 @@
 				<!-- BUTTONS HIER REIN -->
 				<h:commandButton id="back2buddylist" action="history:back"
 					value="back" title="back" styleClass="button" />
-				<h:commandButton id="newTag"
+				<h:commandButton id="newTagButton"
 					action="#{views$secured$buddylist$edittags.addTag}" value="new Tag"
-					title="new Tag" styleClass="button" />
+					hint="new Tag" styleClass="button_add" />
 			</o:block>
 		</h:form>
 	</ui:define>
