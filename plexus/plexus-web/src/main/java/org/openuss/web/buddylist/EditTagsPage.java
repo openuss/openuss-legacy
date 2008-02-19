@@ -29,7 +29,7 @@ public class EditTagsPage extends BasePage {
 	public User profile;
 	
 	@Property(value= "#{newTag}")
-	private String newTag;
+	private String newTag = "neuer Tag";
 	
 	private static final Logger logger = Logger.getLogger(EditTagsPage.class);
 	

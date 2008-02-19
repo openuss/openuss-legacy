@@ -35,7 +35,8 @@
 		<ui:include src="/views/commons/sidebar/default.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="openuss4us_buddylist_edittags" enctype="multipart/form-data">
+		<h:form id="openuss4us_buddylist_edittags"
+			enctype="multipart/form-data">
 			<o:block label="#{msg['openuss4us_buddylist_edit_tags']}"
 				styleClass="form_box">
 				<div styleClass="content_font_normal"><h:outputText
@@ -47,27 +48,28 @@
 					alt="#{msg.user_profile_no_image}"
 					title="#{msg.user_profile_no_image}"
 					rendered="#{empty buddy.userPicture}" /></div>
-					<br/>
+				<br />
 					Aktuelle Tags:
 				<t:dataList value="#{buddy.tags}" var="currentTag"
 					styleClass="content_font_normal">
 					<h:outputText value="#{currentTag}"
 						styleClass="content_font_normal" />
-					<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}" 
-				action="history:back" />
-				</t:dataList><br/>
-				Neue Tags:<br/>
-				<o:input entity="edittags" property="newTag" required="true" maxlength="250" />
-				<h:inputText id="newTag" label="new Tag" />
-				<br/>
+					<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}"
+						action="history:back" />
+				</t:dataList>
+				<br />
+				Neue Tags:<br />
+				<h:inputText id="aNewTag" styleClass="styleClass" value="#{views$secured$buddylist$edittags.newTag}"/>
+				<br />
 				Vorschlagsliste
 			</o:block>
 			<o:block>
 				<!-- BUTTONS HIER REIN -->
-				<h:commandButton id="back2buddylist" action="openuss4us_buddylist"
+				<h:commandButton id="back2buddylist" action="history:back"
 					value="back" title="back" styleClass="button" />
-				<h:commandButton id="newTag" action="#{views$secured$buddylist$edittags.addTag}"
-					value="new Tag" title="new Tag" styleClass="button" />	
+				<h:commandButton id="newTag"
+					action="#{views$secured$buddylist$edittags.addTag}" value="new Tag"
+					title="new Tag" styleClass="button" />
 			</o:block>
 		</h:form>
 	</ui:define>

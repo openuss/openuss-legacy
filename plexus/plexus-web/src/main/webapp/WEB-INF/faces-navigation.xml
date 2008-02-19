@@ -214,6 +214,10 @@
 			<to-view-id>/views/secured/buddylist/addbuddy.xhtml</to-view-id>
 		</navigation-case>	
 
+		<navigation-case>
+			<from-outcome>openuss4us_deletebuddy</from-outcome>
+			<to-view-id>/views/secured/buddylist/deletebuddy.xhtml</to-view-id>
+		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>openuss4us_messagecenter</from-outcome>
