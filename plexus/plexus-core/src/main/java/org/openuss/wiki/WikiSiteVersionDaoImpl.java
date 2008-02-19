@@ -39,17 +39,13 @@ public class WikiSiteVersionDaoImpl
      */
     private org.openuss.wiki.WikiSiteVersion loadWikiSiteVersionFromWikiSiteContentInfo(org.openuss.wiki.WikiSiteContentInfo wikiSiteContentInfo)
     {
-        // @todo implement loadWikiSiteVersionFromWikiSiteContentInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.loadWikiSiteVersionFromWikiSiteContentInfo(org.openuss.wiki.WikiSiteContentInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.wiki.WikiSiteVersion wikiSiteVersion = this.load(wikiSiteContentInfo.getId());
-        if (wikiSiteVersion == null)
-        {
+        WikiSiteVersion wikiSiteVersion = null;
+        if (wikiSiteContentInfo.getId() != null) {
+        	wikiSiteVersion = this.load(wikiSiteContentInfo.getId());
+        } else {
             wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
         }
         return wikiSiteVersion;
-        */
     }
 
     
@@ -106,17 +102,13 @@ public class WikiSiteVersionDaoImpl
      */
     private org.openuss.wiki.WikiSiteVersion loadWikiSiteVersionFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo wikiSiteInfo)
     {
-        // @todo implement loadWikiSiteVersionFromWikiSiteInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.wiki.loadWikiSiteVersionFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.wiki.WikiSiteVersion wikiSiteVersion = this.load(wikiSiteInfo.getId());
-        if (wikiSiteVersion == null)
-        {
+    	org.openuss.wiki.WikiSiteVersion wikiSiteVersion = null;
+    	if (wikiSiteInfo.getId() != null) {
+    		wikiSiteVersion = this.load(wikiSiteInfo.getId());
+    	} else {
             wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
         }
         return wikiSiteVersion;
-        */
     }
 
     

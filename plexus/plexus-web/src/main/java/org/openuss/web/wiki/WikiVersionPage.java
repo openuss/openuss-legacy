@@ -62,7 +62,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	private List<WikiSiteVersionInfo> loadWikiSiteVersions() {
 		if (entries == null) {
-			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteInfo.getId());
+			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteVersionInfo.getId());
 		}
 		return entries;
 	}

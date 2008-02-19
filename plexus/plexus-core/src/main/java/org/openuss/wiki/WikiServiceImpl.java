@@ -38,9 +38,16 @@ public class WikiServiceImpl
 		Validate.notNull(siteName, "Parameter siteName must not be null!");
 		
 		WikiSiteInfo wikiSite = (WikiSiteInfo) getWikiSiteDao().findByDomainIdAndName(WikiSiteDao.TRANSFORM_WIKISITEINFO, domainId, siteName);
-		return handleGetNewestWikiSiteContent(wikiSite.getId());
+		WikiSiteContentInfo wikiSiteContent = null;
+		if (wikiSite != null) {
+			wikiSiteContent = handleGetNewestWikiSiteContent(wikiSite.getWikiSiteId());
+		}
+		return wikiSiteContent;
 	}
 
+	/** 
+	 * @return List of WikiSiteInfo
+	 */
 	@Override
 	protected List handleFindWikiSiteVersionsByWikiSite(Long wikiSiteId)
 			throws Exception {
@@ -48,6 +55,7 @@ public class WikiServiceImpl
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWikiSitesByDomainObject(Long domainId)
 			throws Exception {
@@ -70,7 +78,7 @@ public class WikiServiceImpl
     		return null;
     	} else {
     		WikiSiteInfo wikiSite = list.get(0);
-    		return (WikiSiteContentInfo) getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSite.getId());
+    		return (WikiSiteContentInfo) getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSite.getWikiSiteId());
     	}
 	}
 
@@ -107,9 +115,9 @@ public class WikiServiceImpl
 			
 			// find/create WikiSite
 			WikiSite wikiSite = null;
-			if (wikiSiteContentInfo.getId() != null) {
-				wikiSite = getWikiSiteDao().load(wikiSiteContentInfo.getId());
-				Validate.notNull(wikiSite, "Cannot find wikiSite for id: " + wikiSiteContentInfo.getId());
+			if (wikiSiteContentInfo.getWikiSiteId() != null) {
+				wikiSite = getWikiSiteDao().load(wikiSiteContentInfo.getWikiSiteId());
+				Validate.notNull(wikiSite, "Cannot find wikiSite for id: " + wikiSiteContentInfo.getWikiSiteId());
 			} else {
 				wikiSite = this.getWikiSiteDao().wikiSiteInfoToEntity(wikiSiteContentInfo);
 				Validate.notNull(wikiSite, "Cannot transform wikiSiteInfo to entity.");
@@ -119,10 +127,20 @@ public class WikiServiceImpl
 				Validate.notNull(wikiSite, "Id of wikiSite cannot be null.");
 			}
 			
+			
 			WikiSiteVersion wikiSiteVersion = getWikiSiteVersionDao().wikiSiteContentInfoToEntity(wikiSiteContentInfo);
+
+			User author = getSecurityService().getCurrentUser();
+			wikiSiteVersion.setAuthor(author);
+			
 			getWikiSiteVersionDao().create(wikiSiteVersion);
 			
-			wikiSiteContentInfo.setId(wikiSite.getId());
+			wikiSite.getWikiPageVersions().add(wikiSiteVersion);
+			getWikiSiteDao().update(wikiSite);
+			getWikiSiteVersionDao().update(wikiSiteVersion);
+			
+			wikiSiteContentInfo.setId(wikiSiteVersion.getId());
+			wikiSiteContentInfo.setWikiSiteId(wikiSite.getId());
 	
 			// add object identity to security
 			//getSecurityService().createObjectIdentity(wikiSiteEntity, wikiSiteEntity.getCourse());

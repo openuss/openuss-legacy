@@ -251,7 +251,6 @@ public class Constants {
 	public static final String COLLABORATION_SELECTED_FOLDER = "collaboration_selected_folder";
 	public static final String COLLABORATION_CURRENT_FOLDER = "collaboration_current_folder";
 
-	public static final String WIKI_CURRENT_SITE = "wiki_current_site";
 	public static final String WIKI_CURRENT_SITE_VERSION = "wiki_current_site_version";
 	public static final String WIKI_STARTSITE_NAME = "index";
 	public static final String WIKI_STARTSITE_NAME_I18N = "wiki_index_page_readable";

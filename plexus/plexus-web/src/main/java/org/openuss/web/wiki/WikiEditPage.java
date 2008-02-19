@@ -58,9 +58,16 @@ public class WikiEditPage extends AbstractWikiPage{
 	
 	public String save() {
 		this.siteVersionInfo.setId(null);
-		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
+		if (this.siteVersionInfo.getName() == null) {
+			this.siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
+		}
+		//this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
 		this.siteVersionInfo.setCreationDate(new Date());
 		this.siteVersionInfo.setAuthorId(user.getId());
+		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
+		this.siteVersionInfo.setDeleted(false);
+		this.siteVersionInfo.setReadOnly(false);
+		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		
 		return Constants.WIKI_MAIN_PAGE;

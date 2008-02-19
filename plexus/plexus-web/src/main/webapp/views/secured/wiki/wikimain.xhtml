@@ -31,7 +31,6 @@
          
         <ui:define name="content">
             <h:form id="mainWikiForm">
-            	<!-- ${wiki_current_site_version.id}, ${wiki_current_site_version.text}, ${wiki_current_site.name}  -->
             	<c:if test="${empty wiki_current_site_version.text}">
 	  				<o:block label="#{msg.wiki_create_site_header}" styleClass="form_box">
 	  					<p class="content_font_normal">
@@ -52,7 +51,7 @@
 					</o:block>
 	  			</c:if>
 	  			<c:if test="${not empty wiki_current_site_version.text}">
-	  				<c:choose><c:when test="${wiki_current_site.name != 'index'}"><c:set var="lbl" value="${wiki_current_site.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose>
+	  				<c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose>
 	                <o:block label="#{lbl}">
 	                	<p class="content_font_normal">
 	                    	<div style="margin:10px"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>

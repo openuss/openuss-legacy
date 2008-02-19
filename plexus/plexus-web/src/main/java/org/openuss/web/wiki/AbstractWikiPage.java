@@ -25,9 +25,6 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE_VERSION + "}")
 	protected WikiSiteContentInfo siteVersionInfo;
 	
-	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE+ "}")
-	protected WikiSiteInfo siteInfo;
-	
 	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
 
 	protected String siteName;
@@ -52,12 +49,12 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		if (this.siteInfo.getName() != null && 
-				!Constants.WIKI_STARTSITE_NAME.equals(this.siteInfo.getName())) {
+		if (this.siteVersionInfo.getName() != null && 
+				!Constants.WIKI_STARTSITE_NAME.equals(this.siteVersionInfo.getName())) {
 			crumb = new BreadCrumb();
 			crumb.setLink("");
-			crumb.setName(readablePageName(this.siteInfo.getName()));
-			crumb.setHint(this.siteInfo.getName());
+			crumb.setName(readablePageName(this.siteVersionInfo.getName()));
+			crumb.setHint(this.siteVersionInfo.getName());
 			breadcrumbs.addCrumb(crumb);
 		}
 	}
@@ -74,13 +71,6 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	}
 	public void setSiteVersionInfo(WikiSiteContentInfo siteVersionInfo) {
 		this.siteVersionInfo = siteVersionInfo;
-	}
-	
-	public WikiSiteInfo getSiteInfo() {
-		return siteInfo;
-	}
-	public void setSiteInfo(WikiSiteInfo siteInfo) {
-		this.siteInfo = siteInfo;
 	}
 	
 	public WikiOverviewDataProvider getData() {

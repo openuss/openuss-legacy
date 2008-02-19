@@ -22,20 +22,14 @@ public class WikiMainPage extends AbstractWikiPage{
 		if (this.siteName != null) {
 			pageName = this.siteName;
 		} 
-		this.siteInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
+		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 		
-		if (this.siteInfo != null) {
-			if (this.siteVersionId != null) {
-				this.siteVersionInfo = this.wikiService.getWikiSiteContent(this.siteVersionId);
-			} else {
-				this.siteVersionInfo = this.wikiService.getNewestWikiSiteContent(this.siteInfo.getId());
-			}
-		} else {
-			this.siteVersionInfo = null;
+		System.out.println(">>>>>>>>>> " + siteVersionInfo + " : " + (siteVersionInfo!=null?siteVersionInfo.getText():"NULL"));
+		
+		if (this.siteVersionInfo == null) {
 			setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
 		}
 		
-		setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 	}
 	

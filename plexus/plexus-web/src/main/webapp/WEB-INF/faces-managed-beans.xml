@@ -254,13 +254,8 @@
     
     <!--  Wiki -->   
     <managed-bean>
-        <managed-bean-name>wiki_current_site</managed-bean-name>
-        <managed-bean-class>org.openuss.wiki.WikiSiteInfo</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
         <managed-bean-name>wiki_current_site_version</managed-bean-name>
-        <managed-bean-class>org.openuss.wiki.WikiSiteVersionInfo</managed-bean-class>
+        <managed-bean-class>org.openuss.wiki.WikiSiteContentInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
