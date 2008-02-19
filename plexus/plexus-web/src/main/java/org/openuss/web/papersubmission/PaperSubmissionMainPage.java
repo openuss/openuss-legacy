@@ -113,7 +113,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 		// TODO implement save/update
 		if (examInfo.getId() == null) {
 
-			examInfo.setCourseId(courseInfo.getId());
+			examInfo.setDomainId(courseInfo.getId());
 			paperSubmissionService.createExam(examInfo);
 
 			addMessage(i18n("papersubmission_message_add_paper_succeed"));
@@ -206,7 +206,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
 						.findCourseTypesByInstitute(instituteInfo.getId()));*/
 				List<ExamInfo> exams = new ArrayList<ExamInfo>();
-				exams = paperSubmissionService.findExamsByCourse(courseInfo.getId());
+				exams = paperSubmissionService.findExamsByDomainId(courseInfo.getId());
 				
 				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
 				

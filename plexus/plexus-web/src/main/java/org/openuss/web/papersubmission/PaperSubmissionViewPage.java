@@ -71,10 +71,10 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
-		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndCourseMember(examInfo.getId(), memberInfo.getId());
+		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), memberInfo.getId());
 		if(paperInfos.isEmpty()){
 			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setCourseMemberId(memberInfo.getId());
+			paperSubmissionInfo.setUserId(memberInfo.getId());
 			//paperSubmissionInfo.setDeliverDate(System.currentTimeMillis());
 			paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
@@ -83,7 +83,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
 			paperSubmissionInfo.setId(paperInfos.get(paperInfos.size()-1).getId());
 			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setCourseMemberId(memberInfo.getId());
+			paperSubmissionInfo.setUserId(memberInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
 		

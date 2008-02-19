@@ -120,7 +120,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		logger.debug("Starting method saveWorkspace()");
 		if (workspaceInfo.getId() == null) {
 
-			workspaceInfo.setCourseId(courseInfo.getId());
+			workspaceInfo.setDomainId(courseInfo.getId());
 			workspaceService.createWorkspace(workspaceInfo);
 
 			addMessage(i18n("collaboration_message_add_workspace_succeed"));
@@ -253,8 +253,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
-						.findWorkspacesByCourseAndCourseMember(courseInfo.getId(), 
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), 
 								memberInfo.getId()));
 				
 				sort(workspaces);
@@ -274,7 +273,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
-						.findWorkspacesByCourse(courseInfo.getId()));
+						.findWorkspacesByDomain(courseInfo.getId()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
