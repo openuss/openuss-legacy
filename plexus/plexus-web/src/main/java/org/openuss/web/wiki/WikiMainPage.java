@@ -16,21 +16,20 @@ public class WikiMainPage extends AbstractWikiPage{
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-		super.prerender();
-		
 		String pageName = Constants.WIKI_STARTSITE_NAME;
 		if (this.siteName != null) {
 			pageName = this.siteName;
 		} 
 		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 		
-		System.out.println(">>>>>>>>>> " + siteVersionInfo + " : " + (siteVersionInfo!=null?siteVersionInfo.getText():"NULL"));
-		
 		if (this.siteVersionInfo == null) {
 			setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
 		}
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+
+		// prerender at the end because of breadcrumbs!
+		super.prerender();
 	}
 	
 	public String overview() {

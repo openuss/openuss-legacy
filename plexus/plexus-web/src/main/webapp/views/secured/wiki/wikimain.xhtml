@@ -34,7 +34,7 @@
             	<c:if test="${empty wiki_current_site_version.text}">
 	  				<o:block label="#{msg.wiki_create_site_header}" styleClass="form_box">
 	  					<p class="content_font_normal">
-	  						<h:outputFormat value="#{msg.wiki_edit_create_msg}">
+	  						<h:outputFormat value="#{msg.wiki_edit_create_msg}" styleClass="content_font_normal">
 								<f:param value="#{wiki_new_site_name}" />
 							</h:outputFormat>
 						</p>
@@ -52,10 +52,9 @@
 	  			</c:if>
 	  			<c:if test="${not empty wiki_current_site_version.text}">
 	  				<c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose>
+	                <!-- ${lbl} -->
 	                <o:block label="#{lbl}">
-	                	<p class="content_font_normal">
-	                    	<div style="margin:10px"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>
-	                    </p>
+	                    <div class="wiki_content"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>
 	                </o:block>                  
 	                <o:block>
 	                    <h:commandButton 

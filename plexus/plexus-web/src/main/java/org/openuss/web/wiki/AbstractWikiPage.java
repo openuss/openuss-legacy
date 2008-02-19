@@ -49,12 +49,11 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		if (this.siteVersionInfo.getName() != null && 
-				!Constants.WIKI_STARTSITE_NAME.equals(this.siteVersionInfo.getName())) {
+		if (this.siteVersionInfo.getName() != null) {
 			crumb = new BreadCrumb();
 			crumb.setLink("");
 			crumb.setName(readablePageName(this.siteVersionInfo.getName()));
-			crumb.setHint(this.siteVersionInfo.getName());
+			crumb.setHint(readablePageName(this.siteVersionInfo.getName()));
 			breadcrumbs.addCrumb(crumb);
 		}
 	}

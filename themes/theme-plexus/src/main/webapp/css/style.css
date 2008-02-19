@@ -2132,3 +2132,17 @@ table.jscalendar-DB-dropdown-style {
 #extended_search_link_padding {
 	padding: 5px;
 }
+
+/* WIKI STYLES */
+
+.wiki_content {
+	margin: 10px;
+}
+
+.wiki_content a {
+	text-decoration: underline !important;
+}
+
+.wiki_content ul {
+  list-style-type: disc !important;
+}

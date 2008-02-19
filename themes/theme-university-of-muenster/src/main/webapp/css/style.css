@@ -1891,3 +1891,11 @@ table.jscalendar-DB-dropdown-style{
 #extended_search_link_padding {
 	padding: 5px;
 }
+
+/* WIKI STYLES */
+
+.wiki_content ul {
+  list-style-type: disc;
+  margin: 0; 
+  padding: 0;
+}

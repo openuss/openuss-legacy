@@ -78,7 +78,7 @@ public class WikiServiceImpl
     		return null;
     	} else {
     		WikiSiteInfo wikiSite = list.get(0);
-    		return (WikiSiteContentInfo) getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSite.getWikiSiteId());
+    		return (WikiSiteContentInfo) getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSite.getId());
     	}
 	}
 
@@ -136,6 +136,8 @@ public class WikiServiceImpl
 			getWikiSiteVersionDao().create(wikiSiteVersion);
 			
 			wikiSite.getWikiPageVersions().add(wikiSiteVersion);
+			wikiSiteVersion.setWikiSite(wikiSite);
+			
 			getWikiSiteDao().update(wikiSite);
 			getWikiSiteVersionDao().update(wikiSiteVersion);
 			

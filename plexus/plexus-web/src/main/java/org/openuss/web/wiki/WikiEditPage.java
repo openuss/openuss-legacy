@@ -17,45 +17,6 @@ import org.openuss.wiki.WikiSiteContentInfo;
 public class WikiEditPage extends AbstractWikiPage{
 	private static final Logger logger = Logger.getLogger(WikiEditPage.class);
 	
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-		
-		/*String pageName = (String)getSessionBean(Constants.WIKI_NEW_SITE_NAME);
-		if (pageName != null) {
-			this.siteInfo.setId(null);
-			this.siteInfo.setName(pageName);
-			this.siteInfo.setCourseId(courseInfo.getId());
-			
-			this.siteVersionInfo.setId(null);
-			this.siteVersionInfo.setWikiSiteId(null);
-			this.siteVersionInfo.setText("");
-			this.siteVersionInfo.setCreationDate(new Date());
-			this.siteVersionInfo.setUserId(user.getId());
-			
-			setSessionBean(Constants.WIKI_NEW_SITE_NAME, null);
-		} else {
-			this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
-			
-			if (this.siteInfo != null) {
-				if (this.siteVersionId != null) {
-					this.siteVersionInfo = this.wikiService.getWikiSiteVersion(this.siteVersionId);
-					addMessage(i18n("wiki_editing_old_version"));
-				} else {
-					this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
-				}
-				
-				if (this.siteVersionInfo != null) {
-					this.siteVersionInfo.setNote("");
-				}
-			} 
-		}
-		
-		setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);*/
-	}
-	
 	public String save() {
 		this.siteVersionInfo.setId(null);
 		if (this.siteVersionInfo.getName() == null) {
