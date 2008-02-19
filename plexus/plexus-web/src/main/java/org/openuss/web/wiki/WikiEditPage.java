@@ -22,7 +22,7 @@ public class WikiEditPage extends AbstractWikiPage{
 	public void prerender() throws Exception {
 		super.prerender();
 		
-		String pageName = (String)getSessionBean(Constants.WIKI_NEW_SITE_NAME);
+		/*String pageName = (String)getSessionBean(Constants.WIKI_NEW_SITE_NAME);
 		if (pageName != null) {
 			this.siteInfo.setId(null);
 			this.siteInfo.setName(pageName);
@@ -53,14 +53,14 @@ public class WikiEditPage extends AbstractWikiPage{
 		}
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);*/
 	}
 	
 	public String save() {
 		this.siteVersionInfo.setId(null);
 		this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
 		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setUserId(user.getId());
+		this.siteVersionInfo.setAuthorId(user.getId());
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		
 		return Constants.WIKI_MAIN_PAGE;

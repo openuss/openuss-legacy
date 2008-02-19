@@ -1,15 +1,11 @@
 package org.openuss.web.wiki;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
-import org.openuss.wiki.WikiSiteInfo;
-import org.openuss.wiki.WikiSiteVersionInfo;
 
 
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
@@ -26,13 +22,13 @@ public class WikiMainPage extends AbstractWikiPage{
 		if (this.siteName != null) {
 			pageName = this.siteName;
 		} 
-		this.siteInfo = this.wikiService.findWikiSiteByCourseAndName(this.courseInfo.getId(), pageName);
+		this.siteInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 		
 		if (this.siteInfo != null) {
 			if (this.siteVersionId != null) {
-				this.siteVersionInfo = this.wikiService.getWikiSiteVersion(this.siteVersionId);
+				this.siteVersionInfo = this.wikiService.getWikiSiteContent(this.siteVersionId);
 			} else {
-				this.siteVersionInfo = this.wikiService.getNewestWikiSiteVersion(this.siteInfo.getId());
+				this.siteVersionInfo = this.wikiService.getNewestWikiSiteContent(this.siteInfo.getId());
 			}
 		} else {
 			this.siteVersionInfo = null;

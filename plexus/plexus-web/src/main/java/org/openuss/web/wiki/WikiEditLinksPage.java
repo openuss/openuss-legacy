@@ -27,7 +27,7 @@ public class WikiEditLinksPage extends AbstractWikiPage{
 	public void prerender() throws Exception {
 		super.prerender();
 		
-		List<WikiSiteInfo> sites = wikiService.findWikiSitesByCourse(this.courseInfo.getId());
+		List<WikiSiteInfo> sites = wikiService.findWikiSitesByDomainObject(this.courseInfo.getId());
 		this.wikiSites = new ArrayList<SelectItem>(sites.size());
 		for (WikiSiteInfo site : sites) {
 			this.wikiSites.add(new SelectItem(site.getName(), readablePageName(site.getName())));
