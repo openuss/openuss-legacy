@@ -12,8 +12,8 @@ import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.wiki.WikiService;
+import org.openuss.wiki.WikiSiteContentInfo;
 import org.openuss.wiki.WikiSiteInfo;
-import org.openuss.wiki.WikiSiteVersionInfo;
 
 public class AbstractWikiPage extends AbstractCoursePage {
 	
@@ -23,7 +23,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	protected WikiService wikiService;
 	
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE_VERSION + "}")
-	protected WikiSiteVersionInfo siteVersionInfo;
+	protected WikiSiteContentInfo siteVersionInfo;
 	
 	@Property(value = "#{" + Constants.WIKI_CURRENT_SITE+ "}")
 	protected WikiSiteInfo siteInfo;
@@ -69,10 +69,10 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		this.wikiService = wikiService;
 	}
 	
-	public WikiSiteVersionInfo getSiteVersionInfo() {
+	public WikiSiteContentInfo getSiteVersionInfo() {
 		return siteVersionInfo;
 	}
-	public void setSiteVersionInfo(WikiSiteVersionInfo siteVersionInfo) {
+	public void setSiteVersionInfo(WikiSiteContentInfo siteVersionInfo) {
 		this.siteVersionInfo = siteVersionInfo;
 	}
 	
@@ -117,7 +117,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<WikiSiteInfo> getDataPage(int startRow, int pageSize) {		
-			List<WikiSiteInfo> wikiSiteInfoList = wikiService.findWikiSitesByCourse(courseInfo.getId());		
+			List<WikiSiteInfo> wikiSiteInfoList = wikiService.findWikiSitesByDomainObject(courseInfo.getId());		
 			page = new DataPage<WikiSiteInfo>(wikiSiteInfoList.size(), 0, wikiSiteInfoList);
 			sort(wikiSiteInfoList);
 			return page;
