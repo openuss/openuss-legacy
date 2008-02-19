@@ -69,7 +69,10 @@ public class GroupsMainPage extends BasePage {
 	// Navigation outcomes
 	// TODO Thomas: Implement Security - Max Groups allowed ?
 	public String createGroup() {
-		groupInfo = new UserGroupInfo();
+		setSessionAttribute(Constants.GROUP_INFO, null);
+		setSessionBean(Constants.GROUP_INFO, null);
+		groupInfo = null;
+		setSessionAttribute(Constants.GROUP_INFO, groupInfo);
 		setSessionBean(Constants.GROUP_INFO, groupInfo);
 		return Constants.OPENUSS4US_GROUPS_CREATE;
 	}

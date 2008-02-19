@@ -34,54 +34,38 @@
 			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
   		</ui:define>
-  		<ui:define name="content">
-			<h:form id="openuss4us_groups_create_group" enctype="multipart/form-data">
+  		<ui:define name="content" enctype="multipart/form-data">
+			<h:form id="openuss4us_groups_create_group">
 				<o:block label="#{msg['openuss4us_groups_registration_headline']}" styleClass="form_box">
-				
-					<t:htmlTag value="br" />
+					
 					<h:outputText value="#{msg.openuss4us_groups_options_header}" styleClass="header_font_normal"/>
-					<o:input entity="groupInfo" property="name" maxlength="100" required="true"/>
-					<o:input entity="groupInfo" property="shortcut" maxlength="30" required="true" />
+					<o:input entity="groupRegistration" property="name" maxlength="100" required="true"/>
+					<o:input entity="groupRegistration" property="shortcut" maxlength="30" required="true" />
 					
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
-					<h:inputTextarea styleClass="pulldown" value="#{groupInfo.description}" id="descriptionTextField" />
+					<h:inputTextarea styleClass="pulldown" value="#{groupRegistration.description}" id="descriptionTextField" />
 					
-					<h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="field_label" />
-					
-					<!-- FIXME 
-					<h:selectOneMenu id="groupAccessTypeSelect" 
+					<h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="fiel_label" />
+					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
-						value="#{groupRegistration.accessTypes}" 
-
+						value="#{groupRegistration.accessType}" 
+						valueChangeListener="#{groupRegistration.processAccessTypeChanged}"
 						onchange="this.form.submit();"
-						immediate="true" 
+						immediate="true"
 						styleClass="pulldown">
-						<f:converter converterId="accessTypeConverter" />
-						<f:selectItems value="#{groupRegistration.accessTypes}" />
-					</h:selectOneMenu>
+						<f:selectItems value="#{groupRegistration.accessTypes}"/>
+					</h:selectOneMenu>			
+					<h:message for="accessType" styleClass="field_error"/>
+					<c:if test="#{sessionScope.groupRegistration.accessType == 2}">
+		 				<o:input entity="groupRegistration" property="password" required="true"/>
+	 				</c:if> 
 
-					<h:selectOneListbox id="accessTypeSelect" size="1" styleClass="pulldown" value="#{groupInfo.accessType}">
-					    <f:selectItems value="#{groupRegistration.accessTypes}"/>
-					    <f:converter converterId="accessTypeConverter" />
-					</h:selectOneListbox>
-					-->
-					
-
-					<t:htmlTag value="br" />
 					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
-					<o:input entity="groupInfo" property="documents"/>
-					<o:input entity="groupInfo" property="forum"/>
-					<o:input entity="groupInfo" property="newsletter"/>
-					<o:input entity="groupInfo" property="chat"/>
-					<o:input entity="groupInfo" property="calendar"/>
-					
-					<o:input entity="groupRegistration" property="groupInfo"/>
-					
-					<h:outputText value="#{groupInfo.description}" />
-
-
-				
-				<!-- CONTENT HIER REIN -->
+					<o:input entity="groupRegistration" property="documents"/>
+					<o:input entity="groupRegistration" property="forum"/>
+					<o:input entity="groupRegistration" property="newsletter"/>
+					<o:input entity="groupRegistration" property="chat"/>
+					<o:input entity="groupRegistration" property="calendar"/>
    			 	</o:block>
    			 	
    			 	<o:block>
