@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.sql.Update;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.User;
@@ -66,9 +67,10 @@ public class CalendarServiceImpl extends
 
 		Calendar calendar = getCalendarDao().load(calendarInfo.getId());
 
-		Appointment app = getAppointmentDao().create(
-				getAppointmentTypeDao().load(
-						appointmentInfo.getAppointmentType().getId()),
+		AppointmentType appType = getAppointmentTypeDao().load(
+				appointmentInfo.getAppointmentType().getId());
+
+		Appointment app = getAppointmentDao().create(appType,
 				appointmentInfo.getDescription(), appointmentInfo.getEndtime(),
 				appointmentInfo.getLocation(), false, calendar,
 				appointmentInfo.getStarttime(), appointmentInfo.getSubject());
@@ -138,10 +140,10 @@ public class CalendarServiceImpl extends
 		// appointment
 		if (app.isSerial())
 			throw new Exception(
-					"Cannot delete appointment, is part of a serial appointment");
+					"Cannot delete appointment, it is part of a serial appointment");
 		if (app instanceof SerialAppointment)
 			throw new Exception(
-					"Cannot delete appointment, is part of a serial appointment");
+					"Cannot delete appointment, it is part of a serial appointment");
 
 		// remove associations to all assigned calendars of this appointment
 		// (including source calendar)
@@ -169,9 +171,9 @@ public class CalendarServiceImpl extends
 			throw new Exception("Recurrence endtime before first occurence");
 		Calendar cal = getCalendarDao().load(calendar.getId());
 
-		
 		SerialAppointment serialAppointment = getSerialAppointmentDao().create(
-				getAppointmentTypeDao().load(serialAppointmentInfo.getAppointmentType().getId()),
+				getAppointmentTypeDao().load(
+						serialAppointmentInfo.getAppointmentType().getId()),
 				serialAppointmentInfo.getDescription(),
 				serialAppointmentInfo.getEndtime(),
 				serialAppointmentInfo.getLocation(),
@@ -182,6 +184,18 @@ public class CalendarServiceImpl extends
 				serialAppointmentInfo.getSubject());
 
 		cal.addSerialAppointment(serialAppointment);
+
+		// make changes persistent for the source calendar
+		getCalendarDao().update(cal);
+
+		// make changes persistent for the subscribed calendars
+		ArrayList<Calendar> subscribedCals = new ArrayList<Calendar>();
+		if (!subscribedCals.isEmpty()) {
+			for (Calendar subscribedCal : subscribedCals) {
+				getCalendarDao().update(subscribedCal);
+			}
+		}
+
 	}
 
 	/**
@@ -189,14 +203,34 @@ public class CalendarServiceImpl extends
 	 *      org.openuss.calendar.CalendarInfo)
 	 */
 	protected void handleUpdateSerialAppointment(
-			org.openuss.calendar.SerialAppointmentInfo serialAppointment,
-			org.openuss.calendar.CalendarInfo calendar)
+			org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo,
+			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleUpdateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo
-		// serialAppointment, org.openuss.calendar.CalendarInfo calendar)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.CalendarService.handleUpdateSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
+
+		Calendar cal = getCalendarDao().load(calendarInfo.getId());
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());
+
+		// delete old serial appointment completely
+		cal.deleteSerialAppointment(serialApp);
+
+		// set new data
+
+		AppointmentType appType = getAppointmentTypeDao().load(
+				serialAppointmentInfo.getAppointmentType().getId());
+
+		SerialAppointment newSerialApp = getSerialAppointmentDao().create(
+				appType, serialAppointmentInfo.getDescription(),
+				serialAppointmentInfo.getEndtime(),
+				serialAppointmentInfo.getLocation(),
+				serialAppointmentInfo.getRecurrenceEndtime(),
+				serialAppointmentInfo.getRecurrencePeriod(),
+				serialAppointmentInfo.getRecurrenceType(), true, cal,
+				serialAppointmentInfo.getStarttime(),
+				serialAppointmentInfo.getSubject());
+
+		// add the serial appointment again with updated data
+		cal.addSerialAppointment(newSerialApp);
 	}
 
 	/**
@@ -204,14 +238,36 @@ public class CalendarServiceImpl extends
 	 *      org.openuss.calendar.CalendarInfo)
 	 */
 	protected void handleDeleteSerialAppointment(
-			org.openuss.calendar.SerialAppointmentInfo serialAppointment,
-			org.openuss.calendar.CalendarInfo calendar)
+			org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo,
+			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleDeleteSerialAppointment(org.openuss.calendar.SerialAppointmentInfo
-		// serialAppointment, org.openuss.calendar.CalendarInfo calendar)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.CalendarService.handleDeleteSerialAppointment(org.openuss.calendar.SerialAppointmentInfo serialAppointment, org.openuss.calendar.CalendarInfo calendar) Not implemented!");
+
+		// create entities from info objects
+
+		Calendar cal = getCalendarDao().load(calendarInfo.getId());
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());
+
+		// remove (association) serial appointment and its created single
+		// appointments from all calendars
+		cal.deleteSerialAppointment(serialApp);
+
+		getCalendarDao().update(cal);
+
+		// update subscribed calendars
+		Set<Calendar> subscribedCals = cal.getSubscribedCalendars();
+		if (!subscribedCals.isEmpty()) {
+			for (Calendar subscribedCal : subscribedCals)
+				getCalendarDao().update(subscribedCal);
+
+		}
+
+		// remove associated appointments from the persistent store
+		for (Appointment app : serialApp.getAppointments())
+			getAppointmentDao().remove(app);
+
+		// finally remove the serial appointment from the persistent store
+		getSerialAppointmentDao().remove(serialApp);
 	}
 
 	/**
@@ -304,8 +360,14 @@ public class CalendarServiceImpl extends
 	protected List handleGetSingleAppointments(CalendarInfo calendarInfo)
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-		List apps = cal.getSingleAppointments();
+		List<Appointment> apps = cal.getSingleAppointments();
+		
 		getAppointmentDao().toAppointmentInfoCollection(apps);
+
 		return apps;
+
 	}
+
+	/************** TEMP ************ */
+
 }

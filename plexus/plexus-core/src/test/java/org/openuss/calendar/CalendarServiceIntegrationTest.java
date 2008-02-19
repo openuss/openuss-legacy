@@ -7,6 +7,7 @@ package org.openuss.calendar;
  */
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -45,7 +46,7 @@ public class CalendarServiceIntegrationTest extends
 	public CourseDao courseDao;
 
 	public PeriodDao periodDao;
-	
+
 	public AppointmentDao appointmentDao;
 
 	public AppointmentTypeDao appointmentTypeDao;
@@ -107,7 +108,7 @@ public class CalendarServiceIntegrationTest extends
 	}
 
 	public void testCalendarAdministrationSingle() {
-		
+
 		// create user
 		User user = userDao.create("user", "pwd", "e@ma.il", true, false,
 				false, false, new Date());
@@ -118,7 +119,6 @@ public class CalendarServiceIntegrationTest extends
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()
 				.create("standard");
 
-		
 		try {
 
 			// create calendar for user
@@ -131,7 +131,8 @@ public class CalendarServiceIntegrationTest extends
 			// create an single appointment for the user calendar
 			AppointmentInfo singleAppointmentInfo = getTestAppointmentInfo(
 					standardAppointmentType, user);
-			calendarService.createAppointment(singleAppointmentInfo, userCalInfo);
+			calendarService.createAppointment(singleAppointmentInfo,
+					userCalInfo);
 
 			// get natural single appointments from calendar
 			List<AppointmentInfo> naturalSingleAppInfos = calendarService
@@ -141,6 +142,14 @@ public class CalendarServiceIntegrationTest extends
 
 			// get (all) single appointments (including generated appointments
 			// from a serial appointment
+			
+			/***************** TEMP ***********************/
+			
+			List<Appointment> app = calendarService.getSingleAppointments(userCalInfo);
+			System.out.println("Test: " + app.get(0).getAppointmentType().getId());
+			
+			
+			/******************* ENDE **********************/
 
 			List<AppointmentInfo> singleAppInfos = calendarService
 					.getSingleAppointments(userCalInfo);
@@ -151,21 +160,26 @@ public class CalendarServiceIntegrationTest extends
 			assertEquals("Description", naturalAppInfo.getDescription());
 
 			// test update appointment
-			
+
 			// test getCalendar
-			AppointmentInfo newAppointmentInfo = calendarService.getAppointment(singleAppInfo.getId());
+			AppointmentInfo newAppointmentInfo = calendarService
+					.getAppointment(singleAppInfo.getId());
 			
 			newAppointmentInfo.setDescription("new Description");
 			calendarService.updateAppointment(newAppointmentInfo, userCalInfo);
-			List<AppointmentInfo> updatedAppInfos = calendarService.getSingleAppointments(userCalInfo);
+			List<AppointmentInfo> updatedAppInfos = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertNotNull(updatedAppInfos);
-			assertEquals(updatedAppInfos.get(0).getId(), singleAppInfos.get(0).getId());
-			assertEquals("new Description", updatedAppInfos.get(0).getDescription());
-			
-			//test delete appointment
-			
+			assertEquals(updatedAppInfos.get(0).getId(), singleAppInfos.get(0)
+					.getId());
+			assertEquals("new Description", updatedAppInfos.get(0)
+					.getDescription());
+
+			// test delete appointment
+
 			calendarService.deleteAppointment(newAppointmentInfo, userCalInfo);
-			List<AppointmentInfo> appointmentInfos = calendarService.getSingleAppointments(userCalInfo);
+			List<AppointmentInfo> appointmentInfos = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertEquals(0, appointmentInfos.size());
 		} catch (CalendarApplicationException e) {
 			fail();
@@ -181,55 +195,93 @@ public class CalendarServiceIntegrationTest extends
 		 * deleteSerialAppointment 12 - getSerialAppointments /
 		 * getAllUserAppointments -> null
 		 */
-		
+
 		// generate Appointment Type
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()
 				.create("standard");
 		AppointmentTypeInfo appointmentTypeInfo = getAppointmentTypeDao()
 				.toAppointmentTypeInfo(standardAppointmentType);
-		
+
 		// create user
 		User user = userDao.create("user", "pwd", "e@ma.il", true, false,
 				false, false, new Date());
 		UserInfo userInfo = (UserInfo) userDao.load(userDao.TRANSFORM_USERINFO,
 				user.getId());
-		
-		// test create calendar
+
 		try {
 			calendarService.createCalendar(userInfo);
-			CalendarInfo userCalendarInfo = calendarService.getCalendar(userInfo);
+			CalendarInfo userCalendarInfo = calendarService
+					.getCalendar(userInfo);
 
-			// test create serial appointment
-			
+			/* test create serial appointment */
+
 			SerialAppointmentInfo serialAppointmentInfo = new SerialAppointmentInfo();
 			serialAppointmentInfo.setSubject("subject");
 			serialAppointmentInfo.setDescription("description");
-			
+
 			GregorianCalendar gregCal = new GregorianCalendar();
 			gregCal.set(2008, 03, 01, 17, 00);
-			
+
 			serialAppointmentInfo.setStarttime(new Timestamp(gregCal.getTime()
 					.getTime()));
 			gregCal.add(GregorianCalendar.HOUR, 1);
-			serialAppointmentInfo.setEndtime(new Timestamp(gregCal.getTime().getTime()));
+			serialAppointmentInfo.setEndtime(new Timestamp(gregCal.getTime()
+					.getTime()));
 			serialAppointmentInfo.setLocation("location");
 			gregCal.add(GregorianCalendar.WEEK_OF_YEAR, 5);
-			serialAppointmentInfo.setRecurrenceEndtime(new Timestamp(gregCal.getTime().getTime()));
+			serialAppointmentInfo.setRecurrenceEndtime(new Timestamp(gregCal
+					.getTime().getTime()));
 			serialAppointmentInfo.setRecurrencePeriod(1);
 			serialAppointmentInfo.setRecurrenceType(RecurrenceType.weekly);
 			serialAppointmentInfo.setAppointmentType(appointmentTypeInfo);
 			serialAppointmentInfo.setSerial(true);
-			
-			
-			calendarService.createSerialAppointment(serialAppointmentInfo, userCalendarInfo);
-			
-//			List serialAppointments = calendarService.getNaturalSerialAppointments(userCalendarInfo);
-//			assertNotNull(serialAppointments);
-//			assertEquals(1, serialAppointments.size());
-			// List singleAppointments =
-			// calendarService.getAllUserAppointments(userInfo);
-			// assertEquals(6, singleAppointments.size());
 
+			calendarService.createSerialAppointment(serialAppointmentInfo,
+					userCalendarInfo);
+
+			// test if the serial appointment is added (not the generated
+			// single appointments)
+
+			List<SerialAppointmentInfo> serialAppointments = calendarService
+					.getNaturalSerialAppointments(userCalendarInfo);
+			assertNotNull(serialAppointments);
+			assertEquals(1, serialAppointments.size());
+
+			// test if the single appointments are created from the serial
+			// appointment
+
+			List singleAppointments = calendarService
+					.getSingleAppointments(userCalendarInfo);
+			assertNotNull(singleAppointments);
+			assertEquals(6, singleAppointments.size());
+
+			SerialAppointmentInfo serialAppInfo = serialAppointments.get(0);
+			assertNotNull(serialAppInfo.getId());
+			
+
+			/* test update serial appointment */
+
+			serialAppointmentInfo.setDescription("new description");
+			calendarService.updateSerialAppointment(serialAppInfo, userCalendarInfo);
+			
+			SerialAppointmentInfo saAfterUpdate = calendarService.getSerialAppointment(serialAppInfo.getId());
+			
+			assertEquals("new description", saAfterUpdate.getDescription());
+			
+			/* test delete serial appointment */
+
+			calendarService.deleteSerialAppointment(serialAppInfo,
+					userCalendarInfo);
+			
+			// test if natural serial appointments exist
+			List<SerialAppointmentInfo> serialAppInfos = calendarService
+					.getNaturalSerialAppointments(userCalendarInfo);
+			assertEquals(0, serialAppInfos.size());
+
+			// test if single appointments exist
+			List singleAppInfos = calendarService.getSingleAppointments(userCalendarInfo);
+			assertEquals(0, singleAppInfos.size());
+			
 		} catch (CalendarApplicationException e) {
 			e.printStackTrace();
 			fail();

@@ -19,7 +19,6 @@ public class AppointmentDaoImpl
     {
         // @todo verify behavior of toAppointmentInfo
         super.toAppointmentInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.creator (can't convert sourceEntity.getCreator():org.openuss.security.User to org.openuss.security.UserInfo
         // WARNING! No conversion for targetVO.appointmentType (can't convert sourceEntity.getAppointmentType():org.openuss.calendar.AppointmentType to org.openuss.calendar.AppointmentTypeInfo
     }
 
