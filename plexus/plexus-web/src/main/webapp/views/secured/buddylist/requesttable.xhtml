@@ -9,12 +9,12 @@
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core">
 
-	<plexus:dataTable id="buddyTable"
-		value="views$secured$buddylist$buddylist.data" var="currentbuddy"
+	<plexus:dataTable id="requestTable"
+		value="views$secured$buddylist$buddyrequest.data" var="currentbuddy"
 		rows="20" label="#{msg['openuss4us_command_buddylist']}">
 		<t:column styleClass="userphoto">
 			<div class="userimage"><h:commandLink value="" 
-				action="#{views$secured$buddylist$buddylist.linkProfile}">
+				action="#{views$secured$buddylist$buddyrequest.linkProfile}">
 				<h:graphicImage styleClass="userphoto"
 					value="/files?fileid=#{currentbuddy.userPicture}"
 					title="#{currentbuddy.name}"
@@ -35,11 +35,11 @@
 			</t:dataList>
 		</t:column>
 		<t:column styleClass="col_commands">
-			<h:commandButton id="removeBuddy" action="#{views$secured$buddylist$buddylist.linkDeleteBuddy}"
-				value="#{msg.openuss4us_buddylist_button_delete_buddy}" title="#{msg.openuss4us_buddylist_button_delete_buddy}"
+			<h:commandButton id="removeBuddy" action="#{views$secured$buddylist$buddyrequest.authorizeBuddy}"
+				value="#{msg.openuss4us_buddylist_button_authorize}" title="#{msg.openuss4us_buddylist_button_authorize}"
 				styleClass="button_remove" /><br />
-			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddylist.linkEditTags}"
-				value="#{msg.openuss4us_buddylist_button_edit_tags}" title="#{msg.openuss4us_buddylist_button_edit_tags}"
+			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddyrequest.declineBuddy}"
+				value="#{msg.openuss4us_buddylist_button_decline}" title="#{msg.openuss4us_buddylist_button_decline}"
 				styleClass="button_remove" />
 		</t:column>
 	</plexus:dataTable>
