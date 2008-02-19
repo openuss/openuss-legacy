@@ -266,6 +266,7 @@ public class Constants {
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
+	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
 	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";

@@ -93,6 +93,14 @@ public class BuddylistMainPage extends BasePage {
 		setSessionBean(Constants.OPENUSS4US_CHOSEN_BUDDYINFO, buddyInfo);
 		return Constants.OPENUSS4US_EDITTAGS;
 	}
+	
+	public String linkDeleteBuddy(){
+		profile.setId(this.data.getRowData().getUserId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		setBuddyInfo(this.data.getRowData());
+		setSessionBean(Constants.OPENUSS4US_CHOSEN_BUDDYINFO, buddyInfo);
+		return Constants.OPENUSS4US_DELETEBUDDY;
+	}
 
 	public void setBuddyService(BuddyService buddyService) {
 		this.buddyService = buddyService;

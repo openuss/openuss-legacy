@@ -35,8 +35,8 @@
 			</t:dataList>
 		</t:column>
 		<t:column styleClass="col_commands">
-			<h:commandButton id="removeBuddy" action="history:back"
-				onclick="history:back" value="remove buddy" title="remove buddy"
+			<h:commandButton id="removeBuddy" action="#{views$secured$buddylist$buddylist.linkDeleteBuddy}"
+				value="#{msg.openuss4us_command_deletebuddy}" title="#{msg.openuss4us_command_deletebuddy}"
 				styleClass="button_remove" /><br />
 			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddylist.linkEditTags}"
 				value="#{msg.openuss4us_buddylist_edit_tags}" title="#{msg.openuss4us_buddylist_edit_tags}"

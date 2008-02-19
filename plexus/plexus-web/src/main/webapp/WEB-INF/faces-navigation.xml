@@ -215,7 +215,7 @@
 		</navigation-case>	
 
 		<navigation-case>
-			<from-outcome>openuss4us_deletebuddy</from-outcome>
+			<from-outcome>openuss4us_delete_buddy</from-outcome>
 			<to-view-id>/views/secured/buddylist/deletebuddy.xhtml</to-view-id>
 		</navigation-case>
 
