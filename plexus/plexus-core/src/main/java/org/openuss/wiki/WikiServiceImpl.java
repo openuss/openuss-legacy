@@ -54,8 +54,10 @@ public class WikiServiceImpl
 	@Override
 	protected List handleFindWikiSiteVersionsByWikiSite(Long wikiSiteId)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+		
+		WikiSite wikiSite = getWikiSiteDao().load(wikiSiteId);
+		return getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, wikiSite);
 	}
 
 	@SuppressWarnings("unchecked")
