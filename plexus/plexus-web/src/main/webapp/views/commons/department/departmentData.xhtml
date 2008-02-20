@@ -43,11 +43,11 @@
 	<o:input entity="departmentInfo" property="website" maxlength="100"/>
 	<o:input entity="departmentInfo" property="telephone" maxlength="100"/>
 	<o:input entity="departmentInfo" property="telefax" maxlength="100"/>
-	<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
+	<h:outputLabel value="#{msg.user_locale}" for="languageSelect" styleClass="field_label"/>
 	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{departmentInfo.locale}">
 	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 	</h:selectOneListbox>
-	<h:outputLabel value="#{msg.user_preferences_theme}" for="themeSelect" styleClass="field_label"/>
+	<h:outputLabel value="#{msg.user_theme}" for="themeSelect" styleClass="field_label"/>
 	<h:selectOneListbox id="themeSelect" size="1" value="#{departmentInfo.theme}" styleClass="pulldown" >
 	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
 	</h:selectOneListbox>
