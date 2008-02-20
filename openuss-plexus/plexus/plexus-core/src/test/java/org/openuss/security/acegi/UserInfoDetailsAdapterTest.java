@@ -36,13 +36,17 @@ public class UserInfoDetailsAdapterTest extends TestCase {
 		return details;
 	}
 	
+	/**
+	 * 
+	 */
 	public void testEquals() {
 		UserDetails details = createUserDetailsObject();
 		
 		User user = User.Factory.newInstance();
 		user.setId(120L);
 		
-		assertTrue(details.equals(user));		
+		assertEquals(user, details);
+		assertEquals(details, user);
 	}
 
 }

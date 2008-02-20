@@ -8,6 +8,9 @@ package org.openuss.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.openuss.foundation.DomainObject;
+
 /**
  * @see org.openuss.security.Authority
  * @author Ingo Dueppe
@@ -64,5 +67,15 @@ public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 	public String getName() {
 		return null;
 	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof DomainObject) {
+			return ObjectUtils.equals(getId() , ((DomainObject)object).getId());
+		}
+		return super.equals(object);
+	}
+	
+	
 
 }
