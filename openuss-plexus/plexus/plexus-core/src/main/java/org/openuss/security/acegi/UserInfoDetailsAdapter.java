@@ -20,11 +20,18 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 	
 	public UserInfoDetailsAdapter(UserInfo userInfo, String[] authorities) {
 		super(userInfo);
-		
+		this.setAuthorities(authorities);
+	}
+
+	private void setAuthorities(String[] authorities) {
 		grantedAuthorities = new StringGrantedAuthority[authorities.length];
 		for(int i = 0; i < authorities.length; i++) {
 			grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
 		}
+	}
+	
+	public void setAuthorities(GrantedAuthority[] authorities) {
+		this.grantedAuthorities = authorities;
 	}
 	
 	public GrantedAuthority[] getAuthorities() {

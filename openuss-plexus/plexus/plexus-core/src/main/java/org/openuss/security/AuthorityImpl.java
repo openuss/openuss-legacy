@@ -5,8 +5,9 @@
  */
 package org.openuss.security;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.openuss.foundation.DomainObject;
@@ -42,7 +43,7 @@ public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List getGrantedGroups() {
+	public Set<Group> getGrantedGroups() {
 		return fetchSuperGroups(getGroups());
 	}
 
@@ -51,8 +52,8 @@ public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 	 * @param groups
 	 * @return
 	 */
-	private List<Group> fetchSuperGroups(List<Group> groups) {
-		List<Group> authorities = new ArrayList<Group>();
+	private Set<Group> fetchSuperGroups(List<Group> groups) {
+		Set<Group> authorities = new HashSet<Group>();
 		authorities.addAll(groups);
 
 		for (Group group : groups) {
