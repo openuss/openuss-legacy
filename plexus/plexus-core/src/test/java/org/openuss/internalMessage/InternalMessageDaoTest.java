@@ -8,7 +8,7 @@ package org.openuss.internalMessage;
 
 /**
  * JUnit Test for Spring Hibernate InternalMessageDao class.
- * @see org.openuss.buddylist.InternalMessageDao
+ * @see org.openuss.internalMessage.InternalMessageDao
  */
 public class InternalMessageDaoTest extends InternalMessageDaoTestBase {
 	

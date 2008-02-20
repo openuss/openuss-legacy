@@ -9,8 +9,8 @@ package org.openuss.internalMessage;
  * @see org.openuss.internalMessage.InternalMessage
  */
 public class InternalMessageImpl
-    extends org.openuss.internalMessage.InternalMessageBase
-	implements org.openuss.internalMessage.InternalMessage
+    extends InternalMessageBase
+	implements InternalMessage
 {
     /**
      * The serial version UID of this class. Needed for serialization.
