@@ -185,7 +185,7 @@ public class BuddyServiceImpl
         for(Buddy buddy : allRequests){
         	if(!buddy.isAuthorized()){
         		BuddyInfo toAdd = getBuddyDao().toBuddyInfo(buddy);
-        		User userBuddy = buddy.getUser();
+        		User userBuddy = getUserDao().load(buddy.getBuddyList().getDomainIdentifier());
         		toAdd.setRequesterId(userBuddy.getId());
         		toAdd.setRequestingPictureId(userBuddy.getImageId());
         		toAdd.setRequesterName(userBuddy.getDisplayName());
