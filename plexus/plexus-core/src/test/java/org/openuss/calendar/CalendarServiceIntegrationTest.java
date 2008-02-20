@@ -50,6 +50,8 @@ public class CalendarServiceIntegrationTest extends
 	public AppointmentDao appointmentDao;
 
 	public AppointmentTypeDao appointmentTypeDao;
+	
+	public TestUtility testUtility = new TestUtility();
 
 	public CourseDao getCourseDao() {
 		return courseDao;
@@ -57,20 +59,6 @@ public class CalendarServiceIntegrationTest extends
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
-	}
-
-	private UserInfo getTestUserInfo() {
-		DomainObject domainObjectUser = generateDomainObject();
-
-		UserInfo userInfo = new UserInfo();
-		userInfo.setId(domainObjectUser.getId());
-		userInfo.setUsername("El Matatdor");
-		userInfo.setFirstName("Hans");
-		userInfo.setLastName("Peter");
-		userInfo.setPassword("pwd");
-		userInfo.setEmail("ElMatador@Stierkampf.de");
-
-		return userInfo;
 	}
 
 	private AppointmentInfo getTestAppointmentInfo(AppointmentType appType,
@@ -97,23 +85,13 @@ public class CalendarServiceIntegrationTest extends
 		return appInfo;
 	}
 
-	private DomainObject generateDomainObject() {
-		DomainObject domainObject = new DefaultDomainObject(TestUtility
-				.unique());
-		securityService.createObjectIdentity(domainObject, null);
-		// securityService.setPermissions(user, domainId,
-		// LectureAclEntry.ASSIST);
-
-		return domainObject;
-	}
-
 	public void testCalendarAdministrationSingle() {
 
 		// create user
-		User user = userDao.create("user", "pwd", "e@ma.il", true, false,
-				false, false, new Date());
+		User user = testUtility.createUniqueUserInDB();
 		UserInfo userInfo = (UserInfo) userDao.load(userDao.TRANSFORM_USERINFO,
 				user.getId());
+
 
 		// generate Appointment Type
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()
@@ -159,7 +137,6 @@ public class CalendarServiceIntegrationTest extends
 
 			// test update appointment
 
-			// test getCalendar
 			AppointmentInfo newAppointmentInfo = calendarService
 					.getAppointment(singleAppInfo.getId());
 			
@@ -259,22 +236,25 @@ public class CalendarServiceIntegrationTest extends
 
 			/* test update serial appointment */
 
-			serialAppointmentInfo.setDescription("new description");
+			serialAppInfo.setDescription("new description");
 			calendarService.updateSerialAppointment(serialAppInfo, userCalendarInfo);
 			
-			SerialAppointmentInfo saAfterUpdate = calendarService.getSerialAppointment(serialAppInfo.getId());
+			List<SerialAppointmentInfo> serialAppInfosAfterUpdate = calendarService.getNaturalSerialAppointments(userCalendarInfo);
 			
+			SerialAppointmentInfo saAfterUpdate = serialAppInfosAfterUpdate.get(0);			
+			assertNotNull(saAfterUpdate);
+			assertEquals(1, serialAppInfosAfterUpdate.size());
 			assertEquals("new description", saAfterUpdate.getDescription());
 			
 			/* test delete serial appointment */
-
-			calendarService.deleteSerialAppointment(serialAppInfo,
+			
+			calendarService.deleteSerialAppointment(saAfterUpdate,
 					userCalendarInfo);
 			
-			// test if natural serial appointments exist
-			List<SerialAppointmentInfo> serialAppInfos = calendarService
+			// test if natural serial appointments exist after delete
+			List<SerialAppointmentInfo> serialAppInfosAfterDelete = calendarService
 					.getNaturalSerialAppointments(userCalendarInfo);
-			assertEquals(0, serialAppInfos.size());
+			assertEquals(0, serialAppInfosAfterDelete.size());
 
 			// test if single appointments exist
 			List singleAppInfos = calendarService.getSingleAppointments(userCalendarInfo);
@@ -300,8 +280,12 @@ public class CalendarServiceIntegrationTest extends
 		 * endSubscription(course) 13 - getAllUserAppointments -> null 14 -
 		 * getUserCalendars -> only userCalendar 15 - deleteCalendar End :)
 		 */
+		
+		
+		
 
 	}
+	
 
 	public void testCourseCalendar() {
 		AppointmentType standardAppointmentType = getAppointmentTypeDao()

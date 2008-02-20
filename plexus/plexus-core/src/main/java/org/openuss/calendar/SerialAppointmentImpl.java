@@ -50,8 +50,5 @@ public class SerialAppointmentImpl
 	@Override
 	public void addSingleAppointment(Appointment appointment) {
 		this.getAppointments().add(appointment);
-		
-		// FIXME calculated single appointments must be added as linked appointments to all
-		// calendars subscripted to the original calendar
 	}
 }

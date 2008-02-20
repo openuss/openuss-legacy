@@ -207,18 +207,19 @@ public class CalendarServiceImpl extends
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
 
+		// get entities
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-		SerialAppointment serialApp = getSerialAppointmentDao().load(
-				serialAppointmentInfo.getId());
 
-		// delete old serial appointment completely
-		cal.deleteSerialAppointment(serialApp);
+
+		
+		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
 
 		// set new data
 
 		AppointmentType appType = getAppointmentTypeDao().load(
 				serialAppointmentInfo.getAppointmentTypeInfo().getId());
 
+		
 		SerialAppointment newSerialApp = getSerialAppointmentDao().create(
 				appType, serialAppointmentInfo.getDescription(),
 				serialAppointmentInfo.getEndtime(),
@@ -230,7 +231,7 @@ public class CalendarServiceImpl extends
 				serialAppointmentInfo.getSubject());
 
 		// add the serial appointment again with updated data
-		cal.addSerialAppointment(newSerialApp);
+		this.createSerialAppointment(serialAppointmentInfo, calendarInfo);
 	}
 
 	/**
