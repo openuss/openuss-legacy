@@ -143,13 +143,12 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	private void updateSecurityContext(Authority authority) {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
-		if (securityContext != null) {
+		if (securityContext != null && authority instanceof UserImpl) {
 			Authentication auth = securityContext.getAuthentication();
-			if (auth != null && ObjectUtils.equals(authority, auth.getPrincipal())) {
+			if (auth != null && ObjectUtils.equals(auth.getPrincipal(), authority)) {
 				logger.debug("refresing current user security context.");
 				final UsernamePasswordAuthenticationToken authentication;
-				// FIXME Replace UserImpl with UserInfo Objects
-				authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]",
+				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getName(), "[Protected]",
 						((UserImpl) authority).getAuthorities());
 				securityContext.setAuthentication(authentication);
 			}

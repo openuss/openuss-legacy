@@ -226,6 +226,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
 		persistCourseMember(participant);
 		getSecurityService().addAuthorityToGroup(participant.getUser(), getParticipantsGroup(participant.getCourse()));
+		getSecurityService().saveUser(participant.getUser());
 	}
 
 	@Override
