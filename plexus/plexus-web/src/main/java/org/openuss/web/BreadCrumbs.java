@@ -10,6 +10,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -53,6 +54,9 @@ public class BreadCrumbs extends BaseBean {
 
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
+	
+//	@Property(value = "#{groupService}")
+//	private GroupService groupService;
 
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
@@ -302,6 +306,8 @@ public class BreadCrumbs extends BaseBean {
 		return instituteCrumb;
 	}
 
+	// Course Crumb Generation
+	
 	private List<BreadCrumb> getCourseCrumbs(CourseInfo info) {
 		if (info == null)
 			return getEmptyList();
@@ -362,6 +368,48 @@ public class BreadCrumbs extends BaseBean {
 		return courseTypeCrumb;
 	}
 
+	// Group Crumb Generation
+	
+//	private List<BreadCrumb> getGroupCrumbs(Long groupId) {
+//
+//		if (groupService == null)
+//			return getEmptyList();
+//
+//		GroupInfo info = groupService.getGroupInfo(groupId);
+//		if (info == null)
+//			return getEmptyList();
+//
+//		List<BreadCrumb> crumbs = getBaseCrumbs();
+//		BreadCrumb groupCrumb = getGroupCrumb(info);
+//
+//		assert crumbs != null;
+//		crumbs.add(groupCrumb);
+//		return crumbs;
+//	}
+//
+//	private List<BreadCrumb> getGroupCrumbs(GroupInfo info) {
+//		if (info == null)
+//			return getEmptyList();
+//
+//		List<BreadCrumb> crumbs = getBaseCrumbs();
+//		BreadCrumb groupCrumb = getGroupCrumb(info);
+//
+//		assert crumbs != null;
+//		crumbs.add(groupCrumb);
+//		return crumbs;
+//	}
+//
+//	private BreadCrumb getGroupCrumb(GroupInfo info) {
+//		assert info != null;
+//		BreadCrumb groupCrumb = new BreadCrumb();
+//		groupCrumb.setName(info.getShortcut());
+//		groupCrumb.setHint(info.getName());
+//		groupCrumb.setLink(PageLinks.GROUP_PAGE);
+//		groupCrumb.addParameter("group", info.getId());
+//
+//		return groupCrumb;
+//	}
+	
 	// MyUni Crumb Generation
 
 	private List<BreadCrumb> getMyUniCrumbs() {
@@ -390,6 +438,20 @@ public class BreadCrumbs extends BaseBean {
 		crumbs.add(profileCrumb);
 		return crumbs;
 	}
+	
+	// OpenUSS4US Crumb Generation
+	
+	private List<BreadCrumb> getOpenuss4usCrumbs() {
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+
+		BreadCrumb openuss4usCrumb = new BreadCrumb();
+		openuss4usCrumb.setName(i18n("openuss4us_navigation_header"));
+		openuss4usCrumb.setHint(i18n("openuss4us_navigation_header"));
+
+		crumbs.add(openuss4usCrumb);
+		return crumbs;
+	}	
 
 	// Extended Search Crumb Generation
 
@@ -470,6 +532,14 @@ public class BreadCrumbs extends BaseBean {
 		// setOrganisationHierarchy(organisationService.findCourseTypeHierarchy(courseTypeInfo.getId()));
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
+	
+//	public void loadGroupCrumbs(Long groupId) {
+//		setCrumbs(getGroupCrumbs(groupId));
+//	}
+//
+//	public void loadGroupCrumbs(GroupInfo groupInfo) {
+//		setCrumbs(getGroupCrumbs(groupInfo));
+//	}
 
 	public void loadMyUniCrumbs() {
 		setCrumbs(getMyUniCrumbs());
@@ -479,6 +549,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getProfileCrumbs());
 	}
 
+	public void loadOpenuss4usCrumbs() {
+		setCrumbs(getOpenuss4usCrumbs());
+	}	
+	
 	public void loadExtendedSearchCrumbs() {
 		setCrumbs(getExtendedSearchCrumbs());
 	}
@@ -567,6 +641,11 @@ public class BreadCrumbs extends BaseBean {
 		} else {
 			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
+	}
+
+	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
+		// TODO Thomas: Implement !
+		
 	}
 
 }

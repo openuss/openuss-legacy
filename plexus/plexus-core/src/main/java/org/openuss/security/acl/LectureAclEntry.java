@@ -83,9 +83,13 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int DEPARTMENT_ADMINISTRATION = PARTICIPATE | ASSIST | READ | CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_DEPARTMENT | GRANT;
 	public static final int UNIVERSITY_ADMINISTRATION = MANAGE_UNIVERSITY | MANAGE_PERIODS | DEPARTMENT_ADMINISTRATION;
 	
-	
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
+	
+	// Default combinations of base group permissions
+	public static final int GROUP_MEMBER = READ | PARTICIPATE;
+	public static final int GROUP_MODERATOR = CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_COURSE_TYPES | MANAGE_PERIODS | MANAGE_COURSES | INSTITUTE_TUTOR;
+	
 	
 	// Combinations of base permissions we permit
 	public static final int RU = READ | UPDATE;

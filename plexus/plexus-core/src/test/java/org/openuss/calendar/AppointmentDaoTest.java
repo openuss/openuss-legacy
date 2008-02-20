@@ -19,8 +19,7 @@ public class AppointmentDaoTest extends AppointmentDaoTestBase {
 		appointment.setSubject(" ");
 		appointment.setDescription(" ");
 		appointment.setLocation(" ");
-		appointment.setTimezone(" ");
-		appointment.setIsSerial(false);
+		appointment.setSerial(false);
 		assertNull(appointment.getId());
 		appointmentDao.create(appointment);
 		assertNotNull(appointment.getId());

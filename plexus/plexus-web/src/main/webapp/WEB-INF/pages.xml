@@ -239,4 +239,12 @@
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
         <parameter name="page" value="#{currentSiteInfo.id}" converterId="javax.faces.Long"/> 
     </page>    
-</pages>
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            OpenUSS4US
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+
+      
+ </pages>   

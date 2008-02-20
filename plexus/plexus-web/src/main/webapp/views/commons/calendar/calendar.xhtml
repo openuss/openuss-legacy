@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:sandbox="http://myfaces.apache.org/sandbox">
+      
+      <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+
+	<sandbox:schedule value="#{scheduleHandler2.model}" id="schedule1"
+					rendered="true" visibleEndHour="#{scheduleSettings2.visibleEndHour}"
+					visibleStartHour="#{scheduleSettings2.visibleStartHour}"
+					workingEndHour="#{scheduleSettings2.workingEndHour}"
+					workingStartHour="#{scheduleSettings2.workingStartHour}"
+					readonly="#{scheduleSettings2.readonly}"
+					theme="default"
+					tooltip="#{scheduleSettings2.tooltip}"
+					renderZeroLengthEntries="true"
+					expandToFitEntries="#{scheduleSettings2.expandToFitEntries}"
+					headerDateFormat="dd-MM-yyyy"
+					compactWeekRowHeight="#{scheduleSettings2.compactWeekRowHeight}"
+					compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
+					detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/> 
+	
+	
+	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
+
+</ui:composition>

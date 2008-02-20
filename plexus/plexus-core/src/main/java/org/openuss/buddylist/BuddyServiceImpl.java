@@ -1,7 +1,8 @@
 // OpenUSS - Open Source University Support System
 /**
  * This is only generated once! It will never be overwritten.
- * You can (and have to!) safely modify it by hand.
+ * You can (and have to!) safely modify it by hand
+ * @author Ralf Plattfaut
  */
 package org.openuss.buddylist;
 
@@ -15,118 +16,198 @@ import org.openuss.security.*;
 public class BuddyServiceImpl
     extends org.openuss.buddylist.BuddyServiceBase
 {
-
     /**
-     * @throws Exception 
-     * @see org.openuss.buddylist.BuddyService#addBuddy(org.openuss.security.User, org.openuss.security.UserInfo)
+     * @see org.openuss.buddylist.BuddyService#addBuddy(org.openuss.security.UserInfo)
      */
-    protected void handleAddBuddy(org.openuss.security.User user, org.openuss.security.UserInfo userToAdd) throws Exception{
-      	Set<Buddy> buddyList = user.getBuddyList();
-      	// test if userToAdd is already buddy of user
-      	for(Buddy buddy : buddyList){
-    		if(buddy.getBuddy().getId() == userToAdd.getId())
-    			throw new Exception("Buddy is already on BuddyList");
-    	}
-    	User newBuddy = getUserDao().load(userToAdd.getId());
-      	Buddy buddy = getBuddyDao().create(false, newBuddy, user);
-      	buddyList.add(buddy);
-      	newBuddy.getBuddies().add(buddy);
+    protected void handleAddBuddy(org.openuss.security.UserInfo userToAdd)
+        throws java.lang.Exception
+    {
+        User user = getSecurityService().getCurrentUser();
+        //test wether userToAdd equals current user
+        if(user.getId().equals(userToAdd.getId()))
+        	throw new Exception("You cannot add yourself");
+        BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+        if(buddyList == null){
+        	buddyList = getBuddyListDao().create(user.getId());
+        }
+    	//test wether user is already added
+        for(Buddy buddy : buddyList.getBuddies()){
+        	if(buddy.getUser().getId().equals(userToAdd.getId()))
+        		throw new Exception("User is already added");
+        }
+        Buddy buddy = Buddy.Factory.newInstance();
+        buddy.setAuthorized(false);
+        buddy.setBuddyList(buddyList);
+        buddy.setUser(getUserDao().load(userToAdd.getId()));
+        buddy = getBuddyDao().create(buddy);
+        buddyList.getBuddies().add(buddy);
     }
 
     /**
-     * @see org.openuss.buddylist.BuddyService#deleteBuddy(org.openuss.security.User, org.openuss.buddylist.BuddyInfo)
+     * @see org.openuss.buddylist.BuddyService#deleteBuddy(org.openuss.buddylist.BuddyInfo)
      */
-    protected void handleDeleteBuddy(org.openuss.security.User user, org.openuss.buddylist.BuddyInfo buddy)
+    protected void handleDeleteBuddy(org.openuss.buddylist.BuddyInfo buddyInfo)
         throws java.lang.Exception
     {
-        // Test if Buddy is on List
-    	Set<Buddy> buddyList = user.getBuddyList();
-    	Buddy buddyToDelete = getBuddyDao().load(buddy.getId());
-    	if(buddyList.contains(buddyToDelete)){
-    		for(Tag tag : (List<Tag>)buddyToDelete.getallTags()){
-    			buddyToDelete.removeTag(tag.getTag());
+    	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
+    	buddy.getBuddyList().getBuddies().remove(buddy);
+    	for(Tag tag : buddy.getTags()){
+    		tag.getBuddies().remove(buddy);
+    		if(tag.getBuddies().size()==0){
+    			tag.getBuddyList().getTags().remove(tag);
+    			getTagDao().remove(tag);
     		}
-    		buddyList.remove(buddyToDelete);
-    		buddyToDelete.getBuddy().getBuddies().remove(buddyToDelete);
-    		getBuddyDao().remove(buddyToDelete);
-    	} else {
-    		throw new Exception("Buddy not on list");
     	}
+    	getBuddyDao().remove(buddy);
     }
 
     /**
      * @see org.openuss.buddylist.BuddyService#addTag(org.openuss.buddylist.BuddyInfo, java.lang.String)
      */
-    protected void handleAddTag(org.openuss.buddylist.BuddyInfo buddyInfo, java.lang.String tagContent)
+    protected void handleAddTag(org.openuss.buddylist.BuddyInfo buddyInfo, java.lang.String tagString)
         throws java.lang.Exception
     {
-    	getBuddyDao().load(buddyInfo.getId()).addTag(tagContent);
+    	tagString = tagString.toLowerCase();
+    	if(tagString.length()<=2)
+    		throw new Exception("Tag too short");
+    	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
+    	//search tag
+    	User user = getSecurityService().getCurrentUser();
+    	BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+    	Tag tag = null;
+    	for(Tag tagIterate : buddyList.getTags()){
+    		if(tagIterate.getTag().equals(tagString)){
+    			tag = tagIterate;
+    			break;
+    		}
+    	}
+    	if(tag == null){
+    		tag = getTagDao().create(tagString);
+    		buddyList.getTags().add(tag);
+    		tag.setBuddyList(buddyList);
+    	} else if(buddy.getTags().contains(tag)){
+    		return;
+    	}
+    	buddy.getTags().add(tag);
+    	tag.getBuddies().add(buddy);
+    	getTagDao().update(tag);
+    	getBuddyDao().update(buddy);
+    	getBuddyListDao().update(buddyList);
     }
 
     /**
      * @see org.openuss.buddylist.BuddyService#deleteTag(org.openuss.buddylist.BuddyInfo, java.lang.String)
      */
-    protected void handleDeleteTag(org.openuss.buddylist.BuddyInfo buddy, java.lang.String tag)
+    protected void handleDeleteTag(org.openuss.buddylist.BuddyInfo buddyInfo, java.lang.String tagString)
         throws java.lang.Exception
     {
-        getBuddyDao().load(buddy.getId()).removeTag(tag);
-    }
-
-    /**
-     * @see org.openuss.buddylist.BuddyService#getAllUsedTags(org.openuss.security.User)
-     */
-    protected java.util.List handleGetAllUsedTags(org.openuss.security.User user)
-        throws java.lang.Exception
-    {
-    	ArrayList userTagList = new ArrayList();
-    	userTagList.addAll(user.getUsedTags());
-        return userTagList;
-    }
-
-    /**
-     * @see org.openuss.buddylist.BuddyService#getBuddyList(org.openuss.security.User)
-     */
-    protected java.util.List handleGetBuddyList(org.openuss.security.User user)
-        throws java.lang.Exception
-    {
-    	Set<Buddy> allCandidates = user.getBuddyList();
-    	if(allCandidates.size()==0) return new ArrayList();
-    	List<Buddy> BuddyList = new ArrayList();
-    	for(Buddy candidate : allCandidates){
-    		if(candidate.isAuthorized())
-    			BuddyList.add(candidate);
+    	tagString = tagString.toLowerCase();
+    	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
+    	for(Tag tag : buddy.getTags()){
+    		if(tag.getTag().equals(tagString)){
+    			//delete tag
+    			buddy.getTags().remove(tag);
+    			tag.getBuddies().remove(buddy);
+    			if(tag.getBuddies().size()==0){
+    				tag.getBuddyList().getTags().remove(tag);
+    				tag.setBuddyList(null);
+    				getTagDao().remove(tag);
+    			}
+    			return;
+    		}
     	}
-        return BuddyList;
+    	throw new Exception("Tag does not exist at user");
+    }
+
+    /**
+     * @see org.openuss.buddylist.BuddyService#getAllUsedTags()
+     */
+    protected java.util.List handleGetAllUsedTags()
+        throws java.lang.Exception
+    {
+        User user = getSecurityService().getCurrentUser();
+        BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+        LinkedList<String> tagList = new LinkedList<String>();
+        for (Tag tag : buddyList.getTags()){
+        	tagList.add(tag.getTag());
+        }
+        Collections.sort(tagList);
+        return tagList;
+    }
+
+    /**
+     * @see org.openuss.buddylist.BuddyService#getBuddyList()
+     */
+    protected java.util.List handleGetBuddyList()
+        throws java.lang.Exception
+    {
+        User user = getSecurityService().getCurrentUser();
+        BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+        if(buddyList == null){
+        	buddyList = getBuddyListDao().create(user.getId());
+        }
+        Set<Buddy> buddySet = buddyList.getBuddies();
+        ArrayList<BuddyInfo> buddys = new ArrayList<BuddyInfo>();
+        for(Buddy buddy : buddySet){
+        	if(buddy.isAuthorized()){
+        		BuddyInfo buddyToAdd = getBuddyDao().toBuddyInfo(buddy);
+        		buddyToAdd.setRequesterName(user.getDisplayName());
+        		buddyToAdd.setRequestingPictureId(user.getImageId());
+        		buddys.add(buddyToAdd);
+        	}
+        }    
+        return buddys;
     }
 
     /**
      * @see org.openuss.buddylist.BuddyService#authorizeBuddyRequest(org.openuss.buddylist.BuddyInfo, boolean)
      */
-    protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddy, boolean authorize)
+    protected void handleAuthorizeBuddyRequest(org.openuss.buddylist.BuddyInfo buddyInfo, boolean authorize)
         throws java.lang.Exception
     {
-    	Buddy authorizeBuddy = getBuddyDao().load(buddy.getId());
-    	if(authorize == true){
-    		//authorize buddy
-    		authorizeBuddy.setAuthorized(true);
-    	} else {
-    		deleteBuddy(authorizeBuddy.getUser(), buddy);
-    	}
+        Buddy buddy = getBuddyDao().load(buddyInfo.getId());
+        if(authorize){
+        	buddy.setAuthorized(true);
+        } else {
+        	this.deleteBuddy(buddyInfo);
+        }
     }
 
     /**
-     * @see org.openuss.buddylist.BuddyService#getAllOpenRequests(org.openuss.security.User)
+     * @see org.openuss.buddylist.BuddyService#getAllOpenRequests()
      */
-    protected java.util.List handleGetAllOpenRequests(org.openuss.security.User user)
+    protected java.util.List handleGetAllOpenRequests()
         throws java.lang.Exception
     {
-        Set<Buddy> allCandidates = user.getBuddies();
-        List<BuddyInfo> openRequests = new ArrayList();
-        for (Buddy candidate : allCandidates){
-        	if(!candidate.isAuthorized()){
-        		openRequests.add(getBuddyDao().toBuddyInfo(candidate));
+    	User user = getSecurityService().getCurrentUser();
+        List<Buddy> allRequests = getBuddyDao().findByUser(user);
+        List<BuddyInfo> requests = new ArrayList();
+        for(Buddy buddy : allRequests){
+        	if(!buddy.isAuthorized()){
+        		BuddyInfo toAdd = getBuddyDao().toBuddyInfo(buddy);
+        		User userBuddy = getUserDao().load(buddy.getBuddyList().getDomainIdentifier());
+        		toAdd.setRequesterId(userBuddy.getId());
+        		toAdd.setRequestingPictureId(userBuddy.getImageId());
+        		toAdd.setRequesterName(userBuddy.getDisplayName());
+        		requests.add(toAdd);
         	}
         }
-        return openRequests;
+        return requests;
     }
+
+	@Override
+	protected List handleGetAllBuddysByTag(String tagString) throws Exception {
+		User user = getSecurityService().getCurrentUser();
+		BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+		Tag tag = null;
+		for(Tag tagCandidate : buddyList.getTags()){
+			if(tagCandidate.getTag().equalsIgnoreCase(tagString)){
+				tag = tagCandidate;
+				break;
+			}
+		}
+		if(tag==null)
+			throw new Exception("Tag not found");
+		return getBuddyDao().findByTag(getBuddyDao().TRANSFORM_BUDDYINFO, tag);
+	}
 }

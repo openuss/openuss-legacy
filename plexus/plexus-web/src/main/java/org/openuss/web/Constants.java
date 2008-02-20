@@ -22,6 +22,8 @@ public class Constants {
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "courseInfo";
 	public static final String DESKTOP_INFO = "desktopInfo";
+	public static final String GROUP = "group";
+	public static final String GROUP_INFO = "groupInfo";
 
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";
@@ -137,6 +139,13 @@ public class Constants {
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
 	public static final Long   COURSES_ALL_PERIODS = -111L;
 	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
+	
+	// group and group type navigation outcomes and combobox long constants
+	// TODO - Lutz: Properties anpassen
+	public static final String GROUP_PAGE = "group_main";
+	public static final String GROUP_OPTIONS_PAGE = "group_options";
+	public static final String GROUP_REGISTRATION_CONTROLLER = "groupRegistration";
+	
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
@@ -178,6 +187,9 @@ public class Constants {
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
 	public static final String COURSE_NEWS_PAGE = "course_news";
+	// TODO - Lutz: Properties anpassen
+	public static final String GROUP_NEWS_EDIT_PAGE = "course_news_edit";
+	public static final String GROUP_NEWS_PAGE = "course_news";
 	
 	// newsletter navigation outcomes and combobox long constants
 	public static final String NEWSLETTER_NEWSLETTER = "newsletter_newsletter";
@@ -250,5 +262,16 @@ public class Constants {
 
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
 
-
+	// openuss4us navigation outcomes
+	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
+	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
+	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
+	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
+	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
+	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
+	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
+	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
+	public static final String OPENUSS4US_GROUPS_LEAVE = "openuss4us_groups_leave";
+	// openuss4us constants
+	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 }

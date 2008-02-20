@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:c="http://java.sun.com/jstl/core"  
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:include src="/views/commons/groups/groupInfo.xhtml" />
+	
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+
+		<!-- TODO Add Security -->
+			<h:form id="courseNavigationForm">
+				<t:panelNavigation2 id="group_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+					<t:commandNavigation2 value="#{msg['openuss4us_group_navigation_header']}">
+							
+							<t:commandNavigation2 
+								action="group_main" 
+								activeOnViewIds="/views/secured/groups/main.xhtml" >
+								<h:outputText value="#{msg['course_command_overview']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_newsletter" 
+								activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/exportedsubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
+								rendered="#{courseInfo.newsletter}">
+								<h:outputText value="#{msg['course_command_newsletter']}"/>
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_documents_main" 
+								activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces" 
+								rendered="#{courseInfo.documents}">
+								<h:outputText value="#{msg['course_command_documents']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_discussion" 
+								activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml,/views/secured/discussion/discussionsearch.xhtml"
+								rendered="#{courseInfo.discussion}">
+								<h:outputText value="#{msg['course_command_discussion']}"/>
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_chat" 
+								activeOnViewIds="/views/secured/course/chatmain.xhtml"
+								rendered="#{courseInfo.chat}">
+								<h:outputText value="#{msg['course_command_chat']}"/>
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_news"
+								activeOnViewIds="/views/secured/course/coursenews.xhtml,/views/secured/course/coursenews.xhtml">
+								<h:outputText value="#{msg['course_command_options_news']}" />
+							</t:commandNavigation2>
+							<t:commandNavigation2 
+								action="group_options_moderators" 
+								activeOnViewIds="/views/secured/course/courseassistants.xhtml">
+								<h:outputText value="#{msg['openuss4us_group_command_options_moderators']}" />
+							</t:commandNavigation2>
+							
+							<!--  TODO <c:if test="#{sessionScope.courseInfo.accessType.value != 0 and sessionScope.courseInfo.accessType.value != 1 }"> -->
+								<t:commandNavigation2 
+									action="group_options_members" 
+									activeOnViewIds="/views/secured/course/courseparticipants.xhtml">
+									<h:outputText value="#{msg['openuss4us_group_command_options_participants']}" />
+								</t:commandNavigation2>
+							<!--  </c:if> -->
+							
+							<!--  TODO <c:if test="#{sessionScope.courseInfo.accessType.value == 4}"> -->
+								<t:commandNavigation2 
+									action="group_options_aspirants" 
+									activeOnViewIds="/views/secured/course/courseaspirants.xhtml">
+									<h:outputText value="#{msg['openuss4us_group_command_options_aspirants']}" />
+								</t:commandNavigation2>
+							<!-- </c:if> -->
+							
+							<t:commandNavigation2 
+								action="group_options_config" 
+								activeOnViewIds="/views/secured/groups/components/groupoptions.xhtml">
+								<h:outputText value="#{msg['course_command_options_config']}" />
+							</t:commandNavigation2>
+
+					</t:commandNavigation2>
+				</t:panelNavigation2>	
+			</h:form>
+		
+</ui:composition>

@@ -71,6 +71,11 @@
 		</navigation-case>
 
 		<navigation-case>
+			<from-outcome>user_profile_vorlage</from-outcome>
+			<to-view-id>/views/secured/user/vorlage.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>user_profile</from-outcome>
 			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
 		</navigation-case>
@@ -190,12 +195,88 @@
 			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
 		</navigation-case>
 		
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	O p e n U S S 4 U S - R u l e s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 		
+		<navigation-case>
+			<from-outcome>openuss4us_buddylist</from-outcome>
+			<to-view-id>/views/secured/buddylist/buddylist.xhtml</to-view-id>
+		</navigation-case>		
+		
+		<navigation-case>
+			<from-outcome>buddylist_edit_Tags</from-outcome>
+			<to-view-id>/views/secured/buddylist/edittags.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_addbuddy</from-outcome>
+			<to-view-id>/views/secured/buddylist/addbuddy.xhtml</to-view-id>
+		</navigation-case>	
+
+		<navigation-case>
+			<from-outcome>openuss4us_delete_buddy</from-outcome>
+			<to-view-id>/views/secured/buddylist/deletebuddy.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_buddylist_requests</from-outcome>
+			<to-view-id>/views/secured/buddylist/buddyrequest.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_messagecenter</from-outcome>
+			<to-view-id>/views/secured/internalMessages/messagecenter.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar</from-outcome>
+			<to-view-id>/views/secured/calendar/usercalendar.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar_create_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createappointment.faces</to-view-id>
+		</navigation-case>	
+
+		<navigation-case>
+			<from-outcome>openuss4us_groups</from-outcome>
+			<to-view-id>/views/secured/groups/groups.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>group_main</from-outcome>
+			<to-view-id>/views/secured/groups/components/main.xhtml</to-view-id>
+		</navigation-case>
+	
+		<navigation-case>
+			<from-outcome>openuss4us_groups_create</from-outcome>
+			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_create_step2</from-outcome>
+			<to-view-id>//views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_join</from-outcome>
+			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_leave</from-outcome>
+			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
+		</navigation-case>
+		
+		<!-- TODO DUMMY LINK ENTFERNEN -->
+		<navigation-case>
+			<from-outcome>openuss4us_group_testgroup</from-outcome>
+			<to-view-id>/views/secured/groups/group.xhtml</to-view-id>
+		</navigation-case>
 		
 	</navigation-rule>
-	
-	
-	
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	L o g i n / L o g o u t  - R u l e s
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	

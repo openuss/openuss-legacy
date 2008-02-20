@@ -21,7 +21,7 @@ import org.openuss.lecture.CourseMemberType;
 import org.openuss.web.Constants;
 
 /**
- * 
+ *
  * @author Ingo Dueppe
  * 
  */

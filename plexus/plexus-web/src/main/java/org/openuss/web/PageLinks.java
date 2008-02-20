@@ -20,6 +20,10 @@ public class PageLinks{
 	
 	public static final String COURSE_PAGE = "/views/secured/course/main.faces";
 	
+	public static final String GROUP_PAGE = "/views/secured/groups/main.faces";
+	
+	public static final String GROUPS_MAIN = "/views/secured/groups/groups.faces";
+	
 	public static final String BRAINCONTEST_MAIN = "/views/secured/braincontest/braincontestmain.faces";
 	
 	public static final String COURSE_NEWS = "/views/secured/course/coursenews.faces";

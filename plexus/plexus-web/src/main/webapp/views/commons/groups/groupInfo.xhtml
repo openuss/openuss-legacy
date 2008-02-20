@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+      
+    <div class="group_info">
+    	<h:form id="group_link">
+    		<h:commandLink action="/views/secured/groups/main.faces" >
+    			<f:param name="groupInfo" value="#{groupInfo.id}"/>
+				<h:outputText value="#{groupInfo.name}" styleClass="header_font_normal"/>			 	
+			 	<h:outputText value="#{groupInfo.shortcut}" styleClass="content_font_normal"/>
+
+    		</h:commandLink>
+    	</h:form>
+	</div>
+
+</ui:composition>

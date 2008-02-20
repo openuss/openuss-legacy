@@ -19,8 +19,13 @@ public class SerialAppointmentDaoImpl
     {
         // @todo verify behavior of toSerialAppointmentInfo
         super.toSerialAppointmentInfo(sourceEntity, targetVO);
-        // WARNING! No conversion for targetVO.creator (can't convert sourceEntity.getCreator():org.openuss.security.User to org.openuss.security.UserInfo
-        // WARNING! No conversion for targetVO.scheduleExceptions (can't convert sourceEntity.getScheduleExceptions():org.openuss.calendar.ScheduleException to java.util.List
+
+        // create association between the value objects
+        
+        AppointmentTypeInfo appTypeInfo = new AppointmentTypeInfo();
+        appTypeInfo.setId(sourceEntity.getAppointmentType().getId());
+        appTypeInfo.setName(sourceEntity.getAppointmentType().getName());
+        targetVO.setAppointmentTypeInfo(appTypeInfo);
     }
 
 
@@ -29,8 +34,9 @@ public class SerialAppointmentDaoImpl
      */
     public org.openuss.calendar.SerialAppointmentInfo toSerialAppointmentInfo(final org.openuss.calendar.SerialAppointment entity)
     {
-        // @todo verify behavior of toSerialAppointmentInfo
-        return super.toSerialAppointmentInfo(entity);
+		final SerialAppointmentInfo target = new SerialAppointmentInfo();
+		this.toSerialAppointmentInfo(entity, target);
+		return target;
     }
 
 

@@ -5,6 +5,9 @@
  */
 package org.openuss.calendar;
 
+import java.sql.Timestamp;
+
+
 /**
  * @see org.openuss.calendar.SerialAppointment
  */
@@ -16,20 +19,11 @@ public class SerialAppointmentImpl
      * The serial version UID of this class. Needed for serialization.
      */
     private static final long serialVersionUID = 1126431082902617516L;
-
-    /**
-     * @see org.openuss.calendar.SerialAppointment#createSingleAppointments()
-     */
-    public void createSingleAppointments()
-    {
-        // @todo implement public void createSingleAppointments()
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.SerialAppointment.createSingleAppointments() Not implemented!");
-    }
-
+    
     /**
      * @see org.openuss.calendar.SerialAppointment#deleteSingleAppointments()
      */
-    public void deleteSingleAppointments()
+    public void deleteSingleAppointment(Appointment appointment)
     {
         // @todo implement public void deleteSingleAppointments()
         throw new java.lang.UnsupportedOperationException("org.openuss.calendar.SerialAppointment.deleteSingleAppointments() Not implemented!");
@@ -53,4 +47,8 @@ public class SerialAppointmentImpl
         throw new java.lang.UnsupportedOperationException("org.openuss.calendar.SerialAppointment.deleteExceptions() Not implemented!");
     }
 
+	@Override
+	public void addSingleAppointment(Appointment appointment) {
+		this.getAppointments().add(appointment);
+	}
 }

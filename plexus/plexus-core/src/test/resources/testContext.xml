@@ -57,6 +57,9 @@
 		<property name="courseDao">
 			<ref bean="courseDao" />
 		</property>
+		<property name="userGroupDao">
+			<ref bean="userGroupDao" />
+		</property>
 		<property name="periodDao">
 			<ref bean="periodDao" />
 		</property>

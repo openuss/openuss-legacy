@@ -5,7 +5,7 @@
  */
 package org.openuss.buddylist;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @see org.openuss.buddylist.Buddy
@@ -20,9 +20,17 @@ public class BuddyDaoImpl
         org.openuss.buddylist.Buddy sourceEntity,
         org.openuss.buddylist.BuddyInfo targetVO)
     {
-    	targetVO.setId(sourceEntity.getId());
-    	targetVO.setName(sourceEntity.getBuddy().getDisplayName());
-    	targetVO.setTags(sourceEntity.getallTags());
+        targetVO.setId(sourceEntity.getId());
+        LinkedList<String> tags = new LinkedList<String>();
+        for(Tag tag : sourceEntity.getTags()){
+        	tags.add(tag.getTag());
+        }
+        Collections.sort(tags);
+        targetVO.setTags(tags);
+        targetVO.setName(sourceEntity.getUser().getDisplayName());
+        targetVO.setUserId(sourceEntity.getUser().getId());
+        targetVO.setUserPicture(sourceEntity.getUser().getImageId());
+        targetVO.setRequesterId(sourceEntity.getBuddyList().getDomainIdentifier());           
     }
 
 
@@ -31,8 +39,9 @@ public class BuddyDaoImpl
      */
     public org.openuss.buddylist.BuddyInfo toBuddyInfo(final org.openuss.buddylist.Buddy entity)
     {
-        // @todo verify behavior of toBuddyInfo
-        return super.toBuddyInfo(entity);
+    	BuddyInfo buddyInfo = new BuddyInfo();
+        this.toBuddyInfo(entity, buddyInfo);
+        return buddyInfo;
     }
 
 
