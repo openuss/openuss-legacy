@@ -25,7 +25,7 @@ import org.openuss.web.Constants;
  * @author Lutz D. Kramer
  * 
  */
-@Bean(name = "views$secured$groups$groupoptions", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$components$groupoptions", scope = Scope.REQUEST)
 @View
 public class GroupOptionsPage extends AbstractGroupPage {
 	

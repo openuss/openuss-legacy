@@ -14,13 +14,13 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.lecture.AccessType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 
 /**
  * Backing bean for the group registration on the groupCreatePage
+ * @author Lutz D. Kramer
  * @author Thomas Jansing
  */
 
@@ -30,7 +30,7 @@ public class GroupCreatePage extends BasePage {
 	
 	private static final Logger logger = Logger.getLogger(GroupCreatePage.class);
 	
-//	@Property(value = "#{groupInfo}")
+	@Property(value = "#{groupInfo}")
 	protected UserGroupInfo groupInfo;
 	@Property(value = "#{groupService}")
 	protected GroupService groupService;
@@ -50,13 +50,15 @@ public class GroupCreatePage extends BasePage {
 	
 	public String register() {
 		logger.debug("START CREATION GROUP");
-		logger.debug("ACTUAL ACCESS TYPE: " + accessType);
 		// create group info object
 		UserGroupInfo groupInfo = new UserGroupInfo();
 		groupInfo.setId(null);
 		groupInfo.setName(name);
 		groupInfo.setShortcut(shortcut);
 		groupInfo.setDescription(description);
+		if (accessType < 2){
+			password = null;
+		}
 		groupInfo.setPassword(password);
 		groupInfo.setAccessType(GroupAccessType.fromInteger(accessType));
 		groupInfo.setCreator(user.getId());
@@ -66,37 +68,28 @@ public class GroupCreatePage extends BasePage {
 		groupInfo.setForum(forum);
 		groupInfo.setNewsletter(newsletter);
 
-		logger.debug("Id: " + groupInfo.getId());
-		logger.debug("Name: " + groupInfo.getName());
-		logger.debug("Shortcut: " + groupInfo.getShortcut());
-		logger.debug("Description: " + groupInfo.getDescription());
-		logger.debug("Password: " + groupInfo.getPassword());
-		logger.debug("AccessType: " + groupInfo.getAccessType());
-		logger.debug("Creator: " + groupInfo.getCreator());
-		logger.debug("Calendar: " + groupInfo.isCalendar());
-		logger.debug("Chat: " + groupInfo.isChat());
-		logger.debug("Documents: " + groupInfo.isDocuments());
-		logger.debug("Forum: " + groupInfo.isForum());
-		logger.debug("Newsletter: " + groupInfo.isNewsletter());
-
 		// create group and set id
-		Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
-		groupInfo.setId(newGroupId);
+		if (groupService.isUniqueShortcut(shortcut)){
+			Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+			groupInfo.setId(newGroupId);
 
-		// clear fields
-		name = null;
-		shortcut = null;
-		description = null;
-		password = null;
-		calendar = true;
-		chat = false;
-		documents = true;
-		forum = true;
-		newsletter = true;
-		accessType = 0;
-		
-		logger.debug("END CREATION GROUP");
-		return Constants.GROUP_PAGE;
+			// clear fields
+			name = null;
+			shortcut = null;
+			description = null;
+			password = null;
+			calendar = true;
+			chat = false;
+			documents = true;
+			forum = true;
+			newsletter = true;
+			accessType = 0;
+			
+			logger.debug("END CREATION GROUP");
+			return Constants.GROUP_PAGE;
+		} else {
+			return "";
+		}
 	}
 
 	public List<SelectItem> getAccessTypes() {
@@ -108,9 +101,14 @@ public class GroupCreatePage extends BasePage {
 	}
 
 	public void processAccessTypeChanged(ValueChangeEvent event) {
-//		Object accessTypeGroup = event.getNewValue();
-//		logger.debug("HERE IS THE ACCESS TYPE: " + (GroupAccessType)accessTypeGroup);
-//		accessType = (GroupAccessType) accessTypeGroup;
+		Object accessTypeGroup = event.getNewValue();
+		logger.debug("HERE IS THE ACCESS TYPE: " + accessTypeGroup);
+		accessType = (Integer) accessTypeGroup;
+		if (accessType < 2){
+			password = "Password";
+		} else {
+			password = null;
+		}
 	}
 	
 	/* ----- getter and setter ----- */
@@ -212,111 +210,4 @@ public class GroupCreatePage extends BasePage {
 	public void setGroupInfo(UserGroupInfo groupInfo) {
 		this.groupInfo = groupInfo;
 	}
-
-	
-	
-	
-	
-	
-
-//	@Property(value = "#{groupInfo}")
-//	protected UserGroupInfo groupInfo;
-//	
-//	@Property(value = "#{groupService}")
-//	protected GroupService groupService;
-//	
-//	
-//	
-//	private List<SelectItem> localeItems;
-//	private Long newGroupId;
-//	
-////	@Property(value = "#{groupInfo}")
-////	protected UserGroupInfo groupInfo;
-////	
-////	private GroupService groupService;
-//
-////	@Preprocess
-////	public void preprocess() throws GroupApplicationException {
-////		
-////		logger.debug("@PRE");
-////		groupInfo = new UserGroupInfo();
-////		
-////		// groupInfo.setId(null);
-////	}
-//	
-//	@Prerender
-//	public void prerender() throws Exception {
-//		super.prerender();
-//		logger.debug("Honigkuchenpferd1");
-//		if (groupInfo != null && groupInfo.getId() != null) {
-//			logger.debug("Honigkuchenpferd2");
-//			groupInfo = new UserGroupInfo();
-//		}
-//		if (groupInfo == null) {
-//			logger.debug("Honigkuchenpferd3");
-//			// groupInfo = new UserGroupInfo();
-//			
-//			// addError(i18n("group_page: groupInfo == null"));
-//			// redirect(Constants.OUTCOME_BACKWARD);
-//			
-//		} else {
-//			logger.debug("Honigkuchenpferd4");
-//			BreadCrumb newCrumb = new BreadCrumb();
-//			newCrumb.setName(i18n("openuss4us_groups_registration_headline"));
-//			newCrumb.setHint(i18n("openuss4us_groups_registration_headline"));
-//			breadcrumbs.loadOpenuss4usCrumbs();
-//			breadcrumbs.addCrumb(newCrumb);
-//			
-//			groupInfo = new UserGroupInfo();
-//			
-//			// setSessionBean(Constants.GROUP_INFO, groupInfo);
-//		}
-//	}
-//	
-//	public List<SelectItem> getAccessTypes() {
-//
-//		localeItems = new ArrayList<SelectItem>();
-//
-//		SelectItem item1 = new SelectItem(GroupAccessType.OPEN, i18n("groupaccesstype_open"));
-//		SelectItem item2 = new SelectItem(GroupAccessType.CLOSED, i18n("groupaccesstype_closed"));
-//		SelectItem item3 = new SelectItem(GroupAccessType.PASSWORD, i18n("groupaccesstype_password"));
-//
-//		localeItems.add(item1);
-//		localeItems.add(item2);
-//		localeItems.add(item3);
-//
-//		return localeItems;
-//	}
-//	
-//	
-//	/**
-//	 * Value Change Listener to switch password input text on and off.
-//	 * 
-//	 * @param event
-//	 */ 
-//	public void processAccessTypeChanged(ValueChangeEvent event) {
-////		Object accessType = event.getNewValue();
-////		groupInfo.setAccessType((GroupAccessType) accessType);
-//	}
-//	
-//	public UserGroupInfo getGroupInfo() {
-//		logger.debug("Honigkuchenpferd GetGroupInfo");
-//		return groupInfo;
-//	}
-//	
-//	public void setGroupInfo(UserGroupInfo newGroup) {
-//		logger.debug("Honigkuchenpferd SetGroupInfo");
-//		this.groupInfo = newGroup;
-//	}
-//
-//	public GroupService getGroupService() {
-//		logger.debug("Honigkuchenpferd GetGroupService");
-//		return groupService;
-//	}
-//
-//	public void setGroupService(GroupService groupService) {
-//		logger.debug("Honigkuchenpferd SetGroupService");
-//		this.groupService = groupService;
-//	}
-	
 }

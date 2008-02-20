@@ -39,13 +39,25 @@
 				<o:block label="#{msg['openuss4us_groups_registration_headline']}" styleClass="form_box">
 					
 					<h:outputText value="#{msg.openuss4us_groups_options_header}" styleClass="header_font_normal"/>
-					<o:input entity="groupRegistration" property="name" maxlength="100" required="true"/>
-					<o:input entity="groupRegistration" property="shortcut" maxlength="30" required="true" />
+					<o:input 
+						id="groupName"
+						label="FIXME: msg.groupinfo_name"
+						entity="groupRegistration" 
+						property="name" 
+						maxlength="100" 
+						required="true"/>
+					<o:input 
+						id="groupShortcut"
+						label="FIXME: msg.groupinfo_shortcut"
+						entity="groupRegistration" 
+						property="shortcut" 
+						maxlength="30" 
+						required="true" />
 					
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
 					<h:inputTextarea styleClass="pulldown" value="#{groupRegistration.description}" id="descriptionTextField" />
 					
-					<h:outputLabel value="#{msg.groupinfo_accesstype}" for="accessTypeSelect" styleClass="fiel_label" />
+					<h:outputLabel for="accessType" value="#{msg.groupinfo_accesstype}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
 						value="#{groupRegistration.accessType}" 
@@ -54,18 +66,44 @@
 						immediate="true"
 						styleClass="pulldown">
 						<f:selectItems value="#{groupRegistration.accessTypes}"/>
-					</h:selectOneMenu>			
+					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
-					<c:if test="#{sessionScope.groupRegistration.accessType == 2}">
-		 				<o:input entity="groupRegistration" property="password" required="true"/>
-	 				</c:if> 
+					<c:if test="#{groupRegistration.accessType == 2}">
+					
+		 				<o:input 
+		 					id="groupsPassword"
+		 					label="FIXME: msg.groupinfo_password"
+		 					entity="groupRegistration" 
+		 					property="password" 
+		 					required="true"/>
+	 				</c:if> 	
 
 					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
-					<o:input entity="groupRegistration" property="documents"/>
-					<o:input entity="groupRegistration" property="forum"/>
-					<o:input entity="groupRegistration" property="newsletter"/>
-					<o:input entity="groupRegistration" property="chat"/>
-					<o:input entity="groupRegistration" property="calendar"/>
+					<o:input 
+						id="groupDocuments" 
+						label="FIXME: msg.groupinfo_documents"
+						entity="groupRegistration" 
+						property="documents"/>
+					<o:input 
+						id="groupForum" 
+						label="FIXME: msg.groupinfo_forum"
+						entity="groupRegistration" 
+						property="forum"/>
+					<o:input 
+						id="groupNewsletter" 
+						label="FIXME: msg.groupinfo_newsletter"
+						entity="groupRegistration" 
+						property="newsletter"/>
+					<o:input 
+						id="groupChat" 
+						label="FIXME: msg.groupinfo_chat"
+						entity="groupRegistration" 
+						property="chat"/>
+					<o:input 
+						id="groupCalendar" 
+						label="FIXME: msg.groupinfo_calendar"
+						entity="groupRegistration" 
+						property="calendar"/>
    			 	</o:block>
    			 	
    			 	<o:block>
