@@ -24,6 +24,8 @@ FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
 var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
 FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
+FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+
 FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],

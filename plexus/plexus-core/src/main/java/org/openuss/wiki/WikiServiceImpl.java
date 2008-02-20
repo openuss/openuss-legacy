@@ -171,7 +171,7 @@ public class WikiServiceImpl
 		Validate.notNull(domainId, "Parameter domainId cannot be null.");
 		
 		WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(domainId, "index");
-		return getDocumentService().getFileEntries(indexSite);
+		return getDocumentService().getFolderEntries(indexSite, null);
 	}
 
 	@Override
