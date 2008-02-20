@@ -63,9 +63,10 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		validateUserInfoForRegistration(userInfo);
 
 		User user = getUserDao().userInfoToEntity(userInfo);
-		encodePassword(user);
 		getUserDao().create(user);
-		userInfo.setId(user.getId());
+		encodePassword(user);
+		getUserDao().update(user);
+		getUserDao().toUserInfo(user, userInfo);
 
 		// Define object identity security
 		createObjectIdentity(user, null);
