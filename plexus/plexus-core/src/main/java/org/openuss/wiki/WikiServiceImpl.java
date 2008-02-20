@@ -128,6 +128,8 @@ public class WikiServiceImpl
 				// Save Entity
 				this.getWikiSiteDao().create(wikiSite);
 				Validate.notNull(wikiSite, "Id of wikiSite cannot be null.");
+				
+				getSecurityService().createObjectIdentity(wikiSite, null);
 			}
 			
 			
@@ -148,7 +150,7 @@ public class WikiServiceImpl
 			wikiSiteContentInfo.setWikiSiteId(wikiSite.getId());
 	
 			// add object identity to security
-			//getSecurityService().createObjectIdentity(wikiSiteEntity, wikiSiteEntity.getCourse());
+			getSecurityService().createObjectIdentity(wikiSiteVersion, wikiSite);
 
 		    // Set Security
 	  
@@ -158,8 +160,9 @@ public class WikiServiceImpl
 
 	@Override
 	protected void handleDeleteImage(Long fileId) throws Exception {
-		// TODO Auto-generated method stub
+		Validate.notNull(fileId, "Parameter fileId cannot be null.");
 		
+		getDocumentService().removeFolderEntry(fileId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,7 +170,8 @@ public class WikiServiceImpl
 	protected List handleFindImagesByDomainId(Long domainId) throws Exception {
 		Validate.notNull(domainId, "Parameter domainId cannot be null.");
 		
-		return getDocumentService().getFileEntries(getDomainObject(domainId));
+		WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(domainId, "index");
+		return getDocumentService().getFileEntries(indexSite);
 	}
 
 	@Override
@@ -176,17 +180,8 @@ public class WikiServiceImpl
 		Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
 		Validate.notNull(image, "Parameter image cannot be null.");
 		
-		FolderInfo folder = getDocumentService().getFolder(getDomainObject(wikiSiteInfo.getDomainId()));
+		WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(wikiSiteInfo.getDomainId(), "index");
+		FolderInfo folder = getDocumentService().getFolder(indexSite);
 		getDocumentService().createFileEntry(image, folder);
-	}
-
-	private DomainObject getDomainObject(final Long domainId) {
-		return new DomainObject() {
-			public void setId(Long id) {
-			}
-			public Long getId() {
-				return domainId;
-			}
-		};
 	}
 }

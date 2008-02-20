@@ -311,7 +311,7 @@ public class ConnectorServlet extends HttpServlet {
 		for(FileInfo file : fileEntries) {
 			//if(fileList[i].isFile()){
 				Element myEl=doc.createElement("File");
-				myEl.setAttribute("name", file.getFileName());
+				myEl.setAttribute("name", "openuss-plexus/files/" + file.getFileName() + "?fileid=" + file.getId());
 				myEl.setAttribute("size", Integer.toString(file.getFileSize()/1024));
 				files.appendChild(myEl);
 		//	}

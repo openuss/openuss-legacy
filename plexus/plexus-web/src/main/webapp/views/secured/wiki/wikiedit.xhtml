@@ -30,7 +30,9 @@
  		 
   		<ui:define name="content">
   			<h:form id="editWikiForm">
-				<o:block label="#{msg.wiki_edit_header}" styleClass="form_box">
+  			   <c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose>
+                <!-- ${lbl} -->
+                <o:block label="#{lbl}" styleClass="form_box">
 					<div class="content_iframe">
 						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400">
 							<f:converter converterId="xssFilter"/>
