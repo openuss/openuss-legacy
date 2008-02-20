@@ -114,10 +114,12 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		assertNotNull(userGroup);
 
 		// Load UserInfoObject
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
+		assertNotNull(groupInfo);
 
 		// Delete Group
 		this.getGroupService().deleteUserGroup(groupInfo);

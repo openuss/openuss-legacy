@@ -141,11 +141,8 @@ public class Constants {
 	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
 	
 	// group and group type navigation outcomes and combobox long constants
-	// TODO - Lutz: Properties anpassen
 	public static final String GROUP_PAGE = "group_main";
 	public static final String GROUP_OPTIONS_PAGE = "group_options";
-	public static final String GROUP_REGISTRATION_CONTROLLER = "groupRegistration";
-	
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
@@ -271,7 +268,7 @@ public class Constants {
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
 	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
-	public static final String OPENUSS4US_GROUPS_LEAVE = "openuss4us_groups_leave";
+
 	// openuss4us constants
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 }

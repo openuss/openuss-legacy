@@ -12,7 +12,7 @@
     	id="groups" 
     	label="FIXME: Titel fuer dieses Feld" 
     	value="views$secured$groups$groups.data" 
-    	columnClasses="col_max_left, col_max_left, col_commands"
+    	columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
     	var="group" 
     	rows="20">  
       
@@ -24,6 +24,11 @@
 		<t:column>
 			<plexus:commandSortHeader columnName="groupShortcut"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
 			<h:outputText value="#{group.shortcut}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="groupCreator"> #{msg['user_contact_lastname']}</plexus:commandSortHeader>
+			<h:outputText value="#{group.creatorName}"/>
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">

@@ -13,14 +13,13 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.security.SecurityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+
 /**
- * 
  * @author Lutz D. Kramer
  * @author Thomas Jansing
- *
  */
 @Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
@@ -45,7 +44,7 @@ public class GroupsMainPage extends BasePage {
 		@Override
 		public DataPage<UserGroupInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				logger.debug("fetching course assistant list");
+				logger.debug("fetching group list");
 				List<UserGroupInfo> groups = getGroups();
 				page = new DataPage<UserGroupInfo>(groups.size(), 0, groups);
 				sort(groups);
@@ -68,9 +67,6 @@ public class GroupsMainPage extends BasePage {
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	
-
-	// Navigation outcomes
-	// TODO Thomas: Implement Security - Max Groups allowed ?
 	public String createGroup() {
 		return Constants.OPENUSS4US_GROUPS_CREATE;
 	}
@@ -82,8 +78,16 @@ public class GroupsMainPage extends BasePage {
 	public String leaveGroup() {
 		logger.debug("course member deleted");
 		UserGroupInfo groups = data.getRowData();
+		logger.debug("GRUPPE " + +groups.getId() + ", " + groups.getName());
+		List<UserGroupInfo> mods = groupService.getModerators(groups);
+		logger.debug("LEERE GRUPPE? " + mods.size());
+		List<UserGroupInfo> memb = groupService.getMembers(groups);
+		logger.debug("LEERE GRUPPE? " + memb.size());
+		List<UserGroupInfo> asp = groupService.getAspirants(groups);
+		logger.debug("LEERE GRUPPE? " + asp.size());
 		groupService.removeMember(groups, user.getId());
-		addMessage(i18n("message_course_removed_assistant", groups.getName()));
+		// TODO - Lutz: Properties anpassen
+		addMessage(i18n("message_group_left", groups.getName()));
 		resetCachedData();
 		return Constants.SUCCESS;
 	}

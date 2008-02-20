@@ -37,7 +37,7 @@
   		<ui:define name="content">
 			<h:form id="openuss4us_groups" enctype="multipart/form-data">
 		
-				<ui:include src="groupstable.xhtml" />
+				<ui:include src="groupsusertable.xhtml" />
 				
    			 	<o:block>
 				
@@ -52,12 +52,6 @@
 					action="#{views$secured$groups$groups.joinGroup}"
 					value="#{msg['openuss4us_groups_button_join']}"
 					title="#{msg['openuss4us_groups_button_join']}"
-					immediate="false" />
-				<h:commandButton 
-					styleClass="button"
-					action="#{views$secured$groups$groups.leaveGroup}"
-					value="#{msg['openuss4us_groups_button_leave']}"
-					title="#{msg['openuss4us_groups_button_leave']}"
 					immediate="false" />
 		 		</o:block>
 	 		</h:form> 

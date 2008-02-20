@@ -21,6 +21,7 @@ public class UserGroupDaoImpl extends org.openuss.groups.UserGroupDaoBase {
 		targetVO.setCalendar(sourceEntity.getCalendar());
 		targetVO.setChat(sourceEntity.getChat());
 		targetVO.setCreator(sourceEntity.getCreator().getId());
+		targetVO.setCreatorName(sourceEntity.getCreator().getUsername());
 		targetVO.setDescription(sourceEntity.getDescription());
 		targetVO.setDocuments(sourceEntity.getDocuments());
 		targetVO.setForum(sourceEntity.getForum());

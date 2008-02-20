@@ -92,9 +92,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
 		
-		// Add Creator to Membership
-		membership.getMembers().add(creator);
-		getMembershipDao().update(membership);
+		// Add Creator as Member
+		this.addMember(groupInfo, creator.getId());
 		
 		// Add Creator to Group of Moderators
 		this.addModerator(groupInfo, creator.getId());
@@ -174,10 +173,14 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User must not be null.");
-
+		
 		// Add user to SecurityGroup - Moderators
 		Group secGroup = group.getModeratorsGroup();
 		getSecurityService().addAuthorityToGroup(user, secGroup);
+		
+		// Remove user from SecurityGroup - Members
+		Group secGroupMem = group.getMembersGroup();
+		getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
 
 	}
 
@@ -231,6 +234,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Add user to Membership
 		Membership membership = group.getMembership();
 		getMembershipService().addMember(membership, user);
+		getMembershipDao().update(membership);
+		getUserGroupDao().update(group);
 
 		// Add user to SecurityGroup - Members
 		Group secGroup = group.getMembersGroup();
@@ -286,8 +291,12 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
+		
+		// Remove User from SecurityGroup - Members
+		Group secGroupMem = group.getMembersGroup();
+		getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
 
-		// Remove User as Aspriant from Membership
+		// Remove User as Member from Membership
 		Membership membership = group.getMembership();
 		getMembershipService().removeMember(membership, user);
 	}
@@ -452,11 +461,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
-
+		
+		// Load Membership
 		Collection<Membership> memberships = getMembershipDao().loadAll();
 		Collection<UserGroup> groups = getUserGroupDao().loadAll();
 		List<UserGroupInfo> groupList = new ArrayList<UserGroupInfo>();
-		logger.debug("GROUPSERVICEIMPL 1: " + groupList.size());
 		for (Membership membership : memberships) {
 			for (UserGroup group:groups){
 				if (group.getMembership().getId() == membership.getId()){
@@ -465,14 +474,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 						if (member.getId() == userId) {
 							groupList.add(getUserGroupDao().toUserGroupInfo(
 									getUserGroupDao().findByMembership(membership)));
-							logger.debug("GROUPSERVICEIMPL 2: " + groupList.size());
 						}
 					}
 				}
 			}
 		}
-		logger.debug("GROUPSERVICEIMPL 3: " + groupList.size());
-
 		return groupList;
 	}
 

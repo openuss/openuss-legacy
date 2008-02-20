@@ -24,11 +24,11 @@ import org.openuss.web.Constants;
  * @author Thomas Jansing
  */
 
-@Bean(name = Constants.GROUP_REGISTRATION_CONTROLLER, scope = Scope.SESSION)
+@Bean(name = "views$secured$groups$groupcreate", scope = Scope.REQUEST)
 @View
-public class GroupCreatePage extends BasePage {
+public class GroupsCreatePage extends BasePage {
 	
-	private static final Logger logger = Logger.getLogger(GroupCreatePage.class);
+	private static final Logger logger = Logger.getLogger(GroupsCreatePage.class);
 	
 	@Property(value = "#{groupInfo}")
 	protected UserGroupInfo groupInfo;
@@ -69,27 +69,23 @@ public class GroupCreatePage extends BasePage {
 		groupInfo.setNewsletter(newsletter);
 
 		// create group and set id
-		if (groupService.isUniqueShortcut(shortcut)){
-			Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
-			groupInfo.setId(newGroupId);
+		Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+		groupInfo.setId(newGroupId);
 
-			// clear fields
-			name = null;
-			shortcut = null;
-			description = null;
-			password = null;
-			calendar = true;
-			chat = false;
-			documents = true;
-			forum = true;
-			newsletter = true;
-			accessType = 0;
-			
-			logger.debug("END CREAT GROUP");
-			return Constants.GROUP_PAGE;
-		} else {
-			return "";
-		}
+		// clear fields
+		name = null;
+		shortcut = null;
+		description = null;
+		password = null;
+		calendar = true;
+		chat = false;
+		documents = true;
+		forum = true;
+		newsletter = true;
+		accessType = 0;
+		
+		logger.debug("END CREAT GROUP");
+		return Constants.GROUP_PAGE;
 	}
 
 	public List<SelectItem> getAccessTypes() {

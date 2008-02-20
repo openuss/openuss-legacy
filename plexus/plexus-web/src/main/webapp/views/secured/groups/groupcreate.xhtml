@@ -42,38 +42,38 @@
 					<o:input 
 						id="groupName"
 						label="FIXME: msg.groupinfo_name"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="name" 
 						maxlength="100" 
 						required="true"/>
 					<o:input 
 						id="groupShortcut"
 						label="FIXME: msg.groupinfo_shortcut"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="shortcut" 
 						maxlength="30" 
 						required="true" />
 					
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
-					<h:inputTextarea styleClass="pulldown" value="#{groupRegistration.description}" id="descriptionTextField" />
+					<h:inputTextarea styleClass="pulldown" value="#{views$secured$groups$groupcreate.description}" id="descriptionTextField" />
 					
 					<h:outputLabel for="accessType" value="#{msg.groupinfo_accesstype}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
-						value="#{groupRegistration.accessType}" 
-						valueChangeListener="#{groupRegistration.processAccessTypeChanged}"
+						value="#{views$secured$groups$groupcreate.accessType}" 
+						valueChangeListener="#{views$secured$groups$groupcreate.processAccessTypeChanged}"
 						onchange="this.form.submit();"
 						immediate="true"
 						styleClass="pulldown">
-						<f:selectItems value="#{groupRegistration.accessTypes}"/>
+						<f:selectItems value="#{views$secured$groups$groupcreate.accessTypes}"/>
 					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
-					<c:if test="#{groupRegistration.accessType == 2}">
+					<c:if test="#{views$secured$groups$groupcreate.accessType == 2}">
 					
 		 				<o:input 
 		 					id="groupsPassword"
 		 					label="FIXME: msg.groupinfo_password"
-		 					entity="groupRegistration" 
+		 					entity="views$secured$groups$groupcreate" 
 		 					property="password" 
 		 					required="true"/>
 	 				</c:if> 	
@@ -82,33 +82,33 @@
 					<o:input 
 						id="groupDocuments" 
 						label="FIXME: msg.groupinfo_documents"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="documents"/>
 					<o:input 
 						id="groupForum" 
 						label="FIXME: msg.groupinfo_forum"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="forum"/>
 					<o:input 
 						id="groupNewsletter" 
 						label="FIXME: msg.groupinfo_newsletter"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="newsletter"/>
 					<o:input 
 						id="groupChat" 
 						label="FIXME: msg.groupinfo_chat"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="chat"/>
 					<o:input 
 						id="groupCalendar" 
 						label="FIXME: msg.groupinfo_calendar"
-						entity="groupRegistration" 
+						entity="views$secured$groups$groupcreate" 
 						property="calendar"/>
    			 	</o:block>
    			 	
    			 	<o:block>
 			   		<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back" immediate="true" />
-					<h:commandButton value="#{msg.forward}" action="#{groupRegistration.register}" styleClass="button_continue" />
+					<h:commandButton value="#{msg.forward}" action="#{views$secured$groups$groupcreate.register}" styleClass="button_continue" />
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>
