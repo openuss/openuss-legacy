@@ -68,7 +68,7 @@ public class CalendarServiceImpl extends
 		Calendar calendar = getCalendarDao().load(calendarInfo.getId());
 
 		AppointmentType appType = getAppointmentTypeDao().load(
-				appointmentInfo.getAppointmentType().getId());
+				appointmentInfo.getAppointmentTypeInfo().getId());
 
 		Appointment app = getAppointmentDao().create(appType,
 				appointmentInfo.getDescription(), appointmentInfo.getEndtime(),
@@ -103,9 +103,9 @@ public class CalendarServiceImpl extends
 
 		// set new data for appointment
 
-		if (newApp.getAppointmentType() != null)
+		if (newApp.getAppointmentTypeInfo() != null)
 			app.setAppointmentType(getAppointmentTypeDao().load(
-					newApp.getAppointmentType().getId()));
+					newApp.getAppointmentTypeInfo().getId()));
 		app.setDescription(newApp.getDescription());
 		app.setEndtime(newApp.getEndtime());
 		app.setStarttime(newApp.getStarttime());
@@ -173,7 +173,7 @@ public class CalendarServiceImpl extends
 
 		SerialAppointment serialAppointment = getSerialAppointmentDao().create(
 				getAppointmentTypeDao().load(
-						serialAppointmentInfo.getAppointmentType().getId()),
+						serialAppointmentInfo.getAppointmentTypeInfo().getId()),
 				serialAppointmentInfo.getDescription(),
 				serialAppointmentInfo.getEndtime(),
 				serialAppointmentInfo.getLocation(),
@@ -217,7 +217,7 @@ public class CalendarServiceImpl extends
 		// set new data
 
 		AppointmentType appType = getAppointmentTypeDao().load(
-				serialAppointmentInfo.getAppointmentType().getId());
+				serialAppointmentInfo.getAppointmentTypeInfo().getId());
 
 		SerialAppointment newSerialApp = getSerialAppointmentDao().create(
 				appType, serialAppointmentInfo.getDescription(),
@@ -351,9 +351,10 @@ public class CalendarServiceImpl extends
 	protected List handleGetNaturalSingleAppointments(CalendarInfo calendarInfo)
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-		List apps = cal.getNaturalSingleAppointments();
+		List<Appointment> apps = cal.getNaturalSingleAppointments();
 		getAppointmentDao().toAppointmentInfoCollection(apps);
 		return apps;
+
 	}
 
 	@Override
@@ -363,6 +364,7 @@ public class CalendarServiceImpl extends
 		List<Appointment> apps = cal.getSingleAppointments();
 		
 		getAppointmentDao().toAppointmentInfoCollection(apps);
+		
 
 		return apps;
 

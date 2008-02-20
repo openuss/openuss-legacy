@@ -88,7 +88,7 @@ public class CalendarServiceIntegrationTest extends
 		appInfo.setLocation("Location");
 		appInfo.setStarttime(new Timestamp(start.getTime()));
 		appInfo.setEndtime(new Timestamp(end.getTime()));
-		appInfo.setAppointmentType(getAppointmentTypeDao()
+		appInfo.setAppointmentTypeInfo(getAppointmentTypeDao()
 				.toAppointmentTypeInfo(appType));
 
 		// TODO isSerial setzen beim Erzeugen eines Termins
@@ -142,14 +142,6 @@ public class CalendarServiceIntegrationTest extends
 
 			// get (all) single appointments (including generated appointments
 			// from a serial appointment
-			
-			/***************** TEMP ***********************/
-			
-			List<Appointment> app = calendarService.getSingleAppointments(userCalInfo);
-			System.out.println("Test: " + app.get(0).getAppointmentType().getId());
-			
-			
-			/******************* ENDE **********************/
 
 			List<AppointmentInfo> singleAppInfos = calendarService
 					.getSingleAppointments(userCalInfo);
@@ -158,6 +150,12 @@ public class CalendarServiceIntegrationTest extends
 			assertEquals(naturalAppInfo, singleAppInfo);
 
 			assertEquals("Description", naturalAppInfo.getDescription());
+			
+			// test if a appointmenttypeinfo is associated to the appointmentinfo
+			
+			AppointmentInfo appInfo = singleAppInfos.get(0);
+			System.out.println("Type Name: " + appInfo.getAppointmentTypeInfo().getName());
+			assertNotNull(appInfo.getAppointmentTypeInfo());
 
 			// test update appointment
 
@@ -233,7 +231,7 @@ public class CalendarServiceIntegrationTest extends
 					.getTime().getTime()));
 			serialAppointmentInfo.setRecurrencePeriod(1);
 			serialAppointmentInfo.setRecurrenceType(RecurrenceType.weekly);
-			serialAppointmentInfo.setAppointmentType(appointmentTypeInfo);
+			serialAppointmentInfo.setAppointmentTypeInfo(appointmentTypeInfo);
 			serialAppointmentInfo.setSerial(true);
 
 			calendarService.createSerialAppointment(serialAppointmentInfo,
