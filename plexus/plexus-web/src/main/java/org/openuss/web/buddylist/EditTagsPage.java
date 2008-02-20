@@ -12,6 +12,7 @@ import org.openuss.buddylist.*;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.BasePage;
@@ -30,6 +31,8 @@ public class EditTagsPage extends BasePage {
 	
 	private String newTag = "";
 	
+	private BuddyTagsDataProvider buddyTags = new BuddyTagsDataProvider();
+	
 	private static final Logger logger = Logger.getLogger(EditTagsPage.class);
 	
 	@Property(value = "#{buddyService}")
@@ -37,6 +40,8 @@ public class EditTagsPage extends BasePage {
 	
 	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
+	
+	private AllTagsDataProvider usedTags = new AllTagsDataProvider();
 	
 	public BuddyInfo getBuddyInfo() {
 		return buddyInfo;
@@ -64,15 +69,59 @@ public class EditTagsPage extends BasePage {
 	public String addTag(){
 		logger.debug("Add tag '" + newTag + "' to " + buddyInfo.getName());
 		buddyService.addTag(buddyInfo, newTag);
-		return Constants.OPENUSS4US_CALENDAR;
+		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	
-	public String linkProfile(){
-		logger.debug("started");
-		profile.setId(profile.getId());
-		logger.debug("loading user profile: " + profile.getId());
-		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
-		return Constants.USER_PROFILE_VIEW_PAGE;
+	public AllTagsDataProvider getUsedTags(){
+		return usedTags;
+	}
+	
+	public String deleteTag(){
+		String tag = this.buddyTags.getRowData();
+		logger.debug("Delete Tag: " + tag);
+		buddyService.deleteTag(buddyInfo, tag);
+		return Constants.OPENUSS4US_BUDDYLIST;
+	}
+	
+	public String addSelectedTag(){
+		String tag = this.usedTags.getRowData();
+		logger.debug("Delete Tag: " + tag);
+		buddyService.addTag(buddyInfo, tag);
+		return Constants.OPENUSS4US_BUDDYLIST;
+	}
+	
+	private class BuddyTagsDataProvider extends AbstractPagedTable<String> {
+
+		private static final long serialVersionUID = -2279124324233684525L;
+		
+		private DataPage<String> page; 
+		
+		@SuppressWarnings("unchecked")
+		@Override 
+		public DataPage<String> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<String> al = buddyInfo.getTags();
+				page = new DataPage<String>(al.size(),0,al);
+			}
+			return page;
+		}
+	}
+
+	private class AllTagsDataProvider extends AbstractPagedTable<String> {
+
+		private static final long serialVersionUID = -2279124324233684525L;
+		
+		private DataPage<String> page; 
+		
+		@SuppressWarnings("unchecked")
+		@Override 
+		public DataPage<String> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				List<String> al = buddyService.getAllUsedTags();
+				page = new DataPage<String>(al.size(),0,al);
+			}
+			return page;
+		}
 	}
 
 	public void setBuddyService(BuddyService buddyService) {
@@ -93,6 +142,18 @@ public class EditTagsPage extends BasePage {
 
 	public void setNewTag(String newTag) {
 		this.newTag = newTag;
+	}
+
+	public BuddyTagsDataProvider getBuddyTags() {
+		return buddyTags;
+	}
+
+	public void setBuddyTags(BuddyTagsDataProvider buddyTags) {
+		this.buddyTags = buddyTags;
+	}
+
+	public void setUsedTags(AllTagsDataProvider usedTags) {
+		this.usedTags = usedTags;
 	}
 	
 }

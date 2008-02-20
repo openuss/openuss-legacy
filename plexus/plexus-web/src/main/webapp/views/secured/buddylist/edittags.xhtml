@@ -7,6 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:news="http://www.openuss.org/news/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
@@ -37,42 +38,55 @@
 	<ui:define name="content">
 		<h:form id="openuss4us_buddylist_edittags"
 			enctype="multipart/form-data">
-			<o:block label="#{msg['openuss4us_buddylist_edit_tags']}"
-				styleClass="form_box">
-				<div styleClass="content_font_normal"><h:outputText
-					value="#{buddy.name}" styleClass="header_font_normal" /><br />
-				<h:graphicImage styleClass="userphoto"
+			<o:block styleClass="form_box"
+				label="#{msg.openuss4us_buddylist_edit_tags_header} #{buddy.name}">
+				<div styleClass="content_normal">
+				<div class="userimage"><h:graphicImage styleClass="userphoto"
 					value="/files?fileid=#{buddy.userPicture}" title="#{buddy.name}"
 					rendered="#{not empty buddy.userPicture}" /> <h:graphicImage
 					styleClass="userphoto" value="/images/icons/no_pic.gif"
 					alt="#{msg.user_profile_no_image}"
 					title="#{msg.user_profile_no_image}"
 					rendered="#{empty buddy.userPicture}" /></div>
-				<br />
-					Aktuelle Tags:
-				<t:dataList value="#{buddy.tags}" var="currentTag"
+				<plexus:dataTable label="#{msg.openuss4us_buddylist_current_tags}"
+					id="buddyTagsTable"
+					value="views$secured$buddylist$edittags.buddyTags" var="currentTag"
 					styleClass="content_font_normal">
-					<h:outputText value="#{currentTag}"
-						styleClass="content_font_normal" />
-					<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}"
-						action="history:back" />
-				</t:dataList>
+					<t:column>
+						<h:outputText value="#{currentTag} "
+							styleClass="content_font_normal" />
+					</t:column>
+					<t:column>
+						<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}"
+							action="#{views$secured$buddylist$edittags.deleteTag}" />
+					</t:column>
+				</plexus:dataTable>
+				<o:input entity="views$secured$buddylist$edittags" property="newTag"
+					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" />
 				<br />
-				Neue Tags:<br />
-				<o:input entity="views$secured$buddylist$edittags" 
-									 property="newTag"
-									 label="#{msg.institute_members_command_user}" 
-									 styleClass="field" />
-				<br />
-				Vorschlagsliste
+				<plexus:dataTable
+					label="#{msg.openuss4us_buddylist_command_tag_add_from_list}"
+					id="usedTagsTable"
+					value="views$secured$buddylist$edittags.usedTags" var="thisUsedTag"
+					styleClass="content_font_normal">
+					<t:column>
+						<h:outputText value="#{thisUsedTag} "
+							styleClass="content_font_normal" />
+					</t:column>
+					<t:column>
+						<h:commandLink value="#{msg.openuss4us_buddylist_button_add_tag}"
+							action="#{views$secured$buddylist$edittags.addSelectedTag}" />
+					</t:column>
+				</plexus:dataTable>
+				</div>
 			</o:block>
 			<o:block>
-				<!-- BUTTONS HIER REIN -->
-				<h:commandButton id="back2buddylist" action="history:back"
-					value="back" title="back" styleClass="button" />
+				<h:commandButton id="back2buddylist" action="openuss4us_buddylist"
+					value="#{msg.openuss4us_backward}"
+					title="#{msg.openuss4us_backward}" styleClass="button" />
 				<h:commandButton id="newTagButton"
-					action="#{views$secured$buddylist$edittags.addTag}" value="new Tag"
-					hint="new Tag" styleClass="button_add" />
+					action="#{views$secured$buddylist$edittags.addTag}" value="#{msg.openuss4us_buddylist_button_add_tag}"
+					hint="#{msg.openuss4us_buddylist_button_add_tag}" styleClass="button" />
 			</o:block>
 		</h:form>
 	</ui:define>

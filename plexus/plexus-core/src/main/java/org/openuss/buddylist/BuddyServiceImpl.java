@@ -68,6 +68,8 @@ public class BuddyServiceImpl
         throws java.lang.Exception
     {
     	tagString = tagString.toLowerCase();
+    	if(tagString.length()<=2)
+    		throw new Exception("Tag too short");
     	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
     	//search tag
     	User user = getSecurityService().getCurrentUser();
