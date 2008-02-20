@@ -181,9 +181,31 @@ public class BuddyServiceImpl
         List<Buddy> allRequests = getBuddyDao().findByUser(user);
         List<BuddyInfo> requests = new ArrayList();
         for(Buddy buddy : allRequests){
-        	if(!buddy.isAuthorized())
-        		requests.add(getBuddyDao().toBuddyInfo(buddy));
+        	if(!buddy.isAuthorized()){
+        		BuddyInfo toAdd = getBuddyDao().toBuddyInfo(buddy);
+        		User userBuddy = buddy.getUser();
+        		toAdd.setRequesterId(userBuddy.getId());
+        		toAdd.setRequestingPictureId(userBuddy.getImageId());
+        		toAdd.setRequesterName(userBuddy.getDisplayName());
+        		requests.add(toAdd);
+        	}
         }
         return requests;
     }
+
+	@Override
+	protected List handleGetAllBuddysByTag(String tagString) throws Exception {
+		User user = getSecurityService().getCurrentUser();
+		BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+		Tag tag = null;
+		for(Tag tagCandidate : buddyList.getTags()){
+			if(tagCandidate.getTag().equalsIgnoreCase(tagString)){
+				tag = tagCandidate;
+				break;
+			}
+		}
+		if(tag==null)
+			throw new Exception("Tag not found");
+		return getBuddyDao().findByTag(getBuddyDao().TRANSFORM_BUDDYINFO, tag);
+	}
 }
