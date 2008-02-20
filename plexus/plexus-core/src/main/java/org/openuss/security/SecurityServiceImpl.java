@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
@@ -148,18 +149,11 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			if (auth != null && ObjectUtils.equals(auth.getPrincipal(), authority)) {
 				logger.debug("refresing current user security context.");
 				final UsernamePasswordAuthenticationToken authentication;
-				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getName(), "[Protected]",
+				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(), "[Protected]",
 						((UserImpl) authority).getAuthorities());
 				securityContext.setAuthentication(authentication);
 			}
 		}
-		
-		//TODO check if UserContext of another user can updated
-//		if (authority instanceof UserImpl) {
-//			UserInfo userInfo = getUserDao().toUserInfo((User)authority);
-//			getUserCache().removeUserFromCache(userInfo.getUsername());
-//			getUserCache().putUserInCache(new UserInfoDetailsAdapter(userInfo,((UserImpl) authority).getGrantedAuthorities()));
-//		}
 	}
 
 	private Authority forceAuthorityLoad(Authority authority) {
@@ -179,7 +173,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	private void checkInheritanceConstraints(Authority authority, Group group) {
-		List grantedGroups = group.getGrantedGroups();
+		Set grantedGroups = group.getGrantedGroups();
 		if (grantedGroups.contains(authority)) {
 			throw new SecurityServiceException("Circular dependencies between authorities is not supported");
 		}

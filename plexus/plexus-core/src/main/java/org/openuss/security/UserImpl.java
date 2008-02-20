@@ -5,7 +5,7 @@
  */
 package org.openuss.security;
 
-import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
@@ -40,7 +40,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	 */
 	public org.acegisecurity.GrantedAuthority[] getAuthorities() {
 		// expected that all groups beans implements GrantedAuthority interface
-		List<Group> authorities = getGrantedGroups();
+		Set<Group> authorities = getGrantedGroups();
 		return (GrantedAuthority[]) authorities.toArray(new GrantedAuthority[authorities.size()]);
 	}
 
