@@ -14,10 +14,10 @@ INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (3, 'mail.from.na
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (4, 'mail.host.name', 'localhost');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (5, 'mail.host.user', 'plexus@openuss-plexus.org');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (6, 'mail.host.password', 'plexus');
-INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (7, 'openuss.server.url', 'http://localhost:8080/openuss-plexus');
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (7, 'openuss.server.url', 'http://localhost:8080/plexus-web');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (8, 'openuss.copyright', '(c) Copyright OpenUSS 2000 - 2007');
-INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (9, 'documentation.url', 'http://localhost:8080/openuss-plexus/views/secured/course/main.faces?&course=163355');
-INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (10, 'support.url', 'http://localhost:8080/openuss-plexus/views/secured/course/main.faces?&course=163355');
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (9, 'documentation.url', 'http://localhost:8080/plexus-web/views/secured/course/main.faces?&course=163355');
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (10, 'support.url', 'http://localhost:8080/plexus-web/views/secured/course/main.faces?&course=163355');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (11, 'bugtracking.url', 'http://teamopenuss.uni-muenster.de/jira');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (12, 'impressum.text', '<a href="http://www.wi.uni-muenster.de/aw">OpenUSS wird Lehrstuhl für WI und Controlling entwickelt</a>');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (13, 'provider.url', 'http://openuss.sourceforge.net');
