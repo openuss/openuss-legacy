@@ -19,6 +19,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+import org.openuss.web.documents.FolderEntrySelection;
 
 @Bean(name = "views$secured$collaboration$main", scope = Scope.REQUEST)
 @View
@@ -47,6 +48,9 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws Exception {
 		super.prerender();
+		
+		memberSelection.processSwitch();
+		
 		addPageCrumbs();
 	}
 
