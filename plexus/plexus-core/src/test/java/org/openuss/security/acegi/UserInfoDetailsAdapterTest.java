@@ -2,6 +2,7 @@ package org.openuss.security.acegi;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
+import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
 import junit.framework.TestCase;
@@ -9,10 +10,7 @@ import junit.framework.TestCase;
 public class UserInfoDetailsAdapterTest extends TestCase {
 
 	public void testGetAuthorities() {
-		UserInfo userInfo = new UserInfo();
-		userInfo.setUsername("username");
-		userInfo.setPassword("password");
-		UserDetails details = new UserInfoDetailsAdapter(userInfo,new String[]{"ROLE_USER","ROLE_ADMIN","SECURE"});
+		UserDetails details = createUserDetailsObject();
 
 		assertEquals("username", details.getUsername());
 		assertEquals("password", details.getPassword());
@@ -27,6 +25,28 @@ public class UserInfoDetailsAdapterTest extends TestCase {
 		assertFalse(authorities[2].equals("ROLE_ADMIN"));
 		
 		assertTrue(authorities[1].equals(authorities[1]));
+	}
+
+	private UserDetails createUserDetailsObject() {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(120L);
+		userInfo.setUsername("username");
+		userInfo.setPassword("password");
+		UserDetails details = new UserInfoDetailsAdapter(userInfo,new String[]{"ROLE_USER","ROLE_ADMIN","SECURE"});
+		return details;
+	}
+	
+	/**
+	 * 
+	 */
+	public void testEquals() {
+		UserDetails details = createUserDetailsObject();
+		
+		User user = User.Factory.newInstance();
+		user.setId(120L);
+		
+		assertEquals(user, details);
+		assertEquals(details, user);
 	}
 
 }

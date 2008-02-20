@@ -2,7 +2,9 @@ package org.openuss.security.acegi;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.openuss.foundation.DomainObject;
 import org.openuss.security.UserInfo;
 
 /**
@@ -18,11 +20,18 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 	
 	public UserInfoDetailsAdapter(UserInfo userInfo, String[] authorities) {
 		super(userInfo);
-		
+		this.setAuthorities(authorities);
+	}
+
+	private void setAuthorities(String[] authorities) {
 		grantedAuthorities = new StringGrantedAuthority[authorities.length];
 		for(int i = 0; i < authorities.length; i++) {
 			grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
 		}
+	}
+	
+	public void setAuthorities(GrantedAuthority[] authorities) {
+		this.grantedAuthorities = authorities;
 	}
 	
 	public GrantedAuthority[] getAuthorities() {
@@ -38,6 +47,9 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 	 */
 	@Override
 	public boolean equals(Object object) {
+		if (object instanceof DomainObject) {
+			return ObjectUtils.equals(this.getId(), ((DomainObject)object).getId() ); 
+		}
 		if (object instanceof String) {
 			return this.getUsername().equals(object);
 		}

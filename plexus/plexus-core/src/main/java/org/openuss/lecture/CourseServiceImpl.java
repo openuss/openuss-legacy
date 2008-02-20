@@ -93,6 +93,12 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(course);
 		this.getSecurityService().removeObjectIdentity(course);
+		
+		// Remove security group
+		Set<Group> courseGroups = course.getGroups();
+		for (Group courseGroup:courseGroups){
+			getSecurityService().removeGroup(courseGroup);
+		}
 
 		// Remove Course
 		course.getCourseType().remove(course);
@@ -226,6 +232,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
 		persistCourseMember(participant);
 		getSecurityService().addAuthorityToGroup(participant.getUser(), getParticipantsGroup(participant.getCourse()));
+		getSecurityService().saveUser(participant.getUser());
 	}
 
 	@Override

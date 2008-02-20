@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
@@ -143,13 +144,12 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	private void updateSecurityContext(Authority authority) {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
-		if (securityContext != null) {
+		if (securityContext != null && authority instanceof UserImpl) {
 			Authentication auth = securityContext.getAuthentication();
-			if (auth != null && ObjectUtils.equals(authority, auth.getPrincipal())) {
+			if (auth != null && ObjectUtils.equals(auth.getPrincipal(), authority)) {
 				logger.debug("refresing current user security context.");
 				final UsernamePasswordAuthenticationToken authentication;
-				// FIXME Replace UserImpl with UserInfo Objects
-				authentication = new UsernamePasswordAuthenticationToken((UserImpl) authority, "[Protected]",
+				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(), "[Protected]",
 						((UserImpl) authority).getAuthorities());
 				securityContext.setAuthentication(authentication);
 			}
@@ -173,7 +173,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	private void checkInheritanceConstraints(Authority authority, Group group) {
-		List grantedGroups = group.getGrantedGroups();
+		Set grantedGroups = group.getGrantedGroups();
 		if (grantedGroups.contains(authority)) {
 			throw new SecurityServiceException("Circular dependencies between authorities is not supported");
 		}
