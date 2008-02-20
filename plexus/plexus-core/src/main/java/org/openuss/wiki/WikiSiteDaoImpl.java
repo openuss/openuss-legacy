@@ -19,6 +19,9 @@ public class WikiSiteDaoImpl
     {
         // @todo verify behavior of toWikiSiteInfo
         super.toWikiSiteInfo(sourceEntity, targetVO);
+        
+        targetVO.setId(null);
+        targetVO.setWikiSiteId(sourceEntity.getId());
     }
 
 

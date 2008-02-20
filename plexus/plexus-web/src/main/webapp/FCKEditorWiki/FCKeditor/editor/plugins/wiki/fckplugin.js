@@ -17,11 +17,22 @@ if (window.document.location.href.match(/Wiki/)) {
 	                         FCKLang['OpenUSSWikiLinkTitle'], 
 	                         FCKConfig.BaseHref + '/openuss-plexus/views/secured/wiki/wikieditlinks.faces', 400, 500));
 	                         
-	// Create the "Find" toolbar button.
+    // Register the related commands.
+    FCKCommands.RegisterCommand('OpenUSSWikiImage', 
+        new FCKDialogCommand(FCKLang['OpenUSSWikiImageTitle'], 
+                             FCKLang['OpenUSSWikiImageTitle'], 
+                             FCKConfig.BaseHref + '/openuss-plexus/views/secured/wiki/wikieditimages.faces', 400, 500));
+	                         
+	// Create the "Link" toolbar button.
 	var oWikiLinkItem = new FCKToolbarButton('OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkTitle']);
 	oWikiLinkItem.IconPath = FCKPlugins.Items['wiki'].Path + '/wikilink.gif';
 	
+	// Create the "Image" toolbar button.
+    var oWikiImageItem = new FCKToolbarButton('OpenUSSWikiImage', FCKLang['OpenUSSWikiImageTitle']);
+    oWikiImageItem.IconPath = FCKPlugins.Items['wiki'].Path + '/wikiimage.gif';
+	
 	FCKToolbarItems.RegisterItem('OpenUSSWikiLink', oWikiLinkItem);
+	FCKToolbarItems.RegisterItem('OpenUSSWikiImage', oWikiImageItem);
 	
 	FCK.ContextMenu.RegisterListener( {
 	        AddItems : function( menu, tag, tagName )

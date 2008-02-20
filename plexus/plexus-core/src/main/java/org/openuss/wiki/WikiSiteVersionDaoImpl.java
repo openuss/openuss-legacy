@@ -17,8 +17,9 @@ public class WikiSiteVersionDaoImpl
         org.openuss.wiki.WikiSiteVersion sourceEntity,
         org.openuss.wiki.WikiSiteContentInfo targetVO)
     {
-        // @todo verify behavior of toWikiSiteContentInfo
-        super.toWikiSiteContentInfo(sourceEntity, targetVO);
+    	toWikiSiteInfo(sourceEntity, targetVO);
+    	
+    	targetVO.setText(sourceEntity.getText());
     }
 
 
@@ -27,8 +28,9 @@ public class WikiSiteVersionDaoImpl
      */
     public org.openuss.wiki.WikiSiteContentInfo toWikiSiteContentInfo(final org.openuss.wiki.WikiSiteVersion entity)
     {
-        // @todo verify behavior of toWikiSiteContentInfo
-        return super.toWikiSiteContentInfo(entity);
+    	final org.openuss.wiki.WikiSiteContentInfo target = new org.openuss.wiki.WikiSiteContentInfo();
+        this.toWikiSiteContentInfo(entity, target);
+        return target;
     }
 
 
@@ -69,8 +71,12 @@ public class WikiSiteVersionDaoImpl
         org.openuss.wiki.WikiSiteVersion targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of wikiSiteContentInfoToEntity
-        super.wikiSiteContentInfoToEntity(sourceVO, targetEntity, copyIfNull);
+    	wikiSiteInfoToEntity(sourceVO, targetEntity, copyIfNull);
+    	
+    	if (copyIfNull || sourceVO.getText() != null)
+        {
+    		targetEntity.setText(sourceVO.getText());
+        }
     }
 
     /**
@@ -80,8 +86,18 @@ public class WikiSiteVersionDaoImpl
         org.openuss.wiki.WikiSiteVersion sourceEntity,
         org.openuss.wiki.WikiSiteInfo targetVO)
     {
-        // @todo verify behavior of toWikiSiteInfo
-        super.toWikiSiteInfo(sourceEntity, targetVO);
+    	targetVO.setId(sourceEntity.getId());
+    	targetVO.setCreationDate(sourceEntity.getCreationDate());
+    	targetVO.setNote(sourceEntity.getNote());
+    	
+    	targetVO.setWikiSiteId(sourceEntity.getWikiSite().getId());
+    	targetVO.setName(sourceEntity.getWikiSite().getName());
+    	targetVO.setDeleted(sourceEntity.getWikiSite().getDeleted());
+    	targetVO.setReadOnly(sourceEntity.getWikiSite().getReadOnly());
+    	targetVO.setDomainId(sourceEntity.getWikiSite().getDomainId());
+    	
+    	targetVO.setAuthorId(sourceEntity.getAuthor().getId());
+    	
     }
 
 
@@ -90,8 +106,9 @@ public class WikiSiteVersionDaoImpl
      */
     public org.openuss.wiki.WikiSiteInfo toWikiSiteInfo(final org.openuss.wiki.WikiSiteVersion entity)
     {
-        // @todo verify behavior of toWikiSiteInfo
-        return super.toWikiSiteInfo(entity);
+    	final org.openuss.wiki.WikiSiteInfo target = new org.openuss.wiki.WikiSiteInfo();
+        this.toWikiSiteInfo(entity, target);
+        return target;
     }
 
 
@@ -132,8 +149,14 @@ public class WikiSiteVersionDaoImpl
         org.openuss.wiki.WikiSiteVersion targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of wikiSiteInfoToEntity
-        super.wikiSiteInfoToEntity(sourceVO, targetEntity, copyIfNull);
+    	if (copyIfNull || sourceVO.getCreationDate() != null)
+        {
+    		targetEntity.setCreationDate(sourceVO.getCreationDate());
+        }
+        if (copyIfNull || sourceVO.getNote() != null)
+        {
+        	targetEntity.setNote(sourceVO.getNote());
+        }
     }
 
 }

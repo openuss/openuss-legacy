@@ -8,7 +8,7 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
- * File Name: ConnectorServlet.java
+ * File Name: FCKConnectorServlet.java
  * 	Java Connector for Resource Manager class.
  * 
  * Version:  2.3
@@ -18,22 +18,42 @@
  * 		Simone Chiaretta (simo@users.sourceforge.net)
  */ 
  
-package com.fredck.FCKeditor.connector;
+package org.openuss.web.servlets;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.fileupload.*;
-
-
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource; 
-import javax.xml.transform.stream.StreamResult; 
+import org.apache.commons.fileupload.DiskFileUpload;
+import org.apache.commons.fileupload.FileItem;
+import org.openuss.documents.FileInfo;
+import org.openuss.repository.RepositoryService;
+import org.openuss.web.Constants;
+import org.openuss.wiki.WikiService;
+import org.openuss.wiki.WikiSite;
+import org.openuss.wiki.WikiSiteContentInfo;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 
 /**
@@ -49,12 +69,14 @@ import javax.xml.transform.stream.StreamResult;
  * </ul>
  *
  * @author Simone Chiaretta (simo@users.sourceforge.net)
+ * @author Christian Beer
  */
 
 public class ConnectorServlet extends HttpServlet {
 	
-	private static String baseDir;
-	private static boolean debug=false;
+	private static boolean debug = false;
+	
+	private transient WikiService wikiService;
 	
 	/**
 	 * Initialize the servlet.<br>
@@ -63,15 +85,10 @@ public class ConnectorServlet extends HttpServlet {
 	 *
 	 */
 	 public void init() throws ServletException { 
-		baseDir=getInitParameter("baseDir");
-		debug=(new Boolean(getInitParameter("debug"))).booleanValue();
-		if(baseDir==null)
-			baseDir="/UserFiles/";
-		String realBaseDir=getServletContext().getRealPath(baseDir);
-		File baseFile=new File(realBaseDir);
-		if(!baseFile.exists()){
-			baseFile.mkdir();
-		}
+		debug = Boolean.parseBoolean(getInitParameter("debug"));
+		
+		final WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		this.wikiService = (WikiService)wac.getBean("wikiService", WikiService.class);
 	}
 	
 	/**
@@ -94,13 +111,7 @@ public class ConnectorServlet extends HttpServlet {
 		String typeStr=request.getParameter("Type");
 		String currentFolderStr=request.getParameter("CurrentFolder");
 		
-		String currentPath=baseDir+typeStr+currentFolderStr;
-		String currentDirPath=getServletContext().getRealPath(currentPath);
-		
-		File currentDir=new File(currentDirPath);
-		if(!currentDir.exists()){
-			currentDir.mkdir();
-		}
+		WikiSiteContentInfo wikiSite = (WikiSiteContentInfo)request.getSession().getAttribute(Constants.WIKI_CURRENT_SITE_VERSION);
 		
 		Document document=null;
 		try {
@@ -111,18 +122,19 @@ public class ConnectorServlet extends HttpServlet {
 			pce.printStackTrace();
 		}
 		
-		Node root=CreateCommonXml(document,commandStr,typeStr,currentFolderStr,request.getContextPath()+currentPath);
+		Node root=createCommonXml(document,commandStr,typeStr,currentFolderStr, "/");
 		
 		if (debug) System.out.println("Command = " + commandStr);
 		
 		if(commandStr.equals("GetFolders")) {
-			getFolders(currentDir,root,document);
+			getFolders(wikiSite, root, document);
 		}
 		else if (commandStr.equals("GetFoldersAndFiles")) {
-			getFolders(currentDir,root,document);
-			getFiles(currentDir,root,document);
+			getFolders(wikiSite, root, document);
+			getFiles(wikiSite, root, document);
 		}
 		else if (commandStr.equals("CreateFolder")) {
+			/*
 			String newFolderStr=request.getParameter("NewFolderName");
 			File newFolder=new File(currentDir,newFolderStr);
 			String retValue="110";
@@ -141,7 +153,10 @@ public class ConnectorServlet extends HttpServlet {
 					retValue="103";
 				}
 				
-			}			
+			}			*/
+			
+			String retValue="101";
+			
 			setCreateFolderResponse(retValue,root,document);
 		}		
 		
@@ -190,17 +205,14 @@ public class ConnectorServlet extends HttpServlet {
 		response.setHeader("Cache-Control","no-cache");
 		PrintWriter out = response.getWriter();
 		
-		String commandStr=request.getParameter("Command");
-		String typeStr=request.getParameter("Type");
-		String currentFolderStr=request.getParameter("CurrentFolder");
-		
-		String currentPath=baseDir+typeStr+currentFolderStr;
-		String currentDirPath=getServletContext().getRealPath(currentPath);
-		
-		if (debug) System.out.println(currentDirPath);
+		String commandStr = request.getParameter("Command");
+		String typeStr = request.getParameter("Type");
+		String currentFolderStr = request.getParameter("CurrentFolder");
 		
 		String retVal="0";
 		String newName="";
+		
+		WikiSiteContentInfo wikiSite = (WikiSiteContentInfo)request.getSession().getAttribute(Constants.WIKI_CURRENT_SITE_VERSION);
 		
 		if(!commandStr.equals("FileUpload"))
 			retVal="203";
@@ -219,14 +231,29 @@ public class ConnectorServlet extends HttpServlet {
 				    else
 				    	fields.put(item.getFieldName(),item);
 				}
-				FileItem uplFile=(FileItem)fields.get("NewFile");
-				String fileNameLong=uplFile.getName();
-				fileNameLong=fileNameLong.replace('\\','/');
-				String[] pathParts=fileNameLong.split("/");
-				String fileName=pathParts[pathParts.length-1];
+				FileItem uplFile = (FileItem)fields.get("NewFile");
+				String fileNameLong = uplFile.getName();
+				fileNameLong = fileNameLong.replace('\\','/');
+				String[] pathParts = fileNameLong.split("/");
+				String fileName = pathParts[pathParts.length-1];
 				
-				String nameWithoutExt=getNameWithoutExtension(fileName);
-				String ext=getExtension(fileName);
+				String nameWithoutExt = getNameWithoutExtension(fileName);
+				String ext = getExtension(fileName);
+				
+				FileInfo file = new FileInfo();
+				file.setAbsoluteName(fileName);
+				file.setCreated(new Date());
+				file.setExtension(ext);
+				file.setFileName(fileName);
+				file.setFileSize((int)uplFile.getSize());
+				file.setContentType(uplFile.getContentType());
+				file.setInputStream(uplFile.getInputStream());
+				
+				this.wikiService.saveImage(wikiSite, file);
+				
+				newName = "/files/test.gif";
+				
+				/*
 				File pathToSave=new File(currentDirPath,fileName);
 				int counter=1;
 				while(pathToSave.exists()){
@@ -236,7 +263,9 @@ public class ConnectorServlet extends HttpServlet {
 					counter++;
 					}
 				uplFile.write(pathToSave);
+				*/
 			}catch (Exception ex) {
+				ex.printStackTrace();
 				retVal="203";
 			}
 			
@@ -259,10 +288,10 @@ public class ConnectorServlet extends HttpServlet {
 	}
 	
 
-	private void getFolders(File dir,Node root,Document doc) {
+	private void getFolders(WikiSiteContentInfo wikiSite, Node root,Document doc) {
 		Element folders=doc.createElement("Folders");
 		root.appendChild(folders);
-		File[] fileList=dir.listFiles();
+		File[] fileList = new File[0]; //dir.listFiles();
 		for(int i=0;i<fileList.length;++i) {
 			if(fileList[i].isDirectory()){
 				Element myEl=doc.createElement("Folder");
@@ -272,21 +301,24 @@ public class ConnectorServlet extends HttpServlet {
 			}		
 	}
 
-	private void getFiles(File dir,Node root,Document doc) {
+	@SuppressWarnings("unchecked")
+	private void getFiles(WikiSiteContentInfo wikiSite, Node root,Document doc) {
 		Element files=doc.createElement("Files");
 		root.appendChild(files);
-		File[] fileList=dir.listFiles();
-		for(int i=0;i<fileList.length;++i) {
-			if(fileList[i].isFile()){
+		
+		List<FileInfo> fileEntries = wikiService.findImagesByDomainId(wikiSite.getDomainId());
+		
+		for(FileInfo file : fileEntries) {
+			//if(fileList[i].isFile()){
 				Element myEl=doc.createElement("File");
-				myEl.setAttribute("name",fileList[i].getName());
-				myEl.setAttribute("size",""+fileList[i].length()/1024);
+				myEl.setAttribute("name", file.getFileName());
+				myEl.setAttribute("size", Integer.toString(file.getFileSize()/1024));
 				files.appendChild(myEl);
-				}
-			}	
+		//	}
+		}	
 	}	
 
-	private Node CreateCommonXml(Document doc,String commandStr, String typeStr,  String currentPath, String currentUrl ) {
+	private Node createCommonXml(Document doc,String commandStr, String typeStr,  String currentPath, String currentUrl ) {
 		
 		Element root=doc.createElement("Connector");
 		doc.appendChild(root);

@@ -58,12 +58,12 @@ FCKConfig.ToolbarSets["Wiki"] = [
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
 	['Undo','Redo','-','SelectAll','RemoveFormat'],
 	'/',
-	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+	['Bold','Italic','Underline','StrikeThrough'/*,'-','Subscript','Superscript'*/],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	['OpenUSSWikiLink','Unlink'],
 	['TextColor','BGColor'],
-	['Smiley']
+	['Image', 'Smiley']
 ] ;
 
 FCKConfig.ToolbarSets["Description"] = [

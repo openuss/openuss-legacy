@@ -8,6 +8,9 @@ package org.openuss.wiki;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DomainObject;
 import org.openuss.lecture.Course;
 import org.openuss.security.User;
 
@@ -153,4 +156,37 @@ public class WikiServiceImpl
 		}
 	}
 
+	@Override
+	protected void handleDeleteImage(Long fileId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List handleFindImagesByDomainId(Long domainId) throws Exception {
+		Validate.notNull(domainId, "Parameter domainId cannot be null.");
+		
+		return getDocumentService().getFileEntries(getDomainObject(domainId));
+	}
+
+	@Override
+	protected void handleSaveImage(final WikiSiteInfo wikiSiteInfo, final FileInfo image)
+			throws Exception {
+		Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
+		Validate.notNull(image, "Parameter image cannot be null.");
+		
+		FolderInfo folder = getDocumentService().getFolder(getDomainObject(wikiSiteInfo.getDomainId()));
+		getDocumentService().createFileEntry(image, folder);
+	}
+
+	private DomainObject getDomainObject(final Long domainId) {
+		return new DomainObject() {
+			public void setId(Long id) {
+			}
+			public Long getId() {
+				return domainId;
+			}
+		};
+	}
 }

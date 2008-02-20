@@ -8,3 +8,6 @@
 FCKLang.OpenUSSWikiLinkTitle		    = 'Link' ;
 FCKLang.OpenUSSWikiLinkContextMenuTitle = 'edit link';
 FCKLang.DlnLnkMsgNoPageName             = 'Bitte geben Sie einen Seiten-Namen ein';
+
+FCKLang.OpenUSSWikiImageTitle            = 'Image' ;
+FCKLang.OpenUSSWikiImageContextMenuTitle = 'Image edit'; 
