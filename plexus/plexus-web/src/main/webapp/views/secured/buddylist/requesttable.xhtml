@@ -16,17 +16,17 @@
 			<div class="userimage"><h:commandLink value="" 
 				action="#{views$secured$buddylist$buddyrequest.linkProfile}">
 				<h:graphicImage styleClass="userphoto"
-					value="/files?fileid=#{currentbuddy.userPicture}"
-					title="#{currentbuddy.name}"
-					rendered="#{not empty currentbuddy.userPicture}" />
+					value="/files?fileid=#{currentbuddy.requestingPictureId}"
+					title="#{currentbuddy.requesterName}"
+					rendered="#{not empty currentbuddy.requestingPictureId}" />
 				<h:graphicImage styleClass="userphoto"
 					value="/images/icons/no_pic.gif" alt="#{msg.user_profile_no_image}"
 					title="#{msg.user_profile_no_image}"
-					rendered="#{empty currentbuddy.userPicture}" />
+					rendered="#{empty currentbuddy.requestingPictureId}" />
 			</h:commandLink></div>
 		</t:column>
 		<t:column styleClass="col_max_left">
-			<h:outputText value="#{currentbuddy.name}"
+			<h:outputText value="#{currentbuddy.requesterName}"
 				styleClass="header_font_normal" />
 			<br />
 			<t:dataList value="#{currentbuddy.tags}" var="currentTag"

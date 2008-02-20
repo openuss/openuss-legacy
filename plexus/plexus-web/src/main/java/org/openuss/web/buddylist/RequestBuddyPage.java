@@ -90,7 +90,7 @@ public class RequestBuddyPage extends BasePage {
 	}
 	
 	public String linkProfile(){
-		profile.setId(this.data.getRowData().getUserId());
+		profile.setId(this.data.getRowData().getRequesterId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

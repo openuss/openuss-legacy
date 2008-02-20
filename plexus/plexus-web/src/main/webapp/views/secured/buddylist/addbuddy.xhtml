@@ -39,7 +39,7 @@
 				<o:block label="#{msg['openuss4us_addbuddy']}" styleClass="content_box">
 				<!-- CONTENT HIER REIN -->
 				
-				<h:panelGrid columns="1" border="0">
+				<h:panelGrid columns="3" border="0">
 	
 					<h:panelGroup id="userimage">
 						<div class="userimage">
@@ -60,7 +60,15 @@
 				<h:outputText value="#{showuser.lastName}" />
 					
 					</h:panelGroup>
-
+				
+				<h:panelGroup>
+					<h:outputText value="" />
+				</h:panelGroup>
+		
+					
+				<h:panelGroup id="text">
+					<h:outputText value="#{msg.openuss4us_buddylist_addbuddy_text}"/>
+				</h:panelGroup>	
 				</h:panelGrid>
 				
 				
