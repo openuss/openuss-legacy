@@ -49,7 +49,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		if (this.siteVersionInfo.getName() != null) {
+		if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
 			crumb = new BreadCrumb();
 			crumb.setLink("");
 			crumb.setName(readablePageName(this.siteVersionInfo.getName()));
