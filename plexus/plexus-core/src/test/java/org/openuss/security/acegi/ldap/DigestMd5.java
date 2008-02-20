@@ -8,6 +8,8 @@ import java.util.Hashtable;
 import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 
@@ -62,15 +64,74 @@ public class DigestMd5 {
         	DirContext ctx = new InitialDirContext(env);
             System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer").toString());
             System.out.println();
-            System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer", new String[]{"mail"}).get("mail").toString().substring(6));
+            System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null).get("mail").toString().substring(6));
         	
-//        	NamingEnumeration enumList = ctx.list("");
+            Attributes attrs = ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null);
+        	
+//            NamingEnumeration returnedAttributes = attrs.getAll();
+//        	while (returnedAttributes.hasMore()){
+//        		Attribute returnedAttribute = (Attribute) returnedAttributes.next();
+//        		NamingEnumeration attributeValues = returnedAttribute.getAll();
+//        		while (attributeValues.hasMore()) {
+//        			System.out.println(((Object) attributeValues.next()).toString());
+//        		}
+//        	}
+        
+            // Set up some test values
+            String rootDn1 = "dc=uni-muenster, DC=DE";
+            String rootDn2 = "dc=openuss-university,dc=de";
+            
+            // Prepare test values for string comparison
+            rootDn1.trim();
+    		rootDn2.trim();
+    		rootDn1 = rootDn1.replaceAll("\\s+","");
+    		rootDn2 = rootDn2.replaceAll("\\s+","");
+    		rootDn1 = rootDn1.toLowerCase();
+    		rootDn2 = rootDn2.toLowerCase();
+    		
+    		String groupRoleAttribute = "cn";
+    		groupRoleAttribute.trim();
+    		groupRoleAttribute = groupRoleAttribute.replaceAll("\\s+","");
+    		groupRoleAttribute = groupRoleAttribute.toUpperCase();
+    		
+    		
+    		// Retrieve information from DN
+        	Attribute returnedAttribute = attrs.get("memberOf");
+        	NamingEnumeration attributeValues = returnedAttribute.getAll();
+        	while (attributeValues.hasMore()) {
+        		String dn = ((Object) attributeValues.next()).toString();
+        		System.out.println(dn);
+        		dn = dn.replaceAll("\\s+","");
+        		
+        		// Retrieve Domain
+        		if (dn.toLowerCase().contains(rootDn2.toLowerCase()))
+        			System.out.println("OpenUSS");
+        		else if (dn.toLowerCase().contains(rootDn1.toLowerCase()))
+        			System.out.println("Uni Muenster");
+        		
+        		// Retrieve Role     		
+        		String role = "GroupRoleAttribute not found within DN.";
+        		dn = dn.toUpperCase();
+        		int startindex = dn.indexOf(groupRoleAttribute);
+        		int endindex = 0;
+        		if (startindex > -1) {
+        			startindex = startindex + groupRoleAttribute.length()+1;
+        			endindex = dn.indexOf(",", startindex);
+        		    role = "ROLE_"+ dn.substring(startindex,endindex);
+        		}
+        		System.out.println(role);        	      		
+        	}
+        	
+        	
+        	
+            
+//            NamingEnumeration enumList = ctx.list("");
 //        	int i=0;
 //            while (i < 10 && enumList.hasMore()) {
 //                System.out.println(enumList.next());
 //                ++i;
 //            }            
-//            ctx.close();
+            ctx.close();
             
             
             
