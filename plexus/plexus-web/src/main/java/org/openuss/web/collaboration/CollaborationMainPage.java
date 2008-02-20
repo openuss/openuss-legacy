@@ -137,7 +137,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
 		for (CourseMemberInfo member : courseMembers) {
 			if (this.memberSelection.isSelected(member)) {
-				memberIds.add(member.getId());
+				memberIds.add(member.getUserId());
 			}
 		}
 		workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
