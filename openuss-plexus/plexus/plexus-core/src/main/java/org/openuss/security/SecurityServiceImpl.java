@@ -153,6 +153,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 				securityContext.setAuthentication(authentication);
 			}
 		}
+		
+		//TODO check if UserContext of another user can updated
+//		if (authority instanceof UserImpl) {
+//			UserInfo userInfo = getUserDao().toUserInfo((User)authority);
+//			getUserCache().removeUserFromCache(userInfo.getUsername());
+//			getUserCache().putUserInCache(new UserInfoDetailsAdapter(userInfo,((UserImpl) authority).getGrantedAuthorities()));
+//		}
 	}
 
 	private Authority forceAuthorityLoad(Authority authority) {
