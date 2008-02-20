@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/groups.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="groupOptionForm">
+	  			<o:block label="#{msg.group_options_headline} - #{sessionScope.groupInfo.name}" styleClass="form_box">
+	  				<o:input entity="groupInfo" property="name" maxlength="100" required="true"/>
+					<o:input entity="groupInfo" property="shortcut" maxlength="30" required="true"/>
+					<h:outputLabel for="accessType" value="#{msg.group_options_access_headline}" styleClass="field_label"/>
+					<h:selectOneMenu id="accessType" 
+						layout="pageDirection" 
+						value="#{sessionScope.groupInfo.accessType}" 
+						valueChangeListener="#{views$secured$groups$components$groupoptions.processAccessTypeChanged}" 
+						onchange="this.form.submit();"
+						immediate="true" 
+						styleClass="pulldown">
+						<f:converter converterId="accessTypeConverter" />
+						<f:selectItems value="#{views$secured$groups$components$groupoptions.accessTypes}"/>
+					</h:selectOneMenu>
+					<h:message for="accessType" styleClass="field_error"/>
+					<c:if test="#{sessionScope.groupInfo.accessType.value == 2}">
+		 				<o:input entity="groupInfo" property="password" required="true"/>
+	 				</c:if> 				
+					
+					<h:outputText value="#{msg.group_description}" styleClass="field_label"/>					
+					<div class="content_iframe">
+						<fck:editor value="#{sessionScope.groupInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+					</div>
+	 				
+					<h:outputText value="#{msg.group_options_features_headline}" styleClass="header_font_normal"/>
+					<div class="content_font_normal">
+						<o:input entity="groupInfo" property="documents"/>
+						<o:input entity="groupInfo" property="forum"/>
+						<o:input entity="groupInfo" property="newsletter"/>
+						<o:input entity="groupInfo" property="chat"/>
+						<o:input entity="groupInfo" property="calendar"/>
+					</div>
+				</o:block>
+				<o:block>
+					<h:commandButton 
+						value="${msg.save}" 
+						action="#{views$secured$groups$components$groupoptions.saveOptions}" 
+						styleClass="button"/>
+					<h:commandButton 
+						value="${msg.cancel}" 
+						action="#{views$secured$groups$components$groupoptions.cancelOptions}" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

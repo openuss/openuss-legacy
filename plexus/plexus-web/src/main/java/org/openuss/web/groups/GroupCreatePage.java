@@ -49,7 +49,7 @@ public class GroupCreatePage extends BasePage {
 	/* ----- business logic ----- */
 	
 	public String register() {
-		logger.debug("START CREATION GROUP");
+		logger.debug("START CREAT GROUP");
 		// create group info object
 		UserGroupInfo groupInfo = new UserGroupInfo();
 		groupInfo.setId(null);
@@ -85,7 +85,7 @@ public class GroupCreatePage extends BasePage {
 			newsletter = true;
 			accessType = 0;
 			
-			logger.debug("END CREATION GROUP");
+			logger.debug("END CREAT GROUP");
 			return Constants.GROUP_PAGE;
 		} else {
 			return "";
@@ -102,7 +102,6 @@ public class GroupCreatePage extends BasePage {
 
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessTypeGroup = event.getNewValue();
-		logger.debug("HERE IS THE ACCESS TYPE: " + accessTypeGroup);
 		accessType = (Integer) accessTypeGroup;
 		if (accessType < 2){
 			password = "Password";

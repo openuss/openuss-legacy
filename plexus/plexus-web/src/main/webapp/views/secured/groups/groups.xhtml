@@ -36,19 +36,9 @@
   		</ui:define>
   		<ui:define name="content">
 			<h:form id="openuss4us_groups" enctype="multipart/form-data">
-				<o:block label="#{msg['openuss4us_command_groups']}" styleClass="content_box">
+		
+				<ui:include src="groupstable.xhtml" />
 				
-				<t:htmlTag value="br" />
-				
-				<h:outputText value="#{msg['openuss4us_groups_description']}" styleClass="content_font_normal" />
-				
-
-					<o:flexlist binding="#{views$secured$groups$groups.groupList}" />
-
-				
-				<t:htmlTag value="br" />
-				
-   			 	</o:block>
    			 	<o:block>
 				
 				<h:commandButton 

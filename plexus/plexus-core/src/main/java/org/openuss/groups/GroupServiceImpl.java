@@ -142,6 +142,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = this.getUserGroupDao().load(groupInfo.getId());
 		Validate.notNull(group, "No Group found to the corresponding ID "
 				+ groupInfo.getId());
+		
+		// TODO - Lutz: Aspiranten, Member und Moderatoren sofern vorhanden entfernen
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(group);
@@ -274,6 +276,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		if (isModerator(groupInfo, userId)){
 			this.removeModerator(groupInfo, userId);
 		}
+		
+		// TODO - Lutz: Gruppe löschen sofern letztes Gruppenmitglied
 
 		// Load Group Entitiy
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
@@ -450,21 +454,26 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(user, "User cannot be null.");
 
 		Collection<Membership> memberships = getMembershipDao().loadAll();
-		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
+		Collection<UserGroup> groups = getUserGroupDao().loadAll();
+		List<UserGroupInfo> groupList = new ArrayList<UserGroupInfo>();
+		logger.debug("GROUPSERVICEIMPL 1: " + groupList.size());
 		for (Membership membership : memberships) {
-			List<User> members = membership.getMembers();
-			for (User member : members) {
-				if (member.getId() == userId) {
-					group.add(getUserGroupDao().toUserGroupInfo(
-							getUserGroupDao().findByMembership(membership)));
+			for (UserGroup group:groups){
+				if (group.getMembership().getId() == membership.getId()){
+					List<User> members = membership.getMembers();
+					for (User member : members) {
+						if (member.getId() == userId) {
+							groupList.add(getUserGroupDao().toUserGroupInfo(
+									getUserGroupDao().findByMembership(membership)));
+							logger.debug("GROUPSERVICEIMPL 2: " + groupList.size());
+						}
+					}
 				}
 			}
 		}
+		logger.debug("GROUPSERVICEIMPL 3: " + groupList.size());
 
-		// for (GroupMember member : membership) {
-		// group.add(getUserGroupDao().findbyMembership(member));
-		// }
-		return group;
+		return groupList;
 	}
 
 	/**

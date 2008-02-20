@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/chatlayout.xhtml">
+  		<ui:define name="title">
+  			<h:outputText value="#{courseInfo.name}"/>
+  		</ui:define>
+  		<ui:define name="content"> 
+			<o:block>
+				<span class="header_font_normal">
+					<h:outputText value="#{courseInfo.shortcut} > Chat" styleClass="content_font_normal"></h:outputText>
+				</span>
+			</o:block>
+			<form action="javascript:doSend()" name="formular" method="post">
+			<o:block label="#{msg.chat_userlist}" styleClass="user_box">
+				<label class="fieldLabel"/>
+				<textarea readonly="readonly" name="usersonline" id="UserList" class="field"/>
+			</o:block>
+				<o:block label="#{msg.chat_messages}" styleClass="news_box">
+					<label class="fieldLabel"/>
+					<textarea readonly="readonly" name="messagefield" id="ChatArea" class="field"/>
+				</o:block>
+				<o:block label="#{msg.chat_message}" styleClass="form_box">
+					<label class="fieldLabel"/>
+					<input name="message" type="text" id="MessageField" class="field_inline" size="50" />
+					<input value="#{msg.chat_command_send}" type="submit" class="button"/>
+				</o:block>
+			</form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
