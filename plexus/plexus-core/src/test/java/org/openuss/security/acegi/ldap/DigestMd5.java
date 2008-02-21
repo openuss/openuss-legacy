@@ -1,31 +1,28 @@
 package org.openuss.security.acegi.ldap;
 
-/* Beispiele aus dem Buch "LDAP fuer Java-Entwickler"
- * Software & Support Verlag, 2004
- */
 import java.util.Hashtable;
 
 import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
+
 /**
- * Verwendung von DIGEST-MD5 -- (Listing 4_2).
+ * Usage of DIGEST-MD5.
+ * 
  */
 public class DigestMd5 {
 
-    public static void main (String[] args) throws Exception {
-
-    	if (args.length < 1) {
-            System.err.println(
-                "Usage: java DigestMd5 <password>");
-            System.exit(1);
-        }
-    	
+	private static void authenticate(String password) throws NamingException {
         Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 //        env.put(Context.PROVIDER_URL, "ldap://wwusv1.uni-muenster.de:389/dc=uni-muenster,dc=de");
@@ -48,7 +45,7 @@ public class DigestMd5 {
          * AcceptSecurityContext error, data 0: fehlerhafter Benutzername oder Passwort
          * AcceptSecurityContext error, data 525: fehlerhafter AuthentifikationsTyp (Simple statt DIGEST-MD5)
          */
-        env.put(Context.SECURITY_CREDENTIALS, args[0]);
+        env.put(Context.SECURITY_CREDENTIALS, password);
 //        env.put(Context.SECURITY_CREDENTIALS, "");
                 
         try {
@@ -82,8 +79,6 @@ public class DigestMd5 {
             String rootDn2 = "dc=openuss-university,dc=de";
             
             // Prepare test values for string comparison
-            rootDn1.trim();
-    		rootDn2.trim();
     		rootDn1 = rootDn1.replaceAll("\\s+","");
     		rootDn2 = rootDn2.replaceAll("\\s+","");
     		rootDn1 = rootDn1.toLowerCase();
@@ -101,12 +96,12 @@ public class DigestMd5 {
         	while (attributeValues.hasMore()) {
         		String dn = ((Object) attributeValues.next()).toString();
         		System.out.println(dn);
-        		dn = dn.replaceAll("\\s+","");
+        		dn = dn.toLowerCase().replaceAll("\\s+","");
         		
         		// Retrieve Domain
-        		if (dn.toLowerCase().contains(rootDn2.toLowerCase()))
+        		if (dn.contains(rootDn2.toLowerCase()))
         			System.out.println("OpenUSS");
-        		else if (dn.toLowerCase().contains(rootDn1.toLowerCase()))
+        		else if (dn.contains(rootDn1.toLowerCase()))
         			System.out.println("Uni Muenster");
         		
         		// Retrieve Role     		
@@ -120,9 +115,7 @@ public class DigestMd5 {
         		    role = "ROLE_"+ dn.substring(startindex,endindex);
         		}
         		System.out.println(role);        	      		
-        	}
-        	
-        	
+        	} 	
         	
             
 //            NamingEnumeration enumList = ctx.list("");
@@ -140,8 +133,192 @@ public class DigestMd5 {
         }
         catch(AuthenticationException ex) {
         	System.out.println("Fehlerhafte Authentifizierung: "+ex);
-        }
-        
+        }        
 
+    }
+	
+	public static void testSetUpProviderUrl(String inputUrl, Integer port, String rootDn) {
+    	String url = inputUrl;
+    	url = url.toLowerCase().replaceAll("\\s+","");
+    	url = url + " ";  	
+    	url = url.replaceAll("[^a-z]+\\s", "");
+    	
+    	rootDn = rootDn.toLowerCase();
+    	rootDn = rootDn.replaceAll("\\s+","");
+    	rootDn = rootDn.replaceAll("/+","");
+    	url = url + ":"+port.toString()+"/"+rootDn;
+    	
+    	System.out.println(url);
+	}
+	
+
+	private static void testExtendedLdapUserDetailsMapper(String password) throws NamingException {
+        Hashtable env = new Hashtable();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, "ldap://wwusv1.uni-muenster.de:389/dc=uni-muenster,dc=de");
+        env.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5");
+        env.put(Context.SECURITY_PRINCIPAL, "p_schu07");
+        
+        env.put(Context.SECURITY_CREDENTIALS, password);
+                
+        try {
+        	
+        	Hashtable envClone = (Hashtable) env.clone();
+            if (envClone.containsKey(Context.SECURITY_CREDENTIALS)) {
+                envClone.put(Context.SECURITY_CREDENTIALS, "******");
             }
+            System.out.println("Creating InitialDirContext with environment " + envClone);
+            System.out.println();
+            
+                	
+        	DirContext ctx = new InitialDirContext(env);
+        	String UserDn = ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null).get("distinguishedName").toString();
+        	Attributes attributes = ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null);
+        	
+        	ExtendedLdapUserDetailsMapper mapper = new ExtendedLdapUserDetailsMapper();
+        	//LdapUserDetailsMapper mapper = new LdapUserDetailsMapper();
+        	mapper.setRoleAttributes(new String[]{"memberOf"});
+        	mapper.setGroupRoleAttributeKey("ou");
+        	mapper.setConvertToUpperCase(true);
+        	
+        	LdapUserDetailsImpl.Essence essence = (LdapUserDetailsImpl.Essence) mapper.mapAttributes(UserDn, attributes);
+        	LdapUserDetails ldapUserDetails = essence.createUserDetails();
+        	        	
+//        	GrantedAuthority[] grantedAuthorities = ldapUserDetails.getAuthorities();
+        	
+//        	for (int i = 0; i < grantedAuthorities.length; i++) {
+//				GrantedAuthority grantedAuthority = grantedAuthorities[i];
+//				System.out.println(grantedAuthority.getAuthority());
+//			}
+
+        	
+            // Set up some test values
+            String rootDn1 = "dc=uni-muenster, DC=DE";
+            String rootDn2 = "dc=openuss-university,dc=de";
+            
+            // Prepare test values for string comparison
+    		rootDn1 = rootDn1.replaceAll("\\s+","");
+    		rootDn2 = rootDn2.replaceAll("\\s+","");
+    		rootDn1 = rootDn1.toLowerCase();
+    		rootDn2 = rootDn2.toLowerCase();
+
+        	String dn = ldapUserDetails.getDn();
+        	
+    		dn = dn.toLowerCase().replaceAll("\\s+","");
+    		
+    		Integer domainId = new Integer(0);
+    		// Retrieve Domain
+    		if (dn.contains(rootDn2.toLowerCase()))
+    			System.out.println("OpenUSS");
+    		else if (dn.contains(rootDn1.toLowerCase())) {
+    				System.out.println("Uni Muenster");
+    				domainId = 42;
+    			 }
+    		
+    		ldapUserDetails.getAttributes().put("logonDomainId", domainId);
+    		
+    		essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
+    		
+    		essence.addAuthority(new GrantedAuthorityImpl("ROLE_LDAPUSER"));
+    		
+    		ldapUserDetails = essence.createUserDetails();
+    		
+    		System.out.println(ldapUserDetails.getAttributes().get("logonDomainId").toString());
+
+    		GrantedAuthority[] grantedAuthorities = ldapUserDetails.getAuthorities();
+    		
+        	for (int i = 0; i < grantedAuthorities.length; i++) {
+				GrantedAuthority grantedAuthority = grantedAuthorities[i];
+				System.out.println(grantedAuthority.getAuthority());
+			}
+
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+/*        	
+            Attributes attrs = ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null);
+
+            // Set up some test values
+            String rootDn1 = "dc=uni-muenster, DC=DE";
+            String rootDn2 = "dc=openuss-university,dc=de";
+            
+            // Prepare test values for string comparison
+    		rootDn1 = rootDn1.replaceAll("\\s+","");
+    		rootDn2 = rootDn2.replaceAll("\\s+","");
+    		rootDn1 = rootDn1.toLowerCase();
+    		rootDn2 = rootDn2.toLowerCase();
+    		
+    		String groupRoleAttribute = "cn";
+    		groupRoleAttribute.trim();
+    		groupRoleAttribute = groupRoleAttribute.replaceAll("\\s+","");
+    		groupRoleAttribute = groupRoleAttribute.toUpperCase();
+    		
+    		
+    		// Retrieve information from DN
+        	Attribute returnedAttribute = attrs.get("memberOf");
+        	NamingEnumeration attributeValues = returnedAttribute.getAll();
+        	while (attributeValues.hasMore()) {
+        		String dn = ((Object) attributeValues.next()).toString();
+//        		System.out.println(dn);
+        		dn = dn.toLowerCase().replaceAll("\\s+","");
+        		
+        		// Retrieve Domain
+        		if (dn.contains(rootDn2.toLowerCase()))
+        			System.out.println("OpenUSS");
+        		else if (dn.contains(rootDn1.toLowerCase()))
+        			System.out.println("Uni Muenster");
+        		
+        		// Retrieve Role     		
+        		String role = "GroupRoleAttribute not found within DN.";
+        		dn = dn.toUpperCase();
+        		int startindex = dn.indexOf(groupRoleAttribute);
+        		int endindex = 0;
+        		if (startindex > -1) {
+        			startindex = startindex + groupRoleAttribute.length()+1;
+        			endindex = dn.indexOf(",", startindex);
+        		    role = "ROLE_"+ dn.substring(startindex,endindex);
+        		}
+//        		System.out.println(role);        	      		
+        	} 	
+*/          
+            ctx.close();
+            
+            
+            
+            System.out.println("\nSie haben sich korrekt authentifiziert!");
+
+        }
+        catch(AuthenticationException ex) {
+        	System.out.println("Fehlerhafte Authentifizierung: "+ex);
+        }        
+
+    }
+
+	
+	
+	public static void main (String[] args) throws Exception {
+
+    	if (args.length < 1) {
+            System.err.println(
+                "Usage: java DigestMd5 <password>");
+            System.exit(1);
+        }
+    	
+//    	authenticate(args[0]);
+//    	testSetUpProviderUrl(" LDAP:// wwusv1.uni-muenster. DE://.:://///////// ", new Integer(389), "//////dc=uni-muenster, dc=de");
+    	testExtendedLdapUserDetailsMapper(args[0]);
+	}	
 }
+

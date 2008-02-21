@@ -6,6 +6,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
 import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
 import org.apache.commons.logging.Log;
@@ -15,54 +16,65 @@ public class ExtendedLdapUserDetailsMapper extends LdapUserDetailsMapper {
 
     //~ Instance fields ================================================================================================
     private final Log logger = LogFactory.getLog(ExtendedLdapUserDetailsMapper.class);
-    private String passwordAttributeName = "userPassword";
     private String rolePrefix = "ROLE_";
-    private String[] roleAttributes = null;
     private boolean convertToUpperCase = true;
     
-	private String groupRoleAttributeKey = null;
+	private String groupRoleAttributeKey = "cn";
 
     //~ Methods ========================================================================================================
 
-    @Override
-	public Object mapAttributes(String dn, Attributes attributes)
-        throws NamingException {
-        LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence();
-
-        essence.setDn(dn);
-        essence.setAttributes(attributes);
-
-        Attribute passwordAttribute = attributes.get(passwordAttributeName);
-
-        if (passwordAttribute != null) {
-            essence.setPassword(mapPassword(passwordAttribute));
-        }
-
-        // Map the roles
-        for (int i = 0; (roleAttributes != null) && (i < roleAttributes.length); i++) {
-            Attribute roleAttribute = attributes.get(roleAttributes[i]);
-
-            if (roleAttribute == null) {
-                logger.debug("Couldn't read role attribute '" + roleAttributes[i] + "' for user " + dn);
-                continue;
+	
+    /**
+     * Retrieves a Role from a Role DN  according to the groupRoleAttributeKey. Default is Common Name (CN) of a Role DN.
+     */
+    
+    protected GrantedAuthority createAuthority(Object roleDn) {
+        String dn = null;
+    	String role = null;        
+    	if (roleDn instanceof String) {
+        	dn = (String) roleDn;
+        	role = dn;
+        	
+    		dn = dn.toUpperCase();
+    		int startindex = dn.indexOf(groupRoleAttributeKey.toUpperCase());
+    		int endindex = 0;
+    		if (startindex > -1) {
+    			startindex = startindex + groupRoleAttributeKey.length()+1;
+    			endindex = dn.indexOf(",", startindex);
+    		    role = role.substring(startindex,endindex);
+    		}
+    		// GroupRoleAttribute not found within Role DN
+    		else return null;
+      	
+            if (convertToUpperCase) {
+                role = role.toUpperCase();
             }
-
-            NamingEnumeration attributeRoles = roleAttribute.getAll();
-
-            while (attributeRoles.hasMore()) {
-                GrantedAuthority authority = createAuthority(attributeRoles.next());
-
-                if (authority != null) {
-                    essence.addAuthority(authority);
-                } else {
-                    logger.debug("Failed to create an authority value from attribute with Id: "
-                            + roleAttribute.getID());
-                }
-            }
+            return new GrantedAuthorityImpl(rolePrefix + role);
         }
-
-        return essence;
+        return null;
     }
 
-	
+	public String getGroupRoleAttributeKey() {
+		return groupRoleAttributeKey;
+	}
+
+	public void setGroupRoleAttributeKey(String groupRoleAttributeKey) {
+		this.groupRoleAttributeKey = groupRoleAttributeKey;
+	}
+
+	public String getRolePrefix() {
+		return rolePrefix;
+	}
+
+	public void setRolePrefix(String rolePrefix) {
+		this.rolePrefix = rolePrefix;
+	}
+
+	public boolean getConvertToUpperCase() {
+		return convertToUpperCase;
+	}
+
+	public void setConvertToUpperCase(boolean convertToUpperCase) {
+		this.convertToUpperCase = convertToUpperCase;
+	}	
 }
