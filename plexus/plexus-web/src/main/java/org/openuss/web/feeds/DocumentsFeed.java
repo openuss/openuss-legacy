@@ -44,7 +44,7 @@ public class DocumentsFeed extends AbstractFeed {
 		
 		if (files != null && files.size() > 0) {
 			for(FileInfo entry : files) {
-				String link = urlServer + "/files/" + entry.getFileName() + "?"+Constants.REPOSITORY_FILE_ID+"="+entry.getId();
+				String link = urlServer + "/views/secured/documents/document.faces" + "?"+Constants.REPOSITORY_FILE_ID+"="+entry.getId()+"&"+Constants.COURSE+"="+course.getId();
 				this.addEntry(entries, course.getName()+" - "+entry.getName(), link, entry.getCreated(), entry.getName()+"\n"+StringUtils.trimToEmpty(entry.getDescription()), course.getName(),course.getName());
 			}
 			

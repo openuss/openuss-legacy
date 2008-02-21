@@ -156,6 +156,11 @@
 	<page view-id="/views/secured/documents/remove.xhtml">
 		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.ASSIST}"/>
 	</page>
+	
+	<page view-id="/views/secured/documents/document.xhtml">
+		<parameter name="fileid" value="#{views$secured$documents$document.entry.id}" />
+		<parameter name="course" value="#{courseInfo.id}" />
+	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			BrainContest

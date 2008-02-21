@@ -214,6 +214,7 @@ public class Constants {
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
 	public static final String VISIT = "visit";
 	public static final String STEP3 = "step3";	
+	public static final String FILE_NOT_FOUND = "documents_file_not_found";
 	
 	// strings used by string builder
 	public static final String SPACE = " ";
