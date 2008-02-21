@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+	@TODO Set Read beachten
+	@TODO Nachrichten nur kurz anzeigen und read button
+	<plexus:dataTable id="inboxTable"
+		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
+		 label="@TODO Inbox" rows="10">
+		<t:column styleClass="userphoto">
+		<f:facet name="header">  
+				#{msg['discussion_thread_column_author']} 
+			</f:facet>
+			<div class="userimage"><h:commandLink value="" 
+				action="#{views$secured$buddylist$buddylist.linkToSender}">
+				<h:outputText value="#{inboxMessage.senderDisplayName}"
+				styleClass="header_font_normal" />
+				<h:graphicImage styleClass="userphoto"
+					value="/files?fileid=#{inboxMessage.senderImageId}"
+					title="#{inboxMessage.senderDisplayName}"
+					rendered="#{not empty inboxMessage.senderImageId}" />
+				<h:graphicImage styleClass="userphoto"
+					value="/images/icons/no_pic.gif" alt="#{msg.user_profile_no_image}"
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty inboxMessage.senderImageId}" />
+			</h:commandLink></div>
+		</t:column>
+		<t:column styleClass="col_max_left">
+		<f:facet name="header">  
+				#{msg['discussion_thread_column_message']}  
+			</f:facet>
+			<h:outputText value="#{inboxMessage.subject}"
+				styleClass="header_font_normal" /><br />
+			<h:outputText value="#{inboxMessage.content}" syleClass="content_font_normal" />
+		</t:column>
+		<t:column styleClass="col_post_date">
+			<f:facet name="header">
+				#{msg['openuss4us_messagecenter_sentdate']} (sort)
+			</f:facet>
+			<h:outputText value="#{inboxMessage.messageDate}"
+				styleClass="content_font_normal">
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+			</h:outputText>
+		</t:column>
+		<t:column styleClass="col_commands">
+		<f:facet name="header">  
+				#{msg.commands_header}
+			</f:facet>
+			<h:commandButton id="send_message" action="view:back"
+				value="#{msg.user_send_internalmessage}"
+				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
+			<br />
+			<h:commandButton id="remove_message" action="view:back"
+				value="delete" title="delete"
+				styleClass="button_remove" />
+		</t:column>
+	</plexus:dataTable>
+</ui:composition>
