@@ -251,22 +251,45 @@ public class MyUniPage extends BasePage {
 	private void handleSubscriptions(){
 		UserInfo user = getSecurityService().getCurrentUser();
 		if (paramSubscribeNewsletter != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
-			getCourseNewsletterService().subscribe(ci, user);
+			try {
+				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
+				getCourseNewsletterService().subscribe(ci, user);
+				addMessage(i18n("newsletter_subscribe_success"));
+			} catch (Exception e) {
+				addMessage(i18n("errorpage_text"));
+			}
+			
+			
 		}
 		if (paramUnsubscribeNewsletter != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
-			getCourseNewsletterService().unsubscribe(ci, user);
+			try {
+				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
+				getCourseNewsletterService().unsubscribe(ci, user);
+				addMessage(i18n("newsletter_unsubscribe_success"));
+			} catch (Exception e) {
+				addMessage(i18n("errorpage_text"));
+			}
+			
 		}
 		if (paramSubscribeForum != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
-			ForumInfo forum = getDiscussionService().getForum(ci);
-			getDiscussionService().addForumWatch(forum);
+			try {
+				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
+				ForumInfo forum = getDiscussionService().getForum(ci);
+				getDiscussionService().addForumWatch(forum);
+				addMessage(i18n("discussion_subscribe_success"));
+			} catch (Exception e) {
+				addMessage(i18n("errorpage_text"));
+			}
 		}
 		if (paramUnsubscribeForum != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeForum));
-			ForumInfo forum = getDiscussionService().getForum(ci);
-			getDiscussionService().removeForumWatch(forum);
+			try {
+				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeForum));
+				ForumInfo forum = getDiscussionService().getForum(ci);
+				getDiscussionService().removeForumWatch(forum);
+				addMessage(i18n("discussion_unsubscribe_success"));
+			} catch (Exception e) {
+				addMessage(i18n("errorpage_text"));
+			}
 		}
 	}
 

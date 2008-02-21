@@ -98,6 +98,7 @@
 	background-image: url(../img/newsletter_subscribed.png);
 	background-repeat: no-repeat;
 	padding: 0px 5px 3px 0px;
+	margin-left: 5px;
 }
 .flexListItemRight a:hover .newsletter_subscribed {
 	background-image: url(../img/newsletter_unsubscribe.png);
@@ -106,6 +107,7 @@
 	background-image: url(../img/newsletter_notSubscribed.png);
 	background-repeat: no-repeat;
 	padding: 0px 5px 3px 0px;
+	margin-left: 5px;
 }
 .flexListItemRight a:hover .newsletter_notSubscribed {
 	background-image: url(../img/newsletter_subscribe.png);
@@ -114,6 +116,7 @@
 	background-image: url(../img/newsletter_none.png);
 	background-repeat: no-repeat;
 	padding: 0px 5px 3px 0px;
+	margin-left: 5px;
 }
 .flexListItemRight a .forum_subscribed {
 	background-image: url(../img/forum_subscribed.png);
