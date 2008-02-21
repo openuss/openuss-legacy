@@ -71,8 +71,8 @@ public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 
 	@Override
 	public boolean equals(Object object) {
-		if (object instanceof DomainObject) {
-			return ObjectUtils.equals(getId() , ((DomainObject)object).getId());
+		if (getId()  != null && object instanceof DomainObject) {
+			return getId().equals(((DomainObject)object).getId());
 		}
 		return super.equals(object);
 	}
