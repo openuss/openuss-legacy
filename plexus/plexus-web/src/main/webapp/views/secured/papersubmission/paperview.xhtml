@@ -105,8 +105,14 @@
 	               
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.name}"/>
+	                              				
+            				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
+								<f:param value="#{bean.id}" name="fileid" />
+								<h:outputText value="#{bean.name}"/>
+							</o:link>
 	                    </t:column>
+	                    
+	                    
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 

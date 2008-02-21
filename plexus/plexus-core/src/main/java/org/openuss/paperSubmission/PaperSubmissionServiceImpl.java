@@ -228,6 +228,13 @@ public class PaperSubmissionServiceImpl
 		// FIXME implement!!!!!!
 		return null;
 	}
+
+	@Override
+	protected List handleGetPaperSubmissionsbyExam(Long examId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
     
 
