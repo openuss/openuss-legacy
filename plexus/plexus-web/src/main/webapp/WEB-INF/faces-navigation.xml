@@ -671,6 +671,10 @@
                 <from-outcome>wiki_choose_image</from-outcome>
                 <to-view-id>/views/secured/wiki/wikichooseimage.xhtml</to-view-id>              
             </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_remove_image</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimageremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>
 			
             <!--  Papersubmission  -->
             <navigation-case>

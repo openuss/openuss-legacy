@@ -5,6 +5,7 @@
  */
 package org.openuss.wiki;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -77,7 +78,7 @@ public class WikiServiceImpl
     	WikiSite site = getWikiSiteDao().load(wikiSiteId);
     	Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
     	
-    	String query = "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = :wikiSite order by f.creationDate desc";
+    	String query = "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = ? order by f.creationDate desc";
     	List<WikiSiteInfo> list = getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, query, site);
     	if (list.isEmpty()) {
     		return null;

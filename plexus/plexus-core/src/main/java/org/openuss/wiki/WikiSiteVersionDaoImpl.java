@@ -97,7 +97,7 @@ public class WikiSiteVersionDaoImpl
     	targetVO.setDomainId(sourceEntity.getWikiSite().getDomainId());
     	
     	targetVO.setAuthorId(sourceEntity.getAuthor().getId());
-    	
+    	targetVO.setAuthorName(sourceEntity.getAuthor().getDisplayName());
     }
 
 

@@ -1,6 +1,5 @@
 package org.openuss.web.wiki;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,13 +7,10 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
-import org.openuss.wiki.WikiSiteVersionInfo;
 
 
 @Bean(name = "views$secured$wiki$wikiversion", scope = Scope.REQUEST)
@@ -24,7 +20,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	WikiDataProvider data = new WikiDataProvider();
 	
-	private List<WikiSiteVersionInfo> entries;
+	private List<WikiSiteInfo> entries;
 	
 	@Override
 	@Prerender
@@ -60,26 +56,26 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	}
 	
-	private List<WikiSiteVersionInfo> loadWikiSiteVersions() {
+	private List<WikiSiteInfo> loadWikiSiteVersions() {
 		if (entries == null) {
 			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteVersionInfo.getWikiSiteId());
 		}
 		return entries;
 	}
 	
-	private class WikiDataProvider extends AbstractPagedTable<WikiSiteVersionInfo> {
+	private class WikiDataProvider extends AbstractPagedTable<WikiSiteInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;
 		
-		private DataPage<WikiSiteVersionInfo> page;
+		private DataPage<WikiSiteInfo> page;
 		
 		@Override
-		public DataPage<WikiSiteVersionInfo> getDataPage(int startRow,
+		public DataPage<WikiSiteInfo> getDataPage(int startRow,
 				int pageSize) {
 			if (page == null) {
-				List<WikiSiteVersionInfo> entries = loadWikiSiteVersions();
+				List<WikiSiteInfo> entries = loadWikiSiteVersions();
 				//sort(entries);
-				page = new DataPage<WikiSiteVersionInfo>(entries.size(), 0, entries);
+				page = new DataPage<WikiSiteInfo>(entries.size(), 0, entries);
 			}
 			return page;
 		}

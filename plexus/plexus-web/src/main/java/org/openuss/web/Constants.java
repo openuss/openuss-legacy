@@ -259,6 +259,6 @@ public class Constants {
 	public static final String WIKI_EDIT_PAGE = "wiki_edit";
 	public static final String WIKI_OVERVIEW = "wiki_overview";
 	public static final String WIKI_NEW_SITE_NAME = "wiki_new_site_name";
-
+	public static final String WIKI_IMAGE = "wiki_image";
 
 }

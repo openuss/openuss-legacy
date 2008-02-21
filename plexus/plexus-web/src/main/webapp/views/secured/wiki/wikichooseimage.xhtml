@@ -53,7 +53,7 @@
 			    	id="imagestable" 
 			    	label="#{views$secured$wiki$wikichooseimage.siteVersionInfo.name}" 
 			    	value="views$secured$wiki$wikichooseimage.imagesData"
-			    	columnClasses="col_min_center, col_max_left, col_max_left, col_max_left, col_max_left"
+			    	columnClasses="col_min_center, col_max_left, col_max_left, col_max_left, col_max_left, col_commands"
 			    	var="entry" 
 			    	rows="20">  
 			    	
@@ -96,6 +96,17 @@
 			                <f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			            </h:outputText>
 			        </t:column>
+			        
+			        <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+			            <plexus:column header="#{msg.documents_main_column_actions}">
+			                <plexus:command 
+			                    bean="#{views$secured$wiki$wikichooseimage}"
+			                    action="deleteImage" 
+			                    label="#{msg.documents_main_button_delete}" 
+			                    title="#{msg.documents_main_button_delete}"
+			                    styleClass="icon_remove"/>
+			            </plexus:column>
+			        </s:acl>
 					
 				</plexus:dataTable>
 				

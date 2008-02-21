@@ -11,29 +11,15 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.wiki_overview_header}" 
     	value="views$secured$wiki$wikioverview.data" var="wikiPage" rows="20"
-    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
-      
+    	columnClasses="col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
+
 		<t:column>
-			
-		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
-		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="title"> #{msg['wiki_overview_column_name']} </plexus:commandSortHeader>
 			<h:outputText value="#{wikiPage.name}" />
 		</t:column>
 		<t:column>
-			<plexus:commandSortHeader columnName="submitter"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
-			<h:outputText value="#{wikiPage.name}" />
-		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="hits"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
-			<h:outputText value="#{wikiPage.name}" />
-		</t:column>
-		<t:column>
-			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
-			<h:outputText value="#{wikiPage.name} - #{wikiPage.name}" />
+			<plexus:commandSortHeader columnName="submitter"> #{msg['wiki_overview_column_author']} </plexus:commandSortHeader>
+			<h:outputText value="#{wikiPage.author.name}" />
 		</t:column>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>

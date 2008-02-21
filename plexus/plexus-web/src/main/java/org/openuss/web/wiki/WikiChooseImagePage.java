@@ -44,6 +44,13 @@ public class WikiChooseImagePage extends AbstractWikiPage{
 		return "wiki_choose_image";
 	}
 	
+	public String deleteImage() {
+		FolderEntryInfo entry = data.getRowData();
+		setSessionBean(Constants.WIKI_IMAGE, entry);
+		
+		return "wiki_remove_image";
+	}
+	
 	private class WikiImageProvider extends AbstractPagedTable<FolderEntryInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;
