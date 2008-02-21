@@ -4,6 +4,9 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.collaboration;
+
+import java.util.List;
+
 /**
  * @see org.openuss.collaboration.Workspace
  */

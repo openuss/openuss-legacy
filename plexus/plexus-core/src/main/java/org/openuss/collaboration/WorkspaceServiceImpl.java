@@ -111,14 +111,11 @@ public class WorkspaceServiceImpl extends
 
 	@Override
 	protected List handleFindWorkspacesByDomainAndUser(Long domainId,
-			Long userId) throws Exception {
+			User user) throws Exception {
 		Validate.notNull(domainId, "domainId cannot be null.");
-		Validate.notNull(userId, "userId cannot be null.");
+		Validate.notNull(user, "userId cannot be null.");
 		
-		User user = getUserDao().load(userId);
-		Validate.notNull(user, "No user could be found with the userId " + userId);
-		
-		return getWorkspaceDao().findByDomainIdAndUserId(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId, userId);
+		return getWorkspaceDao().findByDomainIdAndUser(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId, user);
 	}
 
 	
