@@ -32,18 +32,29 @@
 			<span class="given-name">#{showuser.contact.firstName}</span>
 			<span class="adr type=home" style="display: none"></span>
 		</c:if>
-			
+		</span>
+		<span class="adr home" style="display: none">
 		<c:if test="#{showuser.profile.addressPublic}">
-			<span class="street-address">#{showuser.contact.address}</span>
-			<span class="country-name">#{showuser.contact.country}</span>
-			<span class="postal-code">#{showuser.contact.postcode}</span>
-			<span class="locality">#{showuser.contact.city}</span>
+				<span class="street-address">#{showuser.contact.address}</span>
+				<span class="country-name">#{showuser.contact.country}</span>
+				<span class="postal-code">#{showuser.contact.postcode}</span>
+				<span class="locality">#{showuser.contact.city}</span>
 		</c:if>
 		
+		<div class="tel" style="display: none">
 		<c:if test="#{showuser.profile.telephonePublic}">
-			<div class="tel home">#{showuser.contact.telephone}</div>
-			<div class="tel cell">#{showuser.contact.mobile}</div>
+			<span class="type">home</span>
+			<span class="value">#{showuser.contact.telephone}</span> 
+			
 		</c:if>
+		</div>
+		
+		<div class="tel" style="display: none">
+		<c:if test="#{showuser.profile.telephonePublic}">
+			<span class="type">cell</span>
+			<span class="value">#{showuser.contact.mobile}</span>
+		</c:if>
+		</div>
 		
 		<c:if test="#{showuser.profile.profilePersonalPublic}">
 			<div class="bday">#{showuser.contact.birthday}</div>
@@ -52,7 +63,7 @@
 		<c:if test="#{showuser.profile.emailPublic}">
 			<div class="email">#{showuser.email}</div>
 		</c:if>
-	</span>
+		</span>
 </address>
 			
 		<div class="content_normal">
@@ -79,7 +90,10 @@
 				<h:outputText value="" />
 				
 
-				<c:if test="#{showuser.profile.profileContactPublic}">
+				<c:if test="#{showuser.profile.addressPublic or
+							showuser.profile.emailPublic or
+							showuser.profile.profileContactPublic or
+							showuser.profile.telephonePublic}">
 					<h:outputText styleClass="profile_header"
 						value="#{msg.profile_address_header}" />
 					<h:outputText value="" />
@@ -118,6 +132,7 @@
 				</c:if> 
 				
 				<c:if test="#{showuser.profile.profileContactPublic}">
+					
 					<c:if test="#{not empty showuser.contact.skype}">
 						<h:outputText value="#{msg.user_contact_skype}: " />
 						<h:outputLink value="skype:#{showuser.contact.skype}" styleClass="email">
