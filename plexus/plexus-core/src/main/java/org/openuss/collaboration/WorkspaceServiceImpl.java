@@ -115,7 +115,15 @@ public class WorkspaceServiceImpl extends
 		Validate.notNull(domainId, "domainId cannot be null.");
 		Validate.notNull(user, "userId cannot be null.");
 		
-		return getWorkspaceDao().findByDomainIdAndUser(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId, user);
+		List<Workspace> workspaces = getWorkspaceDao().findByDomainId(domainId);
+		List<WorkspaceInfo> workspaceInfos = new ArrayList<WorkspaceInfo>(workspaces.size());
+		for (Workspace ws : workspaces) {
+			if (ws.getUser().contains(user)) {
+				workspaceInfos.add(getWorkspaceDao().toWorkspaceInfo(ws));
+			}
+		}
+		
+		return workspaceInfos;
 	}
 
 	
