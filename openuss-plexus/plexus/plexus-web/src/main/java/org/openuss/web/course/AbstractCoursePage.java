@@ -69,6 +69,9 @@ public class AbstractCoursePage extends BasePage {
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
+			if (courseInfo.getCourseTypeId()==null){
+				courseInfo = getCourseService().getCourseInfo(courseInfo.getId());
+			}
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
