@@ -107,7 +107,6 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 			for (CourseMemberInfo member : courseMembers) {
 				map.put(member, workspaceMembers.contains(member) ? Boolean.TRUE : Boolean.FALSE);
 			}
-			this.memberSelection.setMap(map);
 			
 			return Constants.SUCCESS;
 		}

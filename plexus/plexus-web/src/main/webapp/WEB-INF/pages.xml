@@ -239,5 +239,13 @@
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
         <parameter name="page" value="#{views$secured$wiki$wikimain.siteName}"/>
         <parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionId}" converterId="javax.faces.Long"/>
-    </page>    
+    </page>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Papersubmission
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/papersubmission/*">
+    	<parameter name="paper" value="#{paperSubmissionInfo.id}" converterId="javax.faces.Long"/>
+    </page>
 </pages>

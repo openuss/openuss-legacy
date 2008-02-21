@@ -20,6 +20,7 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.collaboration.WorkspaceMemberSelection;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
 
@@ -40,8 +41,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	private List<FileInfo> entries;
 	
-//	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
-//	private FolderEntrySelection entrySelection;
+	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
+	private PaperSubmissionSelection paperSelection;
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
@@ -49,17 +50,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public void prerender() throws Exception {
 		super.prerender();
 		paperSubmissionInfo = getCurrentPaperSubmission();
-	
-//		if (currentFolder == null && paperSubmissionInfo == null) {
-//			redirect(Constants.OUTCOME_BACKWARD);
-//		} else{
-//			currentFolder = retrieveActualFolder();
-//		}
-			
-//setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
-			
-//		entrySelection.setEntries(loadFolderEntries());
-//		entrySelection.processSwitch();
+		
+		paperSelection.processSwitch();
 	
 		addPageCrumbs();
 	}
@@ -197,6 +189,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 //	public void setEntrySelection(FolderEntrySelection entrySelection) {
 //		this.entrySelection = entrySelection;
 //	}
+	
+	public PaperSubmissionSelection getPaperSelection() {
+		return paperSelection;
+	}
+	
+	public void setPaperSelection(PaperSubmissionSelection paperSelection) {
+		this.paperSelection = paperSelection;
+	}
 
 	public List<FileInfo> getEntries() {
 		return entries;
