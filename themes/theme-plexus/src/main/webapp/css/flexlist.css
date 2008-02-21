@@ -80,15 +80,11 @@
 .flexListItemRight a .remove_bookmark {
 	background-image: url(../img/delete_button.png);
 	background-repeat: no-repeat;
-	padding: 1px 3px 0px 0px;
-	margin: 3px 1px 0px 0px;
+	padding: 0px 14px 3px 0px;
 }
 
 .flexListItemRight a:hover .remove_bookmark {
 	background-image: url(../img/delete_button_over.png);
-	background-repeat: no-repeat;
-	padding: 1px 3px 0px 0px;
-	margin: 3px 1px 0px 0px;
 }
 
 .flexListItemRight a {
@@ -97,6 +93,48 @@
 
 .remove_bookmark .remove_bookmark_hidden {
 	display:none !important;	
+}
+.flexListItemRight a .newsletter_subscribed {
+	background-image: url(../img/newsletter_subscribed.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
+}
+.flexListItemRight a:hover .newsletter_subscribed {
+	background-image: url(../img/newsletter_unsubscribe.png);
+}
+.flexListItemRight a .newsletter_notSubscribed {
+	background-image: url(../img/newsletter_notSubscribed.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
+}
+.flexListItemRight a:hover .newsletter_notSubscribed {
+	background-image: url(../img/newsletter_subscribe.png);
+}
+.flexListItemRight .newsletter_none {
+	background-image: url(../img/newsletter_none.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
+}
+.flexListItemRight a .forum_subscribed {
+	background-image: url(../img/forum_subscribed.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
+}
+.flexListItemRight a:hover .forum_subscribed {
+	background-image: url(../img/forum_unsubscribe.png);
+}
+.flexListItemRight a .forum_notSubscribed {
+	background-image: url(../img/forum_notSubscribed.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
+}
+.flexListItemRight a:hover .forum_notSubscribed {
+	background-image: url(../img/forum_subscribe.png);
+}
+.flexListItemRight .forum_none {
+	background-image: url(../img/forum_none.png);
+	background-repeat: no-repeat;
+	padding: 0px 5px 3px 0px;
 }
 /* Tabs CSS */
 
