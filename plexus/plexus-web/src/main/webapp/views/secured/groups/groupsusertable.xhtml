@@ -18,7 +18,7 @@
       
 		<t:column>
 			<plexus:commandSortHeader columnName="groupName"> #{msg['user_username']} </plexus:commandSortHeader>
-			<h:outputText value="#{group.name}"/>
+			<h:commandLink value="" action="#{views$secured$groups$groups.linkGroup}" > <h:outputText value="#{group.name}"/></h:commandLink>
 		</t:column>
 		
 		<t:column>

@@ -248,6 +248,17 @@
 			<from-outcome>group_main</from-outcome>
 			<to-view-id>/views/secured/groups/components/main.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>group_news</from-outcome>
+			<to-view-id>/views/secured/groups/components/groupnews.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>group_news_edit</from-outcome>
+			<to-view-id>/views/secured/groups/components/groupnewsedit.xhtml</to-view-id>
+		</navigation-case>
+		
 	
 		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>

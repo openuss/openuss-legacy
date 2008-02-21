@@ -32,12 +32,12 @@ public class AbstractGroupPage extends BasePage {
 				groupInfo = groupService.getGroupInfo(groupInfo.getId());
 			}
 			if (groupInfo == null) {
-				// TODO Thomas: Anpassen
 				addError(i18n("group_page not found!"));
 				redirect(Constants.OUTCOME_BACKWARD);
 				return;
 			} else {
 				addGroupCrumb();
+				addError("No ERROR");
 				setSessionBean(Constants.GROUP_INFO, groupInfo);
 			}
 		}

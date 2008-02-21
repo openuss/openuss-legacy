@@ -6,12 +6,15 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:oc="http://www.openuss.org/jsf-core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:news="http://www.openuss.org/news/jsf"
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
-      
- 	<head>
+      xmlns:fck="http://www.fck-faces.org/fck-faces"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>
 			<ui:insert name="title"/>
@@ -44,31 +47,101 @@
 						<h:outputText value="#{groupInfo.description}" escape="false"/>
 					</div>
 					
-					<!-- 
+					
 					<h:outputText value="#{msg.openuss4us_group_command_options_moderators}" styleClass="field_label" 
-						rendered="#{not empty views$secured$groups$main.moderators}"/>
+						rendered="#{not empty views$secured$groups$components$main.moderators}"/>
 					<span class="content_font_normal">
 					<t:dataList 
 						id="moderators"  
 						var="moderator"
-						value="#{views$secured$groups$main.moderators}"
-						rendered="#{not empty views$secured$groups$main.moderators}"
+						value="#{views$secured$groups$components$main.moderators}"
+						rendered="#{not empty views$secured$groups$components$main.moderators}"
 						layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
 						<o:link value="/views/secured/user/userprofile.faces?showuser=#{moderator.userId}">
-							<h:outputText value="#{moderator.title} #{moderator.firstName} #{moderator.lastName}"/>
+							<h:outputText value="#{moderator.firstName} #{moderator.lastName}"/>
 						</o:link>
 					</t:dataList>
+					
 					</span>
-					-->
+					
+					<h:outputText value="DEBUG: ACCESSTYPE = #{groupInfo.accessType.value}" />
+					<br/><br/> NACHRICHTEN FUNZEN, aber Edit noch nicht....
    			 	</o:block>
    			 	
-   			 	<o:block>
-				<!-- BUTTONS HIER REIN -->
-		 		</o:block>
-		 		
+   			 <s:authorize ifAllGranted="ROLE_USER">
+				<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.READ}">
+					
+					<!-- check if access type is AccessType.CLOSED -->
+					<c:if test="#{groupInfo.accessType.value == 1}">
+						<o:block label="#{msg.course_main_access}" styleClass="form_box">
+							<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
+						</o:block>
+						
+											
+						<c:if test="#{views$secured$groups$components$main.aspirant}">
+							<o:block label="#{msg.course_main_access}">
+								<h:outputText value="ASPIRANT WAIT" styleClass="content_font_normal" />
+							</o:block>
+						</c:if>
+						<c:if test="#{!views$secured$groups$components$main.aspirant}">
+							<h:form id="course_main_apply_form">
+								<o:block label="#{msg.course_main_access}">
+									<h:outputText value="NO ASPIRANT. PLEASE APPLY !!!" styleClass="content_font_normal"/>
+								</o:block>
+								<o:block>
+									<!-- BUTTON ZUM APPLY HIER REIN -->
+								</o:block>
+							</h:form>
+						</c:if>
+						
+					</c:if>
+				
+					<!-- check if access type is AccessType.PASSWORD -->
+					<c:if test="#{groupInfo.accessType.value == 2}">
+						<h:form id="group_main_apply_password_form">
+							<o:block label="#{msg.course_main_access}" styleClass="form_box">
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.course_main_access_passtext}"/>
+								</p> 
+								<h:outputLabel for="group_password"
+									value="#{msg.course_main_access_password}"
+									styleClass="field_label" />
+								<h:inputSecret id="group_password"
+									value="#{views$secured$groups$components$main.password}"
+									styleClass="field" validator="#{views$secured$groups$components$main.validatePassword}" required="true">
+								</h:inputSecret> 
+								<h:message for="group_password" styleClass="field_error" showDetail="true" showSummary="false"/>
+							</o:block>
+		
+							<o:block>
+								<h:commandButton action="#{views$secured$groups$components$main.applyWithPassword}"
+									value ="#{msg['course_main_access']}"
+									hint="#{msg['course_main_access']}" styleClass="button" />
+							</o:block>
+						</h:form>
+					</c:if>
+
+				</s:acl>
+			</s:authorize>
+				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+					<c:if test="#{not empty views$secured$group$components$groupnews.currentNews}">
+						<o:block label="#{msg.news_header}" styleClass="news_box">
+							<h:form id="news_tables">
+		   						<t:dataList id="news" value="#{views$secured$group$components$groupnews.currentNews}" var="item" styleClass="news">
+	    								<h:outputText value="#{item.publishDate}" styleClass="news_date" >
+    										<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both" dateStyle="medium" timeStyle="short"/>
+    									</h:outputText>
+    									<h:outputText value="#{item.title}" styleClass="news_title"/>
+    									<div class="content_font_normal">
+		    								<h:outputText value="#{item.text}" escape="false"/>
+	    								</div>
+	   							</t:dataList>
+	   						</h:form>
+   						</o:block>
+   					</c:if>
+				</s:acl>
 	 		</h:form> 
   		</ui:define>
 	</ui:composition>
-	<!-- text above will be ignored -->
 	</body>
 </html>

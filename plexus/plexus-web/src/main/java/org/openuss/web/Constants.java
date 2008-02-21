@@ -185,8 +185,8 @@ public class Constants {
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
 	public static final String COURSE_NEWS_PAGE = "course_news";
 	// TODO - Lutz: Properties anpassen
-	public static final String GROUP_NEWS_EDIT_PAGE = "course_news_edit";
-	public static final String GROUP_NEWS_PAGE = "course_news";
+	public static final String GROUP_NEWS_EDIT_PAGE = "group_news_edit";
+	public static final String GROUP_NEWS_PAGE = "group_news";
 	
 	// newsletter navigation outcomes and combobox long constants
 	public static final String NEWSLETTER_NEWSLETTER = "newsletter_newsletter";

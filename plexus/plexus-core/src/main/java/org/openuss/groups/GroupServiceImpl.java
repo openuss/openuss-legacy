@@ -138,6 +138,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
+		
+		// Load Group
 		UserGroup group = this.getUserGroupDao().load(groupInfo.getId());
 		Validate.notNull(group, "No Group found to the corresponding ID "
 				+ groupInfo.getId());
@@ -195,7 +197,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
 
-		// Load Group Entitiy
+		// Load Group Entity
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
@@ -203,13 +205,13 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User must not be null.");
 
-		// Remove user from Security Group - Moderators
-		Group secGroupMod = group.getModeratorsGroup();
-		getSecurityService().removeAuthorityFromGroup(user, secGroupMod);
-
 		// Add user to SecurityGroup - Members
 		Group secGroupMem = group.getMembersGroup();
 		getSecurityService().addAuthorityToGroup(user, secGroupMem);
+		
+		// Remove user from Security Group - Moderators
+		Group secGroupMod = group.getModeratorsGroup();
+		getSecurityService().removeAuthorityFromGroup(user, secGroupMod);
 	}
 
 	/**
@@ -234,8 +236,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Add user to Membership
 		Membership membership = group.getMembership();
 		getMembershipService().addMember(membership, user);
-		getMembershipDao().update(membership);
-		getUserGroupDao().update(group);
 
 		// Add user to SecurityGroup - Members
 		Group secGroup = group.getMembersGroup();
@@ -281,8 +281,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		if (isModerator(groupInfo, userId)){
 			this.removeModerator(groupInfo, userId);
 		}
-		
-		// TODO - Lutz: Gruppe löschen sofern letztes Gruppenmitglied
 
 		// Load Group Entitiy
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
@@ -378,6 +376,18 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	/**
+	 * @see org.openuss.groups.GroupService#getAllMembers(org.openuss.groups.UserGroupInfo)
+	 */
+	protected List<UserGroupMemberInfo> handleGetAllMembers(UserGroupInfo groupInfo) throws Exception{
+		Validate.notNull(groupInfo, "Parameter group must not be null.");
+		Validate.notNull(groupInfo.getId(), "Parameter group must contain a valid group id.");
+		List<UserGroupMemberInfo> moderators = this.getModerators(groupInfo);
+		List<UserGroupMemberInfo> members = this.getMembers(groupInfo);
+		moderators.addAll(members);
+		return moderators;
+	}
+	
+	/**
 	 * @see org.openuss.groups.GroupService#getMembers(org.openuss.groups.UserGroupInfo)
 	 */
 	protected List<UserGroupMemberInfo> handleGetMembers(UserGroupInfo groupInfo)
@@ -391,7 +401,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Load Membership
 		Membership membership = group.getMembership();
-	
 
 		// Load Members
 		List<User> users = membership.getMembers();
@@ -598,15 +607,17 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			List<User> users, UserGroup group, Group secGroups) {
 		Validate.notNull(users, "Parameter users must not be null.");
 		Validate.notNull(group, "Parameter group must not be null.");
+
 		List<User> users2 = new ArrayList<User>();
-		if (secGroups != null) {
-			for (User user : users) {
-				for (Group secGroup : user.getGroups()) {
-					if (secGroup == secGroups) {
+		if ((users.size() >0) && (secGroups != null)){
+			for(User user:users){
+				List<Authority> authorities = secGroups.getMembers();
+				for (Authority authority:authorities){
+					if (user.getId() == authority.getId()){
 						users2.add(user);
 					}
-
 				}
+					
 			}
 			users = users2;
 		}

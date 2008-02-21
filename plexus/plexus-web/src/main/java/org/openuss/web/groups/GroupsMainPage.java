@@ -13,7 +13,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.security.SecurityService;
+import org.openuss.groups.UserGroupMemberInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -30,6 +30,9 @@ public class GroupsMainPage extends BasePage {
 
 	@Property(value = "#{groupService}")
 	protected GroupService groupService;
+	
+	@Property(value = "#{groupInfo}")
+	protected UserGroupInfo userGroupInfo;
 	
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;
@@ -75,19 +78,26 @@ public class GroupsMainPage extends BasePage {
 		return Constants.OPENUSS4US_GROUPS_JOIN;
 	}
 	
+	public String linkGroup(){
+		UserGroupInfo group = this.data.getRowData();
+		setSessionAttribute(Constants.GROUP_INFO, group);
+		return Constants.GROUP_PAGE;
+	}
+	
 	public String leaveGroup() {
 		logger.debug("course member deleted");
-		UserGroupInfo groups = data.getRowData();
-		logger.debug("GRUPPE " + +groups.getId() + ", " + groups.getName());
-		List<UserGroupInfo> mods = groupService.getModerators(groups);
-		logger.debug("LEERE GRUPPE? " + mods.size());
-		List<UserGroupInfo> memb = groupService.getMembers(groups);
-		logger.debug("LEERE GRUPPE? " + memb.size());
-		List<UserGroupInfo> asp = groupService.getAspirants(groups);
-		logger.debug("LEERE GRUPPE? " + asp.size());
-		groupService.removeMember(groups, user.getId());
+		UserGroupInfo group = data.getRowData();
+		logger.debug("GRUPPE " + +group.getId() + ", " + group.getName());
+		groupService.removeMember(group, user.getId());
+		if(groupService.getAllMembers(group).size() == 0){
+			List<UserGroupMemberInfo> aspirants = groupService.getAspirants(group);
+			for (UserGroupMemberInfo aspirant:aspirants){
+				groupService.rejectAspirant(group, aspirant.getUserId());
+			}
+			groupService.deleteUserGroup(group);
+		}
 		// TODO - Lutz: Properties anpassen
-		addMessage(i18n("message_group_left", groups.getName()));
+		addMessage(i18n("message_group_left", group.getName()));
 		resetCachedData();
 		return Constants.SUCCESS;
 	}
@@ -119,6 +129,14 @@ public class GroupsMainPage extends BasePage {
 
 	public void setGroupService(GroupService groupService) {
 		this.groupService = groupService;
+	}
+
+	public UserGroupInfo getUserGroupInfo() {
+		return userGroupInfo;
+	}
+
+	public void setUserGroupInfo(UserGroupInfo userGroupInfo) {
+		this.userGroupInfo = userGroupInfo;
 	}
 
 }

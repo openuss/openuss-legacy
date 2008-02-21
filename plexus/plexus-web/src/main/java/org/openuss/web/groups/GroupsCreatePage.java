@@ -49,43 +49,50 @@ public class GroupsCreatePage extends BasePage {
 	/* ----- business logic ----- */
 	
 	public String register() {
-		logger.debug("START CREAT GROUP");
-		// create group info object
-		UserGroupInfo groupInfo = new UserGroupInfo();
-		groupInfo.setId(null);
-		groupInfo.setName(name);
-		groupInfo.setShortcut(shortcut);
-		groupInfo.setDescription(description);
-		if (accessType < 2){
-			password = null;
-		}
-		groupInfo.setPassword(password);
-		groupInfo.setAccessType(GroupAccessType.fromInteger(accessType));
-		groupInfo.setCreator(user.getId());
-		groupInfo.setCalendar(calendar);
-		groupInfo.setChat(chat);
-		groupInfo.setDocuments(documents);
-		groupInfo.setForum(forum);
-		groupInfo.setNewsletter(newsletter);
+		if(groupService.isUniqueShortcut(shortcut)){
+			logger.debug("START CREAT GROUP");
+			
+			// create group info object
+			UserGroupInfo groupInfo = new UserGroupInfo();
+			groupInfo.setId(null);
+			groupInfo.setName(name);
+			groupInfo.setShortcut(shortcut);
+			groupInfo.setDescription(description);
+			if (accessType < 2){
+				password = null;
+			}	
+			groupInfo.setPassword(password);
+			groupInfo.setAccessType(GroupAccessType.fromInteger(accessType));
+			groupInfo.setCreator(user.getId());
+			groupInfo.setCalendar(calendar);
+			groupInfo.setChat(chat);
+			groupInfo.setDocuments(documents);
+			groupInfo.setForum(forum);
+			groupInfo.setNewsletter(newsletter);
 
-		// create group and set id
-		Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
-		groupInfo.setId(newGroupId);
-
-		// clear fields
-		name = null;
-		shortcut = null;
-		description = null;
-		password = null;
-		calendar = true;
-		chat = false;
-		documents = true;
-		forum = true;
-		newsletter = true;
-		accessType = 0;
+			// create group and set id
+			Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+			groupInfo.setId(newGroupId);
 		
-		logger.debug("END CREAT GROUP");
-		return Constants.GROUP_PAGE;
+			// clear fields
+//			name = null;
+//			shortcut = null;
+//			description = null;
+//			password = null;
+//			calendar = true;
+//			chat = false;
+//			documents = true;
+//			forum = true;
+//			newsletter = true;
+//			accessType = 0;
+//		
+			logger.debug("END CREAT GROUP");
+			return Constants.OPENUSS4US_GROUPS;
+		} else {
+			// TODO - Lutz: Vernünftiges Propertie bitte
+			addError("Test");
+			return Constants.OPENUSS4US_GROUPS_CREATE;
+		}
 	}
 
 	public List<SelectItem> getAccessTypes() {
