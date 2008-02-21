@@ -43,9 +43,11 @@ public class BuddyServiceImpl
         buddy = getBuddyDao().create(buddy);
         buddyList.getBuddies().add(buddy);
         //inform about request
+        System.out.println("Sending message");
         InternalMessageInfo imInfo = new InternalMessageInfo();
         imInfo.setSenderDisplayName(user.getDisplayName());
         imInfo.setSenderId(user.getId());
+        imInfo.setMessageDate(new Date());
         //TODO make information dynamically
         imInfo.setSubject("New Buddy Request");
         imInfo.setContent("do you want to be my buddy? /n Don't forget to make this dynamically!");
@@ -54,6 +56,10 @@ public class BuddyServiceImpl
         imrecInfo.setRead(false);
         imrecInfo.setRecipientDisplayName(buddy.getUser().getDisplayName());
         imrecInfo.setRecipientId(buddy.getUser().getId());
+        List<InternalMessageRecipientsInfo> internalMessageRecipientsInfos = new LinkedList();
+        internalMessageRecipientsInfos.add(imrecInfo);
+        imInfo.setInternalMessageRecipientsInfos(internalMessageRecipientsInfos);
+        imrecInfo.setInternalMessageInfo(imInfo);
         getInternalMessageService().sendInternalMessage(imInfo);
     }
 

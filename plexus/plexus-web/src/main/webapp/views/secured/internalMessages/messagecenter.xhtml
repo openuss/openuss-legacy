@@ -36,11 +36,8 @@
   		</ui:define>
   		<ui:define name="content">
 			<h:form id="openuss4us_messagecenter" enctype="multipart/form-data">
-				<o:block label="#{msg['openuss4us_command_messagecenter']}" styleClass="form_box">
-				<!-- CONTENT -->
-				plexus:datatable: Received messages (10 messages)<br />
-				plexus:datatable: Sent messages (10 messages)
-   			 	</o:block>
+			<ui:include src="inboxTable.xhtml" />
+			<ui:include src="outboxTable.xhtml" />
    			 	<o:block>
 				<!-- BUTTONS -->
 				Buttons: (New Message?) (Search User?)

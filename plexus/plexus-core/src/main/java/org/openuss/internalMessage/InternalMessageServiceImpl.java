@@ -35,7 +35,6 @@ public class InternalMessageServiceImpl
         		InternalMessageInfo imInfo = getInternalMessageDao().toInternalMessageInfo(im);
         		List recipients = new LinkedList();
         		recipients.addAll(im.getRecipients());
-        		System.out.println(im.getRecipients().size() + " " + im.getRecipients().get(0).getClass());
         		getMessageStatusDao().toInternalMessageRecipientsInfoCollection(recipients);
         		imInfo.setInternalMessageRecipientsInfos(recipients);
         		sentMessages.add(imInfo);
@@ -129,10 +128,14 @@ public class InternalMessageServiceImpl
     	InternalMessage message = InternalMessage.Factory.newInstance();
     	message.setContent(messageInfo.getContent());
     	message.setSubject(messageInfo.getSubject());
-    	message.setMessageDate(messageInfo.getMessageDate());
-    	InternalMessageCenter sender = getInternalMessageCenterDao().findByUser(getUserDao().load(messageInfo.getSenderId()));
-    	message.setSender(sender);
-    	sender.getSentInternalMessage().add(message);
+		if (messageInfo.getMessageDate() == null)
+			message.setMessageDate(new Date());
+		else
+			message.setMessageDate(messageInfo.getMessageDate());
+		InternalMessageCenter sender = getInternalMessageCenterDao()
+				.findByUser(getUserDao().load(messageInfo.getSenderId()));
+		message.setSender(sender);
+		sender.getSentInternalMessage().add(message);
     	getInternalMessageDao().create(message);
     	for(InternalMessageRecipientsInfo rec : messageInfo.getInternalMessageRecipientsInfos()){
     		MessageStatus messageStatus = MessageStatus.Factory.newInstance();
