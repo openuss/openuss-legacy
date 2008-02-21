@@ -467,4 +467,11 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return folder;
 	}
 
+	@Override
+	protected boolean handleIsFolderOfDomainObejct(FolderInfo folderInfo,
+			DomainObject domainObject) throws Exception {
+		Folder folder = getFolderDao().load(folderInfo.getId());
+		return isFolderOfDomainObject(domainObject, folder);
+	}
+
 }
