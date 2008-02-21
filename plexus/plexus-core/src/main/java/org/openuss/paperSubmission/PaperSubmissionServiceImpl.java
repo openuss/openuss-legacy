@@ -36,6 +36,7 @@ public class PaperSubmissionServiceImpl
     	
 		// Update input parameter for aspects to get the right domain objects.    	
     	examInfo.setId(examEntity.getId());
+    	this.getSecurityService().createObjectIdentity(examEntity, null);
 	}
 
 	@Override
@@ -68,6 +69,10 @@ public class PaperSubmissionServiceImpl
     	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
     	this.getExamDao().update(exam);
+    	
+
+    	
+    	
 	}
 
 	@Override
@@ -97,7 +102,7 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(examId, "examId cannot be null.");
     	
     	Exam exam = this.getExamDao().load(examId);
-    	return this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_NONE, exam);    	
+    	return this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);    	
 	}
 
 	@Override
@@ -176,6 +181,8 @@ public class PaperSubmissionServiceImpl
 		logger.debug("Starting method handleUpdatePaperSubmission");
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
 		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
+		
+		paperSubmissionInfo.setDeliverDate(new Date());
 		
 		//Transfor VO to an entity
 		PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);

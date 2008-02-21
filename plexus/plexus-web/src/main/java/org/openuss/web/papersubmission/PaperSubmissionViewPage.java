@@ -49,42 +49,47 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public void prerender() throws Exception {
 		super.prerender();
 		if(user.getId() != -10){
-//			getCurrentPaperSubmission();
-//	
-//			if (currentFolder == null && paperSubmissionInfo == null) {
-//				redirect(Constants.OUTCOME_BACKWARD);
-//			} else{
-//				currentFolder = retrieveActualFolder();
-//			}
-//				
-//			setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
-//				
-//			entrySelection.setEntries(loadFolderEntries());
-//			entrySelection.processSwitch();
+			paperSubmissionInfo = getCurrentPaperSubmission();
+	
+			if (currentFolder == null && paperSubmissionInfo == null) {
+				redirect(Constants.OUTCOME_BACKWARD);
+			} else{
+				currentFolder = retrieveActualFolder();
+			}
+				
+			setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
+				
+			entrySelection.setEntries(loadFolderEntries());
+			entrySelection.processSwitch();
 		}
 		
 		addPageCrumbs();
 	}
 
-	private void getCurrentPaperSubmission() {
-		paperSubmissionInfo = new PaperSubmissionInfo();
+	private PaperSubmissionInfo getCurrentPaperSubmission() {
+		//paperSubmissionInfo = new PaperSubmissionInfo();
 		List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
-		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
-		if(paperInfos.isEmpty()){
+		paperInfos = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
+		/*if(paperInfos.isEmpty()){
 			paperSubmissionInfo.setExamId(examInfo.getId());
 			paperSubmissionInfo.setUserId(user.getId());
 			//paperSubmissionInfo.setDeliverDate(System.currentTimeMillis());
 			paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
-		else {
-			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
-			paperSubmissionInfo.setId(paperInfos.get(paperInfos.size()-1).getId());
-			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setUserId(user.getId());
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+		else {*/
+		if(!paperInfos.isEmpty()){
+//			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
+//			paperSubmissionInfo.setId(paperInfos.get(paperInfos.size()-1).getId());
+//			paperSubmissionInfo.setExamId(examInfo.getId());
+//			paperSubmissionInfo.setUserId(user.getId());
+			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfos.get(paperInfos.size()-1));
+			return paperInfos.get(paperInfos.size()-1);
+		}
+		else{
+			return null;
 		}
 		
 	}
@@ -146,22 +151,20 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelSubmissions extends AbstractPagedTable<PaperSubmission> {
+	private class LocalDataModelSubmissions extends AbstractPagedTable<PaperSubmissionInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<PaperSubmission> page;
+		private DataPage<PaperSubmissionInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<PaperSubmission> getDataPage(int startRow, int pageSize) {
+		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				// TODO: implement!
-				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
-						.findCourseTypesByInstitute(instituteInfo.getId()));*/
-				List<PaperSubmission> submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
+				
+				List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
 				
 				//sort(entries);
-				page = new DataPage<PaperSubmission>(submissions.size(), 0, submissions);
+				page = new DataPage<PaperSubmissionInfo>(submissions.size(), 0, submissions);
 			}
 			return page;
 		}
@@ -175,30 +178,16 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				// TODO: implement!
-				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
-						.findCourseTypesByInstitute(instituteInfo.getId()));*/
-				
-				getCurrentPaperSubmission();
-				
-				if (currentFolder == null && paperSubmissionInfo == null) {
-					redirect(Constants.OUTCOME_BACKWARD);
-				} else{
-					currentFolder = retrieveActualFolder();
+							
+				if(paperSubmissionInfo == null){
+					page = new DataPage<FolderEntryInfo>(0,0,null);
 				}
+				else{
+					List<FolderEntryInfo> entries = loadFolderEntries();
 					
-				setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
-				
-				entrySelection.setEntries(loadFolderEntries());
-				entrySelection.processSwitch();
-					
-				List<FolderEntryInfo> entries = loadFolderEntries();
-				
-				
-				//submissions.add(new SubmissionFileInfo(1l, "Lösung", "pdf", 1234l, "21.01.2008 10:03", "21.01.2008 10:15"));
-				
-				//sort(submissions);
-				page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
+					//sort(submissions);
+					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
+				}
 			}
 			return page;
 		}
