@@ -63,30 +63,27 @@
 				</plexus:dataTable>
 				<o:input entity="views$secured$buddylist$edittags" property="newTag"
 					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" />
-				<br />
-				<plexus:dataTable
+				<br /><div styleClass="content_font_normal">
+				<t:dataList 
+					id="usedTagsList"  
+					var="aUsedTag"
+					styleClass="content_font_normal"
 					label="#{msg.openuss4us_buddylist_command_tag_add_from_list}"
-					id="usedTagsTable"
-					value="views$secured$buddylist$edittags.usedTags" var="thisUsedTag"
-					styleClass="content_font_normal">
-					<t:column>
-						<h:outputText value="#{thisUsedTag} "
-							styleClass="content_font_normal" />
-					</t:column>
-					<t:column>
-						<h:commandLink value="#{msg.openuss4us_buddylist_button_add_tag}"
-							action="#{views$secured$buddylist$edittags.addSelectedTag}" />
-					</t:column>
-				</plexus:dataTable>
+					value="#{views$secured$buddylist$edittags.usedTags}"
+					rendered="#{not empty views$secured$buddylist$edittags.usedTags}"
+					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
+						<a
+							onClick="javascript:document.getElementById('_id6:openuss4us_buddylist_edittags:newTag').value='#{aUsedTag}'">#{aUsedTag}</a>
+				</t:dataList></div>
 				</div>
 			</o:block>
 			<o:block>
-				<h:commandButton id="back2buddylist" action="openuss4us_buddylist"
-					value="#{msg.openuss4us_backward}"
-					title="#{msg.openuss4us_backward}" styleClass="button" />
 				<h:commandButton id="newTagButton"
 					action="#{views$secured$buddylist$edittags.addTag}" value="#{msg.openuss4us_buddylist_button_add_tag}"
 					hint="#{msg.openuss4us_buddylist_button_add_tag}" styleClass="button" />
+				<h:commandButton id="back2buddylist" action="openuss4us_buddylist"
+					value="#{msg.openuss4us_backward}"
+					title="#{msg.openuss4us_backward}" styleClass="button" />
 			</o:block>
 		</h:form>
 	</ui:define>

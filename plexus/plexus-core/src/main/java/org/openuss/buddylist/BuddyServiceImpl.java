@@ -8,6 +8,7 @@ package org.openuss.buddylist;
 
 import java.util.*;
 
+import org.openuss.internalMessage.*;
 import org.openuss.security.*;
 
 /**
@@ -41,6 +42,19 @@ public class BuddyServiceImpl
         buddy.setUser(getUserDao().load(userToAdd.getId()));
         buddy = getBuddyDao().create(buddy);
         buddyList.getBuddies().add(buddy);
+        //inform about request
+        InternalMessageInfo imInfo = new InternalMessageInfo();
+        imInfo.setSenderDisplayName(user.getDisplayName());
+        imInfo.setSenderId(user.getId());
+        //TODO make information dynamically
+        imInfo.setSubject("New Buddy Request");
+        imInfo.setContent("do you want to be my buddy? /n Don't forget to make this dynamically!");
+        InternalMessageRecipientsInfo imrecInfo = new InternalMessageRecipientsInfo();
+        imrecInfo.setInternalMessageInfo(imInfo);
+        imrecInfo.setRead(false);
+        imrecInfo.setRecipientDisplayName(buddy.getUser().getDisplayName());
+        imrecInfo.setRecipientId(buddy.getUser().getId());
+        getInternalMessageService().sendInternalMessage(imInfo);
     }
 
     /**
@@ -69,7 +83,9 @@ public class BuddyServiceImpl
     {
     	tagString = tagString.toLowerCase();
     	if(tagString.length()<=2)
-    		throw new Exception("Tag too short");
+    		throw new BuddyApplicationException("Tag too short");
+    	if(tagString.equals("penis"))
+    		throw new BuddyApplicationException("Tag too short");
     	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
     	//search tag
     	User user = getSecurityService().getCurrentUser();

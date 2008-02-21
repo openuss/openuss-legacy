@@ -39,7 +39,7 @@
 		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 
 			<ui:include src="buddytable.xhtml" />
-			<o:block>
+			<!-- <o:block>
 				<plexus:dataTable
 					label="HARDCODED: ALL USED TAGS"
 					id="usedTagsTable"
@@ -50,7 +50,15 @@
 							styleClass="content_font_normal" />
 					</t:column>
 				</plexus:dataTable>
-				</o:block>
+				<t:dataList 
+					id="usedTagsList"  
+					var="aUsedTag"
+					value="#{views$secured$buddylist$buddylist.usedTags}"
+					rendered="#{not empty views$secured$buddylist$buddylist.usedTags}"
+					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
+						<h:outputText value="#{aUsedTag}"/>
+				</t:dataList>
+				</o:block> -->
 			<o:block>
 				<h:commandButton action="openuss4us_buddylist_requests"
 					value="#{msg.openuss4us_buddylist_button_requests}"

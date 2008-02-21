@@ -62,12 +62,15 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	 * The buddylist should be empty.
 	 * The second user accepts now the buddy-request of the first one.
 	 * The buddylist should now consist of one entry.
+	 * @throws BuddyApplicationException 
 	 */
-	public void testBuddyList(){
+	public void testBuddyList() throws BuddyApplicationException{
 		org.openuss.security.User user2 = userDao.create("user2", "asdf", "asdf@asdf.com", true, false, false, false, new Date());
 		UserInfo user2Info = new UserInfo();
 		userDao.toUserInfo(user2, user2Info);
-		buddyService.addBuddy(user2Info);
+
+			buddyService.addBuddy(user2Info);
+
 //		assertEquals(0, buddyService.getBuddyList().size());
 		List<Buddy> buddys = buddyDao.findByUser(user2);
 		assertEquals(1, buddys.size());
@@ -90,6 +93,7 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		UserInfo user3Info = new UserInfo();
 		userDao.toUserInfo(user2, user2Info);
 		userDao.toUserInfo(user3, user3Info);
+		try{
 		buddyService.addBuddy(user2Info);
 		buddyService.addBuddy(user3Info);
 //		assertEquals(0, buddyService.getBuddyList().size());
@@ -121,6 +125,9 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		assertEquals(1, buddyService.getAllUsedTags().size());
 		assertEquals(1, buddyDao.load(buddy3.getId()).getTags().size());
 		assertEquals(1, buddyService.getBuddyList().size());
+		} catch(Exception e1){
+			fail();
+		}
 	}
 
 	public void setUserDao(UserDao userDao) {
