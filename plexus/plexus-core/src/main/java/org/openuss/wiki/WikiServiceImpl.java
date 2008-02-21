@@ -24,8 +24,9 @@ public class WikiServiceImpl
 
 	@Override
 	protected void handleDeleteWikiSite(Long wikiSiteId) throws Exception {
-		// TODO Auto-generated method stub
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
 		
+		getWikiSiteDao().remove(wikiSiteId);
 	}
 
 	@Override

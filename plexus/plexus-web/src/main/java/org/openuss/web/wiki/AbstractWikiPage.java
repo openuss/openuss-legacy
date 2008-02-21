@@ -100,7 +100,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		}
 	}
 	
-	private class WikiOverviewDataProvider extends AbstractPagedTable<WikiSiteInfo> {
+	protected class WikiOverviewDataProvider extends AbstractPagedTable<WikiSiteInfo> {
 		private DataPage<WikiSiteInfo> page; 
 		
 		@SuppressWarnings("unchecked")

@@ -262,5 +262,7 @@ public class Constants {
 	public static final String WIKI_IMAGE = "wiki_image";
 	public static final String WIKI_CHOOSE_IMAGE_PAGE = "wiki_choose_image";
 	public static final String WIKI_REMOVE_IMAGE_PAGE = "wiki_remove_image";
+	public static final String WIKI_REMOVE_SITE_PAGE = "wiki_remove_site";
+	public static final String WIKI_SITE_TO_REMOVE = "wiki_site_to_remove";
 
 }

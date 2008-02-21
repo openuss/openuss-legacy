@@ -25,10 +25,10 @@
 			<t:column>
 				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
 				<plexus:command 
-					bean="#{views$secured$discussion$discussions}"
-					action="removeTopic" 
-					label="#{msg['discussion_thread_remove_topic']}"
-					title="#{msg['discussion_thread_remove_topic']}"
+					bean="#{views$secured$wiki$wikioverview}"
+					action="removeSite" 
+					label="#{msg['wiki_site_remove']}"
+					title="#{msg['wiki_site_remove']}"
 					styleClass="icon_remove"/>				
 			</t:column>
 		</s:acl>

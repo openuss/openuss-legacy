@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.wiki.WikiService;
 import org.openuss.wiki.WikiSiteInfo;
@@ -26,4 +27,9 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		super.prerender();
 	}
 
+	public String removeSite() {
+		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, getData().getRowData());
+		
+		return Constants.WIKI_REMOVE_SITE_PAGE;
+	}
 }
