@@ -39,39 +39,6 @@
 	<ui:define name="content">
 		<h:form id="discussionTableView">
 			<ui:include src="wikioverviewtable.xhtml" />
-			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-				<o:block>
-					<h:commandButton
-						id="newTopicButtonAssist"
-						action="#{views$secured$discussion$discussions.newTopic}"
-						value="#{msg['discussion_new']}"
-						title="#{msg['discussion_new']}"
-						styleClass="button"/>
-					<h:commandButton
-						id="discussionSearchButton"
-						action="#{views$secured$discussion$discussions.search}"
-						value="#{msg['discussion_search']}"
-						title="#{msg['discussion_search']}"
-						immediate="true"
-						styleClass="button"/>				
-				</o:block>
-			</s:acl>
-			<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
-				<o:block rendered="#{not discussion_forum.readOnly}">
-					<h:commandButton
-						id="newTopicButton"
-						action="#{views$secured$discussion$discussions.newTopic}"
-						value="#{msg['discussion_new']}"
-						title="#{msg['discussion_new']}"
-						styleClass="button"/>	
-					<h:commandButton
-						id="discussionSearchButton"
-						action="#{views$secured$discussion$discussions.search}"
-						value="#{msg['discussion_search']}"
-						title="#{msg['discussion_search']}"
-						styleClass="button"/>			
-				</o:block>
-			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>

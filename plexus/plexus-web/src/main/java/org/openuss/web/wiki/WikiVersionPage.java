@@ -26,36 +26,9 @@ public class WikiVersionPage extends AbstractWikiPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		/*
-		if (this.siteVersionInfo == null || this.siteVersionInfo.getId() == null) {
-			this.siteInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), Constants.WIKI_STARTSITE_NAME);
-			if (this.siteInfo == null) {
-				System.out.println("WikiSite '" + Constants.WIKI_STARTSITE_NAME + "' for course not found. Creating WikiSite for courseId: " + this.courseInfo.getId());
-				logger.debug("WikiSite '" + Constants.WIKI_STARTSITE_NAME + "' for course not found. Creating WikiSite for courseId: " + this.courseInfo.getId());
-				this.siteInfo = new WikiSiteInfo();
-				this.siteInfo.setCourseId(courseInfo.getId());
-				this.siteInfo.setName(Constants.WIKI_STARTSITE_NAME);
-				this.wikiService.createWikiSite(this.siteInfo);
-			}
-			
-			this.siteVersionInfo = this.wikiService.getNewestWikiSiteContent(this.siteInfo.getId());
-			if (this.siteVersionInfo == null) {
-				System.out.println("No version found for wiki with id:" + this.siteInfo.getId() + " ... creating one.");
-				logger.debug("No version found for wiki with id:" + this.siteInfo.getId() + " ... creating one.");
-				this.siteVersionInfo = new WikiSiteVersionInfo();
-				this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
-				this.siteVersionInfo.setCreationDate(new Date());
-				this.siteVersionInfo.setUserId(user.getId());
-			}
-			
-			setSessionBean(Constants.WIKI_CURRENT_SITE, this.siteInfo);
-			setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-		}
-		
-		this.siteVersionInfo.setNote("");*/
-	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<WikiSiteInfo> loadWikiSiteVersions() {
 		if (entries == null) {
 			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteVersionInfo.getWikiSiteId());

@@ -16,14 +16,20 @@ public class WikiMainPage extends AbstractWikiPage{
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-		String pageName = Constants.WIKI_STARTSITE_NAME;
-		if (this.siteName != null) {
-			pageName = this.siteName;
-		} 
-		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
-		
-		if (this.siteVersionInfo == null) {
-			setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
+		if (siteVersionId != null) {
+			this.siteVersionInfo = this.wikiService.getWikiSiteContent(siteVersionId);
+		} else {
+			String pageName = Constants.WIKI_STARTSITE_NAME;
+			if (this.siteName != null) {
+				pageName = this.siteName;
+			}
+			
+			
+			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
+			
+			if (this.siteVersionInfo == null) {
+				setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
+			}
 		}
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);

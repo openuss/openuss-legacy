@@ -41,14 +41,14 @@ public class WikiChooseImagePage extends AbstractWikiPage{
 			e.printStackTrace();
 		}
 		
-		return "wiki_choose_image";
+		return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 	}
 	
 	public String deleteImage() {
 		FolderEntryInfo entry = data.getRowData();
 		setSessionBean(Constants.WIKI_IMAGE, entry);
 		
-		return "wiki_remove_image";
+		return Constants.WIKI_REMOVE_IMAGE_PAGE;
 	}
 	
 	private class WikiImageProvider extends AbstractPagedTable<FolderEntryInfo> {

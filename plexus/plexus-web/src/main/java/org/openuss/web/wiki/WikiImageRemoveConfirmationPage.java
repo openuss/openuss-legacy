@@ -54,11 +54,11 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			
 			setSessionBean(Constants.WIKI_IMAGE, null);
 			addMessage(i18n("wiki_image_removed_succeed"));
-			return Constants.COLLABORATION_MAIN_PAGE;
+			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
 			addMessage(i18n("workspace_cannot_be_removed"));
-			return Constants.COLLABORATION_MAIN_PAGE;
+			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		}
 	}
 	
