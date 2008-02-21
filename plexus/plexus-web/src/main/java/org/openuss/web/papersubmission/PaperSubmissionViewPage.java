@@ -29,8 +29,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
 	
-	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
-	private FolderEntrySelection entrySelection;
+//	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
+//	private FolderEntrySelection entrySelection;
 	
 	/** The datamodel for all submissions. */
 	private LocalDataModelSubmissions dataSubmissions = new LocalDataModelSubmissions();
@@ -38,7 +38,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** The datamodel for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
 	
-	private List<FolderEntryInfo> entries;
+	private List<FileInfo> entries;
 	
 //	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
 //	private FolderEntrySelection entrySelection;
@@ -48,21 +48,19 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if(user.getId() != -10){
-			paperSubmissionInfo = getCurrentPaperSubmission();
+		paperSubmissionInfo = getCurrentPaperSubmission();
 	
-			if (currentFolder == null && paperSubmissionInfo == null) {
-				redirect(Constants.OUTCOME_BACKWARD);
-			} else{
-				currentFolder = retrieveActualFolder();
-			}
-				
-			setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
-				
-			entrySelection.setEntries(loadFolderEntries());
-			entrySelection.processSwitch();
-		}
-		
+//		if (currentFolder == null && paperSubmissionInfo == null) {
+//			redirect(Constants.OUTCOME_BACKWARD);
+//		} else{
+//			currentFolder = retrieveActualFolder();
+//		}
+			
+//setSessionAttribute(Constants.PAPERSUBMISSION_CURRENT_FOLDER, currentFolder);
+			
+//		entrySelection.setEntries(loadFolderEntries());
+//		entrySelection.processSwitch();
+	
 		addPageCrumbs();
 	}
 
@@ -129,9 +127,9 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<FolderEntryInfo> loadFolderEntries() {
+	private List<FileInfo> loadFileEntries() {
 		if (entries == null) {
-			entries = documentService.getFolderEntries(paperSubmissionInfo, currentFolder);
+			entries = documentService.getFileEntries(paperSubmissionInfo);
 		}
 		return entries;
 	}
@@ -169,42 +167,42 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			return page;
 		}
 	}
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FileInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<FolderEntryInfo> page;
+		private DataPage<FileInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<FileInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							
 				if(paperSubmissionInfo == null){
-					page = new DataPage<FolderEntryInfo>(0,0,null);
+					page = new DataPage<FileInfo>(0,0,null);
 				}
 				else{
-					List<FolderEntryInfo> entries = loadFolderEntries();
+					List<FileInfo> entries = loadFileEntries();
 					
 					//sort(submissions);
-					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
+					page = new DataPage<FileInfo>(entries.size(), 0, entries);
 				}
 			}
 			return page;
 		}
 	}
-	public FolderEntrySelection getEntrySelection() {
-		return entrySelection;
-	}
+//	public FolderEntrySelection getEntrySelection() {
+//		return entrySelection;
+//	}
+//
+//	public void setEntrySelection(FolderEntrySelection entrySelection) {
+//		this.entrySelection = entrySelection;
+//	}
 
-	public void setEntrySelection(FolderEntrySelection entrySelection) {
-		this.entrySelection = entrySelection;
-	}
-
-	public List<FolderEntryInfo> getEntries() {
+	public List<FileInfo> getEntries() {
 		return entries;
 	}
 
-	public void setEntries(List<FolderEntryInfo> entries) {
+	public void setEntries(List<FileInfo> entries) {
 		this.entries = entries;
 	}
 

@@ -36,8 +36,8 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	@Property(value="#{"+Constants.PAPERSUBMISSION_EXAM_INFO+"}")
 	protected ExamInfo examInfo = null;
 	
-	@Property(value = "#{papersubmission_current_folder}")
-	protected FolderInfo currentFolder;
+//	@Property(value = "#{papersubmission_current_folder}")
+//	protected FolderInfo currentFolder;
 	
 	
 	@Override
@@ -74,9 +74,9 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 //		}
 //	}
 	
-	protected FolderInfo retrieveActualFolder() {
-		return documentService.getFolder(paperSubmissionInfo, currentFolder);
-	}
+//	protected FolderInfo retrieveActualFolder() {
+//		return documentService.getFolder(paperSubmissionInfo, currentFolder);
+//	}
 
 	public PaperSubmissionService getPaperSubmissionService() {
 		return paperSubmissionService;
@@ -98,10 +98,10 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public void setPaperSubmissionInfo(PaperSubmissionInfo paperSubmissionInfo) {
 		this.paperSubmissionInfo = paperSubmissionInfo;
 	}
-	public FolderInfo getCurrentFolder() {
-		return currentFolder;
-	}
-	public void setCurrentFolder(FolderInfo currentFolder) {
-		this.currentFolder = currentFolder;
-	}
+//	public FolderInfo getCurrentFolder() {
+//		return currentFolder;
+//	}
+//	public void setCurrentFolder(FolderInfo currentFolder) {
+//		this.currentFolder = currentFolder;
+//	}
 }

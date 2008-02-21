@@ -17,6 +17,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberInfo;
@@ -122,7 +123,8 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (document != null) {
 			documentToSelectedFile(document);
-			documentService.createFileEntry(selectedFile, documentService.getFolder(paperSubmissionInfo));
+			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+			documentService.createFileEntry(selectedFile, folder);
 			uploadFileManager.removeDocument(document);
 			paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
 			return true;

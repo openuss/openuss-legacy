@@ -7,6 +7,7 @@ package org.openuss.paperSubmission;
 
 import org.openuss.collaboration.Workspace;
 
+
 /**
  * @see org.openuss.paperSubmission.PaperSubmission
  */
@@ -22,6 +23,11 @@ public class PaperSubmissionDaoImpl
     {
         // @todo verify behavior of toPaperSubmissionInfo
         super.toPaperSubmissionInfo(sourceEntity, targetVO);
+//    	targetVO.setId(sourceEntity.getId());
+//    	targetVO.setExamId(sourceEntity.getExam().getId());
+//    	targetVO.setUserId(sourceEntity.getSender().getId());
+//        targetVO.setDeliverDate(sourceEntity.getDeliverDate());
+//        //targetVO.setFiles()
     }
 
 
@@ -32,6 +38,9 @@ public class PaperSubmissionDaoImpl
     {
         // @todo verify behavior of toPaperSubmissionInfo
         return super.toPaperSubmissionInfo(entity);
+//        final org.openuss.paperSubmission.PaperSubmissionInfo target = new org.openuss.paperSubmission.PaperSubmissionInfo();
+//        this.toPaperSubmissionInfo(entity, target);
+//        return target;
     }
 
 

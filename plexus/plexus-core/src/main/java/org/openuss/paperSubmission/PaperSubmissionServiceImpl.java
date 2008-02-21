@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.FileInfo;
 import org.openuss.security.User;
 
 
@@ -128,8 +129,12 @@ public class PaperSubmissionServiceImpl
 	protected PaperSubmissionInfo handleGetPaperSubmission(
 			Long paperSubmissionId) throws Exception {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
-    	
-    	return (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
+		PaperSubmissionInfo submissionInfo = new PaperSubmissionInfo();
+		submissionInfo = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
+		submissionInfo.setFiles(getDocumentService().getFileEntries(submissionInfo));
+		
+		return submissionInfo;
+    	//return (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
 	}
 
 	@Override
@@ -182,7 +187,7 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
 		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
 		
-		paperSubmissionInfo.setDeliverDate(new Date());
+		paperSubmissionInfo.setDeliverDate(new Date());		
 		
 		//Transfor VO to an entity
 		PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
