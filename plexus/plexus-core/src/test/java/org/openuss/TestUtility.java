@@ -47,6 +47,13 @@ import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
 import org.openuss.security.UserProfile;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.seminarpool.ConditionType;
+import org.openuss.seminarpool.CourseGroup;
+import org.openuss.seminarpool.CourseSeminarpoolAllocation;
+import org.openuss.seminarpool.SeminarCondition;
+import org.openuss.seminarpool.SeminarUserRegistration;
+import org.openuss.seminarpool.Seminarpool;
+import org.openuss.seminarpool.SeminarpoolStatus;
 
 /**
  * Test Utility to generate default database structures
@@ -743,7 +750,55 @@ public class TestUtility {
 		user.setAccountLocked(true);
 		return user;
 	}
-
+	
+	public Seminarpool createUniqueSeminarpoolinDB(){
+		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
+		seminarpool.setMaxSeminarAllocations(5);
+		seminarpool.setPriorities(5);
+		seminarpool.setRegistrationStartTime(new Date());
+		seminarpool.setRegistrationEndTime(new Date());
+		seminarpool.setName("Unique Seminarpool");
+		seminarpool.setShortcut("SEPO");
+		seminarpool.setDescription("Seminarpool");
+		seminarpool.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
+		Membership membership = Membership.Factory.newInstance();
+		seminarpool.setMembership(membership);
+		return seminarpool;
+	}
+	
+	public SeminarUserRegistration createSeminarUserRegistration(){
+		SeminarUserRegistration seminarUserRegistration = SeminarUserRegistration.Factory.newInstance();
+		seminarUserRegistration.setNeededSeminars(3);
+		seminarUserRegistration.setUser(createUniqueUserInDB());
+		seminarUserRegistration.setSeminarpool(createUniqueSeminarpoolinDB());
+		return seminarUserRegistration;
+	}
+	
+	public CourseGroup createCourseGroup(){
+		CourseGroup courseGroup = CourseGroup.Factory.newInstance();
+		courseGroup.setIsTimeSet(false);
+		courseGroup.setIsDefault(true);
+		courseGroup.setCapacity(30);
+		courseGroup.setCourse(createUniqueCourseInDB());
+		return courseGroup;
+	}
+	
+	public CourseSeminarpoolAllocation createCourseSeminarpoolAllocation(){
+		CourseSeminarpoolAllocation courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
+		courseSeminarpoolAllocation.setSeminarpool(createUniqueSeminarpoolinDB());
+		courseSeminarpoolAllocation.setCourseGroup(createCourseGroup());
+		return courseSeminarpoolAllocation;
+	}
+	
+	public SeminarCondition createSeminarCondition(){
+		SeminarCondition seminarCondition = SeminarCondition.Factory.newInstance();
+		seminarCondition.setConditionDescription("120 CP Condition");
+		seminarCondition.setFieldDescription("Test");
+		seminarCondition.setType(ConditionType.CHECKBOX);
+		seminarCondition.setSeminarpool(createUniqueSeminarpoolinDB());
+		return seminarCondition;
+	}
+		
 	public UserGroup createUniqueUserGroupInDB() {
 
 		// Create a unique CourseType
