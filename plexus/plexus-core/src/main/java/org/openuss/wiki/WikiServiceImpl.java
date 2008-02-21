@@ -33,7 +33,7 @@ public class WikiServiceImpl
 	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
+		getWikiSiteVersionDao().remove(wikiSiteVersionId);
 	}
 	
 	@Override

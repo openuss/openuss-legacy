@@ -64,9 +64,19 @@
 						<plexus:command 
 					    bean="#{views$secured$wiki$wikiversion}"
 						action="editWikiVersion" 
-						label="#{msg.documents_main_button_change}" 
-						title="#{msg.documents_main_button_change}"
+						label="#{msg.wiki_version_button_edit}" 
+						title="#{msg.wiki_version_button_edit}"
 						styleClass="icon_edit"/>
+						
+						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+							<plexus:command 
+						    bean="#{views$secured$wiki$wikiversion}"
+							action="deleteWikiVersion" 
+							label="#{msg.wiki_version_button_delete}" 
+							title="#{msg.wiki_version_button_delete}"
+							onclick="if (!confirm('#{msg.wiki_version_button_delete_confirmation}')) return false"
+							styleClass="icon_remove"/>
+						</s:acl>
 					</plexus:column>
 					
 				</plexus:dataTable>     

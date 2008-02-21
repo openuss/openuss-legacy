@@ -70,7 +70,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 	}
 	
 	public String editWikiVersion() {
-		logger.debug("editing wikipage entry");
+		logger.debug("editing WikiSiteVersion");
 		WikiSiteInfo entry = data.getRowData();
 		siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
 		
@@ -78,4 +78,12 @@ public class WikiVersionPage extends AbstractWikiPage{
 		return Constants.WIKI_EDIT_PAGE;
 	}
 	
+	public String deleteWikiVersion() {
+		logger.debug("delete wikiSiteVersion");
+		WikiSiteInfo entry = data.getRowData();
+		wikiService.deleteWikiSiteVersion(entry.getId());
+		//siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
+		//setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
+		return Constants.WIKI_VERSION_PAGE;
+	}
 }
