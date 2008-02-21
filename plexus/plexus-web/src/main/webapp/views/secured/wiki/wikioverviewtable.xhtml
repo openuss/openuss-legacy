@@ -21,15 +21,50 @@
 			  <h:outputText value="#{wikiPage.name}" />
 			</o:link>
 		</t:column>
-		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >			
 			<t:column>
 				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="markSiteForRemoval" 
+					label="#{msg['wiki_overview_mark_site_for_removal']}"
+					title="#{msg['wiki_overview_mark_site_for_removal']}"
+					styleClass="icon_remove"
+					rendered="#{!wikiPage.deleted}" />
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="recoverSite" 
+					label="#{msg['wiki_overview_recover_site']}"
+					title="#{msg['wiki_overview_recover_site']}"
+					styleClass="icon_move"
+					rendered="#{wikiPage.deleted == true}" />
 				<plexus:command 
 					bean="#{views$secured$wiki$wikioverview}"
 					action="removeSite" 
 					label="#{msg['wiki_site_remove']}"
 					title="#{msg['wiki_site_remove']}"
-					styleClass="icon_remove"/>				
+					styleClass="icon_remove"/>
+			</t:column>
+		</s:acl>
+		
+		<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
+			<t:column>
+				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="markSiteForRemoval" 
+					label="#{msg['wiki_overview_mark_site_for_removal']}"
+					title="#{msg['wiki_overview_mark_site_for_removal']}"
+					styleClass="icon_remove"
+					rendered="#{!wikiPage.deleted}" />
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="recoverSite" 
+					label="#{msg['wiki_overview_recover_site']}"
+					title="#{msg['wiki_overview_recover_site']}"
+					styleClass="icon_move"
+					rendered="#{wikiPage.deleted}" />			
 			</t:column>
 		</s:acl>
 	</plexus:dataTable>      

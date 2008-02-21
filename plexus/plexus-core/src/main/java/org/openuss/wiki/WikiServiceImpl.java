@@ -101,6 +101,18 @@ public class WikiServiceImpl
 		Validate.notNull(wikiSiteVersionId, "Parameter wikiSiteId must not be null!");
 		return (WikiSiteContentInfo)getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSiteVersionId);
 	}
+	
+	@Override
+	protected void handleSaveWikiSite(WikiSiteInfo wikiSiteInfo)
+			throws Exception {
+		Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
+		Validate.notNull(wikiSiteInfo.getWikiSiteId(), "getWikiSiteId cannot be null.");
+		
+		final WikiSite wikiSite = getWikiSiteDao().wikiSiteInfoToEntity(wikiSiteInfo);
+		wikiSite.setId(wikiSiteInfo.getWikiSiteId());
+		
+		getWikiSiteDao().update(wikiSite);
+	}
 
 	/** Creates or updates a wikisite.
 	 * 
@@ -113,7 +125,6 @@ public class WikiServiceImpl
 		
 		if (wikiSiteContentInfo.getId() != null) {
 			// update
-			
 			WikiSiteVersion wikiSiteVersion = getWikiSiteVersionDao().wikiSiteContentInfoToEntity(wikiSiteContentInfo);
 			getWikiSiteVersionDao().update(wikiSiteVersion);
 			
@@ -188,4 +199,5 @@ public class WikiServiceImpl
 		FolderInfo folder = getDocumentService().getFolder(indexSite);
 		getDocumentService().createFileEntry(image, folder);
 	}
+
 }
