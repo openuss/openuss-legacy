@@ -41,7 +41,7 @@ public class EditTagsPage extends BasePage {
 	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
 	
-	private AllTagsDataProvider usedTags = new AllTagsDataProvider();
+	private List<String> usedTags = new ArrayList<String>();
 	
 	public BuddyInfo getBuddyInfo() {
 		return buddyInfo;
@@ -55,6 +55,7 @@ public class EditTagsPage extends BasePage {
 	public void prerender() throws Exception {	
 		super.prerender();
 		addPageCrumb();
+		usedTags = buddyService.getAllUsedTags();
 	}
 
 	private void addPageCrumb() {
@@ -68,25 +69,20 @@ public class EditTagsPage extends BasePage {
 	
 	public String addTag(){
 		logger.debug("Add tag '" + newTag + "' to " + buddyInfo.getName());
-		buddyService.addTag(buddyInfo, newTag);
+		try {
+			buddyService.addTag(buddyInfo, newTag);
+			addMessage(i18n("openuss4us_message_buddylist_tag_add"));
+		} catch (BuddyApplicationException e) {
+			addError(i18n("openuss4us_error_buddylist_tag_add"));
+		}
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
-	
-	public AllTagsDataProvider getUsedTags(){
-		return usedTags;
-	}
+
 	
 	public String deleteTag(){
 		String tag = this.buddyTags.getRowData();
 		logger.debug("Delete Tag: " + tag);
 		buddyService.deleteTag(buddyInfo, tag);
-		return Constants.OPENUSS4US_BUDDYLIST;
-	}
-	
-	public String addSelectedTag(){
-		String tag = this.usedTags.getRowData();
-		logger.debug("Delete Tag: " + tag);
-		buddyService.addTag(buddyInfo, tag);
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	
@@ -101,23 +97,6 @@ public class EditTagsPage extends BasePage {
 		public DataPage<String> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<String> al = buddyInfo.getTags();
-				page = new DataPage<String>(al.size(),0,al);
-			}
-			return page;
-		}
-	}
-
-	private class AllTagsDataProvider extends AbstractPagedTable<String> {
-
-		private static final long serialVersionUID = -2279124324233684525L;
-		
-		private DataPage<String> page; 
-		
-		@SuppressWarnings("unchecked")
-		@Override 
-		public DataPage<String> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<String> al = buddyService.getAllUsedTags();
 				page = new DataPage<String>(al.size(),0,al);
 			}
 			return page;
@@ -152,7 +131,11 @@ public class EditTagsPage extends BasePage {
 		this.buddyTags = buddyTags;
 	}
 
-	public void setUsedTags(AllTagsDataProvider usedTags) {
+	public List<String> getUsedTags() {
+		return usedTags;
+	}
+
+	public void setUsedTags(List<String> usedTags) {
 		this.usedTags = usedTags;
 	}
 	

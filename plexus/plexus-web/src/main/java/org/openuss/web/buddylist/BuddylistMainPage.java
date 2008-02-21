@@ -31,6 +31,8 @@ public class BuddylistMainPage extends BasePage {
 	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
 	
+	private List<String> usedTags = new ArrayList<String>();
+	
 	private static final Logger logger = Logger.getLogger(BuddylistMainPage.class);
 	
 	private BuddytableDataProvider data = new BuddytableDataProvider();
@@ -42,6 +44,7 @@ public class BuddylistMainPage extends BasePage {
 	public void prerender() throws Exception {	
 		super.prerender();
 		addPageCrumb();
+		usedTags = buddyService.getAllUsedTags();
 	}
 
 	private void addPageCrumb() {
@@ -74,7 +77,6 @@ public class BuddylistMainPage extends BasePage {
 	public BuddytableDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(BuddytableDataProvider data) {
 		this.data = data;
@@ -120,6 +122,14 @@ public class BuddylistMainPage extends BasePage {
 
 	public void setBuddyInfo(BuddyInfo buddyInfo) {
 		this.buddyInfo = buddyInfo;
+	}
+
+	public List<String> getUsedTags() {
+		return usedTags;
+	}
+
+	public void setUsedTags(List<String> usedTags) {
+		this.usedTags = usedTags;
 	}
 	
 }
