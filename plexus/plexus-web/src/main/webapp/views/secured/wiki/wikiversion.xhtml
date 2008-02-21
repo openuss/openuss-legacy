@@ -42,8 +42,7 @@
 					<t:column>
 						<plexus:commandSortHeader columnName="created"> #{msg['wiki_version_column_create']} </plexus:commandSortHeader>
 						
-						<o:link value="/views/secured/wiki/wikimain.faces" title="{entry.description}" rendered="{entry.folder}">
-							<f:param value="#{siteInfo.id}" name="page" />
+						<o:link value="/views/secured/wiki/wikimain.faces">
 							<f:param value="#{entry.id}" name="versionId" />
 							<h:outputText value="#{entry.creationDate}">
 								<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
@@ -58,7 +57,7 @@
 					
 					<t:column>
 						<plexus:commandSortHeader columnName="author"> #{msg['wiki_version_column_author']} </plexus:commandSortHeader>
-						<h:outputText value="{entry.author}"/>
+						<h:outputText value="#{entry.authorName}"/>
 					</t:column>					
 					
 					<plexus:column header="#{msg.wiki_version_column_actions}">	

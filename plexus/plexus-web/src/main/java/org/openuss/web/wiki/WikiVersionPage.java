@@ -10,6 +10,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
+import org.openuss.wiki.WikiSiteContentInfo;
 import org.openuss.wiki.WikiSiteInfo;
 
 
@@ -69,7 +70,12 @@ public class WikiVersionPage extends AbstractWikiPage{
 	}
 	
 	public String editWikiVersion() {
-		return null;
+		logger.debug("editing wikipage entry");
+		WikiSiteInfo entry = data.getRowData();
+		siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
+		
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
+		return Constants.WIKI_EDIT_PAGE;
 	}
 	
 }
