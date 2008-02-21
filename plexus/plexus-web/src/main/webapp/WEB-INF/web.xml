@@ -226,6 +226,13 @@
 	
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>/files/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
@@ -283,6 +290,13 @@
 	<filter-mapping>
 		<filter-name>Acegi Security Chain Filter</filter-name>
 		<url-pattern>/rss/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
@@ -439,6 +453,16 @@
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.WebDAVServlet</servlet-class>
+		<init-param>
+			<param-name>resource-path-prefix</param-name>
+			<param-value>/webdav</param-value>
+		</init-param>
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+	
 <!--
 	<servlet>
 	    <servlet-name>Jenia internal servlet</servlet-name>
@@ -540,6 +564,11 @@
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/rss/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<url-pattern>/webdav/*</url-pattern>
 	</servlet-mapping>
 	
 <!--
