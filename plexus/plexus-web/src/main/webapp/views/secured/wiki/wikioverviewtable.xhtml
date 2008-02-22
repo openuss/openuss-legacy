@@ -11,10 +11,10 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.wiki_overview_header}" 
     	value="views$secured$wiki$wikioverview.data" var="wikiPage" rows="20"
-    	columnClasses="col_max_left, col_commands">  
+    	columnClasses="col_max_left, col_commands" sortColumn="name" sortAscending="true">  
 
-		<t:column>
-			<plexus:commandSortHeader columnName="title"> #{msg['wiki_overview_column_name']} </plexus:commandSortHeader>
+		<t:column defaultSorted="true">
+			<plexus:commandSortHeader columnName="name" > #{msg['wiki_overview_column_name']} </plexus:commandSortHeader>
 			
 			<o:link value="/views/secured/wiki/wikimain.faces">
               <f:param value="#{wikiPage.name}" name="page" />
@@ -80,7 +80,7 @@
 					label="#{msg['wiki_overview_recover_site']}"
 					title="#{msg['wiki_overview_recover_site']}"
 					styleClass="icon_move"
-					rendered="#{wikiPage.deleted}" />
+					rendered="#{wikiPage.deleted == true}" />
 			</t:column>
 		</s:acl>
 	</plexus:dataTable>      
