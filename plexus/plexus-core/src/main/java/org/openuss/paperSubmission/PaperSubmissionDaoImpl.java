@@ -25,9 +25,9 @@ public class PaperSubmissionDaoImpl
         //super.toPaperSubmissionInfo(sourceEntity, targetVO);
     	targetVO.setId(sourceEntity.getId());
 //    	targetVO.setExamId(sourceEntity.getExam().getId());
-//    	targetVO.setUserId(sourceEntity.getSender().getId());
+    	targetVO.setUserId(sourceEntity.getSender().getId());
         targetVO.setDeliverDate(sourceEntity.getDeliverDate());
-        //FIXME
+        
 //        //targetVO.setFiles()
     }
 
@@ -38,10 +38,10 @@ public class PaperSubmissionDaoImpl
     public org.openuss.paperSubmission.PaperSubmissionInfo toPaperSubmissionInfo(final org.openuss.paperSubmission.PaperSubmission entity)
     {
         // @todo verify behavior of toPaperSubmissionInfo
-        return super.toPaperSubmissionInfo(entity);
-//        final org.openuss.paperSubmission.PaperSubmissionInfo target = new org.openuss.paperSubmission.PaperSubmissionInfo();
-//        this.toPaperSubmissionInfo(entity, target);
-//        return target;
+        //return super.toPaperSubmissionInfo(entity);
+        final org.openuss.paperSubmission.PaperSubmissionInfo target = new org.openuss.paperSubmission.PaperSubmissionInfo();
+        this.toPaperSubmissionInfo(entity, target);
+        return target;
     }
 
 

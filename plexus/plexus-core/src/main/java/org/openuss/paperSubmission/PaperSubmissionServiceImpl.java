@@ -5,12 +5,18 @@
  */
 package org.openuss.paperSubmission;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMember;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
 
 
@@ -97,13 +103,43 @@ public class PaperSubmissionServiceImpl
     	return null; //list;
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindPaperSubmissionsByExam(Long examId)
 			throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
-    	
+    	List<PaperSubmissionInfo> allSubmissions = new ArrayList();
     	Exam exam = this.getExamDao().load(examId);
-    	return this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);    	
+    	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
+    	//FIXME CourseMembers will be deprecated soon. Alternatives?
+    	CourseInfo course = this.getCourseService().getCourseInfo(exam.getDomainId());
+    	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
+    	for(CourseMemberInfo member : members){
+    		boolean submitted = false;
+    		PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    		paper.setUserId(member.getUserId());
+    		paper.setUserName(member.getLastName());
+    		
+    		
+    		for(PaperSubmissionInfo submission : submissions){
+    			if(member.getUserId().equals(submission.getUserId())){
+    				submitted = true;
+    				if(exam.getDeadline().after(submission.getDeliverDate())){
+    					paper.setSubmissionType("INTIME");
+    					allSubmissions.add(paper);
+    				}
+    				else{
+    					paper.setSubmissionType("NOTINTIME");
+    					allSubmissions.add(paper);
+    				}    				
+    			}
+    		}
+    		if(submitted==false){
+    			paper.setSubmissionType("NOTSUBMITTED");
+				allSubmissions.add(paper);
+    		}
+    	}
+    	return allSubmissions;
 	}
 
 	@Override

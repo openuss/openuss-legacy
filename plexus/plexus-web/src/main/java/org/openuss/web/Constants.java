@@ -233,6 +233,9 @@ public class Constants {
 	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "papersubmissionview";
 	public static final String PAPERSUBMISSION_CURRENT_FOLDER = "papersubmission_current_folder";
 	public static final String PAPERSUBMISSION_FOLDERENTRY_SELECTION = "papersubmission_entry_selection";
+	public static final String PAPERSUBMISSION_SELECTED_FILEENTRIES = "papersubmission_selected_fileentries";
+	public static final String PAPERSUBMISSION_REMOVE_FILEENTRY_PAGE = "papersubmission_remove_fileentries";
+	public static final String PAPERSUBMISSION_CONFIRM_REMOVE_PAGE = "papersubmission_confirm_remove";
 	
 
 	// collaboration

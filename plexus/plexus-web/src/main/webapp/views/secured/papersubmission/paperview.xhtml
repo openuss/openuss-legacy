@@ -57,7 +57,11 @@
 				   
 				        <t:column>
 				            <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
-				            <h:outputText value="#{bean.id}"/>
+				            <h:outputText value="#{bean.userName}"/>
+				        </t:column>
+				        <t:column>
+				            <plexus:commandSortHeader columnName="submissionTime">Abgabe</plexus:commandSortHeader> 
+				            <h:outputText value="#{bean.submissionType}"/>
 				        </t:column>
 				        
 				      
@@ -145,7 +149,7 @@
 						
 						<h:commandButton 
 					    id="addZip"
-						action="documents_add_zip" 
+						action="papersubmission_add_zip" 
 						value="#{msg.documents_main_button_zip}" 
 						title="#{msg.documents_main_button_zip}"
 						styleClass="button_add"/>
@@ -159,7 +163,7 @@
 	                        
 	                    <h:commandButton 
 					    id="delete"
-						action="#{views$secured$documents$documents.delete}" 
+						action="#{views$secured$papersubmission$paperview.delete}" 
 						value="#{msg.documents_main_button_delete}" 
 						styleClass="button_add"/>
 	                        

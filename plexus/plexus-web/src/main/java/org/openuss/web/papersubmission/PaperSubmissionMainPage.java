@@ -1,6 +1,7 @@
 package org.openuss.web.papersubmission;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -49,6 +50,10 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	public void prerender() throws Exception {
 		super.prerender();
 		addPageCrumbs();
+		
+		if(examInfo.getDeadline()==null){
+			examInfo.setDeadline(new Date());
+		}
 	}
 
 	/** Adds an additional breadcrumb to the course-crumbs.

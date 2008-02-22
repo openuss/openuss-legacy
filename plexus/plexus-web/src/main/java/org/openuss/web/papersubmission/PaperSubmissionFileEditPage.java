@@ -44,6 +44,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
 				selectedFile = documentService.getFileEntry(selectedFile.getId(), false);

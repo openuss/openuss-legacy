@@ -1,8 +1,13 @@
 package org.openuss.web.papersubmission;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -97,18 +102,45 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-//	private List<SubmissionInfo> loadSubmissionEntries() {
-//		if (this.entries == null) {
-//			this.entries = new ArrayList<SubmissionInfo>();
-//			this.entries.add(new SubmissionInfo(1l, "Donald Duck", "late"));
-//			this.entries.add(new SubmissionInfo(2l, "Minnie Maus", "missing"));
-//			this.entries.add(new SubmissionInfo(3l, "Dagobert Duck", "ok"));
-//		}
-//		return this.entries;
-//	}
+
+	private List<FileInfo> selectedEntries() {
+		List<FileInfo> selected = new ArrayList<FileInfo>(loadFileEntries());
+		CollectionUtils.filter(selected, new Predicate() {
+			public boolean evaluate(Object object) {
+				return paperSelection.isSelected(object);
+			}
+		});
+		logger.debug("selected " + selected.size() + " files");
+		return selected;
+	}
 	
-	public String downloadFile () {
-		return "collaboration";
+	@SuppressWarnings("unchecked")
+	public String download () throws IOException{
+		logger.debug("downloading documents");
+		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		if (files.size() > 0) {
+			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
+			HttpServletResponse response = getResponse();
+			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
+			getFacesContext().responseComplete();
+			paperSelection.getMap().clear();
+		} else {
+			addError(i18n("messages_error_no_documents_selected"));
+		}
+		return Constants.SUCCESS;
+	}
+	
+	public String delete() {
+		List<FileInfo> entries = selectedEntries();
+		if (entries.size() > 0) {
+			logger.debug("deleting documents:");
+			setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES, entries);
+			paperSelection.getMap().clear();
+			return Constants.PAPERSUBMISSION_REMOVE_FILEENTRY_PAGE;
+		} else {
+			addError(i18n("messages_error_no_documents_selected"));
+		}
+		return Constants.SUCCESS;
 	}
 	
 	public String addFile() {
