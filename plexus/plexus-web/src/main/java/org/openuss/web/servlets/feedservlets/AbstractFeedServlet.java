@@ -54,7 +54,10 @@ public abstract class AbstractFeedServlet{
 				}
 			}
 			res.setContentType(APPLICATION_RSS_XML);
-			res.getWriter().write(feedWrapper.getWriter().toString());
+			// FIXME - Workaround for NullPointerException
+			if (feedWrapper.getWriter() != null) {
+				res.getWriter().write(feedWrapper.getWriter().toString());
+			} 
 
 			if (feedWrapper.getLastModified() != null) {
 				String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
