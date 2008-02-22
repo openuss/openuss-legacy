@@ -44,10 +44,26 @@ public class WikiMainPage extends AbstractWikiPage{
 	}
 	
 	public String recoverSite() {
-		//this.siteVersionInfo = this.wikiService.getWikiSiteContent(siteVersionId);
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
-		
 		wikiSiteInfo.setDeleted(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+	}
+	
+	public String lockSite() {
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		wikiSiteInfo.setReadOnly(true);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+	}
+	
+	public String unlockSite() {
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		wikiSiteInfo.setReadOnly(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		

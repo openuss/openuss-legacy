@@ -103,7 +103,25 @@
 		                        		styleClass="button" />
 		                    </s:acl>
 		                    
+		                    <c:if test="${wiki_current_site_version.readOnly}">
+		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		                    		<h:commandButton 
+		                        		value="${msg.wiki_overview_unlock_site}" 
+		                        		action="#{views$secured$wiki$wikimain.unlockSite}" 
+		                        		immediate="true" 
+		                        		styleClass="button" />
+		                       	</s:acl>
+		                    </c:if>
+		                    
 		                    <c:if test="${wiki_current_site_version.readOnly == false}">
+		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		                    		<h:commandButton 
+		                        		value="${msg.wiki_overview_lock_site}" 
+		                        		action="#{views$secured$wiki$wikimain.lockSite}"
+		                        		immediate="true" 
+		                        		styleClass="button" />
+		                       	</s:acl>
+		                    
 		                    	<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
 		                    		<h:commandButton 
 		                        		value="${msg.wiki_main_button_edit}" 
