@@ -6,6 +6,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
+import org.openuss.wiki.WikiSiteInfo;
 
 
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
@@ -40,6 +41,17 @@ public class WikiMainPage extends AbstractWikiPage{
 	
 	public String overview() {
 		return Constants.WIKI_OVERVIEW;
+	}
+	
+	public String recoverSite() {
+		//this.siteVersionInfo = this.wikiService.getWikiSiteContent(siteVersionId);
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		
+		wikiSiteInfo.setDeleted(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
 }

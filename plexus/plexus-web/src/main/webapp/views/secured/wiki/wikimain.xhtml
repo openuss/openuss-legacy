@@ -31,6 +31,34 @@
          
         <ui:define name="content">
             <h:form id="mainWikiForm">
+            
+            	<c:if test="${wiki_current_site_version.deleted}">
+            		<o:block label="#{msg.wiki_main_header_site_deleted}" styleClass="form_box">
+	  					<p class="content_font_normal">
+	  						<h:outputFormat value="#{msg.wiki_main_site_deleted_detail}" styleClass="content_font_normal">
+								<f:param value="#{wiki_current_site_version.name}" />
+							</h:outputFormat>
+						</p>
+	  				</o:block>
+	  				<o:block>
+	  					<h:commandButton 
+							value="#{msg.wiki_overview_recover_site}" 
+							action="#{views$secured$wiki$wikimain.recoverSite}"
+							styleClass="button"/>
+						<h:commandButton
+							value="${msg.wiki_main_button_overview}"
+							action="wiki_overview"
+							immediate="true" 
+							styleClass="button"/>
+						<h:commandButton
+							value="${msg.wiki_main_button_version}"
+							action="wiki_version"
+							immediate="true" 
+							styleClass="button"/>
+					</o:block>
+	            </c:if>
+	            
+	            <c:if test="${not wiki_current_site_version.deleted}">
             	<c:if test="${empty wiki_current_site_version.text}">
 	  				<o:block label="#{msg.wiki_create_site_header}" styleClass="form_box">
 	  					<p class="content_font_normal">
@@ -76,6 +104,7 @@
 							styleClass="button"/>
 							
 	                </o:block>
+	        	</c:if>
 	        	</c:if>
             </h:form>
         </ui:define>
