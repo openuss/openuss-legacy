@@ -78,9 +78,10 @@ public class GroupsJoinPage extends BasePage{
 		setSessionAttribute(Constants.GROUP_INFO, group);
 		return Constants.GROUP_PAGE;
 	}
-
-	public String joinGroup() {
-		return null;
+	
+	public String deleteGroup(){
+		resetCachedData();
+		return Constants.SUCCESS;
 	}
 	
 	private void resetCachedData() {

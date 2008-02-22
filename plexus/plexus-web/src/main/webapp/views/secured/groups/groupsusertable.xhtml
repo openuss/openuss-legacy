@@ -10,24 +10,24 @@
       
     <plexus:dataTable 
     	id="groups" 
-    	label="FIXME: Titel fuer dieses Feld" 
+    	label="#{msg['openuss4us_group_list_header']}" 
     	value="views$secured$groups$groups.data" 
     	columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
     	var="group" 
     	rows="20">  
       
 		<t:column>
-			<plexus:commandSortHeader columnName="groupName"> #{msg['user_username']} </plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="groupName"> #{msg['groupinfo_name']} </plexus:commandSortHeader>
 			<h:commandLink value="" action="#{views$secured$groups$groups.linkGroup}" > <h:outputText value="#{group.name}"/></h:commandLink>
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="groupShortcut"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="groupShortcut"> #{msg['groupinfo_shortcut']}</plexus:commandSortHeader>
 			<h:outputText value="#{group.shortcut}"/>
 		</t:column>
 		
 		<t:column>
-			<plexus:commandSortHeader columnName="groupCreator"> #{msg['user_contact_lastname']}</plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="groupCreator"> #{msg['groupinfo_creator_name']}</plexus:commandSortHeader>
 			<h:outputText value="#{group.creatorName}"/>
 		</t:column>
 		
@@ -35,8 +35,8 @@
 			<plexus:command 
 				bean="#{views$secured$groups$groups}"
 				action="leaveGroup"
-				label="#{msg['course_assistants_delete']}"
-				title="#{msg['course_assistants_delete_hint']}"
+				label="#{msg['openuss4us_group_leave']}"
+				title="#{msg['openuss4us_group_leave_hint']}"
 				styleClass="icon_remove" />
 		</plexus:column>
 		

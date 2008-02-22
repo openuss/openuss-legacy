@@ -85,9 +85,8 @@ public class GroupsMainPage extends BasePage {
 	}
 	
 	public String leaveGroup() {
-		logger.debug("course member deleted");
+		logger.debug("member leave group");
 		UserGroupInfo group = data.getRowData();
-		logger.debug("GRUPPE " + +group.getId() + ", " + group.getName());
 		groupService.removeMember(group, user.getId());
 		if(groupService.getAllMembers(group).size() == 0){
 			List<UserGroupMemberInfo> aspirants = groupService.getAspirants(group);
