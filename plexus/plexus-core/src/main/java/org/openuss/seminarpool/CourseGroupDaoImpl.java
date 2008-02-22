@@ -9,6 +9,7 @@ import org.openuss.lecture.CourseInfo;
 
 /**
  * @see org.openuss.seminarpool.CourseGroup
+ * @author Stefan Thiemann
  */
 public class CourseGroupDaoImpl
     extends org.openuss.seminarpool.CourseGroupDaoBase

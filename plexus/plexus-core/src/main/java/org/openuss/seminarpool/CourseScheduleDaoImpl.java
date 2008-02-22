@@ -4,8 +4,12 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.seminarpool;
+
+import org.openuss.lecture.CourseInfo;
+
 /**
  * @see org.openuss.seminarpool.CourseSchedule
+ * @author Stefan Thiemann
  */
 public class CourseScheduleDaoImpl
     extends org.openuss.seminarpool.CourseScheduleDaoBase
@@ -17,8 +21,9 @@ public class CourseScheduleDaoImpl
         org.openuss.seminarpool.CourseSchedule sourceEntity,
         org.openuss.seminarpool.CourseScheduleInfo targetVO)
     {
-        // @todo verify behavior of toCourseScheduleInfo
         super.toCourseScheduleInfo(sourceEntity, targetVO);
+        if(sourceEntity.getCourseGroup() != null)
+        targetVO.setCourseGroupId(sourceEntity.getCourseGroup().getId());
     }
 
 
@@ -27,8 +32,13 @@ public class CourseScheduleDaoImpl
      */
     public org.openuss.seminarpool.CourseScheduleInfo toCourseScheduleInfo(final org.openuss.seminarpool.CourseSchedule entity)
     {
-        // @todo verify behavior of toCourseScheduleInfo
-        return super.toCourseScheduleInfo(entity);
+    	if (entity != null) { 
+    		CourseScheduleInfo targetVO = new CourseScheduleInfo();
+			toCourseScheduleInfo(entity, targetVO);
+			return targetVO;
+		} else {
+			return null;
+		}
     }
 
 
@@ -39,17 +49,14 @@ public class CourseScheduleDaoImpl
      */
     private org.openuss.seminarpool.CourseSchedule loadCourseScheduleFromCourseScheduleInfo(org.openuss.seminarpool.CourseScheduleInfo courseScheduleInfo)
     {
-        // @todo implement loadCourseScheduleFromCourseScheduleInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadCourseScheduleFromCourseScheduleInfo(org.openuss.seminarpool.CourseScheduleInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.CourseSchedule courseSchedule = this.load(courseScheduleInfo.getId());
-        if (courseSchedule == null)
-        {
-            courseSchedule = org.openuss.seminarpool.CourseSchedule.Factory.newInstance();
+        CourseSchedule courseSchedule = null;
+        if(courseScheduleInfo != null && courseScheduleInfo.getId() != null){
+        	courseSchedule = this.load(courseScheduleInfo.getId());
+        }
+        if(courseScheduleInfo == null){
+        	courseSchedule = CourseSchedule.Factory.newInstance();
         }
         return courseSchedule;
-        */
     }
 
     
@@ -58,9 +65,13 @@ public class CourseScheduleDaoImpl
      */
     public org.openuss.seminarpool.CourseSchedule courseScheduleInfoToEntity(org.openuss.seminarpool.CourseScheduleInfo courseScheduleInfo)
     {
-        // @todo verify behavior of courseScheduleInfoToEntity
         org.openuss.seminarpool.CourseSchedule entity = this.loadCourseScheduleFromCourseScheduleInfo(courseScheduleInfo);
         this.courseScheduleInfoToEntity(courseScheduleInfo, entity, true);
+        
+        if(courseScheduleInfo.getId() != null){
+        	CourseGroup courseGroup = this.getCourseGroupDao().load(courseScheduleInfo.getId());
+        	entity.setCourseGroup(courseGroup);
+        }
         return entity;
     }
 
@@ -73,7 +84,6 @@ public class CourseScheduleDaoImpl
         org.openuss.seminarpool.CourseSchedule targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of courseScheduleInfoToEntity
         super.courseScheduleInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
