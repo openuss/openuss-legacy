@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable 
+    	id="groups" 
+    	label="FIXME: Titel fuer dieses Feld" 
+    	value="views$secured$groups$groupjoin.data" 
+    	columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
+    	var="group" 
+    	rows="20">  
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="groupName"> #{msg['user_username']} </plexus:commandSortHeader>
+			<h:commandLink value="" action="#{views$secured$groups$groupjoin.linkGroup}" > <h:outputText value="#{group.name}"/></h:commandLink>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="groupShortcut"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
+			<h:outputText value="#{group.shortcut}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="groupCreator"> #{msg['user_contact_lastname']}</plexus:commandSortHeader>
+			<h:outputText value="#{group.creatorName}"/>
+		</t:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command 
+				bean="#{views$secured$groups$groups}"
+				action="joinGroup"
+				label="#{msg['course_assistants_delete']}"
+				title="#{msg['course_assistants_delete_hint']}"
+				styleClass="icon_edit" />
+		</plexus:column>
+		
+	</plexus:dataTable>      
+</ui:composition>

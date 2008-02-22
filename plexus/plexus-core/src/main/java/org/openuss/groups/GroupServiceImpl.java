@@ -27,7 +27,8 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
-	private static final Logger logger = Logger.getLogger(GroupServiceImpl.class);
+	private static final Logger logger = Logger
+			.getLogger(GroupServiceImpl.class);
 
 	/**
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
@@ -37,17 +38,19 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.isTrue(groupInfo.getId() == null,
-				"The Group shouldn't have an ID yet, the aktual ID is: " + groupInfo.getId());
+				"The Group shouldn't have an ID yet, the aktual ID is: "
+						+ groupInfo.getId());
 
 		// Transform VO to entity
-		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(groupInfo);
+		UserGroup groupEntity = this.getUserGroupDao().userGroupInfoToEntity(
+				groupInfo);
 		Validate.notNull(groupEntity, "Cannot transform groupInfo to entity.");
 
 		// Create a default Membership for the Group
 		Membership membership = Membership.Factory.newInstance();
 		getMembershipDao().create(membership);
 		groupEntity.setMembership(membership);
-		
+
 		// Create default SecurityGroups for UserGroup
 		GroupItem moderators = new GroupItem();
 		logger.debug(groupEntity.getId());
@@ -56,8 +59,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		moderators.setLabel("autogroup_moderator_label");
 		moderators.setGroupType(GroupType.MODERATOR);
 		Group moderatorGroup = this.getGroupDao().groupItemToEntity(moderators);
-		moderatorGroup = this.getMembershipService().createGroup(groupEntity.getMembership(), moderatorGroup);
-		Validate.notNull(moderatorGroup.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		moderatorGroup = this.getMembershipService().createGroup(
+				groupEntity.getMembership(), moderatorGroup);
+		Validate
+				.notNull(moderatorGroup.getId(),
+						"MembershipService.handleCreateGroup - Group couldn't be created");
 		moderatorGroup = this.getGroupDao().load(moderatorGroup.getId());
 		groupEntity.setModeratorsGroup(moderatorGroup);
 
@@ -67,19 +73,22 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		members.setLabel("autogroup_member_label");
 		members.setGroupType(GroupType.MEMBER);
 		Group memberGroup = this.getGroupDao().groupItemToEntity(members);
-		memberGroup = this.getMembershipService().createGroup(groupEntity.getMembership(), memberGroup);
-		Validate.notNull(memberGroup.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		memberGroup = this.getMembershipService().createGroup(
+				groupEntity.getMembership(), memberGroup);
+		Validate
+				.notNull(memberGroup.getId(),
+						"MembershipService.handleCreateGroup - Group couldn't be created");
 		moderatorGroup = this.getGroupDao().load(moderatorGroup.getId());
 		groupEntity.setMembersGroup(memberGroup);
-		
+
 		// Add Creator to Group
 		User creator = getUserDao().load(userId);
 		groupEntity.setCreator(creator);
-		
+
 		// Save Entity
 		this.getUserGroupDao().create(groupEntity);
 		Validate.notNull(groupEntity, "Id of course cannot be null.");
-				
+
 		// Update SecurityGroups and groupEntity
 		moderatorGroup.setName("GROUP_" + groupEntity.getId() + "_MODERATORS");
 		getGroupDao().update(moderatorGroup);
@@ -91,17 +100,19 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Update input parameter for aspects to get the right domain objects.
 		groupInfo.setId(groupEntity.getId());
-		
+
 		// Add Creator as Member
 		this.addMember(groupInfo, creator.getId());
-		
+
 		// Add Creator to Group of Moderators
 		this.addModerator(groupInfo, creator.getId());
 
 		// Set Security
 		this.getSecurityService().createObjectIdentity(groupEntity, null);
-		this.getSecurityService().setPermissions(moderatorGroup, groupEntity, LectureAclEntry.GROUP_MODERATOR);
-		this.getSecurityService().setPermissions(memberGroup, groupEntity, LectureAclEntry.GROUP_MEMBER);
+		this.getSecurityService().setPermissions(moderatorGroup, groupEntity,
+				LectureAclEntry.GROUP_MODERATOR);
+		this.getSecurityService().setPermissions(memberGroup, groupEntity,
+				LectureAclEntry.GROUP_MEMBER);
 
 		updateAccessTypePermission(groupEntity);
 
@@ -138,21 +149,32 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
-		
+
 		// Load Group
 		UserGroup group = this.getUserGroupDao().load(groupInfo.getId());
 		Validate.notNull(group, "No Group found to the corresponding ID "
 				+ groupInfo.getId());
-		
-		// TODO - Lutz: Aspiranten, Member und Moderatoren sofern vorhanden entfernen
+
+		// Remove all Members
+		List<UserGroupMemberInfo> members = this.getAllMembers(groupInfo);
+		if (members.size() > 0) {
+			for (UserGroupMemberInfo member : members) {
+				this.removeMember(groupInfo, member.getUserId());
+			}
+		}
+
+		// Remove all Aspirants
+		List<UserGroupMemberInfo> aspirants = this.getAspirants(groupInfo);
+		if (aspirants.size() > 0) {
+			for (UserGroupMemberInfo aspirant : aspirants) {
+				this.rejectAspirant(groupInfo, aspirant.getUserId());
+			}
+		}
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(group);
 		this.getSecurityService().removeObjectIdentity(group);
-
-		// Clear Membership
-		this.getMembershipService().clearMembership(group.getMembership());
-
+		
 		// Remove Group
 		this.getUserGroupDao().remove(group.getId());
 	}
@@ -175,11 +197,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User must not be null.");
-		
+
 		// Add user to SecurityGroup - Moderators
 		Group secGroup = group.getModeratorsGroup();
 		getSecurityService().addAuthorityToGroup(user, secGroup);
-		
+
 		// Remove user from SecurityGroup - Members
 		Group secGroupMem = group.getMembersGroup();
 		getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
@@ -208,7 +230,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Add user to SecurityGroup - Members
 		Group secGroupMem = group.getMembersGroup();
 		getSecurityService().addAuthorityToGroup(user, secGroupMem);
-		
+
 		// Remove user from Security Group - Moderators
 		Group secGroupMod = group.getModeratorsGroup();
 		getSecurityService().removeAuthorityFromGroup(user, secGroupMod);
@@ -276,9 +298,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
-		
+
 		// Test If User is Moderator
-		if (isModerator(groupInfo, userId)){
+		if (isModerator(groupInfo, userId)) {
 			this.removeModerator(groupInfo, userId);
 		}
 
@@ -289,7 +311,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
-		
+
 		// Remove User from SecurityGroup - Members
 		Group secGroupMem = group.getMembersGroup();
 		getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
@@ -378,22 +400,25 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getAllMembers(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<UserGroupMemberInfo> handleGetAllMembers(UserGroupInfo groupInfo) throws Exception{
+	protected List<UserGroupMemberInfo> handleGetAllMembers(
+			UserGroupInfo groupInfo) throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
-		Validate.notNull(groupInfo.getId(), "Parameter group must contain a valid group id.");
+		Validate.notNull(groupInfo.getId(),
+				"Parameter group must contain a valid group id.");
 		List<UserGroupMemberInfo> moderators = this.getModerators(groupInfo);
 		List<UserGroupMemberInfo> members = this.getMembers(groupInfo);
 		moderators.addAll(members);
 		return moderators;
 	}
-	
+
 	/**
 	 * @see org.openuss.groups.GroupService#getMembers(org.openuss.groups.UserGroupInfo)
 	 */
 	protected List<UserGroupMemberInfo> handleGetMembers(UserGroupInfo groupInfo)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
-		Validate.notNull(groupInfo.getId(), "Parameter group must contain a valid group id.");
+		Validate.notNull(groupInfo.getId(),
+				"Parameter group must contain a valid group id.");
 
 		// Load Group Entitiy
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
@@ -404,7 +429,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Load Members
 		List<User> users = membership.getMembers();
-		return userListToUserGroupMemberInfoList(users, group, group.getMembersGroup());
+		return userListToUserGroupMemberInfoList(users, group, group
+				.getMembersGroup());
 	}
 
 	/**
@@ -424,6 +450,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
+		logger.debug("HandleGetModerators: " + users.size());
 		return userListToUserGroupMemberInfoList(users, group, group
 				.getModeratorsGroup());
 	}
@@ -456,7 +483,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
 		for (UserGroup userGroup : userGroups) {
 			group.add(getUserGroupDao().toUserGroupInfo(userGroup));
-
 		}
 		return group;
 	}
@@ -466,23 +492,26 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 */
 	protected List<UserGroupInfo> handleGetGroupsByUser(Long userId)
 			throws Exception {
+		Validate.notNull(userId, "UserId cannot be null.");
+		logger.debug("THIS IS THE ACTUAL UserId: " + userId);
 
 		// Load User Entity
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "User cannot be null.");
-		
+
 		// Load Membership
 		Collection<Membership> memberships = getMembershipDao().loadAll();
 		Collection<UserGroup> groups = getUserGroupDao().loadAll();
 		List<UserGroupInfo> groupList = new ArrayList<UserGroupInfo>();
 		for (Membership membership : memberships) {
-			for (UserGroup group:groups){
-				if (group.getMembership().getId() == membership.getId()){
+			for (UserGroup group : groups) {
+				if (group.getMembership().getId().compareTo(membership.getId()) == 0 ) {
 					List<User> members = membership.getMembers();
 					for (User member : members) {
-						if (member.getId() == userId) {
+						if (member.getId().compareTo(userId) == 0) {
 							groupList.add(getUserGroupDao().toUserGroupInfo(
-									getUserGroupDao().findByMembership(membership)));
+									getUserGroupDao().findByMembership(
+											membership)));
 						}
 					}
 				}
@@ -495,7 +524,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#getGroupInfo(java.lang.Long)
 	 */
 	protected UserGroupInfo handleGetGroupInfo(Long groupId) throws Exception {
-		Validate.notNull(groupId, "UserId cannot be null.");
+		Validate.notNull(groupId, "GroupId cannot be null.");
 		return getUserGroupDao().toUserGroupInfo(
 				getUserGroupDao().load(groupId));
 	}
@@ -507,7 +536,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	protected boolean handleIsModerator(UserGroupInfo groupInfo, Long userId)
 			throws Exception {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
-		Validate.notNull(groupInfo.getId(),	"Parameter group must contain a valid group id.");
+		Validate.notNull(groupInfo.getId(),
+				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
 
 		// Load Group Entitiy
@@ -516,8 +546,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Load Moderators
 		List<Authority> authorities = group.getModeratorsGroup().getMembers();
-		for(Authority authority:authorities){
-			if (authority.getId() == userId){
+			
+		for (Authority authority : authorities) {
+			if ( authority.getId().compareTo(userId) == 0) {
 				return true;
 			}
 		}
@@ -568,17 +599,17 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
 		Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		return (group.getCreator().getId() == userId);
+		return (group.getCreator().getId().compareTo(userId) == 0);
 
 	}
-	
+
 	/**
 	 * @see org.openuss.groups.GroupService#isUniqueShortcut(java.lang.String)
 	 */
 	protected boolean handleIsUniqueShortcut(String shortcut) throws Exception {
 		Validate.notNull(shortcut, "Parameter shortcut must not be null.");
 		UserGroup group = getUserGroupDao().findByShortcut(shortcut);
-		if (group == null){
+		if (group == null) {
 			return true;
 		} else {
 			return false;
@@ -609,19 +640,20 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(group, "Parameter group must not be null.");
 
 		List<User> users2 = new ArrayList<User>();
-		if ((users.size() >0) && (secGroups != null)){
-			for(User user:users){
+		if ((users.size() > 0) && (secGroups != null)) {
+			for (User user : users) {
 				List<Authority> authorities = secGroups.getMembers();
-				for (Authority authority:authorities){
-					if (user.getId() == authority.getId()){
+				for (Authority authority : authorities) {
+					if (user.getId().compareTo(authority.getId()) == 0) {
 						users2.add(user);
 					}
 				}
-					
+
 			}
 			users = users2;
 		}
-		List<UserGroupMemberInfo> groupMembers = new ArrayList<UserGroupMemberInfo>();;
+		List<UserGroupMemberInfo> groupMembers = new ArrayList<UserGroupMemberInfo>();
+		;
 		for (User user : users) {
 			UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 			groupMember.setUserId(user.getId());

@@ -41,14 +41,14 @@
 					<h:outputText value="#{msg.openuss4us_groups_options_header}" styleClass="header_font_normal"/>
 					<o:input 
 						id="groupName"
-						label="FIXME: msg.groupinfo_name"
+						label="#{msg.groupinfo_name}"
 						entity="views$secured$groups$groupcreate" 
 						property="name" 
 						maxlength="100" 
 						required="true"/>
 					<o:input 
 						id="groupShortcut"
-						label="FIXME: msg.groupinfo_shortcut"
+						label="#{msg.groupinfo_shortcut}"
 						entity="views$secured$groups$groupcreate" 
 						property="shortcut" 
 						maxlength="30" 
@@ -72,7 +72,7 @@
 					
 		 				<o:input 
 		 					id="groupsPassword"
-		 					label="FIXME: msg.groupinfo_password"
+		 					label="#{msg.groupinfo_password}"
 		 					entity="views$secured$groups$groupcreate" 
 		 					property="password" 
 		 					required="true"/>
@@ -81,27 +81,27 @@
 					<h:outputText value="#{msg.openuss4us_groups_options_features}" styleClass="header_font_normal"/>
 					<o:input 
 						id="groupDocuments" 
-						label="FIXME: msg.groupinfo_documents"
+						label="#{msg.groupinfo_documents}"
 						entity="views$secured$groups$groupcreate" 
 						property="documents"/>
 					<o:input 
 						id="groupForum" 
-						label="FIXME: msg.groupinfo_forum"
+						label="#{msg.groupinfo_forum}"
 						entity="views$secured$groups$groupcreate" 
 						property="forum"/>
 					<o:input 
 						id="groupNewsletter" 
-						label="FIXME: msg.groupinfo_newsletter"
+						label="#{msg.groupinfo_newsletter}"
 						entity="views$secured$groups$groupcreate" 
 						property="newsletter"/>
 					<o:input 
 						id="groupChat" 
-						label="FIXME: msg.groupinfo_chat"
+						label="#{msg.groupinfo_chat}"
 						entity="views$secured$groups$groupcreate" 
 						property="chat"/>
 					<o:input 
 						id="groupCalendar" 
-						label="FIXME: msg.groupinfo_calendar"
+						label="#{msg.groupinfo_calendar}"
 						entity="views$secured$groups$groupcreate" 
 						property="calendar"/>
    			 	</o:block>

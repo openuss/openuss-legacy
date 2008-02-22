@@ -112,22 +112,45 @@ public class GroupServiceIntegrationTest extends
 		// Synchronize with DB
 		flush();
 
+		
+		// Create UserGroupInfo
+		UserGroupInfo groupInfo = new UserGroupInfo();
+		groupInfo.setAccessType(GroupAccessType.OPEN);
+		groupInfo.setCalendar(true);
+		groupInfo.setChat(true);
+		User user = testUtility.createUniqueUserInDB();
+		groupInfo.setCreator(user.getId());
+		groupInfo.setDescription("A UserGroup");
+		groupInfo.setDocuments(true);
+		groupInfo.setForum(true);
+		groupInfo.setName("UserGroup");
+		groupInfo.setPassword(null);
+		groupInfo.setShortcut("group");
+		assertNotNull(groupInfo);
+		
+		
 		// Create UserGroup
-		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
+		Long groupId = this.getGroupService().createUserGroup(groupInfo,
+				user.getId());
+		assertNotNull(groupId);
+		
+		// Load Group
+		UserGroup userGroup = testUtility.getUserGroupDao().load(groupId);
 		assertNotNull(userGroup);
+		
 
 		// Load UserInfoObject
-		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
+		UserGroupInfo groupInfoTest = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
+		assertNotNull(groupInfoTest);
 
 		// Delete Group
-		this.getGroupService().deleteUserGroup(groupInfo);
+		this.getGroupService().deleteUserGroup(groupInfoTest);
 
 		// Test
 		try {
 			UserGroup groupTest = testUtility.getUserGroupDao().load(
-					groupInfo.getId());
+					groupInfoTest.getId());
 			assertNull(groupTest);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());

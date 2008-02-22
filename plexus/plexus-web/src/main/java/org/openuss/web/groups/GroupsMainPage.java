@@ -103,12 +103,16 @@ public class GroupsMainPage extends BasePage {
 	}
 	
 	private void resetCachedData() {
-		page = null;
+		groups = null;
 	}
 	
 	private List<UserGroupInfo> getGroups() {
 		if (groups == null) {
 			groups = groupService.getGroupsByUser(user.getId());
+			logger.debug("User GROUPS: " + groups.size() + ", " + groups);
+			for(UserGroupInfo group:groups){
+				logger.debug("Gruppe Creator:" +group.getCreator() + " - " + group.getCreatorName());
+			}
 		}
 		return groups;
 	}
