@@ -15,7 +15,7 @@ public class CourseSeminarpoolAllocationImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = 1489554310558861464L;
+    private static final long serialVersionUID = 7459013160324036581L;
 
     /**
      * @see org.openuss.seminarpool.CourseSeminarpoolAllocation#addUser(java.lang.Long)
@@ -51,6 +51,24 @@ public class CourseSeminarpoolAllocationImpl
     {
         // @todo implement public void removeCourse(java.lang.Long courseId)
         throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.CourseSeminarpoolAllocation.removeCourse(java.lang.Long courseId) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.seminarpool.CourseSeminarpoolAllocation#addCourseGroup(org.openuss.seminarpool.CourseGroup)
+     */
+    public void addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
+    {
+        // @todo implement public void addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
+        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.CourseSeminarpoolAllocation.addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup) Not implemented!");
+    }
+
+    /**
+     * @see org.openuss.seminarpool.CourseSeminarpoolAllocation#removeCourseGroup(org.openuss.seminarpool.CourseGroup)
+     */
+    public void removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
+    {
+        // @todo implement public void removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
+        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.CourseSeminarpoolAllocation.removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup) Not implemented!");
     }
 
 }

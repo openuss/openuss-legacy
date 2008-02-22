@@ -15,6 +15,6 @@ public class CourseGroupImpl
     /**
      * The serial version UID of this class. Needed for serialization.
      */
-    private static final long serialVersionUID = -3647679996981482027L;
+    private static final long serialVersionUID = -5256797015565690286L;
 
 }
