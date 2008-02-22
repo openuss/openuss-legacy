@@ -31,23 +31,17 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="remove_folderentries">
+		<h:form id="remove_fileentries">
 	  			<o:block label="#{msg.warning_attention_dataloss}- #{msg.documents_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
 							<h:outputText value="#{msg.documents_remove_text}" styleClass="warning"/>
 						</span>
 					</p>
-					<h:outputText value="#{msg.documents_actual_path}" styleClass="field_label"/>
-					<span class="content_font_normal">
-						<t:dataList var="folder" layout="list" value="#{views$secured$papersubmission$papersubmissionremove.currentPath}">
-							<h:outputText value="/ #{folder.name}" rendered="#{!folder.root}"/>
-						</t:dataList>
-					</span>
 					<h:outputText value="#{msg.documents_selected_files}" styleClass="field_label"/>
 					<ul class="file-list">
-						<t:dataList id="entries" var="entry" layout="list" value="#{collaboration_selected_folderentries}">
-							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.sizeAsString}</li>
+						<t:dataList id="entries" var="entry" layout="list" value="#{papersubmission_selected_fileentries}">
+							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.fileSize}</li>
 						</t:dataList>					
 					</ul>
 					<p class="content_font_normal">
