@@ -5,6 +5,7 @@
 */
 package org.openuss.seminarpool;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -23,8 +24,8 @@ public class SeminarpoolDaoTest extends SeminarpoolDaoTestBase {
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
-		seminarpool.setRegistrationStartTime(new Date());
-		seminarpool.setRegistrationEndTime(new Date());
+		seminarpool.setRegistrationStartTime(new Timestamp(12345L));
+		seminarpool.setRegistrationEndTime(new Timestamp(12345L));
 		seminarpool.setName(" ");
 		seminarpool.setShortcut(" ");
 		seminarpool.setDescription(" ");

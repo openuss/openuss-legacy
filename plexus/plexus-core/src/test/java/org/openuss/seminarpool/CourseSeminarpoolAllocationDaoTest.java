@@ -28,7 +28,7 @@ public class CourseSeminarpoolAllocationDaoTest extends CourseSeminarpoolAllocat
 	public void testCourseSeminarpoolAllocationDaoCreate() {
 		CourseSeminarpoolAllocation courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
 		courseSeminarpoolAllocation.setSeminarpool(testUtility.createUniqueSeminarpoolinDB());
-		courseSeminarpoolAllocation.setCourseGroup(testUtility.createCourseGroup());
+		courseSeminarpoolAllocation.setCourse(testUtility.createUniqueCourseInDB());
 		assertNull(courseSeminarpoolAllocation.getId());
 		courseSeminarpoolAllocationDao.create(courseSeminarpoolAllocation);
 		assertNotNull(courseSeminarpoolAllocation.getId());

@@ -1,5 +1,6 @@
 package org.openuss;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -755,8 +756,8 @@ public class TestUtility {
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
-		seminarpool.setRegistrationStartTime(new Date());
-		seminarpool.setRegistrationEndTime(new Date());
+		seminarpool.setRegistrationStartTime(new Timestamp(12345L));
+		seminarpool.setRegistrationEndTime(new Timestamp(12345L));
 		seminarpool.setName("Unique Seminarpool");
 		seminarpool.setShortcut("SEPO");
 		seminarpool.setDescription("Seminarpool");
@@ -779,14 +780,13 @@ public class TestUtility {
 		courseGroup.setIsTimeSet(false);
 		courseGroup.setIsDefault(true);
 		courseGroup.setCapacity(30);
-		courseGroup.setCourse(createUniqueCourseInDB());
 		return courseGroup;
 	}
 	
 	public CourseSeminarpoolAllocation createCourseSeminarpoolAllocation(){
 		CourseSeminarpoolAllocation courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
 		courseSeminarpoolAllocation.setSeminarpool(createUniqueSeminarpoolinDB());
-		courseSeminarpoolAllocation.setCourseGroup(createCourseGroup());
+		courseSeminarpoolAllocation.setCourse(createUniqueCourseInDB());
 		return courseSeminarpoolAllocation;
 	}
 	

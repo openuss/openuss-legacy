@@ -29,7 +29,7 @@ public class CourseGroupDaoTest extends CourseGroupDaoTestBase {
 		courseGroup.setIsTimeSet(false);
 		courseGroup.setIsDefault(true);
 		courseGroup.setCapacity(30);
-		courseGroup.setCourse(testUtility.createUniqueCourseInDB());
+		courseGroup.setCourseSeminarpoolAllocation(testUtility.createCourseSeminarpoolAllocation());
 		assertNull(courseGroup.getId());
 		courseGroupDao.create(courseGroup);
 		assertNotNull(courseGroup.getId());
