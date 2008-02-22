@@ -256,7 +256,7 @@ public class MyUniPage extends BasePage {
 				getCourseNewsletterService().subscribe(ci, user);
 				addMessage(i18n("newsletter_subscribe_success"));
 			} catch (Exception e) {
-				addMessage(i18n("errorpage_text"));
+				addError(i18n("errorpage_text"));
 			}
 			
 			
@@ -267,7 +267,7 @@ public class MyUniPage extends BasePage {
 				getCourseNewsletterService().unsubscribe(ci, user);
 				addMessage(i18n("newsletter_unsubscribe_success"));
 			} catch (Exception e) {
-				addMessage(i18n("errorpage_text"));
+				addError(i18n("errorpage_text"));
 			}
 			
 		}
@@ -278,7 +278,7 @@ public class MyUniPage extends BasePage {
 				getDiscussionService().addForumWatch(forum);
 				addMessage(i18n("discussion_subscribe_success"));
 			} catch (Exception e) {
-				addMessage(i18n("errorpage_text"));
+				addError(i18n("errorpage_text"));
 			}
 		}
 		if (paramUnsubscribeForum != null){
@@ -288,7 +288,7 @@ public class MyUniPage extends BasePage {
 				getDiscussionService().removeForumWatch(forum);
 				addMessage(i18n("discussion_unsubscribe_success"));
 			} catch (Exception e) {
-				addMessage(i18n("errorpage_text"));
+				addError(i18n("errorpage_text"));
 			}
 		}
 	}
