@@ -44,4 +44,22 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		
 		return Constants.WIKI_OVERVIEW;
 	}
+	
+	public String lockSite() {
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		wikiSiteInfo.setReadOnly(true);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_OVERVIEW;
+	}
+	
+	public String unlockSite() {
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		wikiSiteInfo.setReadOnly(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_OVERVIEW;
+	}
 }
