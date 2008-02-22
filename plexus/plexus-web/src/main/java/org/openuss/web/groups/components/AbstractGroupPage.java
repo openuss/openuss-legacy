@@ -1,14 +1,15 @@
-package org.openuss.web.groups.components;
+ package org.openuss.web.groups.components;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.CourseService;
+import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.security.SecurityService;
 
 /**
  * 
@@ -26,6 +27,12 @@ public class AbstractGroupPage extends BasePage {
 		@Property(value = "#{groupService}")
 		protected GroupService groupService;
 
+		@Property(value = "#{lectureService}")
+		protected LectureService lectureService;
+		
+		@Property(value = "#{courseService}")
+		protected CourseService courseService;
+		
 		@Prerender
 		public void prerender() throws Exception {
 			if (groupInfo != null && groupInfo.getId() != null) {
@@ -37,7 +44,6 @@ public class AbstractGroupPage extends BasePage {
 				return;
 			} else {
 				addGroupCrumb();
-				addError("No ERROR");
 				setSessionBean(Constants.GROUP_INFO, groupInfo);
 			}
 		}
@@ -69,4 +75,22 @@ public class AbstractGroupPage extends BasePage {
 		public void setGroupInfo(UserGroupInfo GroupInfo) {
 			this.groupInfo = GroupInfo;
 		}
+		
+		public LectureService getLectureService() {
+			return lectureService;
+		}
+
+		public void setLectureService(LectureService lectureService) {
+			this.lectureService = lectureService;
+		}
+
+		public CourseService getCourseService() {
+			return courseService;
+		}
+
+		public void setCourseService(CourseService courseService) {
+			this.courseService = courseService;
+		}
+		
+		
 }

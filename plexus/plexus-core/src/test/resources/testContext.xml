@@ -22,8 +22,17 @@
 		<property name="shortcut" value="shortcut" />
 		<property name="email" value="email" />
 	</bean>
-
+	
 	<bean id="testUtility" class="org.openuss.TestUtility">
+		<property name="calendarDao">
+			<ref bean="calendarDao" />
+		</property>
+		<property name="appointmentDao">
+			<ref bean="appointmentDao" />
+		</property>
+		<property name="appointmentTypeDao">
+			<ref bean="appointmentTypeDao" />
+		</property>
 		<property name="defaultUser">
 			<ref local="defaultUser" />
 		</property>

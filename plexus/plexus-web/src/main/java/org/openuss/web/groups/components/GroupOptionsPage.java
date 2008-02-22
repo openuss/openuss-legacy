@@ -23,7 +23,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Lutz D. Kramer
- * 
+ * @author Thomas Jansing
  */
 @Bean(name = "views$secured$groups$components$groupoptions", scope = Scope.REQUEST)
 @View
@@ -45,14 +45,14 @@ public class GroupOptionsPage extends AbstractGroupPage {
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
 			if (!isPostBack()) {
-				logger.debug("---------- is not postback ---------- refreshing course");
+				logger.debug("---------- is not postback ---------- refreshing group");
 				super.prerender();
 			} else {
-				// TODO - Lutz: BreadCrumbs
-//				breadcrumbs.loadGroupCrumbs(groupInfo);
+				breadcrumbs.loadCourseCrumbs;
+				
 			}
 		}
-		setSessionBean(Constants.COURSE, groupInfo);
+		setSessionBean(Constants.GROUP, groupInfo);
 		addPageCrumb();
 	}
 
@@ -65,13 +65,13 @@ public class GroupOptionsPage extends AbstractGroupPage {
 	}
 
 	/**
-	 * Save changes of the course
+	 * Save changes of the group
 	 * 
 	 * @return outcome
 	 * @throws LectureException
 	 */
 	public String saveOptions() {
-		logger.trace("saving course options");
+		logger.trace("saving group options");
 		
 		// TODO move to business layer
 		UserGroupInfo groupOld = getGroupService().getGroupInfo(groupInfo.getId());
@@ -96,7 +96,7 @@ public class GroupOptionsPage extends AbstractGroupPage {
 	 * @return outcome
 	 */
 	public String cancelOptions() {
-		// nothing to do - course will be automatically refreshed during prerender phase.
+		// nothing to do - group will be automatically refreshed during prerender phase.
 			return Constants.GROUP_PAGE;
 	}
 

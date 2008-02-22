@@ -1,14 +1,22 @@
 package org.openuss;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.calendar.Appointment;
+import org.openuss.calendar.AppointmentDao;
+import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.AppointmentType;
+import org.openuss.calendar.AppointmentTypeDao;
+import org.openuss.calendar.CalendarDao;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.GroupServiceImpl;
@@ -87,8 +95,16 @@ public class TestUtility {
 	private User defaultUser;
 
 	private Institute defaultInstitute;
+	
+	private AppointmentTypeDao appointmentTypeDao;
+	
+	private AppointmentDao appointmentDao;
+	
+	private org.openuss.calendar.CalendarDao calendarDao;
 
 	private static long uniqueId = System.currentTimeMillis();
+	
+
 
 	/**
 	 * @deprecated As of OpenUSS 3.0 RC1, replaced by
@@ -903,5 +919,83 @@ public class TestUtility {
 	public UserGroupDao getUserGroupDao() {
 		return userGroupDao;
 	}
+
+	/***************************** Calendar *************************/
+	
+	public AppointmentType createAppointmentTypeInDB(String name) {
+		AppointmentType appType = AppointmentType.Factory.newInstance();
+		appType.setName(name);
+		appointmentTypeDao.create(appType);
+		return appType;
+	}
+	
+	public AppointmentInfo getTestAppointmentInfo(AppointmentType appType,
+			User user) {
+		
+		Date start = new Date();
+		Date end = new Date();
+
+		AppointmentInfo appInfo = new AppointmentInfo();
+		appInfo.setSubject("Subject");
+		appInfo.setDescription("Description");
+		appInfo.setLocation("Location");
+		appInfo.setStarttime(new Timestamp(start.getTime()));
+		appInfo.setEndtime(new Timestamp(end.getTime()));
+		appInfo.setAppointmentTypeInfo(appointmentTypeDao
+				.toAppointmentTypeInfo(appType));
+
+		// TODO isSerial setzen beim Erzeugen eines Termins
+		appInfo.setSerial(false);
+
+		return appInfo;
+	}
+	
+	public void setAppointmentTypeDao(AppointmentTypeDao appointmentTypeDao) {
+		this.appointmentTypeDao = appointmentTypeDao;
+	}
+
+	public void createUniqueAppointmentForCalendarInDB(org.openuss.calendar.CalendarInfo calInfo) {
+		Appointment app = Appointment.Factory.newInstance();
+		AppointmentType appType = this.createAppointmentTypeInDB("standard");
+		app.setAppointmentType(appType);
+		app.setDescription("description");
+		app.setLocation("location");
+		app.setSubject(unique("subject"));
+		app.setSerial(false);
+		Random rnd = new Random();
+		Long randomLong = rnd.nextLong();
+		Timestamp start = new Timestamp(randomLong);
+		Timestamp end = new Timestamp(randomLong + (60*60)); // 1 h later
+		app.setStarttime(start);
+		app.setEndtime(end);
+		
+		System.out.println("ID:"+ calInfo.getId());
+		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
+		app.setSourceCalendar(cal);
+		cal.addAppointment(app);
+		appointmentDao.create(app);
+		calendarDao.update(cal);
+	}
+
+	public AppointmentDao getAppointmentDao() {
+		return appointmentDao;
+	}
+
+	public void setAppointmentDao(AppointmentDao appointmentDao) {
+		this.appointmentDao = appointmentDao;
+	}
+
+	public org.openuss.calendar.CalendarDao getCalendarDao() {
+		return calendarDao;
+	}
+
+	public void setCalendarDao(org.openuss.calendar.CalendarDao calendarDao) {
+		this.calendarDao = calendarDao;
+	}
+
+	public AppointmentTypeDao getAppointmentTypeDao() {
+		return appointmentTypeDao;
+	}
+
 
 }

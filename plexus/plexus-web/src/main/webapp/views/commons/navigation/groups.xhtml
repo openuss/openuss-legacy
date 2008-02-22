@@ -40,7 +40,7 @@
 							</t:commandNavigation2>
 							<t:commandNavigation2 
 								action="group_chat" 
-								activeOnViewIds="/views/secured/course/chatmain.xhtml"
+								activeOnViewIds="/views/secured/groups/components/chatmain.xhtml"
 								rendered="#{groupInfo.chat}">
 								<h:outputText value="#{msg['course_command_chat']}"/>
 							</t:commandNavigation2>
@@ -62,14 +62,6 @@
 									<h:outputText value="#{msg['openuss4us_group_command_options_participants']}" />
 								</t:commandNavigation2>
 							<!--  </c:if> -->
-							
-							<!--  TODO <c:if test="#{sessionScope.courseInfo.accessType.value == 4}"> -->
-								<t:commandNavigation2 
-									action="group_options_aspirants" 
-									activeOnViewIds="/views/secured/course/courseaspirants.xhtml">
-									<h:outputText value="#{msg['openuss4us_group_command_options_aspirants']}" />
-								</t:commandNavigation2>
-							<!-- </c:if> -->
 							
 							<t:commandNavigation2 
 								action="group_options_config" 

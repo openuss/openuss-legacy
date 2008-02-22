@@ -26,9 +26,9 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/course.xhtml" />
-		</ui:define>
+  		<ui:define name="navigation">  			
+			<ui:include src="/views/commons/navigation/groups.xhtml" />
+  		</ui:define>
  		 
   		<ui:define name="content">
 			<h:form id="chatroomstable">
@@ -36,7 +36,7 @@
 			   <plexus:dataTable 
 			    	id="chatrooms" 
 			    	label="#{msg.chat_rooms_subheading}" 
-			    	value="views$secured$course$chatmain.rooms" 
+			    	value="views$secured$groups$components$chatmain.rooms" 
 			   	 	columnClasses="col_max_left, col_min_left, col_min_left, col_commands"
 			    	var="room" 
 			    	rows="20">  
@@ -54,10 +54,10 @@
 						<plexus:commandSortHeader columnName="messages">#{msg['chat_rooms_messages']}</plexus:commandSortHeader>
 						<h:outputText value="#{room.messages}"/>
 					</t:column>
-					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
 						<plexus:column header="#{msg.commands_header}">
 							<plexus:command 
-								bean="#{views$secured$course$chatmain}"
+								bean="#{views$secured$groups$components$chatmain}"
 								action="deleteRoom"
 								label="#{msg['chat_rooms_delete']}"
 								title="#{msg['chat_rooms_delete_hint']}"
@@ -69,8 +69,8 @@
 			
 			<h:form id="chatRoomCreate">
 				<o:block label="#{msg['chat_rooms_create']}" styleClass="form_box">
-					<o:input entity="views$secured$course$chatmain" property="roomTopic" required="true" label="#{msg['chat_rooms_topic']}"/>
-					<h:commandButton action="#{views$secured$course$chatmain.createRoom}" value="#{msg['chat_rooms_create']}" title="#{msg['chat_rooms_create_hint']}" styleClass="button_save"/>
+					<o:input entity="views$secured$groups$components$chatmain" property="roomTopic" required="true" label="#{msg['chat_rooms_topic']}"/>
+					<h:commandButton action="#{views$secured$groups$components$chatmain.createRoom}" value="#{msg['chat_rooms_create']}" title="#{msg['chat_rooms_create_hint']}" styleClass="button_save"/>
 				</o:block>
 			</h:form>
   		</ui:define>

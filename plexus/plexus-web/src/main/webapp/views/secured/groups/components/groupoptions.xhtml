@@ -29,10 +29,10 @@
  		 
   		<ui:define name="content">
 			<h:form id="groupOptionForm">
-	  			<o:block label="#{msg.group_options_headline} - #{sessionScope.groupInfo.name}" styleClass="form_box">
+	  			<o:block label="#{msg.openuss4us_group_options_headline} - #{groupInfo.name}" styleClass="form_box">
 	  				<o:input entity="groupInfo" property="name" maxlength="100" required="true"/>
 					<o:input entity="groupInfo" property="shortcut" maxlength="30" required="true"/>
-					<h:outputLabel for="accessType" value="#{msg.group_options_access_headline}" styleClass="field_label"/>
+					<h:outputLabel for="accessType" value="#{msg.openuss4us_group_options_access_headline}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
 						value="#{sessionScope.groupInfo.accessType}" 
@@ -48,12 +48,12 @@
 		 				<o:input entity="groupInfo" property="password" required="true"/>
 	 				</c:if> 				
 					
-					<h:outputText value="#{msg.group_description}" styleClass="field_label"/>					
+					<h:outputText value="#{msg.openuss4us_group_description}" styleClass="field_label"/>					
 					<div class="content_iframe">
 						<fck:editor value="#{sessionScope.groupInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
 					</div>
 	 				
-					<h:outputText value="#{msg.group_options_features_headline}" styleClass="header_font_normal"/>
+					<h:outputText value="#{msg.openuss4us_group_options_features_headline}" styleClass="header_font_normal"/>
 					<div class="content_font_normal">
 						<o:input entity="groupInfo" property="documents"/>
 						<o:input entity="groupInfo" property="forum"/>

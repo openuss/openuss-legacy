@@ -259,6 +259,16 @@
 			<to-view-id>/views/secured/groups/components/groupnewsedit.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>group_chat</from-outcome>
+			<to-view-id>/views/secured/groups/components/chatmain.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>group_options_config</from-outcome>
+			<to-view-id>/views/secured/groups/components/groupoptions.xhtml</to-view-id>
+		</navigation-case>
+		
 	
 		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>

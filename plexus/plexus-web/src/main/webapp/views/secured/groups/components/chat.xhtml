@@ -21,12 +21,14 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/chatlayout.xhtml">
   		<ui:define name="title">
-  			<h:outputText value="#{courseInfo.name}"/>
+			<h:outputText value="#{msg['openuss4us_command_groups']}" />
   		</ui:define>
+
+
   		<ui:define name="content"> 
 			<o:block>
 				<span class="header_font_normal">
-					<h:outputText value="#{courseInfo.shortcut} > Chat" styleClass="content_font_normal"></h:outputText>
+					<h:outputText value="#{groupInfo.shortcut} > Chat" styleClass="content_font_normal"></h:outputText>
 				</span>
 			</o:block>
 			<form action="javascript:doSend()" name="formular" method="post">
