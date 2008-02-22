@@ -39,7 +39,9 @@
 						<ui:include src="/views/commons/search/search.xhtml"/> 
 					</ui:define>
 					<ui:define name="messages">
-						<h:messages layout="list" id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
+						<o:block rendered="#{! empty facesContext.maximumSeverity}">
+							<h:messages layout="list" id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
+						</o:block>
 					</ui:define>
 					<ui:define name="breadcrumb">
 						<ui:include src="/views/commons/navigation/crumb.xhtml" />

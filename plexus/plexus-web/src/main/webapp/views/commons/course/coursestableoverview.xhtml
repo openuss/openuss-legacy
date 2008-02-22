@@ -23,7 +23,7 @@
 		</h:selectOneMenu>
 	</o:block>  
 	
-      
+    <h:outputText value="titten"></h:outputText>
 	<plexus:dataTable 
 	    	id="courses" 
 	    	var="courseInfo" 
@@ -59,7 +59,16 @@
 		</plexus:column>
 		  
 		<s:authorize ifAllGranted="ROLE_USER">
-			<plexus:column header="#{msg.commands_header}">		
+			<plexus:column header="#{msg.commands_header}">
+				<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+					<o:link value="/views/secured/course/courseoptions.faces"
+						label="#{msg.course_command_edit}"
+						title="#{msg.course_command_edit_hint}"
+						styleClass="icon_edit">
+							<f:param value="#{courseInfo.id}" name="course" />
+							<span></span>
+					</o:link>
+				</s:acl>
 				<plexus:command 
 					bean="#{views$public$institute$institute}"
 					action="removeCourseShortcut"
