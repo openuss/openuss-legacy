@@ -31,10 +31,10 @@ import org.apache.commons.logging.LogFactory;
 
 
 /**
-* An authenticator which binds as a user.
+* An authenticator which binds as a user to an Microsoft Active Directory service.
 *
 * @author Luke Taylor
-* @version $Id: BindAuthenticator.java 2348 2007-12-07 16:04:43Z luke_t $
+* @author Peter Schuh 
 *
 * @see AbstractLdapAuthenticator
 */

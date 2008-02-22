@@ -38,10 +38,12 @@ import org.springframework.util.Assert;
 
 /**
 * LDAP equivalent of the Spring JdbcTemplate class.<p>This is mainly intended to simplify Ldap access within Acegi
-* Security's LDAP-related services.</p>
+* Security's LDAP-related services. This template is used for access Microsoft Active Directory services.</p>
 *
 * @author Ben Alex
 * @author Luke Taylor
+* @author Peter Schuh
+*  
 */
 public class ActiveDirectoryLdapTemplate extends LdapTemplate
 {
