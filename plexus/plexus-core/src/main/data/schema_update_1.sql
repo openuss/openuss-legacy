@@ -1,3 +1,12 @@
+/* 
+ * Migration script for security refactoring. 
+ * Consolidation of user preferences, contact, and profile to one user object
+ * 
+ * Be aware that ibexpert logging is switched of before. 
+ * Otherwise the script cannot drop the foreign key reference columns in the user table 
+ * 
+ */
+
 ALTER TABLE SECURITY_USER
     ADD LAST_NAME        VARCHAR(100) NOT NULL,
     ADD FIRST_NAME           VARCHAR(100) NOT NULL,
