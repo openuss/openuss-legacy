@@ -780,6 +780,7 @@ public class TestUtility {
 		courseGroup.setIsTimeSet(false);
 		courseGroup.setIsDefault(true);
 		courseGroup.setCapacity(30);
+		courseGroup.setName("Name");
 		return courseGroup;
 	}
 	
