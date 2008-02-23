@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.security.User;
 import org.openuss.system.SystemProperties;
 
@@ -429,6 +431,11 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
+			
+			Course course = getCourseDao().load(topic.getForum().getDomainIdentifier());
+			CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
+			
+			parameters.put("coursename", courseInfo.getName());
 			parameters.put("topiclink", link);
 			
 			getMessageService().sendMessage(
