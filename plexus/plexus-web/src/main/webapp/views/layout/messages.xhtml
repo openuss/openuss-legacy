@@ -6,7 +6,7 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols">
-	<o:block styleClass="#{ facesContext.maximumSeverity }" 
+	<o:block styleClass="messages#{ facesContext.maximumSeverity }" 
 	rendered="#{! empty facesContext.maximumSeverity}">
 		<h:messages 
 			layout="list" 
