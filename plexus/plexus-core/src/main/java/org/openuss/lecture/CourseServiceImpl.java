@@ -6,6 +6,7 @@
 package org.openuss.lecture;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		
 		
 		// Create default Group for Course
-		Group participantsGroup = getSecurityService().createGroup("COURSE_" + courseEntity.getId() + "_PARTICIPANTS", "autogroup_administrator_label", "", GroupType.ADMINISTRATOR);
+		Group participantsGroup = getSecurityService().createGroup("COURSE_" + courseEntity.getId() + "_PARTICIPANTS", "autogroup_participant_label", null, GroupType.PARTICIPANT);
 		Set<Group> groups = courseEntity.getGroups();
 		if (groups == null){
 			groups = new HashSet<Group>();
@@ -588,6 +589,11 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		} else {
 			return self.equals(found);
 		}
+	}
+
+	@Override
+	protected List handleFindAllCourses() throws Exception {
+		return new ArrayList(getCourseDao().loadAll());
 	}
 
 }
