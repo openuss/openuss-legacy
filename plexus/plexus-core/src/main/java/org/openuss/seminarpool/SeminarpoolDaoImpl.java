@@ -6,6 +6,7 @@
 package org.openuss.seminarpool;
 /**
  * @see org.openuss.seminarpool.Seminarpool
+ * @author Stefan Thiemann
  */
 public class SeminarpoolDaoImpl
     extends org.openuss.seminarpool.SeminarpoolDaoBase
@@ -17,7 +18,6 @@ public class SeminarpoolDaoImpl
         org.openuss.seminarpool.Seminarpool sourceEntity,
         org.openuss.seminarpool.SeminarpoolInfo targetVO)
     {
-        // @todo verify behavior of toSeminarpoolInfo
         super.toSeminarpoolInfo(sourceEntity, targetVO);
     }
 
@@ -27,7 +27,6 @@ public class SeminarpoolDaoImpl
      */
     public org.openuss.seminarpool.SeminarpoolInfo toSeminarpoolInfo(final org.openuss.seminarpool.Seminarpool entity)
     {
-        // @todo verify behavior of toSeminarpoolInfo
         return super.toSeminarpoolInfo(entity);
     }
 
@@ -39,17 +38,14 @@ public class SeminarpoolDaoImpl
      */
     private org.openuss.seminarpool.Seminarpool loadSeminarpoolFromSeminarpoolInfo(org.openuss.seminarpool.SeminarpoolInfo seminarpoolInfo)
     {
-        // @todo implement loadSeminarpoolFromSeminarpoolInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadSeminarpoolFromSeminarpoolInfo(org.openuss.seminarpool.SeminarpoolInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.Seminarpool seminarpool = this.load(seminarpoolInfo.getId());
-        if (seminarpool == null)
-        {
-            seminarpool = org.openuss.seminarpool.Seminarpool.Factory.newInstance();
+    	Seminarpool seminarpool = null;
+        if(seminarpoolInfo != null && seminarpoolInfo.getId() != null){
+        	seminarpool = this.load(seminarpoolInfo.getId());
+        }
+        if(seminarpoolInfo == null){
+        	seminarpool = Seminarpool.Factory.newInstance();
         }
         return seminarpool;
-        */
     }
 
     
@@ -58,7 +54,6 @@ public class SeminarpoolDaoImpl
      */
     public org.openuss.seminarpool.Seminarpool seminarpoolInfoToEntity(org.openuss.seminarpool.SeminarpoolInfo seminarpoolInfo)
     {
-        // @todo verify behavior of seminarpoolInfoToEntity
         org.openuss.seminarpool.Seminarpool entity = this.loadSeminarpoolFromSeminarpoolInfo(seminarpoolInfo);
         this.seminarpoolInfoToEntity(seminarpoolInfo, entity, true);
         return entity;
@@ -73,7 +68,6 @@ public class SeminarpoolDaoImpl
         org.openuss.seminarpool.Seminarpool targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarpoolInfoToEntity
         super.seminarpoolInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

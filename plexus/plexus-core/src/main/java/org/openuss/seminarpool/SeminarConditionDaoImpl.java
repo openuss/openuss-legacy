@@ -6,6 +6,7 @@
 package org.openuss.seminarpool;
 /**
  * @see org.openuss.seminarpool.SeminarCondition
+ * @author Stefan Thiemann
  */
 public class SeminarConditionDaoImpl
     extends org.openuss.seminarpool.SeminarConditionDaoBase
@@ -17,8 +18,10 @@ public class SeminarConditionDaoImpl
         org.openuss.seminarpool.SeminarCondition sourceEntity,
         org.openuss.seminarpool.SeminarConditionInfo targetVO)
     {
-        // @todo verify behavior of toSeminarConditionInfo
         super.toSeminarConditionInfo(sourceEntity, targetVO);
+        if(sourceEntity.getSeminarpool() != null && sourceEntity.getSeminarpool().getId() != null){
+        	targetVO.setSeminarpoolId(sourceEntity.getSeminarpool().getId());
+        }
     }
 
 
@@ -27,8 +30,13 @@ public class SeminarConditionDaoImpl
      */
     public org.openuss.seminarpool.SeminarConditionInfo toSeminarConditionInfo(final org.openuss.seminarpool.SeminarCondition entity)
     {
-        // @todo verify behavior of toSeminarConditionInfo
-        return super.toSeminarConditionInfo(entity);
+    	if (entity != null) { 
+    		SeminarConditionInfo targetVO = new SeminarConditionInfo();
+			toSeminarConditionInfo(entity, targetVO);
+			return targetVO;
+		} else {
+			return null;
+		}
     }
 
 
@@ -39,17 +47,14 @@ public class SeminarConditionDaoImpl
      */
     private org.openuss.seminarpool.SeminarCondition loadSeminarConditionFromSeminarConditionInfo(org.openuss.seminarpool.SeminarConditionInfo seminarConditionInfo)
     {
-        // @todo implement loadSeminarConditionFromSeminarConditionInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadSeminarConditionFromSeminarConditionInfo(org.openuss.seminarpool.SeminarConditionInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.SeminarCondition seminarCondition = this.load(seminarConditionInfo.getId());
-        if (seminarCondition == null)
-        {
-            seminarCondition = org.openuss.seminarpool.SeminarCondition.Factory.newInstance();
+    	SeminarCondition seminarCondition = null;
+        if(seminarConditionInfo != null && seminarConditionInfo.getId() != null){
+        	seminarCondition = this.load(seminarConditionInfo.getId());
+        }
+        if(seminarConditionInfo == null){
+        	seminarCondition = SeminarCondition.Factory.newInstance();
         }
         return seminarCondition;
-        */
     }
 
     
@@ -58,9 +63,12 @@ public class SeminarConditionDaoImpl
      */
     public org.openuss.seminarpool.SeminarCondition seminarConditionInfoToEntity(org.openuss.seminarpool.SeminarConditionInfo seminarConditionInfo)
     {
-        // @todo verify behavior of seminarConditionInfoToEntity
         org.openuss.seminarpool.SeminarCondition entity = this.loadSeminarConditionFromSeminarConditionInfo(seminarConditionInfo);
         this.seminarConditionInfoToEntity(seminarConditionInfo, entity, true);
+        if(seminarConditionInfo.getSeminarpoolId() != null){
+        	Seminarpool seminarpool = Seminarpool.Factory.newInstance();
+        	entity.setSeminarpool(seminarpool);
+        }
         return entity;
     }
 
@@ -73,7 +81,6 @@ public class SeminarConditionDaoImpl
         org.openuss.seminarpool.SeminarCondition targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarConditionInfoToEntity
         super.seminarConditionInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

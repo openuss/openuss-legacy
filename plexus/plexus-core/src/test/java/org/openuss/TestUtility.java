@@ -795,7 +795,7 @@ public class TestUtility {
 		SeminarCondition seminarCondition = SeminarCondition.Factory.newInstance();
 		seminarCondition.setConditionDescription("120 CP Condition");
 		seminarCondition.setFieldDescription("Test");
-		seminarCondition.setType(ConditionType.CHECKBOX);
+		seminarCondition.setFieldType(ConditionType.CHECKBOX);
 		seminarCondition.setSeminarpool(createUniqueSeminarpoolinDB());
 		return seminarCondition;
 	}

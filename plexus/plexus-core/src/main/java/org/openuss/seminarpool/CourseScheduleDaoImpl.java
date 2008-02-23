@@ -5,8 +5,6 @@
  */
 package org.openuss.seminarpool;
 
-import org.openuss.lecture.CourseInfo;
-
 /**
  * @see org.openuss.seminarpool.CourseSchedule
  * @author Stefan Thiemann
@@ -68,8 +66,8 @@ public class CourseScheduleDaoImpl
         org.openuss.seminarpool.CourseSchedule entity = this.loadCourseScheduleFromCourseScheduleInfo(courseScheduleInfo);
         this.courseScheduleInfoToEntity(courseScheduleInfo, entity, true);
         
-        if(courseScheduleInfo.getId() != null){
-        	CourseGroup courseGroup = this.getCourseGroupDao().load(courseScheduleInfo.getId());
+        if(courseScheduleInfo.getCourseGroupId() != null){
+        	CourseGroup courseGroup = this.getCourseGroupDao().load(courseScheduleInfo.getCourseGroupId());
         	entity.setCourseGroup(courseGroup);
         }
         return entity;

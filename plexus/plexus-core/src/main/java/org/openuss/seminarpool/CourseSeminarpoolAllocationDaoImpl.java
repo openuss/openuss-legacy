@@ -4,8 +4,12 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.seminarpool;
+
+import org.openuss.lecture.Course;
+
 /**
  * @see org.openuss.seminarpool.CourseSeminarpoolAllocation
+ * @author Stefan Thiemann
  */
 public class CourseSeminarpoolAllocationDaoImpl
     extends org.openuss.seminarpool.CourseSeminarpoolAllocationDaoBase
@@ -17,8 +21,16 @@ public class CourseSeminarpoolAllocationDaoImpl
         org.openuss.seminarpool.CourseSeminarpoolAllocation sourceEntity,
         org.openuss.seminarpool.CourseSeminarpoolAllocationInfo targetVO)
     {
-        // @todo verify behavior of toCourseSeminarpoolAllocationInfo
         super.toCourseSeminarpoolAllocationInfo(sourceEntity, targetVO);
+        if(sourceEntity.getSeminarpool() != null && sourceEntity.getSeminarpool().getId() != null){
+        	targetVO.setSeminarpoolId(sourceEntity.getSeminarpool().getId());
+        }
+        if(sourceEntity.getCourse() != null && sourceEntity.getCourse().getId() != null){
+        	targetVO.setCourseId(sourceEntity.getCourse().getId());
+        	targetVO.setCourseName(this.getCourseDao().load(sourceEntity.getCourse().getId()).getName());
+        	targetVO.setCourseShortcut(this.getCourseDao().load(sourceEntity.getCourse().getId()).getShortcut());
+        } 
+        
     }
 
 
@@ -27,8 +39,13 @@ public class CourseSeminarpoolAllocationDaoImpl
      */
     public org.openuss.seminarpool.CourseSeminarpoolAllocationInfo toCourseSeminarpoolAllocationInfo(final org.openuss.seminarpool.CourseSeminarpoolAllocation entity)
     {
-        // @todo verify behavior of toCourseSeminarpoolAllocationInfo
-        return super.toCourseSeminarpoolAllocationInfo(entity);
+    	if (entity != null) { 
+    		CourseSeminarpoolAllocationInfo targetVO = new CourseSeminarpoolAllocationInfo();
+			toCourseSeminarpoolAllocationInfo(entity, targetVO);
+			return targetVO;
+		} else {
+			return null;
+		}
     }
 
 
@@ -39,17 +56,14 @@ public class CourseSeminarpoolAllocationDaoImpl
      */
     private org.openuss.seminarpool.CourseSeminarpoolAllocation loadCourseSeminarpoolAllocationFromCourseSeminarpoolAllocationInfo(org.openuss.seminarpool.CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo)
     {
-        // @todo implement loadCourseSeminarpoolAllocationFromCourseSeminarpoolAllocationInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadCourseSeminarpoolAllocationFromCourseSeminarpoolAllocationInfo(org.openuss.seminarpool.CourseSeminarpoolAllocationInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.CourseSeminarpoolAllocation courseSeminarpoolAllocation = this.load(courseSeminarpoolAllocationInfo.getId());
-        if (courseSeminarpoolAllocation == null)
-        {
-            courseSeminarpoolAllocation = org.openuss.seminarpool.CourseSeminarpoolAllocation.Factory.newInstance();
-        }
-        return courseSeminarpoolAllocation;
-        */
+    	CourseSeminarpoolAllocation courseSeminarpoolAllocation = null;
+    	if(courseSeminarpoolAllocationInfo != null && courseSeminarpoolAllocationInfo.getId() != null){
+    		courseSeminarpoolAllocation = this.load(courseSeminarpoolAllocationInfo.getId());
+    	}
+    	if(courseSeminarpoolAllocationInfo == null){
+    		courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
+    	}
+    	return courseSeminarpoolAllocation;
     }
 
     
@@ -58,9 +72,16 @@ public class CourseSeminarpoolAllocationDaoImpl
      */
     public org.openuss.seminarpool.CourseSeminarpoolAllocation courseSeminarpoolAllocationInfoToEntity(org.openuss.seminarpool.CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo)
     {
-        // @todo verify behavior of courseSeminarpoolAllocationInfoToEntity
         org.openuss.seminarpool.CourseSeminarpoolAllocation entity = this.loadCourseSeminarpoolAllocationFromCourseSeminarpoolAllocationInfo(courseSeminarpoolAllocationInfo);
         this.courseSeminarpoolAllocationInfoToEntity(courseSeminarpoolAllocationInfo, entity, true);
+        if(courseSeminarpoolAllocationInfo.getSeminarpoolId() != null){
+        	Seminarpool seminarpool = this.getSeminarpoolDao().load(courseSeminarpoolAllocationInfo.getSeminarpoolId());
+        	entity.setSeminarpool(seminarpool);
+        }
+        if(courseSeminarpoolAllocationInfo.getCourseId() != null){
+        	Course course = this.getCourseDao().load(courseSeminarpoolAllocationInfo.getCourseId());
+        	entity.setCourse(course);
+        }
         return entity;
     }
 
@@ -73,7 +94,6 @@ public class CourseSeminarpoolAllocationDaoImpl
         org.openuss.seminarpool.CourseSeminarpoolAllocation targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of courseSeminarpoolAllocationInfoToEntity
         super.courseSeminarpoolAllocationInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
@@ -84,8 +104,13 @@ public class CourseSeminarpoolAllocationDaoImpl
         org.openuss.seminarpool.CourseSeminarpoolAllocation sourceEntity,
         org.openuss.seminarpool.SeminarPlaceAllocationInfo targetVO)
     {
-        // @todo verify behavior of toSeminarPlaceAllocationInfo
         super.toSeminarPlaceAllocationInfo(sourceEntity, targetVO);
+        if(sourceEntity.getSeminarpool() != null && sourceEntity.getSeminarpool().getId() != null){
+        	targetVO.setSeminarpoolId(sourceEntity.getSeminarpool().getId());
+        }
+        if(sourceEntity.getCourse() != null && sourceEntity.getCourse().getId() != null){
+        	targetVO.setCourseId(sourceEntity.getCourse().getId());
+        } 
     }
 
 
@@ -94,8 +119,13 @@ public class CourseSeminarpoolAllocationDaoImpl
      */
     public org.openuss.seminarpool.SeminarPlaceAllocationInfo toSeminarPlaceAllocationInfo(final org.openuss.seminarpool.CourseSeminarpoolAllocation entity)
     {
-        // @todo verify behavior of toSeminarPlaceAllocationInfo
-        return super.toSeminarPlaceAllocationInfo(entity);
+    	if (entity != null) { 
+    		SeminarPlaceAllocationInfo targetVO = new SeminarPlaceAllocationInfo();
+			toSeminarPlaceAllocationInfo(entity, targetVO);
+			return targetVO;
+		} else {
+			return null;
+		}
     }
 
 
@@ -128,6 +158,9 @@ public class CourseSeminarpoolAllocationDaoImpl
         // @todo verify behavior of seminarPlaceAllocationInfoToEntity
         org.openuss.seminarpool.CourseSeminarpoolAllocation entity = this.loadCourseSeminarpoolAllocationFromSeminarPlaceAllocationInfo(seminarPlaceAllocationInfo);
         this.seminarPlaceAllocationInfoToEntity(seminarPlaceAllocationInfo, entity, true);
+        if(seminarPlaceAllocationInfo.getCourseId() != null){
+        
+        }
         return entity;
     }
 
@@ -140,7 +173,6 @@ public class CourseSeminarpoolAllocationDaoImpl
         org.openuss.seminarpool.CourseSeminarpoolAllocation targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarPlaceAllocationInfoToEntity
         super.seminarPlaceAllocationInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

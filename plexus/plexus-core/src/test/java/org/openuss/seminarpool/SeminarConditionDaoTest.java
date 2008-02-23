@@ -28,7 +28,7 @@ public class SeminarConditionDaoTest extends SeminarConditionDaoTestBase {
 		SeminarCondition seminarCondition = SeminarCondition.Factory.newInstance();
 		seminarCondition.setConditionDescription("120 CP Condition");
 		seminarCondition.setFieldDescription("Test");
-		seminarCondition.setType(ConditionType.CHECKBOX);
+		seminarCondition.setFieldType(ConditionType.CHECKBOX);
 		seminarCondition.setSeminarpool(testUtility.createUniqueSeminarpoolinDB());
 		assertNull(seminarCondition.getId());
 		seminarConditionDao.create(seminarCondition);

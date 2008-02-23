@@ -5,8 +5,6 @@
  */
 package org.openuss.seminarpool;
 
-import org.openuss.lecture.CourseInfo;
-
 /**
  * @see org.openuss.seminarpool.CourseGroup
  * @author Stefan Thiemann
@@ -23,7 +21,7 @@ public class CourseGroupDaoImpl
     {
         super.toCourseGroupInfo(sourceEntity, targetVO);
         if(sourceEntity.getCourseSeminarpoolAllocation() != null && sourceEntity.getCourseSeminarpoolAllocation().getId() != null)
-        targetVO.setCourseSeminarpoolAllocation(sourceEntity.getCourseSeminarpoolAllocation().getId());
+        targetVO.setCourseSeminarpoolAllocationId(sourceEntity.getCourseSeminarpoolAllocation().getId());
     }
 
 
@@ -68,8 +66,8 @@ public class CourseGroupDaoImpl
         org.openuss.seminarpool.CourseGroup entity = this.loadCourseGroupFromCourseGroupInfo(courseGroupInfo);
         this.courseGroupInfoToEntity(courseGroupInfo, entity, true);
         
-        if(courseGroupInfo.getId() != null){
-        	CourseSeminarpoolAllocation courseSeminarpoolAllocation = this.getCourseSeminarpoolAllocationDao().load(courseGroupInfo.getId());
+        if(courseGroupInfo.getCourseSeminarpoolAllocationId() != null){
+        	CourseSeminarpoolAllocation courseSeminarpoolAllocation = this.getCourseSeminarpoolAllocationDao().load(courseGroupInfo.getCourseSeminarpoolAllocationId());
         	entity.setCourseSeminarpoolAllocation(courseSeminarpoolAllocation);
         }
         
