@@ -2132,3 +2132,146 @@ table.jscalendar-DB-dropdown-style {
 #extended_search_link_padding {
 	padding: 5px;
 }
+
+/*###################################*/
+
+#messages .messagesInfo .content_box .header_normal {
+	padding: 0;
+	margin: 0;
+	height: 7px;
+	background-image: url(../img/headline_green_bg.jpg);
+	background-repeat: repeat-x;
+}
+
+#messages .messagesInfo .content_box .header_normal .header_normal_left_bg {
+	float: left;
+	width: 9px;
+	height: 7px;
+	background-image: url(../img/headline_green_left_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesInfo .content_box .header_normal .header_normal_right_bg {
+	float: right;
+	margin-right: -1px;
+	width: 9px;
+	height: 7px;
+	background-image: url(../img/headline_green_right_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesInfo .content_box .content_normal {
+	margin: 0;
+	padding: 10px 10px 0 5px;
+	border-width: 0 1px 0 1px;
+	border-right-color: #b3b3b3;
+	border-left-color: #b3b3b3;
+	background-color: #dfeec3;
+	min-height: 23px;
+	vertical-align: bottom;
+}
+
+#messages .messagesInfo .content_box .content_normal .info {
+	margin: 0 0 0 5px;
+	padding: 10px 5px 10px 45px;
+	background: url(../img/messages_ok.png) no-repeat left center;
+	color: #000;	
+}
+
+#messages .messagesInfo .content_box .footer_normal {
+	margin-top: 0;
+	padding: 0;
+	height: 7px;
+	background-image: url(../img/footer_green_bg.jpg);
+	background-repeat: repeat-x;
+}
+
+#messages .messagesInfo .content_box .footer_normal .footer_normal_left_bg {
+	margin-top: 0;
+	float: left;
+	width: 8px;
+	height: 7px;
+	background-image: url(../img/footer_green_left_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesInfo .content_box .footer_normal .footer_normal_right_bg {
+	margin-top: 0;
+	float: right;
+	width: 8px;
+	height: 7px;
+	background-image: url(../img/footer_green_right_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+
+#messages .messagesError .content_box .header_normal {
+	padding: 0;
+	margin: 0;
+	height: 7px;
+	background-image: url(../img/headline_red_bg.jpg);
+	background-repeat: repeat-x;
+}
+
+#messages .messagesError .content_box .header_normal .header_normal_left_bg {
+	float: left;
+	width: 9px;
+	height: 7px;
+	background-image: url(../img/headline_red_left_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesError .content_box .header_normal .header_normal_right_bg {
+	float: right;
+	margin-right: -1px;
+	width: 9px;
+	height: 7px;
+	background-image: url(../img/headline_red_right_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesError .content_box .content_normal {
+	margin: 0;
+	padding: 10px 10px 0 5px;
+	
+	border-width: 0 1px 0 1px;
+	border-right-color: #a61f1f;
+	border-left-color: #a61f1f;
+	background-color: #ff7272;
+	min-height: 23px;
+	vertical-align: bottom;
+}
+
+#messages .messagesError .content_box .content_normal .error {
+	margin: 0 0 0 5px;
+	padding: 10px 5px 10px 45px;
+	background: url(../img/messages_error.png) no-repeat left center;
+	color: #000;	
+}
+
+#messages .messagesError .content_box .footer_normal {
+	margin-top: 0;
+	padding: 0;
+	height: 7px;
+	background-image: url(../img/footer_red_bg.jpg);
+	background-repeat: repeat-x;
+}
+
+#messages .messagesError .content_box .footer_normal .footer_normal_left_bg {
+	margin-top: 0;
+	float: left;
+	width: 8px;
+	height: 7px;
+	background-image: url(../img/footer_red_left_bg.jpg);
+	background-repeat: no-repeat;
+}
+
+#messages .messagesError .content_box .footer_normal .footer_normal_right_bg {
+	margin-top: 0;
+	float: right;
+	width: 8px;
+	height: 7px;
+	background-image: url(../img/footer_red_right_bg.jpg);
+	background-repeat: no-repeat;
+}
+/*###################################*/
