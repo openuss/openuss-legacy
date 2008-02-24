@@ -1729,16 +1729,15 @@ td .userphoto {
 .col_post {
 	vertical-align: top;
 	margin: 0;
-	padding: 0 5px 0 5px;
+	padding: 0 5px 30px 5px;
 }
 
 td .col_post_text .content_font_normal {
 	padding: 8px 0 8px 0;
 	color: #000000;
-	border-style: solid none solid none;
+	border-style: solid none none none;
 	border-width: 1px;
-	border-top-color: #919191;
-	border-bottom-color: #919191;
+	border-color: #919191;
 }
 
 td .col_post_attachments {
@@ -1750,6 +1749,9 @@ td .col_post_attachments .content_font_normal {
 	padding: 3px 0 0 0;
 	font-weight: bold;
 	color: #000000;
+	border-style: solid none none none;
+	border-width: 1px;
+	border-color: #919191;	
 }
 
 .col_post_author {
@@ -2131,6 +2133,10 @@ table.jscalendar-DB-dropdown-style {
 
 #extended_search_link_padding {
 	padding: 5px;
+}
+
+div .space_20above {
+	margin-top: 20px;	
 }
 
 /*###################################*/
