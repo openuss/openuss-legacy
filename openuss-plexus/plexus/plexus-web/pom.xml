@@ -68,8 +68,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.fckfaces</groupId>
-			<artifactId>fckfaces</artifactId>
+			<groupId>net.sourceforge.fck-faces</groupId>
+			<artifactId>fck-faces</artifactId>
 		</dependency>
 
 		<dependency>
