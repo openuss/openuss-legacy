@@ -5,11 +5,6 @@
  */
 package org.openuss.seminarpool;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 
 
@@ -31,58 +26,6 @@ public class SeminarUserRegistrationDaoImpl
         targetVO.setUserId(sourceEntity.getUser().getId());
     }
     
-    /**
-     * NOT USED YET
-     * @param entities
-     * @return
-     */
-    private Collection<SeminarPrioritiesInfo> mapSeminarPriorityEntitiesToInfos(Collection<SeminarPriority> entities){
-    	if ( entities.size() > 0 ){
-	    	Iterator<SeminarPriority> iter = entities.iterator();
-	    	Collection<SeminarPrioritiesInfo> collection = new ArrayList<SeminarPrioritiesInfo>();
-	    	while(iter.hasNext()){
-	    		SeminarPriority seminarPriority = iter.next();
-	    		SeminarPrioritiesInfo infoVO = new SeminarPrioritiesInfo();
-	    		infoVO.setCourseId(seminarPriority.getCourseSeminarPoolAllocation().getId());
-	    		infoVO.setId(seminarPriority.getId());
-	    		infoVO.setPriority(seminarPriority.getPriority());
-	    		infoVO.setSeminarUserRegistrationId(seminarPriority.getSeminarUserRegistration().getId());
-	    		collection.add(infoVO);
-	    	}
-	    	return collection;
-    	} else { 
-    		return null;
-    	}
-    }
-    
-    /**
-     * NOT USED YET
-     * @param entities
-     * @return
-     */
-    private Collection<SeminarUserConditionValueInfo> mapSeminarUserConditionValueEntitiesToInfos(Collection<SeminarUserConditionValue> entities){
-    	if ( entities.size() > 0 ){
-	    	Iterator<SeminarUserConditionValue> iter = entities.iterator();
-	    	Collection<SeminarUserConditionValueInfo> collection = new ArrayList<SeminarUserConditionValueInfo>();
-	    	while(iter.hasNext()){
-	    		SeminarUserConditionValue conditionValue = iter.next();
-	    		SeminarUserConditionValueInfo infoVO = new SeminarUserConditionValueInfo();
-	    		infoVO.setConditionValue(conditionValue.getConditionValue());
-	    		infoVO.setId(conditionValue.getId());
-	    		infoVO.setSeminarConditionDescription(conditionValue.getSeminarCondition().getConditionDescription());
-	    		infoVO.setSeminarConditionFieldDescription(conditionValue.getSeminarCondition().getFieldDescription());
-	    		infoVO.setSeminarConditionId(conditionValue.getSeminarCondition().getId());
-	    		infoVO.setSeminarConditionType(conditionValue.getSeminarCondition().getFieldType());
-	    		infoVO.setSeminarUserRegistrationId(conditionValue.getSeminarUserRegistration().getId());
-	    		collection.add(infoVO);
-	    	}
-	    	return collection;
-    	} else { 
-    		return null;
-    	}
-    }
-
-
     /**
      * @see org.openuss.seminarpool.SeminarUserRegistrationDao#toSeminarUserRegistrationInfo(org.openuss.seminarpool.SeminarUserRegistration)
      */

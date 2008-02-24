@@ -5,6 +5,8 @@
  */
 package org.openuss.seminarpool;
 
+import org.apache.commons.lang.Validate;
+
 /**
  * @see org.openuss.seminarpool.Seminarpool
  */
@@ -22,8 +24,10 @@ public class SeminarpoolImpl
      */
     public java.lang.Boolean isPasswordCorrect(java.lang.String password)
     {
-        // @todo implement public java.lang.Boolean isPasswordCorrect(java.lang.String password)
-        return null;
+    	if (password == null){
+    		return false;
+    	}
+        return password.equals(getPassword());
     }
 
     /**
@@ -31,8 +35,11 @@ public class SeminarpoolImpl
      */
     public void addCondition(org.openuss.seminarpool.SeminarCondition condition)
     {
-        // @todo implement public void addCondition(org.openuss.seminarpool.SeminarCondition condition)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.addCondition(org.openuss.seminarpool.SeminarCondition condition) Not implemented!");
+    	Validate.notNull(condition, "SeminarCondition cannot be null");
+    	if ( !getSeminarCondition().contains(condition) ) {
+    		getSeminarCondition().add(condition);
+    	}
+    	condition.setSeminarpool(this);
     }
 
     /**
@@ -40,17 +47,25 @@ public class SeminarpoolImpl
      */
     public void removeCondition(org.openuss.seminarpool.SeminarCondition condition)
     {
-        // @todo implement public void removeCondition(org.openuss.seminarpool.SeminarCondition condition)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.removeCondition(org.openuss.seminarpool.SeminarCondition condition) Not implemented!");
-    }
+		Validate.notNull(condition, "SeminarCondition cannot be null");
+
+		if (getSeminarCondition().remove(condition)) {
+			if (condition.getSeminarpool().equals(this)) {
+				condition.setSeminarpool(null);
+			}
+		}
+	}
 
     /**
      * @see org.openuss.seminarpool.Seminarpool#addRegistration(org.openuss.seminarpool.SeminarUserRegistration)
      */
     public void addRegistration(org.openuss.seminarpool.SeminarUserRegistration registration)
     {
-        // @todo implement public void addRegistration(org.openuss.seminarpool.SeminarUserRegistration registration)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.addRegistration(org.openuss.seminarpool.SeminarUserRegistration registration) Not implemented!");
+    	Validate.notNull(registration, "SeminarUserRegistration cannot be null");
+    	if ( !getSeminarUserRegistration().contains(registration) ) {
+    		getSeminarUserRegistration().add(registration);
+    	}
+    	registration.setSeminarpool(this);
     }
 
     /**
@@ -58,17 +73,24 @@ public class SeminarpoolImpl
      */
     public void removeRegistration(org.openuss.seminarpool.SeminarUserRegistration registration)
     {
-        // @todo implement public void removeRegistration(org.openuss.seminarpool.SeminarUserRegistration registration)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.removeRegistration(org.openuss.seminarpool.SeminarUserRegistration registration) Not implemented!");
-    }
+		Validate.notNull(registration, "SeminarUserRegistration cannot be null");
+		if (getSeminarUserRegistration().remove(registration)) {
+			if (registration.getSeminarpool().equals(this)) {
+				registration.setSeminarpool(null);
+			}
+		}   
+	}
 
     /**
      * @see org.openuss.seminarpool.Seminarpool#addCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation)
      */
     public void addCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation)
     {
-        // @todo implement public void addCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.addCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation) Not implemented!");
+    	Validate.notNull(courseAllocation, "CourseSeminarpoolAllocation cannot be null");
+    	if ( !getCourseSeminarpoolAllocation().contains(courseAllocation) ) {
+    		getCourseSeminarpoolAllocation().add(courseAllocation);
+    	}
+    	courseAllocation.setSeminarpool(this);    
     }
 
     /**
@@ -76,8 +98,12 @@ public class SeminarpoolImpl
      */
     public void removeCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation)
     {
-        // @todo implement public void removeCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.Seminarpool.removeCourseAllocation(org.openuss.seminarpool.CourseSeminarpoolAllocation courseAllocation) Not implemented!");
+		Validate.notNull(courseAllocation, "CourseSeminarpoolAllocation cannot be null");
+		if (getCourseSeminarpoolAllocation().remove(courseAllocation)) {
+			if (courseAllocation.getSeminarpool().equals(this)) {
+				courseAllocation.setSeminarpool(null);
+			}
+		}   
     }
 
 }

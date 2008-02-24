@@ -5,8 +5,7 @@
  */
 package org.openuss.seminarpool;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.Validate;
 
 /**
  * @see org.openuss.seminarpool.SeminarUserRegistration
@@ -25,12 +24,11 @@ public class SeminarUserRegistrationImpl
      */
     public void addPriority(SeminarPriority priority)
     {
-    	if ( getSeminarPriority() != null ) {
+    	Validate.notNull(priority, "SeminarPriority cannot be null");
+    	if ( !getSeminarPriority().contains(priority) ) {
     		getSeminarPriority().add(priority);
-    	} else {
-    		Set<org.openuss.seminarpool.SeminarPriority> set = new HashSet<org.openuss.seminarpool.SeminarPriority>();
-    		set.add(priority);
     	}
+    	priority.setSeminarUserRegistration(this);
     }
 
     /**
@@ -38,27 +36,33 @@ public class SeminarUserRegistrationImpl
      */
     public void removePriority(SeminarPriority priority)
     {
-    	if ( getSeminarPriority() != null ) {
-    		getSeminarPriority().remove(priority);
-    	} 
+		Validate.notNull(priority, "SeminarPriority cannot be null");
+
+		if (getSeminarPriority().remove(priority)) {
+			if (priority.getSeminarUserRegistration().equals(this)) {
+				priority.setSeminarUserRegistration(null);
+			}
+		}
     }
 
 	@Override
 	public void addUserCondition(
 			SeminarUserConditionValue seminarUserConditionValue) {
-		if ( getSeminarUserConditionValue() != null ) {
-			getSeminarUserConditionValue().add(seminarUserConditionValue);
-		} else {
-			Set<SeminarUserConditionValue> set = new HashSet<SeminarUserConditionValue>();
-			set.add(seminarUserConditionValue);
-		}
+    	Validate.notNull(seminarUserConditionValue, "SeminarUserConditionValue cannot be null");
+    	if ( !getSeminarUserConditionValue().contains(seminarUserConditionValue) ) {
+    		getSeminarUserConditionValue().add(seminarUserConditionValue);
+    	}
+    	seminarUserConditionValue.setSeminarUserRegistration(this);
 	}
 
 	@Override
 	public void removeUserCondition(
 			SeminarUserConditionValue seminarUserConditionValue) {
-		if ( getSeminarUserConditionValue() != null ) {
-			getSeminarUserConditionValue().remove(seminarUserConditionValue);
+		Validate.notNull(seminarUserConditionValue, "SeminarPriority cannot be null");
+		if (getSeminarUserConditionValue().remove(seminarUserConditionValue)) {
+			if (seminarUserConditionValue.getSeminarUserRegistration().equals(this)) {
+				seminarUserConditionValue.setSeminarUserRegistration(null);
+			}
 		}
 	}
 
