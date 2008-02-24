@@ -1,5 +1,6 @@
 package org.openuss.security.acegi.ldap;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.AuthenticationException;
@@ -15,6 +16,7 @@ import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
+import org.openuss.security.Roles;
 
 /**
  * Usage of DIGEST-MD5.
@@ -217,14 +219,18 @@ public class DigestMd5 {
     		
     		ldapUserDetails.getAttributes().put("logonDomainId", domainId);
     		
-    		essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
+    		essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);    		
+    		
     		
     		essence.addAuthority(new GrantedAuthorityImpl("ROLE_LDAPUSER"));
     		
     		ldapUserDetails = essence.createUserDetails();
     		
+    		assignAttributes(ldapUserDetails);
     		System.out.println(ldapUserDetails.getAttributes().get("logonDomainId").toString());
-
+    		System.out.println(ldapUserDetails.getAttributes().get("OPENUSS_TEST").toString());
+    		
+    		ldapUserDetails = assignDefaultRole(ldapUserDetails);
     		GrantedAuthority[] grantedAuthorities = ldapUserDetails.getAuthorities();
     		
         	for (int i = 0; i < grantedAuthorities.length; i++) {
@@ -306,7 +312,15 @@ public class DigestMd5 {
 
     }
 
+	protected static LdapUserDetails assignDefaultRole(LdapUserDetails ldapUserDetails) {
+		LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
+		essence.addAuthority(new GrantedAuthorityImpl("ROLE_HERO"));
+		return essence.createUserDetails();		
+	}
 	
+	protected static void assignAttributes(LdapUserDetails ldapUserDetails) {
+		ldapUserDetails.getAttributes().put("OPENUSS_TEST", 4711);
+	}	
 	
 	public static void main (String[] args) throws Exception {
 

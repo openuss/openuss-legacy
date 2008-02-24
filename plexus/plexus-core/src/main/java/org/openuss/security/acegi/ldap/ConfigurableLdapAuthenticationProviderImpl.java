@@ -6,9 +6,12 @@ package org.openuss.security.acegi.ldap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.naming.NamingException;
+
 import org.acegisecurity.AcegiMessageSource;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
+import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.ldap.DefaultInitialDirContextFactory;
 import org.acegisecurity.ldap.InitialDirContextFactory;
 import org.acegisecurity.providers.ProviderManager;
@@ -18,9 +21,12 @@ import org.acegisecurity.providers.dao.UserCache;
 import org.acegisecurity.providers.ldap.LdapAuthenticationProvider;
 import org.acegisecurity.providers.ldap.LdapAuthenticator;
 import org.acegisecurity.providers.ldap.authenticator.BindAuthenticator;
+import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
 import org.openuss.security.AttributeMappingKeys;
+import org.openuss.security.Roles;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.beans.factory.InitializingBean;
@@ -58,6 +64,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected Vector<LdapAuthenticationProvider> ldapAuthenticationProviders = null;
 	protected List<LdapServerConfiguration> ldapServerConfigurations = null;
 
+	
 	/** 
 	 * @see org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProvider#reconfigure()
 	 */
@@ -93,13 +100,9 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		}
 		authenticationManager.setMessageSource(messageSource);
 	}
-
 	
 	
-	
-	
-	
-	
+    //~ Authentication ================================================================================================	
 	
 	/* (non-Javadoc)
 	 * @see org.acegisecurity.providers.AuthenticationProvider#authenticate(org.acegisecurity.Authentication)
@@ -112,14 +115,20 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		
 		// Authentication successful
 		
+		LdapUserDetails ldapUserDetails = (LdapUserDetailsImpl) authResponse.getPrincipal();
+		LdapServerConfiguration ldapServerConfiguration = retrieveSuccessfulLdapServerConfiguration(ldapServerConfigurations, ldapUserDetails);
 		
+		assignAttributes(ldapServerConfiguration, ldapUserDetails);
+		ldapUserDetails = assignDefaultRole(ldapUserDetails);
 		
-		return authResponse;
+		Object principalToReturn = ldapUserDetails;
+		
+		return createSuccessAuthentication(principalToReturn, authentication, ldapUserDetails);
 	}
 	
 	
 	/**
-	 * Retrieves configuration of the LDAP server used for successful authentication.
+	 * Retrieves configuration of the LDAP server which has successfully authenticated the user.
 	 * @param ldapServerConfigurations
 	 * @param ldapUserDetails
 	 * @return LdapServerConfiguration of corresponding LDAP server
@@ -145,26 +154,65 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		ldapUserDetails.getAttributes().put(destKey, ldapServerConfiguration.getAuthenticationDomainId());
 		
 		// Assign username
-		
+		destKey = AttributeMappingKeys.USERNAME_KEY;
+		sourceKey = ldapServerConfiguration.getUsernameKey();
+		try {
+			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
+			ldapUserDetails.getAttributes().put(destKey, value);
+		} catch (NamingException e) {
+			new RuntimeException(e.getMessage(),e);
+		}
+				
 		// Assign firstname
+		destKey = AttributeMappingKeys.FIRSTNAME_KEY;
+		sourceKey = ldapServerConfiguration.getFirstNameKey();		
+		try {
+			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
+			ldapUserDetails.getAttributes().put(destKey, value);
+		} catch (NamingException e) {
+			new RuntimeException(e.getMessage(),e);
+		}
 		
 		// Assign lastname
+		destKey = AttributeMappingKeys.LASTNAME_KEY;
+		sourceKey = ldapServerConfiguration.getLastNameKey();
+		try {
+			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
+			ldapUserDetails.getAttributes().put(destKey, value);
+		} catch (NamingException e) {
+			new RuntimeException(e.getMessage(),e);
+		}
 		
 		// Assign email address
+		destKey = AttributeMappingKeys.EMAIL_KEY;
+		sourceKey = ldapServerConfiguration.getEmailKey();
+		try {
+			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
+			ldapUserDetails.getAttributes().put(destKey, value);
+		} catch (NamingException e) {
+			new RuntimeException(e.getMessage(),e);
+		}		
 	}
 	
-	protected void assignDefaultRole(LdapUserDetails ldapUserDetails) {
-		
+	protected LdapUserDetails assignDefaultRole(LdapUserDetails ldapUserDetails) {
+		LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
+		essence.addAuthority(new GrantedAuthorityImpl(Roles.LDAPUSER.getName()));
+		return essence.createUserDetails();
+	}
+	
+   protected Authentication createSuccessAuthentication(Object principal, Authentication authentication, UserDetails user) {
+        // Ensure we return the original credentials the user supplied,
+        // so subsequent attempts are successful even with encoded passwords.
+        // Also ensure we return the original getDetails(), so that future
+        // authentication events after cache expiry contain the details
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
+        		authentication.getCredentials(), user.getAuthorities());
+		result.setDetails(authentication.getDetails());
+        return result;
 	}
 	
 	
-	
-	
-	
-	
-	
-
-    //~ Instantiate and initialize objects ================================================================================================
+    //~ Instantiation and initializing methods for provider related objects ================================================================================================
 
 	protected InitialDirContextFactory newInitialDirContextFactory(LdapServerConfiguration ldapServerConfiguration) {
 		String url = ldapServerConfiguration.getProviderUrl();
@@ -221,7 +269,6 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		}		
 		return activeDirectoryBindAuthenticator; 
 	}
-	
 	
 	
 	public void afterPropertiesSet() throws Exception {
