@@ -4,6 +4,15 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.seminarpool;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+
+
 /**
  * @see org.openuss.seminarpool.SeminarUserRegistration
  */
@@ -17,8 +26,60 @@ public class SeminarUserRegistrationDaoImpl
         org.openuss.seminarpool.SeminarUserRegistration sourceEntity,
         org.openuss.seminarpool.SeminarUserRegistrationInfo targetVO)
     {
-        // @todo verify behavior of toSeminarUserRegistrationInfo
         super.toSeminarUserRegistrationInfo(sourceEntity, targetVO);
+        targetVO.setSeminarpoolId(sourceEntity.getSeminarpool().getId());
+        targetVO.setUserId(sourceEntity.getUser().getId());
+    }
+    
+    /**
+     * NOT USED YET
+     * @param entities
+     * @return
+     */
+    private Collection<SeminarPrioritiesInfo> mapSeminarPriorityEntitiesToInfos(Collection<SeminarPriority> entities){
+    	if ( entities.size() > 0 ){
+	    	Iterator<SeminarPriority> iter = entities.iterator();
+	    	Collection<SeminarPrioritiesInfo> collection = new ArrayList<SeminarPrioritiesInfo>();
+	    	while(iter.hasNext()){
+	    		SeminarPriority seminarPriority = iter.next();
+	    		SeminarPrioritiesInfo infoVO = new SeminarPrioritiesInfo();
+	    		infoVO.setCourseId(seminarPriority.getCourseSeminarPoolAllocation().getId());
+	    		infoVO.setId(seminarPriority.getId());
+	    		infoVO.setPriority(seminarPriority.getPriority());
+	    		infoVO.setSeminarUserRegistrationId(seminarPriority.getSeminarUserRegistration().getId());
+	    		collection.add(infoVO);
+	    	}
+	    	return collection;
+    	} else { 
+    		return null;
+    	}
+    }
+    
+    /**
+     * NOT USED YET
+     * @param entities
+     * @return
+     */
+    private Collection<SeminarUserConditionValueInfo> mapSeminarUserConditionValueEntitiesToInfos(Collection<SeminarUserConditionValue> entities){
+    	if ( entities.size() > 0 ){
+	    	Iterator<SeminarUserConditionValue> iter = entities.iterator();
+	    	Collection<SeminarUserConditionValueInfo> collection = new ArrayList<SeminarUserConditionValueInfo>();
+	    	while(iter.hasNext()){
+	    		SeminarUserConditionValue conditionValue = iter.next();
+	    		SeminarUserConditionValueInfo infoVO = new SeminarUserConditionValueInfo();
+	    		infoVO.setConditionValue(conditionValue.getConditionValue());
+	    		infoVO.setId(conditionValue.getId());
+	    		infoVO.setSeminarConditionDescription(conditionValue.getSeminarCondition().getConditionDescription());
+	    		infoVO.setSeminarConditionFieldDescription(conditionValue.getSeminarCondition().getFieldDescription());
+	    		infoVO.setSeminarConditionId(conditionValue.getSeminarCondition().getId());
+	    		infoVO.setSeminarConditionType(conditionValue.getSeminarCondition().getFieldType());
+	    		infoVO.setSeminarUserRegistrationId(conditionValue.getSeminarUserRegistration().getId());
+	    		collection.add(infoVO);
+	    	}
+	    	return collection;
+    	} else { 
+    		return null;
+    	}
     }
 
 
@@ -27,8 +88,13 @@ public class SeminarUserRegistrationDaoImpl
      */
     public org.openuss.seminarpool.SeminarUserRegistrationInfo toSeminarUserRegistrationInfo(final org.openuss.seminarpool.SeminarUserRegistration entity)
     {
-        // @todo verify behavior of toSeminarUserRegistrationInfo
-        return super.toSeminarUserRegistrationInfo(entity);
+        if(entity != null){
+        	SeminarUserRegistrationInfo info = new SeminarUserRegistrationInfo();
+        	toSeminarUserRegistrationInfo(entity, info);
+        	return info;
+        } else {
+        	return null;
+        }
     }
 
 
@@ -37,30 +103,26 @@ public class SeminarUserRegistrationDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.seminarpool.SeminarUserRegistration loadSeminarUserRegistrationFromSeminarUserRegistrationInfo(org.openuss.seminarpool.SeminarUserRegistrationInfo seminarUserRegistrationInfo)
+    private SeminarUserRegistration loadSeminarUserRegistrationFromSeminarUserRegistrationInfo(SeminarUserRegistrationInfo seminarUserRegistrationInfo)
     {
-        // @todo implement loadSeminarUserRegistrationFromSeminarUserRegistrationInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadSeminarUserRegistrationFromSeminarUserRegistrationInfo(org.openuss.seminarpool.SeminarUserRegistrationInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.SeminarUserRegistration seminarUserRegistration = this.load(seminarUserRegistrationInfo.getId());
-        if (seminarUserRegistration == null)
-        {
-            seminarUserRegistration = org.openuss.seminarpool.SeminarUserRegistration.Factory.newInstance();
+        SeminarUserRegistration seminarUserRegistration = null;
+        if ( seminarUserRegistrationInfo != null && seminarUserRegistrationInfo.getId() != null ) {
+        	seminarUserRegistration = this.load(seminarUserRegistrationInfo.getId());
         }
-        return seminarUserRegistration;
-        */
+        if ( seminarUserRegistration == null){
+        	seminarUserRegistration = SeminarUserRegistration.Factory.newInstance();
+        }
+        return seminarUserRegistration;     
     }
 
     
     /**
      * @see org.openuss.seminarpool.SeminarUserRegistrationDao#seminarUserRegistrationInfoToEntity(org.openuss.seminarpool.SeminarUserRegistrationInfo)
      */
-    public org.openuss.seminarpool.SeminarUserRegistration seminarUserRegistrationInfoToEntity(org.openuss.seminarpool.SeminarUserRegistrationInfo seminarUserRegistrationInfo)
+    public SeminarUserRegistration seminarUserRegistrationInfoToEntity(SeminarUserRegistrationInfo seminarUserRegistrationInfo)
     {
-        // @todo verify behavior of seminarUserRegistrationInfoToEntity
         org.openuss.seminarpool.SeminarUserRegistration entity = this.loadSeminarUserRegistrationFromSeminarUserRegistrationInfo(seminarUserRegistrationInfo);
-        this.seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, entity, true);
+        this.seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, entity, true);        
         return entity;
     }
 
@@ -73,8 +135,12 @@ public class SeminarUserRegistrationDaoImpl
         org.openuss.seminarpool.SeminarUserRegistration targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarUserRegistrationInfoToEntity
         super.seminarUserRegistrationInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        if ( sourceVO.getSeminarpoolId() != null ) {
+        	targetEntity.setSeminarpool(getSeminarpoolDao().load(sourceVO.getSeminarpoolId()));
+        }
+        if ( sourceVO.getUserId() != null ){
+        	targetEntity.setUser(getUserDao().load(sourceVO.getUserId()));
+        }
     }
-
 }

@@ -5,6 +5,9 @@
  */
 package org.openuss.seminarpool;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @see org.openuss.seminarpool.SeminarUserRegistration
  */
@@ -20,19 +23,43 @@ public class SeminarUserRegistrationImpl
     /**
      * @see org.openuss.seminarpool.SeminarUserRegistration#addPriority(org.openuss.seminarpool.SeminarPriority)
      */
-    public void addPriority(org.openuss.seminarpool.SeminarPriority priority)
+    public void addPriority(SeminarPriority priority)
     {
-        // @todo implement public void addPriority(org.openuss.seminarpool.SeminarPriority priority)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarUserRegistration.addPriority(org.openuss.seminarpool.SeminarPriority priority) Not implemented!");
+    	if ( getSeminarPriority() != null ) {
+    		getSeminarPriority().add(priority);
+    	} else {
+    		Set<org.openuss.seminarpool.SeminarPriority> set = new HashSet<org.openuss.seminarpool.SeminarPriority>();
+    		set.add(priority);
+    	}
     }
 
     /**
      * @see org.openuss.seminarpool.SeminarUserRegistration#removePriority(org.openuss.seminarpool.SeminarPriority)
      */
-    public void removePriority(org.openuss.seminarpool.SeminarPriority priority)
+    public void removePriority(SeminarPriority priority)
     {
-        // @todo implement public void removePriority(org.openuss.seminarpool.SeminarPriority priority)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarUserRegistration.removePriority(org.openuss.seminarpool.SeminarPriority priority) Not implemented!");
+    	if ( getSeminarPriority() != null ) {
+    		getSeminarPriority().remove(priority);
+    	} 
     }
+
+	@Override
+	public void addUserCondition(
+			SeminarUserConditionValue seminarUserConditionValue) {
+		if ( getSeminarUserConditionValue() != null ) {
+			getSeminarUserConditionValue().add(seminarUserConditionValue);
+		} else {
+			Set<SeminarUserConditionValue> set = new HashSet<SeminarUserConditionValue>();
+			set.add(seminarUserConditionValue);
+		}
+	}
+
+	@Override
+	public void removeUserCondition(
+			SeminarUserConditionValue seminarUserConditionValue) {
+		if ( getSeminarUserConditionValue() != null ) {
+			getSeminarUserConditionValue().remove(seminarUserConditionValue);
+		}
+	}
 
 }

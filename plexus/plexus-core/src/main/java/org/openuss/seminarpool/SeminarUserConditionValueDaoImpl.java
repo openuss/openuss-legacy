@@ -17,8 +17,17 @@ public class SeminarUserConditionValueDaoImpl
         org.openuss.seminarpool.SeminarUserConditionValue sourceEntity,
         org.openuss.seminarpool.SeminarUserConditionValueInfo targetVO)
     {
-        // @todo verify behavior of toSeminarUserConditionValueInfo
         super.toSeminarUserConditionValueInfo(sourceEntity, targetVO);
+        if ( sourceEntity.getSeminarCondition() != null ) {
+        	SeminarCondition condition = sourceEntity.getSeminarCondition(); 
+        	targetVO.setSeminarConditionId(condition.getId());
+        	targetVO.setSeminarConditionDescription(condition.getConditionDescription());
+        	targetVO.setSeminarConditionFieldDescription(condition.getFieldDescription());
+        	targetVO.setSeminarConditionType(condition.getFieldType());
+        }
+        if ( sourceEntity.getSeminarUserRegistration() != null ) {
+        	targetVO.setSeminarUserRegistrationId(sourceEntity.getSeminarUserRegistration().getId());
+        }
     }
 
 
@@ -27,8 +36,13 @@ public class SeminarUserConditionValueDaoImpl
      */
     public org.openuss.seminarpool.SeminarUserConditionValueInfo toSeminarUserConditionValueInfo(final org.openuss.seminarpool.SeminarUserConditionValue entity)
     {
-        // @todo verify behavior of toSeminarUserConditionValueInfo
-        return super.toSeminarUserConditionValueInfo(entity);
+    	if ( entity != null ){
+    		SeminarUserConditionValueInfo infoVO = new SeminarUserConditionValueInfo();
+    		toSeminarUserConditionValueInfo(entity, infoVO);
+    		return infoVO;
+    	} else {
+    		return null; 
+    	}
     }
 
 
@@ -37,19 +51,16 @@ public class SeminarUserConditionValueDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.seminarpool.SeminarUserConditionValue loadSeminarUserConditionValueFromSeminarUserConditionValueInfo(org.openuss.seminarpool.SeminarUserConditionValueInfo seminarUserConditionValueInfo)
+    private org.openuss.seminarpool.SeminarUserConditionValue loadSeminarUserConditionValueFromSeminarUserConditionValueInfo(SeminarUserConditionValueInfo seminarUserConditionValueInfo)
     {
-        // @todo implement loadSeminarUserConditionValueFromSeminarUserConditionValueInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadSeminarUserConditionValueFromSeminarUserConditionValueInfo(org.openuss.seminarpool.SeminarUserConditionValueInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.SeminarUserConditionValue seminarUserConditionValue = this.load(seminarUserConditionValueInfo.getId());
-        if (seminarUserConditionValue == null)
-        {
-            seminarUserConditionValue = org.openuss.seminarpool.SeminarUserConditionValue.Factory.newInstance();
+    	SeminarUserConditionValue seminarUserConditionValue = null;
+        if ( seminarUserConditionValueInfo != null && seminarUserConditionValueInfo.getId() != null ) {
+        	seminarUserConditionValue = this.load(seminarUserConditionValueInfo.getId());
+        }
+        if ( seminarUserConditionValue == null){
+        	seminarUserConditionValue = SeminarUserConditionValue.Factory.newInstance();
         }
         return seminarUserConditionValue;
-        */
     }
 
     
@@ -58,7 +69,6 @@ public class SeminarUserConditionValueDaoImpl
      */
     public org.openuss.seminarpool.SeminarUserConditionValue seminarUserConditionValueInfoToEntity(org.openuss.seminarpool.SeminarUserConditionValueInfo seminarUserConditionValueInfo)
     {
-        // @todo verify behavior of seminarUserConditionValueInfoToEntity
         org.openuss.seminarpool.SeminarUserConditionValue entity = this.loadSeminarUserConditionValueFromSeminarUserConditionValueInfo(seminarUserConditionValueInfo);
         this.seminarUserConditionValueInfoToEntity(seminarUserConditionValueInfo, entity, true);
         return entity;
@@ -73,8 +83,13 @@ public class SeminarUserConditionValueDaoImpl
         org.openuss.seminarpool.SeminarUserConditionValue targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarUserConditionValueInfoToEntity
         super.seminarUserConditionValueInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        if ( sourceVO.getSeminarConditionId() != null ) {
+        	targetEntity.setSeminarCondition(getSeminarConditionDao().load(sourceVO.getSeminarConditionId()));
+        }
+        if ( sourceVO.getSeminarUserRegistrationId() != null ){
+        	targetEntity.setSeminarUserRegistration(getSeminarUserRegistrationDao().load(sourceVO.getSeminarUserRegistrationId()));
+        }
     }
 
 }

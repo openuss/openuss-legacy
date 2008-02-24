@@ -17,18 +17,28 @@ public class SeminarPriorityDaoImpl
         org.openuss.seminarpool.SeminarPriority sourceEntity,
         org.openuss.seminarpool.SeminarPrioritiesInfo targetVO)
     {
-        // @todo verify behavior of toSeminarPrioritiesInfo
         super.toSeminarPrioritiesInfo(sourceEntity, targetVO);
+        if (sourceEntity.getCourseSeminarPoolAllocation() != null){
+        	targetVO.setCourseId(sourceEntity.getCourseSeminarPoolAllocation().getId());
+        }
+        if ( sourceEntity.getSeminarUserRegistration() != null ) {
+        	targetVO.setSeminarUserRegistrationId(sourceEntity.getSeminarUserRegistration().getId());
+        }
     }
 
 
     /**
      * @see org.openuss.seminarpool.SeminarPriorityDao#toSeminarPrioritiesInfo(org.openuss.seminarpool.SeminarPriority)
      */
-    public org.openuss.seminarpool.SeminarPrioritiesInfo toSeminarPrioritiesInfo(final org.openuss.seminarpool.SeminarPriority entity)
+    public SeminarPrioritiesInfo toSeminarPrioritiesInfo(final SeminarPriority entity)
     {
-        // @todo verify behavior of toSeminarPrioritiesInfo
-        return super.toSeminarPrioritiesInfo(entity);
+    	if ( entity != null ){
+    		SeminarPrioritiesInfo infoVO = new SeminarPrioritiesInfo();
+    		toSeminarPrioritiesInfo(entity, infoVO);
+    		return infoVO;
+    	} else {
+    		return null; 
+    	}
     }
 
 
@@ -37,28 +47,26 @@ public class SeminarPriorityDaoImpl
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
-    private org.openuss.seminarpool.SeminarPriority loadSeminarPriorityFromSeminarPrioritiesInfo(org.openuss.seminarpool.SeminarPrioritiesInfo seminarPrioritiesInfo)
+    private SeminarPriority loadSeminarPriorityFromSeminarPrioritiesInfo(SeminarPrioritiesInfo seminarPrioritiesInfo)
     {
-        // @todo implement loadSeminarPriorityFromSeminarPrioritiesInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.loadSeminarPriorityFromSeminarPrioritiesInfo(org.openuss.seminarpool.SeminarPrioritiesInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
-        org.openuss.seminarpool.SeminarPriority seminarPriority = this.load(seminarPrioritiesInfo.getId());
-        if (seminarPriority == null)
-        {
-            seminarPriority = org.openuss.seminarpool.SeminarPriority.Factory.newInstance();
+    	SeminarPriority seminarPriority = null;
+        if ( seminarPrioritiesInfo != null && seminarPrioritiesInfo.getId() != null ) {
+        	seminarPriority = this.load(seminarPrioritiesInfo.getId());
+        }
+        if ( seminarPriority == null){
+        	seminarPriority = SeminarPriority.Factory.newInstance();
         }
         return seminarPriority;
-        */
+
     }
 
     
     /**
      * @see org.openuss.seminarpool.SeminarPriorityDao#seminarPrioritiesInfoToEntity(org.openuss.seminarpool.SeminarPrioritiesInfo)
      */
-    public org.openuss.seminarpool.SeminarPriority seminarPrioritiesInfoToEntity(org.openuss.seminarpool.SeminarPrioritiesInfo seminarPrioritiesInfo)
+    public SeminarPriority seminarPrioritiesInfoToEntity(SeminarPrioritiesInfo seminarPrioritiesInfo)
     {
-        // @todo verify behavior of seminarPrioritiesInfoToEntity
         org.openuss.seminarpool.SeminarPriority entity = this.loadSeminarPriorityFromSeminarPrioritiesInfo(seminarPrioritiesInfo);
         this.seminarPrioritiesInfoToEntity(seminarPrioritiesInfo, entity, true);
         return entity;
@@ -73,8 +81,13 @@ public class SeminarPriorityDaoImpl
         org.openuss.seminarpool.SeminarPriority targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of seminarPrioritiesInfoToEntity
         super.seminarPrioritiesInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        if (sourceVO.getCourseId() != null ) {
+        	targetEntity.setCourseSeminarPoolAllocation(getCourseSeminarpoolAllocationDao().load(sourceVO.getCourseId()));
+        }
+        if (sourceVO.getSeminarUserRegistrationId() != null ) {
+        	targetEntity.setSeminarUserRegistration(getSeminarUserRegistrationDao().load(sourceVO.getSeminarUserRegistrationId()));
+        }
     }
 
 }
