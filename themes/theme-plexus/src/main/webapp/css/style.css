@@ -2145,7 +2145,7 @@ table.jscalendar-DB-dropdown-style {
 
 #messages .messagesInfo .content_box .header_normal .header_normal_left_bg {
 	float: left;
-	width: 9px;
+	width: 8px;
 	height: 7px;
 	background-image: url(../img/headline_green_left_bg.jpg);
 	background-repeat: no-repeat;
@@ -2153,8 +2153,7 @@ table.jscalendar-DB-dropdown-style {
 
 #messages .messagesInfo .content_box .header_normal .header_normal_right_bg {
 	float: right;
-	margin-right: -1px;
-	width: 9px;
+	width: 8px;
 	height: 7px;
 	background-image: url(../img/headline_green_right_bg.jpg);
 	background-repeat: no-repeat;
@@ -2215,7 +2214,7 @@ table.jscalendar-DB-dropdown-style {
 
 #messages .messagesError .content_box .header_normal .header_normal_left_bg {
 	float: left;
-	width: 9px;
+	width: 8px;
 	height: 7px;
 	background-image: url(../img/headline_red_left_bg.jpg);
 	background-repeat: no-repeat;
@@ -2223,8 +2222,7 @@ table.jscalendar-DB-dropdown-style {
 
 #messages .messagesError .content_box .header_normal .header_normal_right_bg {
 	float: right;
-	margin-right: -1px;
-	width: 9px;
+	width: 8px;
 	height: 7px;
 	background-image: url(../img/headline_red_right_bg.jpg);
 	background-repeat: no-repeat;
