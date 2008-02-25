@@ -38,6 +38,8 @@ public class WorkspaceServiceImpl extends
 		
 		// Update input parameter for aspects to get the right domain objects. 
 		workspaceInfo.setId(workspaceEntity.getId());
+		
+		getSecurityService().createObjectIdentity(workspaceEntity, null);
 	}
 
 	@Override

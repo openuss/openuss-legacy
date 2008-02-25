@@ -2,6 +2,7 @@ package org.openuss.web.collaboration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.collaboration.WorkspaceInfo;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
@@ -195,6 +197,22 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		});
 		logger.debug("selected " + selected.size() + " files");
 		return selected;
+	}
+	
+	/**
+	 * Store the selected workspace into session scope and go to workspace
+	 * remove confirmation page. 
+	 * 
+	 * @return outcome
+	 */
+	public String selectFileAndConfirmRemove() {
+		logger.debug("Starting method selectFileAndConfirmRemove");
+		FolderEntryInfo entry = data.getRowData();
+		logger.debug("Returning to method selectFileAndConfirmRemove");
+		logger.debug(entry.getId());
+		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, Arrays.asList(new FolderEntryInfo[] {entry}));
+
+		return Constants.COLLABORATION_REMOVE_FOLDERENTRY_PAGE;
 	}
 	
 	//// getter/setter methods /////////////////////////////////////////////////
