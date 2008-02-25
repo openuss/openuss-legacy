@@ -7,6 +7,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
+import org.openuss.wiki.WikiSiteContentInfo;
 
 
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
@@ -74,27 +75,29 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_IMPORT_PAGE;
 	}
 	
-	public String showStable() {
-		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
-		wikiSiteInfo.setReadOnly(false);
+	public String showStable() { //Test
+		WikiSiteContentInfo wikiSiteContentInfo = wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId());
+		if(wikiSiteContentInfo == null)
+			wikiSiteContentInfo = wikiService.getNewestWikiSiteContent(siteVersionInfo.getWikiSiteId());
 		
-		wikiService.saveWikiSite(wikiSiteInfo);
+		siteVersionInfo = wikiSiteContentInfo;
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+		
+	}
+	
+	public String markStable() { //FIXME
+		siteVersionInfo.setStable(true);
+		
+		wikiService.saveWikiSite(siteVersionInfo);
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
 		
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
-	public String markStable() {
+	public String unmarkStable() { //FIXME
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
-		wikiSiteInfo.setReadOnly(false);
-		
-		wikiService.saveWikiSite(wikiSiteInfo);
-		
-		return Constants.WIKI_CURRENT_SITE_VERSION;
-	}
-	
-	public String unmarkStable() {
-		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
-		wikiSiteInfo.setReadOnly(false);
+		wikiSiteInfo.setStable(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
