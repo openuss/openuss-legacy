@@ -134,6 +134,9 @@ public class InternalMessageServiceImpl
 			message.setMessageDate(messageInfo.getMessageDate());
 		InternalMessageCenter sender = getInternalMessageCenterDao()
 				.findByUser(getUserDao().load(messageInfo.getSenderId()));
+		if(sender == null){
+			sender = getInternalMessageCenterDao().create(getUserDao().load(messageInfo.getSenderId()));
+		}
 		message.setSender(sender);
 		sender.getSentInternalMessage().add(message);
     	getInternalMessageDao().create(message);
