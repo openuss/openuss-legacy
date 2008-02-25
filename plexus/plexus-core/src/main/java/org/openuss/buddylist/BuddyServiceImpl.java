@@ -149,6 +149,9 @@ public class BuddyServiceImpl
     {
         User user = getSecurityService().getCurrentUser();
         BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
+        if(buddyList == null){
+        	buddyList = getBuddyListDao().create(user.getId());
+        }
         LinkedList<String> tagList = new LinkedList<String>();
         for (Tag tag : buddyList.getTags()){
         	tagList.add(tag.getTag());
