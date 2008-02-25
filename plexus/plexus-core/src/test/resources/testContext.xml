@@ -63,11 +63,17 @@
 		<property name="periodDao">
 			<ref bean="periodDao" />
 		</property>
+		<property name="seminarpoolDao">
+			<ref bean="seminarpoolDao" />
+		</property>
 		<property name="securityService">
 			<ref bean="securityService" />
 		</property>
 		<property name="organisationService">
 			<ref bean="organisationService" />
+		</property>
+		<property name="membershipService">
+			<ref bean="membershipService" />
 		</property>
 	</bean>
 	

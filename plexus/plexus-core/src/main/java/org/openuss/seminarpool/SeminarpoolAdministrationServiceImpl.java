@@ -61,15 +61,17 @@ public class SeminarpoolAdministrationServiceImpl
 		admins.setName("SEMINARPOOL_" + seminarpoolEntity.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
-		Long adminsId = this.getOrganisationService().createGroup(seminarpoolEntity.getId(), admins);
-		Group adminsGroup = this.getGroupDao().load(adminsId);
+		Group group = this.getGroupDao().groupItemToEntity(admins);
+		group.addMember(user);
+		group = this.getMembershipService().createGroup(seminarpoolEntity.getMembership(), group);
+		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
 		// Security
-		getSecurityService().createObjectIdentity(seminarpoolEntity, seminarpoolEntity);
-		getSecurityService().setPermissions(adminsGroup, seminarpoolEntity, LectureAclEntry.OGCRUD);
+		getSecurityService().createObjectIdentity(seminarpoolEntity, seminarpoolEntity.getUniversity());
+		getSecurityService().setPermissions(group, seminarpoolEntity, LectureAclEntry.OGCRUD);
 
 		// Add Owner to Members and the group of Administrators
-		getOrganisationService().addMember(seminarpoolEntity.getId(), userId);
-		getOrganisationService().addUserToGroup(userId, adminsGroup.getId());
+		getMembershipService().addMember(membership, user);
+		
 		return seminarpoolEntity.getId();
     }
 

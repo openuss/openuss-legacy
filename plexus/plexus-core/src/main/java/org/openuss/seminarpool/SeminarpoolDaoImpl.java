@@ -45,7 +45,7 @@ public class SeminarpoolDaoImpl
         if(seminarpoolInfo != null && seminarpoolInfo.getId() != null){
         	seminarpool = this.load(seminarpoolInfo.getId());
         }
-        if(seminarpoolInfo == null){
+        if(seminarpool == null){
         	seminarpool = Seminarpool.Factory.newInstance();
         }
         return seminarpool;

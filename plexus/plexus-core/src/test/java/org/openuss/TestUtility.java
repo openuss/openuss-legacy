@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.apache.commons.lang.Validate;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.GroupServiceImpl;
@@ -39,6 +40,7 @@ import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.MembershipDao;
+import org.openuss.security.MembershipService;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -93,6 +95,8 @@ public class TestUtility {
 	private UserGroupDao userGroupDao;
 
 	private SecurityService securityService;
+	
+	private MembershipService membershipService;
 
 	private OrganisationService organisationService;
 
@@ -757,6 +761,8 @@ public class TestUtility {
 	}
 	
 	public Seminarpool createUniqueSeminarpoolinDB(){
+		University university = createUniqueUniversityInDB();
+		User user = createUniqueUserInDB();
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
@@ -766,7 +772,30 @@ public class TestUtility {
 		seminarpool.setShortcut("SEPO");
 		seminarpool.setDescription("Seminarpool");
 		seminarpool.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
+		seminarpool.setUniversity(university);
 		Membership membership = Membership.Factory.newInstance();
+		seminarpool.setMembership(membership);
+
+		// Create the Seminarpool
+		getSeminarpoolDao().create(seminarpool);
+		Validate.notNull(seminarpool.getId(), "SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
+
+
+		// Create default Groups for Institute
+		GroupItem admins = new GroupItem();
+		admins.setName("SEMINARPOOL_" + seminarpool.getId() + "_ADMINS");
+		admins.setLabel("autogroup_administrator_label");
+		admins.setGroupType(GroupType.ADMINISTRATOR);
+		Group group = this.getGroupDao().groupItemToEntity(admins);
+		group.addMember(user);
+		group = this.getMembershipService().createGroup(seminarpool.getMembership(), group);
+		Validate.notNull(group.getId(), "MembershipService.handleCreateGroup - Group couldn't be created");
+		// Security
+		getSecurityService().createObjectIdentity(seminarpool, seminarpool.getUniversity());
+		getSecurityService().setPermissions(group, seminarpool, LectureAclEntry.OGCRUD);
+
+		// Add Owner to Members and the group of Administrators
+		getMembershipService().addMember(membership, user);
 		seminarpool.setMembership(membership);
 		seminarpoolDao.create(seminarpool);
 		return seminarpool;
@@ -892,6 +921,14 @@ public class TestUtility {
 	public void setUniversityDao(UniversityDao universityDao) {
 		this.universityDao = universityDao;
 	}
+	
+	public MembershipService getMembershipService() {
+		return membershipService;
+	}
+
+	public void setMembershipService(MembershipService membershipService) {
+		this.membershipService = membershipService;
+	}
 
 	public DepartmentDao getDepartmentDao() {
 		return departmentDao;
@@ -919,6 +956,14 @@ public class TestUtility {
 
 	public void setPeriodDao(PeriodDao periodDao) {
 		this.periodDao = periodDao;
+	}
+	
+	public void setSeminarpoolDao(SeminarpoolDao seminarpoolDao){
+		this.seminarpoolDao=seminarpoolDao;
+	}
+	
+	public SeminarpoolDao getSeminarpoolDao(){
+		return seminarpoolDao;
 	}
 
 	public CourseTypeDao getCourseTypeDao() {

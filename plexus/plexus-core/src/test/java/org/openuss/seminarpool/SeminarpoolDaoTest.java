@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 
+import org.openuss.TestUtility;
+import org.openuss.lecture.University;
 import org.openuss.security.Membership;
 
 
@@ -18,8 +20,19 @@ import org.openuss.security.Membership;
 */
 public class SeminarpoolDaoTest extends SeminarpoolDaoTestBase {
 	
+	private TestUtility testUtility;
+	
+	public TestUtility getTestUtility() {
+		return testUtility;
+	}
+
+	public void setTestUtility(TestUtility testUtility) {
+		this.testUtility = testUtility;
+	}
 	
 	public void testSeminarpoolDaoCreate() {
+		University university = testUtility.createUniqueUniversityInDB();
+		
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
@@ -29,6 +42,7 @@ public class SeminarpoolDaoTest extends SeminarpoolDaoTestBase {
 		seminarpool.setShortcut(" ");
 		seminarpool.setDescription(" ");
 		seminarpool.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
+		seminarpool.setUniversity(university);
 		Membership membership = Membership.Factory.newInstance();
 		seminarpool.setMembership(membership);
 		assertNull(seminarpool.getId());
