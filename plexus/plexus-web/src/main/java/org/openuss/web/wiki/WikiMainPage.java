@@ -70,4 +70,29 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
+	public String showStable() {
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		wikiSiteInfo.setReadOnly(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+	}
+	public String markStable() {
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		wikiSiteInfo.setReadOnly(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+	}
+	public String unmarkStable() {
+		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		wikiSiteInfo.setReadOnly(false);
+		
+		wikiService.saveWikiSite(wikiSiteInfo);
+		
+		return Constants.WIKI_CURRENT_SITE_VERSION;
+	}
+	
 }

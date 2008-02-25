@@ -208,4 +208,22 @@ public class WikiServiceImpl
 		getDocumentService().createFileEntry(image, folder);
 	}
 
+	@Override
+	protected WikiSiteContentInfo handleGetNewestStableWikiSiteContent(Long wikiSiteId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+    	WikiSite site = getWikiSiteDao().load(wikiSiteId);
+    	Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
+    	
+    	String query = "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = ? and f.stable = true order by f.creationDate desc";
+    	List<WikiSiteInfo> list = getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, query, site);
+    	if (list.isEmpty()) {
+    		return null;
+    	} else {
+    		WikiSiteInfo wikiSite = list.get(0);
+    		return (WikiSiteContentInfo) getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSite.getId());
+    	}
+	}
+
 }

@@ -149,6 +149,30 @@
 								action="wiki_version"
 								immediate="true" 
 								styleClass="button"/>
+								
+							<h:commandButton
+								value="${msg.wiki_main_button_showStable}"
+								action="#{views$secured$wiki$wikimain.showStable}" 
+								immediate="true" 
+								styleClass="button"/>
+							
+							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+								<c:if test="${not wiki_current_site_version.stable}">
+									<h:commandButton
+										value="${msg.wiki_main_button_markStable}"
+										action="#{views$secured$wiki$wikimain.markStable}" 
+										immediate="true" 
+										styleClass="button"/>
+								</c:if>
+								<c:if test="${wiki_current_site_version.stable}">		
+									<h:commandButton
+										value="${msg.wiki_main_button_unmarkStable}"
+										action="#{views$secured$wiki$wikimain.unmarkStable}" 
+										immediate="true" 
+										styleClass="button"/>
+								</c:if>
+							</s:acl>		
+								
 		                </o:block>
 		        	</c:if>
 	        	</c:if>

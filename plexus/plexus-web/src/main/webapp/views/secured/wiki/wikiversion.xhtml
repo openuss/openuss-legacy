@@ -40,7 +40,7 @@
 			    	rows="20">  
 			      
 					<t:column>
-						<plexus:commandSortHeader columnName="creationDate"> #{msg['wiki_version_column_create']} </plexus:commandSortHeader>
+						<plexus:commandSortHeader columnName="creationDate"  defaultSorted="true"> #{msg['wiki_version_column_create']} </plexus:commandSortHeader>
 						
 						<o:link value="/views/secured/wiki/wikimain.faces">
 							<f:param value="#{entry.id}" name="versionId" />
