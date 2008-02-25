@@ -103,6 +103,12 @@
 		                        		styleClass="button" />
 		                    </s:acl>
 		                    
+		                    <h:commandButton 
+	                            value="${msg.wiki_main_button_preview}" 
+	                            immediate="true" 
+	                            styleClass="button"
+	                            onclick="window.open('wikiprintpreview.faces');" />
+		                    
 		                    <c:if test="${wiki_current_site_version.readOnly}">
 		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 		                    		<h:commandButton 
