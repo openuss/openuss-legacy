@@ -126,8 +126,8 @@ public class MigrationServiceImpl
     			User user = getCourseMemberDao().courseMemberInfoToEntity(member).getUser();
 
     			Permission permission = getSecurityService().getPermissions(user, course);
-    			if (permission.getMask().intValue()==1040){
-    				getSecurityService().removePermission(user, course);
+    			if (permission!=null&&permission.getMask().intValue()==1040){
+   					getSecurityService().removePermission(user, course);
     			}
     			getSecurityService().addAuthorityToGroup(user, participantsGroup);
     		}
