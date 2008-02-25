@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.FolderInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
@@ -74,9 +75,12 @@ public class WorkspaceServiceImpl extends
 	protected void handleRemoveWorkspace(Long workspaceId) throws Exception {
 		Validate.notNull(workspaceId, "workspaceId cannot be null.");
 		
-		// Transform VO to entity
-		Workspace workspaceEntity = this.getWorkspaceDao().load(workspaceId);
-
+		Workspace workspaceEntity = getWorkspaceDao().load(workspaceId);
+		WorkspaceInfo workspaceInfo = getWorkspaceDao().toWorkspaceInfo(workspaceEntity);
+		
+		FolderInfo folderEntry = getDocumentService().getFolder(workspaceInfo);
+		getDocumentService().removeFolderEntry(folderEntry.getId());
+		
 		getWorkspaceDao().remove(workspaceEntity);
 	}
 
@@ -127,6 +131,4 @@ public class WorkspaceServiceImpl extends
 		
 		return workspaceInfos;
 	}
-
-	
 }
