@@ -17,4 +17,16 @@ public class CourseGroupImpl
      */
     private static final long serialVersionUID = -5256797015565690286L;
 
+	@Override
+	public void addUser(Long userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUser(Long userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

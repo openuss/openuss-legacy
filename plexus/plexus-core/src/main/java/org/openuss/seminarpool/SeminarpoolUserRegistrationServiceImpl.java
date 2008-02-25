@@ -103,7 +103,6 @@ public class SeminarpoolUserRegistrationServiceImpl
 				targetEntity.addPriority(seminarPriorityEntity);
 				seminarPriorityEntity.setSeminarUserRegistration(targetEntity);
 			}
-			
 		}
 		if ( userConditions != null ) {
 			Iterator iter = userConditions.iterator();
@@ -115,6 +114,15 @@ public class SeminarpoolUserRegistrationServiceImpl
 			}
 		}
 		return targetEntity;
+	}
+
+	@Override
+	protected void handleUnregisterUserFromSeminar(
+			SeminarUserRegistrationInfo userRegistrationInfo) throws Exception {
+		Validate.notNull(userRegistrationInfo, "handleUnregisterUserFromSeminar ==> userRegistrationInfo cannot be null");
+		Validate.notNull(userRegistrationInfo.getSeminarpoolId(), "handleUnregisterUserFromSeminar ==> userRegistrationInfo.getSeminarpoolId() cannot be null");		
+		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(userRegistrationInfo.getSeminarpoolId());
+		seminarpoolEntity.removeRegistration(getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(userRegistrationInfo));
 	}
 
 }
