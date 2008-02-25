@@ -24,9 +24,10 @@ public class PaperSubmissionDaoImpl
         // @todo verify behavior of toPaperSubmissionInfo
         //super.toPaperSubmissionInfo(sourceEntity, targetVO);
     	targetVO.setId(sourceEntity.getId());
-//    	targetVO.setExamId(sourceEntity.getExam().getId());
+    	targetVO.setExamId(sourceEntity.getExam().getId());
     	targetVO.setUserId(sourceEntity.getSender().getId());
         targetVO.setDeliverDate(sourceEntity.getDeliverDate());
+        targetVO.setSubmissionType(sourceEntity.getSubmissionType());
         
 //        //targetVO.setFiles()
     }

@@ -67,7 +67,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 
 	public String save() throws DocumentApplicationException, IOException{
 		logger.debug("saving file");
-		loadPaperSubmission();
+		paperSubmissionInfo = loadPaperSubmission();
 		if (isNewFile()) {
 			if (!saveNewFile()) {
 				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
@@ -127,7 +127,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 			documentService.createFileEntry(selectedFile, folder);
 			uploadFileManager.removeDocument(document);
-			paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
+//			paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
 			return true;
 		} else {
 			return false;

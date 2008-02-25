@@ -56,8 +56,12 @@
 				        </t:column>
 				   
 				        <t:column>
-				            <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
-				            <h:outputText value="#{bean.userName}"/>
+				            <plexus:commandSortHeader columnName="firstname">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
+				            <h:outputText value="#{bean.firstName}"/>
+				        </t:column>
+				         <t:column>
+				            <plexus:commandSortHeader columnName="lastname">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
+				            <h:outputText value="#{bean.lastName}"/>
 				        </t:column>
 				        <t:column>
 				            <plexus:commandSortHeader columnName="submissionTime">Abgabe</plexus:commandSortHeader> 

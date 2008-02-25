@@ -17,6 +17,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.documents.FileEntryDao;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -44,7 +45,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** The datamodel for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
 	
-	private List<FileInfo> entries;
+	private List<FolderEntryInfo> entries;
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
 	private PaperSubmissionSelection paperSelection;
@@ -103,8 +104,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 
-	private List<FileInfo> selectedEntries() {
-		List<FileInfo> selected = new ArrayList<FileInfo>(loadFileEntries());
+	private List<FolderEntryInfo> selectedEntries() {
+		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFileEntries());
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
 				return paperSelection.isSelected(object);
@@ -117,7 +118,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@SuppressWarnings("unchecked")
 	public String download () throws IOException{
 		logger.debug("downloading documents");
-		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
@@ -131,7 +132,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	public String delete() {
-		List<FileInfo> entries = selectedEntries();
+		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
 			logger.debug("deleting documents:");
 			setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES, entries);
@@ -151,9 +152,10 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<FileInfo> loadFileEntries() {
+	private List<FolderEntryInfo> loadFileEntries() {
 		if (entries == null) {
-			entries = documentService.getFileEntries(paperSubmissionInfo);
+			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
+			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
 		}
 		return entries;
 	}
@@ -191,24 +193,24 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			return page;
 		}
 	}
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FileInfo> {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<FileInfo> page;
+		private DataPage<FolderEntryInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<FileInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							
 				if(paperSubmissionInfo == null){
-					page = new DataPage<FileInfo>(0,0,null);
+					page = new DataPage<FolderEntryInfo>(0,0,null);
 				}
 				else{
-					List<FileInfo> entries = loadFileEntries();
+					List<FolderEntryInfo> entries = loadFileEntries();
 					
 					//sort(submissions);
-					page = new DataPage<FileInfo>(entries.size(), 0, entries);
+					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
 				}
 			}
 			return page;
@@ -230,11 +232,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		this.paperSelection = paperSelection;
 	}
 
-	public List<FileInfo> getEntries() {
+	public List<FolderEntryInfo> getEntries() {
 		return entries;
 	}
 
-	public void setEntries(List<FileInfo> entries) {
+	public void setEntries(List<FolderEntryInfo> entries) {
 		this.entries = entries;
 	}
 

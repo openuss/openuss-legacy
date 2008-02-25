@@ -25,7 +25,7 @@ public class PaperSubmissionDocumentRemovePage extends AbstractPaperSubmissionPa
 	private static final Logger logger = Logger.getLogger(PaperSubmissionDocumentRemovePage.class);
 
 	@Property(value="#{sessionScope.papersubmission_selected_fileentries}")
-	private List<FileInfo> entries;
+	private List<FolderEntryInfo> entries;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -48,7 +48,7 @@ public class PaperSubmissionDocumentRemovePage extends AbstractPaperSubmissionPa
 	public String removeEntries() throws DocumentApplicationException {
 		logger.trace("removing entries");
 		if (entries != null) {
-			documentService.removeFileEntries(entries);
+			documentService.removeFolderEntries(entries);
 			removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES);
 			addMessage(i18n("documents_message_removing_files_succeed"));
 		}
@@ -81,12 +81,12 @@ public class PaperSubmissionDocumentRemovePage extends AbstractPaperSubmissionPa
 	}
 
 
-	public List<FileInfo> getEntries() {
+	public List<FolderEntryInfo> getEntries() {
 		return entries;
 	}
 
 
-	public void setEntries(List<FileInfo> entries) {
+	public void setEntries(List<FolderEntryInfo> entries) {
 		this.entries = entries;
 	}
 

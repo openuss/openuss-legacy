@@ -13,6 +13,8 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntryInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMember;
@@ -65,6 +67,12 @@ public class PaperSubmissionServiceImpl
     	paperSubmissionEntity.setExam(exam);
     	paperSubmissionEntity.setSender(user);
     	paperSubmissionEntity.setDeliverDate(new Date());
+    	if(exam.getDeadline().after(paperSubmissionEntity.getDeliverDate())){
+    		paperSubmissionEntity.setSubmissionType("INTIME");
+    	}else{
+    		paperSubmissionEntity.setSubmissionType("NOTINTIME");
+    	}
+    	
     	
     	this.getPaperSubmissionDao().create(paperSubmissionEntity);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionId cannot be null");
@@ -72,6 +80,7 @@ public class PaperSubmissionServiceImpl
 		// Update input parameter for aspects to get the right domain objects.
     	paperSubmissionInfo.setId(paperSubmissionEntity.getId());
 
+    	
 		// add object identity to security
     	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
@@ -118,20 +127,14 @@ public class PaperSubmissionServiceImpl
     		boolean submitted = false;
     		PaperSubmissionInfo paper = new PaperSubmissionInfo();
     		paper.setUserId(member.getUserId());
-    		paper.setUserName(member.getLastName());
-    		
+    		paper.setFirstName(member.getFirstName());
+    		paper.setLastName(member.getLastName());
     		
     		for(PaperSubmissionInfo submission : submissions){
     			if(member.getUserId().equals(submission.getUserId())){
-    				submitted = true;
-    				if(exam.getDeadline().after(submission.getDeliverDate())){
-    					paper.setSubmissionType("INTIME");
-    					allSubmissions.add(paper);
-    				}
-    				else{
-    					paper.setSubmissionType("NOTINTIME");
-    					allSubmissions.add(paper);
-    				}    				
+    				paper.setSubmissionType(submission.getSubmissionType());
+    				allSubmissions.add(paper);
+ 					submitted=true;
     			}
     		}
     		if(submitted==false){
@@ -223,15 +226,29 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
 		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
 		
+		ExamInfo exam = this.getExam(paperSubmissionInfo.getExamId());
+		
 		paperSubmissionInfo.setDeliverDate(new Date());		
+		if(paperSubmissionInfo.getSubmissionType().equals("INTIME") && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())){
+			PaperSubmissionInfo newSubmissionInfo = new PaperSubmissionInfo();			
+			newSubmissionInfo.setDeliverDate(paperSubmissionInfo.getDeliverDate());
+			newSubmissionInfo.setExamId(paperSubmissionInfo.getExamId());
+			newSubmissionInfo.setUserId(paperSubmissionInfo.getUserId());
+			this.createPaperSubmission(newSubmissionInfo);
+			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+			List<FileInfo> files = getDocumentService().getFileEntries(paperSubmissionInfo);
+			FolderInfo newFolder = getDocumentService().getFolder(newSubmissionInfo);
+			getDocumentService().createFileEntries(files, newFolder);
+		}else{
+			//Transfor VO to an entity
+			PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
+			
+			// FIXME update files!!!
+			
+			//update the PaperSubmission
+			getPaperSubmissionDao().update(paperSubmissionEntity);
+		}
 		
-		//Transfor VO to an entity
-		PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
-		
-		// FIXME update files!!!
-		
-		//update the PaperSubmission
-		getPaperSubmissionDao().update(paperSubmissionEntity);
 	}
 
 	@Override
