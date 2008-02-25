@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -18,8 +15,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.course.newsletter.CourseNewsletterService;
-import org.openuss.desktop.Desktop;
-import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.MyUniCourseInfo;
 import org.openuss.desktop.MyUniDepartmentInfo;
@@ -35,10 +30,8 @@ import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.SecurityService;
-import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
-import org.openuss.web.Constants;
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -78,7 +71,6 @@ public class MyUniPage extends BasePage {
 	private UIFlexList institutesList;
 	private CourseUIFlexList coursesList;
 	private UITabs tabs;
-	private Desktop desktop;
 
 	private boolean prerenderCalled = false;
 	private boolean tabDataLoaded = false;
@@ -93,16 +85,11 @@ public class MyUniPage extends BasePage {
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 
-	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	String locale = (String) binding.getValue(getFacesContext());
-	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
-
 	@Prerender
 	public void prerender() {
 		logger.debug("Prerender MyUni-Page");
 		prerenderCalled = true;
-		refreshDesktop();
-
+		
 		// Load paramenters from request
 		loadParams();
 		// Remove bookmarks
@@ -110,34 +97,17 @@ public class MyUniPage extends BasePage {
 		// (un)subscribe newsletter/forum
 		handleSubscriptions();
 		// Load myUni data
-		prepareData();
-		// Load data into the list components
-		loadValuesForComponents();
-		breadcrumbs.loadMyUniCrumbs();
-	}
-
-	private void refreshDesktop() {
-		if (user != null) {
-			try {
-				if (desktopInfo == null) {
-					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktopInfo = desktopService2.findDesktopByUser(user.getId());
-
-				} else {
-					logger.debug("refreshing desktop data");
-					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
-				}
-				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
-
-				assert desktopDao != null;
-				desktop = desktopDao.load(desktopInfo.getId());
-				assert desktop != null;
-
-			} catch (DesktopException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
+		try {
+			myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
+		} catch (Exception e) {
+			logger.error(e);
 		}
+		// Load data into the list components
+		loadValuesForTabs(tabs);
+		loadValuesForDepartmentList(departmentsList);
+		loadValuesForInstituteList(institutesList);
+		loadValuesForCourseList(coursesList);
+		breadcrumbs.loadMyUniCrumbs();
 	}
 
 	/*
@@ -238,6 +208,7 @@ public class MyUniPage extends BasePage {
 				if (paramRemoveCourse != null) {
 					try {
 						desktopService2.unlinkCourse(desktopId, paramRemoveCourse);
+						addMessage(i18n("desktop_mesage_removed_course_succeed"));
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -293,53 +264,9 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
-	public boolean getData() {
-		logger.debug("Checcking, if data available");
-		if (myUniData == null || myUniData.isEmpty()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/*
-	 * Loads myUni data if myUniData is not already set
-	 */
-	public void prepareData() {
-		logger.debug("Preparing MyUni data");
-		if (myUniData == null) {
-			try {
-				myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
-			} catch (Exception e) {
-				logger.error(e);
-			}
-		}
-	}
-
-	/*
-	 * Called by the prerender method after bookmarks have been removed to make
-	 * sure that the current state of bookmarks is shown. Otherwise removed
-	 * bookmarks only disappear upon the next request.
-	 */
-	private void loadValuesForComponents() {
-		if (tabs != null)
-			loadValuesForTabs(tabs);
-
-		if (departmentsList != null)
-			loadValuesForDepartmentList(departmentsList);
-
-		if (institutesList != null)
-			loadValuesForInstituteList(institutesList);
-
-		if (coursesList != null)
-			loadValuesForCourseList(coursesList);
-	}
-
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
 		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
 			logger.debug("Loading data for departments flexlist");
-			// Make sure myUni-Data is loaded
-			prepareData();
 
 			// Get the current university id
 			Long universityId = chooseUniversity();
@@ -357,8 +284,6 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
 		if (instituteListDataLoaded == false && prerenderCalled == true && institutesList != null) {
 			logger.debug("Loading data for institutes flexlist");
-			// Make sure myUni-Data is loaded
-			prepareData();
 
 			// Get the current university id
 			Long universityId = chooseUniversity();
@@ -377,8 +302,6 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForCourseList(CourseUIFlexList coursesList) {
 		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
-			// Make sure myUni-Data is loaded
-			prepareData();
 
 			// Get the current university id
 			Long universityId = chooseUniversity();
@@ -397,8 +320,6 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForTabs(UITabs tabs) {
 		if (tabDataLoaded == false && prerenderCalled == true && tabs != null) {
 			logger.debug("Loading data for MyUni-Tabs");
-			// Make sure myUni-Data is loaded
-			prepareData();
 
 			// Get the current university id
 			Long universityId = chooseUniversity();
@@ -453,7 +374,7 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(departmentInfo.getName());
 					newItem.setUrl(contextPath()+departmentsBasePath + "?department=" + departmentInfo.getId());
-					if (departmentInfo.isBookmarked())
+					if (departmentInfo.getBookmarked())
 						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
 								+ "&remove_department=" + departmentInfo.getId());
 
@@ -490,7 +411,7 @@ public class MyUniPage extends BasePage {
 						else
 							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " "
 									+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
-					if (instituteInfo.isBookmarked())
+					if (instituteInfo.getBookmarked())
 						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
 								+ "&remove_institute=" + instituteInfo.getId());
 
@@ -519,7 +440,7 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
-					if (instituteInfo.isBookmarked()) {
+					if (instituteInfo.getBookmarked()) {
 						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId	+ "&remove_institute=" + instituteInfo.getId());
 					}
 					listItems.add(newItem);
@@ -654,11 +575,11 @@ public class MyUniPage extends BasePage {
 	public void setDepartmentsList(UIFlexList departmentsList) {
 		logger.debug("Setting departments flexlist component");
 		this.departmentsList = departmentsList;
-		departmentsList.getAttributes().put("title", bundle.getString("flexlist_departments"));
-		departmentsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_departments"));
-		departmentsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_departments"));
+		departmentsList.getAttributes().put("title", i18n("flexlist_departments"));
+		departmentsList.getAttributes().put("showButtonTitle", i18n("flexlist_more_departments"));
+		departmentsList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_departments"));
 		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
-				bundle.getString("flexlist_remove_bookmark"));
+				i18n("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForDepartmentList(departmentsList);
@@ -671,10 +592,10 @@ public class MyUniPage extends BasePage {
 	public void setInstitutesList(UIFlexList institutesList) {
 		logger.debug("Setting institutes flexlist component");
 		this.institutesList = institutesList;
-		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
-		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
-		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
-		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	bundle.getString("flexlist_remove_bookmark"));
+		institutesList.getAttributes().put("title", i18n("flexlist_institutes"));
+		institutesList.getAttributes().put("showButtonTitle", i18n("flexlist_more_institutes"));
+		institutesList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_institutes"));
+		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	i18n("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForInstituteList(institutesList);
@@ -687,10 +608,10 @@ public class MyUniPage extends BasePage {
 	public void setCoursesList(CourseUIFlexList coursesList) {
 		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
-		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
-		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
-		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
-		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", 	bundle.getString("flexlist_remove_bookmark"));
+		coursesList.getAttributes().put("title", i18n("flexlist_courses"));
+		coursesList.getAttributes().put("showButtonTitle", i18n("flexlist_more_courses"));
+		coursesList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_courses"));
+		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", 	i18n("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForCourseList(coursesList);
@@ -703,7 +624,7 @@ public class MyUniPage extends BasePage {
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;
-		tabs.getAttributes().put("alternateLinkTitle", bundle.getString("flexlist_tabs_details"));
+		tabs.getAttributes().put("alternateLinkTitle", i18n("flexlist_tabs_details"));
 
 		loadValuesForTabs(tabs);
 	}
@@ -739,6 +660,14 @@ public class MyUniPage extends BasePage {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	public Map<Long, MyUniInfo> getMyUniData() {
+		return myUniData;
+	}
+
+	public void setMyUniData(Map<Long, MyUniInfo> myUniData) {
+		this.myUniData = myUniData;
 	}
 
 }

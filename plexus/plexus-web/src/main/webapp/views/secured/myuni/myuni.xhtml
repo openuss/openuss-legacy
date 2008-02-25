@@ -37,7 +37,7 @@
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-	<c:if test="#{not views$secured$myuni$myuni.data}">
+	<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
 		<div class="content_box">
 			<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
 			</o:flexlist_tabs>
@@ -55,7 +55,7 @@
 			</div>
 		</div>
 	</c:if>
-	<c:if test="#{views$secured$myuni$myuni.data}">
+	<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
 		<o:block>	
 			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">	
 				<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false"/>

@@ -19,9 +19,16 @@
 		<t:column>
 		
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
-			<b><h:outputText value="#{bean.name} (#{bean.shortcut})"/></b>
+			<b><h:outputText value="#{bean.name} (#{bean.shortcut}) #{bean.courseCount} bla"/></b>
 			<br></br>
 			<small><h:outputText value="#{bean.description}"/></small>
+			
+		</t:column>
+		
+		<t:column>
+		
+			<plexus:commandSortHeader columnName="courseCount">#{msg.coursetype_header}</plexus:commandSortHeader> 
+			<b><h:outputText value="#{bean.courseCount}"/></b>
 			
 		</t:column>
 		

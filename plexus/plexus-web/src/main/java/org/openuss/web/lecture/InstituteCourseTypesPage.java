@@ -1,6 +1,7 @@
 package org.openuss.web.lecture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -176,6 +177,10 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
 						.findCourseTypesByInstitute(instituteInfo.getId()));
 				sort(courseTypes);
+				for( Iterator<CourseTypeInfo> i = courseTypes.iterator(); i.hasNext(); ) {
+					CourseTypeInfo cti = i.next();
+					cti.setCourseCount(new Long(getCourseService().findCoursesByCourseType(cti.getId()).size()));
+				}
 				page = new DataPage<CourseTypeInfo>(courseTypes.size(), 0, courseTypes);
 			}
 			return page;
