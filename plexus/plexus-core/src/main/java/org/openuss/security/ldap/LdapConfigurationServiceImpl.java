@@ -43,8 +43,10 @@ public class LdapConfigurationServiceImpl
     	if (!handleIsValidURL(ldapServer.getProviderUrl())) {
     		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
     	}
+    	if (! (ldapServer.getPort()>0)) {
+    		throw new LdapConfigurationServiceException("Port must be not negative!");
+    	}
 
-    	// TODO: check if port is correct
     	// TODO: check if root dn is valid
     	// TODO: check if auth type is valid
     	
@@ -88,7 +90,11 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {}
+    public void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+    	LdapServerDao dao = getLdapServerDao();
+    	LdapServer ldap = dao.ldapServerInfoToEntity(ldapServer);
+    	dao.update(ldap);
+    }
 
     /**
      * 
@@ -126,26 +132,19 @@ public class LdapConfigurationServiceImpl
      * 
      */
     public void handleSaveDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
-    	//getAuthenticationDomainDao().update(domain.)
+    	AuthenticationDomainDao dao = getAuthenticationDomainDao();
+    	AuthenticationDomain authDomain = dao.authenticationDomainInfoToEntity(domain);
+    	dao.update(authDomain);
     }
 
     /**
      * 
      */
     public java.util.List handleGetAllDomains() {
-    	return null;
+    	return (java.util.List) getAuthenticationDomainDao().loadAll();
     }
 
-    /**
-     * 
-     */
-    public void handleEditLdapServer(org.openuss.security.ldap.LdapServerInfo oldConfig, org.openuss.security.ldap.LdapServerInfo newConfig) {}
-
-    /**
-     * 
-     */
-    public void handleEditDomain(org.openuss.security.ldap.AuthenticationDomainInfo oldConfig, org.openuss.security.ldap.AuthenticationDomainInfo newConfig) {}
-
+    
     /**
      * 
      */
@@ -171,10 +170,6 @@ public class LdapConfigurationServiceImpl
      */
     public void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){}
 
-    /**
-     * 
-     */
-    public void handleEditAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo oldConfig, org.openuss.security.ldap.AttributeMappingInfo newConfig){}
-
+    
 
 }
