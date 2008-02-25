@@ -131,6 +131,23 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
+
+	public String downloadSubmission () throws IOException{
+		logger.debug("downloading documents");
+		//FIXME Need for a method that returns a tree of FolderEntryInfos...
+		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		if (files.size() > 0) {
+			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
+			HttpServletResponse response = getResponse();
+			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
+			getFacesContext().responseComplete();
+			paperSelection.getMap().clear();
+		} else {
+			addError(i18n("messages_error_no_documents_selected"));
+		}
+		return Constants.SUCCESS;
+	}
+	
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {

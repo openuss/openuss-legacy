@@ -51,7 +51,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 		super.prerender();
 		addPageCrumbs();
 		
-		if(examInfo.getDeadline()==null){
+		if(examInfo!= null && examInfo.getDeadline()==null){
 			examInfo.setDeadline(new Date());
 		}
 	}

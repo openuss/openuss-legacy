@@ -80,11 +80,12 @@ public class PaperSubmissionServiceImpl
 		// Update input parameter for aspects to get the right domain objects.
     	paperSubmissionInfo.setId(paperSubmissionEntity.getId());
 
+    	this.getExamDao().update(exam);
     	
 		// add object identity to security
     	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
-    	this.getExamDao().update(exam);
+    
     	
 
     	
@@ -125,19 +126,25 @@ public class PaperSubmissionServiceImpl
     	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
     	for(CourseMemberInfo member : members){
     		boolean submitted = false;
-    		PaperSubmissionInfo paper = new PaperSubmissionInfo();
-    		paper.setUserId(member.getUserId());
-    		paper.setFirstName(member.getFirstName());
-    		paper.setLastName(member.getLastName());
+    		
     		
     		for(PaperSubmissionInfo submission : submissions){
     			if(member.getUserId().equals(submission.getUserId())){
+    				PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    				paper.setUserId(member.getUserId());
+    	    		paper.setFirstName(member.getFirstName());
+    	    		paper.setLastName(member.getLastName());
+    				paper.setId(submission.getId());
     				paper.setSubmissionType(submission.getSubmissionType());
     				allSubmissions.add(paper);
  					submitted=true;
     			}
     		}
     		if(submitted==false){
+    			PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    			paper.setUserId(member.getUserId());
+        		paper.setFirstName(member.getFirstName());
+        		paper.setLastName(member.getLastName());
     			paper.setSubmissionType("NOTSUBMITTED");
 				allSubmissions.add(paper);
     		}
@@ -177,17 +184,6 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected Boolean handleIsExamDeadlineExpired(Long examId) throws Exception {
-		Validate.notNull(examId, "examId cannot be null.");
-		
-		Exam examEntity = getExamDao().load(examId);
-		long deadline = examEntity.getDeadline().getTime();
-		
-		long now = System.currentTimeMillis();
-		return (deadline < now);
-	}
-
-	@Override
 	protected void handleRemoveExam(Long examId) throws Exception {
     	Validate.notNull(examId, "examId cannot be null.");
     	
@@ -220,7 +216,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected void handleUpdatePaperSubmission(
+	protected PaperSubmissionInfo handleUpdatePaperSubmission(
 			PaperSubmissionInfo paperSubmissionInfo) throws Exception {
 		logger.debug("Starting method handleUpdatePaperSubmission");
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
@@ -237,8 +233,18 @@ public class PaperSubmissionServiceImpl
 			this.createPaperSubmission(newSubmissionInfo);
 			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 			List<FileInfo> files = getDocumentService().getFileEntries(paperSubmissionInfo);
+		//	FolderInfo newFolder = new FolderInfo();
+		//	newFolder.setName(paperSubmissionInfo.getDeliverDate().toString());
+		//	getDocumentService().createFolder(newFolder, getDocumentService().getFolder(newSubmissionInfo));
+			
 			FolderInfo newFolder = getDocumentService().getFolder(newSubmissionInfo);
-			getDocumentService().createFileEntries(files, newFolder);
+			for(FileInfo file : files){
+				file = getDocumentService().getFileEntry(file.getId(), true);
+				file.setId(null);
+				getDocumentService().createFileEntry(file, newFolder);
+			}
+			return newSubmissionInfo;
+			
 		}else{
 			//Transfor VO to an entity
 			PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
@@ -247,6 +253,7 @@ public class PaperSubmissionServiceImpl
 			
 			//update the PaperSubmission
 			getPaperSubmissionDao().update(paperSubmissionEntity);
+			return paperSubmissionInfo;
 		}
 		
 	}

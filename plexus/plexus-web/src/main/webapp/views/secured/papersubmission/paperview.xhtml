@@ -75,7 +75,7 @@
 					<o:block>
 	                    <h:commandButton 
 	                        id="downloadFile"
-	                        action="#{views$secured$papersubmission$paperview.download}" 
+	                        action="#{views$secured$papersubmission$paperview.downloadSubmission}" 
 	                        value="#{msg.papersubmission_command_download}" 
 	                        title="#{msg.papersubmission_command_download_hint}"
 	                        styleClass="button_big"/> 
@@ -128,14 +128,14 @@
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="status2">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="status3">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>

@@ -112,7 +112,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 //			paperSubmissionInfo.setUserId(user.getId());
 			
 			
-			paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1));
+			paperInfos.set(paperInfos.size()-1, paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1)));
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfos.get(paperInfos.size()-1));
 			return paperInfos.get(paperInfos.size()-1);
 		}
