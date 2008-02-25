@@ -49,19 +49,20 @@
 			<o:block>
 				<h:commandButton action="#{views$secured$newsletter$newmail.send}"
 					value="#{msg['mailingjob_newmail_button_send']}"
-					hint="#{msg['mailingjob_newmail_button_send']}"
+					title="#{msg['mailingjob_newmail_button_send']}"
 					styleClass="button" />
 				<h:commandButton action="#{views$secured$newsletter$newmail.sendDraft}"
 					value="#{msg['mailingjob_newmail_button_senddraft']}"
-					hint="#{msg['mailingjob_newmail_button_senddraft']}"
+					title="#{msg['mailingjob_newmail_button_senddraft']}"
 					styleClass="button" />
 				<h:commandButton action="#{views$secured$newsletter$newmail.saveDraft}"
 					value="#{msg['mailingjob_newmail_button_savedraft']}"
-					hint="#{msg['mailingjob_newmail_button_savedraft']}"
+					title="#{msg['mailingjob_newmail_button_savedraft']}"
 					styleClass="button" />
 				<h:commandButton 
 					action="course_newsletter"
 					value="#{msg['mailingjob_newmail_button_cancel']}" 
+					title="#{msg['mailingjob_newmail_button_cancel']}"
 					styleClass="button" 
 					immediate="true"/>	
 			</o:block>

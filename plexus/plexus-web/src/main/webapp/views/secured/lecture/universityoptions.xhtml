@@ -38,14 +38,14 @@
 					action = "#{views$secured$lecture$universityoptions.selectUniversityAndConfirmDisable}"
 					styleClass="button_save"
 					value="#{msg.university_command_disable}"
-					hint="#{msg.university_command_disable_hint}"
+					title="#{msg.university_command_disable_hint}"
 					rendered="#{universityInfo.enabled}">
 					</h:commandButton>
 					<h:commandButton 
 					action = "#{views$secured$lecture$universityoptions.enableUniversity}"
 					styleClass="button_save"
 					value="#{msg.university_command_enable}"
-					hint="#{msg.university_command_enable_hint}"
+					title="#{msg.university_command_enable_hint}"
 					rendered="#{!(universityInfo.enabled)}">
 					</h:commandButton>
 		  		</o:block>

@@ -73,13 +73,13 @@
 				action="editPeriod"
 				styleClass="icon_edit"
 				label="#{msg.period_command_edit}"
-				hint="#{msg.period_command_edit_hint}"/>
+				title="#{msg.period_command_edit_hint}"/>
 			<plexus:command 
 				bean="#{views$secured$lecture$universityperiods}"
 				action="confirmRemovePeriod"
 				styleClass="icon_remove"
 				label="#{msg.period_command_remove}"
-				hint="#{msg.period_command_remove_hint}"
+				title="#{msg.period_command_remove_hint}"
 				rendered="#{not periodInfo.defaultPeriod}"/>
 		</plexus:column>
 	</plexus:dataTable>
