@@ -55,7 +55,10 @@
 						required="true" />
 					
 					<h:outputLabel value="#{msg.groupinfo_description}" for="descriptionTextField" styleClass="field_label"/>
-					<h:inputTextarea styleClass="pulldown" value="#{views$secured$groups$groupcreate.description}" id="descriptionTextField" />
+					
+					<div id="descriptionTextField" class="content_iframe">
+						<fck:editor value="#{views$secured$groups$groupcreate.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+					</div>
 					
 					<h:outputLabel for="accessType" value="#{msg.groupinfo_accesstype}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 

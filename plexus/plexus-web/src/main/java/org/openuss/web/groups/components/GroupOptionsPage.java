@@ -8,17 +8,16 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupAccessType;
+import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.lecture.LectureException;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
-
 
 /**
  * 
@@ -28,16 +27,21 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$groups$components$groupoptions", scope = Scope.REQUEST)
 @View
 public class GroupOptionsPage extends AbstractGroupPage {
-	
-	private static final Logger logger = Logger.getLogger(GroupOptionsPage.class);
 
+	private static final Logger logger = Logger
+			.getLogger(GroupOptionsPage.class);
 	private static final long serialVersionUID = 8821048605517398410L;
+
+	private Integer accessType = -1;
+	private String password;
+	/* ----- business logic ----- */
 
 	@Prerender
 	@Override
 	public void prerender() throws Exception {
 		if (groupInfo == null) {
 			groupInfo = (UserGroupInfo) getSessionBean(Constants.GROUP);
+			
 		}
 		if (groupInfo == null) {
 			// TODO - Lutz: Properties anpassen
@@ -45,14 +49,21 @@ public class GroupOptionsPage extends AbstractGroupPage {
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
 			if (!isPostBack()) {
-				logger.debug("---------- is not postback ---------- refreshing group");
+				logger
+						.debug("---------- is not postback ---------- refreshing group");
 				super.prerender();
 			} else {
-				breadcrumbs.loadCourseCrumbs;
-				
+				// breadcrumbs.loadCourseCrumbs;
+
 			}
 		}
 		setSessionBean(Constants.GROUP, groupInfo);
+		if (accessType.compareTo(-1) == 0){
+			accessType = groupInfo.getAccessType().getValue();
+		}
+		if (password == null){
+			password = groupInfo.getPassword();
+		}
 		addPageCrumb();
 	}
 
@@ -64,60 +75,68 @@ public class GroupOptionsPage extends AbstractGroupPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
-	/**
-	 * Save changes of the group
-	 * 
-	 * @return outcome
-	 * @throws LectureException
-	 */
 	public String saveOptions() {
 		logger.trace("saving group options");
-		
-		// TODO move to business layer
-		UserGroupInfo groupOld = getGroupService().getGroupInfo(groupInfo.getId());
-		if (groupOld.getAccessType() == GroupAccessType.CLOSED && groupInfo.getAccessType() != GroupAccessType.OPEN) {
-			List<UserInfo> aspirants = groupService.getAspirants(groupInfo);
-			for(UserInfo aspirant:aspirants){
-				groupService.rejectAspirant(groupOld, aspirant.getId());
-			}
-		}
+
 		// XSS Filter Content
-		groupInfo.setDescription(new HtmlInputFilter().filter(groupInfo.getDescription()));
-		
+		groupInfo.setDescription(new HtmlInputFilter().filter(groupInfo
+				.getDescription()));
+		groupInfo.setAccessType(GroupAccessType.fromInteger(accessType));
+		if (accessType < 2) {
+			password = groupInfo.getPassword();
+		}
+		groupInfo.setPassword(password);
+
+		// update group
 		groupService.updateUserGroup(groupInfo);
-		//TODO - Lutz: Properties anpassen
+
+		// TODO - Lutz: Properties anpassen
 		addMessage(i18n("message_group_options_saved"));
 		return Constants.GROUP_OPTIONS_PAGE;
 	}
 
-	/**
-	 * Cancel changes to the Options. Redirect to the previous page
-	 * 
-	 * @return outcome
-	 */
 	public String cancelOptions() {
-		// nothing to do - group will be automatically refreshed during prerender phase.
-			return Constants.GROUP_PAGE;
+		// nothing to do - group will be automatically refreshed during
+		// prerender phase.
+		return Constants.GROUP_PAGE;
 	}
 
-	/**
-	 * Value Change Listener to switch password input text on and off.
-	 * 
-	 * @param event
-	 */
 	public void processAccessTypeChanged(ValueChangeEvent event) {
-		Object accessType = event.getNewValue();
-		groupInfo.setAccessType((GroupAccessType) accessType);
+		Object accessTypeGroup = event.getNewValue();
+		accessType = (Integer) accessTypeGroup;
+		if (accessType < 2) {
+			password = "Password";
+		} else {
+			password = groupInfo.getPassword();
+		}
 	}
 
 	public List<SelectItem> getAccessTypes() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
-		// TODO - Lutz: Properties anpassen
-		items.add(new SelectItem(GroupAccessType.OPEN, i18n("group_options_access_open")));
-		items.add(new SelectItem(GroupAccessType.CLOSED, i18n("group_options_access_closed")));
-		items.add(new SelectItem(GroupAccessType.PASSWORD, i18n("group_options_access_password")));
+		items.add(new SelectItem(GroupAccessType.OPEN.getValue(),
+				i18n("groupaccesstype_open")));
+		items.add(new SelectItem(GroupAccessType.CLOSED.getValue(),
+				i18n("groupaccesstype_closed")));
+		items.add(new SelectItem(GroupAccessType.PASSWORD.getValue(),
+				i18n("groupaccesstype_password")));
 		return items;
 	}
 
+	/* ----- getter and setter ----- */
 
+	public Integer getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(Integer accessType) {
+		this.accessType = accessType;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

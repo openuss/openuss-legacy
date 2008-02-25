@@ -11,6 +11,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
@@ -57,7 +58,8 @@ public class GroupsCreatePage extends BasePage {
 			groupInfo.setId(null);
 			groupInfo.setName(name);
 			groupInfo.setShortcut(shortcut);
-			groupInfo.setDescription(description);
+			// XSS Filter Content
+			groupInfo.setDescription(new HtmlInputFilter().filter(description));
 			if (accessType < 2){
 				password = null;
 			}	
@@ -75,17 +77,17 @@ public class GroupsCreatePage extends BasePage {
 			groupInfo.setId(newGroupId);
 		
 			// clear fields
-//			name = null;
-//			shortcut = null;
-//			description = null;
-//			password = null;
-//			calendar = true;
-//			chat = false;
-//			documents = true;
-//			forum = true;
-//			newsletter = true;
-//			accessType = 0;
-//		
+			name = null;
+			shortcut = null;
+			description = null;
+			password = null;
+			calendar = true;
+			chat = false;
+			documents = true;
+			forum = true;
+			newsletter = true;
+			accessType = 0;
+		
 			logger.debug("END CREAT GROUP");
 			return Constants.OPENUSS4US_GROUPS;
 		} else {

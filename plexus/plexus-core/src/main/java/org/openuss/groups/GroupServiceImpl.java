@@ -132,8 +132,27 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Transform VO to Entity
 		UserGroup groupEntity = getUserGroupDao().userGroupInfoToEntity(
 				groupInfo);
+		
+		// Check Access-Type Open --> Add Aspirants
+		if (groupInfo.getAccessType() == GroupAccessType.OPEN){
+			List<UserGroupMemberInfo> aspirants = this.getAspirants(groupInfo);
+			for (UserGroupMemberInfo aspirant:aspirants){
+				this.addAspirant(groupInfo, aspirant.getUserId());
+			}
+		}
+		
+		// Check Access-Type Password --> Reject Aspirants
+		if (groupInfo.getAccessType() == GroupAccessType.PASSWORD){
+			List<UserGroupMemberInfo> aspirants = this.getAspirants(groupInfo);
+			for (UserGroupMemberInfo aspirant:aspirants){
+				this.rejectAspirant(groupInfo, aspirant.getUserId());
+			}
+		}
+		
+		
 		// Update Rights
 		updateAccessTypePermission(groupEntity);
+		
 		// Update Course
 		getUserGroupDao().update(groupEntity);
 	}
