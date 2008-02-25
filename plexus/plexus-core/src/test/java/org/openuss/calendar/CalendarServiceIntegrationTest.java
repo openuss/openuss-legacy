@@ -317,7 +317,8 @@ public class CalendarServiceIntegrationTest extends
 			calendarService.addSubscription(courseCalInfo); 
 			
 			// test if subscription is added
-			
+			User user = testUtil.getSecurityService().getCurrentUser();
+			UserInfo currentUserInfo = testUtil.getUserDao().toUserInfo(user);
 			
 			// test if the appointments are added to the user calendar
 			
