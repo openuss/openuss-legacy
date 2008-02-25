@@ -20,7 +20,6 @@ public class SeminarpoolDaoTest extends SeminarpoolDaoTestBase {
 	
 	
 	public void testSeminarpoolDaoCreate() {
-//		User user = testUtility.createUniqueUserInDB();
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
@@ -31,13 +30,9 @@ public class SeminarpoolDaoTest extends SeminarpoolDaoTestBase {
 		seminarpool.setDescription(" ");
 		seminarpool.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
 		Membership membership = Membership.Factory.newInstance();
-//		membership.getMembers().add(user);
-//		membership.getAspirants().add(user);
-		
 		seminarpool.setMembership(membership);
 		assertNull(seminarpool.getId());
 		seminarpoolDao.create(seminarpool);
 		assertNotNull(seminarpool.getId());
-		System.out.println("ID" + seminarpool.getId());
 	}
 }

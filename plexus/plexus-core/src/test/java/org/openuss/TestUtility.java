@@ -54,6 +54,7 @@ import org.openuss.seminarpool.CourseSeminarpoolAllocation;
 import org.openuss.seminarpool.SeminarCondition;
 import org.openuss.seminarpool.SeminarUserRegistration;
 import org.openuss.seminarpool.Seminarpool;
+import org.openuss.seminarpool.SeminarpoolDao;
 import org.openuss.seminarpool.SeminarpoolStatus;
 
 /**
@@ -63,6 +64,7 @@ import org.openuss.seminarpool.SeminarpoolStatus;
  * @author Ron Haus
  * @author Florian Dondorf
  * @author Lutz D. Kramer
+ * @author Stefan Thiemann
  */
 public class TestUtility {
 
@@ -73,6 +75,8 @@ public class TestUtility {
 	private MembershipDao membershipDao;
 
 	private InstituteDao instituteDao;
+	
+	private SeminarpoolDao seminarpoolDao;
 
 	private UniversityDao universityDao;
 
@@ -764,6 +768,7 @@ public class TestUtility {
 		seminarpool.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
 		Membership membership = Membership.Factory.newInstance();
 		seminarpool.setMembership(membership);
+		seminarpoolDao.create(seminarpool);
 		return seminarpool;
 	}
 	
