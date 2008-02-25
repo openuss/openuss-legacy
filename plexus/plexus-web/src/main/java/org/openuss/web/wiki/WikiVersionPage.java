@@ -1,17 +1,24 @@
 package org.openuss.web.wiki;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.collections.comparators.ComparatorChain;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteContentInfo;
 import org.openuss.wiki.WikiSiteInfo;
+import org.springframework.beans.support.PropertyComparator;
 
 
 @Bean(name = "views$secured$wiki$wikiversion", scope = Scope.REQUEST)
@@ -50,10 +57,10 @@ public class WikiVersionPage extends AbstractWikiPage{
 				List<WikiSiteInfo> entries = loadWikiSiteVersions();
 				//sort(entries);
 				page = new DataPage<WikiSiteInfo>(entries.size(), 0, entries);
+				sort(entries);
 			}
 			return page;
 		}
-		
 	}
 	
 	

@@ -123,7 +123,7 @@ public class WikiServiceImpl
 		Validate.notNull(wikiSiteContentInfo, "Parameter wikiSiteContentInfo cannot be null.");
 		Validate.notNull(wikiSiteContentInfo.getDomainId(), "getDomainId cannot be null.");
 		
-		if (wikiSiteContentInfo.getId() != null) {
+		if (wikiSiteContentInfo.getId() != null) { //Sinn????
 			// update
 			WikiSiteVersion wikiSiteVersion = getWikiSiteVersionDao().wikiSiteContentInfoToEntity(wikiSiteContentInfo);
 			getWikiSiteVersionDao().update(wikiSiteVersion);
@@ -133,6 +133,14 @@ public class WikiServiceImpl
 			
 			// find/create WikiSite
 			WikiSite wikiSite = null;
+			
+			//It is possible, that a site without versions exist. check:
+			wikiSite = getWikiSiteDao().findByDomainIdAndName(wikiSiteContentInfo.getDomainId(), wikiSiteContentInfo.getName());
+			if (wikiSite!=null){
+				wikiSiteContentInfo.setWikiSiteId(wikiSite.getId());
+			}
+			
+			
 			if (wikiSiteContentInfo.getWikiSiteId() != null) {
 				wikiSite = getWikiSiteDao().load(wikiSiteContentInfo.getWikiSiteId());
 				Validate.notNull(wikiSite, "Cannot find wikiSite for id: " + wikiSiteContentInfo.getWikiSiteId());
