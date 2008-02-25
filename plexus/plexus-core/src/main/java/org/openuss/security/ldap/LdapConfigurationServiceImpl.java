@@ -6,7 +6,9 @@
 package org.openuss.security.ldap;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
+import java.util.List;
 
 /**
  * @see org.openuss.security.ldap.LdapConfigurationService
@@ -148,7 +150,52 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) {}
+    public void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
+    	AuthenticationDomainDao domainDao = getAuthenticationDomainDao();
+    	LdapServerDao serverDao = getLdapServerDao();
+    	
+    	LdapServer ldapServer = serverDao.ldapServerInfoToEntity(server);
+    	AuthenticationDomain authDomain  = domainDao.authenticationDomainInfoToEntity(domain);
+    	
+    	Validate.notNull(ldapServer, "Server must not be null");
+		Validate.notNull(ldapServer.getId(), "Server must provide a valid id.");
+		Validate.notNull(authDomain, "Domain must not be null");
+		Validate.notNull(authDomain.getId(), "Domain must provide a valid id.");
+
+		ldapServer = forceServerLoad(ldapServer);
+		authDomain = forceDomainLoad(authDomain);
+
+		checkDomainContainsServer(ldapServer, authDomain);
+	
+		authDomain.getLdapServers().add(ldapServer);
+		ldapServer.setAuthenticationDomain(authDomain);
+		
+		domainDao.update(authDomain);
+		serverDao.update(ldapServer);
+	}
+    
+    private AuthenticationDomain forceDomainLoad(AuthenticationDomain domain) {
+		domain = getAuthenticationDomainDao().load(domain.getId());
+		if (domain == null) {
+			throw new LdapConfigurationServiceException("Domain not found");
+		}
+		return domain;
+	}
+
+	private LdapServer forceServerLoad(LdapServer server) {
+		server = getLdapServerDao().load(server.getId());
+		if (server == null) {
+			throw new LdapConfigurationServiceException("Server not found!");
+		}
+		return server;
+	}
+
+	private void checkDomainContainsServer(LdapServer server, AuthenticationDomain domain) {
+		List servers = (List) domain.getLdapServers();
+		if (servers.contains(server)) {
+			throw new LdapConfigurationServiceException("Domain already contains server!");
+		}
+	}
 
     /**
      * 
