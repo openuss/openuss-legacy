@@ -13,6 +13,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.Organisation;
+import org.openuss.lecture.University;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -44,11 +46,11 @@ public class SeminarpoolAdministrationServiceImpl
 		// Transform ValueObject into Entity
 		Seminarpool seminarpoolEntity = this.getSeminarpoolDao().seminarpoolInfoToEntity(seminarpoolInfo);
 
-		// Create a default Membership for the Institute
+		// Create a default Membership for the Seminarpool
 		Membership membership = Membership.Factory.newInstance();
 		seminarpoolEntity.setMembership(membership);
 
-		// Create the Institute
+		// Create the Seminarpool
 		getSeminarpoolDao().create(seminarpoolEntity);
 		Validate.notNull(seminarpoolEntity.getId(), "SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
 
@@ -61,26 +63,9 @@ public class SeminarpoolAdministrationServiceImpl
 		admins.setGroupType(GroupType.ADMINISTRATOR);
 		Long adminsId = this.getOrganisationService().createGroup(seminarpoolEntity.getId(), admins);
 		Group adminsGroup = this.getGroupDao().load(adminsId);
-
-//		GroupItem assistants = new GroupItem();
-//		assistants.setName("SEMINARPOOL_" + seminarpoolEntity.getId() + "_ASSISTANTS");
-//		assistants.setLabel("autogroup_assistant_label");
-//		assistants.setGroupType(GroupType.ASSISTANT);
-//		Long assistantsId = this.getOrganisationService().createGroup(seminarpoolEntity.getId(), assistants);
-//		Group assistantsGroup = this.getGroupDao().load(assistantsId);
-//
-//		GroupItem tutors = new GroupItem();
-//		tutors.setName("SEMINARPOOL_" + seminarpoolEntity.getId() + "_TUTORS");
-//		tutors.setLabel("autogroup_tutor_label");
-//		tutors.setGroupType(GroupType.TUTOR);
-//		Long tutorsId = this.getOrganisationService().createGroup(seminarpoolEntity.getId(), tutors);
-//		Group tutorsGroup = this.getGroupDao().load(tutorsId);
-
 		// Security
-		getSecurityService().createObjectIdentity(seminarpoolEntity, null);
-		getSecurityService().setPermissions(adminsGroup, seminarpoolEntity, LectureAclEntry.INSTITUTE_ADMINISTRATION);
-//		getSecurityService().setPermissions(assistantsGroup, seminarpoolEntity, LectureAclEntry.INSTITUTE_ASSIST);
-//		getSecurityService().setPermissions(tutorsGroup, seminarpoolEntity, LectureAclEntry.INSTITUTE_TUTOR);
+		getSecurityService().createObjectIdentity(seminarpoolEntity, seminarpoolEntity);
+		getSecurityService().setPermissions(adminsGroup, seminarpoolEntity, LectureAclEntry.OGCRUD);
 
 		// Add Owner to Members and the group of Administrators
 		getOrganisationService().addMember(seminarpoolEntity.getId(), userId);
@@ -108,6 +93,14 @@ public class SeminarpoolAdministrationServiceImpl
         throws java.lang.Exception
     {
     	Validate.notNull(seminarpoolId, "handleRemoveSeminarpool ==> seminarpoolId cannot be null");
+    	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
+		// Remove Security
+		getSecurityService().removeAllPermissions(seminarpoolEntity);
+		getSecurityService().removeObjectIdentity(seminarpoolEntity);
+
+		// Clear Membership
+		getMembershipService().clearMembership(seminarpoolEntity.getMembership());
+
     	getSeminarpoolDao().remove(seminarpoolId);
     }
 
@@ -117,8 +110,14 @@ public class SeminarpoolAdministrationServiceImpl
     protected void handleAddSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleAddSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarpoolAdministrationService.handleAddSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId) Not implemented!");
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the ID " + seminarpoolId);
+
+		User user = getUserDao().load(userId);
+		Validate.notNull(user, "No User found corresponding to the ID "	+ user);
+
+		this.getMembershipService().addMember(seminarpool.getMembership(), user);
+
     }
 
     /**
@@ -127,8 +126,15 @@ public class SeminarpoolAdministrationServiceImpl
     protected void handleRemoveSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleRemoveSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarpoolAdministrationService.handleRemoveSeminarpoolAdmin(java.lang.Long userId, java.lang.Long seminarpoolId) Not implemented!");
+		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the ID "	+ seminarpoolId);
+
+		Validate.isTrue(seminarpool.getMembership().getMembers().size() > 1, "You cannot remove the last Member!");
+
+		User user = this.getUserDao().load(userId);
+		Validate.notNull(user, "No User found corresponding to the ID "	+ userId);
+
+		this.getMembershipService().removeMember(seminarpool.getMembership(), user);
     }
 
     /**
@@ -157,6 +163,16 @@ public class SeminarpoolAdministrationServiceImpl
     		set.add(courseGroupEntity);    		
     	}
     	courseAllocation.setCourseGroup(set);
+		// Set Security
+		this.getSecurityService().createObjectIdentity(courseAllocation, course);
+		
+		
+//		getSecurityService().setPermissions(seminarpool ,courseAllocation , LectureAclEntry.CRUD);
+
+
+    	
+    	
+    	
         return getCourseSeminarpoolAllocationDao().create(courseAllocation).getId();    
     }
 

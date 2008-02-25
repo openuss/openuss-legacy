@@ -19,6 +19,7 @@ public class SeminarpoolDaoImpl
         org.openuss.seminarpool.SeminarpoolInfo targetVO)
     {
         super.toSeminarpoolInfo(sourceEntity, targetVO);
+        targetVO.setUniversityId(sourceEntity.getUniversity().getId());
     }
 
 
@@ -27,7 +28,9 @@ public class SeminarpoolDaoImpl
      */
     public org.openuss.seminarpool.SeminarpoolInfo toSeminarpoolInfo(final org.openuss.seminarpool.Seminarpool entity)
     {
-        return super.toSeminarpoolInfo(entity);
+        SeminarpoolInfo targetInfo =  super.toSeminarpoolInfo(entity);
+        targetInfo.setUniversityId(entity.getUniversity().getId());
+        return targetInfo;
     }
 
 
@@ -69,6 +72,7 @@ public class SeminarpoolDaoImpl
         boolean copyIfNull)
     {
         super.seminarpoolInfoToEntity(sourceVO, targetEntity, copyIfNull);
+        targetEntity.setUniversity(getUniversityDao().load(sourceVO.getUniversityId()));
     }
 
 }
