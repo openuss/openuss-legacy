@@ -108,6 +108,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		public DataPage<WikiSiteInfo> getDataPage(int startRow, int pageSize) {		
 			List<WikiSiteInfo> wikiSiteInfoList = wikiService.findWikiSitesByDomainObject(courseInfo.getId());		
 			page = new DataPage<WikiSiteInfo>(wikiSiteInfoList.size(), 0, wikiSiteInfoList);
+			setSortColumn("name");			
 			sort(wikiSiteInfoList);
 			return page;
 		}

@@ -11,7 +11,7 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.wiki_overview_header}" 
     	value="views$secured$wiki$wikioverview.data" var="wikiPage" rows="20"
-    	columnClasses="col_max_left, col_commands" sortColumn="name" sortAscending="true">  
+    	columnClasses="col_max_left, col_commands">  
 
 		<t:column defaultSorted="true">
 			<plexus:commandSortHeader columnName="name" > #{msg['wiki_overview_column_name']} </plexus:commandSortHeader>

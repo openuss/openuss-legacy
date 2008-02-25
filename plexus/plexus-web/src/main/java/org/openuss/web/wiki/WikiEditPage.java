@@ -31,7 +31,7 @@ public class WikiEditPage extends AbstractWikiPage{
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		
-		this.siteVersionInfo.setId(null); //?
+		setSiteVersionId(null);
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}

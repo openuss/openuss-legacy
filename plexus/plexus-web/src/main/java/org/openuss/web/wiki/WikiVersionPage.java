@@ -55,9 +55,10 @@ public class WikiVersionPage extends AbstractWikiPage{
 				int pageSize) {
 			if (page == null) {
 				List<WikiSiteInfo> entries = loadWikiSiteVersions();
-				//sort(entries);
 				page = new DataPage<WikiSiteInfo>(entries.size(), 0, entries);
+				setSortColumn("creationDate");
 				sort(entries);
+				
 			}
 			return page;
 		}
