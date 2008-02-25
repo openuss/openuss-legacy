@@ -33,18 +33,24 @@ public class ExtendedLdapUserDetailsMapper extends LdapUserDetailsMapper {
     	String role = null;        
     	if (roleDn instanceof String) {
         	dn = (String) roleDn;
+        	dn = dn.replaceAll("\\s+","");
         	role = dn;
         	
     		dn = dn.toUpperCase();
     		int startindex = dn.indexOf(groupRoleAttributeKey.toUpperCase());
-    		int endindex = 0;
+    		int endindex = dn.length();    		
     		if (startindex > -1) {
     			startindex = startindex + groupRoleAttributeKey.length()+1;
-    			endindex = dn.indexOf(",", startindex);
-    		    role = role.substring(startindex,endindex);
+    			// If GroupRoleAttributeKey is not at the end of the DN
+    			if (dn.indexOf(",", startindex) > -1)
+    				endindex = dn.indexOf(",", startindex);    			
     		}
-    		// GroupRoleAttribute not found within Role DN
-    		else return null;
+    		// GroupRoleAttribute not found within Role DN -> Return full roleDN
+    		else { 
+    			startindex = 0;
+    		}
+    		
+    		role = role.substring(startindex,endindex);    		
       	
             if (convertToUpperCase) {
                 role = role.toUpperCase();
