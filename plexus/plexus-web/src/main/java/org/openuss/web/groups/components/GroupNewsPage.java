@@ -36,18 +36,8 @@ public class GroupNewsPage extends AbstractGroupPage {
 
 	private NewsDataProvider data = new NewsDataProvider();
 
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-		addPageCrumb();
-	}
-	
-	private void addPageCrumb() {
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setName(i18n("course_command_options_news"));
-		crumb.setHint(i18n("course_command_options_news"));
-		breadcrumbs.addCrumb(crumb);
-	}	
+
+	/* ----- private classes ----- */
 	
 	private class NewsDataProvider extends AbstractPagedTable<NewsItemInfo> {
 
@@ -65,6 +55,21 @@ public class GroupNewsPage extends AbstractGroupPage {
 			return page;
 		}
 	}
+	
+	/* ----- business logic ----- */
+	
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		addPageCrumb();
+	}
+	
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("course_command_options_news"));
+		crumb.setHint(i18n("course_command_options_news"));
+		breadcrumbs.addCrumb(crumb);
+	}	
 	
 	public List<NewsItemInfo> getCurrentNews() {
 		return newsService.getCurrentNewsItems(groupInfo,null);
@@ -116,7 +121,7 @@ public class GroupNewsPage extends AbstractGroupPage {
 		return newsService.getNewsItems(groupInfo);
 	}
 
-	/* --------------- properties -------------- */
+	/* ----- getter and setter ----- */
 
 	public NewsService getNewsService() {
 		return newsService;

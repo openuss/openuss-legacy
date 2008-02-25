@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -26,9 +25,6 @@ import org.openuss.security.acl.LectureAclEntry;
  * 
  */
 public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
-
-	private static final Logger logger = Logger
-			.getLogger(GroupServiceImpl.class);
 
 	/**
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
@@ -53,7 +49,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Create default SecurityGroups for UserGroup
 		GroupItem moderators = new GroupItem();
-		logger.debug(groupEntity.getId());
 		moderators.setName("GROUP_MODERATORS");
 		// TODO - Lutz: Properties anpassen
 		moderators.setLabel("autogroup_moderator_label");
@@ -124,7 +119,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 */
 	protected void handleUpdateUserGroup(UserGroupInfo groupInfo)
 			throws Exception {
-		logger.debug("Starting method handleUpdateUserGroup");
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -132,27 +126,26 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Transform VO to Entity
 		UserGroup groupEntity = getUserGroupDao().userGroupInfoToEntity(
 				groupInfo);
-		
+
 		// Check Access-Type Open --> Add Aspirants
-		if (groupInfo.getAccessType() == GroupAccessType.OPEN){
+		if (groupInfo.getAccessType() == GroupAccessType.OPEN) {
 			List<UserGroupMemberInfo> aspirants = this.getAspirants(groupInfo);
-			for (UserGroupMemberInfo aspirant:aspirants){
+			for (UserGroupMemberInfo aspirant : aspirants) {
 				this.addAspirant(groupInfo, aspirant.getUserId());
 			}
 		}
-		
+
 		// Check Access-Type Password --> Reject Aspirants
-		if (groupInfo.getAccessType() == GroupAccessType.PASSWORD){
+		if (groupInfo.getAccessType() == GroupAccessType.PASSWORD) {
 			List<UserGroupMemberInfo> aspirants = this.getAspirants(groupInfo);
-			for (UserGroupMemberInfo aspirant:aspirants){
+			for (UserGroupMemberInfo aspirant : aspirants) {
 				this.rejectAspirant(groupInfo, aspirant.getUserId());
 			}
 		}
-		
-		
+
 		// Update Rights
 		updateAccessTypePermission(groupEntity);
-		
+
 		// Update Course
 		getUserGroupDao().update(groupEntity);
 	}
@@ -162,9 +155,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 */
 	protected void handleDeleteUserGroup(UserGroupInfo groupInfo)
 			throws Exception {
-		logger.debug("Starting method handleDeleteUserGroup for UserGroupID "
-				+ groupInfo.getId());
-
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -193,7 +183,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(group);
 		this.getSecurityService().removeObjectIdentity(group);
-		
+
 		// Remove Group
 		this.getUserGroupDao().remove(group.getId());
 	}
@@ -469,7 +459,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
-		logger.debug("HandleGetModerators: " + users.size());
 		return userListToUserGroupMemberInfoList(users, group, group
 				.getModeratorsGroup());
 	}
@@ -512,7 +501,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	protected List<UserGroupInfo> handleGetGroupsByUser(Long userId)
 			throws Exception {
 		Validate.notNull(userId, "UserId cannot be null.");
-		logger.debug("THIS IS THE ACTUAL UserId: " + userId);
 
 		// Load User Entity
 		User user = getUserDao().load(userId);
@@ -524,7 +512,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		List<UserGroupInfo> groupList = new ArrayList<UserGroupInfo>();
 		for (Membership membership : memberships) {
 			for (UserGroup group : groups) {
-				if (group.getMembership().getId().compareTo(membership.getId()) == 0 ) {
+				if (group.getMembership().getId().compareTo(membership.getId()) == 0) {
 					List<User> members = membership.getMembers();
 					for (User member : members) {
 						if (member.getId().compareTo(userId) == 0) {
@@ -565,9 +553,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		// Load Moderators
 		List<Authority> authorities = group.getModeratorsGroup().getMembers();
-			
+
 		for (Authority authority : authorities) {
-			if ( authority.getId().compareTo(userId) == 0) {
+			if (authority.getId().compareTo(userId) == 0) {
 				return true;
 			}
 		}
@@ -597,6 +585,35 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		List<User> members = membership.getMembers();
 		for (User member : members) {
 			if (member == user) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @see org.openuss.groups.GroupService#isAspirant(org.openuss.groups.UserGroupInfo,
+	 *      java.lang.Long)
+	 */
+	protected boolean handleIsAspirant(UserGroupInfo groupInfo, Long userId)
+			throws Exception {
+		Validate.notNull(groupInfo, "Parameter group must not be null.");
+		Validate.notNull(groupInfo.getId(),
+				"Parameter group must contain a valid group id.");
+		Validate.notNull(userId, "UserId cannot be null.");
+
+		// Load Group Entitiy
+		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
+		Validate.notNull(group, "Cannot transform groupInfo to entity.");
+
+		// Load User Entity
+		User user = getUserDao().load(userId);
+		Validate.notNull(user, "User cannot be null.");
+
+		Membership membership = group.getMembership();
+		List<User> aspirants = membership.getAspirants();
+		for (User aspirant : aspirants) {
+			if (aspirant == user) {
 				return true;
 			}
 		}
@@ -638,9 +655,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/*------------------- private methods -------------------- */
 
 	private void updateAccessTypePermission(UserGroup group) {
-		logger.debug("changing group " + group.getName() + " (" + group.getId()
-				+ ") to " + group.getAccessType());
-
 		getSecurityService().setPermissions(Roles.ANONYMOUS, group,
 				LectureAclEntry.NOTHING);
 

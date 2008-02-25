@@ -50,6 +50,8 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 	
 	private UIData attachmentList;
 	
+	/* ----- business logic ----- */
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -99,8 +101,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		User user = (User) getSessionBean(Constants.USER);
 		return user.getFirstName() + " " + user.getLastName();
 	}
-	
-	
+		
 	public String removeAttachment() {
 		logger.debug("news attachment removed");
 		FileInfo attachment = (FileInfo) attachmentList.getRowData();
@@ -158,7 +159,8 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		return Constants.COURSE_NEWS_PAGE;
 	}
 
-	/* ----------------- properties ------------------*/
+	/* ----- getter and setter ----- */
+
 
 	public NewsItemInfo getNewsItem() {
 		return newsItem;

@@ -11,7 +11,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
 import org.openuss.groups.UserGroupMemberInfo;
 import org.openuss.lecture.CourseMemberInfo;
@@ -20,7 +23,8 @@ import org.openuss.web.Constants;
 
 /**
  *
- * @author Ingo Dueppe
+ * @author Lutz D. Kramer
+ * @author Thomas Jansing
  * 
  */
 @Bean(name = "views$secured$groups$components$main", scope = Scope.REQUEST)
@@ -31,7 +35,9 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	private String password;
 
-	private List<CourseMemberInfo> moderators = new ArrayList<CourseMemberInfo>();
+	private List<UserGroupMemberInfo> moderators = new ArrayList<UserGroupMemberInfo>();
+	
+	/* ----- business logic ----- */
 	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
@@ -48,63 +54,26 @@ public class GroupMainPage extends AbstractGroupPage {
 		return Constants.SUCCESS;
 	}
 
+	public String applyAsAspirant() throws GroupApplicationException{
+		logger.debug("group apply as aspirant");
+		groupService.addAspirant(groupInfo, user.getId());
+		addMessage(i18n("message_group_applied_as_aspirant"));
+		return Constants.SUCCESS;
+	}
+	
 	public String apply() throws GroupApplicationException {
 		logger.debug("group entry applied");
 		groupService.addMember(groupInfo, user.getId());
-		addMessage(i18n("message_group_send_application"));
+		addMessage(i18n("message_group_applied_as_member"));
 		return Constants.SUCCESS;
 	}
 
 	public boolean isAspirant() {
-		return false;
+		return groupService.isAspirant(groupInfo, user.getId());
 	}
 	
-	// public boolean isAspirant() {
-		// GroupMemberInfo info = groupService.getAspirants(groupInfo);
-		// CourseMemberInfo info = courseService.getMemberInfo(courseInfo, user);
-		// return (info != null) && (info.getMemberType() == CourseMemberType.ASPIRANT);
-	// }
-
-	/** public Boolean getBookmarked() {
-		try {
-			return desktopService2.isCourseBookmarked(courseInfo.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
-			return false;
-		}
-	}
-	*/
+	/* ----- getter and setter ----- */
 	
-	
-	/**
-	 * Bookmarks the selected course on the MyUni Page.
-	 * @return Outcome
-	 
-	public String shortcutCourse() {
-		try {
-			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
-			addMessage(i18n("desktop_command_add_course_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
-	}
-
-	public String removeCourseShortcut() {
-		try {
-			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
-			addMessage(i18n("desktop_command_add_course_succeed"));
-			return Constants.SUCCESS;
-		} catch (DesktopException e) {
-			logger.error(e);
-			addError(i18n(e.getMessage()));
-			return Constants.FAILURE;
-		}
-	}
-	*/
-
 	public String getPassword() {
 		return password;
 	}
@@ -113,7 +82,7 @@ public class GroupMainPage extends AbstractGroupPage {
 		this.password = password;
 	}
 
-	public List<CourseMemberInfo> getModerators() {
+	public List<UserGroupMemberInfo> getModerators() {
 		return moderators;
 	}
 

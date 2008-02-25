@@ -51,6 +51,8 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 	
 	private UIData attachmentList;
 	
+	/* ----- business logic ----- */
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -76,19 +78,12 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		breadcrumbs.addCrumb(newCrumb);
 	}
 
-	/**
-	 * Save the current newsbean into the database.
-	 * 
-	 * @return outcome
-	 * @throws DocumentApplicationException 
-	 * @throws IOException 
-	 */
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
 		
 		newsItem.setCategory(NewsCategory.COURSE);
 		newsItem.setExpireDate(null);
-		newsItem.setPublisherIdentifier(groupInfo.getCreator());
+		newsItem.setPublisherIdentifier(groupInfo.getId());
 		newsItem.setAuthor(getAuthorName());
 		newsItem.setPublisherType(PublisherType.COURSE);
 		newsService.saveNewsItem(newsItem);
@@ -100,7 +95,6 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		User user = (User) getSessionBean(Constants.USER);
 		return user.getFirstName() + " " + user.getLastName();
 	}
-	
 	
 	public String removeAttachment() {
 		logger.debug("news attachment removed");
@@ -148,10 +142,6 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		return true;
 	}
 
-	/**
-	 * Cancel editing the current newsItem
-	 * @return
-	 */
 	public String cancel() {
 		logger.debug("cancel");
 		removeSessionBean(Constants.NEWS_SELECTED_NEWSITEM);
@@ -159,7 +149,7 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		return Constants.GROUP_NEWS_PAGE;
 	}
 
-	/* ----------------- properties ------------------*/
+	/* ----- getter and setter ----- */
 
 	public NewsItemInfo getNewsItem() {
 		return newsItem;
