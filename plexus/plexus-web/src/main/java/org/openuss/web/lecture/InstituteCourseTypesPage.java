@@ -106,16 +106,20 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 			courseTypeInfo.setInstituteId(instituteInfo.getId());
 			courseTypeService.create(courseTypeInfo);
 
-			addMessage(i18n("institute_message_add_coursetype_succeed"));
+			addMessage(i18n("institute_message_add_coursetype_succeed") + " " + i18n("institute_message_add_coursetype_advice"));
+			courseTypeInfo = null;
+			editing = false;
+			return Constants.INSTITUTE_COURSES_PAGE;
 		} else {
 			courseTypeService.update(courseTypeInfo);
 			addMessage(i18n("institute_message_persist_coursetype_succeed"));
+			removeSessionBean(Constants.COURSE_TYPE_INFO);
+			courseTypeInfo = null;
+			editing = false;
+			return Constants.SUCCESS;
 		}
 
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
-		courseTypeInfo = null;
-		editing = false;
-		return Constants.SUCCESS;
+		
 	}
 
 	/**

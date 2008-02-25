@@ -124,7 +124,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 		courseInfo.setAccessType(AccessType.CLOSED);
 		courseService.create(courseInfo);
-		addMessage(i18n("institute_message_persist_coursetype_succeed"));
+		addMessage(i18n("institute_message_persist_coursetype_succeed" ) + " " + i18n("institute_message_persist_coursetype_advice"));
 		return Constants.SUCCESS;
 	}
 
