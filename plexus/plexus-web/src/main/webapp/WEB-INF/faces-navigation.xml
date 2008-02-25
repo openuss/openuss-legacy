@@ -680,6 +680,10 @@
                 <to-view-id>/views/secured/wiki/wikisiteremoveconfirmation.xhtml</to-view-id>              
             </navigation-case>
             <navigation-case>
+                <from-outcome>wiki_import</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimport.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
                 <from-outcome>wiki_print_preview</from-outcome>
                 <to-view-id>/views/secured/wiki/wikiprintpreview.xhtml</to-view-id>
             </navigation-case>

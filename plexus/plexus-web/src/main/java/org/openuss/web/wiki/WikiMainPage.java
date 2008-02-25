@@ -70,6 +70,10 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
+	public String showImportPage() {
+		return Constants.WIKI_IMPORT_PAGE;
+	}
+	
 	public String showStable() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setReadOnly(false);
@@ -78,6 +82,7 @@ public class WikiMainPage extends AbstractWikiPage{
 		
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
+	
 	public String markStable() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setReadOnly(false);
@@ -86,6 +91,7 @@ public class WikiMainPage extends AbstractWikiPage{
 		
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
+	
 	public String unmarkStable() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setReadOnly(false);
@@ -94,5 +100,4 @@ public class WikiMainPage extends AbstractWikiPage{
 		
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
-	
 }

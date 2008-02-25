@@ -226,4 +226,18 @@ public class WikiServiceImpl
     	}
 	}
 
+	@Override
+	protected void handleImportWikiSites(Long importDomainId,
+			Long exportDomainId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleImportWikiVersions(Long importDomainId,
+			Long exportDomainId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

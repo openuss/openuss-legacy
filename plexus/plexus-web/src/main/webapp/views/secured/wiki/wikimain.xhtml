@@ -23,11 +23,27 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error" />
     
         <ui:define name="navigation">
             <ui:include src="/views/commons/navigation/course.xhtml" />
         </ui:define>
+        
+        <ui:define name="sidebar"> 
+        	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+				<h:form>
+					<o:block styleClass="option_box" label="#{msg.wiki_main_import_wiki}">						
+						<ul class="int">
+							<li>
+								<h:commandLink action="#{views$secured$wiki$wikimain.showImportPage}"
+									value="#{msg.wiki_main_import_wiki}"
+									title="#{msg.wiki_main_import_wiki}"/>
+							</li>
+						</ul>
+					</o:block>				
+				</h:form>
+			</s:acl>
+		</ui:define>
          
         <ui:define name="content">
             <h:form id="mainWikiForm">
@@ -136,8 +152,6 @@
 		                        		styleClass="button" />
 		                       	</s:acl>
 		                    </c:if>
-		                    	
-		                    
 		                        
 		                    <h:commandButton
 								value="${msg.wiki_main_button_overview}"
