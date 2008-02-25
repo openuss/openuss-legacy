@@ -15,6 +15,7 @@ import java.util.Set;
 import org.hibernate.sql.Update;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
@@ -23,6 +24,8 @@ import org.openuss.security.UserInfo;
  */
 public class CalendarServiceImpl extends
 		org.openuss.calendar.CalendarServiceBase {
+	
+	SecurityService securityService;
 
 	/**
 	 * @see org.openuss.calendar.CalendarService#createCalendar(org.openuss.foundation.DomainObject)
@@ -327,11 +330,13 @@ public class CalendarServiceImpl extends
 	protected void handleAddSubscription(
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleAddSubscription(org.openuss.calendar.CalendarInfo calendarInfo,
-		// org.openuss.security.UserInfo userInfo)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.CalendarService.handleAddSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo) Not implemented!");
+		User user = securityService.getCurrentUser();
+		Calendar calToSubscribe = getCalendarDao().calendarInfoToEntity(calendarInfo);
+		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(user.getId());
+		calToSubscribe.getSubscribedCalendars().add(subscribingCal);
+		subscribingCal.getSubscriptions().add(calToSubscribe);
+		
+		
 	}
 
 	/**
@@ -371,6 +376,6 @@ public class CalendarServiceImpl extends
 
 	}
 
-	/************** TEMP ************ */
+	
 
 }

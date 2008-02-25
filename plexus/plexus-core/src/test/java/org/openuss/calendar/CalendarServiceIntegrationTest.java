@@ -64,7 +64,8 @@ public class CalendarServiceIntegrationTest extends
 			
 			CalendarInfo courseCalInfo = calendarService.getCalendar(courseInfo);
 			assertNotNull(courseCalInfo);
-			assertEquals("COURSE", courseCalInfo.getCalendarType());
+			System.out.println("Kalender: " + courseCalInfo.getCalendarType());
+			assertEquals("COURSE", courseCalInfo.getCalendarType().toString());
 			
 			
 		} catch (Exception e) {
@@ -312,11 +313,11 @@ public class CalendarServiceIntegrationTest extends
 			List<AppointmentInfo> appInfos = calendarService.getSingleAppointments(courseCalInfo);
 			assertNotNull(appInfos.get(0));
 			
-			// TODO implement service method: addSubscription and 
-			
-			// subscribe to course calendar
+			// add subscription
+			calendarService.addSubscription(courseCalInfo); 
 			
 			// test if subscription is added
+			
 			
 			// test if the appointments are added to the user calendar
 			
