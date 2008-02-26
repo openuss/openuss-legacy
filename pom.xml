@@ -462,7 +462,7 @@
 							<maxmemory>384</maxmemory>
 							<charset>UTF-8</charset>
 							<sourcepath>
-								${project.build.directory}/src;${project.build.directory}/../src
+								${project.build.directory}/src;${project.build.directory}/../src/main/java
 							</sourcepath>
 						</configuration>
 						<reports>
