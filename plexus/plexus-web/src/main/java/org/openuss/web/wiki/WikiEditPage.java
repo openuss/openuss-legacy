@@ -17,6 +17,14 @@ import org.openuss.wiki.WikiSiteContentInfo;
 public class WikiEditPage extends AbstractWikiPage{
 	private static final Logger logger = Logger.getLogger(WikiEditPage.class);
 	
+	@Override
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		
+		siteVersionInfo.setNote(null);
+	}
+	
 	public String save() {
 		this.siteVersionInfo.setId(null);
 		if (this.siteVersionInfo.getName() == null) {
