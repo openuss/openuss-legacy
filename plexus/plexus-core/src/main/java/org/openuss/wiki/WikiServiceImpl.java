@@ -226,11 +226,28 @@ public class WikiServiceImpl
     	}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleImportWikiSites(Long importDomainId,
-			Long exportDomainId) throws Exception {
-		// TODO Auto-generated method stub
+	protected void handleImportWikiSites(Long importDomainId, Long exportDomainId) throws Exception {
+		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
+		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
 		
+		List<WikiSiteInfo> oldImportWikiSites = findWikiSitesByDomainObject(importDomainId);
+		for (WikiSiteInfo oldImportWikiSite : oldImportWikiSites) {
+			deleteWikiSite(oldImportWikiSite.getWikiSiteId());
+		}
+		
+		List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
+		for (WikiSiteInfo exportWikiSite : exportWikiSites) {
+			WikiSiteContentInfo newestWikiSiteContent = getNewestWikiSiteContent(exportWikiSite.getWikiSiteId());
+			
+			WikiSiteContentInfo importWikiSiteContent = new WikiSiteContentInfo(newestWikiSiteContent);
+			importWikiSiteContent.setId(null);
+			importWikiSiteContent.setWikiSiteId(null);
+			importWikiSiteContent.setDomainId(importDomainId);
+			
+			saveWikiSite(importWikiSiteContent);
+		}
 	}
 
 	@Override

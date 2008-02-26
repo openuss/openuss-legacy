@@ -1,6 +1,7 @@
 package org.openuss.web.wiki;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -11,12 +12,9 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.web.jsf.model.AbstractPagedTable;
-import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.lecture.CourseService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
@@ -30,55 +28,20 @@ public class WikiImportPage extends AbstractWikiPage{
 	@Property(value = "#{securityService}")
 	protected SecurityService securityService;
 	
-	@Property(value = "#{courseService}")
-	protected CourseService courseService;
-	
 	@Property(value = "#{courseDao}")
 	protected CourseDao courseDao;
 	
-	protected List<SelectItem> courses = new ArrayList<SelectItem>();
+	protected List<SelectItem> exportableWikiCourses;
 	
-	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
-	
-	protected CourseInfo selectedCourse;
-	
-	protected Long courseId;
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		// TODO: this is very dirty! 
-		courses.clear();
-		
-		User currentUser = securityService.getCurrentUser();
-		
-		List<CourseInfo> availableCourses = courseService.findAllCoursesByInstitute(getInstituteInfo().getId());
-		for (CourseInfo courseInfo : availableCourses) {			
-			List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
-			boolean isAssistant = false;
-			for (CourseMemberInfo assistant : assistants) {
-				if (assistant.getUserId().equals(currentUser.getId())) {
-					isAssistant = true;
-				}
-			}
-			
-			if (isAssistant) {
-				courses.add(new SelectItem(courseInfo.getId().toString(), courseInfo.getName()));
-			}
-		}
-
-		// super.prerender();
-	}
+	protected Long selectedCourseId;
 	
 	public String importWikiVersions() {
-				
 		
 		return Constants.WIKI_OVERVIEW;
 	}
 	
-	public String importWikiSites() {
-				
+	public String importWikiSites() {		
+		wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
 		
 		return Constants.WIKI_OVERVIEW;
 	}
@@ -91,14 +54,6 @@ public class WikiImportPage extends AbstractWikiPage{
 		this.securityService = securityService;
 	}
 
-	public CourseService getCourseService() {
-		return courseService;
-	}
-
-	public void setCourseService(CourseService courseService) {
-		this.courseService = courseService;
-	}
-
 	public CourseDao getCourseDao() {
 		return courseDao;
 	}
@@ -107,70 +62,54 @@ public class WikiImportPage extends AbstractWikiPage{
 		this.courseDao = courseDao;
 	}
 
-	public CourseInfo getSelectedCourse() {
-		return selectedCourse;
+	public Long getSelectedCourseId() {
+		return selectedCourseId;
 	}
 
-	public void setSelectedCourse(CourseInfo selectedCourse) {
-		this.selectedCourse = selectedCourse;
+	public void setSelectedCourseId(Long selectedCourseId) {
+		this.selectedCourseId = selectedCourseId;
 	}
-	
-	private class LocalDataModelCourses extends AbstractPagedTable<CourseInfo> {
-		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<CourseInfo> page;
-
-		@Override
-		@SuppressWarnings({"unchecked"})
-		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
+	@SuppressWarnings("unchecked")
+	public List<SelectItem> getExportableWikiCourses() {
+		// TODO: this is very dirty!
+		boolean firstIteration = true;
+		
+		if (exportableWikiCourses == null) {
+			exportableWikiCourses = new ArrayList<SelectItem>();
 			
-			if (page == null) {
-				User currentUser = securityService.getCurrentUser();
-				List<CourseInfo> courses = new ArrayList<CourseInfo>();
-				List<CourseInfo> availableCourses = courseService.findAllCoursesByInstitute(getInstituteInfo().getId());
-				
-				for (CourseInfo courseInfo : availableCourses) {			
-					List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
-					boolean isAssistant = false;
-					for (CourseMemberInfo assistant : assistants) {
-						if (assistant.getUserId().equals(currentUser.getId())) {
-							isAssistant = true;
-						}
-					}
-					
-					if (isAssistant) {
-						courses.add(courseInfo);
+			User currentUser = securityService.getCurrentUser();
+			
+			List<CourseInfo> availableCourses = courseService.findAllCoursesByInstitute(getInstituteInfo().getId());
+			for (CourseInfo courseInfo : availableCourses) {			
+				List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
+				boolean isAssistant = false;
+				for (CourseMemberInfo assistant : assistants) {
+					if (assistant.getUserId().equals(currentUser.getId())) {
+						isAssistant = true;
 					}
 				}
 				
-				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
+				if (isAssistant) {
+					if (firstIteration) {
+						SelectItem item = new SelectItem();
+						item.setLabel(i18n("please_choose"));
+						item.setDisabled(true);
+						exportableWikiCourses.add(item);
+						
+						firstIteration = false;
+					}
+					
+					exportableWikiCourses.add(new SelectItem(courseInfo.getId(), courseInfo.getName()));
+				}
 			}
-			
-			return page;
 		}
+
+		return exportableWikiCourses;
 	}
 
-	public LocalDataModelCourses getDataCourses() {
-		return dataCourses;
+	public void setExportableWikiCourses(List<SelectItem> exportableWikiCourses) {
+		this.exportableWikiCourses = exportableWikiCourses;
 	}
-
-	public void setDataCourses(LocalDataModelCourses dataCourses) {
-		this.dataCourses = dataCourses;
-	}
-
-	public List<SelectItem> getCourses() {
-		return courses;
-	}
-
-	public void setCourses(List<SelectItem> courses) {
-		this.courses = courses;
-	}
-
-	public Long getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
-	}
+	
 }
