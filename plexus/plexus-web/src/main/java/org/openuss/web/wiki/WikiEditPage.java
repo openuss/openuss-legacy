@@ -28,6 +28,7 @@ public class WikiEditPage extends AbstractWikiPage{
 		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
 		this.siteVersionInfo.setDeleted(false);
 		this.siteVersionInfo.setReadOnly(false);
+		this.siteVersionInfo.setStable(false);
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		

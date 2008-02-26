@@ -81,26 +81,21 @@ public class WikiMainPage extends AbstractWikiPage{
 			wikiSiteContentInfo = wikiService.getNewestWikiSiteContent(siteVersionInfo.getWikiSiteId());
 		
 		siteVersionInfo = wikiSiteContentInfo;
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
-		return Constants.WIKI_CURRENT_SITE_VERSION;
+		siteVersionId=siteVersionInfo.getId();
+		//setSessionBean(Constants.WIKI_MAIN_PAGE, wikiSiteContentInfo);
+		return Constants.WIKI_MAIN_PAGE;
 		
 	}
 	
-	public String markStable() { //FIXME
+	public String markStable() {
 		siteVersionInfo.setStable(true);
-		
-		wikiService.saveWikiSite(siteVersionInfo);
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
-		
-		return Constants.WIKI_CURRENT_SITE_VERSION;
+		wikiService.saveWikiSite(siteVersionInfo);		
+		return Constants.WIKI_MAIN_PAGE;
 	}
 	
 	public String unmarkStable() { //FIXME
-		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
-		wikiSiteInfo.setStable(false);
-		
-		wikiService.saveWikiSite(wikiSiteInfo);
-		
-		return Constants.WIKI_CURRENT_SITE_VERSION;
+		siteVersionInfo.setStable(false);
+		wikiService.saveWikiSite(siteVersionInfo);
+		return Constants.WIKI_MAIN_PAGE;
 	}
 }

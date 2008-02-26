@@ -125,7 +125,7 @@ public class WikiServiceImpl
 		Validate.notNull(wikiSiteContentInfo, "Parameter wikiSiteContentInfo cannot be null.");
 		Validate.notNull(wikiSiteContentInfo.getDomainId(), "getDomainId cannot be null.");
 		
-		if (wikiSiteContentInfo.getId() != null) { //Sinn????
+		if (wikiSiteContentInfo.getId() != null) {
 			// update
 			WikiSiteVersion wikiSiteVersion = getWikiSiteVersionDao().wikiSiteContentInfoToEntity(wikiSiteContentInfo);
 			getWikiSiteVersionDao().update(wikiSiteVersion);

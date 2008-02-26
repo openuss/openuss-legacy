@@ -98,6 +98,8 @@ public class WikiSiteVersionDaoImpl
     	
     	targetVO.setAuthorId(sourceEntity.getAuthor().getId());
     	targetVO.setAuthorName(sourceEntity.getAuthor().getDisplayName());
+    	
+    	targetVO.setStable(sourceEntity.getStable());
     }
 
 
@@ -156,6 +158,10 @@ public class WikiSiteVersionDaoImpl
         if (copyIfNull || sourceVO.getNote() != null)
         {
         	targetEntity.setNote(sourceVO.getNote());
+        }
+        if (copyIfNull || sourceVO.isStable() != false)
+        {
+            targetEntity.setStable(new java.lang.Boolean(sourceVO.isStable()));
         }
     }
 
