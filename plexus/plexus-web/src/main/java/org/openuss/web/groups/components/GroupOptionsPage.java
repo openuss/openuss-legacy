@@ -34,44 +34,22 @@ public class GroupOptionsPage extends AbstractGroupPage {
 
 	private Integer accessType = -1;
 	private String password;
+	
 	/* ----- business logic ----- */
 
 	@Prerender
 	@Override
 	public void prerender() throws Exception {
-		if (groupInfo == null) {
-			groupInfo = (UserGroupInfo) getSessionBean(Constants.GROUP);
-			
-		}
-		if (groupInfo == null) {
-			// TODO - Lutz: Properties anpassen
-			addMessage(i18n("message_error_group_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
-		} else {
-			if (!isPostBack()) {
-				logger
-						.debug("---------- is not postback ---------- refreshing group");
-				super.prerender();
-			} else {
-				// breadcrumbs.loadCourseCrumbs;
-
-			}
-		}
-		setSessionBean(Constants.GROUP, groupInfo);
+		super.prerender();
 		if (accessType.compareTo(-1) == 0){
 			accessType = groupInfo.getAccessType().getValue();
 		}
 		if (password == null){
 			password = groupInfo.getPassword();
 		}
-		addPageCrumb();
-	}
-
-	// TODO - Lutz: Properties anpassen
-	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setName(i18n("group_command_options_config"));
-		crumb.setHint(i18n("group_command_options_config"));
+		crumb.setName(i18n("group_command_option"));
+		crumb.setHint(i18n("group_command_option"));
 		breadcrumbs.addCrumb(crumb);
 	}
 

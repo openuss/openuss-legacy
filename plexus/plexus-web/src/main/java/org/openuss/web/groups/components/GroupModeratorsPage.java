@@ -3,6 +3,8 @@ package org.openuss.web.groups.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.ValueChangeEvent;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -26,101 +28,26 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 			.getLogger(GroupModeratorsPage.class);
 
 	private GroupsDataProvider data = new GroupsDataProvider();
-	private DataPage<MemberInfo> page;
-	List<MemberInfo> members;
+	private DataPage<UserGroupMemberInfo> page;
+	List<UserGroupMemberInfo> moderators;
 
 	/* ----- private classes ----- */
 
-	private class MemberInfo {
-
-		private Long id;
-		private String username;
-		private String firstName;
-		private String lastName;
-		private String eMail;
-		private boolean moderator;
-
-		/* ----- getter and setter ----- */
-
-		public MemberInfo(Long id, String username, String firstName,
-				String lastName, String eMail, boolean moderator) {
-			this.id = id;
-			this.username = username;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.eMail = eMail;
-			this.moderator = moderator;
-		}
-
-		public String getUsername() {
-			return username;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
-		public String getFirstName() {
-			return firstName;
-		}
-
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
-
-		public String getLastName() {
-			return lastName;
-		}
-
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
-
-		public boolean isModerator() {
-			return moderator;
-		}
-
-		public void setModerator(boolean moderator) {
-			this.moderator = moderator;
-		}
-
-		public Long getId() {
-			return id;
-		}
-
-		public void setId(Long id) {
-			this.id = id;
-		}
-
-		public String getEMail() {
-			return eMail;
-		}
-
-		public void setEMail(String mail) {
-			eMail = mail;
-		}
-
-	}
-
-	private class GroupsDataProvider extends AbstractPagedTable<MemberInfo> {
+	private class GroupsDataProvider extends
+			AbstractPagedTable<UserGroupMemberInfo> {
 
 		private static final long serialVersionUID = -5342817757466323535L;
 
 		@Override
-		public DataPage<MemberInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<UserGroupMemberInfo> getDataPage(int startRow,
+				int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group list");
-				List<UserGroupMemberInfo> membersInfo = groupService
+				moderators = groupService
 						.getAllMembers(groupInfo);
-				members = new ArrayList<MemberInfo>();
-				for (UserGroupMemberInfo member : membersInfo) {
-					members.add(new MemberInfo(member.getUserId(), member
-							.getUsername(), member.getFirstName(), member
-							.getLastName(), member.getEMail(), groupService
-							.isModerator(groupInfo, member.getUserId())));
-				}
-				page = new DataPage<MemberInfo>(members.size(), 0, members);
-				sort(members);
+				page = new DataPage<UserGroupMemberInfo>(moderators.size(), 0,
+						moderators);
+				sort(moderators);
 			}
 			return page;
 		}
@@ -130,48 +57,27 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 
 	public String linkProfile() {
 		User profile = User.Factory.newInstance();
-		profile.setId(this.data.getRowData().getId());
+		profile.setId(this.data.getRowData().getUserId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
 	public String save() {
-		MemberInfo member = data.getRowData();
-		if (!groupService.isCreator(groupInfo, member.getId())) {
-			if (!groupService.isModerator(groupInfo, member.getId())
-					&& member.moderator) {
-				groupService.addModerator(groupInfo, member.getId());
-			}
-			if (groupService.isModerator(groupInfo, member.getId())
-					&& !member.moderator) {
-				groupService.removeModerator(groupInfo, member.getId());
-			}
-		} else {
-			if (!groupService.isModerator(groupInfo, member.getId())
-					&& member.moderator) {
-				groupService.addModerator(groupInfo, member.getId());
-			}
-			if (member.getId().compareTo(user.getId()) == 0){
-				if (groupService.isModerator(groupInfo, member.getId())
-						&& !member.moderator) {
-					groupService.removeModerator(groupInfo, member.getId());
-				}
-			}else{
-				// TODO - Lutz: Error anpassen
-				addError("group_remove_creator");
-			}
+		for(UserGroupMemberInfo moderator:moderators){
+			
 		}
+		addMessage("Erfolg");
 		return Constants.SUCCESS;
 	}
 
 	public String removeMember() {
-		MemberInfo member = data.getRowData();
-		if (!groupService.isCreator(groupInfo, member.getId())) {
-			groupService.removeMember(groupInfo, member.getId());
+		UserGroupMemberInfo member = data.getRowData();
+		if (!groupService.isCreator(groupInfo, member.getUserId())) {
+			groupService.removeMember(groupInfo, member.getUserId());
 		} else {
-			if (member.getId().compareTo(user.getId()) == 0){
-				groupService.removeMember(groupInfo, member.getId());
-			}else{
+			if (member.getUserId().compareTo(user.getId()) == 0) {
+				groupService.removeMember(groupInfo, member.getUserId());
+			} else {
 				// TODO - Lutz: Error anpassen
 				addError("group_delete_creator");
 			}
@@ -189,11 +95,11 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		this.data = data;
 	}
 
-	public DataPage<MemberInfo> getPage() {
+	public DataPage<UserGroupMemberInfo> getPage() {
 		return page;
 	}
 
-	public void setPage(DataPage<MemberInfo> page) {
+	public void setPage(DataPage<UserGroupMemberInfo> page) {
 		this.page = page;
 	}
 

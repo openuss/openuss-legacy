@@ -39,6 +39,20 @@ public class GroupMainPage extends AbstractGroupPage {
 	
 	/* ----- business logic ----- */
 	
+	@Override
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		if (groupInfo != null) {
+			moderators = groupService.getModerators(groupInfo);
+		}
+		BreadCrumb newCrumb = new BreadCrumb();
+		// TODO - Breadcrumbs
+		newCrumb.setName(i18n("group_command_overview"));
+		newCrumb.setHint(i18n("group_command_overview"));
+		breadcrumbs.addCrumb(newCrumb);
+	}
+	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
 		if (!StringUtils.equalsIgnoreCase(password, groupInfo.getPassword())) {

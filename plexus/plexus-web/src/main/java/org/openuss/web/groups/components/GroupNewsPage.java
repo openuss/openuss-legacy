@@ -58,18 +58,16 @@ public class GroupNewsPage extends AbstractGroupPage {
 	
 	/* ----- business logic ----- */
 	
+	@Override
 	@Prerender
 	public void prerender() throws Exception {
+		logger.debug("PRERENDER OF NEWS PAGE");
 		super.prerender();
-		addPageCrumb();
-	}
-	
-	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setName(i18n("course_command_options_news"));
-		crumb.setHint(i18n("course_command_options_news"));
+		crumb.setName(i18n("group_command_news"));
+		crumb.setHint(i18n("group_command_news"));
 		breadcrumbs.addCrumb(crumb);
-	}	
+	}
 	
 	public List<NewsItemInfo> getCurrentNews() {
 		return newsService.getCurrentNewsItems(groupInfo,null);
