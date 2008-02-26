@@ -85,11 +85,6 @@ public class PaperSubmissionServiceImpl
 		// add object identity to security
     	this.getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
-    
-    	
-
-    	
-    	
 	}
 
 	@Override

@@ -3,9 +3,8 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.Date;
-
-import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.component.UIInput;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,11 +18,11 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.CourseMember;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
-import org.openuss.security.User;
+import org.openuss.security.Roles;
+import org.openuss.security.SecurityService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
@@ -38,6 +37,9 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
+	
+	@Property (value="#{securityService}")
+	private SecurityService securityService;
 	
 	private UIInput fileUpload;
 
@@ -78,7 +80,10 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			if (document != null) {
 				documentToSelectedFile(document);
 			}
+			
 			documentService.saveFileEntry(selectedFile);
+			permitRolesImageReadPermission(selectedFile);
+			
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
 			}
@@ -86,6 +91,12 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		}
 		removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
+	}
+	
+	private void permitRolesImageReadPermission(FileInfo imageFile) {
+		// TODO should be done within the business layer
+		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
+		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 	}
 
 	private PaperSubmissionInfo loadPaperSubmission(){
@@ -126,6 +137,9 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			documentToSelectedFile(document);
 			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 			documentService.createFileEntry(selectedFile, folder);
+			
+			permitRolesImageReadPermission(selectedFile);
+			
 			uploadFileManager.removeDocument(document);
 //			paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
 			return true;
@@ -192,6 +206,14 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 
 	public void setFileUpload(UIInput fileUpload) {
 		this.fileUpload = fileUpload;
+	}
+	
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 
 } 

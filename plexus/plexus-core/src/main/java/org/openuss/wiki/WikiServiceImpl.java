@@ -13,7 +13,9 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
 import org.openuss.lecture.Course;
+import org.openuss.security.Roles;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.wiki.WikiService
@@ -206,6 +208,9 @@ public class WikiServiceImpl
 		WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(wikiSiteInfo.getDomainId(), "index");
 		FolderInfo folder = getDocumentService().getFolder(indexSite);
 		getDocumentService().createFileEntry(image, folder);
+		
+		getSecurityService().setPermissions(Roles.ANONYMOUS, image, LectureAclEntry.READ);
+		getSecurityService().setPermissions(Roles.USER, image, LectureAclEntry.READ);
 	}
 
 	@Override

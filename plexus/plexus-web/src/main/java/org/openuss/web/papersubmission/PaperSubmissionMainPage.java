@@ -38,11 +38,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
-	
-
-	
-	
-	
+		
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
@@ -133,7 +129,6 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 		examInfo = null;
 		editing = false;
 		return Constants.SUCCESS;
-		
 	}
 	
 	/**
