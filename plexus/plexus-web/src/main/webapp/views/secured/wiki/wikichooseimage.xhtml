@@ -110,7 +110,9 @@
 					
 				</plexus:dataTable>
 				
-				<o:block label="Upload" styleClass="form_box">
+				<o:block>
+				    <h:outputLabel value="#{msg.wiki_choose_image_upload_file}"
+                    for="file" styleClass="field_label" />
 				    <t:inputFileUpload 
 	                    id="file" 
 	                    storage="file" 

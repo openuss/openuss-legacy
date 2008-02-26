@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.component.UIInput;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -30,15 +31,10 @@ public class WikiChooseImagePage extends AbstractWikiPage{
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
 		
-	public String save() {
-		FileInfo fileInfo;
-		try {
-			fileInfo = uploadFileManager.lastUploadAsFileInfo();
-			
-			getWikiService().saveImage(this.siteVersionInfo, fileInfo);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public String save() throws IOException {
+		FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
+		if (fileInfo != null) {
+			getWikiService().saveImage(this.siteVersionInfo, fileInfo);		
 		}
 		
 		return Constants.WIKI_CHOOSE_IMAGE_PAGE;

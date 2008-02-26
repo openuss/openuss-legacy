@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.documents.FolderEntrySelection;
 
@@ -248,7 +249,27 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	public void setDataCourseMembers(LocalDataModelCourseMembers dataCourseMembers) {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
-	
+
+	private List<CourseMemberInfo> loadCourseMembers() {
+		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
+				.getParticipants(courseInfo));
+
+		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
+		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
+		for (UserInfo ui : wsMembers) {
+			wsMemberIds.add(ui.getId());
+		}
+		
+		memberSelection.clear();
+		for (CourseMemberInfo courseMemberInfo : members) {
+			if (wsMemberIds.contains(courseMemberInfo.getUserId())) {
+				memberSelection.getMap().put(courseMemberInfo, Boolean.TRUE);
+			}
+		}
+		
+		return members;
+	}
+
 	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelMappedWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
@@ -299,14 +320,14 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseMemberInfo> courseMembers = new ArrayList<CourseMemberInfo>(courseService
-						.getParticipants(courseInfo));
+				List<CourseMemberInfo> courseMembers = loadCourseMembers();
 				
 				sort(courseMembers);
 				page = new DataPage<CourseMemberInfo>(courseMembers.size(), 0, courseMembers);
 			}
 			return page;
 		}
+
 	}
 
 }

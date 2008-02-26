@@ -113,6 +113,8 @@ public class WorkspaceServiceImpl extends
 			
 			workspace.getUser().add(member);
 		}
+		
+		getWorkspaceDao().update(workspace);
 	}
 
 	@Override
