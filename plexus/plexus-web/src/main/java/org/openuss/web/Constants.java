@@ -274,4 +274,8 @@ public class Constants {
 	public static final String OPENUSS4US_GROUPS_LEAVE = "openuss4us_groups_leave";
 	// openuss4us constants
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
+	
+	// seminarpool constants and outcomes
+	public static final String SEMINARPOOL_CREATION_CONTROLLER = "seminarpoolRegistration";
+	public static final String SEMINARPOOL_MAIN = "seminarpoolMain";
 }

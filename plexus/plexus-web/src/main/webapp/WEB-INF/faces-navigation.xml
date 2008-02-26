@@ -275,6 +275,15 @@
 			<to-view-id>/views/secured/groups/group.xhtml</to-view-id>
 		</navigation-case>
 		
+	
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	S e m i n a r p o o l  - R u l e s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<navigation-case>
+			<from-outcome>seminarpool_create_start</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolregistrationstart.xhtml</to-view-id>
+		</navigation-case>
+
 	</navigation-rule>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
@@ -1161,6 +1170,21 @@
 		<navigation-case>
 			<from-outcome>institute_registration_step1</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             SEMINARPOOL-Page 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>/views/secured/seminarpool/*</from-view-id>
+		<navigation-case>
+			<from-outcome>seminarpool_create_success</from-outcome>
+			<to-view-id>/views/welcome.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_create_step1</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolcreatestep1.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

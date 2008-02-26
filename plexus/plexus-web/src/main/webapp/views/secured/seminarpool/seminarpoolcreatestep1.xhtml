@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+		<ui:insert name="title" />
+	</title>
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/dialog.xhtml">
+<!-- 
+	<ui:define name="title">
+		<h:outputText value="#{msg['seminarpool_main_title']}" />
+	</ui:define>
+  	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml"/>
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>				
+-->	
+	<ui:define name="content">
+		<h:form id="seminarpool_create_seminarpool">
+			<o:block label="#{msg['seminarpool_create_block']}" styleClass="form_box">
+				<o:input 
+					label="#{msg.seminarpool_name}"
+					entity="seminarpoolRegistration" 
+					property="name" 
+					maxlength="100" 
+					required="true"/>
+				<o:input 
+					label="#{msg.seminarpool_shortcut}"
+					entity="seminarpoolRegistration" 
+					property="shortcut" 
+					maxlength="30" 
+					required="true" />
+					
+<!--				<o:input entity="seminarpoolRegistration.seminarpoolInfo" property="maxSeminarAllocations" maxlength="50"/>
+				<o:input entity="seminarpoolRegistration.seminarpoolInfo" property="priorities" maxlength="50"/>	
+-->					
+				<o:input 
+					label="#{msg.seminarpool_max_seminar_allocations}"
+					entity="seminarpoolRegistration" 
+					property="maxSeminarAllocations" 
+					size="5"
+					maxlength="5"
+					required="true" />
+				<o:input 
+					label="#{msg.seminarpool_priorities}"
+					entity="seminarpoolRegistration" 
+					property="priorities"
+					size="5"
+					maxlength="5" 
+					required="true" />
+<!--					maxlength="100"  --> 
+					
+				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
+					
+				<div id="descriptionTextField" class="content_iframe">
+					<fck:editor value="#{seminarpoolRegistration.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+				</div>
+					
+				<h:outputLabel for="accessType" value="#{msg.seminarpool_accesstype}" styleClass="field_label"/>
+				<h:selectOneMenu id="accessType" 
+					layout="pageDirection" 
+					value="#{seminarpoolRegistration.accessType}" 
+					valueChangeListener="#{seminarpoolRegistration.processAccessTypeChanged}"
+					onchange="this.form.submit();"
+					immediate="true"
+					styleClass="pulldown">
+					<f:selectItems value="#{seminarpoolRegistration.accessTypes}"/>
+				</h:selectOneMenu>
+				<h:message for="accessType" styleClass="field_error"/>
+				<c:if test="#{seminarpoolRegistration.accessType == 1}">	
+	 				<o:input 
+	 					label="#{msg.seminarpool_password}"
+	 					entity="seminarpoolRegistration" 
+	 					property="password" 
+	 					required="true"/>
+ 				</c:if> 	
+			</o:block>
+			
+			<o:block>
+				<h:commandButton value="#{msg.back}" action="view:backward" styleClass="button_back" immediate="true" />
+				<h:commandButton value="#{msg.seminarpool_create_button}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" />
+			</o:block>	
+	 	</h:form> 
+	</ui:define>
+	
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>
