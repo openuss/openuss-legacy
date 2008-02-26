@@ -90,8 +90,6 @@ public class BuddyServiceImpl
     	tagString = tagString.toLowerCase();
     	if(tagString.length()<=2)
     		throw new BuddyApplicationException("Tag too short");
-    	if(tagString.equals("penis"))
-    		throw new BuddyApplicationException("Tag too short");
     	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
     	//search tag
     	User user = getSecurityService().getCurrentUser();

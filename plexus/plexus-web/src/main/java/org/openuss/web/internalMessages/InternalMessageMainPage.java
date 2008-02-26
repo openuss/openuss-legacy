@@ -6,12 +6,14 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.internalMessage.*;
+import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -23,11 +25,17 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$internalmessages$messagecenter", scope = Scope.REQUEST)
 @View
 public class InternalMessageMainPage extends BasePage {
+	
+	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
+	public User profile;
+	
 	private static final Logger logger = Logger
 			.getLogger(InternalMessageMainPage.class);
 	
 	@Property(value = "#{internalMessageService}")
 	private InternalMessageService internalMessageService;
+	
+	private int numberOfUnreadMessages;
 	
 	//Inbox
 	
@@ -75,21 +83,38 @@ public class InternalMessageMainPage extends BasePage {
 	}
 	
 	public String linkToSender(){
-//		profile.setId(this.data.getRowData().getUserId());
-//		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		profile.setId(this.inboxData.getRowData().getSenderId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
+	public String deleteSent(){
+		logger.debug("delete sent message");
+		return delete(this.outboxData.getRowData());
+	}
+	
+	public String deleteRecieved(){
+		logger.debug("delete received message");
+		return delete(this.inboxData.getRowData());
+	}
+	
+	private String delete(InternalMessageInfo message){
+		internalMessageService.deleteInternalMessage(message);
+		return Constants.OPENUSS4US_MESSAGECENTER;
+	}
+	
 	public String linkToRecipient(){
-//		profile.setId(this.data.getRowData().getUserId());
+//		profile.setId(this.outboxData.getRowData().getI;
 //		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}	
 
+	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		addPageCrumb();
+		markAllAsRead();
 	}
 
 	private void addPageCrumb() {
@@ -99,6 +124,16 @@ public class InternalMessageMainPage extends BasePage {
 		crumb.setHint(i18n("openuss4us_command_messagecenter"));
 		breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(crumb);
+	}
+	
+	public void markAllAsRead(){
+		List<InternalMessageInfo> list = internalMessageService.getAllReceivedInternalMessages();
+		for(InternalMessageInfo im : list){
+			logger.debug("mark as read: " + im.getId() + " " + im.getSubject());
+			logger.debug("sender: " + im.getSenderDisplayName());
+			logger.debug("recipient: " + im.getInternalMessageRecipientsInfos().get(0).getRecipientDisplayName());
+			internalMessageService.setRead(im);
+		}
 	}
 
 	public InternalMessageService getInternalMessageService() {
@@ -124,5 +159,23 @@ public class InternalMessageMainPage extends BasePage {
 
 	public void setOutboxData(OutboxDataProvider outboxData) {
 		this.outboxData = outboxData;
+	}
+
+	public int getNumberOfUnreadMessages() {
+		numberOfUnreadMessages = internalMessageService.getNumberOfUnreadMessages();
+		logger.debug(numberOfUnreadMessages + " unread messages found");
+		return numberOfUnreadMessages;
+	}
+
+	public void setNumberOfUnreadMessages(int numberOfUnreadMessages) {
+		this.numberOfUnreadMessages = numberOfUnreadMessages;
+	}
+
+	public User getProfile() {
+		return profile;
+	}
+
+	public void setProfile(User profile) {
+		this.profile = profile;
 	}
 }

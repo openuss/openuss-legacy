@@ -7,20 +7,17 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:c="http://java.sun.com/jstl/core">
-	@TODO Set Read beachten
-	@TODO Nachrichten nur kurz anzeigen und read button
 	<plexus:dataTable id="inboxTable"
 		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
 		 label="@TODO Inbox" rows="10">
 		<t:column styleClass="userphoto">
-		<f:facet name="header">  
-				#{msg['discussion_thread_column_author']} 
-			</f:facet>
-			<div class="userimage"><h:commandLink value="" 
-				action="#{views$secured$buddylist$buddylist.linkToSender}">
+			<plexus:commandSortHeader columnName="inboxsender"> #{msg['discussion_thread_column_author']}</plexus:commandSortHeader>
+			<div class="userimage"><h:commandLink value=""
+				action="#{views$secured$internalmessages$messagecenter.linkToSender}">
 				<h:outputText value="#{inboxMessage.senderDisplayName}"
-				styleClass="header_font_normal" />
+					styleClass="header_font_normal" />
 				<h:graphicImage styleClass="userphoto"
 					value="/files?fileid=#{inboxMessage.senderImageId}"
 					title="#{inboxMessage.senderDisplayName}"
@@ -32,17 +29,26 @@
 			</h:commandLink></div>
 		</t:column>
 		<t:column styleClass="col_max_left">
-		<f:facet name="header">  
+			<f:facet name="header">  
 				#{msg['discussion_thread_column_message']}  
 			</f:facet>
 			<h:outputText value="#{inboxMessage.subject}"
-				styleClass="header_font_normal" /><br />
-			<h:outputText value="#{inboxMessage.content}" syleClass="content_font_normal" />
+				styleClass="header_font_normal" />
+			<br />
+			#{fn:length(inboxMessage.content)}
+			#{fn:length(inboxMessage.content) gt 50}
+			<c:if test="#{fn:length(inboxMessage.content) le 50}">
+				<h:outputText
+					value="#{fn:substring(inboxMessage.content, 0, 50)}..."
+					syleClass="content_font_normal" />
+			</c:if>
+			<c:if test="#{fn:length(inboxMessage.content) gt 50}">
+				<h:outputText value="#{inboxMessage.content}"
+					syleClass="content_font_normal" />
+			</c:if>
 		</t:column>
 		<t:column styleClass="col_post_date">
-			<f:facet name="header">
-				#{msg['openuss4us_messagecenter_sentdate']} (sort)
-			</f:facet>
+			<plexus:commandSortHeader columnName="inboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
 			<h:outputText value="#{inboxMessage.messageDate}"
 				styleClass="content_font_normal">
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
@@ -56,7 +62,7 @@
 				value="#{msg.user_send_internalmessage}"
 				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
 			<br />
-			<h:commandButton id="remove_message" action="view:back"
+			<h:commandButton id="remove_message" action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
 				value="delete" title="delete"
 				styleClass="button_remove" />
 		</t:column>

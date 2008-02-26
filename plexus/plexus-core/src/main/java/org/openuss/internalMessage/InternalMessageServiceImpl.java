@@ -52,7 +52,6 @@ public class InternalMessageServiceImpl
     	User user = getSecurityService().getCurrentUser();
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
         InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
-        System.out.println("markiere als gelesen: " + message.getContent());
         MessageStatus messageStatus = null;
         for(MessageStatus messageStatusCandidate : message.getRecipients()){
         	if(messageStatusCandidate.getRecipient() == imCenter){
@@ -101,7 +100,7 @@ public class InternalMessageServiceImpl
         throws java.lang.Exception
     {
     	User user = getSecurityService().getCurrentUser();
-    	if(messageInfo.getSenderId() == user.getId()){
+    	if(messageInfo.getSenderId().equals(user.getId())){
     		// User is sender
             InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
             message.setDeletedAtSender(true);
@@ -119,6 +118,7 @@ public class InternalMessageServiceImpl
             if(messageStatus==null)
             	throw new Exception("Message not found");
             messageStatus.setDeleted(true);
+            getMessageStatusDao().update(messageStatus);
     	}
     }
 
@@ -150,6 +150,10 @@ public class InternalMessageServiceImpl
 		message.setSender(sender);
 		sender.getSentInternalMessage().add(message);
     	getInternalMessageDao().create(message);
+    	message.setRecipients(new ArrayList<MessageStatus>());
+    	if(messageInfo.getInternalMessageRecipientsInfos() == null || messageInfo.getInternalMessageRecipientsInfos().size() == 0){
+    		throw new Exception("No Recipients found");
+    	}
     	for(InternalMessageRecipientsInfo rec : messageInfo.getInternalMessageRecipientsInfos()){
     		MessageStatus messageStatus = MessageStatus.Factory.newInstance();
     		messageStatus.setDeleted(false);

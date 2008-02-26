@@ -33,7 +33,7 @@ public class InternalMessageDaoImpl
         // @todo verify behavior of toInternalMessageInfo
     	InternalMessageInfo messageInfo = super.toInternalMessageInfo(entity);
     	messageInfo.setSenderDisplayName(entity.getSender().getUser().getDisplayName());
-    	messageInfo.setId(entity.getSender().getUser().getId());
+    	messageInfo.setSenderId(entity.getSender().getUser().getId());
         messageInfo.setSenderImageId(entity.getSender().getUser().getImageId());
         return messageInfo;
     }

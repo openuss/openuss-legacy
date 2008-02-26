@@ -33,9 +33,7 @@
 			<h:outputText value="#{outboxMessage.content}" syleClass="content_font_normal" />
 		</t:column>
 		<t:column styleClass="col_post_date">
-			<f:facet name="header">
-				#{msg['openuss4us_messagecenter_sentdate']} (sort)
-			</f:facet>
+			<plexus:commandSortHeader columnName="outboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
 			<h:outputText value="#{outboxMessage.messageDate}"
 				styleClass="content_font_normal">
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
@@ -49,7 +47,7 @@
 				value="#{msg.user_send_internalmessage}"
 				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
 			<br />
-			<h:commandButton id="remove_message" action="view:back"
+			<h:commandButton id="remove_message" action="#{views$secured$internalmessages$messagecenter.deleteSent}"
 				value="delete" title="delete"
 				styleClass="button_remove" />
 		</t:column>
