@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<welcomeScreenDescriptor>
+  <welcomeElement folder="false" id="e1" parentId="none" title="
+      Willkommen zu FSL
+    " type="text" htmlFileName="author_text1.html">
+    <welcomeElementLink id="l2">
+      <welcomeElementLinkTarget targetViewManagerId="e2" targetViewElementId="test" targetLearningUnitId="freestyleLearningGroup-Glossary"/></welcomeElementLink></welcomeElement></welcomeScreenDescriptor>

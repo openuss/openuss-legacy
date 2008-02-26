@@ -1,0 +1,17 @@
+<!ELEMENT tourDescriptor (tour)*>
+<!ELEMENT tour (tourElement)*>
+<!ATTLIST tour id ID #REQUIRED>
+<!ATTLIST tour tourName CDATA #REQUIRED>
+<!ATTLIST tour tourIcon CDATA #IMPLIED>
+<!ELEMENT tourElement (tourElementLink)*>
+<!ATTLIST tourElement id ID #REQUIRED>
+<!ATTLIST tourElement elementName CDATA #REQUIRED>
+<!ATTLIST tourElement description CDATA #IMPLIED>
+<!ATTLIST tourElement imageFileName CDATA #IMPLIED>
+<!ATTLIST tourElement displayTime CDATA #IMPLIED>
+<!ELEMENT tourElementLink (tourElementLinkTarget)*>
+<!ATTLIST tourElementLink id NMTOKEN #REQUIRED>
+<!ELEMENT tourElementLinkTarget EMPTY>
+<!ATTLIST tourElementLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST tourElementLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST tourElementLinkTarget targetViewElementId NMTOKEN #REQUIRED>

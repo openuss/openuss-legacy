@@ -1,0 +1,5 @@
+<!ELEMENT learningUnitProperties (editStatus)>
+<!ELEMENT editStatus EMPTY>
+
+<!ATTLIST editStatus currentlyEditedBy CDATA #REQUIRED>
+

@@ -1,0 +1,14 @@
+<!ELEMENT welcomeScreenDescriptor (welcomeElement)*>
+<!ELEMENT welcomeElement (welcomeElementLink)*>
+<!ATTLIST welcomeElement id ID #REQUIRED>
+<!ATTLIST welcomeElement parentId NMTOKEN #REQUIRED>
+<!ATTLIST welcomeElement title CDATA #REQUIRED>
+<!ATTLIST welcomeElement type CDATA #REQUIRED>
+<!ATTLIST welcomeElement folder (true|false) #REQUIRED>
+<!ATTLIST welcomeElement htmlFileName CDATA #IMPLIED>
+<!ELEMENT welcomeElementLink (welcomeElementLinkTarget)*>
+<!ATTLIST welcomeElementLink id NMTOKEN #REQUIRED>
+<!ELEMENT welcomeElementLinkTarget EMPTY>
+<!ATTLIST welcomeElementLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST welcomeElementLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST welcomeElementLinkTarget targetViewElementId NMTOKEN #REQUIRED>

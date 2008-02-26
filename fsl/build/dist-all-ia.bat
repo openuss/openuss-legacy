@@ -1,0 +1,1 @@
+ant -f build-ia.xml dist-all

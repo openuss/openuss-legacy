@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearning.homeCore.learningUnitsManager.tourCreator.data.xmlBinding"/> 
+  <element name="tourDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="tour" collection="list" property="tours"/>
+    </content>
+  </element>
+  <element name="tour" type="class">
+    <content>
+       <element-ref name="tourElement" collection="list" property="tourElements"/>
+    </content>
+  </element>
+  <element name="tourElement" type="class">
+    <content>
+      <element-ref name="tourElementLink" collection="list" property="learningUnitViewElementLinks"/>
+    </content>
+    <attribute name="displayTime" convert="int"/>
+  </element>
+  <element name="tourElementLink" type="class">
+    <content>
+      <element-ref name="tourElementLinkTarget" collection="list" property="learningUnitViewElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="tourElementLinkTarget" type="class">
+   <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+   <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+</xml-java-binding-schema>

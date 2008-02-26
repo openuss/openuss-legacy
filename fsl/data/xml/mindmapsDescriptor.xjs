@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.mindmaps.data.xmlBinding"/> 
+  <element name="mindmapsDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="viewElement" collection="list" property="learningUnitViewElements"/>
+    </content>
+  </element>
+  <element name="viewElement" type="class">
+    <attribute name="folder" convert="boolean"/>
+    <content>
+       <element-ref name="viewElementLink" collection="list" property="learningUnitViewElementLinks"/>
+    </content>
+  </element>
+  <element name="viewElementLink" type="class">
+    <content>
+      <element-ref name="viewElementLinkTarget" collection="list" property="learningUnitViewElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="viewElementLinkTarget" type="class">
+   <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+   <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+</xml-java-binding-schema>

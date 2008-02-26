@@ -1,0 +1,16 @@
+<!ELEMENT introDescriptor (viewElement)*>
+<!ELEMENT viewElement EMPTY>
+<!ELEMENT viewElement (viewElementLink)*>
+<!ATTLIST viewElement id ID #REQUIRED>
+<!ATTLIST viewElement parentId NMTOKEN #REQUIRED>
+<!ATTLIST viewElement title CDATA #REQUIRED>
+<!ATTLIST viewElement type CDATA #REQUIRED>
+<!ATTLIST viewElement folder (true|false) #REQUIRED>
+<!ATTLIST viewElement lastModificationDate CDATA #IMPLIED>
+<!ATTLIST viewElement videoFileName CDATA #REQUIRED>
+<!ELEMENT viewElementLink (viewElementLinkTarget)*>
+<!ATTLIST viewElementLink id NMTOKEN #REQUIRED>
+<!ELEMENT viewElementLinkTarget EMPTY>
+<!ATTLIST viewElementLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewElementId NMTOKEN #REQUIRED>

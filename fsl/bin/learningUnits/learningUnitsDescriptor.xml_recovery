@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<learningUnitsDescriptor>
+  <learningUnitDescriptor id="Test" title="Test" version="1" path="./learningUnits/Test" authors="cf" learningUnitViewManagers="freestyleLearningGroup-Intro freestyleLearningGroup-Text-Study freestyleLearningGroup-CheckUp freestyleLearningGroup-SlideShow freestyleLearningGroup-MediaPool"/>
+  <learningUnitDescriptor id="Finanzierungsrechnung" title="Finanzierungsrechnung als Grundlage des Controllings" enrollmentId="1023690903491" version="1" path="./learningUnits/Finanzierungsrechnung" authors="Heinz Lothar Grob" learningUnitViewManagers="freestyleLearningGroup-Intro freestyleLearningGroup-Text-Study freestyleLearningGroup-LearningByDoing freestyleLearningGroup-CaseStudy freestyleLearningGroup-CheckUp freestyleLearningGroup-SlideShow freestyleLearningGroup-MediaPool freestyleLearningGroup-Notes"/></learningUnitsDescriptor>

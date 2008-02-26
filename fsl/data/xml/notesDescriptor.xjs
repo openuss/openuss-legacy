@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.notes.data.xmlBinding"/> 
+  <element name="notesDescriptor" type="class" root="true">
+    <content>
+      <element-ref name="note" collection="list" property="notes"/>
+    </content>
+  </element>
+  <element name="note" type="class">
+    <content>
+      <element-ref name="noteLink" collection="list" property="noteLinks"/>
+    </content>
+    <attribute name="targetViewManagerId" property="targetViewManagerId"/>
+    <attribute name="targetViewElementId" property="targetViewElementId"/>
+  </element>
+  <element name="noteLink" type="class">
+    <content>
+      <element-ref name="noteLinkTarget" collection="list" property="noteLinkTargets"/>
+    </content>
+  </element>
+  <element name="noteLinkTarget" type="class">
+    <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+    <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+</xml-java-binding-schema>

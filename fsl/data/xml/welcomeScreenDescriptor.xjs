@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearning.homeCore.welcomeScreen.data.xmlBinding"/> 
+  <element name="welcomeScreenDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="welcomeElement" collection="list" property="welcomeElements"/>
+    </content>
+  </element>
+  <element name="welcomeElement" type="class">
+    <attribute name="folder" convert="boolean"/>
+    <content>
+       <element-ref name="welcomeElementLink" collection="list" property="welcomeElementLinks"/>
+    </content>
+  </element>
+  <element name="welcomeElementLink" type="class">
+    <content>
+      <element-ref name="welcomeElementLinkTarget" collection="list" property="welcomeElementLinkTargets"/>
+    </content>
+  </element>
+  <element name="welcomeElementLinkTarget" type="class">
+    <attribute name="targetViewManagerId" property="targetLearningUnitViewManagerId"/>
+    <attribute name="targetViewElementId" property="targetLearningUnitViewElementId"/>
+  </element>
+</xml-java-binding-schema>

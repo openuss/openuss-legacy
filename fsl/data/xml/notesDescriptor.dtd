@@ -1,0 +1,11 @@
+<!ELEMENT notesDescriptor (note)*>
+<!ELEMENT note  (noteLink)*>
+<!ATTLIST note targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST note targetViewElementId NMTOKEN #REQUIRED>
+<!ATTLIST note htmlFileName CDATA #IMPLIED>
+<!ELEMENT noteLink (noteLinkTarget)*>
+<!ATTLIST noteLink id NMTOKEN #REQUIRED>
+<!ELEMENT noteLinkTarget EMPTY>
+<!ATTLIST noteLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST noteLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST noteLinkTarget targetViewElementId NMTOKEN #REQUIRED>

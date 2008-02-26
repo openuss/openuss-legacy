@@ -1,0 +1,43 @@
+<!ELEMENT checkUpDescriptor (viewElement)*>
+<!ELEMENT viewElement (viewElementLink*, gapText*, multipleChoice*, relator*)>
+<!ATTLIST viewElement id ID #REQUIRED>
+<!ATTLIST viewElement parentId NMTOKEN #REQUIRED>
+<!ATTLIST viewElement title CDATA #REQUIRED>
+<!ATTLIST viewElement type CDATA #REQUIRED>
+<!ATTLIST viewElement lastModificationDate CDATA #IMPLIED>
+<!ATTLIST viewElement folder (true|false) #REQUIRED>
+<!ELEMENT viewElementLink (viewElementLinkTarget)*>
+<!ATTLIST viewElementLink id NMTOKEN #REQUIRED>
+<!ELEMENT viewElementLinkTarget EMPTY>
+<!ATTLIST viewElementLinkTarget targetLearningUnitId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewManagerId NMTOKEN #REQUIRED>
+<!ATTLIST viewElementLinkTarget targetViewElementId NMTOKEN #REQUIRED>
+<!ELEMENT gapText (gapTextGap)*>
+<!ATTLIST gapText htmlFormularFileName CDATA #IMPLIED>
+<!ELEMENT gapTextGap (gapTextSolution)*>
+<!ATTLIST gapTextGap id NMTOKEN #REQUIRED>
+<!ATTLIST gapTextGap ignoreCase (true|false) #REQUIRED>
+<!ELEMENT gapTextSolution (#PCDATA)>
+<!ELEMENT multipleChoice (multipleChoiceAnswer)*>
+<!ELEMENT multipleChoiceAnswer EMPTY>
+<!ATTLIST multipleChoice questionHtmlFileName CDATA #IMPLIED>
+<!ATTLIST multipleChoice rightAnswersIds NMTOKENS #REQUIRED>
+<!ATTLIST multipleChoiceAnswer id NMTOKEN #REQUIRED>
+<!ATTLIST multipleChoiceAnswer htmlFileName CDATA #IMPLIED>
+<!ELEMENT relator (relatorStartPoint*, relatorEndPoint*, relatorRelation*)>
+<!ATTLIST relator questionHtmlFileName CDATA #IMPLIED>
+<!ELEMENT relatorStartPoint EMPTY>
+<!ATTLIST relatorStartPoint id NMTOKEN #REQUIRED>
+<!ATTLIST relatorStartPoint htmlFileName CDATA #IMPLIED>
+<!ELEMENT relatorEndPoint EMPTY>
+<!ATTLIST relatorEndPoint id NMTOKEN #REQUIRED>
+<!ATTLIST relatorEndPoint htmlFileName CDATA #IMPLIED>
+<!ELEMENT relatorRelation EMPTY>
+<!ATTLIST relatorRelation id NMTOKEN #REQUIRED>
+<!ATTLIST relatorRelation startPointId NMTOKEN #REQUIRED>
+<!ATTLIST relatorRelation endPointsIds NMTOKENS #REQUIRED>
+
+
+
+
+

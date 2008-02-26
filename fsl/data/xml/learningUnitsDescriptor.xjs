@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearning.homeCore.learningUnitsManager.data.xmlBinding"/> 
+  <element name="learningUnitsDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="learningUnitDescriptor" collection="list" property="learningUnitsDescriptors"/>
+    </content>
+  </element>
+  <element name="learningUnitDescriptor" type="class">
+    <attribute name="folder" convert="boolean"/>
+  </element>  
+</xml-java-binding-schema>

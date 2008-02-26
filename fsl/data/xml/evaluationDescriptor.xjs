@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<xml-java-binding-schema version="1.0-ea">
+  <options package="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.checkUp.data.xmlBinding"/> 
+  <element name="evaluationsDescriptor" type="class" root="true">
+    <content>
+       <element-ref name="evaluationDescriptor" collection="list" property="evaluationsDescriptors"/>
+    </content>
+  </element>
+  <element name="evaluationRun" type="class">
+  </element>
+</xml-java-binding-schema>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE learningUnitViewManagersDescriptor SYSTEM "learningUnitViewManagersDescriptor.dtd">
+
+<learningUnitViewManagersDescriptor>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Intro" title="Intro" version="1.0" directoryName="intro" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.intro.FLGIntroManager" authors="Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Text-Study" title="Text Study" version="1.0" directoryName="textStudy" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.textStudy.FLGTextStudyManager" authors="Norman Lahme"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-LearningByDoing" title="Learning by Doing" version="1.0" directoryName="learningByDoing" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.learningByDoing.FLGLearningByDoingManager" authors="Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-CaseStudy" title="Case Study" version="1.0" directoryName="caseStudy" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.caseStudy.FLGCaseStudyManager" authors="Norman Lahme"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-CheckUp" title="Check Up" version="1.0" directoryName="checkUp" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.checkUp.FLGCheckUpManager" authors="Norman Lahme, Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-SlideShow" title="Slide Show" version="1.0" directoryName="slideShow" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.slideShow.FLGSlideShowManager" authors="Norman Lahme"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Glossary" title="Glossary" version="1.0" directoryName="glossary" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.glossary.FLGGlossaryManager" authors="Norman Lahme, Jan Hermans"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-MediaPool" title="Media Pool" version="1.0" directoryName="mediaPool" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.mediaPool.FLGMediaPoolManager" authors="Norman Lahme, Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Mindmaps" title="Mindmaps" version="1.0" directoryName="mindmaps" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.mindmaps.FLGMindmapsManager" authors="Joerg Brenninkmeyer"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Notes" title="Notes Manager" version="1.0" directoryName="notes" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.notes.FLGNotesManager" authors="Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Audio" title="Audio Notes" version="1.0" directoryName="audio" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.FLGAudioManager" authors="Gunnar Thies"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-QuestionAndAnswer" title="Question And Answer" version="1.0" directoryName="questionAndAnswer" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.questionAndAnswer.FLGQuestionAndAnswerManager" authors="Norman Lahme, Mirko Wahn"/>
+    <learningUnitViewManagerDescriptor id="freestyleLearningGroup-Selector" title="Selector" version="1.0" directoryName="selector" className="freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.selector.FLGSelectorManager" authors="Carsten Fiedler"/>
+</learningUnitViewManagersDescriptor>
