@@ -3,6 +3,7 @@ package org.openuss;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -52,10 +53,13 @@ import org.openuss.security.UserProfile;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.seminarpool.ConditionType;
 import org.openuss.seminarpool.CourseGroup;
+import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocation;
+import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarCondition;
 import org.openuss.seminarpool.SeminarUserRegistration;
 import org.openuss.seminarpool.Seminarpool;
+import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolDao;
 import org.openuss.seminarpool.SeminarpoolStatus;
 
@@ -99,6 +103,8 @@ public class TestUtility {
 	private MembershipService membershipService;
 
 	private OrganisationService organisationService;
+	
+	private SeminarpoolAdministrationService seminarpoolAdministrationService;
 
 	private User defaultUser;
 
@@ -801,6 +807,24 @@ public class TestUtility {
 		return seminarpool;
 	}
 	
+	public void createCourseInSeminarpool(Long seminarpoolId, Long courseId){
+		CourseSeminarpoolAllocationInfo seminarpoolAllocation = new CourseSeminarpoolAllocationInfo();
+		seminarpoolAllocation.setSeminarpoolId(seminarpoolId);
+		seminarpoolAllocation.setCourseId(courseId);
+		
+		CourseGroupInfo courseGroup = new CourseGroupInfo();
+		courseGroup.setIsDefault(true);
+		courseGroup.setIsTimeSet(false);
+		courseGroup.setCapacity(2000);
+		courseGroup.setName("Unique Name");
+		
+		Collection coll = new ArrayList();
+		coll.add(courseGroup);
+		
+		this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll);
+		
+	}
+	
 	public SeminarUserRegistration createSeminarUserRegistration(){
 		SeminarUserRegistration seminarUserRegistration = SeminarUserRegistration.Factory.newInstance();
 		seminarUserRegistration.setNeededSeminars(3);
@@ -992,6 +1016,14 @@ public class TestUtility {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+	
+	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
+		return seminarpoolAdministrationService;
+	}
+
+	public void setSeminarpoolAdministrationService(SeminarpoolAdministrationService seminarpoolAdministrationService) {
+		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
 	}
 
 	public OrganisationService getOrganisationService() {

@@ -60,7 +60,7 @@ public class CourseSeminarpoolAllocationDaoImpl
     	if(courseSeminarpoolAllocationInfo != null && courseSeminarpoolAllocationInfo.getId() != null){
     		courseSeminarpoolAllocation = this.load(courseSeminarpoolAllocationInfo.getId());
     	}
-    	if(courseSeminarpoolAllocationInfo == null){
+    	if(courseSeminarpoolAllocation == null){
     		courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
     	}
     	return courseSeminarpoolAllocation;

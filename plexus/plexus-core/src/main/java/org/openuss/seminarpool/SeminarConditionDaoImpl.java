@@ -51,7 +51,7 @@ public class SeminarConditionDaoImpl
         if(seminarConditionInfo != null && seminarConditionInfo.getId() != null){
         	seminarCondition = this.load(seminarConditionInfo.getId());
         }
-        if(seminarConditionInfo == null){
+        if(seminarCondition == null){
         	seminarCondition = SeminarCondition.Factory.newInstance();
         }
         return seminarCondition;

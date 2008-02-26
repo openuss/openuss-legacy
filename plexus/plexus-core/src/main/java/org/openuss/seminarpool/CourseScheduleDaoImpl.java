@@ -51,7 +51,7 @@ public class CourseScheduleDaoImpl
         if(courseScheduleInfo != null && courseScheduleInfo.getId() != null){
         	courseSchedule = this.load(courseScheduleInfo.getId());
         }
-        if(courseScheduleInfo == null){
+        if(courseSchedule == null){
         	courseSchedule = CourseSchedule.Factory.newInstance();
         }
         return courseSchedule;
