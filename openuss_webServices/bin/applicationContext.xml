@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<!-- beans for user authentification -->
+	<bean id="user" class="openuss.spring.resources.User" singleton="false">
+		<property name="username" value="author"/>
+		<property name="password" value="author"/>
+	</bean>
+	<bean id="AuthenticationService"
+		class="openuss.spring.services.impl.AuthenticationServiceImpl">
+		<property name="user" ref="user" />
+	</bean>
+	
+	<!-- beans for downloading contents.xml file for fsl synchronization -->
+	<bean id="DownloadContentsXmlFileService" 
+		class="openuss.spring.services.impl.DownloadContentsXmlFileServiceImpl"/>
+	
+	<bean id="UploadLearningUnitViewService"
+		class="openuss.spring.services.impl.UploadLearningUnitViewServiceImpl"/>
+		
+	<bean id="DownloadLearningUnitViewService"
+		class="openuss.spring.services.impl.DownloadLearningUnitViewServiceImpl"/>
+	
+</beans>

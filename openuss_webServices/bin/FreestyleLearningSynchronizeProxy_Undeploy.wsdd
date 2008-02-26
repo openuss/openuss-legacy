@@ -1,0 +1,50 @@
+<undeployment xmlns="http://xml.apache.org/axis/wsdd/" 
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" 
+	 xmlns:ns="urn:FileUploadService">
+
+	<service name="FreestyleLearningSynchronizeProxy" provider="java:RPC">
+	
+		<!-- declare class and method -->
+		<parameter name="className" value="openuss.webServices.FreestyleLearningSynchronizeProxy"/>
+		<parameter name="allowedMethods" value="*"/>
+		
+		<!-- declare types for operations -->	
+		<operation name="authenticateUser" qname="ns:authenticateUser">
+			<parameter name="username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+		</operation>
+		
+		<operation name="uploadLearningUnitView" qname="ns:uploadLearningUnitView">
+			<parameter name="username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="enrollmentId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitViewId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="handler" type="ns:DataHandler"/>
+		</operation>
+		
+		<operation name="downloadLearningUnitView" qname="ns:downloadLearningUnitView">
+			<parameter name="username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="enrollmentId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitViewId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+		</operation>
+	
+		<operation name="downloadContentsXmlFile" qname="ns:downloadContentsXmlFile">
+			<parameter name="username" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="password" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="enrollmentId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+			<parameter name="learningUnitViewId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+		</operation>
+		
+		<!-- type mapping for transfering files -->
+		<typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory"
+			serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory"
+			languageSpecificType="java:javax.activation.DataHandler" 
+			qname="ns:DataHandler" encodingStyle="http://schema.xmlsoap.org/soap/encoding/"
+		/>
+
+	</service>
+</undeployment>
