@@ -68,7 +68,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.sourceforge.fck-faces</groupId>
+			<groupId>net.sf.fck-faces</groupId>
 			<artifactId>fck-faces</artifactId>
 		</dependency>
 
