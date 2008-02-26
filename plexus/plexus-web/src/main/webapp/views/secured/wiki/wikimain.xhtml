@@ -95,12 +95,18 @@
 						</o:block>
 		  			</c:if>
 		  			<c:if test="${not empty wiki_current_site_version.text}">
-		  				<!--  <c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose> -->
-		  				
 		  				<c:if test="${wiki_current_site_version.readOnly}">
 	            			<o:block label="#{msg.wiki_main_header_site_read_only}" styleClass="form_box">
 	  							<p class="content_font_normal">	  								
-	  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail_assistant}" styleClass="content_font_normal" />
+	  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+								</p>
+	  						</o:block>
+	  					</c:if>
+	  					
+	  					<c:if test="${wiki_current_site_version.stable}">
+	            			<o:block label="#{msg.wiki_main_header_site_stable}" styleClass="form_box">
+	  							<p class="content_font_normal">	  								
+	  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
 								</p>
 	  						</o:block>
 	  					</c:if>

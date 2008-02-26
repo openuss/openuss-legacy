@@ -115,7 +115,7 @@ public class WikiMainPage extends AbstractWikiPage{
 		//attach Version if not newest
 		WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
 		if(siteVersionInfo.getId() != wikiSiteInfo.getId()){
-			siteTitle.append(" (Version "+ wikiSiteInfo.getId() +" )");
+			siteTitle.append(" (Version "+ siteVersionInfo.getId() +")");
 		}
 		
 		return siteTitle.toString();
