@@ -95,7 +95,6 @@ public class UserProfilePage extends BasePage{
 			permitRolesImageReadPermission(imageFile);
 			
 			user.setImageId(imageFile.getId());
-			user.setImageId(imageFile.getId());
 
 			removeSessionBean(Constants.UPLOADED_FILE);
 			uploadFileManager.removeDocument(uploaded);
