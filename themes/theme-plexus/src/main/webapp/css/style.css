@@ -2167,7 +2167,8 @@ div .space_20above {
 
 #messages .messagesInfo .content_box .content_normal {
 	margin: 0;
-	padding: 10px 10px 0 5px;
+	padding: 5px 5px 5px 45px;
+	background: url(../img/messages_ok.png) no-repeat 10px center;
 	border-width: 0 1px 0 1px;
 	border-right-color: #b3b3b3;
 	border-left-color: #b3b3b3;
@@ -2178,8 +2179,8 @@ div .space_20above {
 
 #messages .messagesInfo .content_box .content_normal .info {
 	margin: 0 0 0 5px;
-	padding: 10px 5px 10px 45px;
-	background: url(../img/messages_ok.png) no-repeat left center;
+	padding: 0;
+	background-color: #dfeec3;
 	color: #000;	
 }
 
@@ -2236,8 +2237,8 @@ div .space_20above {
 
 #messages .messagesError .content_box .content_normal {
 	margin: 0;
-	padding: 10px 10px 0 5px;
-	
+	padding: 5px 5px 5px 45px;
+	background: url(../img/messages_error.png) no-repeat 10px center;
 	border-width: 0 1px 0 1px;
 	border-right-color: #a61f1f;
 	border-left-color: #a61f1f;
@@ -2247,9 +2248,9 @@ div .space_20above {
 }
 
 #messages .messagesError .content_box .content_normal .error {
-	margin: 0 0 0 5px;
-	padding: 10px 5px 10px 45px;
-	background: url(../img/messages_error.png) no-repeat left center;
+	margin: 0;
+	padding: 0;
+	background-color: #ff7272;
 	color: #000;	
 }
 
