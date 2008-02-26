@@ -259,7 +259,7 @@ public class WikiServiceImpl
 		List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
 		for (WikiSiteInfo exportWikiSite : exportWikiSites) {
 			
-			List<WikiSiteInfo> exportWikiSiteVersions = this.findWikiSiteVersionsByWikiSite(exportWikiSite.getWikiSiteId());
+			List<WikiSiteInfo> exportWikiSiteVersions = findWikiSiteVersionsByWikiSite(exportWikiSite.getWikiSiteId());
 			for (WikiSiteInfo exportWikiSiteVersion : exportWikiSiteVersions) {
 				WikiSiteContentInfo exportWikiSiteVersionContent = getWikiSiteContent(exportWikiSiteVersion.getId());
 				importWikiSiteContent(importDomainId, exportWikiSiteVersionContent);
@@ -267,6 +267,10 @@ public class WikiServiceImpl
 		}
 	}
 	
+	/**
+	 * Deletes all WikiSites that refer to a specific DomainObject. 
+	 * @param deleteDomainId ID of the specific DomainObject.
+	 */
 	@SuppressWarnings("unchecked")
 	private void deleteAllWikiSites(Long deleteDomainId) {
 		List<WikiSiteInfo> oldImportWikiSites = findWikiSitesByDomainObject(deleteDomainId);
@@ -275,6 +279,11 @@ public class WikiServiceImpl
 		}
 	}
 	
+	/**
+	 * Clones existing WikiSite and imports it to a specific DomainObject.
+	 * @param importDomainId ID of the specific DomainObject.
+	 * @param exportWikiSiteContent Exported WikiSite.
+	 */
 	private void importWikiSiteContent(Long importDomainId, WikiSiteContentInfo exportWikiSiteContent) {
 		WikiSiteContentInfo importWikiSiteContent = new WikiSiteContentInfo(exportWikiSiteContent);
 		importWikiSiteContent.setId(null);
