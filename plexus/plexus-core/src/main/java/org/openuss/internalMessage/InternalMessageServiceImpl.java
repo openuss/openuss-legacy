@@ -52,6 +52,7 @@ public class InternalMessageServiceImpl
     	User user = getSecurityService().getCurrentUser();
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
         InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
+        System.out.println("markiere als gelesen: " + message.getContent());
         MessageStatus messageStatus = null;
         for(MessageStatus messageStatusCandidate : message.getRecipients()){
         	if(messageStatusCandidate.getRecipient() == imCenter){
@@ -62,6 +63,8 @@ public class InternalMessageServiceImpl
         if(messageStatus==null)
         	throw new Exception("Message not found");
         messageStatus.setMessageRead(true);
+        getMessageStatusDao().update(messageStatus);
+        getInternalMessageDao().update(message);
     }
 
     /**
@@ -135,7 +138,10 @@ public class InternalMessageServiceImpl
 		InternalMessageCenter sender = getInternalMessageCenterDao()
 				.findByUser(getUserDao().load(messageInfo.getSenderId()));
 		if(sender == null){
-			sender = getInternalMessageCenterDao().create(getUserDao().load(messageInfo.getSenderId()));
+			sender = getInternalMessageCenterDao().findByUser(getSecurityService().getCurrentUser());
+		}
+		if(sender == null){
+			sender = getInternalMessageCenterDao().create(getSecurityService().getCurrentUser());
 		}
 		message.setSender(sender);
 		sender.getSentInternalMessage().add(message);
@@ -157,5 +163,21 @@ public class InternalMessageServiceImpl
     	}
     	getInternalMessageDao().update(message);
     }
+
+	@Override
+	protected int handleGetNumberOfUnreadMessages() throws Exception {
+		List<InternalMessageInfo> list = this.getAllReceivedInternalMessages();
+		int unreadMessages = 0;
+		for(InternalMessageInfo imInfo : list){
+			for(InternalMessageRecipientsInfo imrecInfo : imInfo.getInternalMessageRecipientsInfos()){
+				if(imrecInfo.getRecipientId().equals(getSecurityService().getCurrentUser().getId())){
+					if(!imrecInfo.isRead()){
+						unreadMessages++;
+					}
+				}
+			}
+		}
+		return unreadMessages;
+	}
 
 }
