@@ -249,10 +249,11 @@ public class WikiServiceImpl
 
 	@SuppressWarnings("unchecked")
 	@Override
+
 	protected void handleImportWikiVersions(Long importDomainId, Long exportDomainId) throws Exception {
 		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
 		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
-		
+
 		deleteAllWikiSites(importDomainId);
 		
 		List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
@@ -282,5 +283,24 @@ public class WikiServiceImpl
 		
 		saveWikiSite(importWikiSiteContent);
 	}
+
+	@Override
+	protected WikiSiteInfo handleGetNewestWikiSite(Long wikiSiteId)
+			throws Exception {
+		
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+    	WikiSite site = getWikiSiteDao().load(wikiSiteId);
+    	Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
+    	
+    	String query = "from org.openuss.wiki.WikiSiteVersion as f where f.wikiSite = ? order by f.creationDate desc";
+    	List<WikiSiteInfo> list = getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, query, site);
+    	if (list.isEmpty()) {
+    		return null;
+    	} else {
+    		WikiSiteInfo wikiSite = list.get(0);
+    		return wikiSite;
+    	}		
+	}
+
 
 }

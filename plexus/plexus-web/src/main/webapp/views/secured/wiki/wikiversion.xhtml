@@ -52,12 +52,15 @@
 					
 					<t:column>
 						<plexus:commandSortHeader columnName="note"> #{msg['wiki_version_column_note']} </plexus:commandSortHeader>
+						<o:link value="/views/secured/wiki/wikimain.faces">
+							<f:param value="#{entry.id}" name="versionId" />
 						<h:outputText value="#{entry.note}"/>
+						</o:link>
 					</t:column>	
 					
 					<t:column>
 						<plexus:commandSortHeader columnName="stable"> #{msg['wiki_version_column_stable']} </plexus:commandSortHeader>
-						<h:graphicImage value="/images/wiki/status_ok.png" rendered="#{entry.stable==true}"/>
+						<h:graphicImage value="/images/wiki/status_ok.png" rendered="#{entry.stable}"/>
 					</t:column>	
 					
 					<t:column>

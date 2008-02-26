@@ -95,7 +95,7 @@
 						</o:block>
 		  			</c:if>
 		  			<c:if test="${not empty wiki_current_site_version.text}">
-		  				<c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose>
+		  				<!--  <c:choose><c:when test="${wiki_current_site_version.name != 'index'}"><c:set var="lbl" value="${wiki_current_site_version.name}"/></c:when><c:otherwise><c:set var="lbl" value="${msg.wiki_index_page_readable}"/></c:otherwise></c:choose> -->
 		  				
 		  				<c:if test="${wiki_current_site_version.readOnly}">
 	            			<o:block label="#{msg.wiki_main_header_site_read_only}" styleClass="form_box">
@@ -105,13 +105,12 @@
 	  						</o:block>
 	  					</c:if>
 		  				
-		                <!-- ${lbl} -->
-		                <o:block label="#{lbl}">
+		                <o:block label="#{views$secured$wiki$wikimain.siteTitle}">
 		                    <div class="wiki_content"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}"></h:outputText></div>
-		                </o:block>                  
+		                </o:block>
+		                                  
 		                <o:block>
-		                    
-		                    <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >	
+		                   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >	
 		                    	<h:commandButton 
 		                        		value="${msg.wiki_main_button_edit}" 
 		                        		action="wiki_edit" 
@@ -168,7 +167,8 @@
 								value="${msg.wiki_main_button_showStable}"
 								action="#{views$secured$wiki$wikimain.showStable}" 
 								immediate="true" 
-								styleClass="button"/>
+								styleClass="button"
+								rendered="#{views$secured$wiki$wikimain.hasStableVersion}" />
 							
 							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 								<c:if test="${not wiki_current_site_version.stable}">
