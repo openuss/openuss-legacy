@@ -38,7 +38,8 @@
 		   		var="bean" 
 		   		rows="30"  
 		   		label="#{msg['admin_properties_heading']}"
-		   		columnClasses="col_max_left, col_max_left, col_max_left, col_min_left">
+		   		columnClasses="col_max_left, col_max_left, col_max_left, col_min_left"
+		   		infoText="#{msg.table_info_text_groups}">
 				<t:column>
 					<plexus:commandSortHeader columnName="name">
 						<h:outputText value="#{msg['admin_groups_colheader_name']}"/>

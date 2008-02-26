@@ -54,13 +54,12 @@
 				<div class="footer_normal_right_bg" />
 			</div>
 		</div>
-	</c:if>
-	<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
+	</c:if>	
+	<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
 		<o:block>	
-			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">	
-				<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false"/>
-			</c:if>
-		</o:block>
+			<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}"
+		 	escape="false"/>
+		 </o:block>
 	</c:if>
 		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>

@@ -14,7 +14,8 @@
     	value="views$secured$lecture$auth$universitymembers.members" 
     	columnClasses="col_max_left, col_min_left, col_min_left, col_commands"
     	var="bean" 
-    	rows="20">  
+    	rows="20"
+    	infoText="#{msg.table_info_text_users}">  
 		<t:column>
 			<plexus:commandSortHeader columnName="username">
    				<h:outputText value="#{msg['user_username']}"/>

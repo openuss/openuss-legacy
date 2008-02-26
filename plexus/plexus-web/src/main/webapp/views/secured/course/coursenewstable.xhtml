@@ -14,7 +14,8 @@
 		id="newstable"
 		columnClasses="col_max_left, col_min_left, col_date, col_date, col_commands"
 		value="views$secured$course$coursenews.data"
-		var="item" rows="20">
+		var="item" rows="20"
+		infoText="#{msg.table_info_text_news}">
 	
 		<t:column>
 			<plexus:commandSortHeader columnName="title">#{msg.news_colheader_name}</plexus:commandSortHeader>

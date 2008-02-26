@@ -39,7 +39,8 @@
 			    	value="views$secured$course$chatmain.rooms" 
 			   	 	columnClasses="col_max_left, col_min_left, col_min_left, col_commands"
 			    	var="room" 
-			    	rows="20">  
+			    	rows="20"
+			    	infoText="#{msg.table_info_text_chatrooms}">  
 					<t:column>
 						<plexus:commandSortHeader columnName="name"> #{msg['chat_rooms_topic']} </plexus:commandSortHeader>
 						<a class="chat_room_enter" href="javascript:openChat(#{room.id});" title="#{msg['chat_rooms_enter']}">

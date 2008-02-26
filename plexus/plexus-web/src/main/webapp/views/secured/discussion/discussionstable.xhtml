@@ -11,7 +11,8 @@
       
     <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" 
     	value="views$secured$discussion$discussions.data" var="topic" rows="20"
-    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
+    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands"
+    	infoText="#{msg.table_info_text_threads}">  
       
 		<t:column>
 			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.png"/>
