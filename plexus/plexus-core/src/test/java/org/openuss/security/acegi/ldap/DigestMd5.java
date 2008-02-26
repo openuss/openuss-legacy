@@ -57,11 +57,11 @@ public class DigestMd5 {
                 envClone.put(Context.SECURITY_CREDENTIALS, "******");
             }
             System.out.println("Creating InitialDirContext with environment " + envClone);
-            
-            
+                        
         	
         	DirContext ctx = new InitialDirContext(env);
-            System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer").toString());
+        	System.out.println("NameInNamespace: " + ctx.getNameInNamespace());
+        	System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer").toString());
             System.out.println();
             System.out.println(ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null).get("mail").toString().substring(6));
         	
@@ -330,9 +330,9 @@ public class DigestMd5 {
             System.exit(1);
         }
     	
-//    	authenticate(args[0]);
+    	authenticate(args[0]);
 //    	testSetUpProviderUrl(" LDAP:// wwusv1.uni-muenster. DE://.:://///////// ", new Integer(389), "//////dc=uni-muenster, dc=de");
-    	testExtendedLdapUserDetailsMapper(args[0]);
+//    	testExtendedLdapUserDetailsMapper(args[0]);
 	}	
 }
 

@@ -39,9 +39,6 @@ import org.apache.commons.logging.LogFactory;
 * @see AbstractLdapAuthenticator
 */
 public class ActiveDirectoryBindAuthenticator extends AbstractLdapAuthenticator {
-    //~ Instance fields ================================================================================================
-
-    private LdapUserDetailsMapper userDetailsMapperTest = new LdapUserDetailsMapper();
 
 	//~ Static fields/initializers =====================================================================================
 
@@ -55,11 +52,7 @@ public class ActiveDirectoryBindAuthenticator extends AbstractLdapAuthenticator 
     * @param initialDirContextFactory
     */
    public ActiveDirectoryBindAuthenticator(InitialDirContextFactory initialDirContextFactory) {
-       super(initialDirContextFactory);
-       userDetailsMapperTest.setRoleAttributes(new String[]{"memberOf"});
-       setUserDetailsMapper(userDetailsMapperTest);
-       
-       
+       super(initialDirContextFactory);       
    }
 
    //~ Methods ========================================================================================================
