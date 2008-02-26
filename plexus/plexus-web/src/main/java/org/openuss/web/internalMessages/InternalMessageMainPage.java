@@ -103,18 +103,34 @@ public class InternalMessageMainPage extends BasePage {
 		return Constants.OPENUSS4US_MESSAGECENTER;
 	}
 	
-	public String linkToRecipient(){
-//		profile.setId(this.outboxData.getRowData().getI;
-//		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}	
+	public String answerMessage(){
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());
+		profile.setId(this.inboxData.getRowData().getSenderId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
+	}
+	
+	public String readSentMessage(){
+		InternalMessageInfo imInfo = this.outboxData.getRowData();
+		return this.readMessage(imInfo);
+	}
+	
+	public String readReceivedMessage(){
+		InternalMessageInfo imInfo = this.inboxData.getRowData();
+		internalMessageService.setRead(imInfo);
+		return this.readMessage(imInfo);
+	}
+	
+	private String readMessage(InternalMessageInfo imInfo){
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, imInfo);
+		return Constants.OPENUSS4US_MESSAGECENTER_READMSG;
+	}
 
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		addPageCrumb();
-		markAllAsRead();
 	}
 
 	private void addPageCrumb() {
@@ -126,16 +142,6 @@ public class InternalMessageMainPage extends BasePage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-	public void markAllAsRead(){
-		List<InternalMessageInfo> list = internalMessageService.getAllReceivedInternalMessages();
-		for(InternalMessageInfo im : list){
-			logger.debug("mark as read: " + im.getId() + " " + im.getSubject());
-			logger.debug("sender: " + im.getSenderDisplayName());
-			logger.debug("recipient: " + im.getInternalMessageRecipientsInfos().get(0).getRecipientDisplayName());
-			internalMessageService.setRead(im);
-		}
-	}
-
 	public InternalMessageService getInternalMessageService() {
 		return internalMessageService;
 	}

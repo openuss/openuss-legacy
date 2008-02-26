@@ -12,6 +12,7 @@ import org.openuss.buddylist.*;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.internalMessage.InternalMessageInfo;
 import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.BasePage;
@@ -103,6 +104,14 @@ public class BuddylistMainPage extends BasePage {
 		setSessionBean(Constants.OPENUSS4US_CHOSEN_BUDDYINFO, buddyInfo);
 		return Constants.OPENUSS4US_DELETEBUDDY;
 	}
+	
+	public String sendMessage(){
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());
+		profile.setId(this.data.getRowData().getUserId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
+	}
+
 
 	public void setBuddyService(BuddyService buddyService) {
 		this.buddyService = buddyService;

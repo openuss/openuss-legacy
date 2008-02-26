@@ -39,8 +39,11 @@
 			<ui:include src="inboxTable.xhtml" />
 			<ui:include src="outboxTable.xhtml" />
    			 	<o:block>
-				<!-- BUTTONS -->
-				Buttons: (New Message?) (Search User?)
+				<h:commandButton id="back" action="view:backward" value="#{msg.back}"
+				styleClass="button" />
+				<h:commandButton id="send_message" action="view:backward"
+				value="#{msg.user_send_internalmessage}" title="#{msg.user_send_internalmessage}"
+				styleClass="button" />
 				</o:block>
 	 		</h:form> 
   		</ui:define>

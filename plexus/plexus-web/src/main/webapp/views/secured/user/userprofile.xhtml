@@ -39,8 +39,8 @@
 			<h:form>
 				<o:block>
 					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button"/>
-					<h:commandButton action="view:backward" value="#{msg.user_send_internalmessage}" styleClass="button"/>
-					<h:commandButton id="doit" action="openuss4us_addbuddy" value="#{msg.user_profile_addbuddy}" styleClass="button"/>
+					<h:commandButton action="#{views$secured$internalmessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalmessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
+					<h:commandButton id="doit" action="openuss4us_addbuddy" value="#{msg.user_profile_addbuddy}" styleClass="button" rendered="#{views$secured$internalmessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
 				</o:block>
 			</h:form>
 			

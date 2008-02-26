@@ -35,17 +35,12 @@
 			<h:outputText value="#{inboxMessage.subject}"
 				styleClass="header_font_normal" />
 			<br />
-			#{fn:length(inboxMessage.content)}
-			#{fn:length(inboxMessage.content) gt 50}
-			<c:if test="#{fn:length(inboxMessage.content) le 50}">
-				<h:outputText
-					value="#{fn:substring(inboxMessage.content, 0, 50)}..."
-					syleClass="content_font_normal" />
-			</c:if>
-			<c:if test="#{fn:length(inboxMessage.content) gt 50}">
-				<h:outputText value="#{inboxMessage.content}"
-					syleClass="content_font_normal" />
-			</c:if>
+			<h:outputText value="#{fn:substring(inboxMessage.content, 0, 100)}..."
+				syleClass="content_font_normal"
+				rendered="#{fn:length(inboxMessage.content) gt 100}" />
+			<h:outputText value="#{inboxMessage.content}"
+				syleClass="content_font_normal"
+				rendered="#{fn:length(inboxMessage.content) le 100}" />
 		</t:column>
 		<t:column styleClass="col_post_date">
 			<plexus:commandSortHeader columnName="inboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
@@ -55,16 +50,20 @@
 			</h:outputText>
 		</t:column>
 		<t:column styleClass="col_commands">
-		<f:facet name="header">  
+			<f:facet name="header">  
 				#{msg.commands_header}
 			</f:facet>
-			<h:commandButton id="send_message" action="view:back"
+			<h:commandButton id="read_received_message" action="#{views$secured$internalmessages$messagecenter.readReceivedMessage}"
+				value="TODO: read" title="TODO: read" styleClass="button_remove" />
+			<br />
+			<h:commandButton id="send_message"
+				action="#{views$secured$internalmessages$messagecenter.answerMessage}"
 				value="#{msg.user_send_internalmessage}"
 				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
 			<br />
-			<h:commandButton id="remove_message" action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
-				value="delete" title="delete"
-				styleClass="button_remove" />
+			<h:commandButton id="remove_message"
+				action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
+				value="delete" title="delete" styleClass="button_remove" />
 		</t:column>
 	</plexus:dataTable>
 </ui:composition>

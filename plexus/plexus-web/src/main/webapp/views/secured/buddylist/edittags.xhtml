@@ -62,7 +62,9 @@
 					</t:column>
 				</plexus:dataTable>
 				<o:input entity="views$secured$buddylist$edittags" property="newTag"
-					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" />
+					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" required="true">
+					<f:validateLength minimum="3" />
+					</o:input>
 				<br /><div styleClass="content_font_normal">
 				<t:dataList 
 					id="usedTagsList"  
@@ -72,8 +74,11 @@
 					value="#{views$secured$buddylist$edittags.usedTags}"
 					rendered="#{not empty views$secured$buddylist$edittags.usedTags}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-						<a
+					
+						<a href="#"
 							onClick="javascript:document.getElementById('_id6:openuss4us_buddylist_edittags:newTag').value='#{aUsedTag}'">#{aUsedTag}</a>
+					<h:outputText value="," rendered="#{index + 1 lt rowCount}"/>
+				
 				</t:dataList></div>
 				</div>
 			</o:block>

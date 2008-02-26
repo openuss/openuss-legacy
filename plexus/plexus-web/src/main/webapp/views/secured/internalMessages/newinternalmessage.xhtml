@@ -7,7 +7,6 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:news="http://www.openuss.org/news/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
@@ -26,7 +25,7 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
-		<h:outputText value="#{msg['openuss4us_command_buddylist']}" />
+		<h:outputText value="#{msg['openuss4us_command_messagecenter']}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -36,32 +35,32 @@
 		<ui:include src="/views/commons/sidebar/default.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
+		<h:form id="openuss4us_messagecenter_newmessage"
+			enctype="multipart/form-data">
+			<o:block
+				label="#{msg['openuss4us_command_messagecenter_newmessage']}"
+				styleClass="form_box">
 
-			<ui:include src="buddytable.xhtml" />
+				<h:outputText value="#{showuser.firstName}"
+					styleClass="header_font_normal" />
+				<br />
+				<o:input entity="internalMessageInfo" property="subject"
+					id="internalMessageSubject" styleClass="field" maxlength="50"
+					required="true" />
+				<br />
+				<h:outputText value="#{msg.openuss4us_messagecenter_message}"
+					styleClass="header_font_normal" />
+				<o:input entity="internalMessageInfo" property="content"
+					type="textarea" styleClass="field_message" maxlength="2000" minlength="1" required="true">
+					<f:validateLength maximum="2000" /> <f:converter converterId="xssFilter"/> </o:input>
+			</o:block>
+
 			<o:block>
-				<!-- <plexus:dataTable
-					label="HARDCODED: ALL USED TAGS"
-					id="usedTagsTable"
-					value="views$secured$buddylist$edittags.usedTags" var="thisUsedTag"
-					styleClass="content_font_normal">
-					<t:column>
-						<h:outputText value="#{thisUsedTag} "
-							styleClass="content_font_normal" />
-					</t:column>
-				</plexus:dataTable>-->
-				<t:dataList 
-					id="usedTagsList"  
-					var="aUsedTag"
-					value="#{views$secured$buddylist$buddylist.usedTags}"
-					rendered="#{not empty views$secured$buddylist$buddylist.usedTags}"
-					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-						<h:outputText value="#{aUsedTag}"/>
-				</t:dataList>
-				</o:block>
-			<o:block>
-				<h:commandButton action="openuss4us_buddylist_requests"
-					value="#{msg.openuss4us_buddylist_button_requests}"
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button" immediate="true" />
+				<h:commandButton
+					action="#{views$secured$internalmessages$newinternalmessage.sendmessage}"
+					value="#{msg.openuss4us_buddylist_command_message_send}"
 					styleClass="button" />
 
 			</o:block>

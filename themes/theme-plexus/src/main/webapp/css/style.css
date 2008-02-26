@@ -1296,7 +1296,7 @@ ul {
 	padding: 0 0 0 10px;
 }
 
-.field_label {
+.field_label,.field_message_label {
 	display: block;
 	font-size: 8pt;
 	color: #000000;
@@ -1341,6 +1341,19 @@ ul {
 	display: block;
 }
 
+.field_message{
+	width: 500px;
+	height: 150px;
+	font-size: 9pt;
+	text-decoration: none;
+	color: #505050;
+	border: 1px solid #B4B4B4;
+	margin: 3px 0 0 10px;
+	display: block;
+	
+}
+	
+
 .field_inline,.pulldown_inline {
 	width: 500px;
 	font-size: 9pt;
@@ -1350,6 +1363,9 @@ ul {
 	margin: 1px 10px 0px 10px;
 	display: inline;
 }
+
+
+
 
 .dateField {
 	margin-left: 10px;
@@ -1367,7 +1383,7 @@ ul {
 	margin: 0 3px 0 0;
 }
 
-.field_error {
+.field_error,.field_message_error{
 	display: block;
 	font-size: 9pt;
 	color: #FF0000;
@@ -2178,4 +2194,9 @@ td.day weekend {
 	height:121px;
 	width:16.6667%;
 	padding: 0px 0px 0px 0px;
+}
+
+textarea.internalmessage {
+	width="200"
+	height="200"
 }

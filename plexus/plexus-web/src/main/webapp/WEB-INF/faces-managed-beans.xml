@@ -278,7 +278,20 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
+   <!-- INTERNAL MESSAGE BEANS -->
    
+     <managed-bean>
+        <managed-bean-name>internalMessageInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.internalMessage.InternalMessageInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>internalMessageRecipientsInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.internalMessage.InternalMessageRecipientsInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
     
     <!-- Schedule Beans -->
     

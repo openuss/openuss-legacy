@@ -30,7 +30,12 @@
 			</f:facet>
 			<h:outputText value="#{outboxMessage.subject}"
 				styleClass="header_font_normal" /><br />
-			<h:outputText value="#{outboxMessage.content}" syleClass="content_font_normal" />
+			<h:outputText value="#{fn:substring(outboxMessage.content, 0, 100)}..."
+				syleClass="content_font_normal"
+				rendered="#{fn:length(outboxMessage.content) gt 100}" />
+			<h:outputText value="#{outboxMessage.content}"
+				syleClass="content_font_normal"
+				rendered="#{fn:length(outboxMessage.content) le 100}" />
 		</t:column>
 		<t:column styleClass="col_post_date">
 			<plexus:commandSortHeader columnName="outboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
@@ -43,10 +48,9 @@
 		<f:facet name="header">
 				 #{msg.commands_header}
 			</f:facet>
-			<h:commandButton id="send_message" action="view:back"
-				value="#{msg.user_send_internalmessage}"
-				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
-			<br />
+			<h:commandButton id="read_received_message" action="#{views$secured$internalmessages$messagecenter.readSentMessage}"
+				value="TODO: read" title="TODO: read" styleClass="button_remove" />
+						<br />
 			<h:commandButton id="remove_message" action="#{views$secured$internalmessages$messagecenter.deleteSent}"
 				value="delete" title="delete"
 				styleClass="button_remove" />

@@ -7,6 +7,7 @@ package org.openuss.internalMessage;
 
 import java.util.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.openuss.security.User;
 
 /**
@@ -100,25 +101,19 @@ public class InternalMessageServiceImpl
         throws java.lang.Exception
     {
     	User user = getSecurityService().getCurrentUser();
+        InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
     	if(messageInfo.getSenderId().equals(user.getId())){
     		// User is sender
-            InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
             message.setDeletedAtSender(true);
     	} else {
     		// user is recipient
             InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
-            InternalMessage message = getInternalMessageDao().load(messageInfo.getId());
-            MessageStatus messageStatus = null;
             for(MessageStatus messageStatusCandidate : message.getRecipients()){
             	if(messageStatusCandidate.getRecipient() == imCenter){
-            		messageStatus = messageStatusCandidate;
-            		break;
+            		messageStatusCandidate.setDeleted(true);
+            		getMessageStatusDao().update(messageStatusCandidate);
             	}
             }
-            if(messageStatus==null)
-            	throw new Exception("Message not found");
-            messageStatus.setDeleted(true);
-            getMessageStatusDao().update(messageStatus);
     	}
     }
 
@@ -129,6 +124,8 @@ public class InternalMessageServiceImpl
         throws java.lang.Exception
     {
     	InternalMessage message = InternalMessage.Factory.newInstance();
+//    	//replace here? better: Converter --> ask ingo
+//    	messageInfo.setContent(StringUtils.replace(messageInfo.getContent().trim(), "\n", "<br/>"));
     	message.setContent(messageInfo.getContent());
     	message.setSubject(messageInfo.getSubject());
 		if (messageInfo.getMessageDate() == null)
@@ -155,6 +152,9 @@ public class InternalMessageServiceImpl
     		throw new Exception("No Recipients found");
     	}
     	for(InternalMessageRecipientsInfo rec : messageInfo.getInternalMessageRecipientsInfos()){
+    		if(rec.getRecipientId().equals(sender.getUser().getId())){
+    			throw new Exception("You cannot send a message to yourself");
+    		}
     		MessageStatus messageStatus = MessageStatus.Factory.newInstance();
     		messageStatus.setDeleted(false);
     		messageStatus.setMessageRead(false);

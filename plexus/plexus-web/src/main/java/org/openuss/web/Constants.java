@@ -1,5 +1,7 @@
 package org.openuss.web;
 
+import org.apache.shale.tiger.managed.Property;
+
 /**
  * Contains any constant that is used in conjunction with scopes. 
  * 
@@ -261,6 +263,8 @@ public class Constants {
 
 	// openuss4us navigation outcomes
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
+	public static final String OPENUSS4US_MESSAGECENTER_CREATE = "openuss4us_newinternalmessage";
+	public static final String OPENUSS4US_MESSAGECENTER_READMSG = "openuss4us_read_message";
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
 	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
@@ -268,7 +272,10 @@ public class Constants {
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
 	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
-
+	
 	// openuss4us constants
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
+	public static final String OPENUSS4US_INTERNALMESSAGE_RECIPIENT = "internalMessageRecipientsInfo";
+	public static final String OPENUSS4US_INTERNALMESSAGE_MESSAGE = "internalMessageInfo";
+	
 }

@@ -30,12 +30,15 @@
 				styleClass="header_font_normal" />
 			<br />
 			<t:dataList value="#{currentbuddy.tags}" var="currentTag"
-				styleClass="content_font_normal">
-				<h:outputText value="#{currentTag}" styleClass="content_font_normal" />
+				styleClass="content_font_normal"
+				rowCountVar="rowCount"
+        		rowIndexVar="index">
+				<h:outputText value="#{currentTag}"/>
+				<h:outputText value="," rendered="#{index + 1 lt rowCount}"/>
 			</t:dataList>
 		</t:column>
 		<t:column styleClass="col_commands">
-			<h:commandButton id="send_message" action="view:back"
+			<h:commandButton id="send_message" action="#{views$secured$buddylist$buddylist.sendMessage}"
 				value="#{msg.user_send_internalmessage}" title="#{msg.user_send_internalmessage}"
 				styleClass="button_remove" /><br />
 			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddylist.linkEditTags}"
