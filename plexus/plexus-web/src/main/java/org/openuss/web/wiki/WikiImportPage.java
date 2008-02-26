@@ -62,14 +62,18 @@ public class WikiImportPage extends AbstractWikiPage{
 		breadcrumbs.addCrumb(importWikiBreadCrumb);
 	}
 	
-	public String importWikiSites() {		
-		wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
-		return Constants.WIKI_OVERVIEW;
+	public String importWikiSites() {
+		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
+		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES);
+		
+		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 	
 	public String importWikiVersions() {
-		wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
-		return Constants.WIKI_OVERVIEW;
+		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
+		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS);
+		
+		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 
 	public SecurityService getSecurityService() {

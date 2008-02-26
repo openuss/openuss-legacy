@@ -269,4 +269,9 @@ public class Constants {
 	public static final String WIKI_SITE_TO_REMOVE = "wiki_site_to_remove";
 	public static final String WIKI_VERSION_PAGE = "wiki_version";
 	public static final String WIKI_IMPORT_PAGE = "wiki_import";
+	public static final String WIKI_IMPORT_CONFIRMATION_PAGE = "wiki_import_confirmation";
+	public static final String WIKI_IMPORT_COURSE = "wiki_import_course";
+	public static final String WIKI_IMPORT_TYPE = "wiki_import_type";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
 }
