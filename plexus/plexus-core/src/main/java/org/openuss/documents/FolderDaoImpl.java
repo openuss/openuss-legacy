@@ -7,6 +7,8 @@ package org.openuss.documents;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @see org.openuss.documents.Folder
  * @author ingo dueppe
@@ -46,11 +48,28 @@ public class FolderDaoImpl extends org.openuss.documents.FolderDaoBase {
 		return folder;
 	}
 
+	private String shortenInMiddle(String str, int maxLength){
+		if (str==null){
+			return null;
+		}
+		if (str.length()<maxLength){
+			return str;
+		}
+		int halfLength = maxLength / 2;
+		String beginning = "";
+		String ending = "";
+		ending = str.substring(str.length()-halfLength);
+		beginning = str.substring(0, str.length()-halfLength);
+		return StringUtils.abbreviate(beginning, maxLength-halfLength)+ending;
+	}
+	
 	/**
 	 * @see org.openuss.documents.FolderDao#folderInfoToEntity(org.openuss.documents.FolderInfo)
 	 */
 	public Folder folderInfoToEntity(FolderInfo folderInfo) {
 		org.openuss.documents.Folder entity = this.loadFolderFromFolderInfo(folderInfo);
+		folderInfo.setName(shortenInMiddle(folderInfo.getName(), 255));
+		folderInfo.setDescription(shortenInMiddle(folderInfo.getDescription(), 1000));
 		this.folderInfoToEntity(folderInfo, entity, true);
 		return entity;
 	}
@@ -61,6 +80,8 @@ public class FolderDaoImpl extends org.openuss.documents.FolderDaoBase {
 	 */
 	public void folderInfoToEntity(FolderInfo sourceVO, Folder targetEntity, boolean copyIfNull) {
 		super.folderInfoToEntity(sourceVO, targetEntity, copyIfNull);
+		sourceVO.setName(shortenInMiddle(sourceVO.getName(), 255));
+		sourceVO.setDescription(shortenInMiddle(sourceVO.getDescription(), 1000));
 		if (targetEntity.getCreated() == null) {
 			targetEntity.setCreated(new Date());
 		}
@@ -104,6 +125,8 @@ public class FolderDaoImpl extends org.openuss.documents.FolderDaoBase {
 	 */
 	public Folder folderEntryInfoToEntity(FolderEntryInfo folderEntryInfo) {
 		Folder entity = this.loadFolderFromFolderEntryInfo(folderEntryInfo);
+		folderEntryInfo.setName(shortenInMiddle(folderEntryInfo.getName(), 255));
+		folderEntryInfo.setDescription(shortenInMiddle(folderEntryInfo.getDescription(), 1000));
 		this.folderEntryInfoToEntity(folderEntryInfo, entity, true);
 		return entity;
 	}
@@ -113,6 +136,8 @@ public class FolderDaoImpl extends org.openuss.documents.FolderDaoBase {
 	 *      org.openuss.documents.Folder)
 	 */
 	public void folderEntryInfoToEntity(FolderEntryInfo sourceVO, Folder targetEntity, boolean copyIfNull) {
+		sourceVO.setName(shortenInMiddle(sourceVO.getName(), 255));
+		sourceVO.setDescription(shortenInMiddle(sourceVO.getDescription(), 1000));
 		super.folderEntryInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 
