@@ -23,6 +23,11 @@
 			<ref local="velocityEngine"/> 
 		</property>
 	</bean>
+	
+	<bean id="smsMessagePreparator"
+		class="org.openuss.messaging.SmsMessagePreparator"
+		scope="prototype" parent="messagePreparator">
+	</bean>
 
 	<bean id="messageSendingCommmand" class="org.openuss.messaging.MessageSendingCommand" scope="prototype">
 		<property name="messageJobDao" ref="messageJobDao" />
