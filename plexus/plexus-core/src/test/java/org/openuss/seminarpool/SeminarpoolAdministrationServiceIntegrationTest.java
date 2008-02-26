@@ -149,4 +149,46 @@ public class SeminarpoolAdministrationServiceIntegrationTest extends Seminarpool
 		logger.debug("----> END access to removeCourse test <---- ");
 	}
 	
+	public void testAddSeminarpoolAdmin(){
+		logger.debug("----> BEGIN access to addSeminarpoolAdmin test <---- ");
+		
+		//Create Seminarpool
+		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
+		//Crate User
+		User user = testUtility.createUniqueUserInDB();
+		
+		flush();
+		
+		//Add User as Admin
+		this.getSeminarpoolAdministrationService().addSeminarpoolAdmin(user.getId(), seminarpool.getId());
+		
+		//Test
+		assertEquals(2, seminarpool.getMembership().getMembers().size());
+		
+	}
+	
+	public void testRemoveSeminarpoolAdmin(){
+		logger.debug("----> BEGIN access to addSeminarpoolAdmin test <---- ");
+		
+		//Create Seminarpool
+		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
+		//Crate User
+		User user = testUtility.createUniqueUserInDB();
+		
+		flush();
+		
+		//Add User as Admin
+		this.getSeminarpoolAdministrationService().addSeminarpoolAdmin(user.getId(), seminarpool.getId());
+		
+		//Remove User
+		
+		this.getSeminarpoolAdministrationService().removeSeminarpoolAdmin(user.getId(), seminarpool.getId());
+		
+		
+		//Test
+		
+		assertEquals(1, seminarpool.getMembership().getMembers().size());
+		
+	}
+	
 }

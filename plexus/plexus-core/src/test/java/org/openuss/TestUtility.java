@@ -766,8 +766,8 @@ public class TestUtility {
 		Seminarpool seminarpool = Seminarpool.Factory.newInstance();
 		seminarpool.setMaxSeminarAllocations(5);
 		seminarpool.setPriorities(5);
-		seminarpool.setRegistrationStartTime(new Timestamp(12345L));
-		seminarpool.setRegistrationEndTime(new Timestamp(12345L));
+		seminarpool.setRegistrationStartTime(new Date(12345L));
+		seminarpool.setRegistrationEndTime(new Date(12345L));
 		seminarpool.setName("Unique Seminarpool");
 		seminarpool.setShortcut("SEPO");
 		seminarpool.setDescription("Seminarpool");
