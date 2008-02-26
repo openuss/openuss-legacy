@@ -250,6 +250,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
 
+	@SuppressWarnings("unchecked")
 	private List<CourseMemberInfo> loadCourseMembers() {
 		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
 				.getParticipants(courseInfo));

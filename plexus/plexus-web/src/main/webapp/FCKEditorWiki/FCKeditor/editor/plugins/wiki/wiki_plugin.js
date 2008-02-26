@@ -31,7 +31,6 @@ FCKConfig.LinkDlgHideAdvanced = true;
 
 // Set the dialog tabs.
 window.parent.AddTab( 'Info', 'Link' ) ;
-window.parent.AddTab( 'Upload', FCKLang.DlgLnkUpload ) ;
 
 if ( !FCKConfig.LinkDlgHideTarget )
     window.parent.AddTab( 'Target', FCKLang.DlgLnkTargetTab, true ) ;
