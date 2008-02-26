@@ -135,13 +135,17 @@ public class InternalMessageServiceImpl
 			message.setMessageDate(new Date());
 		else
 			message.setMessageDate(messageInfo.getMessageDate());
-		InternalMessageCenter sender = getInternalMessageCenterDao()
-				.findByUser(getUserDao().load(messageInfo.getSenderId()));
-		if(sender == null){
-			sender = getInternalMessageCenterDao().findByUser(getSecurityService().getCurrentUser());
+		InternalMessageCenter sender = null;
+		if (messageInfo.getSenderId() != null) {
+			sender = getInternalMessageCenterDao().findByUser(
+					getUserDao().load(messageInfo.getSenderId()));
+		} else {
+			sender = getInternalMessageCenterDao().findByUser(
+					getSecurityService().getCurrentUser());
 		}
-		if(sender == null){
-			sender = getInternalMessageCenterDao().create(getSecurityService().getCurrentUser());
+		if (sender == null) {
+			sender = getInternalMessageCenterDao().create(
+					getSecurityService().getCurrentUser());
 		}
 		message.setSender(sender);
 		sender.getSentInternalMessage().add(message);
