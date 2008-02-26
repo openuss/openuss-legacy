@@ -22,6 +22,7 @@ public class WikiEditLinksPage extends AbstractWikiPage{
 	private String selected = Constants.WIKI_STARTSITE_NAME;
 	private List<SelectItem> wikiSites = null;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -32,6 +33,7 @@ public class WikiEditLinksPage extends AbstractWikiPage{
 		for (WikiSiteInfo site : sites) {
 			this.wikiSites.add(new SelectItem(site.getName(), readablePageName(site.getName())));
 		}
+		this.wikiSites.add(new SelectItem("__new__", i18n("wiki_editlinks_newpage")));
 	}
 
 	public String getSelected() {

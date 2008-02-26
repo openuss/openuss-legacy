@@ -49,10 +49,9 @@
 	                            <h:selectOneRadio id="rdoExistingPage" value="#{views$secured$wiki$wikieditlinks.siteVersionInfo.name}" 
 	                                 layout="pageDirection" onchange="SetPageName(this.value)">
 	                            	<f:selectItems value="#{views$secured$wiki$wikieditlinks.wikiSites}"/>
-	                            	<f:selectItem itemValue="__new__" itemLabel="Neue Seite anlegen"/>
 	                            </h:selectOneRadio>
 	                            <br/>
-	                            <span fckLang="DlgLnkName">Seiten-Name:</span><br />
+	                            <span fckLang="DlgLnkPageName">Seiten-Name:</span><br />
 	                            <input id="txtName" style="WIDTH: 100%" type="text" disabled="true"/>
 	                        </td>
 	                    </tr>

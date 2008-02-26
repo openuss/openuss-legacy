@@ -2136,7 +2136,10 @@ table.jscalendar-DB-dropdown-style {
 /* WIKI STYLES */
 
 .wiki_content {
-	margin: 10px;
+	color:#505050;
+    font-size:9pt;
+    padding:10px;
+    text-decoration:none;
 }
 
 .wiki_content a {
@@ -2145,4 +2148,8 @@ table.jscalendar-DB-dropdown-style {
 
 .wiki_content ul {
   list-style-type: disc !important;
+}
+
+.wiki_content ul li {
+    margin-left: 5pt;
 }

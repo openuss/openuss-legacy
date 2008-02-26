@@ -20,11 +20,17 @@
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
 
-// Wiki link plugin
-var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
-FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
+// only working in wiki!!
+if (window.document.location.href.match(/Wiki/)) {
 
-FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+    FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
+
+    // Wiki link plugin
+    var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
+    FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
+
+    FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+}
 
 FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Preview'],
