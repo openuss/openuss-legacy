@@ -137,6 +137,9 @@ public class Constants {
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
 	public static final Long   COURSES_ALL_PERIODS = -111L;
 	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
+	public static final Long   COURSE_CHOOSE_ASSISTANT = -120L;
+	public static final String COURSE_CHOSSE_ASSISTANT_TEXT = "course_assistants_select";
+	public static final String COURSE_CHOOSE_ERROR = "course_assistants_select_error";
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
