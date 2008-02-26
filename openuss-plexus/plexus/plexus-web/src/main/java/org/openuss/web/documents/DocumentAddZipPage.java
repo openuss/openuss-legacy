@@ -72,6 +72,8 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 			logger.error(e);
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
+		} finally {
+			removeSessionBean(Constants.UPLOADED_FILE);
 		}
 		return Constants.SUCCESS;
 	}
