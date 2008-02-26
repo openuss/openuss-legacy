@@ -280,15 +280,20 @@
 		</navigation-case>
 	
 		<navigation-case>
+			<from-outcome>group_discussion</from-outcome>
+			<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
+		</navigation-case>
+	
+		<navigation-case>
+			<from-outcome>group_documents_main</from-outcome>
+			<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
+		</navigation-case>		
+	
+		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>
 			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
 		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>openuss4us_groups_create_step2</from-outcome>
-			<to-view-id>//views/secured/groups/groupjoin.xhtml</to-view-id>
-		</navigation-case>
-		
+				
 		<navigation-case>
 			<from-outcome>openuss4us_groups_join</from-outcome>
 			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
@@ -299,11 +304,6 @@
 			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
 		</navigation-case>
 		
-		<!-- TODO DUMMY LINK ENTFERNEN -->
-		<navigation-case>
-			<from-outcome>openuss4us_group_testgroup</from-outcome>
-			<to-view-id>/views/secured/groups/group.xhtml</to-view-id>
-		</navigation-case>
 		
 	</navigation-rule>
 
