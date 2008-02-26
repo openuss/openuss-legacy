@@ -39,6 +39,29 @@
 	<ui:define name="content">
 		<h:form id="seminarpool_create_seminarpool">
 			<o:block label="#{msg['seminarpool_create_block']}" styleClass="form_box">
+<!--		 		
+				FIXME:  UNIVERSITY-SELECTION   (see Desktop)
+-->
+				<h:outputLabel value="#{msg.seminarpool_preferences_university}" 
+ 				   for="universitySelect" 
+ 				   styleClass="field_label" />
+ 				   
+				<h:selectOneListbox 
+					id="seminarpool_preferences_university" 
+					size="1" 
+					styleClass="pulldown" 
+					value="#{seminarpoolRegistration.universityId}"
+					valueChangeListener="#{seminarpoolRegistration.processUniversitySelectChanged}"
+					
+					required="true">
+ 					<f:selectItems value="#{seminarpoolRegistration.allUniversities}"/>
+ 					<f:validator validatorId="universityDepartmentSelectValidator"/>
+				</h:selectOneListbox>
+
+<!-- LUECKE OBEN	 
+					onchange="this.form.submit();"
+					immediate="true"   -->
+				
 				<o:input 
 					label="#{msg.seminarpool_name}"
 					entity="seminarpoolRegistration" 
@@ -51,10 +74,7 @@
 					property="shortcut" 
 					maxlength="30" 
 					required="true" />
-					
-<!--				<o:input entity="seminarpoolRegistration.seminarpoolInfo" property="maxSeminarAllocations" maxlength="50"/>
-				<o:input entity="seminarpoolRegistration.seminarpoolInfo" property="priorities" maxlength="50"/>	
--->					
+									
 				<o:input 
 					label="#{msg.seminarpool_max_seminar_allocations}"
 					entity="seminarpoolRegistration" 
@@ -70,6 +90,18 @@
 					maxlength="5" 
 					required="true" />
 <!--					maxlength="100"  --> 
+				<o:input
+					label="#{msg.seminarpool_registration_start_time}"
+					entity="seminarpoolRegistration"
+					property="registrationStartTime"
+					maxlength="16"
+					required="true" />
+				<o:input
+					label="#{msg.seminarpool_registration_end_time}"
+					entity="seminarpoolRegistration"
+					property="registrationEndTime"
+					maxlength="16"
+					required="true" />
 					
 				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
 					

@@ -2,6 +2,7 @@ package org.openuss.web.seminarpool;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
@@ -15,9 +16,9 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
-import org.openuss.lecture.AccessType;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
+import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -41,8 +42,10 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
-	@Property(value = "#{seminarpoolService}")
-	protected SeminarpoolAdministrationService seminarpoolService;
+	@Property(value = "#{seminarpoolAdministrationService}")
+	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
+	@Property(value="#{universityService}")
+	protected UniversityService universityService;
 		
 	private String name;
 	private String shortcut;
@@ -51,6 +54,10 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	private Integer accessType;
 	private Integer maxSeminarAllocations;
 	private Integer priorities;
+	private Date registrationStartTime;
+	private Date registrationEndTime;
+	private Long universityId;
+	
 	
 	/* ----- business logic ----- */
 	
@@ -58,7 +65,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 //		if(seminarpoolService.isUniqueShortcut(shortcut)){
 //			logger.debug("START CREAT GROUP");
 			logger.debug("START CREATE SEMINARPOOL");
-			// create group info object
+			// create seminarpool info object
 			seminarpoolInfo = new SeminarpoolInfo();
 			seminarpoolInfo.setId(null);
 			seminarpoolInfo.setName(name);
@@ -71,17 +78,15 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			seminarpoolInfo.setPassword(password);
 			seminarpoolInfo.setMaxSeminarAllocations(maxSeminarAllocations);
 			seminarpoolInfo.setPriorities(priorities);
-//			seminarpoolInfo.setAccessType(GroupAccessType.fromInteger(accessType));
-//			seminarpoolInfo.setCreator(user.getId());
 			
-			seminarpoolInfo.setRegistrationStartTime(new Timestamp(12345L));
-			seminarpoolInfo.setRegistrationEndTime(new Timestamp(123456L));
+			seminarpoolInfo.setRegistrationStartTime(registrationStartTime);
+			seminarpoolInfo.setRegistrationEndTime(registrationEndTime);
 			seminarpoolInfo.setSeminarpoolStatus(org.openuss.seminarpool.SeminarpoolStatus.PREPARATIONPHASE);
 			
-			
+			seminarpoolInfo.setUniversityId(universityId);
 
 			// create seminarpool and set id
-			Long newSeminarpoolId = seminarpoolService.createSeminarpool(seminarpoolInfo, user.getId());
+			Long newSeminarpoolId = seminarpoolAdministrationService.createSeminarpool(seminarpoolInfo, user.getId());
 			seminarpoolInfo.setId(newSeminarpoolId);
 		
 /*			// clear fields
@@ -116,6 +121,39 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			password = "Password";
 		} else {
 			password = null;
+		}
+	}
+	
+	
+/**** University selection stuff  *****/
+	
+	public List<SelectItem> getAllUniversities() {
+		List<SelectItem> universityItems = new ArrayList<SelectItem>();
+		List<UniversityInfo> allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
+		List<UniversityInfo> allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
+		
+		if (!allEnabledUniversities.isEmpty()) {
+			universityItems.add(new SelectItem(Constants.UNIVERSITIES_ENABLED, i18n("universities_enabled")));
+			for (UniversityInfo university: allEnabledUniversities) {
+				universityItems.add(new SelectItem(university.getId(),university.getName()));
+			}
+		}
+		
+		if (!allDisabledUniversities.isEmpty()) {
+			universityItems.add(new SelectItem(Constants.UNIVERSITIES_ENABLED, i18n("universities_disabled")));
+			for (UniversityInfo university: allDisabledUniversities) {
+				universityItems.add(new SelectItem(university.getId(),university.getName()));
+			}
+		}
+		
+		return universityItems;
+	}
+
+	
+	public void processUniversitySelectChanged(ValueChangeEvent event) {
+		if (event.getNewValue() instanceof Long) {
+			universityId = (Long) event.getNewValue();
+			logger.info("ValueChangeEvent: Changing university id for new seminarpool to " + universityId);
 		}
 	}
 	
@@ -177,13 +215,36 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		this.priorities=priorities;
 	}
 	
-
-	public SeminarpoolAdministrationService getSeminarpoolService() {
-		return seminarpoolService;
+	public void setRegistrationStartTime(Date registrationStartTime){
+		this.registrationStartTime=registrationStartTime;
+	}
+	
+	public Date getRegistrationStartTime() {
+		return registrationStartTime;
+	}
+	
+	public void setRegistrationEndTime(Date registrationEndTime){
+		this.registrationEndTime=registrationEndTime;
+	}
+	
+	public Date getRegistrationEndTime(){
+		return registrationEndTime;
+	}
+	
+	public void setUniversityId(Long universityId){
+		this.universityId=universityId;
+	}
+	
+	public Long getUniversityId(){
+		return universityId;
 	}
 
-	public void setSeminarpoolService(SeminarpoolAdministrationService seminarpoolService) {
-		this.seminarpoolService = seminarpoolService;
+	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
+		return seminarpoolAdministrationService;
+	}
+
+	public void setSeminarpoolAdministrationService(SeminarpoolAdministrationService seminarpoolAdministrationService) {
+		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
 	}
 
 	public SeminarpoolInfo getSeminarpoolInfo() {
@@ -193,5 +254,14 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
 		this.seminarpoolInfo = seminarpoolInfo;
 	}
+	
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
+	
 
 }
