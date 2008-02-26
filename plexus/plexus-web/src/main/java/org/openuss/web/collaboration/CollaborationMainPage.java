@@ -121,12 +121,13 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	@SuppressWarnings("unchecked")
 	public String saveWorkspace() throws DesktopException, LectureException {
 		logger.debug("Starting method saveWorkspace()");
+		boolean create = false;
 		if (workspaceInfo.getId() == null) {
 
 			workspaceInfo.setDomainId(courseInfo.getId());
 			workspaceService.createWorkspace(workspaceInfo);
-
-			addMessage(i18n("collaboration_message_add_workspace_succeed"));
+			
+			create = true;
 		} else {
 			workspaceService.updateWorkspace(workspaceInfo);
 		}
@@ -141,7 +142,11 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		}
 		workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
 		
-		addMessage(i18n("collaboration_message_persist_workspace_succeed"));
+		if (create) {
+			addMessage(i18n("collaboration_message_add_workspace_succeed"));
+		} else {
+			addMessage(i18n("collaboration_message_persist_workspace_succeed"));
+		}
 
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_INFO);
 		workspaceInfo = null;

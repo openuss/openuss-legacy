@@ -15,6 +15,9 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.security.Roles;
+import org.openuss.security.SecurityService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
@@ -67,7 +70,10 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 			if (document != null) {
 				documentToSelectedFile(document);
 			}
+			
 			documentService.saveFileEntry(selectedFile);
+			permitRolesImageReadPermission(selectedFile);
+			
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
 			}
@@ -82,13 +88,16 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		if (document != null) {
 			documentToSelectedFile(document);
 			documentService.createFileEntry(selectedFile, retrieveActualFolder());
+			
+			permitRolesImageReadPermission(selectedFile);
+			
 			uploadFileManager.removeDocument(document);
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
 		logger.debug("source is "+document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
@@ -148,5 +157,5 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	public void setFileUpload(UIInput fileUpload) {
 		this.fileUpload = fileUpload;
 	}
-
+	
 } 

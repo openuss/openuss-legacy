@@ -8,7 +8,11 @@ import org.apache.shale.tiger.managed.Property;
 import org.openuss.collaboration.WorkspaceInfo;
 import org.openuss.collaboration.WorkspaceService;
 import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.security.Roles;
+import org.openuss.security.SecurityService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -21,6 +25,9 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
+	
+	@Property (value="#{securityService}")
+	private SecurityService securityService;
 	
 	/** workspace that is currently edited. */
 	@Property(value="#{"+Constants.COLLABORATION_WORKSPACE_INFO+"}")
@@ -78,6 +85,19 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 		} else {
 			return new ArrayList<FolderInfo>();
 		}
+	}
+	
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
+	protected void permitRolesImageReadPermission(FileInfo imageFile) {
+		// TODO should be done within the business layer
+		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
+		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 	}
 	
 }

@@ -60,6 +60,11 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 			injectReleaseDate(infos);
 			try {
 				documentService.createFileEntries(infos, retrieveActualFolder());
+				
+				for (FileInfo fileInfo : infos) {
+					permitRolesImageReadPermission(fileInfo);
+				}
+				
 				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{

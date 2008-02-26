@@ -38,9 +38,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
 	
-	@Property (value="#{securityService}")
-	private SecurityService securityService;
-	
 	private UIInput fileUpload;
 
 	@Prerender
@@ -93,12 +90,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
-	private void permitRolesImageReadPermission(FileInfo imageFile) {
-		// TODO should be done within the business layer
-		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
-		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
-	}
-
 	private PaperSubmissionInfo loadPaperSubmission(){
 		//paperSubmissionInfo = new PaperSubmissionInfo();
 		List<PaperSubmissionInfo> paperInfos;
@@ -206,14 +197,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 
 	public void setFileUpload(UIInput fileUpload) {
 		this.fileUpload = fileUpload;
-	}
-	
-	public SecurityService getSecurityService() {
-		return securityService;
-	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
 	}
 
 } 

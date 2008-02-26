@@ -8,9 +8,13 @@ import org.apache.shale.tiger.managed.Property;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
+import org.openuss.security.Roles;
+import org.openuss.security.SecurityService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.collaboration.WorkspaceInfo;
 import org.openuss.collaboration.WorkspaceService;
 import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.collaboration.AbstractCollaborationPage;
@@ -26,7 +30,9 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	
 	@Property(value= "#{paperSubmissionService}")
 	protected PaperSubmissionService paperSubmissionService;
-	
+
+	@Property (value="#{securityService}")
+	private SecurityService securityService;
 
 	/** paper that is currently edited. */
 	@Property(value="#{"+Constants.PAPERSUBMISSION_PAPER_INFO+"}")
@@ -55,28 +61,6 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		this.documentService = documentService;
 	}
 	
-//	public FolderInfo getCurrentFolder() {
-//		return currentFolder;
-//	}
-//	public void setCurrentFolder(FolderInfo currentFolder) {
-//		this.currentFolder = currentFolder;
-//	}
-	
-	
-	
-//	@SuppressWarnings("unchecked")
-//	public List<FolderInfo> getCurrentPath() {
-//		logger.debug("getting current path");
-//		if (currentFolder != null && currentFolder.getId() != null) {
-//			return documentService.getFolderPath(retrieveActualFolder());
-//		} else {
-//			return new ArrayList<FolderInfo>();
-//		}
-//	}
-	
-//	protected FolderInfo retrieveActualFolder() {
-//		return documentService.getFolder(paperSubmissionInfo, currentFolder);
-//	}
 
 	public PaperSubmissionService getPaperSubmissionService() {
 		return paperSubmissionService;
@@ -98,10 +82,17 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public void setPaperSubmissionInfo(PaperSubmissionInfo paperSubmissionInfo) {
 		this.paperSubmissionInfo = paperSubmissionInfo;
 	}
-//	public FolderInfo getCurrentFolder() {
-//		return currentFolder;
-//	}
-//	public void setCurrentFolder(FolderInfo currentFolder) {
-//		this.currentFolder = currentFolder;
-//	}
+	
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
+	}
+
+	protected void permitRolesImageReadPermission(FileInfo imageFile) {
+		// TODO should be done within the business layer
+		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
+		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
+	}
 }

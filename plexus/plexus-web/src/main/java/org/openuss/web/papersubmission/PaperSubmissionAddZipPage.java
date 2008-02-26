@@ -62,6 +62,11 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 			try {
 				FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 				documentService.createFileEntries(infos, folder);
+				
+				for (FileInfo fileInfo : infos) {
+					permitRolesImageReadPermission(fileInfo);
+				}
+				
 				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{
