@@ -213,6 +213,7 @@ public class WikiServiceImpl
 		getSecurityService().setPermissions(Roles.USER, image, LectureAclEntry.READ);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected WikiSiteContentInfo handleGetNewestStableWikiSiteContent(Long wikiSiteId) throws Exception {
 		// TODO Auto-generated method stub
@@ -237,29 +238,49 @@ public class WikiServiceImpl
 		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
 		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
 		
-		List<WikiSiteInfo> oldImportWikiSites = findWikiSitesByDomainObject(importDomainId);
-		for (WikiSiteInfo oldImportWikiSite : oldImportWikiSites) {
-			deleteWikiSite(oldImportWikiSite.getWikiSiteId());
-		}
+		deleteAllWikiSites(importDomainId);
 		
 		List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
 		for (WikiSiteInfo exportWikiSite : exportWikiSites) {
 			WikiSiteContentInfo newestWikiSiteContent = getNewestWikiSiteContent(exportWikiSite.getWikiSiteId());
-			
-			WikiSiteContentInfo importWikiSiteContent = new WikiSiteContentInfo(newestWikiSiteContent);
-			importWikiSiteContent.setId(null);
-			importWikiSiteContent.setWikiSiteId(null);
-			importWikiSiteContent.setDomainId(importDomainId);
-			
-			saveWikiSite(importWikiSiteContent);
+			importWikiSiteContent(importDomainId, newestWikiSiteContent);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleImportWikiVersions(Long importDomainId,
-			Long exportDomainId) throws Exception {
-		// TODO Auto-generated method stub
+	protected void handleImportWikiVersions(Long importDomainId, Long exportDomainId) throws Exception {
+		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
+		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
 		
+		deleteAllWikiSites(importDomainId);
+		
+		List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
+		for (WikiSiteInfo exportWikiSite : exportWikiSites) {
+			
+			List<WikiSiteInfo> exportWikiSiteVersions = this.findWikiSiteVersionsByWikiSite(exportWikiSite.getWikiSiteId());
+			for (WikiSiteInfo exportWikiSiteVersion : exportWikiSiteVersions) {
+				WikiSiteContentInfo exportWikiSiteVersionContent = getWikiSiteContent(exportWikiSiteVersion.getId());
+				importWikiSiteContent(importDomainId, exportWikiSiteVersionContent);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void deleteAllWikiSites(Long deleteDomainId) {
+		List<WikiSiteInfo> oldImportWikiSites = findWikiSitesByDomainObject(deleteDomainId);
+		for (WikiSiteInfo oldImportWikiSite : oldImportWikiSites) {
+			deleteWikiSite(oldImportWikiSite.getWikiSiteId());
+		}
+	}
+	
+	private void importWikiSiteContent(Long importDomainId, WikiSiteContentInfo exportWikiSiteContent) {
+		WikiSiteContentInfo importWikiSiteContent = new WikiSiteContentInfo(exportWikiSiteContent);
+		importWikiSiteContent.setId(null);
+		importWikiSiteContent.setWikiSiteId(null);
+		importWikiSiteContent.setDomainId(importDomainId);
+		
+		saveWikiSite(importWikiSiteContent);
 	}
 
 }

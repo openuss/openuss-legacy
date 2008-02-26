@@ -54,10 +54,15 @@
 					</h:selectOneMenu>
 				</c:if>
 				<br />
-				<h:commandButton id="addMemberButton"
+				<h:commandButton id="importWikiSitesButton"
 					action="#{views$secured$wiki$wikiimport.importWikiSites}"
 					value="#{msg.course_assistants_add}"
 					hint="#{msg.course_assistants_add_hint}" styleClass="button_add" />
+				<h:commandButton id="importWikiVersionsButton"
+					action="#{views$secured$wiki$wikiimport.importWikiVersions}"
+					value="#{msg.course_assistants_add}"
+					hint="#{msg.course_assistants_add_hint}" styleClass="button_add" />
+					
 				</p>
 			</o:block>
 		</h:form>

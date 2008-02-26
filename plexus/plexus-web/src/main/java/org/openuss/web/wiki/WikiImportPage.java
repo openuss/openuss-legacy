@@ -35,13 +35,14 @@ public class WikiImportPage extends AbstractWikiPage{
 	
 	protected Long selectedCourseId;
 	
-	public String importWikiVersions() {
+	public String importWikiSites() {		
+		wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
 		
 		return Constants.WIKI_OVERVIEW;
 	}
 	
-	public String importWikiSites() {		
-		wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
+	public String importWikiVersions() {
+		wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
 		
 		return Constants.WIKI_OVERVIEW;
 	}
