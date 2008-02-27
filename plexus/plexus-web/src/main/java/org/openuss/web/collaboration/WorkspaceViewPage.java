@@ -34,6 +34,12 @@ import org.openuss.web.PageLinks;
 import org.openuss.web.documents.FolderEntrySelection;
 import org.springframework.beans.support.PropertyComparator;
 
+/**
+ * Controller for the workspaceview.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$workspaceview", scope = Scope.REQUEST)
 @View
 public class WorkspaceViewPage extends AbstractCollaborationPage {
@@ -114,6 +120,12 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return entries;
 	}
 	
+	/**
+	 * Downloads the selected documents
+	 * 
+	 * @return success
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
@@ -130,6 +142,11 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return Constants.SUCCESS;
 	}
 
+	/**
+	 * Deletes the selected entries
+	 * 
+	 * @return success
+	 */
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
@@ -156,12 +173,20 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return Constants.COLLABORATION_MAIN_PAGE;
 	}
 
+	/**
+	 * Creates a new folder
+	 * @return COLLABORATION_EDIT_FOLDER_PAGE
+	 */
 	public String newFolder() {
 		logger.debug("create new folder");
 		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDER, new FolderInfo());
 		return Constants.COLLABORATION_EDIT_FOLDER_PAGE;
 	}
 
+	/**
+	 * Creates a new file
+	 * @return COLLABORATION_EDIT_FILEENTRY_PAGE
+	 */
 	public String newFile() {
 		logger.debug("create new file");
 		setSessionBean(Constants.COLLABORATION_SELECTED_FILEENTRY, new FileInfo());
@@ -169,6 +194,10 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return Constants.COLLABORATION_EDIT_FILEENTRY_PAGE;
 	}
 
+	/**
+	 * edits a folder entry
+	 * @return COLLABORATION_EDIT_FOLDER_PAGE if a folder, COLLABORATION_EDIT_FILEENTRY_PAGE if file
+	 */
 	public String editFolderEntry() {
 		logger.debug("editing folder entry");
 		FolderEntryInfo entry = data.getRowData();
@@ -238,6 +267,11 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		this.targetFolder = targetFolder;
 	}
 
+	/**
+	 * List of a subfolders of the workspace
+	 * 
+	 * @return List of all subfolders
+	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
@@ -276,6 +310,9 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 
+	/**
+	 * Dataprovider for the datatable which lists the folders/files
+	 */
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;

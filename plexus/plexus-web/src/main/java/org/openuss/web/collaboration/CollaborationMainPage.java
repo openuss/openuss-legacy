@@ -22,6 +22,12 @@ import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.documents.FolderEntrySelection;
 
+/**
+ * Controller for the main.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$main", scope = Scope.REQUEST)
 @View
 public class CollaborationMainPage extends AbstractCollaborationPage {

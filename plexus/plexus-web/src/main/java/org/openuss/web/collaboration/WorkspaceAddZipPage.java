@@ -19,6 +19,12 @@ import org.openuss.web.documents.ZipFileUnpacker;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
+/**
+ * Controller for the addzip.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$addzip", scope = Scope.REQUEST)
 @View
 public class WorkspaceAddZipPage extends AbstractCollaborationPage{
@@ -48,6 +54,12 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 		breadcrumbs.addCrumb(crumb);
 	}	
 	
+	/**
+	 * Unzips a uploaded file
+	 * 
+	 * @return success
+	 * @throws DocumentApplicationException
+	 */
 	public String unzip() throws DocumentApplicationException{
 		logger.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);

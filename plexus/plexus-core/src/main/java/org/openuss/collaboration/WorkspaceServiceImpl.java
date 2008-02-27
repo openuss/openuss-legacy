@@ -16,6 +16,7 @@ import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
 /**
+ * @author  Projektseminar WS 07/08, Team Collaboration
  * @see org.openuss.collaboration.WorkspaceService
  */
 public class WorkspaceServiceImpl extends

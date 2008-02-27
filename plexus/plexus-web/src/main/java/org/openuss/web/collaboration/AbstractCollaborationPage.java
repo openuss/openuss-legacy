@@ -16,6 +16,11 @@ import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
+/**
+ * Abstract Page for all Workspace-Pages
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ */
 public class AbstractCollaborationPage extends AbstractCoursePage {
 	
 	public static final Logger logger = Logger.getLogger(AbstractCollaborationPage.class);
@@ -77,6 +82,11 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 		return documentService.getFolder(workspaceInfo, currentFolder);
 	}
 	
+	/**
+	 * Gets the current path
+	 * 
+	 * @return Array of FolderInfos
+	 */
 	@SuppressWarnings("unchecked")
 	public List<FolderInfo> getCurrentPath() {
 		logger.debug("getting current path");

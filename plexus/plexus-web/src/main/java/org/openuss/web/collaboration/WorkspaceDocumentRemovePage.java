@@ -17,6 +17,12 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 
+/**
+ * Controller for the workspaceremove.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$workspaceremove", scope = Scope.REQUEST)
 @View
 public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {

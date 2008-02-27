@@ -15,7 +15,7 @@ import org.openuss.web.Constants;
 
 /** Controller for the workspaceremoveconfirmation.xhtml view.
  * 
- * @author Christian Beer
+ * @author  Projektseminar WS 07/08, Team Collaboration
  */
 @Bean(name = "views$secured$collaboration$removeconfirmation", scope = Scope.REQUEST)
 @View
@@ -60,7 +60,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check wheather the user has accepted the user agreement or not.
 	 * 
 	 * @param context
 	 * @param toValidate

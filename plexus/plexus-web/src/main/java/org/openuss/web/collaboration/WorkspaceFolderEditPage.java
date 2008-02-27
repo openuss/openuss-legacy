@@ -11,6 +11,12 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 
+/**
+ * Controller for the workspacefolderedit.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$workspacefolderedit", scope = Scope.REQUEST)
 @View
 public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
@@ -32,6 +38,12 @@ public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
 		breadcrumbs.addCrumb(crumb);
 	}
 
+	/**
+	 * Saves the edited folder
+	 * 
+	 * @return COLLABORATION_WORKSPACE_PAGE
+	 * @throws DocumentApplicationException
+	 */
 	public String save() throws DocumentApplicationException{
 		logger.debug("saving folder");
 		if (selectedFolder != null && selectedFolder.getId() == null) {

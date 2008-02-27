@@ -22,6 +22,12 @@ import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
+/**
+ * Controller for the workspacefileedit.xhtml view.
+ * 
+ * @author  Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$collaboration$workspacefileedit", scope = Scope.REQUEST)
 @View
 public class WorkspaceFileEditPage extends AbstractCollaborationPage {
@@ -58,6 +64,13 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
+	/**
+	 * Saves the edited fileentry
+	 * 
+	 * @return COLLABORATION_WORKSPACE_PAGE
+	 * @throws DocumentApplicationException
+	 * @throws IOException
+	 */
 	public String save() throws DocumentApplicationException, IOException{
 		logger.debug("saving file");
 		if (isNewFile()) {
@@ -83,6 +96,13 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		return Constants.COLLABORATION_WORKSPACE_PAGE;
 	}
 
+	/**
+	 * Saves a new file
+	 * 
+	 * @return true if successful, else false
+	 * @throws IOException
+	 * @throws DocumentApplicationException
+	 */
 	private boolean saveNewFile() throws IOException, DocumentApplicationException {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (document != null) {

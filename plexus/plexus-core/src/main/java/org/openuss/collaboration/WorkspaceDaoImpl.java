@@ -8,6 +8,7 @@ package org.openuss.collaboration;
 import java.util.List;
 
 /**
+ * @author  Projektseminar WS 07/08, Team Collaboration
  * @see org.openuss.collaboration.Workspace
  */
 public class WorkspaceDaoImpl
@@ -20,7 +21,6 @@ public class WorkspaceDaoImpl
         org.openuss.collaboration.Workspace sourceEntity,
         org.openuss.collaboration.WorkspaceInfo targetVO)
     {
-        // @todo verify behavior of toWorkspaceInfo
         super.toWorkspaceInfo(sourceEntity, targetVO);
     }
 
@@ -30,7 +30,6 @@ public class WorkspaceDaoImpl
      */
     public org.openuss.collaboration.WorkspaceInfo toWorkspaceInfo(final org.openuss.collaboration.Workspace entity)
     {
-        // @todo verify behavior of toWorkspaceInfo
         return super.toWorkspaceInfo(entity);
     }
 
@@ -57,7 +56,6 @@ public class WorkspaceDaoImpl
      */
     public org.openuss.collaboration.Workspace workspaceInfoToEntity(org.openuss.collaboration.WorkspaceInfo workspaceInfo)
     {
-        // @todo verify behavior of workspaceInfoToEntity
         org.openuss.collaboration.Workspace entity = this.loadWorkspaceFromWorkspaceInfo(workspaceInfo);
         this.workspaceInfoToEntity(workspaceInfo, entity, true);
         return entity;
@@ -72,7 +70,6 @@ public class WorkspaceDaoImpl
         org.openuss.collaboration.Workspace targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of workspaceInfoToEntity
         super.workspaceInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

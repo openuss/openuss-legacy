@@ -6,6 +6,7 @@
 package org.openuss.collaboration;
 
 /**
+ * @author  Projektseminar WS 07/08, Team Collaboration
  * @see org.openuss.collaboration.Workspace
  */
 public class WorkspaceImpl
