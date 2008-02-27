@@ -8,6 +8,7 @@ import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
@@ -70,7 +71,7 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	public String getMessage() {
 		Document doc = WebDAVUtils.newDocument();
 		
-		Node rootNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_MULTISTATUS);
+		Element rootNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_MULTISTATUS);
 		doc.appendChild(rootNode);
 		
 		for (MultiStatusResponse response : getResponses()) {

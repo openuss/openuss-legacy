@@ -1,6 +1,6 @@
 package org.openuss.webdav;
 
-import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 /**
  * Multiple responses to a query all concerning a common resource.
@@ -17,7 +17,7 @@ public interface MultiStatusResponse {
 	
 	/**
 	 * Transforms the multi-status response to XML and adds it to the given {@link Node}.
-	 * @param node The XML node to add the multi-status to.
+	 * @param el The XML node to add the multi-status to.
 	 */
-	public void addToXML(Node node);
+	public void addToXML(Element el);
 }
