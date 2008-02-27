@@ -300,6 +300,7 @@
 		</plugins>
 	</build>
 	<modules>
+        <module>documentation</module>
 		<module>framework</module>
 		<module>themes</module>
 		<module>openformula</module>
@@ -453,23 +454,27 @@
 				</reportSets>
 			</plugin>
 			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<id>html</id>
-						<configuration>
-							<minmemory>128</minmemory>
-							<maxmemory>384</maxmemory>
-							<charset>UTF-8</charset>
-							<sourcepath>
-								${project.build.directory}/src;${project.build.directory}/../src/main/java
-							</sourcepath>
-						</configuration>
-						<reports>
-							<report>javadoc</report>
-						</reports>
-					</reportSet>
-				</reportSets>
+		        <groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-javadoc-plugin</artifactId>
+        		<configuration>
+          			<aggregate>true</aggregate>
+ 					<reportSets>
+						<reportSet>
+							<id>html</id>
+							<configuration>
+								<minmemory>128</minmemory>
+								<maxmemory>384</maxmemory>
+								<charset>UTF-8</charset>
+								<sourcepath>
+									${project.build.directory}/src;${project.build.directory}/../src/main/java
+								</sourcepath>
+							</configuration>
+							<reports>
+								<report>javadoc</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+		        </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
@@ -483,7 +488,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>1.0-beta-1</version>
 				<configuration>
 					<outputDirectory>target/site</outputDirectory>
 					<threshold>Low</threshold>
@@ -504,10 +508,16 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.0</version>
 				<configuration>
 					<aggregate>true</aggregate>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
 			<!-- 
 				<plugin>
@@ -517,11 +527,6 @@
 				<aggregate>true</aggregate>
 				</configuration>
 				</plugin>
-			-->
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
-			<!--	
 				<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
@@ -537,10 +542,6 @@
 				</reportSets>
 				</plugin>
 			-->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-			</plugin>
 		</plugins>
 	</reporting>
 	<dependencyManagement>
