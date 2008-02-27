@@ -112,10 +112,16 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected void handleSaveUser(User user) throws Exception {
-		// Do not change the user password by this method use changeUserPassword
-		// instead
-		user.setPassword(getUserDao().getPassword(user.getId()));
 		getUserDao().update(user);
+	}
+
+	@Override
+	protected void handleSaveUser(UserInfo userInfo) throws Exception {
+		if (userInfo.getId() != null) {
+			getUserDao().update(getUserDao().userInfoToEntity(userInfo));
+		} else if (userInfo.getId() == null) {
+			createUser(userInfo);
+		}
 	}
 
 	@Override
@@ -429,16 +435,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected User handleGetUserObject(Long userId) throws Exception {
 		return getUserDao().load(userId);
-	}
-
-	@Override
-	protected void handleSaveUser(UserInfo user) throws Exception {
-		if (user.getId() != null) {
-			getUserDao().update(getUserDao().userInfoToEntity(user));
-		} else if (user.getId() == null) {
-			createUser(user);
-		}
-
 	}
 
 	@Override

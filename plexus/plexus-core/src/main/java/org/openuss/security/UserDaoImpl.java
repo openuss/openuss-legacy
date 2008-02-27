@@ -8,24 +8,24 @@ package org.openuss.security;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
-
-
 
 /**
  * @see org.openuss.security.User
  * @author Ingo Dueppe
  */
 public class UserDaoImpl extends UserDaoBase {
-	
+
 	/**
 	 * @see org.openuss.security.UserDao#getPassword(int, java.lang.Long)
 	 */
 	@Override
 	public Object getPassword(final int transform, final Long id) {
-		return this.getPassword(transform, "select password from org.openuss.security.User as user where user.id = ?",	id);
+		return this.getPassword(transform, "select password from org.openuss.security.User as user where user.id = ?",
+				id);
 	}
 
 	/**
@@ -41,9 +41,8 @@ public class UserDaoImpl extends UserDaoBase {
 			Object result = null;
 			if (results != null) {
 				if (results.size() > 1) {
-					throw new InvalidDataAccessResourceUsageException(
-							"More than one instance of 'java.lang.String" + "' was found when executing query --> '"
-									+ queryString + "'");
+					throw new InvalidDataAccessResourceUsageException("More than one instance of 'java.lang.String"
+							+ "' was found when executing query --> '" + queryString + "'");
 				} else if (results.size() == 1) {
 					result = results.iterator().next();
 				}
@@ -56,12 +55,12 @@ public class UserDaoImpl extends UserDaoBase {
 
 	public User userInfoToEntity(UserInfo userInfo) {
 		User user = loadUserFromUserInfo(userInfo);
-		userInfoToEntity(userInfo, user, false);		
+		userInfoToEntity(userInfo, user, false);
 		return user;
 	}
 
 	private User loadUserFromUserInfo(UserInfo userInfo) {
-		if (userInfo.getId()==null){
+		if (userInfo.getId() == null) {
 			return User.Factory.newInstance();
 		}
 		User user = load(userInfo.getId());
@@ -72,9 +71,18 @@ public class UserDaoImpl extends UserDaoBase {
 	}
 
 	@Override
+	public void userInfoToEntity(org.openuss.security.UserInfo source, org.openuss.security.User target, boolean copyIfNull) {
+		// prevent for override the password
+		if (StringUtils.isNotBlank(target.getPassword())) {
+			source.setPassword(target.getPassword());
+		}
+		super.userInfoToEntity(source, target, copyIfNull);
+	}
+
+	@Override
 	public void toUserInfo(User source, UserInfo target) {
 		super.toUserInfo(source, target);
 		target.setDisplayName(source.getDisplayName());
 	}
-	
+
 }
