@@ -14,7 +14,7 @@ http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
 	<jaxws:endpoint id="lectureService"
 		implementor="org.openuss.services.LectureWebServiceMock"
-		address="http://localhost:9000/plexus-web/lectureService">
+		address="http://localhost:9001/plexus-web/lectureServiceMock">
 		<jaxws:features>
 			<cxf:logging/>
 		</jaxws:features>
@@ -23,7 +23,7 @@ http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 	  
 	<jaxws:client id="lectureClient"
 		serviceClass="org.openuss.services.LectureWebService"
-		address="http://localhost:9000/plexus-web/lectureService">
+		address="http://localhost:9001/plexus-web/lectureServiceMock">
 		<jaxws:features>
 			<cxf:logging/>
 		</jaxws:features>
