@@ -27,13 +27,16 @@ public class WikiEditPage extends AbstractWikiPage{
 	
 	public String save() {
 		
-		System.out.println("Content: '" + this.siteVersionInfo.getText() + "'");
+		// check for concurrent modification
+		Long newestId = this.wikiService.getNewestWikiSite(this.siteVersionInfo.getWikiSiteId()).getId();
+		if (newestId > this.siteVersionInfo.getId()) {
+			return Constants.WIKI_OVERWRITE_PAGE;
+		}
 		
 		this.siteVersionInfo.setId(null);
 		if (this.siteVersionInfo.getName() == null) {
 			this.siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 		}
-		//this.siteVersionInfo.setWikiSiteId(this.siteInfo.getId());
 		this.siteVersionInfo.setCreationDate(new Date());
 		this.siteVersionInfo.setAuthorId(user.getId());
 		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
@@ -44,6 +47,8 @@ public class WikiEditPage extends AbstractWikiPage{
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		
 		setSiteVersionId(null);
+		
+		addMessage(i18n("wiki_site_save_succeeded"));
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}
