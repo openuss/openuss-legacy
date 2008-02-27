@@ -12,6 +12,11 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
+/**
+ * Backing Bean for wikiimportconfirmation.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$wiki$wikiimportconfirmation", scope = Scope.REQUEST)
 @View
 public class WikiImportConfirmationPage extends AbstractWikiPage {
@@ -30,18 +35,22 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	private void addBreadCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		
-		BreadCrumb wikiBreadCrumb = new BreadCrumb();
+		final BreadCrumb wikiBreadCrumb = new BreadCrumb();
 		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
 		wikiBreadCrumb.setName(i18n("wiki_main_header"));
 		wikiBreadCrumb.setHint(i18n("wiki_main_header"));
 		breadcrumbs.addCrumb(wikiBreadCrumb);
 		
-		BreadCrumb importWikiBreadCrumb = new BreadCrumb();
+		final BreadCrumb importWikiBreadCrumb = new BreadCrumb();
 		importWikiBreadCrumb.setName(i18n("wiki_import_wiki"));
 		importWikiBreadCrumb.setHint(i18n("wiki_import_wiki"));
 		breadcrumbs.addCrumb(importWikiBreadCrumb);
 	}
 	
+	/**
+	 * Imports the Wiki.
+	 * @return Wiki Overview Page.
+	 */
 	public String importWiki() {
 		final Long selectedCourseId = (Long) getSessionBean(Constants.WIKI_IMPORT_COURSE);
 		final String importType = (String) getSessionBean(Constants.WIKI_IMPORT_TYPE);
@@ -58,14 +67,14 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check whether the user has accepted the user agreement or not.
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context FacesContext.
+	 * @param toValidate UIComponent that has to be validated.
+	 * @param value Inserted Value.
 	 */
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
+		final boolean accept = (Boolean) value;
 		if (!accept) {
 			((UIInput) toValidate).setValid(false);
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);

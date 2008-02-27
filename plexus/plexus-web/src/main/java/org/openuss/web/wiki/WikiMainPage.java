@@ -104,11 +104,14 @@ public class WikiMainPage extends AbstractWikiPage{
 	}
 	
 	public String getSiteTitle() {
-		StringBuilder siteTitle;
-		if(siteVersionInfo.getName().equals("index")) {
-			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
+		if (siteVersionInfo.getName() == null) {
+			return siteName;
 		}
-		else {
+		
+		StringBuilder siteTitle;
+		if(Constants.WIKI_STARTSITE_NAME.equals(siteVersionInfo.getName())) {
+			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
+		} else {
 			siteTitle = new StringBuilder(siteVersionInfo.getName());
 		}
 		

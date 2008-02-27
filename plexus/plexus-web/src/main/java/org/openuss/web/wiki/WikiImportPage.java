@@ -41,13 +41,13 @@ public class WikiImportPage extends AbstractWikiPage{
 	private void addBreadCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		
-		BreadCrumb wikiBreadCrumb = new BreadCrumb();
+		final BreadCrumb wikiBreadCrumb = new BreadCrumb();
 		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
 		wikiBreadCrumb.setName(i18n("wiki_main_header"));
 		wikiBreadCrumb.setHint(i18n("wiki_main_header"));
 		breadcrumbs.addCrumb(wikiBreadCrumb);
 		
-		BreadCrumb importWikiBreadCrumb = new BreadCrumb();
+		final BreadCrumb importWikiBreadCrumb = new BreadCrumb();
 		importWikiBreadCrumb.setName(i18n("wiki_import_wiki"));
 		importWikiBreadCrumb.setHint(i18n("wiki_import_wiki"));
 		breadcrumbs.addCrumb(importWikiBreadCrumb);
@@ -81,18 +81,18 @@ public class WikiImportPage extends AbstractWikiPage{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectItem> getExportableWikiCourses() {
-		List<CourseInfo> exportableWikiCourses = wikiService.findAllExportableWikiCoursesByInstituteAndUser(instituteInfo, user, courseInfo);
-		List<SelectItem> exportableSelectItems = new LinkedList<SelectItem>();
+		final List<CourseInfo> exportableWikiCourses = wikiService.findAllExportableWikiCoursesByInstituteAndUser(instituteInfo, user, courseInfo);
+		final List<SelectItem> exportableSelectItems = new LinkedList<SelectItem>();
 		
 		if (!exportableWikiCourses.isEmpty()) {
-			SelectItem pleaseChooseItem = new SelectItem();
+			final SelectItem pleaseChooseItem = new SelectItem();
 			pleaseChooseItem.setLabel(i18n("please_choose"));
 			pleaseChooseItem.setDisabled(true);
 			exportableSelectItems.add(pleaseChooseItem);
 		}
 		
 		for (CourseInfo exportableWikiCourse : exportableWikiCourses) {
-			SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourse.getName());
+			final SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourse.getName());
 			exportableSelectItems.add(exportableSelectItem);
 		}
 		
