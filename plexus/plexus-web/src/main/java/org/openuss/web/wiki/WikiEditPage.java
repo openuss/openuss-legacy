@@ -37,6 +37,7 @@ public class WikiEditPage extends AbstractWikiPage{
 		if (this.siteVersionInfo.getName() == null) {
 			this.siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 		}
+
 		this.siteVersionInfo.setCreationDate(new Date());
 		this.siteVersionInfo.setAuthorId(user.getId());
 		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
@@ -45,20 +46,18 @@ public class WikiEditPage extends AbstractWikiPage{
 		this.siteVersionInfo.setStable(false);
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
-		
-		setSiteVersionId(null);
-		
+
 		addMessage(i18n("wiki_site_save_succeeded"));
 		
 		return Constants.WIKI_MAIN_PAGE;
+
 	}
 	
 	public String create() {
 		return Constants.WIKI_EDIT_PAGE;
 	}
 	public String cancelCreate() {
-		this.siteName = Constants.WIKI_STARTSITE_NAME;
-		this.siteVersionId = null;
+		//this.siteName = Constants.WIKI_STARTSITE_NAME;
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}

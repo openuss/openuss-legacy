@@ -238,6 +238,9 @@
 
     <page view-id="/views/secured/wiki/*">
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+    </page>
+    
+   	<page view-id="/views/secured/wiki/wikimain.xhtml">
         <parameter name="page" value="#{views$secured$wiki$wikimain.siteName}"/>
         <parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionId}" converterId="javax.faces.Long"/>
     </page>
