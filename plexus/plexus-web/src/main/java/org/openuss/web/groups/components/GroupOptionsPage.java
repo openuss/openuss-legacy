@@ -8,15 +8,12 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupAccessType;
-import org.openuss.groups.GroupService;
-import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.Constants;
 
 /**

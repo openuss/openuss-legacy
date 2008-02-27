@@ -89,10 +89,6 @@ public class GroupsMainPage extends BasePage {
 		UserGroupInfo group = data.getRowData();
 		groupService.removeMember(group, user.getId());
 		if(groupService.getAllMembers(group).size() == 0){
-			List<UserGroupMemberInfo> aspirants = groupService.getAspirants(group);
-			for (UserGroupMemberInfo aspirant:aspirants){
-				groupService.rejectAspirant(group, aspirant.getUserId());
-			}
 			groupService.deleteUserGroup(group);
 		}
 		// TODO - Lutz: Properties anpassen

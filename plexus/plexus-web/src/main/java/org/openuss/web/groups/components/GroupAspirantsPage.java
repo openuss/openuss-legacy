@@ -6,9 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.UserGroupMemberInfo;
@@ -16,37 +14,32 @@ import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
- * 
  * @author Lutz D. Kramer
- * @author Thomas Jansing
  */
-@Bean(name = "views$secured$groups$components$groupmembers", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$components$groupaspirants", scope = Scope.REQUEST)
 @View
-public class GroupMemberPage extends AbstractGroupPage {
+public class GroupAspirantsPage extends AbstractGroupPage {
 
 	private static final Logger logger = Logger
-			.getLogger(GroupMemberPage.class);
+			.getLogger(GroupAspirantsPage.class);
 
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupMemberInfo> page;
+	List<UserGroupMemberInfo> members;
 
 	/* ----- private classes ----- */
 
-	private class GroupsDataProvider extends
-			AbstractPagedTable<UserGroupMemberInfo> {
+	private class GroupsDataProvider extends AbstractPagedTable<UserGroupMemberInfo> {
 
 		private static final long serialVersionUID = -5342817757466323535L;
 
 		@Override
-		public DataPage<UserGroupMemberInfo> getDataPage(int startRow,
-				int pageSize) {
+		public DataPage<UserGroupMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group list");
-				List<UserGroupMemberInfo> members = groupService
-						.getAllMembers(groupInfo);
-				page = new DataPage<UserGroupMemberInfo>(members.size(), 0,
-						members);
-				sort(members);
+				List<UserGroupMemberInfo> aspirants = groupService.getAspirants(groupInfo);
+				page = new DataPage<UserGroupMemberInfo>(aspirants.size(), 0, aspirants);
+				sort(aspirants);
 			}
 			return page;
 		}
@@ -54,16 +47,6 @@ public class GroupMemberPage extends AbstractGroupPage {
 
 	/* ----- business logic ----- */
 
-	@Prerender
-	@Override
-	public void prerender() throws Exception {
-		super.prerender();
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setName(i18n("group_command_member"));
-		crumb.setHint(i18n("group_command_member"));
-		breadcrumbs.addCrumb(crumb);
-	}
-	
 	public String linkProfile() {
 		User profile = User.Factory.newInstance();
 		profile.setId(this.data.getRowData().getUserId());
@@ -71,6 +54,18 @@ public class GroupMemberPage extends AbstractGroupPage {
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
+	public String accept() {
+		UserGroupMemberInfo member = data.getRowData();
+		groupService.acceptAspirant(groupInfo, member.getUserId());
+		return Constants.SUCCESS;	
+	}
+	
+	public String reject(){
+		UserGroupMemberInfo member = data.getRowData();
+		groupService.rejectAspirant(groupInfo, member.getUserId());
+		return Constants.SUCCESS;
+	}
+	
 	/* ----- getter and setter ----- */
 
 	public GroupsDataProvider getData() {

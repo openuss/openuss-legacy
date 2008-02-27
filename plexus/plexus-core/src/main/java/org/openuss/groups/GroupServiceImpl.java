@@ -199,22 +199,26 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
 
-		// Load Group Entitiy
-		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
-		Validate.notNull(group, "Cannot transform groupInfo to entity.");
+		if (!this.isModerator(groupInfo, userId)) {
 
-		// Load User Entity
-		User user = getUserDao().load(userId);
-		Validate.notNull(user, "User must not be null.");
+			// Load Group Entitiy
+			UserGroup group = getUserGroupDao()
+					.userGroupInfoToEntity(groupInfo);
+			Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Add user to SecurityGroup - Moderators
-		Group secGroup = group.getModeratorsGroup();
-		getSecurityService().addAuthorityToGroup(user, secGroup);
+			// Load User Entity
+			User user = getUserDao().load(userId);
+			Validate.notNull(user, "User must not be null.");
 
-		// Remove user from SecurityGroup - Members
-		Group secGroupMem = group.getMembersGroup();
-		getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
+			// Add user to SecurityGroup - Moderators
+			Group secGroup = group.getModeratorsGroup();
+			getSecurityService().addAuthorityToGroup(user, secGroup);
 
+			// Remove user from SecurityGroup - Members
+			Group secGroupMem = group.getMembersGroup();
+			getSecurityService().removeAuthorityFromGroup(user, secGroupMem);
+
+		}
 	}
 
 	/**
@@ -228,21 +232,26 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				"Parameter group must contain a valid group id.");
 		Validate.notNull(userId, "UserId cannot be null.");
 
-		// Load Group Entity
-		UserGroup group = getUserGroupDao().userGroupInfoToEntity(groupInfo);
-		Validate.notNull(group, "Cannot transform groupInfo to entity.");
+		if (this.isModerator(groupInfo, userId)) {
 
-		// Load User Entity
-		User user = getUserDao().load(userId);
-		Validate.notNull(user, "User must not be null.");
+			// Load Group Entity
+			UserGroup group = getUserGroupDao()
+					.userGroupInfoToEntity(groupInfo);
+			Validate.notNull(group, "Cannot transform groupInfo to entity.");
 
-		// Add user to SecurityGroup - Members
-		Group secGroupMem = group.getMembersGroup();
-		getSecurityService().addAuthorityToGroup(user, secGroupMem);
+			// Load User Entity
+			User user = getUserDao().load(userId);
+			Validate.notNull(user, "User must not be null.");
 
-		// Remove user from Security Group - Moderators
-		Group secGroupMod = group.getModeratorsGroup();
-		getSecurityService().removeAuthorityFromGroup(user, secGroupMod);
+			// Add user to SecurityGroup - Members
+			Group secGroupMem = group.getMembersGroup();
+			getSecurityService().addAuthorityToGroup(user, secGroupMem);
+
+			// Remove user from Security Group - Moderators
+			Group secGroupMod = group.getModeratorsGroup();
+			getSecurityService().removeAuthorityFromGroup(user, secGroupMod);
+
+		}
 	}
 
 	/**
@@ -694,6 +703,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			groupMember.setFirstName(user.getFirstName());
 			groupMember.setLastName(user.getLastName());
 			groupMember.setEMail(user.getEmail());
+			groupMember.setCreator(this.isCreator(getUserGroupDao()
+					.toUserGroupInfo(group), user.getId()));
 			if (secGroups == group.getModeratorsGroup()) {
 				groupMember.setModerator(true);
 			} else {

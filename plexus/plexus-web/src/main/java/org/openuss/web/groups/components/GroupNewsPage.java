@@ -20,10 +20,10 @@ import org.openuss.web.Constants;
 
 /**
  * Group News Page Controller
- * @author Ingo Dueppe
+ * @author Lutz D. Kramer
  * @author Thomas Jansing
  */
-@Bean(name = "views$secured$group$components$groupnews", scope = Scope.REQUEST)
+@Bean(name = "views$secured$groups$components$groupnews", scope = Scope.REQUEST)
 @View
 public class GroupNewsPage extends AbstractGroupPage {
 
@@ -35,7 +35,6 @@ public class GroupNewsPage extends AbstractGroupPage {
 	private NewsService newsService;
 
 	private NewsDataProvider data = new NewsDataProvider();
-
 
 	/* ----- private classes ----- */
 	
@@ -58,11 +57,11 @@ public class GroupNewsPage extends AbstractGroupPage {
 	
 	/* ----- business logic ----- */
 	
-	@Override
 	@Prerender
+	@Override
 	public void prerender() throws Exception {
-		logger.debug("PRERENDER OF NEWS PAGE");
 		super.prerender();
+		logger.debug("THIS IS THE PRERENDER-METHOD OF THE GROUP NEWS PAGE");
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_news"));
 		crumb.setHint(i18n("group_command_news"));

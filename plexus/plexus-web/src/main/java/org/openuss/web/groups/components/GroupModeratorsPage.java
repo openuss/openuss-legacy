@@ -1,18 +1,25 @@
 package org.openuss.web.groups.components;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupMemberInfo;
+import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -29,7 +36,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupMemberInfo> page;
-	List<UserGroupMemberInfo> moderators;
+	private Set<UserGroupMemberInfo> changedUsers = new HashSet<UserGroupMemberInfo>();
 
 	/* ----- private classes ----- */
 
@@ -43,17 +50,35 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 				int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group list");
-				moderators = groupService
+				List<UserGroupMemberInfo> members = groupService
 						.getAllMembers(groupInfo);
-				page = new DataPage<UserGroupMemberInfo>(moderators.size(), 0,
-						moderators);
-				sort(moderators);
+				for (UserGroupMemberInfo member : members) {
+					if (member.getUserId().compareTo(user.getId()) == 0
+							|| (groupService.isCreator(groupInfo, member
+									.getUserId()) && !groupService.isModerator(
+									groupInfo, member.getUserId()))) {
+						member.setCreator(false);
+					}
+				}
+				page = new DataPage<UserGroupMemberInfo>(members.size(), 0,
+						members);
+				sort(members);
 			}
 			return page;
 		}
 	}
 
 	/* ----- business logic ----- */
+
+	@Prerender
+	@Override
+	public void prerender() throws Exception {
+		super.prerender();
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("group_command_moderator"));
+		crumb.setHint(i18n("group_command_moderator"));
+		breadcrumbs.addCrumb(crumb);
+	}
 
 	public String linkProfile() {
 		User profile = User.Factory.newInstance();
@@ -63,26 +88,77 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	}
 
 	public String save() {
-		for(UserGroupMemberInfo moderator:moderators){
-			
+		boolean newMod = false;
+		for (UserGroupMemberInfo userInfo : changedUsers) {
+			if (userInfo.isModerator()) {
+				newMod = true;
+			}
 		}
-		addMessage("Erfolg");
-		return Constants.SUCCESS;
+		if (groupService.getModerators(groupInfo).size() == 1) {
+			for (UserGroupMemberInfo userInfo : changedUsers) {
+				if (newMod) {
+					if (userInfo.isModerator()) {
+						groupService.addModerator(groupInfo, userInfo
+								.getUserId());
+					} else {
+						groupService.removeModerator(groupInfo, userInfo
+								.getUserId());
+					}
+				} else {
+					addError("LAST MODERATOR CAN NOT REMOVED FROM MEMBER STATUS, ONLY BE DELETING GROUP");
+				}
+			}
+		} else {
+			for (UserGroupMemberInfo userInfo : changedUsers) {
+				if (userInfo.isModerator()) {
+					groupService.addModerator(groupInfo, userInfo.getUserId());
+				} else {
+					groupService.removeModerator(groupInfo, userInfo
+							.getUserId());
+				}
+				addMessage(i18n("system_message_changed_user_state", userInfo
+						.getUsername()));
+			}
+		}
+		resetCachedData();
+		if (groupService.isModerator(groupInfo, user.getId())) {
+			return Constants.GROUP_MODERATOR_PAGE;
+		} else {
+			return Constants.GROUP_PAGE;
+		}
 	}
 
 	public String removeMember() {
 		UserGroupMemberInfo member = data.getRowData();
-		if (!groupService.isCreator(groupInfo, member.getUserId())) {
-			groupService.removeMember(groupInfo, member.getUserId());
+		if (groupService.isModerator(groupInfo, member.getUserId())
+				&& groupService.getModerators(groupInfo).size() == 1) {
+			addError("LAST MODERATOR CAN NOT REMOVED FROM GROUP, ONLY BE DELETING GROUP");
 		} else {
-			if (member.getUserId().compareTo(user.getId()) == 0) {
-				groupService.removeMember(groupInfo, member.getUserId());
-			} else {
-				// TODO - Lutz: Error anpassen
-				addError("group_delete_creator");
+			groupService.removeMember(groupInfo, member.getUserId());
+			if (groupService.getAllMembers(groupInfo).size() == 0) {
+				groupService.deleteUserGroup(groupInfo);
 			}
 		}
 		return Constants.SUCCESS;
+	}
+
+	public void changedUserInfo(ValueChangeEvent event) {
+		UserGroupMemberInfo userInfo = data.getRowData();
+		logger.debug("changed state of " + userInfo.getUsername() + " from "
+				+ event.getOldValue() + " to " + event.getNewValue());
+		changedUsers.add(userInfo);
+	}
+
+	public boolean isAspirants() {
+		if (groupService.getAspirants(groupInfo).size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void resetCachedData() {
+		page = null;
 	}
 
 	/* ----- getter and setter ----- */

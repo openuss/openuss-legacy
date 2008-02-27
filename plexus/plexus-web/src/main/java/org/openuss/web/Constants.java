@@ -144,7 +144,11 @@ public class Constants {
 	
 	// group and group type navigation outcomes and combobox long constants
 	public static final String GROUP_PAGE = "group_main";
+	public static final String GROUP_MODERATOR_PAGE="group_options_moderators";
 	public static final String GROUP_OPTIONS_PAGE = "group_options";
+	public static final String GROUP_NEWS_EDIT_PAGE = "group_news_edit";
+	public static final String GROUP_NEWS_PAGE = "group_news";
+	
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
@@ -186,10 +190,7 @@ public class Constants {
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
 	public static final String COURSE_NEWS_PAGE = "course_news";
-	// TODO - Lutz: Properties anpassen
-	public static final String GROUP_NEWS_EDIT_PAGE = "group_news_edit";
-	public static final String GROUP_NEWS_PAGE = "group_news";
-	
+
 	// newsletter navigation outcomes and combobox long constants
 	public static final String NEWSLETTER_NEWSLETTER = "newsletter_newsletter";
 	public static final String NEWSLETTER_MAIL = "newsletter_mail";
