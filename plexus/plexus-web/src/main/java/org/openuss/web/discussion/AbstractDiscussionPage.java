@@ -36,6 +36,9 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (courseInfo!=null&&courseInfo.getId()!=null){
 			forum = getDiscussionService().getForum(courseInfo);
 			setSessionBean(Constants.DISCUSSION_FORUM, forum);

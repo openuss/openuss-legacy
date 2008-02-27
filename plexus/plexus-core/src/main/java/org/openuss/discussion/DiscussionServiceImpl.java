@@ -218,7 +218,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected PostInfo handleGetPost(PostInfo post) throws Exception {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
-		PostInfo postInfo = getPostDao().toPostInfo(getPostDao().load(post.getId()));
+		PostInfo postInfo = (PostInfo) getPostDao().load(getPostDao().TRANSFORM_POSTINFO, post.getId());
+		if (postInfo == null) {
+			return null;  
+		}
 		List<FileInfo> attachments = getAttachments(postInfo);
 		postInfo.setAttachments(attachments);
 		postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));

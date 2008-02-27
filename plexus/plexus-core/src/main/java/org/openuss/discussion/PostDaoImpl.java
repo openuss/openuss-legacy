@@ -21,6 +21,7 @@ public class PostDaoImpl extends PostDaoBase {
 		targetVO.setIsEdited(sourceEntity.isEdited());
 		targetVO.setSubmitterId(sourceEntity.getSubmitter().getId());
 		targetVO.setSubmitterPicture(sourceEntity.getSubmitterPicture());
+		targetVO.setTopicId(sourceEntity.getTopic().getId());
 	}
 
 	/**

@@ -175,6 +175,9 @@ public class Constants {
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
 	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
 	public static final String DISCUSSION_FORUM = "discussion_forum";
+	public static final String DISCUSSION_THREAD_NOT_FOUND = "discussion_thread_not_found";
+	public static final String DISCUSSION_POST_NOT_FOUND = "discussion_post_not_found";
+	public static final String DISCUSSION_POST_NOT_AUTHOR = "discussion_post_not_author";
 	
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
