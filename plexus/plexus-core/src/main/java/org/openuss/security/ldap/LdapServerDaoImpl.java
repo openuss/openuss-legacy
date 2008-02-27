@@ -16,8 +16,7 @@ public class LdapServerDaoImpl
     public void toLdapServerInfo(
         org.openuss.security.ldap.LdapServer sourceEntity,
         org.openuss.security.ldap.LdapServerInfo targetVO)
-    {
-        // @todo verify behavior of toLdapServerInfo
+    {       
         super.toLdapServerInfo(sourceEntity, targetVO);
     }
 
@@ -27,8 +26,7 @@ public class LdapServerDaoImpl
      */
     public org.openuss.security.ldap.LdapServerInfo toLdapServerInfo(final org.openuss.security.ldap.LdapServer entity)
     {
-        // @todo verify behavior of toLdapServerInfo
-        return super.toLdapServerInfo(entity);
+       return super.toLdapServerInfo(entity);
     }
 
 
@@ -39,17 +37,15 @@ public class LdapServerDaoImpl
      */
     private org.openuss.security.ldap.LdapServer loadLdapServerFromLdapServerInfo(org.openuss.security.ldap.LdapServerInfo ldapServerInfo)
     {
-        // @todo implement loadLdapServerFromLdapServerInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadLdapServerFromLdapServerInfo(org.openuss.security.ldap.LdapServerInfo) not yet implemented.");
+//    	throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadLdapServerFromLdapServerInfo(org.openuss.security.ldap.LdapServerInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
         org.openuss.security.ldap.LdapServer ldapServer = this.load(ldapServerInfo.getId());
         if (ldapServer == null)
         {
             ldapServer = org.openuss.security.ldap.LdapServer.Factory.newInstance();
         }
         return ldapServer;
-        */
+        
     }
 
     
@@ -58,7 +54,6 @@ public class LdapServerDaoImpl
      */
     public org.openuss.security.ldap.LdapServer ldapServerInfoToEntity(org.openuss.security.ldap.LdapServerInfo ldapServerInfo)
     {
-        // @todo verify behavior of ldapServerInfoToEntity
         org.openuss.security.ldap.LdapServer entity = this.loadLdapServerFromLdapServerInfo(ldapServerInfo);
         this.ldapServerInfoToEntity(ldapServerInfo, entity, true);
         return entity;
@@ -73,7 +68,6 @@ public class LdapServerDaoImpl
         org.openuss.security.ldap.LdapServer targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of ldapServerInfoToEntity
         super.ldapServerInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

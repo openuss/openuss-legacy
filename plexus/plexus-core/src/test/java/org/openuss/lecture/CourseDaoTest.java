@@ -122,7 +122,7 @@ public class CourseDaoTest extends CourseDaoTestBase {
 		CourseType courseType = createCourseType(institute);
 		courseType.setInstitute(institute);
 		courseTypeDao.create(courseType);
-		assertNotNull(courseTypeDao);
+		assertNotNull(courseType.getId());
 		
 		//create period
 		Period period = createPeriod();

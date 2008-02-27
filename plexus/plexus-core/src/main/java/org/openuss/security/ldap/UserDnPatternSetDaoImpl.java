@@ -16,9 +16,10 @@ public class UserDnPatternSetDaoImpl
     public void toUserDnPatternSetInfo(
         org.openuss.security.ldap.UserDnPatternSet sourceEntity,
         org.openuss.security.ldap.UserDnPatternSetInfo targetVO)
-    {
-        // @todo verify behavior of toUserDnPatternSetInfo
+    {      
         super.toUserDnPatternSetInfo(sourceEntity, targetVO);
+//        targetVO.setId(sourceEntity.getId());
+//        targetVO.setName(sourceEntity.getName());
     }
 
 
@@ -27,7 +28,7 @@ public class UserDnPatternSetDaoImpl
      */
     public org.openuss.security.ldap.UserDnPatternSetInfo toUserDnPatternSetInfo(final org.openuss.security.ldap.UserDnPatternSet entity)
     {
-        // @todo verify behavior of toUserDnPatternSetInfo
+         
         return super.toUserDnPatternSetInfo(entity);
     }
 
@@ -38,18 +39,15 @@ public class UserDnPatternSetDaoImpl
      * a new, blank entity is created
      */
     private org.openuss.security.ldap.UserDnPatternSet loadUserDnPatternSetFromUserDnPatternSetInfo(org.openuss.security.ldap.UserDnPatternSetInfo userDnPatternSetInfo)
-    {
-        // @todo implement loadUserDnPatternSetFromUserDnPatternSetInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadUserDnPatternSetFromUserDnPatternSetInfo(org.openuss.security.ldap.UserDnPatternSetInfo) not yet implemented.");
+    {        
+//        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadUserDnPatternSetFromUserDnPatternSetInfo(org.openuss.security.ldap.UserDnPatternSetInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
         org.openuss.security.ldap.UserDnPatternSet userDnPatternSet = this.load(userDnPatternSetInfo.getId());
         if (userDnPatternSet == null)
         {
             userDnPatternSet = org.openuss.security.ldap.UserDnPatternSet.Factory.newInstance();
         }
-        return userDnPatternSet;
-        */
+        return userDnPatternSet;        
     }
 
     
@@ -58,7 +56,6 @@ public class UserDnPatternSetDaoImpl
      */
     public org.openuss.security.ldap.UserDnPatternSet userDnPatternSetInfoToEntity(org.openuss.security.ldap.UserDnPatternSetInfo userDnPatternSetInfo)
     {
-        // @todo verify behavior of userDnPatternSetInfoToEntity
         org.openuss.security.ldap.UserDnPatternSet entity = this.loadUserDnPatternSetFromUserDnPatternSetInfo(userDnPatternSetInfo);
         this.userDnPatternSetInfoToEntity(userDnPatternSetInfo, entity, true);
         return entity;
@@ -71,9 +68,7 @@ public class UserDnPatternSetDaoImpl
     public void userDnPatternSetInfoToEntity(
         org.openuss.security.ldap.UserDnPatternSetInfo sourceVO,
         org.openuss.security.ldap.UserDnPatternSet targetEntity,
-        boolean copyIfNull)
-    {
-        // @todo verify behavior of userDnPatternSetInfoToEntity
+        boolean copyIfNull) {    	
         super.userDnPatternSetInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

@@ -17,7 +17,6 @@ public class AuthenticationDomainDaoImpl
         org.openuss.security.ldap.AuthenticationDomain sourceEntity,
         org.openuss.security.ldap.AuthenticationDomainInfo targetVO)
     {
-        // @todo verify behavior of toAuthenticationDomainInfo
         super.toAuthenticationDomainInfo(sourceEntity, targetVO);
     }
 
@@ -27,7 +26,6 @@ public class AuthenticationDomainDaoImpl
      */
     public org.openuss.security.ldap.AuthenticationDomainInfo toAuthenticationDomainInfo(final org.openuss.security.ldap.AuthenticationDomain entity)
     {
-        // @todo verify behavior of toAuthenticationDomainInfo
         return super.toAuthenticationDomainInfo(entity);
     }
 
@@ -39,17 +37,16 @@ public class AuthenticationDomainDaoImpl
      */
     private org.openuss.security.ldap.AuthenticationDomain loadAuthenticationDomainFromAuthenticationDomainInfo(org.openuss.security.ldap.AuthenticationDomainInfo authenticationDomainInfo)
     {
-        // @todo implement loadAuthenticationDomainFromAuthenticationDomainInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadAuthenticationDomainFromAuthenticationDomainInfo(org.openuss.security.ldap.AuthenticationDomainInfo) not yet implemented.");
+        
+//        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadAuthenticationDomainFromAuthenticationDomainInfo(org.openuss.security.ldap.AuthenticationDomainInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
         org.openuss.security.ldap.AuthenticationDomain authenticationDomain = this.load(authenticationDomainInfo.getId());
         if (authenticationDomain == null)
         {
             authenticationDomain = org.openuss.security.ldap.AuthenticationDomain.Factory.newInstance();
         }
         return authenticationDomain;
-        */
+
     }
 
     
@@ -58,7 +55,6 @@ public class AuthenticationDomainDaoImpl
      */
     public org.openuss.security.ldap.AuthenticationDomain authenticationDomainInfoToEntity(org.openuss.security.ldap.AuthenticationDomainInfo authenticationDomainInfo)
     {
-        // @todo verify behavior of authenticationDomainInfoToEntity
         org.openuss.security.ldap.AuthenticationDomain entity = this.loadAuthenticationDomainFromAuthenticationDomainInfo(authenticationDomainInfo);
         this.authenticationDomainInfoToEntity(authenticationDomainInfo, entity, true);
         return entity;
@@ -73,7 +69,6 @@ public class AuthenticationDomainDaoImpl
         org.openuss.security.ldap.AuthenticationDomain targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of authenticationDomainInfoToEntity
         super.authenticationDomainInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

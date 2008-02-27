@@ -17,7 +17,6 @@ public class AttributeMappingDaoImpl
         org.openuss.security.ldap.AttributeMapping sourceEntity,
         org.openuss.security.ldap.AttributeMappingInfo targetVO)
     {
-        // @todo verify behavior of toAttributeMappingInfo
         super.toAttributeMappingInfo(sourceEntity, targetVO);
     }
 
@@ -27,7 +26,6 @@ public class AttributeMappingDaoImpl
      */
     public org.openuss.security.ldap.AttributeMappingInfo toAttributeMappingInfo(final org.openuss.security.ldap.AttributeMapping entity)
     {
-        // @todo verify behavior of toAttributeMappingInfo
         return super.toAttributeMappingInfo(entity);
     }
 
@@ -39,17 +37,16 @@ public class AttributeMappingDaoImpl
      */
     private org.openuss.security.ldap.AttributeMapping loadAttributeMappingFromAttributeMappingInfo(org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo)
     {
-        // @todo implement loadAttributeMappingFromAttributeMappingInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadAttributeMappingFromAttributeMappingInfo(org.openuss.security.ldap.AttributeMappingInfo) not yet implemented.");
+        
+//        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadAttributeMappingFromAttributeMappingInfo(org.openuss.security.ldap.AttributeMappingInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
         org.openuss.security.ldap.AttributeMapping attributeMapping = this.load(attributeMappingInfo.getId());
         if (attributeMapping == null)
         {
             attributeMapping = org.openuss.security.ldap.AttributeMapping.Factory.newInstance();
         }
         return attributeMapping;
-        */
+       
     }
 
     
@@ -58,7 +55,6 @@ public class AttributeMappingDaoImpl
      */
     public org.openuss.security.ldap.AttributeMapping attributeMappingInfoToEntity(org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo)
     {
-        // @todo verify behavior of attributeMappingInfoToEntity
         org.openuss.security.ldap.AttributeMapping entity = this.loadAttributeMappingFromAttributeMappingInfo(attributeMappingInfo);
         this.attributeMappingInfoToEntity(attributeMappingInfo, entity, true);
         return entity;
@@ -73,7 +69,6 @@ public class AttributeMappingDaoImpl
         org.openuss.security.ldap.AttributeMapping targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of attributeMappingInfoToEntity
         super.attributeMappingInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

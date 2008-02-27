@@ -17,7 +17,6 @@ public class UserDnPatternDaoImpl
         org.openuss.security.ldap.UserDnPattern sourceEntity,
         org.openuss.security.ldap.UserDnPatternInfo targetVO)
     {
-        // @todo verify behavior of toUserDnPatternInfo
         super.toUserDnPatternInfo(sourceEntity, targetVO);
     }
 
@@ -27,7 +26,6 @@ public class UserDnPatternDaoImpl
      */
     public org.openuss.security.ldap.UserDnPatternInfo toUserDnPatternInfo(final org.openuss.security.ldap.UserDnPattern entity)
     {
-        // @todo verify behavior of toUserDnPatternInfo
         return super.toUserDnPatternInfo(entity);
     }
 
@@ -38,18 +36,17 @@ public class UserDnPatternDaoImpl
      * a new, blank entity is created
      */
     private org.openuss.security.ldap.UserDnPattern loadUserDnPatternFromUserDnPatternInfo(org.openuss.security.ldap.UserDnPatternInfo userDnPatternInfo)
-    {
-        // @todo implement loadUserDnPatternFromUserDnPatternInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadUserDnPatternFromUserDnPatternInfo(org.openuss.security.ldap.UserDnPatternInfo) not yet implemented.");
+    {        
+//        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.loadUserDnPatternFromUserDnPatternInfo(org.openuss.security.ldap.UserDnPatternInfo) not yet implemented.");
 
-        /* A typical implementation looks like this:
+     
         org.openuss.security.ldap.UserDnPattern userDnPattern = this.load(userDnPatternInfo.getId());
         if (userDnPattern == null)
         {
             userDnPattern = org.openuss.security.ldap.UserDnPattern.Factory.newInstance();
         }
         return userDnPattern;
-        */
+     
     }
 
     
@@ -58,7 +55,6 @@ public class UserDnPatternDaoImpl
      */
     public org.openuss.security.ldap.UserDnPattern userDnPatternInfoToEntity(org.openuss.security.ldap.UserDnPatternInfo userDnPatternInfo)
     {
-        // @todo verify behavior of userDnPatternInfoToEntity
         org.openuss.security.ldap.UserDnPattern entity = this.loadUserDnPatternFromUserDnPatternInfo(userDnPatternInfo);
         this.userDnPatternInfoToEntity(userDnPatternInfo, entity, true);
         return entity;
@@ -72,8 +68,7 @@ public class UserDnPatternDaoImpl
         org.openuss.security.ldap.UserDnPatternInfo sourceVO,
         org.openuss.security.ldap.UserDnPattern targetEntity,
         boolean copyIfNull)
-    {
-        // @todo verify behavior of userDnPatternInfoToEntity
+    {        
         super.userDnPatternInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 
