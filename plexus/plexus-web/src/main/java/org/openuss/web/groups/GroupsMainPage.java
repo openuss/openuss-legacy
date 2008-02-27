@@ -4,17 +4,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.groups.UserGroupMemberInfo;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
@@ -23,17 +17,10 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$groups", scope = Scope.REQUEST)
 @View
-public class GroupsMainPage extends BasePage {
+public class GroupsMainPage extends AbstractGroupsPage {
 	
 	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
-	private static final String userGroupBasePath = "/views/secured/groups/components/main.faces";
 
-	@Property(value = "#{groupService}")
-	protected GroupService groupService;
-	
-	@Property(value = "#{groupInfo}")
-	protected UserGroupInfo userGroupInfo;
-	
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;
 	private List<UserGroupInfo> groups;
@@ -57,18 +44,6 @@ public class GroupsMainPage extends BasePage {
 	}
 	
 	/* ----- business logic ----- */
-	
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(contextPath()+userGroupBasePath);
-		newCrumb.setName(i18n("openuss4us_command_groups"));
-		newCrumb.setHint(i18n("openuss4us_command_groups"));	
-		breadcrumbs.loadOpenuss4usCrumbs();
-		breadcrumbs.addCrumb(newCrumb);
-	}
 	
 	public String createGroup() {
 		return Constants.OPENUSS4US_GROUPS_CREATE;
@@ -120,22 +95,6 @@ public class GroupsMainPage extends BasePage {
 
 	public void setData(GroupsDataProvider data) {
 		this.data = data;
-	}
-
-	public GroupService getGroupService() {
-		return groupService;
-	}
-
-	public void setGroupService(GroupService groupService) {
-		this.groupService = groupService;
-	}
-
-	public UserGroupInfo getUserGroupInfo() {
-		return userGroupInfo;
-	}
-
-	public void setUserGroupInfo(UserGroupInfo userGroupInfo) {
-		this.userGroupInfo = userGroupInfo;
 	}
 
 }

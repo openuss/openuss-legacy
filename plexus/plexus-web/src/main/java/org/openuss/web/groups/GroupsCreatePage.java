@@ -8,34 +8,28 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupAccessType;
-import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-
 
 /**
  * Backing bean for the group registration on the groupCreatePage
+ * 
  * @author Lutz D. Kramer
  * @author Thomas Jansing
  */
-
 @Bean(name = "views$secured$groups$groupcreate", scope = Scope.REQUEST)
 @View
-public class GroupsCreatePage extends BasePage {
-	
-	private static final Logger logger = Logger.getLogger(GroupsCreatePage.class);
-	
-	@Property(value = "#{groupInfo}")
-	protected UserGroupInfo groupInfo;
-	@Property(value = "#{groupService}")
-	protected GroupService groupService;
-		
+public class GroupsCreatePage extends AbstractGroupsPage {
+
+	private static final Logger logger = Logger
+			.getLogger(GroupsCreatePage.class);
+
 	private String name;
 	private String shortcut;
 	private String password;
@@ -46,13 +40,25 @@ public class GroupsCreatePage extends BasePage {
 	private boolean documents = true;
 	private boolean forum = true;
 	private boolean newsletter = true;
-	
+
 	/* ----- business logic ----- */
-	
+
+	@Override
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setLink(contextPath()
+				+ "/views/secured/groups/groupcreate.faces");
+		newCrumb.setName(i18n("openuss4us_command_groups_create"));
+		newCrumb.setHint(i18n("openuss4us_command_groups_create"));
+		breadcrumbs.addCrumb(newCrumb);
+	}
+
 	public String register() {
-		if(groupService.isUniqueShortcut(shortcut)){
+		if (groupService.isUniqueShortcut(shortcut)) {
 			logger.debug("START CREAT GROUP");
-			
+
 			// create group info object
 			UserGroupInfo groupInfo = new UserGroupInfo();
 			groupInfo.setId(null);
@@ -60,9 +66,9 @@ public class GroupsCreatePage extends BasePage {
 			groupInfo.setShortcut(shortcut);
 			// XSS Filter Content
 			groupInfo.setDescription(new HtmlInputFilter().filter(description));
-			if (accessType < 2){
+			if (accessType < 2) {
 				password = null;
-			}	
+			}
 			groupInfo.setPassword(password);
 			groupInfo.setAccessType(GroupAccessType.fromInteger(accessType));
 			groupInfo.setCreator(user.getId());
@@ -73,9 +79,10 @@ public class GroupsCreatePage extends BasePage {
 			groupInfo.setNewsletter(newsletter);
 
 			// create group and set id
-			Long newGroupId = groupService.createUserGroup(groupInfo, user.getId());
+			Long newGroupId = groupService.createUserGroup(groupInfo, user
+					.getId());
 			groupInfo.setId(newGroupId);
-		
+
 			// clear fields
 			name = null;
 			shortcut = null;
@@ -87,7 +94,7 @@ public class GroupsCreatePage extends BasePage {
 			forum = true;
 			newsletter = true;
 			accessType = 0;
-		
+
 			logger.debug("END CREAT GROUP");
 			return Constants.OPENUSS4US_GROUPS;
 		} else {
@@ -99,24 +106,27 @@ public class GroupsCreatePage extends BasePage {
 
 	public List<SelectItem> getAccessTypes() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(GroupAccessType.OPEN.getValue(), i18n("groupaccesstype_open")));
-		items.add(new SelectItem(GroupAccessType.CLOSED.getValue(), i18n("groupaccesstype_closed")));
-		items.add(new SelectItem(GroupAccessType.PASSWORD.getValue(), i18n("groupaccesstype_password")));
+		items.add(new SelectItem(GroupAccessType.OPEN.getValue(),
+				i18n("groupaccesstype_open")));
+		items.add(new SelectItem(GroupAccessType.CLOSED.getValue(),
+				i18n("groupaccesstype_closed")));
+		items.add(new SelectItem(GroupAccessType.PASSWORD.getValue(),
+				i18n("groupaccesstype_password")));
 		return items;
 	}
 
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessTypeGroup = event.getNewValue();
 		accessType = (Integer) accessTypeGroup;
-		if (accessType < 2){
+		if (accessType < 2) {
 			password = "Password";
 		} else {
 			password = null;
 		}
 	}
-	
+
 	/* ----- getter and setter ----- */
-	
+
 	public String getName() {
 		return name;
 	}
@@ -197,21 +207,4 @@ public class GroupsCreatePage extends BasePage {
 		this.newsletter = newsletter;
 	}
 
-	public GroupService getGroupService() {
-		return groupService;
-	}
-
-	public void setGroupService(GroupService groupService) {
-		this.groupService = groupService;
-	}
-
-	
-	public UserGroupInfo getGroupInfo() {
-		return groupInfo;
-	}
-
-	
-	public void setGroupInfo(UserGroupInfo groupInfo) {
-		this.groupInfo = groupInfo;
-	}
 }

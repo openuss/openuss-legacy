@@ -64,10 +64,6 @@
 					<h:outputText value="#{moderator.firstName} #{moderator.lastName}" />
 				</o:link>
 			</t:dataList> </span>
-
-			<h:outputText
-				value="DEBUG: ACCESSTYPE = #{groupInfo.accessType.value}" />
-
 		</o:block>
 
 		<s:authorize ifAllGranted="ROLE_USER">
