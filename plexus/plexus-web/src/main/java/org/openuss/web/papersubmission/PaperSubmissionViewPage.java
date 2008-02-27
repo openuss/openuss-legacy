@@ -45,6 +45,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** The datamodel for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
 	
+	private List<PaperSubmissionInfo> submissions;
+	
 	private List<FolderEntryInfo> entries;
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
@@ -135,7 +137,9 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public String downloadSubmission () throws IOException{
 		logger.debug("downloading documents");
 		//FIXME Need for a method that returns a tree of FolderEntryInfos...
-		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		//List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		List<PaperSubmissionInfo> submissions = selectedSubmissions();
+		List<FolderEntryInfo> files = paperSubmissionService.getPaperSubmissions(submissions, examInfo.getId());
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
@@ -148,6 +152,17 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
+	private List<PaperSubmissionInfo> selectedSubmissions() {
+		List<PaperSubmissionInfo> selected = new ArrayList<PaperSubmissionInfo>(loadSubmissions());
+		CollectionUtils.filter(selected, new Predicate() {
+			public boolean evaluate(Object object) {
+				return paperSelection.isSelected(object);
+			}
+		});
+		logger.debug("selected " + selected.size() + " files");
+		return selected;
+	}
+
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
@@ -177,10 +192,32 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return entries;
 	}
 	
+	private List<PaperSubmissionInfo> loadSubmissions(){
+		if(submissions == null && examInfo != null && examInfo.getId() != null){
+			submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
+		}
+		return submissions;
+	}
 	
+	public String selectSubmission(){
+		logger.debug("Starting method selectSubmission");
+		PaperSubmissionInfo currentSubmission = currentSubmission();
+		logger.debug("Returning to method selectSubmission");
+		logger.debug(currentSubmission.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
+
+		return Constants.PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE;
+	}
+	
+	private PaperSubmissionInfo currentSubmission() {
+		PaperSubmissionInfo submission = this.dataSubmissions.getRowData();
+		return submission;
+	}
 	
 	//// getter/setter methods ////////////////////////////////////////////////
 	
+	
+
 	public LocalDataModelSubmissions getDataSubmissions() {
 		return this.dataSubmissions;
 	}
@@ -202,7 +239,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
-				List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
+				List<PaperSubmissionInfo> submissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examInfo.getId());
 				
 				//sort(entries);
 				page = new DataPage<PaperSubmissionInfo>(submissions.size(), 0, submissions);
@@ -241,6 +278,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 //		this.entrySelection = entrySelection;
 //	}
 	
+	
 	public PaperSubmissionSelection getPaperSelection() {
 		return paperSelection;
 	}
@@ -264,6 +302,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public void setDataSubmissionFiles(
 			LocalDataModelSubmissionFiles dataSubmissionFiles) {
 		this.dataSubmissionFiles = dataSubmissionFiles;
+	}
+
+	public List<PaperSubmissionInfo> getSubmissions() {
+		return submissions;
+	}
+
+	public void setSubmissions(List<PaperSubmissionInfo> submissions) {
+		this.submissions = submissions;
 	}
 	
 }

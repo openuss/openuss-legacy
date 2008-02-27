@@ -714,6 +714,10 @@
 	            <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>
+	            <from-outcome>papersubmissionlectureview</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/paperlectureview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>	        
                 <from-outcome>papersubmission_add_zip</from-outcome>
                 <to-view-id>/views/secured/papersubmission/addzip.xhtml</to-view-id>              
             </navigation-case>  

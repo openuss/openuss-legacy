@@ -33,71 +33,12 @@
         
         <ui:define name="content">
             <h:form id="submissionsTableView">
-                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}"> 
-                    <!-- Assitant-view -->
-	                <plexus:dataTable   
-				        id="submissions" 
-				        label="#{msg['papersubmission_submissionstable_header']}" 
-				        value="views$secured$papersubmission$paperview.dataSubmissions" 
-				        columnClasses="col_min_center, col_min_center, col_max_center, col_max_center"
-				        var="bean" 
-				        rows="20">
-				        
-				        <t:column>
-				            <f:facet name="header">
-				                <h:selectBooleanCheckbox 
-				                    immediate="true" 
-				                    onchange="this.form.submit();" 
-				                    onclick="this.form.submit();" 
-				                    value="#{papersubmission_submission_selection.state}" 
-				                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
-				            </f:facet>
-				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
-				        </t:column>
-				        
-				        <t:column> 
-							<plexus:commandSortHeader columnName="folder"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-							<h:graphicImage value="/images/filetypes/folder.gif"/>
-						</t:column>
-				   
-				        <t:column>
-				            <h:commandLink action="#{views$secured$papersubmission$paperview.selectSubmission}" styleClass="command">
-									<b><h:outputText value="#{bean.lastName}"/></b>
-							</h:commandLink>
-				            
-				        </t:column>
-				        
-				       
-				        <t:column>
-				        	<plexus:commandSortHeader columnName="submissionTime">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
-				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
-				            <h:outputText value="&#160;&#160;fristgerecht" rendered="#{bean.submissionType=='INTIME'}"/>
-							<h:outputText value="&#160;&#160;nicht fristgerecht" rendered="#{bean.submissionType=='NOTINTIME'}"/>
-							<h:outputText value="&#160;&#160;nicht abgegeben" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>
-				        </t:column>
-				        
-				    			      
-				        
-				    </plexus:dataTable>
-				
-					<o:block>
-	                    <h:commandButton 
-	                        id="downloadFile"
-	                        action="#{views$secured$papersubmission$paperview.downloadSubmission}" 
-	                        value="#{msg.papersubmission_command_download}" 
-	                        title="#{msg.papersubmission_command_download_hint}"
-	                        styleClass="button_big"/> 
-	                </o:block>
-	                 
-                   
-                </s:acl>
-                
-                <s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
-	                <!-- Student-view -->
+                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+	                <!-- lecturer-view -->
 	                <plexus:dataTable   
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
-	                    value="views$secured$papersubmission$paperview.dataSubmissionFiles" 
+	                    value="views$secured$papersubmission$paperlectureview.dataSubmissionFiles" 
 	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command"
 	                    var="bean" 
 	                    rows="20">  
@@ -129,7 +70,6 @@
 	                    </t:column>
 	                    
 	                    
-	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.sizeAsString}"/>
@@ -154,31 +94,12 @@
 	                <o:block>
 	                    <h:commandButton 
 					    id="download"
-						action="#{views$secured$papersubmission$paperview.download}" 
+						action="#{views$secured$papersubmission$paperlectureview.download}" 
 						value="#{msg.documents_main_button_download}" 
 						title="#{msg.documents_main_button_download}"
 						styleClass="button_add"/>
 						
-						<h:commandButton 
-					    id="addZip"
-						action="papersubmission_add_zip" 
-						value="#{msg.documents_main_button_zip}" 
-						title="#{msg.documents_main_button_zip}"
-						styleClass="button_add"/>
-						
-	                    <h:commandButton 
-                        id="addFile"
-                        action="#{views$secured$papersubmission$paperview.addFile}" 
-                        value="#{msg.papersubmission_command_addfile}" 
-                        title="#{msg.papersubmission_command_addfile_hint}"
-                        styleClass="button_add"/> 
-	                        
-	                    <h:commandButton 
-					    id="delete"
-						action="#{views$secured$papersubmission$paperview.delete}" 
-						value="#{msg.documents_main_button_delete}" 
-						styleClass="button_add"/>
-	                        
+						                   
 	                    
 	                </o:block>   
 	                

@@ -231,6 +231,7 @@ public class Constants {
 	public static final String PAPERSUBMISSION_SELECTED_FILEENTRY = "papersubmission_selected_file";
 	public static final String PAPERSUBMISSION_EDIT_FILEENTRY_PAGE = "papersubmission_edit_file";
 	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "papersubmissionview";
+	public static final String PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE   = "papersubmissionlectureview";
 	public static final String PAPERSUBMISSION_CURRENT_FOLDER = "papersubmission_current_folder";
 	public static final String PAPERSUBMISSION_FOLDERENTRY_SELECTION = "papersubmission_entry_selection";
 	public static final String PAPERSUBMISSION_SELECTED_FILEENTRIES = "papersubmission_selected_fileentries";

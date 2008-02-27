@@ -6,6 +6,7 @@
 package org.openuss.paperSubmission;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -94,17 +95,18 @@ public class PaperSubmissionServiceImpl
     	
 		// FIXME implement!
 		/*
-    	User courseMember = this.getCourseMemberDao().load(courseMemberId);
+    	User member = getSecurityService().getUser(userId);
+    	getCourseService().
 
     	//Filter the inactive exams --> deadline expired
-    	List<Exam> list = this.getExamDao().findByCourse(ExamDao.TRANSFORM_EXAMINFO,courseMember.getCourse());
+    	List<Exam> exams = this.getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO,member.getgetCourse());
 
     	for (int i = 0; i < list.size(); i++){
     		if (this.handleIsExamDeadlineExpired(list.get(i).getId())) {
     			list.remove(i);
     		}
-    	}*/
-
+    	}
+		*/
     	return null; //list;
     }
 
@@ -113,38 +115,14 @@ public class PaperSubmissionServiceImpl
 	protected List handleFindPaperSubmissionsByExam(Long examId)
 			throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
-    	List<PaperSubmissionInfo> allSubmissions = new ArrayList();
     	Exam exam = this.getExamDao().load(examId);
     	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
-    	//FIXME CourseMembers will be deprecated soon. Alternatives?
-    	CourseInfo course = this.getCourseService().getCourseInfo(exam.getDomainId());
-    	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
-    	for(CourseMemberInfo member : members){
-    		boolean submitted = false;
-    		
-    		
-    		for(PaperSubmissionInfo submission : submissions){
-    			if(member.getUserId().equals(submission.getUserId())){
-    				PaperSubmissionInfo paper = new PaperSubmissionInfo();
-    				paper.setUserId(member.getUserId());
-    	    		paper.setFirstName(member.getFirstName());
-    	    		paper.setLastName(member.getLastName());
-    				paper.setId(submission.getId());
-    				paper.setSubmissionType(submission.getSubmissionType());
-    				allSubmissions.add(paper);
- 					submitted=true;
-    			}
-    		}
-    		if(submitted==false){
-    			PaperSubmissionInfo paper = new PaperSubmissionInfo();
-    			paper.setUserId(member.getUserId());
-        		paper.setFirstName(member.getFirstName());
-        		paper.setLastName(member.getLastName());
-    			paper.setSubmissionType("NOTSUBMITTED");
-				allSubmissions.add(paper);
-    		}
-    	}
-    	return allSubmissions;
+    	for(PaperSubmissionInfo submission : submissions){
+    		User user = getSecurityService().getUser(submission.getUserId());
+    		submission.setFirstName(user.getFirstName());
+    		submission.setLastName(user.getLastName());
+       	}
+    	return submissions;
 	}
 
 	@Override
@@ -259,15 +237,15 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(domainId, "courseId cannot be null.");
     	
     	//Filter the inactives --> deadline expired
-		/*
-    	List <Exam> list = getExamDao().findByCourse(ExamDao.TRANSFORM_EXAMINFO, course);
-    	
-    	for (int i = 0; i < list.size(); i++){
-    		if (this.handleIsExamDeadlineExpired(list.get(i).getId()))
-    			list.remove(i);
+		
+    	List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
+    	List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
+    	for (ExamInfo exam : exams){
+    		if (exam.getDeadline().after(new Date()))
+    			activeExams.add(exam);
     	}
-    	*/
-    	return null;//list;
+    	
+    	return activeExams;
 	}
 
 	@Override
@@ -284,11 +262,69 @@ public class PaperSubmissionServiceImpl
 		return null;
 	}
 
+
+
 	@Override
-	protected List handleGetPaperSubmissionsbyExam(Long examId)
+	protected List handleGetMembersAsPaperSubmissionsByExam(Long examId)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(examId, "examId cannot be null.");
+    	List<PaperSubmissionInfo> allSubmissions = new ArrayList();
+    	Exam exam = this.getExamDao().load(examId);
+    	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
+    	//FIXME CourseMembers will be deprecated soon. Alternatives?
+    	CourseInfo course = this.getCourseService().getCourseInfo(exam.getDomainId());
+    	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
+    	for(CourseMemberInfo member : members){
+    		boolean submitted = false;
+    		
+    		
+    		for(PaperSubmissionInfo submission : submissions){
+    			if(member.getUserId().equals(submission.getUserId())){
+    				PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    				paper.setUserId(member.getUserId());
+    				//FIXME Insert a name attribute into the PaperSubmissionInfo ValueObject
+    				paper.setLastName(member.getLastName()+", "+member.getFirstName());
+    	    		paper.setId(submission.getId());
+    				paper.setSubmissionType(submission.getSubmissionType());
+    				allSubmissions.add(paper);
+ 					submitted=true;
+    			}
+    		}
+    		if(submitted==false){
+    			PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    			paper.setUserId(member.getUserId());
+        		paper.setFirstName(member.getFirstName());
+        		paper.setLastName(member.getLastName());
+    			paper.setSubmissionType("NOTSUBMITTED");
+				allSubmissions.add(paper);
+    		}
+    	}
+    	return allSubmissions;
+	}
+
+	@Override
+	protected List handleGetPaperSubmissions(Collection submissions, Long examId)
+			throws Exception {
+		List<FileInfo> allFiles = new ArrayList<FileInfo>();
+		//List<FolderEntryInfo> folderEntries = new ArrayList<FolderEntryInfo>();
+		for(PaperSubmissionInfo submission: (Collection<PaperSubmissionInfo>)submissions){
+			List<FileInfo> filesOfSubmission = new ArrayList<FileInfo>();
+			FolderInfo folder = getDocumentService().getFolder(submission); 
+			List<FolderEntryInfo> files = getDocumentService().getFolderEntries(submission, folder);
+			filesOfSubmission.addAll(getDocumentService().allFileEntries(files));
+			for(FileInfo file : filesOfSubmission){
+				String path = submission.getFirstName()+"_"+submission.getLastName();
+				
+				if(submission.getSubmissionType().equals("NOTINTIME")){
+					path += "_"+submission.getSubmissionType();
+				}
+				
+				file.setAbsoluteName(path+"/"+file.getFileName());
+				file.setPath(path);
+			}
+			allFiles.addAll(filesOfSubmission);
+		}
+		return allFiles;
 	}
 	
     
