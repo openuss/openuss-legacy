@@ -30,6 +30,9 @@ if (window.document.location.href.match(/Wiki/)) {
     FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
     FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+    
+    FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
+    FCKConfig.BodyClass = 'wiki_content';
 }
 
 FCKConfig.ToolbarSets["OpenUSS"] = [
@@ -62,16 +65,15 @@ FCKConfig.ToolbarSets["News"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Wiki"] = [
-	['FitWindow','Preview'],
+    ['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
 	['Undo','Redo','-','SelectAll','RemoveFormat'],
-	'/',
-	['Bold','Italic','Underline','StrikeThrough'/*,'-','Subscript','Superscript'*/],
+    ['Image','-','OpenUSSWikiLink','Unlink','-', 'Smiley'],
+    '/',
+	['FontFormat','-','Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['OpenUSSWikiLink','Unlink'],
-	['TextColor','BGColor'],
-	['Image', 'Smiley']
+	['TextColor','BGColor']	
 ] ;
 
 FCKConfig.ToolbarSets["Description"] = [

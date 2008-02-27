@@ -26,6 +26,9 @@ public class WikiEditPage extends AbstractWikiPage{
 	}
 	
 	public String save() {
+		
+		System.out.println("Content: '" + this.siteVersionInfo.getText() + "'");
+		
 		this.siteVersionInfo.setId(null);
 		if (this.siteVersionInfo.getName() == null) {
 			this.siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
