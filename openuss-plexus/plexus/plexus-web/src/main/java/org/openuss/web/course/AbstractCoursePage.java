@@ -66,7 +66,7 @@ public class AbstractCoursePage extends BasePage {
 		}
 		if (courseInfo == null) {
 			addError(i18n("message_error_course_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
+			redirect(Constants.FAILURE);
 			return;
 		} else {
 			if (courseInfo.getCourseTypeId()==null){

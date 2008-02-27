@@ -19,9 +19,22 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 		super.prerender();
 		if (!isAssistant()){
 			addError(i18n("error_access_denied_details"));
-			redirect(Constants.DISCUSSION_MAIN);			
-		}			
-		addPageCrumb();
+			redirect(Constants.DISCUSSION_MAIN);	
+		}
+		if (topic != null && topic.getId() != null) {
+			topic = discussionService.getTopic(topic);
+			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+		}
+		if (topic == null || topic.getId() == null) {
+			addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
+			redirect(Constants.DISCUSSION_MAIN);
+		} else {
+			if (!topic.getForumId().equals(forum.getId())){
+				addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
+				redirect(Constants.DISCUSSION_MAIN);
+			}
+			addPageCrumb();
+		}		
 	}		
 
 	private void addPageCrumb() {
