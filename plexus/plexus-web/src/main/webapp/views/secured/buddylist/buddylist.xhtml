@@ -39,27 +39,20 @@
 		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 
 			<ui:include src="buddytable.xhtml" />
-			<o:block>
-				<!-- <plexus:dataTable
-					label="HARDCODED: ALL USED TAGS"
-					id="usedTagsTable"
-					value="views$secured$buddylist$edittags.usedTags" var="thisUsedTag"
-					styleClass="content_font_normal">
-					<t:column>
-						<h:outputText value="#{thisUsedTag} "
-							styleClass="content_font_normal" />
-					</t:column>
-				</plexus:dataTable>-->
-				<t:dataList 
-					id="usedTagsList"  
-					var="aUsedTag"
+			<o:block label="TODO: text" styleClass="form_box">
+				<t:dataList id="usedTagsList" var="aUsedTag"
 					value="#{views$secured$buddylist$buddylist.usedTags}"
 					rendered="#{not empty views$secured$buddylist$buddylist.usedTags}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-						<h:outputText value="#{aUsedTag}"/>
+					<h:outputText value="#{aUsedTag}" />
+					<h:commandLink action="openuss4us_buddylist_requests" value="test">
+						
+					</h:commandLink>
+						
 				</t:dataList>
-				</o:block>
+			</o:block>
 			<o:block>
+			<h:outputText value="#{filtertag}" rendered="#{not empty filtertag}"/>
 				<h:commandButton action="openuss4us_buddylist_requests"
 					value="#{msg.openuss4us_buddylist_button_requests}"
 					styleClass="button" />

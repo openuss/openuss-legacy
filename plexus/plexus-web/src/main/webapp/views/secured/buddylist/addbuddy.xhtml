@@ -67,7 +67,8 @@
 		
 					
 				<h:panelGroup id="text">
-					<h:outputText value="#{msg.openuss4us_buddylist_addbuddy_text}"/>
+					<h:outputText value="#{msg.openuss4us_buddylist_addbuddy_text}" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
+					<h:outputText value="TODO: It is not allowed to add this buddy" rendered="#{not views$secured$buddylist$addbuddy.allowAdd}"/>
 				</h:panelGroup>	
 				</h:panelGrid>
 				
@@ -76,7 +77,7 @@
    			 	</o:block>
    			 	<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button"/>
-				<h:commandButton action="#{views$secured$buddylist$addbuddy.addBuddy}" value="#{msg.user_profile_addbuddy}" styleClass="button"/>
+				<h:commandButton action="#{views$secured$buddylist$addbuddy.addBuddy}" value="#{msg.user_profile_addbuddy}" styleClass="button" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

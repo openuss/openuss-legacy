@@ -38,6 +38,9 @@ public class BuddylistMainPage extends BasePage {
 	
 	private BuddytableDataProvider data = new BuddytableDataProvider();
 	
+	@Property(value = "#{filtertag}")
+	private String filtertag = null;
+	
 	@Property(value = "#{buddyService}")
 	private BuddyService buddyService;
 	
@@ -81,6 +84,11 @@ public class BuddylistMainPage extends BasePage {
 
 	public void setData(BuddytableDataProvider data) {
 		this.data = data;
+	}
+	
+	public String filter(){
+		logger.debug("filter for " + this.filtertag);
+		return Constants.OPENUSS4US_CALENDAR;
 	}
 	
 	public String linkProfile(){
@@ -139,6 +147,14 @@ public class BuddylistMainPage extends BasePage {
 
 	public void setUsedTags(List<String> usedTags) {
 		this.usedTags = usedTags;
+	}
+	
+	public String getFiltertag() {
+		return filtertag;
+	}
+
+	public void setFiltertag(String filtertag) {
+		this.filtertag = filtertag;
 	}
 	
 }

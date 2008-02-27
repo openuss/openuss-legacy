@@ -42,19 +42,18 @@
 					value="TODO Sender" styleClass="header_font_normal" /><br />
 				<h:outputText value="#{internalMessageInfo.senderDisplayName}"
 					styleClass="content_font_normal" /><br />
-				<h:outputText value="TODO Recipients" styleClass="header_font_normal" /><br /><br />
+				<h:outputText value="TODO Recipients" styleClass="header_font_normal" /><br/>
 
-<div class="content_font_normal">
+
 				<t:dataList 
 					id="recipients"  
 					var="rec"
-					styleClass="content_font_normal"
 					label="TODO Recipients"
-					value="#{views$secured$internalMessages$readmessage.internalMessageInfo.internalMessageRecipientsInfos}"
-					rendered="#{not empty views$secured$internalMessages$readmessage.internalMessageInfo.internalMessageRecipientsInfos}"
+					value="#{internalMessageInfo.internalMessageRecipientsInfos}"
+					rendered="#{not empty internalMessageInfo.internalMessageRecipientsInfos}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" /><br/>
-				</t:dataList></div>
+					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" /><br/><br/>
+				</t:dataList>
 <o:block label="TODO: Content">
 <div class="content_font_normal">
 				<h:outputText
