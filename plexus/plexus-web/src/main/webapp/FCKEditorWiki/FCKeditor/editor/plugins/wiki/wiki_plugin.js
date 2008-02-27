@@ -548,7 +548,7 @@ function Ok()
         switch (GetE('cmbLinkType').value)
         {
             // inner link: use page name
-            case 'anchor':
+            case 'inner':
                 sInnerHtml = sPageId;
                 break;
         
