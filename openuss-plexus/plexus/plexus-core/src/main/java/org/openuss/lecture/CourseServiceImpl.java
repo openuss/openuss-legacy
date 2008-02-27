@@ -88,7 +88,9 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 	protected void handleRemoveCourse(Long courseId) throws Exception {
 		Validate.notNull(courseId, "CourseId cannot be null.");
 		Course course = (Course) this.getCourseDao().load(courseId);
-		Validate.notNull(course, "No course entity found with the corresponding courseId " + courseId);
+		if (course == null) {
+			throw new CourseServiceException("No course entity found with the corresponding courseId "+ courseId);
+		}
 
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(course);
@@ -115,7 +117,7 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 
 	protected CourseInfo handleFindCourse(Long courseId) {
 		Validate.notNull(courseId, "CourseId cannot be null.");
-		return this.getCourseDao().toCourseInfo(this.getCourseDao().load(courseId));
+		return (CourseInfo) this.getCourseDao().load(CourseDao.TRANSFORM_COURSEINFO, courseId); 
 	}
 
 	@Override
