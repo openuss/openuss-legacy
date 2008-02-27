@@ -76,6 +76,10 @@ public class GroupOptionsPage extends AbstractGroupPage {
 		return Constants.GROUP_PAGE;
 	}
 
+	public String deleteGroup(){
+		return Constants.GROUP_DELETE_CONFIRMATION;
+	}
+	
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessTypeGroup = event.getNewValue();
 		accessType = (Integer) accessTypeGroup;

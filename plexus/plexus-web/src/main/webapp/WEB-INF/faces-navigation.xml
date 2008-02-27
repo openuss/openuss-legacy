@@ -288,6 +288,10 @@
 			<from-outcome>group_options_members</from-outcome>
 			<to-view-id>/views/secured/groups/components/groupmembers.xhtml</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>group_delete_confirmation</from-outcome>
+			<to-view-id>/views/secured/groups/components/groupdeleteconfirmation.xhtml</to-view-id>
+		</navigation-case>
 	
 		<navigation-case>
 			<from-outcome>group_discussion</from-outcome>

@@ -85,11 +85,12 @@
 			</plexus:dataTable>
 
 			<o:block>
-				<h:commandButton value="#{msg.back}" action="view:backward"
-					styleClass="button_back" immediate="true" />
 				<h:commandButton value="#{msg.save}"
 					action="#{views$secured$groups$components$groupmoderators.save}"
 					styleClass="button" />
+
+				<h:commandButton value="#{msg.back}" action="view:backward"
+					styleClass="button_back" immediate="true" />
 			</o:block>
 
 			<c:if
