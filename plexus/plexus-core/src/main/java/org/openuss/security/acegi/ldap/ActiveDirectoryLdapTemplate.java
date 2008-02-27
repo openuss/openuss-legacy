@@ -179,7 +179,6 @@ public class ActiveDirectoryLdapTemplate extends LdapTemplate
     	   		private final Log logger = LogFactory.getLog(LdapCallback.class);
     	   		public Object doInDirContext(DirContext ctx)
                    throws NamingException {
-            	   logger.info(ctx.getAttributes(getRelativeName(dn, ctx), attributesToRetrieve));
                    return mapper.mapAttributes(dn,
                        ctx.getAttributes(getRelativeName(dn, ctx), attributesToRetrieve));
                }
