@@ -7,12 +7,11 @@ package org.openuss.calendar;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.sql.Update;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.SecurityService;
@@ -81,6 +80,7 @@ public class CalendarServiceImpl extends
 		// add associations to the source and to the assigned calendars
 
 		calendar.addAppointment(app);
+		getCalendarDao().update(calendar);
 
 	}
 
@@ -156,6 +156,12 @@ public class CalendarServiceImpl extends
 
 		// finally remove appointment
 		getAppointmentDao().remove(app);
+		getCalendarDao().update(cal);
+		// update all subscribed Cals
+		Collection<Calendar> cals = cal.getSubscribedCalendars();
+		getCalendarDao().update(cals);
+		
+
 	}
 
 	/**
@@ -192,7 +198,7 @@ public class CalendarServiceImpl extends
 		getCalendarDao().update(cal);
 
 		// make changes persistent for the subscribed calendars
-		ArrayList<Calendar> subscribedCals = new ArrayList<Calendar>();
+		Set<Calendar> subscribedCals = cal.getSubscribedCalendars();
 		if (!subscribedCals.isEmpty()) {
 			for (Calendar subscribedCal : subscribedCals) {
 				getCalendarDao().update(subscribedCal);
@@ -212,8 +218,6 @@ public class CalendarServiceImpl extends
 
 		// get entities
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-
-
 		
 		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
 
@@ -280,10 +284,11 @@ public class CalendarServiceImpl extends
 	protected org.openuss.calendar.CalendarInfo handleGetCalendar(
 			org.openuss.foundation.DomainObject domainObject)
 			throws java.lang.Exception {
-
+		
+		
 		Calendar cal = getCalendarDao().findByDomainIdentifier(
 				domainObject.getId());
-
+		
 		if (cal == null) {
 			throw new Exception("No calendar found for this domain object");
 		} else {
@@ -330,11 +335,36 @@ public class CalendarServiceImpl extends
 	protected void handleAddSubscription(
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		User user = securityService.getCurrentUser();
-		Calendar calToSubscribe = getCalendarDao().calendarInfoToEntity(calendarInfo);
+		
+		User user = getSecurityService().getCurrentUser();
+		
+		// add the link between the subscribing and the subscribed
+		Calendar calToSubscribe = getCalendarDao().load(calendarInfo.getId());
+		
 		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(user.getId());
 		calToSubscribe.getSubscribedCalendars().add(subscribingCal);
 		subscribingCal.getSubscriptions().add(calToSubscribe);
+		
+		// add already existing single appointments (including apps generated from serial app)
+		
+		// get single apps from subscribed calendar
+		List<Appointment> appsToAdd = calToSubscribe.getSingleAppointments();
+		
+		for (Appointment app : appsToAdd) {
+			subscribingCal.getLinkedAppointments().add(app);
+			app.getAssignedCalendars().add(subscribingCal);
+		}
+		
+		// add natural serial appointments
+		List<SerialAppointment> serialApps = calToSubscribe.getNaturalSerialAppointments();
+		
+		for (SerialAppointment serialApp : serialApps) {
+			subscribingCal.getLinkedAppointments().add(serialApp);
+			serialApp.getAssignedCalendars().add(subscribingCal);
+		}
+		
+		getCalendarDao().update(subscribingCal);
+		getCalendarDao().update(calToSubscribe);
 		
 		
 	}
@@ -375,6 +405,22 @@ public class CalendarServiceImpl extends
 		return apps;
 
 	}
+
+	@Override
+	protected List handleGetSubscriptions() throws Exception {
+		User user = getSecurityService().getCurrentUser();
+		Calendar cal = getCalendarDao().findByDomainIdentifier(user.getId());
+		Set<Calendar> subscriptions = cal.getSubscriptions();
+		ArrayList<CalendarInfo> subs = new ArrayList<CalendarInfo>();
+//		subs.addAll(subscriptions);		
+//		getCalendarDao().toCalendarInfoCollection(subs);
+		for (Calendar calIt : subscriptions) {
+			subs.add(getCalendarDao().toCalendarInfo(calIt));
+		}
+		return subs;
+	}
+	
+
 
 	
 

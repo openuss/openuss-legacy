@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
@@ -17,6 +18,9 @@ import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.AppointmentType;
 import org.openuss.calendar.AppointmentTypeDao;
 import org.openuss.calendar.CalendarDao;
+import org.openuss.calendar.RecurrenceType;
+import org.openuss.calendar.SerialAppointment;
+import org.openuss.calendar.SerialAppointmentDao;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.GroupServiceImpl;
@@ -99,6 +103,8 @@ public class TestUtility {
 	private AppointmentTypeDao appointmentTypeDao;
 	
 	private AppointmentDao appointmentDao;
+	
+	private SerialAppointmentDao serialAppointmentDao;
 	
 	private org.openuss.calendar.CalendarDao calendarDao;
 
@@ -929,8 +935,7 @@ public class TestUtility {
 		return appType;
 	}
 	
-	public AppointmentInfo getTestAppointmentInfo(AppointmentType appType,
-			User user) {
+	public AppointmentInfo getTestAppointmentInfo(AppointmentType appType) {
 		
 		Date start = new Date();
 		Date end = new Date();
@@ -955,26 +960,60 @@ public class TestUtility {
 	}
 
 	public void createUniqueAppointmentForCalendarInDB(org.openuss.calendar.CalendarInfo calInfo) {
-		Appointment app = Appointment.Factory.newInstance();
+//		Appointment app = Appointment.Factory.newInstance();
+//		app.setAppointmentType(appType);
+//		app.setDescription("description");
+//		app.setLocation("location");
+//		app.setSubject(unique("subject"));
+//		app.setSerial(false);
 		AppointmentType appType = this.createAppointmentTypeInDB("standard");
-		app.setAppointmentType(appType);
-		app.setDescription("description");
-		app.setLocation("location");
-		app.setSubject(unique("subject"));
-		app.setSerial(false);
 		Random rnd = new Random();
 		Long randomLong = rnd.nextLong();
 		Timestamp start = new Timestamp(randomLong);
-		Timestamp end = new Timestamp(randomLong + (60*60)); // 1 h later
-		app.setStarttime(start);
-		app.setEndtime(end);
-		
-		System.out.println("ID:"+ calInfo.getId());
+		Timestamp end = new Timestamp(randomLong + (60*60*60)); // 1 h later
+		System.out.println("startzeitpunkt: " + start.toGMTString());
+		System.out.println("endzeitpunkt: " + end.toGMTString());
+//		app.setStarttime(start);
+//		app.setEndtime(end);
 		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
-		app.setSourceCalendar(cal);
+		Appointment app = appointmentDao.create(appType, "description", end, "location", false, cal, start, unique("subject"));
+		
 		cal.addAppointment(app);
-		appointmentDao.create(app);
 		calendarDao.update(cal);
+	}
+	
+	public void createUniqueSeriallAppForCalendarInDB(org.openuss.calendar.CalendarInfo calInfo) {
+		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
+		AppointmentType appType = this.createAppointmentTypeInDB("standard");
+		Random rnd = new Random();
+		Long randomLong = rnd.nextLong();
+		System.out.println("lomng: " + randomLong);
+		Timestamp start = new Timestamp(randomLong);
+		Timestamp end = new Timestamp(randomLong + (60*60*60)); // 1 h later
+		Timestamp recurEnd = new Timestamp(randomLong + (60*60*60*24*60)); // 2 months later
+		SerialAppointment serialAppointment = serialAppointmentDao.create(
+				appType,
+				"description",
+				end,
+				"location",
+				recurEnd,
+				1,
+				RecurrenceType.weekly, true, cal,
+				start,
+				unique("subject"));
+
+		cal.addSerialAppointment(serialAppointment);
+		
+		// make changes persistent for the source calendar
+		getCalendarDao().update(cal);
+
+		// make changes persistent for the subscribed calendars
+		Set<org.openuss.calendar.Calendar> subscribedCals = cal.getSubscribedCalendars();
+		if (!subscribedCals.isEmpty()) {
+			for (org.openuss.calendar.Calendar subscribedCal : subscribedCals) {
+				getCalendarDao().update(subscribedCal);
+			}
+		}
 	}
 
 	public AppointmentDao getAppointmentDao() {
@@ -995,6 +1034,14 @@ public class TestUtility {
 
 	public AppointmentTypeDao getAppointmentTypeDao() {
 		return appointmentTypeDao;
+	}
+
+	public SerialAppointmentDao getSerialAppointmentDao() {
+		return serialAppointmentDao;
+	}
+
+	public void setSerialAppointmentDao(SerialAppointmentDao serialAppointmentDao) {
+		this.serialAppointmentDao = serialAppointmentDao;
 	}
 
 

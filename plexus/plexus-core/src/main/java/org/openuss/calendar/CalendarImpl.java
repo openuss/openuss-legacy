@@ -36,11 +36,12 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 
 		// remove from previously owning calendar
 		this.getOwnAppointments().remove(appointment);
-
+		
 		// remove from assigned calendars
 		Set<Calendar> subscribedCals = this.getSubscribedCalendars();
 		if (!subscribedCals.isEmpty()) {
 			for (Calendar cal : subscribedCals) {
+				appointment.getAssignedCalendars().remove(cal);
 				cal.getLinkedAppointments().remove(appointment);
 			}
 		}
@@ -135,14 +136,13 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	}
 
 	public void addAppointment(Appointment appointment) {
-
+				
 		// add association to the source calendar
 		this.getOwnAppointments().add(appointment);
 		appointment.setSourceCalendar(this);
 
 		// add associations to the assigned calendar
 		Set<Calendar> subscribedCals = this.getSubscribedCalendars();
-
 		if (!subscribedCals.isEmpty()) {
 			for (Calendar cal : subscribedCals) {
 				cal.getLinkedAppointments().add(appointment);
@@ -150,7 +150,6 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 			}
 		}
 		
-		// Appointmenttype setzen
 	}
 
 	public void addSerialAppointment(SerialAppointment serialAppointment) {
@@ -225,13 +224,14 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 			if (!subscribedCalendars.isEmpty()) {
 				for (Calendar cal : subscribedCalendars) {
 					// add calculated single appointment
-					cal.addAppointment(app);
+					cal.getLinkedAppointments().add(app);
 					// add the assigned calendar to the created appointment
 					app.getAssignedCalendars().add(cal);					
-					// set source calendar for the created appointment
-					app.setSourceCalendar(this);
 				}
 			}
+			
+			// set source calendar for the created appointment
+			app.setSourceCalendar(this);
 
 			serialAppointment.addSingleAppointment(app);
 

@@ -24,6 +24,9 @@
 	</bean>
 	
 	<bean id="testUtility" class="org.openuss.TestUtility">
+		<property name="serialAppointmentDao">
+			<ref bean="serialAppointmentDao" />
+		</property>
 		<property name="calendarDao">
 			<ref bean="calendarDao" />
 		</property>
