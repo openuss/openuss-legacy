@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openuss.services.model.CourseBean;
+import org.openuss.services.model.Role;
 import org.openuss.services.model.UserBean;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
@@ -42,21 +43,70 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 		lectureClient.updateUser(user);
 		
 		assertEquals(user.getId(), lectureClient.findUser(user.getUsername()));
-		
 	}
 	
-	public void testCreateCourse() throws LectureLogicException {
-		CourseBean course = new CourseBean();
+	public void testManageCourse() throws LectureLogicException {
+		CourseBean course = createDefaultCourse();
+		Long courseId = lectureClient.createCourse(course);
+		assertNotNull(courseId);
 		
+		CourseBean loadCourse = lectureClient.getCourse(courseId);
+		assertEquals(course.getName(), loadCourse.getName());
+		
+		course.setId(courseId);
+		course.setName(unique("new course name"));
+		assertTrue(lectureClient.updateCourse(course));
+		
+		loadCourse = lectureClient.getCourse(courseId);
+		assertEquals(course.getName(), loadCourse.getName());
+		
+//		assertTrue(lectureClient.deleteCourse(courseId));
+//		assertFalse(lectureClient.deleteCourse(courseId));
+		
+//		assertNull(lectureClient.getCourse(courseId));
+	}
+
+	public void testMembership() throws LectureLogicException {
+		CourseBean course = createDefaultCourse();
+		Long courseId = lectureClient.createCourse(course);
+		
+		UserBean user = createDefaultUser();
+		Long userId = lectureClient.createUser(user);
+		
+		assertTrue(lectureClient.assignCourseMember(courseId, userId, Role.ASSISTANT));
+		assertEquals(Role.ASSISTANT, lectureClient.isCourseMember(courseId, userId));
+		assertTrue(lectureClient.assignCourseMember(courseId, userId, Role.ASSISTANT));
+		assertEquals(Role.ASSISTANT, lectureClient.isCourseMember(courseId, userId));
+		assertTrue(lectureClient.assignCourseMember(courseId, userId, Role.PARTICIPANT));
+		assertEquals(Role.PARTICIPANT, lectureClient.isCourseMember(courseId, userId));
+		assertTrue(lectureClient.assignCourseMember(courseId, userId, Role.PARTICIPANT));
+		assertEquals(Role.PARTICIPANT, lectureClient.isCourseMember(courseId, userId));
+		assertTrue(lectureClient.removeCourseMember(courseId, userId));
+		assertEquals(Role.NONE, lectureClient.isCourseMember(courseId, userId));
+		assertFalse(lectureClient.removeCourseMember(courseId, userId));
+		assertEquals(Role.NONE, lectureClient.isCourseMember(courseId, userId));
+		
+	}
+
+	public LectureWebService getLectureClient() {
+		return lectureClient;
+	}
+
+	public void setLectureClient(LectureWebService lectureClient) {
+		this.lectureClient = lectureClient;
+	}
+	
+	private static volatile long uniqueId = System.currentTimeMillis();
+	
+	private CourseBean createDefaultCourse() {
+		CourseBean course = new CourseBean();
 		course.setName("Name of the Course");
 		course.setShortcut("Shortcut of the course");
 		course.setDescription("Beschreibung");
 		course.setInstituteId(OPENUSS_DEFAULT_INSTITUTE);
 		course.setStartDate(DateUtils.addMonths(new Date(), 2));
 		course.setEndDate(DateUtils.addMonths(new Date(), 5));
-		
-		Long courseId = lectureClient.createCourse(course);
-		assertNotNull(courseId);
+		return course;
 	}
 
 	private UserBean createDefaultUser() {
@@ -73,42 +123,31 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 		userBean.setLocale("de");
 		return userBean;
 	}
-	
-	protected String[] getConfigLocations() {
-		setAutowireMode(AUTOWIRE_BY_NAME);
-		return new String[] { 
-			"classpath*:applicationContext.xml", 
-//			"classpath*:applicationContext-beans.xml",
-//			"classpath*:applicationContext-lucene.xml",
-			"classpath*:applicationContext-cache.xml", 
-//			"classpath*:applicationContext-messaging.xml",
-//			"classpath*:applicationContext-resources.xml",
-//			"classpath*:applicationContext-aop.xml",
-			"classpath*:applicationContext-webservice.xml",
-			"classpath*:testIntegrated-webservice.xml",
-//			"classpath*:testContext.xml", 
-			"classpath*:testSecurity.xml",
-			"classpath*:testDisableSecurity.xml", 
-			"classpath*:testDataSource.xml"};
-	}
-	
-	
-	public LectureWebService getLectureClient() {
-		return lectureClient;
-	}
 
-	public void setLectureClient(LectureWebService lectureClient) {
-		this.lectureClient = lectureClient;
-	}
-	
-	private static volatile long uniqueId = System.currentTimeMillis();
-	
-	public static synchronized long unique() {
+	private static synchronized long unique() {
 		return ++uniqueId;
 	}
 
-	public String unique(String str) {
+	private String unique(String str) {
 		return str + "-" + unique();
 	}
+
+	protected String[] getConfigLocations() {
+			setAutowireMode(AUTOWIRE_BY_NAME);
+			return new String[] { 
+				"classpath*:applicationContext.xml", 
+	//			"classpath*:applicationContext-beans.xml",
+	//			"classpath*:applicationContext-lucene.xml",
+				"classpath*:applicationContext-cache.xml", 
+	//			"classpath*:applicationContext-messaging.xml",
+	//			"classpath*:applicationContext-resources.xml",
+	//			"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-webservice.xml",
+				"classpath*:testIntegrated-webservice.xml",
+	//			"classpath*:testContext.xml", 
+				"classpath*:testSecurity.xml",
+				"classpath*:testDisableSecurity.xml", 
+				"classpath*:testDataSource.xml"};
+		}
 
 }

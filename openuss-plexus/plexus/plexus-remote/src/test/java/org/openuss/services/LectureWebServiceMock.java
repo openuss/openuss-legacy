@@ -1,6 +1,7 @@
 package org.openuss.services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openuss.services.model.CourseBean;
@@ -205,5 +206,15 @@ public class LectureWebServiceMock implements LectureWebService {
 		return ++id;
 	}
 
+	@Override
+	public boolean deleteCourse(long courseId) throws LectureLogicException {
+		return courses.remove(courseId) == null;
+	}
+
+	@Override
+	public List<InstituteBean> listInstitute(long departmentId) throws LectureLogicException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -1,5 +1,7 @@
 package org.openuss.services;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -26,6 +28,9 @@ public interface LectureWebService {
 
 	@WebMethod(action = "getCourse")
 	public @WebResult(name="courseId") CourseBean getCourse(@WebParam(name="courseId") long courseId) throws LectureLogicException;
+	
+	@WebMethod(action = "deleteCourse")
+	public @WebResult(name="boolean") boolean deleteCourse(@WebParam(name="courseId") long courseId) throws LectureLogicException;
 	
 	@WebMethod(action = "assignCourseMember")
 	public @WebResult(name="success") boolean assignCourseMember(@WebParam(name="courseId") long courseId, @WebParam(name="userId") long userId, @WebParam(name="role") Role role) throws LectureLogicException;
@@ -68,6 +73,9 @@ public interface LectureWebService {
 	
 	@WebMethod(action = "getInstitute")
 	public @WebResult(name="institute") InstituteBean getInstitute(@WebParam(name="instituteId") long instituteId) throws LectureLogicException;
+	
+	@WebMethod(action = "listInstitute")
+	public @WebResult(name="instituteList") List<InstituteBean> listInstitute(@WebParam(name="departmentId") long departmentId) throws LectureLogicException;
 	
 	
 }
