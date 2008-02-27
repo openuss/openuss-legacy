@@ -3,6 +3,7 @@ package org.openuss.webdav;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -100,6 +101,13 @@ public class WebDAVPath {
 	}
 	
 	/**
+	 * @return The root path.
+	 */
+	public static WebDAVPath getRoot() {
+		return new WebDAVPath(new LinkedList<String>());
+	}
+	
+	/**
 	 * Add further path specifications.
 	 * 
 	 * @param subDir The names of sub-directories.
@@ -170,16 +178,15 @@ public class WebDAVPath {
 	 * @return A string that can be extradited to the WebDAV client.
 	 */
 	public String toClientString() {
-		return (clientString == null) ? toRelativeString() : clientString;
+		return (clientString == null) ? toAbsoluteString() : clientString;
 	}
-
+	
 	/**
 	 * @return An unmodifieable list of the remaining path elements represented by this object.
 	 */
 	public List<String> getList() {
 		return Collections.unmodifiableList(pathElems);
 	}
-	
 	
 	/* Helper functions */
 	
