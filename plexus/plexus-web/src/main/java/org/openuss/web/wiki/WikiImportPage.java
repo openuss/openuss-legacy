@@ -1,36 +1,27 @@
 package org.openuss.web.wiki;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.security.SecurityService;
-import org.openuss.security.User;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
+/**
+ * Backing Bean for wikiimport.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$wiki$wikiimport", scope = Scope.REQUEST)
 @View
 public class WikiImportPage extends AbstractWikiPage{
-	
-	private static final Logger logger = Logger.getLogger(WikiImportPage.class);
-	
-	@Property(value = "#{securityService}")
-	protected SecurityService securityService;
-	
-	@Property(value = "#{courseDao}")
-	protected CourseDao courseDao;
 	
 	protected List<SelectItem> exportableWikiCourses;
 	
@@ -62,6 +53,10 @@ public class WikiImportPage extends AbstractWikiPage{
 		breadcrumbs.addCrumb(importWikiBreadCrumb);
 	}
 	
+	/**
+	 * Sets selected Import Course and Import Sites as Import Type and returns the Wiki Import Confirmation Page.
+	 * @return Wiki Import Confirmation Page.
+	 */
 	public String importWikiSites() {
 		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
 		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES);
@@ -69,6 +64,10 @@ public class WikiImportPage extends AbstractWikiPage{
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 	
+	/**
+	 * Sets selected Import Course and Import Versions as Import Type and returns the Wiki Import Confirmation Page.
+	 * @return Wiki Import Confirmation Page.
+	 */
 	public String importWikiVersions() {
 		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
 		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS);
@@ -76,72 +75,44 @@ public class WikiImportPage extends AbstractWikiPage{
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 
-	public SecurityService getSecurityService() {
-		return securityService;
+	/**
+	 * Finds all exportable Wiki Courses.
+	 * @return List of all exportable Wiki Courses as SelectItem object.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectItem> getExportableWikiCourses() {
+		List<CourseInfo> exportableWikiCourses = wikiService.findAllExportableWikiCoursesByInstituteAndUser(instituteInfo, user, courseInfo);
+		List<SelectItem> exportableSelectItems = new LinkedList<SelectItem>();
+		
+		if (!exportableWikiCourses.isEmpty()) {
+			SelectItem pleaseChooseItem = new SelectItem();
+			pleaseChooseItem.setLabel(i18n("please_choose"));
+			pleaseChooseItem.setDisabled(true);
+			exportableSelectItems.add(pleaseChooseItem);
+		}
+		
+		for (CourseInfo exportableWikiCourse : exportableWikiCourses) {
+			SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourse.getName());
+			exportableSelectItems.add(exportableSelectItem);
+		}
+		
+		return exportableSelectItems;
 	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
-	}
-
+	
+	/**
+	 * Returns selected Import Course ID.
+	 * @return Selected Import Course ID.
+	 */
 	public Long getSelectedCourseId() {
 		return selectedCourseId;
 	}
 
+	/**
+	 * Sets selected Import Course ID.
+	 * @param selectedCourseId Selected Import Course ID.
+	 */
 	public void setSelectedCourseId(Long selectedCourseId) {
 		this.selectedCourseId = selectedCourseId;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<SelectItem> getExportableWikiCourses() {
-		// TODO: this is very dirty!
-		boolean firstIteration = true;
-		
-		if (exportableWikiCourses == null) {
-			exportableWikiCourses = new ArrayList<SelectItem>();
-			
-			User currentUser = securityService.getCurrentUser();
-			
-			List<CourseInfo> availableCourses = courseService.findAllCoursesByInstitute(getInstituteInfo().getId());
-			for (CourseInfo availableCourse : availableCourses) {
-				if (!availableCourse.equals(courseInfo)) {
-					List<CourseMemberInfo> assistants = courseService.getAssistants(availableCourse);
-					boolean isAssistant = false;
-					for (CourseMemberInfo assistant : assistants) {
-						if (assistant.getUserId().equals(currentUser.getId())) {						
-							isAssistant = true;
-						}
-					}
-					
-					if (isAssistant) {
-						if (firstIteration) {
-							SelectItem item = new SelectItem();
-							item.setLabel(i18n("please_choose"));
-							item.setDisabled(true);
-							exportableWikiCourses.add(item);
-							
-							firstIteration = false;
-						}
-						
-						exportableWikiCourses.add(new SelectItem(availableCourse.getId(), availableCourse.getName()));
-					}
-				}
-			}
-		}
-
-		return exportableWikiCourses;
-	}
-
-	public void setExportableWikiCourses(List<SelectItem> exportableWikiCourses) {
-		this.exportableWikiCourses = exportableWikiCourses;
 	}
 	
 }
