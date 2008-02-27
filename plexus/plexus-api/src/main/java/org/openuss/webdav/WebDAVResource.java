@@ -55,11 +55,11 @@ public interface WebDAVResource {
 	 * Spool a document to the client or read for a copy/move task.
 	 * If this resource points to a collection, a human-readable HTML document should be written.
 	 * 
-	 * @param ic The ImportContext that allows writing to the client. This may be a virtual one.
+	 * @return A meta information capsule. 
 	 * @throws WebDAVException An error that can be handed directly to the client.
 	 * @throws IOException On internal writing errors.
 	 */
-	public void readContent(ImportContext ic) throws WebDAVException,IOException;
+	public IOContext readContent() throws WebDAVException,IOException;
 
 	/**
 	 * Read a document from the client or write for a copy/move task.
@@ -69,7 +69,7 @@ public interface WebDAVResource {
 	 * @throws WebDAVException An error that can be handed directly to the client.
 	 * @throws IOException On internal reading errors.
 	 */
-	public void writeContent(ExportContext ec) throws WebDAVException,IOException;
+	public void writeContent(IOContext ioc) throws WebDAVException,IOException;
 	
 	/**
 	 * Creates a collection with the name of this resource.
@@ -94,6 +94,11 @@ public interface WebDAVResource {
 	 * @return true iff getChildren does not return null.
 	 */
 	public boolean isCollection();
+	
+	/**
+	 * @return The MIME content type of this resource.
+	 */
+	public String getContentType();
 	
 	/**
 	 * @return true, iff this resource object points to an existant file.

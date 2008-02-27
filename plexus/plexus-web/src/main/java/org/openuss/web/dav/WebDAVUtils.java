@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.IOUtils;
+import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
 import org.w3c.dom.Document;
@@ -29,6 +32,8 @@ import org.xml.sax.SAXException;
  * This class resides in plexus-web instead of plexus-api because it uses {@link HttpServletRequest} and friends.
  */
 public class WebDAVUtils {
+	
+	/* HTTP */
 	
 	/**
 	 * Parses the request body as a XML document.
@@ -57,18 +62,7 @@ public class WebDAVUtils {
 				
 				// read content of request body as string, if present
 				if (hasContent) {
-					// read in 8k blocks until read operation reaches end of stream
-					StringBuilder content = new StringBuilder();
-					byte[] buffer = new byte[8192];
-					int readBytes = 0;
-					do {
-						readBytes = bufferedInputStream.read(buffer);
-						if (readBytes >= 0) {
-							content.append(new String(buffer, 0, readBytes));
-						}
-					} while (readBytes > 0);
-					
-					document = stringToDocument(content.toString());
+					document = streamToDocument(bufferedInputStream);
 				}
 			}
 		} catch (IOException ex) {
@@ -133,6 +127,64 @@ public class WebDAVUtils {
 		}
 	}
 	
+
+	/* (HTTP) I/O */
+	
+	/**
+	 * @param response The response that allows writing to the client.
+	 * @param c The context of data to write.
+	 * @throws IOException On writing errors. 
+	 */
+	public static void writeToClient(HttpServletResponse response, IOContext c) throws IOException {
+		// Content language
+		if (c.getContentLanguage() != null) {
+			response.setHeader(WebDAVConstants.HEADER_CONTENT_LANGUAGE, c.getContentLanguage());
+		}
+		
+		// Content length
+		response.setHeader(WebDAVConstants.HEADER_CONTENT_LENGTH, String.valueOf(c.getContentLength()));
+		
+		// Content type
+		if (c.getContentType() != null) {
+			response.setHeader(WebDAVConstants.HEADER_CONTENT_TYPE, c.getContentType());
+		}
+			
+		// Etag
+		if (c.getETag() != null) {
+			response.setHeader(WebDAVConstants.HEADER_ETAG, c.getETag());
+		}
+		
+		// Modification time
+		if (c.getModificationTime() != null) {
+			response.setDateHeader(WebDAVConstants.HEADER_LAST_MODIFIED, c.getModificationTime().getNanos());			
+		}
+		
+		// Main data stream
+		IOUtils.copyLarge(c.getInputStream(), response.getOutputStream());
+	}
+	
+	/**
+	 * @param request The HTTP request object.
+	 * @return An IO context with all information set by the client.
+	 * @throws IOException On reading errors.
+	 */
+	public static IOContext getClientInputContext(HttpServletRequest request) throws IOException {
+		IOContextImpl ioc = new IOContextImpl();
+		
+		ioc.setContentLanguage(request.getHeader(WebDAVConstants.HEADER_CONTENT_LANGUAGE));
+		ioc.setContentLength(request.getIntHeader(WebDAVConstants.HEADER_CONTENT_LENGTH));
+		ioc.setContentType(request.getHeader(WebDAVConstants.HEADER_CONTENT_TYPE));
+		ioc.setETag(null);
+		ioc.setModificationTime(new Timestamp(request.getDateHeader(WebDAVConstants.HEADER_LAST_MODIFIED)));
+		ioc.setInputStream(request.getInputStream());
+		
+		return ioc;
+	}
+	
+	
+
+	/* XML */	
+
 	/**
 	 * @return A new standard XML document.
 	 */
@@ -167,7 +219,6 @@ public class WebDAVUtils {
 		}
 		
 		return sw.toString();
-		
 	}
 	
 	/**
@@ -191,5 +242,27 @@ public class WebDAVUtils {
 		}
 			
 		return res;
+	}
+	
+	/**
+	 * Reads a serialized XML document to a Document object.
+	 * 
+	 * @param is The input stream to read from.
+	 * @return The deserialized document.
+	 * @throws SAXException On XML errors.
+	 * @throws IOException On reading errors.
+	 */
+	public static Document streamToDocument(InputStream is) throws SAXException, IOException {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		Document res;
+		
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			res = db.parse(new InputSource(is));
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+			
+		return res;		
 	}
 }
