@@ -50,9 +50,15 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public void prerender() throws Exception {
 		super.prerender();
 		
-//		if (this.examInfo != null && this.examInfo.getId() != null) {
-//			this.examInfo = paperSubmissionService.getExam(examInfo.getId());
-//		}
+		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
+			this.paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
+		}
+		
+		if (this.examInfo != null && this.examInfo.getId() != null) {
+			this.examInfo = paperSubmissionService.getExam(examInfo.getId());
+		}
+		
+		
 	}
 	public DocumentService getDocumentService() {
 		return documentService;

@@ -61,6 +61,7 @@
 						</t:column>
 				   
 				        <t:column>
+				        	<plexus:commandSortHeader columnName="Name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
 				            <h:commandLink action="#{views$secured$papersubmission$paperview.selectSubmission}" styleClass="command">
 									<b><h:outputText value="#{bean.lastName}"/></b>
 							</h:commandLink>

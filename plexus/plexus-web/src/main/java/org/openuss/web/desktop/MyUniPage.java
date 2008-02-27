@@ -35,6 +35,9 @@ import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.paperSubmission.ExamInfo;
+import org.openuss.paperSubmission.PaperSubmissionInfo;
+import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
@@ -54,6 +57,8 @@ public class MyUniPage extends BasePage {
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
 	
+	@Property(value = "#{paperSubmissionService}")
+	protected PaperSubmissionService paperSubmissionService;
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
@@ -81,6 +86,7 @@ public class MyUniPage extends BasePage {
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private CourseUIFlexList coursesList;
+	private UIFlexList examsList;
 	private UITabs tabs;
 	private Desktop desktop;
 
@@ -89,6 +95,7 @@ public class MyUniPage extends BasePage {
 	private boolean instituteListDataLoaded = false;
 	private boolean departmentListDataLoaded = false;
 	private boolean courseListDataLoaded = false;
+	private boolean examListDataLoaded = false;
 
 	private Map<Long, MyUniInfo> myUniData;
 
@@ -96,6 +103,8 @@ public class MyUniPage extends BasePage {
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
+	private static final String examBasePath = "/views/secured/papersubmission/paperlist.faces";
+	private static final String submissionBasePath = "/views/secured/papersubmission/paperview.faces";
 
 	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	String locale = (String) binding.getValue(getFacesContext());
@@ -314,7 +323,11 @@ public class MyUniPage extends BasePage {
 
 		if (coursesList != null)
 			loadValuesForCourseList(coursesList);
+		if (examsList != null)
+			loadValuesForExamList(examsList);
 	}
+
+	
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
 		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
@@ -371,6 +384,25 @@ public class MyUniPage extends BasePage {
 
 				// Make sure this isn't executed twice
 				courseListDataLoaded = true;
+			}
+		}
+	}
+	
+	private void loadValuesForExamList(UIFlexList submissionsList2) {
+		if (examListDataLoaded == false && prerenderCalled == true && examsList != null) {
+			logger.debug("Loading data for submissions flexlist");
+			// Make sure myUni-Data is loaded
+			prepareData();
+
+			// Get the current university id
+			Long universityId = chooseUniversity();
+
+			// Put data in the component's attributes
+			if (universityId != null && myUniData != null) {
+				examsList.getAttributes().put("visibleItems", getVisibleExamListItems(universityId));
+				
+				// Make sure this isn't executed twice
+				examListDataLoaded = true;
 			}
 		}
 	}
@@ -598,6 +630,42 @@ public class MyUniPage extends BasePage {
 
 		return listItems;
 	}
+	
+	private List<ListItemDAO> getVisibleExamListItems(Long universityId) {
+		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+
+		if (myUniData != null) {
+			MyUniInfo myUniInfo = myUniData.get(universityId);
+			if (myUniInfo != null) {
+				ListItemDAO newItem;
+				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getCurrentCourses();
+
+				for (MyUniCourseInfo courseInfo : courseCollection) {
+					
+					List<ExamInfo> exams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
+					for(ExamInfo exam : exams){
+						List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExamAndUser(exam.getId(), user.getId());
+						
+						newItem = new ListItemDAO();
+						newItem.setTitle(exam.getName()+ " - " + exam.getDeadline().toString() + " - " +courseInfo.getName());
+						
+						if(submissions!=null && !submissions.isEmpty()){
+							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=" + submissions.get(submissions.size()-1).getId());
+						}else{
+							newItem.setUrl(contextPath()+examBasePath + "?course=" + courseInfo.getId());
+						}
+						
+						
+																	
+						//newItem.setMetaInformation(courseInfo.getPeriod());
+						listItems.add(newItem);
+					}
+				}
+			}
+		}
+
+		return listItems;
+	}
 
 	/*
 	 * Selects a university to be shown on the MyUni page if no university
@@ -676,6 +744,19 @@ public class MyUniPage extends BasePage {
 		// Load values into the component
 		loadValuesForCourseList(coursesList);
 	}
+	
+	public UIFlexList getExamsList() {
+		return examsList;
+	}
+
+	public void setExamsList(UIFlexList examsList) {
+		logger.debug("Setting exams flexlist component");
+		this.examsList = examsList;
+		examsList.getAttributes().put("title", bundle.getString("flexlist_exams"));
+
+		// Load values into the component
+		loadValuesForExamList(examsList);
+	}
 
 	public UITabs getTabs() {
 		return tabs;
@@ -731,5 +812,16 @@ public class MyUniPage extends BasePage {
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
 	}
+
+	public PaperSubmissionService getPaperSubmissionService() {
+		return paperSubmissionService;
+	}
+
+	public void setPaperSubmissionService(
+			PaperSubmissionService paperSubmissionService) {
+		this.paperSubmissionService = paperSubmissionService;
+	}
+
+	
 
 }

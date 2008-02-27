@@ -30,9 +30,6 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
 	
-	@Property(value= "#{paperSubmissionService}")
-	protected PaperSubmissionService paperSubmissionService;
-	
 	/** The datamodel for all papers. */
 	private LocalDataModelExams dataExams = new LocalDataModelExams();
 
@@ -223,15 +220,6 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
-	}
-
-	public PaperSubmissionService getPaperSubmissionService() {
-		return paperSubmissionService;
-	}
-
-	public void setPaperSubmissionService(
-			PaperSubmissionService paperSubmissionService) {
-		this.paperSubmissionService = paperSubmissionService;
 	}
 
 	public ExamInfo getExamInfo() {
