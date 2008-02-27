@@ -20,11 +20,6 @@ public class UITabs extends UIOutput {
 			writer.startElement("div", this);
 				writer.writeAttribute("class", "header_normal", null);
 			
-			
-				writer.startElement("div", this);
-					writer.writeAttribute("class", "header_normal_left_bg", null);
-				writer.endElement("div");
-				
 				writer.startElement("div", this);
 					writer.writeAttribute("class", "header_normal_right_bg", null);
 				writer.endElement("div");
@@ -39,6 +34,7 @@ public class UITabs extends UIOutput {
 						// Render selected university
 						writer.startElement("div", this);
 							writer.writeAttribute("id", "tab_selected", null);
+							
 							writer.startElement("div", this);
 								writer.writeAttribute("class", "tab_content", null);
 								
@@ -74,13 +70,12 @@ public class UITabs extends UIOutput {
 								
 							writer.endElement("div");
 							
-							
 						writer.endElement("div");
 						
-						// Render selection separator
 						writer.startElement("div", this);
-							writer.writeAttribute("class", "tab_arrow_sel_right", null);
+							writer.writeAttribute("class", "tab_selected_right", null);
 						writer.endElement("div");
+						
 					}
 					
 					
@@ -111,10 +106,10 @@ public class UITabs extends UIOutput {
 								writer.endElement("div");
 							writer.endElement("a");
 							
-							// Render deselected separator
 							writer.startElement("div", this);
-								writer.writeAttribute("class", "tab_arrow", null);
+								writer.writeAttribute("class", "tab_deselected_right", null);
 							writer.endElement("div");
+
 						}
 					}
 					

@@ -77,25 +77,22 @@
 	color: #5DBF00;
 }
 
-.flexListItemRight a .remove_bookmark {
+.flexListItemRight a .remove_bookmark{
  	background-image: url(../img/buttons/bookmark_remove_icon.png);
-	background-repeat: no-repeat;
-	padding: 0px 16px 3px 0px;
-	
+ 	background-repeat: no-repeat;
+	padding: 0px 16px 3px 0px;	
+	margin-left: 5px;
 }
 
 .flexListItemRight a:hover .remove_bookmark {
 	background-image: url(../img/buttons/bookmark_remove_icon.png);
-	background-position: right;
+	background-position: top right;
 }
 
 .flexListItemRight a {
 	text-decoration: none !important;
 }
 
-.remove_bookmark .remove_bookmark_hidden {
-	display:none !important;	
-}
 .flexListItemRight a .newsletter_subscribed {
 	background-image: url(../img/newsletter_subscribed.png);
 	background-repeat: no-repeat;
@@ -124,6 +121,7 @@
 	background-image: url(../img/forum_subscribed.png);
 	background-repeat: no-repeat;
 	padding: 0px 5px 3px 0px;
+	margin-left: 5px;
 }
 .flexListItemRight a:hover .forum_subscribed {
 	background-image: url(../img/forum_unsubscribe.png);
@@ -132,6 +130,7 @@
 	background-image: url(../img/forum_notSubscribed.png);
 	background-repeat: no-repeat;
 	padding: 0px 5px 3px 0px;
+	margin-left: 5px;
 }
 .flexListItemRight a:hover .forum_notSubscribed {
 	background-image: url(../img/forum_subscribe.png);
@@ -147,37 +146,70 @@
 
 #flexlist_tabs .header_normal {
   padding: 0;
+  padding-left: 9px;
   height: 28px;
-  background-image: url(../img/headline_grey_bg.jpg);
+  background-image: url(../img/headline_small_bg.jpg);
   background-repeat: repeat-x;
+  background-position: bottom;
 }
 
 #flexlist_tabs .header_normal_right_bg {
   float: right;
   width: 9px;
   height: 28px;
-  background-image: url(../img/headline_grey_right_bg.jpg) !important;
+  background-image: url(../img/headline_right_small_bg.jpg);
   background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 #flexlist_tabs .tabs {
 	float:left; 
 	font-size: 13px; 
-	margin-top: 1px;
 }
 
 .tabs #tab_selected {
 	font-size: 13px !important; 
 	float:left;  
-	height: 27px; 
+	height: 28px; 
 	background-color: white;
+	background-image: url(../img/headline_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	border-bottom:1px solid white;
+	padding-left:9px;
+	margin-left:-9px;
+}
+
+.tabs .tab_selected_right {
+	float:left;
+	background-image: url(../img/headline_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;
+	border-bottom:1px solid white;
+
 }
 
 .tabs .tab_deselected {
 	font-size: 13px !important; 
-	float:left; 
+	float:left;  
 	height: 27px; 
 	background-color: #F4F4F4;
+	background-image: url(../img/headline_grey_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	padding-left: 9px;
+
+}
+
+.tabs .tab_deselected_right {
+	float:left;
+	background-image: url(../img/headline_grey_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;	
 }
 
 .tabs .tab_arrow_sel_right {
@@ -188,7 +220,11 @@
 }
 
 .tabs .tab_content {
-	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid #aeaeae;
+
+	height: 27px; 
+	
 }
 
 .tabs .tab_arrow {

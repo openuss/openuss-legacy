@@ -98,7 +98,7 @@ public class CourseUIFlexList extends UIFlexList {
 					writer.startElement("span", this);
 						writer.writeAttribute("class", "remove_bookmark", null);
 						writer.writeAttribute("title", title, null);
-						
+						writer.write("&nbsp;");
 					writer.endElement("span");
 				writer.endElement("a");
 			}
