@@ -255,16 +255,19 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
 				.getParticipants(courseInfo));
 
-		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
-		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
-		for (UserInfo ui : wsMembers) {
-			wsMemberIds.add(ui.getId());
-		}
-		
-		memberSelection.clear();
-		for (CourseMemberInfo courseMemberInfo : members) {
-			if (wsMemberIds.contains(courseMemberInfo.getUserId())) {
-				memberSelection.getMap().put(courseMemberInfo, Boolean.TRUE);
+		if (this.workspaceInfo.getId() != null) {
+			
+			List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
+			List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
+			for (UserInfo ui : wsMembers) {
+				wsMemberIds.add(ui.getId());
+			}
+			
+			memberSelection.clear();
+			for (CourseMemberInfo courseMemberInfo : members) {
+				if (wsMemberIds.contains(courseMemberInfo.getUserId())) {
+					memberSelection.getMap().put(courseMemberInfo, Boolean.TRUE);
+				}
 			}
 		}
 		
