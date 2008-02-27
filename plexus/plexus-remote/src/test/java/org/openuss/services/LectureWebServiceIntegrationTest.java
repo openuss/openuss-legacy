@@ -60,10 +60,10 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 		loadCourse = lectureClient.getCourse(courseId);
 		assertEquals(course.getName(), loadCourse.getName());
 		
-//		assertTrue(lectureClient.deleteCourse(courseId));
-//		assertFalse(lectureClient.deleteCourse(courseId));
+		assertTrue(lectureClient.deleteCourse(courseId));
+		assertFalse(lectureClient.deleteCourse(courseId));
 		
-//		assertNull(lectureClient.getCourse(courseId));
+		assertNull(lectureClient.getCourse(courseId));
 	}
 
 	public void testMembership() throws LectureLogicException {
