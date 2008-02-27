@@ -66,7 +66,7 @@ public class SeminarConditionDaoImpl
         org.openuss.seminarpool.SeminarCondition entity = this.loadSeminarConditionFromSeminarConditionInfo(seminarConditionInfo);
         this.seminarConditionInfoToEntity(seminarConditionInfo, entity, true);
         if(seminarConditionInfo.getSeminarpoolId() != null){
-        	Seminarpool seminarpool = Seminarpool.Factory.newInstance();
+        	Seminarpool seminarpool = getSeminarpoolDao().load(seminarConditionInfo.getSeminarpoolId());
         	entity.setSeminarpool(seminarpool);
         }
         return entity;

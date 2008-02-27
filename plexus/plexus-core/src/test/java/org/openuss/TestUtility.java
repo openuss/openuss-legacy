@@ -55,6 +55,7 @@ import org.openuss.seminarpool.ConditionType;
 import org.openuss.seminarpool.CourseGroup;
 import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocation;
+import org.openuss.seminarpool.CourseSeminarpoolAllocationDao;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarCondition;
 import org.openuss.seminarpool.SeminarUserRegistration;
@@ -91,6 +92,8 @@ public class TestUtility {
 	private CourseTypeDao courseTypeDao;
 
 	private CourseDao courseDao;
+	
+	private CourseSeminarpoolAllocationDao courseSeminarpoolAllocationDao;
 
 	private ApplicationDao applicationDao;
 
@@ -846,6 +849,7 @@ public class TestUtility {
 		CourseSeminarpoolAllocation courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
 		courseSeminarpoolAllocation.setSeminarpool(createUniqueSeminarpoolinDB());
 		courseSeminarpoolAllocation.setCourse(createUniqueCourseInDB());
+		courseSeminarpoolAllocationDao.create(courseSeminarpoolAllocation);
 		return courseSeminarpoolAllocation;
 	}
 	
@@ -1040,6 +1044,15 @@ public class TestUtility {
 
 	public UserGroupDao getUserGroupDao() {
 		return userGroupDao;
+	}
+
+	public CourseSeminarpoolAllocationDao getCourseSeminarpoolAllocationDao() {
+		return courseSeminarpoolAllocationDao;
+	}
+
+	public void setCourseSeminarpoolAllocationDao(
+			CourseSeminarpoolAllocationDao courseSeminarpoolAllocationDao) {
+		this.courseSeminarpoolAllocationDao = courseSeminarpoolAllocationDao;
 	}
 
 }

@@ -197,6 +197,8 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		//Create Course
 		Course course = testUtility.createUniqueCourseInDB();
 		
+		flush();
+		
 		CourseSeminarpoolAllocationInfo seminarpoolAllocation = new CourseSeminarpoolAllocationInfo();
 		seminarpoolAllocation.setSeminarpoolId(seminarpool.getId());
 		seminarpoolAllocation.setCourseId(course.getId());
@@ -210,49 +212,56 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		Collection coll = new ArrayList();
 		coll.add(courseGroup);
 		
-		this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll);
+		seminarpoolAllocation.setId(this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll));
 		
 		//Test
 		assertEquals(1, seminarpool.getCourseSeminarpoolAllocation().size());
+		assertNotNull(seminarpoolAllocation.getId());
 		
 		logger.debug("----> END access to addSeminar test <---- ");
 	}
 	
 	public void testRemoveSeminar(){
-//		logger.debug("----> BEGIN access to removeSeminar test <---- ");
-//				
-//				//Create Seminarpool
-//				Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
-//				
-//				//Create Course
-//				Course course = testUtility.createUniqueCourseInDB();
-//				
-//				CourseSeminarpoolAllocationInfo seminarpoolAllocation = new CourseSeminarpoolAllocationInfo();
-//				seminarpoolAllocation.setSeminarpoolId(seminarpool.getId());
-//				seminarpoolAllocation.setCourseId(course.getId());
-//				
-//				CourseGroupInfo courseGroup = new CourseGroupInfo();
-//				courseGroup.setIsDefault(true);
-//				courseGroup.setIsTimeSet(false);
-//				courseGroup.setCapacity(2000);
-//				courseGroup.setName("Unique Name");
-//				
-//				Collection coll = new ArrayList();
-//				coll.add(courseGroup);
-//				
-//				Long seminarAllocationId = this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll);
-//				seminarpoolAllocation.setId(seminarAllocationId);
-//				
-//				this.getSeminarpoolAdministrationService().removeSeminar(seminarpoolAllocation);
-//				
-//				assertEquals(0, seminarpool.getCourseSeminarpoolAllocation().size());
-//				
-//				logger.debug("----> END access to removeSeminar test <---- ");
+		logger.debug("----> BEGIN access to removeSeminar test <---- ");
+				
+				//Create Seminarpool
+				Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
+				
+				
+				
+				//Create Course
+				Course course = testUtility.createUniqueCourseInDB();
+				
+				flush();
+				
+				CourseSeminarpoolAllocationInfo seminarpoolAllocation = new CourseSeminarpoolAllocationInfo();
+				seminarpoolAllocation.setSeminarpoolId(seminarpool.getId());
+				seminarpoolAllocation.setCourseId(course.getId());
+				
+				CourseGroupInfo courseGroup = new CourseGroupInfo();
+				courseGroup.setIsDefault(true);
+				courseGroup.setIsTimeSet(false);
+				courseGroup.setCapacity(2000);
+				courseGroup.setName("Unique Name");
+				
+				Collection coll = new ArrayList();
+				coll.add(courseGroup);
+				
+				seminarpoolAllocation.setId(this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll));
+	
+				
+				this.getSeminarpoolAdministrationService().removeSeminar(seminarpoolAllocation);
+				
+				assertEquals(0, seminarpool.getCourseSeminarpoolAllocation().size());
+				
+				logger.debug("----> END access to removeSeminar test <---- ");
 			}
 	public void testFindSeminarpool(){
 		logger.debug("----> BEGIN access to findSeminar test <---- ");
 		
 		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
+		
+		flush();
 		
 		SeminarpoolInfo seminarpoolInfo = this.getSeminarpoolAdministrationService().findSeminarpool(seminarpool.getId());
 		assertEquals(seminarpool.getDescription(),seminarpoolInfo.getDescription());
@@ -270,17 +279,21 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		Course course1 = testUtility.createUniqueCourseInDB();
 		Course course2 = testUtility.createUniqueCourseInDB();
 		
+		flush();
+		
 		testUtility.createCourseInSeminarpool(seminarpool.getId(), course1.getId());
 		testUtility.createCourseInSeminarpool(seminarpool.getId(), course2.getId());
 		
 		assertEquals(2, seminarpool.getCourseSeminarpoolAllocation().size());
 		
 		List<CourseSeminarpoolAllocationInfo> courses = this.getSeminarpoolAdministrationService().findCoursesInSeminarpool(seminarpool.getId());
-		Long course1Id = courses.get(1).getCourseId();
-		Long course2Id = courses.get(0).getCourseId();
-			
-		assertEquals(course1Id, course1.getId());
-		assertEquals(course2Id, course2.getId());
+		Long course1Id = courses.get(0).getCourseId();
+		Long course2Id = courses.get(1).getCourseId();
+		
+		
+		
+		assertTrue(course1Id == course1.getId() || course1Id == course2.getId());
+		assertTrue(course2Id == course1.getId() || course2Id == course2.getId());
 		
 		logger.debug("----> END access to findCoursesInSeminarpool test <---- ");
 	}
@@ -292,12 +305,25 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		Seminarpool seminarpool1 = testUtility.createUniqueSeminarpoolinDB();
 		Seminarpool seminarpool2 = testUtility.createUniqueSeminarpoolinDB();
 		
+		flush();
+		
 		//Test
 		List<SeminarpoolInfo> pools = this.getSeminarpoolAdministrationService().getAllSeminarpools();
 		Long seminarpool1Id = pools.get(0).getId();
 		Long seminarpool2Id = pools.get(1).getId();
 		
+		assertTrue(seminarpool1Id == seminarpool1.getId() || seminarpool1Id == seminarpool2.getId());
+		assertTrue(seminarpool2Id == seminarpool1.getId() || seminarpool2Id == seminarpool2.getId());
+		
 		logger.debug("----> END access to getAllSeminarpools test <---- ");
+	}
+	
+	public void testGetRegistrations(){
+		logger.debug("----> BEGIN access to getRegistrations test <---- ");
+		
+		
+		
+		logger.debug("----> END access to getRegistrations test <---- ");
 	}
 	
 	// <----- missing Tests ----->
@@ -308,15 +334,18 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		//Create Seminarpool
 		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
 		
+		flush();
+		
 		SeminarConditionInfo seminarConditionInfo = new SeminarConditionInfo();
 		seminarConditionInfo.setConditionDescription("ConditionDescription");
 		seminarConditionInfo.setFieldDescription("FieldDescription");
 		seminarConditionInfo.setFieldType(ConditionType.CHECKBOX);
 		seminarConditionInfo.setSeminarpoolId(seminarpool.getId());
 		
-		this.seminarpoolAdministrationService.addConditionToSeminarpool(seminarConditionInfo);
+		seminarConditionInfo.setId(this.seminarpoolAdministrationService.addConditionToSeminarpool(seminarConditionInfo));
 		//Test
 		assertEquals(1, seminarpool.getSeminarCondition().size());
+		assertNotNull(seminarConditionInfo.getId());
 		
 		logger.debug("----> END access to addSeminarCondition test <---- ");
 	}
@@ -327,6 +356,8 @@ logger.debug("----> BEGIN access to removeSeminarCondition test <---- ");
 		//Create Seminarpool
 		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
 		
+		flush();
+		
 		SeminarConditionInfo seminarConditionInfo = new SeminarConditionInfo();
 		seminarConditionInfo.setConditionDescription("ConditionDescription");
 		seminarConditionInfo.setFieldDescription("FieldDescription");
@@ -334,8 +365,7 @@ logger.debug("----> BEGIN access to removeSeminarCondition test <---- ");
 		seminarConditionInfo.setSeminarpoolId(seminarpool.getId());
 		
 		
-		Long id = this.seminarpoolAdministrationService.addConditionToSeminarpool(seminarConditionInfo);
-		seminarConditionInfo.setId(id);
+		seminarConditionInfo.setId(this.seminarpoolAdministrationService.addConditionToSeminarpool(seminarConditionInfo));
 		
 		//Test
 		assertEquals(1, seminarpool.getSeminarCondition().size());

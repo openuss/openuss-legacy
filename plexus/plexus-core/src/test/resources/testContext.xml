@@ -66,6 +66,9 @@
 		<property name="seminarpoolDao">
 			<ref bean="seminarpoolDao" />
 		</property>
+		<property name="courseSeminarpoolAllocationDao">
+			<ref bean="courseSeminarpoolAllocationDao" />
+		</property>
 		<property name="securityService">
 			<ref bean="securityService" />
 		</property>

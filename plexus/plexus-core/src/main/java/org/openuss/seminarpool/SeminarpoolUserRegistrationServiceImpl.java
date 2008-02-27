@@ -34,10 +34,10 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected Long handleRegisterUserForSeminarpool(
 			SeminarUserRegistrationInfo userRegistrationInfo,
-			Collection seminarPriorities, Collection conditionValue)
+			 Collection conditionValue)
 			throws Exception {
 
-		return getSeminarUserRegistrationDao().create(mapSeminarUserRegistrationInfoToEntity(userRegistrationInfo, conditionValue, seminarPriorities)).getId();
+		return getSeminarUserRegistrationDao().create(mapSeminarUserRegistrationInfoToEntity(userRegistrationInfo, conditionValue)).getId();
 	}
 
 
@@ -85,18 +85,18 @@ public class SeminarpoolUserRegistrationServiceImpl
 			SeminarUserRegistrationInfo seminarUserRegistrationInfo,
 			Collection userConditions, Collection priorities) throws Exception {
 
-		getSeminarUserRegistrationDao().update(mapSeminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, userConditions, priorities));
+		getSeminarUserRegistrationDao().update(mapSeminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, userConditions));
 	}
 	
 	private SeminarUserRegistration mapSeminarUserRegistrationInfoToEntity(
 			SeminarUserRegistrationInfo seminarUserRegistrationInfo,
-			Collection userConditions, Collection priorities) throws Exception{
+			Collection userConditions) throws Exception{
 		Validate.notNull(seminarUserRegistrationInfo, "handleEditUserRegistration UserRegistrationInfo cannot be null");
-		Validate.notNull(priorities, "handleEditUserRegistration SeminarPriorities cannot be null");
+		Validate.notNull(seminarUserRegistrationInfo.getSeminarPriorityList(), "handleEditUserRegistration SeminarPriorities cannot be null");
 		SeminarUserRegistration targetEntity = SeminarUserRegistration.Factory.newInstance();
 		getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, targetEntity, true);
-		if ( priorities != null ){
-			Iterator iter = priorities.iterator();
+		if ( seminarUserRegistrationInfo.getSeminarPriorityList() != null ){
+			Iterator iter = seminarUserRegistrationInfo.getSeminarPriorityList().iterator();
 			while( iter.hasNext()){
 				SeminarPriority seminarPriorityEntity = SeminarPriority.Factory.newInstance();
 				getSeminarPriorityDao().seminarPrioritiesInfoToEntity((SeminarPrioritiesInfo)iter.next(), seminarPriorityEntity, true);
@@ -122,7 +122,8 @@ public class SeminarpoolUserRegistrationServiceImpl
 		Validate.notNull(userRegistrationInfo, "handleUnregisterUserFromSeminar ==> userRegistrationInfo cannot be null");
 		Validate.notNull(userRegistrationInfo.getSeminarpoolId(), "handleUnregisterUserFromSeminar ==> userRegistrationInfo.getSeminarpoolId() cannot be null");		
 		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(userRegistrationInfo.getSeminarpoolId());
-		seminarpoolEntity.removeRegistration(getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(userRegistrationInfo));
+		seminarpoolEntity.removeRegistration(getSeminarUserRegistrationDao().load(userRegistrationInfo.getId()));
+		this.getSeminarUserRegistrationDao().remove(userRegistrationInfo.getId());
 	}
 
 }

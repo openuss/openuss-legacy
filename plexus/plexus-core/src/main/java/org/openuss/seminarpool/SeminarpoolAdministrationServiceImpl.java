@@ -156,12 +156,13 @@ public class SeminarpoolAdministrationServiceImpl
     	CourseSeminarpoolAllocation courseAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
     	courseAllocation.setSeminarpool(seminarpool);
     	courseAllocation.setCourse(course);
-    	seminarpool.addCourseAllocation(courseAllocation);
+    	
     	Set<CourseGroup> set = new HashSet<CourseGroup>();
     	for (CourseGroupInfo groupInfo : (Collection<CourseGroupInfo>) courseGroups){
     		CourseGroup courseGroupEntity = getCourseGroupDao().courseGroupInfoToEntity(groupInfo);
     		courseGroupEntity.setCourseSeminarpoolAllocation(courseAllocation);
-    		set.add(courseGroupEntity);    		
+    		set.add(courseGroupEntity);
+    		this.getCourseGroupDao().create(courseGroupEntity);
     	}
     	courseAllocation.setCourseGroup(set);
     	Long courseAllocationId = getCourseSeminarpoolAllocationDao().create(courseAllocation).getId();
@@ -173,7 +174,7 @@ public class SeminarpoolAdministrationServiceImpl
 
 
     	
-    	
+		seminarpool.addCourseAllocation(courseAllocation);
     	
         return courseAllocationId; 
     }
@@ -457,6 +458,7 @@ public class SeminarpoolAdministrationServiceImpl
 		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarConditionInfo.getSeminarpoolId());
 		Validate.notNull(seminarpoolEntity, "handleAddConditionToSeminarpool ==> Cannot load Seminarpool");
 		SeminarCondition seminarConditionEntity = getSeminarConditionDao().seminarConditionInfoToEntity(seminarConditionInfo);
+		getSeminarConditionDao().create(seminarConditionEntity);
 		seminarpoolEntity.addCondition(seminarConditionEntity);
 		return seminarConditionEntity.getId();
 	}
@@ -468,8 +470,8 @@ public class SeminarpoolAdministrationServiceImpl
 		Validate.notNull(seminarConditionInfo.getSeminarpoolId(), "handleAddConditionToSeminarpool.getSeminarpoolId() ==> SeminarpoolId cannot be null");
 		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarConditionInfo.getSeminarpoolId());
 		Validate.notNull(seminarpoolEntity, "handleAddConditionToSeminarpool ==> Cannot load Seminarpool");
-		SeminarCondition seminarConditionEntity = getSeminarConditionDao().seminarConditionInfoToEntity(seminarConditionInfo);
-		seminarpoolEntity.removeCondition(seminarConditionEntity);		
+		SeminarCondition seminarConditionEntity = getSeminarConditionDao().load(seminarConditionInfo.getId());
+		seminarpoolEntity.removeCondition(seminarConditionEntity);	
 	}
 
 
