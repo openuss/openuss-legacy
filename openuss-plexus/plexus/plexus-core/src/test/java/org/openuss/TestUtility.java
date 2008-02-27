@@ -79,8 +79,6 @@ public class TestUtility {
 
 	private Institute defaultInstitute;
 
-	private static long uniqueId = System.currentTimeMillis();
-
 	/**
 	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
@@ -705,6 +703,8 @@ public class TestUtility {
 		return user;
 	}
 
+	private static volatile long uniqueId = System.currentTimeMillis();
+	
 	public static synchronized long unique() {
 		return ++uniqueId;
 	}

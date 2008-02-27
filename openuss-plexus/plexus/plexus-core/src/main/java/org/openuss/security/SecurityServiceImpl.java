@@ -66,18 +66,20 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		User user = getUserDao().userInfoToEntity(userInfo);
 		getUserDao().create(user);
 		encodePassword(user);
-		getUserDao().update(user);
-		getUserDao().toUserInfo(user, userInfo);
 
-		// Define object identity security
+		// Define object identity and assign roles to user 
 		createObjectIdentity(user, null);
+		addAuthorityToGroup(user, Roles.USER);
 
+		getUserDao().update(user);
+
+		getUserDao().toUserInfo(user, userInfo);
 		return userInfo;
 	}
 
 	private void validateUserInfoForRegistration(UserInfo userInfo) {
 		if (!isValidUserName(null, userInfo.getUsername())) {
-			throw new SecurityServiceException("Invalid username.");
+			throw new SecurityServiceException("Invalid username. Maybe the username already exists.");
 		}
 		if (StringUtils.isBlank(userInfo.getPassword())) {
 			throw new SecurityServiceException("Password must not be empty");
