@@ -36,8 +36,9 @@ public class AddBuddyPage extends BasePage{
 		userInfo.setId(profile.getId());
 		try {
 			buddyService.addBuddy(userInfo);
+			addMessage(i18n("openuss4us_message_addbuddy_request"));
 		} catch (Exception e) {
-			this.addError("TODO: ERROR");
+			addError(i18n("openuss4us_error_addbuddy_request"));
 			return Constants.SUCCESS;
 		}
 		return Constants.OPENUSS4US_BUDDYLIST;
