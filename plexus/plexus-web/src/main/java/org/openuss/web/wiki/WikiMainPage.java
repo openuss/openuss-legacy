@@ -1,5 +1,6 @@
 package org.openuss.web.wiki;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.Locale;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -195,21 +195,6 @@ public class WikiMainPage extends AbstractWikiPage {
 		siteVersionInfo.setStable(false);
 		wikiService.saveWikiSite(siteVersionInfo);
 		return Constants.WIKI_MAIN_PAGE;
-	}
-	
-	public String getSiteTitle() {
-		if (siteVersionInfo.getName() == null) {
-			return siteName;
-		}
-		
-		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));
-		
-		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
-		if(siteVersionInfo.getId() != wikiSiteInfo.getId()){
-			siteTitle.append(" ").append(i18n("wiki_main_version", siteVersionInfo.getId().toString()));
-		}
-		
-		return siteTitle.toString();
 	}
 	
 	public String getSiteTitleNoVersion() {

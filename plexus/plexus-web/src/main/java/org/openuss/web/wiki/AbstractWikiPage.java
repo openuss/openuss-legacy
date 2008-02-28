@@ -1,5 +1,7 @@
 package org.openuss.web.wiki;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +37,8 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	protected String siteName;
 	
 	protected Long siteVersionId;
+	
+	private final DateFormat dateFormat = new SimpleDateFormat();
 	
 	@Override
 	public void prerender() throws Exception {
@@ -77,6 +81,25 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	}
 	
 	/**
+	 * Gets the page name with Creation Date if shown page is not the newest.
+	 * @return string of title with optional creation date
+	 */
+	public String getSiteTitle() {
+		if (siteVersionInfo.getName() == null) {
+			return siteName;
+		}
+		
+		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));
+		
+		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
+		if (!siteVersionInfo.getId().equals(wikiSiteInfo.getId())) {
+			siteTitle.append(" ").append(i18n("wiki_main_version", dateFormat.format(siteVersionInfo.getCreationDate())));
+		}
+		
+		return siteTitle.toString();
+	}
+	
+	/**
 	 * DataProvider for WikiOverview table.
 	 * @author Projektseminar WS 07/08, Team Collaboration
 	 *
@@ -93,7 +116,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 			sort(wikiSiteInfoList);
 			return page;
 		}
-	}
+	}	
 	
 	public WikiService getWikiService() {
 		return wikiService;
