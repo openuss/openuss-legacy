@@ -32,14 +32,7 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 	 */
 	private void generateShortcut() {
 		logger.debug("auto-generate shortcut for course");
-		// FIXME make this method robust against unique key violations
-		String courseTypeShortcut = getCourseType().getShortcut();
-		String id = String.valueOf(this.getId());
-		int index = courseTypeShortcut.length();
-		if (index + id.length() >= 30)
-			index -= id.length();
-		String shortcut = courseTypeShortcut.substring(0, index) + id;
-		this.setShortcut(shortcut);
+		this.setShortcut(getCourseType().getShortcut()+"-"+getPeriod().getName());
 
 	}
 
