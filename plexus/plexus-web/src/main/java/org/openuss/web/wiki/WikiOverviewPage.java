@@ -42,6 +42,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_mark_for_removal_successful"));
 		return Constants.WIKI_OVERVIEW;
 	}
 	
@@ -55,6 +56,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_recover_successful"));
 		return Constants.WIKI_OVERVIEW;
 	}
 	
@@ -68,6 +70,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_lock_successful"));
 		return Constants.WIKI_OVERVIEW;
 	}
 	
@@ -81,6 +84,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_unlock_successful"));
 		return Constants.WIKI_OVERVIEW;
 	}
 }

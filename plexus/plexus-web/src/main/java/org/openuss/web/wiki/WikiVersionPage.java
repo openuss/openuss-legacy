@@ -62,6 +62,8 @@ public class WikiVersionPage extends AbstractWikiPage{
 		logger.debug("delete wikiSiteVersion");
 		WikiSiteInfo entry = data.getRowData();
 		wikiService.deleteWikiSiteVersion(entry.getId());
+		
+		addMessage(i18n("wiki_message_version_delete_succeeded"));
 		return Constants.WIKI_VERSION_PAGE;
 	}
 	

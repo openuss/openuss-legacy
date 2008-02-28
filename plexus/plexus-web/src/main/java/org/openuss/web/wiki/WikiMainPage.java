@@ -4,8 +4,6 @@ package org.openuss.web.wiki;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.Date;
 import java.util.Locale;
 import org.apache.shale.tiger.managed.Bean;
@@ -118,11 +116,12 @@ public class WikiMainPage extends AbstractWikiPage {
 	 * @return Wiki Current Site Version Page.
 	 */
 	public String recoverSite() {
-		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setDeleted(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_recover_successful"));
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
@@ -136,6 +135,7 @@ public class WikiMainPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_lock_successful"));
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
@@ -149,6 +149,7 @@ public class WikiMainPage extends AbstractWikiPage {
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
 		
+		addMessage(i18n("wiki_message_unlock_successful"));
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
@@ -183,7 +184,9 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String markStable() {
 		siteVersionInfo.setStable(true);
-		wikiService.saveWikiSite(siteVersionInfo);		
+		wikiService.saveWikiSite(siteVersionInfo);
+		
+		addMessage(i18n("wiki_message_mark_stable_successful"));
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
@@ -194,6 +197,8 @@ public class WikiMainPage extends AbstractWikiPage {
 	public String unmarkStable() {
 		siteVersionInfo.setStable(false);
 		wikiService.saveWikiSite(siteVersionInfo);
+		
+		addMessage(i18n("wiki_message_unmark_stable_successful"));
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	

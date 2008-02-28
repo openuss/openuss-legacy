@@ -49,8 +49,6 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String overwriteSite()  {
-		addMessage(i18n("wiki_site_save_succeeded"));
-		
 		siteVersionInfo.setId(null);
 		if (siteVersionInfo.getName() == null) {
 			siteVersionInfo.setName((String) getSessionBean(Constants.WIKI_NEW_SITE_NAME));
@@ -67,6 +65,7 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 		
 		setSiteVersionId(null);
 		
+		addMessage(i18n("wiki_site_save_succeeded"));
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	

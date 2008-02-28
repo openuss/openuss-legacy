@@ -63,6 +63,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 			throw new RuntimeException("Unexpected Wiki Import Type.");
 		}
 		
+		addMessage(i18n("wiki_message_import_successful"));
 		return Constants.WIKI_OVERVIEW;
 	}
 	

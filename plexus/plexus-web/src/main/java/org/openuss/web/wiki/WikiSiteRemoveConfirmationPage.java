@@ -50,10 +50,9 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 		final WikiSiteInfo site = (WikiSiteInfo) getSessionBean(Constants.WIKI_SITE_TO_REMOVE);
 		getWikiService().deleteWikiSite(site.getWikiSiteId());
 		
-		addMessage(i18n("wiki_site_removed_succeed"));
-		
 		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, null);
 		
+		addMessage(i18n("wiki_site_removed_succeed"));
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
