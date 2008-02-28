@@ -256,51 +256,53 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
     /** Method for update the buttons. */
     private void actualizeButtons() {
         FLGAudioElement audioElement = (FLGAudioElement)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-        //if the audio-element is a folder
-        if (audioElement.getFolder()) {
-            enableButtons(false);
-            stopButton.setEnabled(false);
-            pauseButton.setEnabled(false);
-            if (playing == true) {
-                stopButton.setEnabled(true);
-                pauseButton.setEnabled(true);
-                playButton.setEnabled(false);
-            }
-            else if (pausedPlaying == true) {
-                stopButton.setEnabled(true);
-                playButton.setEnabled(true);
-                pauseButton.setEnabled(false);
-            }
-            else if (recording == true) {
-                stopButton.setEnabled(true);
-                playButton.setEnabled(false);
-                pauseButton.setEnabled(false);
-            }
-        }
-        else //it is not a folder
-        {
-            enableButtons(false);
-            if (playing == true) {
-                stopButton.setEnabled(true);
-                pauseButton.setEnabled(true);
-                playButton.setEnabled(false);
-            }
-            else if (pausedPlaying == true) {
-                stopButton.setEnabled(true);
-                playButton.setEnabled(true);
-                pauseButton.setEnabled(false);
-            }
-            else if (recording == true) {
-                stopButton.setEnabled(true);
-                playButton.setEnabled(false);
-                pauseButton.setEnabled(false);
-            }
-            else {
-                Audio actualAudio = (Audio)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
-                enableButtons(true);
-                //if there is no soundfile available, the playbutton is disabled
-                if (actualAudio.getSoundFileName() == null) { playButton.setEnabled(false); }
-            }
+        if(audioElement != null) {
+	        //if the audio-element is a folder
+	        if (audioElement.getFolder()) {
+	            enableButtons(false);
+	            stopButton.setEnabled(false);
+	            pauseButton.setEnabled(false);
+	            if (playing == true) {
+	                stopButton.setEnabled(true);
+	                pauseButton.setEnabled(true);
+	                playButton.setEnabled(false);
+	            }
+	            else if (pausedPlaying == true) {
+	                stopButton.setEnabled(true);
+	                playButton.setEnabled(true);
+	                pauseButton.setEnabled(false);
+	            }
+	            else if (recording == true) {
+	                stopButton.setEnabled(true);
+	                playButton.setEnabled(false);
+	                pauseButton.setEnabled(false);
+	            }
+	        }
+	        else //it is not a folder
+	        {
+	            enableButtons(false);
+	            if (playing == true) {
+	                stopButton.setEnabled(true);
+	                pauseButton.setEnabled(true);
+	                playButton.setEnabled(false);
+	            }
+	            else if (pausedPlaying == true) {
+	                stopButton.setEnabled(true);
+	                playButton.setEnabled(true);
+	                pauseButton.setEnabled(false);
+	            }
+	            else if (recording == true) {
+	                stopButton.setEnabled(true);
+	                playButton.setEnabled(false);
+	                pauseButton.setEnabled(false);
+	            }
+	            else {
+	                Audio actualAudio = (Audio)learningUnitViewElementsManager.getLearningUnitViewElement(activeLearningUnitViewElementId, false);
+	                enableButtons(true);
+	                //if there is no soundfile available, the playbutton is disabled
+	                if (actualAudio.getSoundFileName() == null) { playButton.setEnabled(false); }
+	            }
+	        }
         }
     }
 
@@ -489,6 +491,9 @@ public class FLGAudioElementInteractionPanel extends FSLAbstractLearningUnitView
                     }
                 }
             }
+        }
+        public void learningUnitViewDeactivated(FSLLearningUnitViewEvent event) { 
+        	stop();
         }
     }
 }

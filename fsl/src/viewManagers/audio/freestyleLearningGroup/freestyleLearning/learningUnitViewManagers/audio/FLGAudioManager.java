@@ -430,6 +430,7 @@ public class FLGAudioManager extends FSLAbstractLearningUnitViewManager {
     }
 
     private void refreshContextDependentInteractionButton(String elementId, String managerId) {
+    	contextDependentInteractionPanel.stop();
         //test if a context-dependent-element is available
         if (hasContextDependentElement(elementId, managerId)) {
             // the the chosen LearningUnitViewElement is set active, so the CDI-panel

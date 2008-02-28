@@ -1,6 +1,5 @@
 package freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.contextDependentInteractionPanel;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
@@ -16,6 +15,9 @@ import freestyleLearning.learningUnitViewAPI.FSLLearningUnitViewManager;
 import freestyleLearning.learningUnitViewAPI.contextDependentInteractionPanel.FSLAbstractLearningUnitViewContextDependentInteractionPanel;
 import freestyleLearning.learningUnitViewAPI.elementInteractionPanel.FSLLearningUnitViewElementInteractionButton;
 import freestyleLearning.learningUnitViewAPI.events.learningUnitEvent.FSLLearningUnitEventGenerator;
+import freestyleLearning.learningUnitViewAPI.events.learningUnitViewEvent.FSLLearningUnitViewAdapter;
+import freestyleLearning.learningUnitViewAPI.events.learningUnitViewEvent.FSLLearningUnitViewEvent;
+import freestyleLearning.learningUnitViewAPI.events.learningUnitViewEvent.FSLLearningUnitViewVetoableAdapter;
 import freestyleLearningGroup.freestyleLearning.learningUnitViewManagers.audio.elementInteractionPanel.FLGAudioElementInteractionPanel;
 import freestyleLearningGroup.independent.gui.FLGImageUtility;
 import freestyleLearningGroup.independent.util.FLGInternationalization;
@@ -51,6 +53,8 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
             manager = learningUnitViewManager;
             _learningUnitEventGenerator = learningUnitEventGenerator;
             buildDependentUI();
+            learningUnitViewManager.addLearningUnitViewListener(new FLGAudioElement_Adapter());
+            learningUnitViewManager.addLearningUnitViewListener(new FLGAudioElement_VetoableAdapter());
     }
 
     /**
@@ -177,5 +181,33 @@ public class FLGAudioContextDependentInteractionPanel extends FSLAbstractLearnin
     }
 
     public void updateUI() {
+    }
+    
+    class FLGAudioElement_Adapter extends FSLLearningUnitViewAdapter {
+        public void learningUnitViewDeactivated(FSLLearningUnitViewEvent event) { 
+        	stop();
+        }
+
+        public void learningUnitViewActivated(FSLLearningUnitViewEvent event) { 
+        	stop();
+        }
+
+        public void learningUnitViewElementsSelected(FSLLearningUnitViewEvent event) { 
+        	stop();
+        }
+
+        public void learningUnitViewElementActivated(FSLLearningUnitViewEvent event) { 
+        	stop();
+        }
+    }
+    
+    class FLGAudioElement_VetoableAdapter extends FSLLearningUnitViewVetoableAdapter {
+    	public void learningUnitViewDeactivating(FSLLearningUnitViewEvent event) { 
+    		stop();
+    	}
+    }
+    
+    public void stop() {
+    	if(elementInteractionPanel != null) elementInteractionPanel.stop();
     }
 }
