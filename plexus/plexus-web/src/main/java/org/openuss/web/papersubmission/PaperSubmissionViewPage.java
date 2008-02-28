@@ -154,6 +154,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 
 	public String delete() {
+		if (paperSubmissionInfo.getId() == null) {
+			addError(i18n("messages_error_no_documents_selected"));
+			return Constants.SUCCESS;
+		}
+		
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
 			logger.debug("deleting documents:");
