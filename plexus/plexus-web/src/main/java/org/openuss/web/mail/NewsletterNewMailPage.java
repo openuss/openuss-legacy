@@ -43,11 +43,13 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 
 	public String saveDraft(){
 		getCourseNewsletterService().updateMail(courseInfo, mail);
-		return Constants.NEWSLETTER_MAIN;
+		addMessage(i18n("newsletter_draft_save_message"));
+		return Constants.NEWSLETTER_MAIN;		
 	}
 	
 	public String send(){
 		getCourseNewsletterService().sendMail(courseInfo, mail);
+		addMessage(i18n("newsletter_send_message"));
 		return Constants.NEWSLETTER_MAIN;
 	}
 	
