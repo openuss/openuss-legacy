@@ -76,6 +76,11 @@
 	</tag>
 	
 	<tag>
+		<tag-name>expandableBlock</tag-name>
+		<source>../facelets/expandableBlock.xhtml</source>
+	</tag>
+	
+	<tag>
 		<tag-name>breadCrumb</tag-name>
 		<source>../facelets/breadCrumb.xhtml</source>
 	</tag>

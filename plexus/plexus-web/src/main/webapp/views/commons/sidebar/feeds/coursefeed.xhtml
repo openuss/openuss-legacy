@@ -14,7 +14,7 @@
 	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 		<h:form>
 		    <div class="feed">
-				<o:block styleClass="option_box" label="#{msg.rss_sidebox_title}">
+				<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
 					<ul class="int">
 						<li>
 							<o:link value="/rss/secured/course.xml?course=#{courseInfo.id}"	title="#{msg['rss_course']}" >
@@ -45,7 +45,7 @@
 							</li>
 						</c:if>
 					</ul>
-				</o:block>
+				</o:expandableBlock>
 			</div>
 		</h:form>	
 	</s:acl>		

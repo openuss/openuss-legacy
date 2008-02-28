@@ -13,7 +13,7 @@
 	
 		<h:form>
 		    <div class="feed">
-				<o:block styleClass="option_box" label="#{msg.rss_sidebox_title}">
+				<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
 						<ul class="int">
 							<li>
 								<h:outputLink value="../../../rss/secured/newsletter.xml?course=#{courseInfo.id}" 
@@ -23,7 +23,7 @@
 									
 							</li>
 						</ul>
-				</o:block>
+				</o:expandableBlock>
 			</div>
 		</h:form>
 </f:subview>
