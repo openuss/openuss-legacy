@@ -14,15 +14,15 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
-/** Controller for the wikiimageremoveconfirmation.xhtml view.
- * 
- * @author Christian Beer
+/**
+ * Backing Bean for wikiremoveimage.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
  */
 @Bean(name = "views$secured$wiki$wikiremoveimage", scope = Scope.REQUEST)
 @View
 public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 	
-	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(WikiImageRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
@@ -33,41 +33,40 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			super.prerender();
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
-			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("wiki_image_remove_header"));
-			newCrumb.setHint(i18n("wiki_image_remove_header"));
+			final BreadCrumb newCrumb = new BreadCrumb();
+			newCrumb.setName(i18n(Constants.WIKI_IMAGE_REMOVE_HEADER));
+			newCrumb.setHint(i18n(Constants.WIKI_IMAGE_REMOVE_HEADER));
 			breadcrumbs.addCrumb(newCrumb);
-		} catch (Exception e) {
-			logger.error(e);
+		} catch (Exception exception) {
+			logger.error(exception);
 		}
 	}
 	
 	/**
-	 * Delete course including all data
-	 * @return outcome
-	 * @throws LectureException
+	 * Removes a specific image and return the Wiki Choose Image Page.
+	 * @return Wiki Choose Image Page.
 	 */
-	public String removeImage() throws LectureException {
+	public String removeImage() {
 		try {
 			FolderEntryInfo entry = (FolderEntryInfo) getSessionBean(Constants.WIKI_IMAGE);
 			getWikiService().deleteImage(entry.getId());
 			
 			setSessionBean(Constants.WIKI_IMAGE, null);
-			addMessage(i18n("wiki_image_removed_succeed"));
+			addMessage(i18n(Constants.WIKI_IMAGE_REMOVE_SUCCEEDED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("workspace_cannot_be_removed"));
+			addMessage(i18n(Constants.WIKI_IMAGE_CANNOT_BE_REMOVED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		}
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check whether the user has accepted the user agreement or not.
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context FacesContext.
+	 * @param toValidate UIComponent that has to be validated.
+	 * @param value Inserted Value.
 	 */
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;

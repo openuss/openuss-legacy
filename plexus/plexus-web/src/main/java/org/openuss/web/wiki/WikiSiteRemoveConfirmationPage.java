@@ -9,21 +9,20 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
 
-/** Controller for the wikisiteremoveconfirmation.xhtml view.
- * 
- * @author Christian Beer
+/**
+ * Backing Bean for wikiremoveconfirmationsite.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
  */
 @Bean(name = "views$secured$wiki$wikiremovesite", scope = Scope.REQUEST)
 @View
 public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	
-	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(WikiSiteRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
@@ -34,7 +33,7 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 			super.prerender();
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
-			BreadCrumb newCrumb = new BreadCrumb();
+			final BreadCrumb newCrumb = new BreadCrumb();
 			newCrumb.setName(i18n("wiki_site_remove_header"));
 			newCrumb.setHint(i18n("wiki_site_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
@@ -44,12 +43,11 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
-	 * Delete course including all data
-	 * @return outcome
-	 * @throws LectureException
+	 * Removes a Site including all Versions and returns Wiki Main Page.
+	 * @return Wiki Main Page.
 	 */
-	public String removeSite() throws LectureException {
-		WikiSiteInfo site = (WikiSiteInfo) getSessionBean(Constants.WIKI_SITE_TO_REMOVE);
+	public String removeSite() {
+		final WikiSiteInfo site = (WikiSiteInfo) getSessionBean(Constants.WIKI_SITE_TO_REMOVE);
 		getWikiService().deleteWikiSite(site.getWikiSiteId());
 		
 		addMessage(i18n("wiki_site_removed_succeed"));
@@ -60,11 +58,11 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check whether the user has accepted the user agreement or not.
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context FacesContext.
+	 * @param toValidate UIComponent that has to be validated.
+	 * @param value Inserted Value.
 	 */
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;

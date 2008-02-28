@@ -276,5 +276,13 @@ public class Constants {
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
 	public static final String WIKI_OVERWRITE_PAGE = "wiki_overwrite";
+	public static final String WIKI_MAIN_HEADER = "wiki_main_header";
+	public static final String WIKI_IMPORT_WIKI = "wiki_import_wiki";
+	public static final String WIKI_NEW_TAG = "__new__";
+	public static final String WIKI_EDIT_LINKS_NEWPAGE = "wiki_editlinks_newpage";
+	public static final String WIKI_SITE_SAVE_SUCCEEDED = "wiki_site_save_succeeded";
+	public static final String WIKI_IMAGE_REMOVE_HEADER = "wiki_image_remove_header";
+	public static final String WIKI_IMAGE_REMOVE_SUCCEEDED = "wiki_image_removed_succeed";
+	public static final String WIKI_IMAGE_CANNOT_BE_REMOVED = "wiki_image_cannot_be_removed";
 	public static final String WIKI_NEW_SITE_BACKUP = "wiki_create_backup";
 }

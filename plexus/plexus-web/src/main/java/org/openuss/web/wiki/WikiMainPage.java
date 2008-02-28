@@ -1,33 +1,35 @@
 package org.openuss.web.wiki;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.web.Constants;
-import org.openuss.wiki.WikiSiteInfo;
 import org.openuss.wiki.WikiSiteContentInfo;
+import org.openuss.wiki.WikiSiteInfo;
 
-
+/**
+ * Backing Bean for wikimain.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
 @View
-public class WikiMainPage extends AbstractWikiPage{
-	private static final Logger logger = Logger.getLogger(WikiMainPage.class);
+public class WikiMainPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		if (siteVersionId != null) {
-			this.siteVersionInfo = this.wikiService.getWikiSiteContent(siteVersionId);
+			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
 			String pageName = Constants.WIKI_STARTSITE_NAME;
 			if (this.siteName != null) {
 				pageName = URLUTF8Encoder.decode(this.siteName);
 			}
 
-			WikiSiteContentInfo backup = this.siteVersionInfo;
+			final WikiSiteContentInfo backup = this.siteVersionInfo;
 			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 			
 			if (this.siteVersionInfo == null) {
@@ -39,14 +41,21 @@ public class WikiMainPage extends AbstractWikiPage{
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 
-		// prerender at the end because of breadcrumbs!
 		super.prerender();
 	}
 	
+	/**
+	 * Returns the Wiki Overview Page.
+	 * @return Wiki Overview Page.
+	 */
 	public String overview() {
 		return Constants.WIKI_OVERVIEW;
 	}
 	
+	/**
+	 * Recovers a Site and returns the Wiki Current Site Version Page.
+	 * @return Wiki Current Site Version Page.
+	 */
 	public String recoverSite() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setDeleted(false);
@@ -56,6 +65,10 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
+	/**
+	 * Recovers a Site and returns the Wiki Current Site Version Page.
+	 * @return Wiki Current Site Version Page.
+	 */
 	public String lockSite() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setReadOnly(true);
@@ -65,6 +78,10 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
+	/**
+	 * Unlocks a Site and returns the Wiki Current Site Version Page.
+	 * @return Wiki Current Site Version Page.
+	 */
 	public String unlockSite() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		wikiSiteInfo.setReadOnly(false);
@@ -74,36 +91,49 @@ public class WikiMainPage extends AbstractWikiPage{
 		return Constants.WIKI_CURRENT_SITE_VERSION;
 	}
 	
+	/**
+	 * Returns the Wiki Import Page.
+	 * @return Wiki Import Page.
+	 */
 	public String showImportPage() {
 		return Constants.WIKI_IMPORT_PAGE;
 	}
 	
-	public String showStable() { //Test
+	/**
+	 * Returns the stable Version of a Site.
+	 * @return Wiki Main Page.
+	 */
+	public String showStable() {
 		WikiSiteContentInfo wikiSiteContentInfo = wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId());
-		if(wikiSiteContentInfo == null)
+		
+		if (wikiSiteContentInfo == null) {
 			wikiSiteContentInfo = wikiService.getNewestWikiSiteContent(siteVersionInfo.getWikiSiteId());
+		}
 		
 		siteVersionInfo = wikiSiteContentInfo;
-		siteVersionId=siteVersionInfo.getId();
-		//setSessionBean(Constants.WIKI_MAIN_PAGE, wikiSiteContentInfo);
-		return Constants.WIKI_MAIN_PAGE;
+		siteVersionId = siteVersionInfo.getId();
 		
+		return Constants.WIKI_MAIN_PAGE;
 	}
 	
+	/**
+	 * Marks a Version as stable and returns the Wiki Main Page.
+	 * @return Wiki Main Page.
+	 */
 	public String markStable() {
 		siteVersionInfo.setStable(true);
 		wikiService.saveWikiSite(siteVersionInfo);		
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
-	public String unmarkStable() { //FIXME
+	/**
+	 * Unmarks a Version as stable and returns the Wiki Main Page.
+	 * @return Wiki Main Page.
+	 */
+	public String unmarkStable() {
 		siteVersionInfo.setStable(false);
 		wikiService.saveWikiSite(siteVersionInfo);
 		return Constants.WIKI_MAIN_PAGE;
-	}
-	
-	public Boolean getHasStableVersion() {
-		return wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId()) != null;
 	}
 	
 	public String getSiteTitle() {
@@ -111,19 +141,26 @@ public class WikiMainPage extends AbstractWikiPage{
 			return siteName;
 		}
 		
-		StringBuilder siteTitle;
+		final StringBuilder siteTitle;
 		if(Constants.WIKI_STARTSITE_NAME.equals(siteVersionInfo.getName())) {
 			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
 		} else {
 			siteTitle = new StringBuilder(siteVersionInfo.getName());
 		}
 		
-		//attach Version if not newest
-		WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
+		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
 		if(siteVersionInfo.getId() != wikiSiteInfo.getId()){
-			siteTitle.append(" (Version "+ siteVersionInfo.getId() +")");
+			siteTitle.append(" (");
+			siteTitle.append(i18n("wiki_main_version"));
+			siteTitle.append(" ");
+			siteTitle.append(siteVersionInfo.getId());
+			siteTitle.append(")");
 		}
 		
 		return siteTitle.toString();
+	}
+	
+	public Boolean getHasStableVersion() {
+		return wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId()) != null;
 	}
 }

@@ -15,15 +15,15 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
-/** Controller for the wikisiteoverwriteconfirmation.xhtml view.
- * 
- * @author Christian Beer
+/**
+ * Backing Bean for wikioverwritesite.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
  */
 @Bean(name = "views$secured$wiki$wikioverwritesite", scope = Scope.REQUEST)
 @View
 public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	
-	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(WikiSiteOverwriteConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
@@ -32,9 +32,10 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	public void prerender() throws LectureException {
 		try {
 			super.prerender();
+			
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
-			BreadCrumb newCrumb = new BreadCrumb();
+			final BreadCrumb newCrumb = new BreadCrumb();
 			newCrumb.setName(i18n("wiki_site_overwrite_header"));
 			newCrumb.setHint(i18n("wiki_site_overwrite_header"));
 			breadcrumbs.addCrumb(newCrumb);
@@ -44,24 +45,25 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
-	 * Overwrite latest version
-	 * @return outcome 
+	 * Overwrite latest Version and return Wiki Main Page.
+	 * @return Wiki Main Page.
 	 */
 	public String overwriteSite()  {
 		addMessage(i18n("wiki_site_save_succeeded"));
 		
-		this.siteVersionInfo.setId(null);
-		if (this.siteVersionInfo.getName() == null) {
-			this.siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
+		siteVersionInfo.setId(null);
+		if (siteVersionInfo.getName() == null) {
+			siteVersionInfo.setName((String) getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 		}
-		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setAuthorId(user.getId());
-		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
-		this.siteVersionInfo.setDeleted(false);
-		this.siteVersionInfo.setReadOnly(false);
-		this.siteVersionInfo.setStable(false);
 		
-		getWikiService().saveWikiSite(this.siteVersionInfo);
+		siteVersionInfo.setCreationDate(new Date());
+		siteVersionInfo.setAuthorId(user.getId());
+		siteVersionInfo.setDomainId(courseInfo.getId());
+		siteVersionInfo.setDeleted(false);
+		siteVersionInfo.setReadOnly(false);
+		siteVersionInfo.setStable(false);
+		
+		getWikiService().saveWikiSite(siteVersionInfo);
 		
 		setSiteVersionId(null);
 		
@@ -69,11 +71,11 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check whether the user has accepted the user agreement or not.
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context FacesContext.
+	 * @param toValidate UIComponent that has to be validated.
+	 * @param value Inserted Value.
 	 */
 	public void validateOverwriteConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;

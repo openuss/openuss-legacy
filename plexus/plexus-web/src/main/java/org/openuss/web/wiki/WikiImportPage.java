@@ -21,7 +21,7 @@ import org.openuss.web.PageLinks;
  */
 @Bean(name = "views$secured$wiki$wikiimport", scope = Scope.REQUEST)
 @View
-public class WikiImportPage extends AbstractWikiPage{
+public class WikiImportPage extends AbstractWikiPage {
 	
 	protected List<SelectItem> exportableWikiCourses;
 	
@@ -43,13 +43,13 @@ public class WikiImportPage extends AbstractWikiPage{
 		
 		final BreadCrumb wikiBreadCrumb = new BreadCrumb();
 		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
-		wikiBreadCrumb.setName(i18n("wiki_main_header"));
-		wikiBreadCrumb.setHint(i18n("wiki_main_header"));
+		wikiBreadCrumb.setName(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.setHint(i18n(Constants.WIKI_MAIN_HEADER));
 		breadcrumbs.addCrumb(wikiBreadCrumb);
 		
 		final BreadCrumb importWikiBreadCrumb = new BreadCrumb();
-		importWikiBreadCrumb.setName(i18n("wiki_import_wiki"));
-		importWikiBreadCrumb.setHint(i18n("wiki_import_wiki"));
+		importWikiBreadCrumb.setName(i18n(Constants.WIKI_IMPORT_WIKI));
+		importWikiBreadCrumb.setHint(i18n(Constants.WIKI_IMPORT_WIKI));
 		breadcrumbs.addCrumb(importWikiBreadCrumb);
 	}
 	
