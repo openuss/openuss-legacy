@@ -5,6 +5,10 @@
  */
 package org.openuss.seminarpool;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @see org.openuss.seminarpool.CourseGroup
  * @author Stefan Thiemann
@@ -22,6 +26,14 @@ public class CourseGroupDaoImpl
         super.toCourseGroupInfo(sourceEntity, targetVO);
         if(sourceEntity.getCourseSeminarpoolAllocation() != null && sourceEntity.getCourseSeminarpoolAllocation().getId() != null)
         targetVO.setCourseSeminarpoolAllocationId(sourceEntity.getCourseSeminarpoolAllocation().getId());
+        if (sourceEntity.getCourseSchedule() != null && sourceEntity.getCourseSchedule().size() > 0){
+        	List<CourseScheduleInfo> courseScheduleInfoList = new ArrayList<CourseScheduleInfo>();
+        	for (CourseSchedule courseScheduleEntity : sourceEntity.getCourseSchedule()){
+        		getCourseScheduleDao().toCourseScheduleInfo(courseScheduleEntity);    		
+        		courseScheduleInfoList.add(getCourseScheduleDao().toCourseScheduleInfo(courseScheduleEntity));        		
+        	}
+        	targetVO.setCourseSchedule(courseScheduleInfoList);
+        }
     }
 
 
@@ -84,6 +96,13 @@ public class CourseGroupDaoImpl
         boolean copyIfNull)
     {
         super.courseGroupInfoToEntity(sourceVO, targetEntity, copyIfNull);
+		if ( sourceVO.getCourseSchedule() != null ){
+			for ( CourseScheduleInfo courseScheduleInfo : (Collection<CourseScheduleInfo>)sourceVO.getCourseSchedule()){
+				CourseSchedule courseScheduleEntity = getCourseScheduleDao().courseScheduleInfoToEntity(courseScheduleInfo);
+				targetEntity.getCourseSchedule().add(courseScheduleEntity);
+				courseScheduleEntity.setCourseGroup(targetEntity);
+			}
+		}
     }
 
 }

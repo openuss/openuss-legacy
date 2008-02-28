@@ -27,13 +27,13 @@ public class CourseScheduleDaoTest extends CourseScheduleDaoTestBase {
 	}
 	
 	public void testCourseScheduleDaoCreate() {
-//		CourseSchedule courseSchedule = CourseSchedule.Factory.newInstance();
-//		courseSchedule.setStartTime(new Date(3223423423L));
-//		courseSchedule.setEndTime(new Date(3223423423L));
-//		courseSchedule.setDayOfWeek(DayOfWeek.MONDAY);
-//		courseSchedule.setCourseGroup(testUtility.createCourseGroup());
-//		assertNull(courseSchedule.getId());
-//		courseScheduleDao.create(courseSchedule);
-//		assertNotNull(courseSchedule.getId());
+		CourseSchedule courseSchedule = CourseSchedule.Factory.newInstance();
+		courseSchedule.setStartTime(new Date(3223423423L));
+		courseSchedule.setEndTime(new Date(3223423423L));
+		courseSchedule.setDayOfWeek(DayOfWeek.MONDAY);
+		courseSchedule.setCourseGroup(testUtility.createCourseGroup());
+		assertNull(courseSchedule.getId());
+		courseScheduleDao.create(courseSchedule);
+		assertNotNull(courseSchedule.getId());
 	}
 }

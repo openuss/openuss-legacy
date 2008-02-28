@@ -17,18 +17,6 @@ public class SeminarConditionImpl
      */
     private static final long serialVersionUID = 8188120938881393258L;
 
-    /**
-     * @see org.openuss.seminarpool.SeminarCondition#addValue(org.openuss.seminarpool.SeminarUserConditionValue)
-     */
-    public void addValue(org.openuss.seminarpool.SeminarUserConditionValue value)
-    {
-    }
 
-    /**
-     * @see org.openuss.seminarpool.SeminarCondition#removeValue(org.openuss.seminarpool.SeminarUserConditionValue)
-     */
-    public void removeValue(org.openuss.seminarpool.SeminarUserConditionValue value)
-    {
-    }
 
 }

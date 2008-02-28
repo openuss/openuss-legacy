@@ -8,6 +8,7 @@ package org.openuss.seminarpool;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.openuss.lecture.Course;
@@ -209,7 +210,16 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		courseGroup.setCapacity(2000);
 		courseGroup.setName("Unique Name");
 		
-		Collection coll = new ArrayList();
+		
+		CourseScheduleInfo courseSchedule = new CourseScheduleInfo();
+		courseSchedule.setDayOfWeek(DayOfWeek.MONDAY);
+		courseSchedule.setStartTime(new Date());
+		courseSchedule.setEndTime(new Date());
+		
+		Collection<CourseScheduleInfo> collSchedule = new ArrayList<CourseScheduleInfo>();
+		collSchedule.add(courseSchedule);
+		courseGroup.setCourseSchedule(collSchedule);
+		Collection<CourseGroupInfo> coll = new ArrayList<CourseGroupInfo>();
 		coll.add(courseGroup);
 		
 		seminarpoolAllocation.setId(this.getSeminarpoolAdministrationService().addSeminar(seminarpoolAllocation, coll));

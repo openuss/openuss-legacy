@@ -53,12 +53,15 @@ import org.openuss.security.UserProfile;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.seminarpool.ConditionType;
 import org.openuss.seminarpool.CourseGroup;
+import org.openuss.seminarpool.CourseGroupDao;
 import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocation;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationDao;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarCondition;
+import org.openuss.seminarpool.SeminarConditionDao;
 import org.openuss.seminarpool.SeminarUserRegistration;
+import org.openuss.seminarpool.SeminarUserRegistrationDao;
 import org.openuss.seminarpool.Seminarpool;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolDao;
@@ -112,6 +115,12 @@ public class TestUtility {
 	private User defaultUser;
 
 	private Institute defaultInstitute;
+	
+	private CourseGroupDao courseGroupDao;
+	
+	private SeminarUserRegistrationDao seminarUserRegistrationDao;
+	
+	private SeminarConditionDao seminarConditionDao;
 
 	private static long uniqueId = System.currentTimeMillis();
 
@@ -833,6 +842,7 @@ public class TestUtility {
 		seminarUserRegistration.setNeededSeminars(3);
 		seminarUserRegistration.setUser(createUniqueUserInDB());
 		seminarUserRegistration.setSeminarpool(createUniqueSeminarpoolinDB());
+		seminarUserRegistrationDao.create(seminarUserRegistration);
 		return seminarUserRegistration;
 	}
 	
@@ -842,6 +852,8 @@ public class TestUtility {
 		courseGroup.setIsDefault(true);
 		courseGroup.setCapacity(30);
 		courseGroup.setName("Name");
+		courseGroup.setCourseSeminarpoolAllocation(createCourseSeminarpoolAllocation());
+		courseGroupDao.create(courseGroup);
 		return courseGroup;
 	}
 	
@@ -859,6 +871,7 @@ public class TestUtility {
 		seminarCondition.setFieldDescription("Test");
 		seminarCondition.setFieldType(ConditionType.CHECKBOX);
 		seminarCondition.setSeminarpool(createUniqueSeminarpoolinDB());
+		seminarConditionDao.create(seminarCondition);
 		return seminarCondition;
 	}
 		
@@ -1054,5 +1067,34 @@ public class TestUtility {
 			CourseSeminarpoolAllocationDao courseSeminarpoolAllocationDao) {
 		this.courseSeminarpoolAllocationDao = courseSeminarpoolAllocationDao;
 	}
+
+	public CourseGroupDao getCourseGroupDao() {
+		return courseGroupDao;
+	}
+
+	public void setCourseGroupDao(CourseGroupDao courseGroupDao) {
+		this.courseGroupDao = courseGroupDao;
+	}
+
+	public SeminarUserRegistrationDao getSeminarUserRegistrationDao() {
+		return seminarUserRegistrationDao;
+	}
+
+	public void setSeminarUserRegistrationDao(
+			SeminarUserRegistrationDao seminarUserRegistrationDao) {
+		this.seminarUserRegistrationDao = seminarUserRegistrationDao;
+	}
+
+	public SeminarConditionDao getSeminarConditionDao() {
+		return seminarConditionDao;
+	}
+
+	public void setSeminarConditionDao(SeminarConditionDao seminarConditionDao) {
+		this.seminarConditionDao = seminarConditionDao;
+	}
+
+
+	
+	
 
 }

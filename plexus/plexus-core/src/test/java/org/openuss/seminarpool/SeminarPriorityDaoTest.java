@@ -25,12 +25,13 @@ public class SeminarPriorityDaoTest extends SeminarPriorityDaoTestBase {
 	}
 	
 	public void testSeminarPriorityDaoCreate() {
-//		SeminarPriority seminarPriority = SeminarPriority.Factory.newInstance();
-//		seminarPriority.setPriority(3);
-//		seminarPriority.setSeminarUserRegistration(testUtility.createSeminarUserRegistration());
-//		seminarPriority.setCourseSeminarPoolAllocation(testUtility.createCourseSeminarpoolAllocation());
-//		assertNull(seminarPriority.getId());
-//		seminarPriorityDao.create(seminarPriority);
-//		assertNotNull(seminarPriority.getId());
+		SeminarPriority seminarPriority = SeminarPriority.Factory.newInstance();
+		seminarPriority.setPriority(3);
+		seminarPriority.setSeminarUserRegistration(testUtility.createSeminarUserRegistration());
+		seminarPriority.setCourseSeminarPoolAllocation(testUtility.createCourseSeminarpoolAllocation());
+		
+		assertNull(seminarPriority.getId());
+		seminarPriorityDao.create(seminarPriority);
+		assertNotNull(seminarPriority.getId());
 	}
 }
