@@ -1,10 +1,12 @@
 package org.openuss.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openuss.services.model.CourseBean;
+import org.openuss.services.model.InstituteBean;
 import org.openuss.services.model.Role;
 import org.openuss.services.model.UserBean;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
@@ -43,6 +45,12 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 		lectureClient.updateUser(user);
 		
 		assertEquals(user.getId(), lectureClient.findUser(user.getUsername()));
+	}
+	
+	public void testInstituteList() throws LectureLogicException {
+		List<InstituteBean> institutes = lectureClient.listInstitute(14); 
+		assertNotNull(institutes);
+		assertTrue(institutes.size()>0);
 	}
 	
 	public void testManageCourse() throws LectureLogicException {
