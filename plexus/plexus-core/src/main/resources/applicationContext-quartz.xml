@@ -5,12 +5,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Quartz Cluster Scheduler
+	  -	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-	<bean id="clusterScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
 		<property name="autoStartup" value="false"/>
+ 		<property name="startupDelay" value="180"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
  		<property name="overwriteExistingJobs" value="true"/>
+ 		<property name="transactionManager" ref="transactionManager"/>
  		<property name="dataSource" ref="dataSource"/>
  		
  		<property name="quartzProperties">
@@ -19,37 +24,30 @@
 				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
 				<prop key="org.quartz.threadPool.threadCount">2</prop>
 				<prop key="org.quartz.threadPool.threadPriority">2</prop>
-
 				<!-- Job store -->
-				<!-- see: http://www.opensymphony.com/quartz/wikidocs/ConfigJobStoreTX.html -->
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<prop key="org.quartz.jobStore.isClustered">true</prop>
-				<prop key="org.quartz.jobStore.clusterCheckinInterval">60000</prop>
+				<prop key="org.quartz.jobStore.clusterCheckinInterval">120000</prop>
 				<prop key="org.quartz.jobStore.tablePrefix">QUARTZ_</prop>
-				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+				<prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
 				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
 				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
 				<prop key="org.quartz.jobStore.useProperties">false</prop>
 				<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ? FOR UPDATE WITH LOCK</prop>
 			</props>
 		</property>
+		
+		<property name="jobDetails">
+			<list>
+				<ref bean="clusterCommandJobDetail" />
+			</list>
+		</property>
+		
+		<property name="triggers">
+			<list>
+				<ref bean="statisticUpdateTrigger" />
+			</list>
+		</property>
 	</bean>
 	
-	<bean id="exampleJob" class="org.springframework.scheduling.quartz.JobDetailBean" scope="prototype">
-		<property name="name" value="example_job"/>
-		<property name="durability" value="true"/>
-		<property name="requestsRecovery" value="true"/>
-		<property name="jobClass" value="org.openuss.commands.ExampleJob"/>
-	</bean>
-
-	<!-- Local DataSource that works in any environment -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" >
-		<property name="maxActive" value="5"></property>
-        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
-        <property name="username"><value>sysdba</value></property>
-        <property name="password"><value>masterkey</value></property>
-        <property name="url"><value>jdbc:firebirdsql://localhost:3050/openuss30-test</value></property>
-    </bean>
-    
-
 </beans>
