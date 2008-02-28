@@ -1348,7 +1348,7 @@ public class FLGSlideShowElementsStructurePanel extends FSLAbstractLearningUnitV
                  }
            	} else {
            		
-           		System.out.println("New element!!!");
+           		//System.out.println("New element!!!");
            		
             	modifyViewElement = false;
            	 	folderPanel.setAudioFileName("");
