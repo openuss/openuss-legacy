@@ -283,6 +283,11 @@
 			<from-outcome>seminarpool_create_start</from-outcome>
 			<to-view-id>/views/secured/seminarpool/seminarpoolregistrationstart.xhtml</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_main</from-outcome>
+			<to-view-id>/views/secured/seminarpool/main.xhtml</to-view-id>
+		</navigation-case>
+		
 
 	</navigation-rule>
 
@@ -1185,6 +1190,30 @@
 		<navigation-case>
 			<from-outcome>seminarpool_create_step1</from-outcome>
 			<to-view-id>/views/secured/seminarpool/seminarpoolcreatestep1.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_main</from-outcome>
+			<to-view-id>/views/secured/seminarpool/main.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_register</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpooluserregistration.xhtml</to-view-id>	
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_seminarpooladmins</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpooladmins.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_members</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolparticipants.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_seminars</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolseminars.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_config</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpooloptions</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

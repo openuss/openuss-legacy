@@ -16,55 +16,42 @@
 				<t:panelNavigation2 id="seminarpool_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 					<t:commandNavigation2 value="#{msg['seminarpool_navigation_header']}">
 						<t:commandNavigation2 
-							action="seminarpool_main" 
+							action="seminarpool_options_main" 
 							activeOnViewIds="/views/secured/seminarpool/main.xhtml" >
-							<h:outputText value="#{msg['seminarpool_command_overview']}" />
+							<h:outputText value="#{msg['seminarpool_command_options_overview']}" />
+						</t:commandNavigation2>
+						<t:commandNavigation2 
+							action="seminarpool_options_register" 
+							activeOnViewIds="/views/secured/seminarpool/seminarpooluserregistration.xhtml" >
+							<h:outputText value="#{msg['seminarpool_command_options_registration']}" />
 						</t:commandNavigation2>
 
-<!-- 
 						<s:authorize ifAllGranted="ROLE_USER">
-							<t:commandNavigation2 
-								action="course_discussion" 
-								activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml,/views/secured/discussion/discussionsearch.xhtml"
-								rendered="#{courseInfo.discussion}">
-								<h:outputText value="#{msg['course_command_discussion']}"/>
-							</t:commandNavigation2>				
-						</s:authorize> 
-
-						<s:authorize ifAllGranted="ROLE_USER">
-							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.ASSIST}">
 								<t:commandNavigation2
 									action="seminarpool_options_seminarpooladmins" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooladmins.xhtml">
 									<h:outputText value="#{msg['seminarpool_command_options_seminarpooladmins']}" />
+								</t:commandNavigation2>							
+								<t:commandNavigation2 
+									action="seminarpool_options_members" 
+									activeOnViewIds="/views/secured/seminarpool/seminarpoolparticipants.xhtml">
+									<h:outputText value="#{msg['seminarpool_command_options_participants']}" />
 								</t:commandNavigation2>
-								<c:if test="#{sessionScope.courseInfo.accessType.value != 0 and sessionScope.courseInfo.accessType.value != 1 }">
-									<t:commandNavigation2 
-										action="seminarpool_options_members" 
-										activeOnViewIds="/views/secured/course/seminarpoolparticipants.xhtml">
-										<h:outputText value="#{msg['seminarpool_command_options_participants']}" />
-									</t:commandNavigation2>
-								</c:if>
-								<c:if test="#{sessionScope.courseInfo.accessType.value == 4}">
-									<t:commandNavigation2 
-										action="course_options_aspirants" 
-										activeOnViewIds="/views/secured/course/courseaspirants.xhtml">
-										<h:outputText value="#{msg['course_command_options_aspirants']}" />
-									</t:commandNavigation2>
-								</c:if>
+
 								<t:commandNavigation2 
 									action="seminarpool_options_seminars" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpoolseminars.xhtml">
-									<h:outputText value="#{msg['course_command_options_seminars']}" />
+									<h:outputText value="#{msg['seminarpool_command_options_seminars']}" />
 								</t:commandNavigation2>
 								<t:commandNavigation2 
 									action="seminarpool_options_config" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooloptions.xhtml">
-									<h:outputText value="#{msg['course_command_options_config']}" />
+									<h:outputText value="#{msg['seminarpool_command_options_config']}" />
 								</t:commandNavigation2>
 							</s:acl>
 						</s:authorize>
-						-->
+						
 					</t:commandNavigation2>
 				</t:panelNavigation2>	
 			</h:form>

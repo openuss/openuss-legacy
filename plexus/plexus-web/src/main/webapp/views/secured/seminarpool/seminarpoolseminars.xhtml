@@ -10,34 +10,30 @@
 	xmlns:oc="http://www.openuss.org/jsf-core"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf"
-	xmlns:fck="http://www.fck-faces.org/fck-faces">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>
-		<ui:insert name="title" />
-	</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
 	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
 	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 <!-- text above will be ignored -->
-<ui:composition template="/views/layout/dialog.xhtml">
-
-	<ui:define name="content">
-		<h:form id="seminarpool_create_seminarpool">
-			<o:block label="#{msg['seminarpool_create_block']}" styleClass="form_box">
-				<ui:include src="/views/commons/seminarpool/seminarpoolData.xhtml" />	
-			</o:block>
-			
-			<o:block>
-				<h:commandButton value="#{msg.back}" action="seminarpool_create_start" styleClass="button_back" immediate="true" />
-				<h:commandButton value="#{msg.seminarpool_create_button}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" />
-			</o:block>	
-	 	</h:form> 
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['seminarpool_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
 	</ui:define>
 	
+	<ui:define name="content" styleClass="footer_normal">
+			<o:block>
+				<h:outputText value="TODO: Seminarpool-Seminar-Verwaltung hinzufügen"/>
+			</o:block>
+
+	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
 </body>

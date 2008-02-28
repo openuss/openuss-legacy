@@ -30,12 +30,11 @@ import org.openuss.seminarpool.SeminarpoolInfo;
  * * Backing bean for the seminarpool registration. Is responsible starting the
  * wizard, binding the values and registering the seminarpool.
  * 
- * @author Simon Weiß
+ * @author PS-Seminarplatzvergabeteam
  * 
  */
 @Bean(name = Constants.SEMINARPOOL_CREATION_CONTROLLER, scope = Scope.REQUEST)
 @View
-
 public class SeminarpoolCreatePage extends BasePage {
 
 private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.class);
@@ -88,23 +87,9 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			// create seminarpool and set id
 			Long newSeminarpoolId = seminarpoolAdministrationService.createSeminarpool(seminarpoolInfo, user.getId());
 			seminarpoolInfo.setId(newSeminarpoolId);
-		
-/*			// clear fields
-			name = null;
-			shortcut = null;
-			description = null;
-			password = null;
-//			accessType = 0;
-*/		
+			
 			logger.debug("END CREATE SEMINARPOOL");
-			return "seminarpool_create_success";
-/*		} 
-		else {
-			// TODO - Lutz: Vernünftiges Propertie bitte
-			addError("Test");
-			return Constants.OPENUSS4US_GROUPS_CREATE;
-		}
-*/
+			return "desktop";
 	}
 
 	public List<SelectItem> getAccessTypes() {

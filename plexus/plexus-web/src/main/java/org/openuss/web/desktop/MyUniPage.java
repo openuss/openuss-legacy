@@ -25,6 +25,7 @@ import org.openuss.desktop.MyUniCourseInfo;
 import org.openuss.desktop.MyUniDepartmentInfo;
 import org.openuss.desktop.MyUniInfo;
 import org.openuss.desktop.MyUniInstituteInfo;
+import org.openuss.desktop.MyUniSeminarpoolInfo;
 import org.openuss.desktop.MyUniUniversityInfo;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
@@ -80,6 +81,7 @@ public class MyUniPage extends BasePage {
 	private Long paramUnsubscribeForum = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
+	private UIFlexList seminarpoolsList;
 	private CourseUIFlexList coursesList;
 	private UITabs tabs;
 	private Desktop desktop;
@@ -89,6 +91,7 @@ public class MyUniPage extends BasePage {
 	private boolean instituteListDataLoaded = false;
 	private boolean departmentListDataLoaded = false;
 	private boolean courseListDataLoaded = false;
+	private boolean seminarpoolListDataLoaded = false;
 
 	private Map<Long, MyUniInfo> myUniData;
 
@@ -96,6 +99,7 @@ public class MyUniPage extends BasePage {
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
+	private static final String seminarpoolsBasePath = "/views/secured/seminarpool/main.faces";
 
 	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	String locale = (String) binding.getValue(getFacesContext());
@@ -314,6 +318,9 @@ public class MyUniPage extends BasePage {
 
 		if (coursesList != null)
 			loadValuesForCourseList(coursesList);
+		
+		if (seminarpoolsList != null)
+			loadValuesForSeminarpoolList(seminarpoolsList);    //todo
 	}
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
@@ -351,6 +358,25 @@ public class MyUniPage extends BasePage {
 
 				// Make sure this isn't executed twice
 				instituteListDataLoaded = true;
+			}
+		}
+	}
+	
+	private void loadValuesForSeminarpoolList(UIFlexList seminarpoolsList) {
+		if (seminarpoolListDataLoaded == false && prerenderCalled == true && seminarpoolsList != null) {
+			logger.debug("Loading data for seminarpools flexlist");
+			// Make sure myUni-Data is loaded
+			prepareData();
+
+			// Get the current university id
+			Long universityId = chooseUniversity();
+
+			// Put data in the component's attributes
+			if (universityId != null && myUniData != null) {
+				seminarpoolsList.getAttributes().put("visibleItems", getSeminarpoolListItems(universityId));
+
+				// Make sure this isn't executed twice
+				seminarpoolListDataLoaded = true;
 			}
 		}
 	}
@@ -445,6 +471,36 @@ public class MyUniPage extends BasePage {
 
 		return listItems;
 	}
+	
+	/*
+	 * Returns a list of ListItemDAOs that contain the information to be shown
+	 * by the seminarpools flexlist
+	 */
+	private List<ListItemDAO> getSeminarpoolListItems(Long universityId) {
+		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+
+		if (myUniData != null) {
+			MyUniInfo myUniInfo = myUniData.get(universityId);
+			if (myUniInfo != null) {
+				ListItemDAO newItem;
+				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo.getSeminarpools();
+
+				for (MyUniSeminarpoolInfo seminarpoolInfo : seminarpoolCollection) {
+					newItem = new ListItemDAO();
+					newItem.setTitle(seminarpoolInfo.getName());
+					newItem.setUrl(contextPath()+seminarpoolsBasePath + "?seminarpool=" + seminarpoolInfo.getId());
+					if (seminarpoolInfo.isBookmarked())
+						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
+								+ "&remove_seminarpool=" + seminarpoolInfo.getId());
+
+					listItems.add(newItem);
+				}
+			}
+		}
+
+		return listItems;
+	}
+	
 
 	/*
 	 * Returns a list of ListItemDAOs that contain the information to be shown
@@ -643,6 +699,23 @@ public class MyUniPage extends BasePage {
 
 		// Load values into the component
 		loadValuesForDepartmentList(departmentsList);
+	}
+	
+	public UIFlexList getSeminarpoolsList() {
+		return seminarpoolsList;
+	}
+
+	public void setSeminarpoolsList(UIFlexList seminarpoolsList) {
+		logger.debug("Setting seminarpools flexlist component");
+		this.seminarpoolsList = seminarpoolsList;
+		seminarpoolsList.getAttributes().put("title", bundle.getString("flexlist_seminarpools"));
+		seminarpoolsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_seminarpools"));
+		seminarpoolsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_seminarpools"));
+		seminarpoolsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
+				bundle.getString("flexlist_remove_bookmark"));
+
+		// Load values into the component
+		loadValuesForSeminarpoolList(seminarpoolsList);
 	}
 
 	public UIFlexList getInstitutesList() {
