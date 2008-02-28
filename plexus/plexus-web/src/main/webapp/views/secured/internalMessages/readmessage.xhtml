@@ -36,13 +36,13 @@
   		</ui:define>
   		<ui:define name="content">
 		<h:form id="read_internal_message" enctype="multipart/form-data">
-			<o:block label="TODO: Read message">
+			<o:block label="#{msg.openuss4us_messagecenter_readmessage}">
 				<div class="content_font_normal">
 				<h:outputText
-					value="TODO Sender" styleClass="header_font_normal" /><br />
+					value="#{msg.openuss4us_messagecenter_sender}" styleClass="header_font_normal" /><br />
 				<h:outputText value="#{internalMessageInfo.senderDisplayName}"
 					styleClass="content_font_normal" /><br />
-				<h:outputText value="TODO Recipients" styleClass="header_font_normal" /><br/>
+				<h:outputText value="#{msg.openuss4us_messagecenter_recipient}" styleClass="header_font_normal" /><br/>
 
 
 				<t:dataList 
@@ -54,7 +54,7 @@
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
 					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" /><br/><br/>
 				</t:dataList>
-<o:block label="TODO: Content">
+<o:block label="#{msg.openuss4us_messagecenter_readmessage_content}">
 <div class="content_font_normal">
 				<h:outputText
 					value="#{internalMessageInfo.content}"
@@ -76,6 +76,10 @@
 				<h:commandButton action="openuss4us_messagecenter"
 					value="#{msg.back}" styleClass="button" />
 				<h:commandButton action="#{views$secured$internalmessages$readmessage.answerMessage}"
+					value="#{msg.discussion_new_answer}" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
+				<h:commandButton action="#{views$secured$internalmessages$readmessage.delete}"
+					value="#{msg.documents_main_button_delete}" styleClass="button" />
+
 					value="#{msg.openuss4us_messagecenter_replymessage}" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
 				<h:commandButton id="requestdelete" action="#{views$secured$internalmessages$readmessage.requestdelete}"
 					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button" 
@@ -86,6 +90,7 @@
 					rendered="#{views$secured$internalmessages$readmessage.requestdelete}"/>	
 					
 					
+
 			</o:block>
 		</h:form>
 	</ui:define>
