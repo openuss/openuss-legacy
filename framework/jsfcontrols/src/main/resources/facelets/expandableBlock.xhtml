@@ -58,7 +58,9 @@
 							<h:outputLink value="javascript:void(0)" onclick="Element.toggle('${jsid}_collapsed'); Element.toggle('${jsid}_expanded'); Element.toggle('${jsid}_content');">
 							<span style="display: none;" class="expanded" id="${jsid}_expanded"></span>
 							<span class="collapsed" id="${jsid}_collapsed"></span>
-							<h:outputText styleClass="${headerclass}" value="${label}"/>
+							<c:if test="${!empty label}">
+       							<p class="${headerClass}">${label}</p>
+      						</c:if>
 							</h:outputLink>
 				       </div>
 				       <div id="${jsid}_content" class="content_normal" style="display: none;">
