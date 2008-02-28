@@ -141,12 +141,7 @@ public class WikiMainPage extends AbstractWikiPage {
 			return siteName;
 		}
 		
-		final StringBuilder siteTitle;
-		if(Constants.WIKI_STARTSITE_NAME.equals(siteVersionInfo.getName())) {
-			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
-		} else {
-			siteTitle = new StringBuilder(siteVersionInfo.getName());
-		}
+		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));
 		
 		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
 		if(siteVersionInfo.getId() != wikiSiteInfo.getId()){
@@ -161,14 +156,7 @@ public class WikiMainPage extends AbstractWikiPage {
 			return siteName;
 		}
 		
-		StringBuilder siteTitle;
-		if(Constants.WIKI_STARTSITE_NAME.equals(siteVersionInfo.getName())) {
-			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
-		} else {
-			siteTitle = new StringBuilder(siteVersionInfo.getName());
-		}
-
-		return siteTitle.toString();
+		return readablePageName(siteVersionInfo.getName());
 	}
 	
 	public Boolean getHasStableVersion() {
