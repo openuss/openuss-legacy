@@ -25,12 +25,14 @@ public class WikiMainPage extends AbstractWikiPage{
 			if (this.siteName != null) {
 				pageName = this.siteName;
 			}
-			
-			
+
+			WikiSiteContentInfo backup = this.siteVersionInfo;
 			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 			
 			if (this.siteVersionInfo == null) {
+				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, backup);
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
+				this.siteName = null;
 			}
 		}
 		

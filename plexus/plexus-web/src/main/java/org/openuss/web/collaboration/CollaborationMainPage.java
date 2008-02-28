@@ -108,11 +108,22 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 			editing = true;
 			
 			// get mapped users
-			List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
-			List<CourseMemberInfo> workspaceMembers = workspaceService.findWorkspaceMembers(workspaceInfo.getId());
-			Map<CourseMemberInfo, Boolean> map = new HashMap<CourseMemberInfo, Boolean>(courseMembers.size());
-			for (CourseMemberInfo member : courseMembers) {
-				map.put(member, workspaceMembers.contains(member) ? Boolean.TRUE : Boolean.FALSE);
+			List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
+					.getParticipants(courseInfo));
+
+			if (this.workspaceInfo.getId() != null) {
+				
+				List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
+				List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
+				for (UserInfo ui : wsMembers) {
+					wsMemberIds.add(ui.getId());
+				}
+				
+				Map<CourseMemberInfo, Boolean> map = new HashMap<CourseMemberInfo, Boolean>(members.size());
+				for (CourseMemberInfo member : members) {
+					map.put(member, wsMemberIds.contains(member.getUserId()) ? Boolean.TRUE : Boolean.FALSE);
+				}
+				this.memberSelection.setMap(map);
 			}
 			
 			return Constants.SUCCESS;
@@ -156,6 +167,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 		}
 
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_INFO);
+		removeSessionBean(Constants.COLLABORATION_WORKSPACE_MEMBER_SELECTION);
 		workspaceInfo = null;
 		editing = false;
 		return Constants.SUCCESS;
@@ -169,6 +181,7 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	public String cancelWorkspace() {
 		logger.debug("cancelWorkspace()");
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_INFO);
+		removeSessionBean(Constants.COLLABORATION_WORKSPACE_MEMBER_SELECTION);
 		this.editing = false;
 		return Constants.SUCCESS;
 	}
@@ -260,22 +273,6 @@ public class CollaborationMainPage extends AbstractCollaborationPage {
 	private List<CourseMemberInfo> loadCourseMembers() {
 		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
 				.getParticipants(courseInfo));
-
-		if (this.workspaceInfo.getId() != null) {
-			
-			List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
-			List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
-			for (UserInfo ui : wsMembers) {
-				wsMemberIds.add(ui.getId());
-			}
-			
-			memberSelection.clear();
-			for (CourseMemberInfo courseMemberInfo : members) {
-				if (wsMemberIds.contains(courseMemberInfo.getUserId())) {
-					memberSelection.getMap().put(courseMemberInfo, Boolean.TRUE);
-				}
-			}
-		}
 		
 		return members;
 	}

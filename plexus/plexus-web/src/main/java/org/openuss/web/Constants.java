@@ -276,4 +276,5 @@ public class Constants {
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
 	public static final String WIKI_OVERWRITE_PAGE = "wiki_overwrite";
+	public static final String WIKI_NEW_SITE_BACKUP = "wiki_create_backup";
 }
