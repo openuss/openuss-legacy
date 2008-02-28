@@ -150,13 +150,24 @@ public class WikiMainPage extends AbstractWikiPage {
 		
 		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
 		if(siteVersionInfo.getId() != wikiSiteInfo.getId()){
-			siteTitle.append(" (");
-			siteTitle.append(i18n("wiki_main_version"));
-			siteTitle.append(" ");
-			siteTitle.append(siteVersionInfo.getId());
-			siteTitle.append(")");
+			siteTitle.append(" ").append(i18n("wiki_main_version", siteVersionInfo.getId().toString()));
 		}
 		
+		return siteTitle.toString();
+	}
+	
+	public String getSiteTitleNoVersion() {
+		if (siteVersionInfo.getName() == null) {
+			return siteName;
+		}
+		
+		StringBuilder siteTitle;
+		if(Constants.WIKI_STARTSITE_NAME.equals(siteVersionInfo.getName())) {
+			siteTitle = new StringBuilder(i18n("wiki_index_page_readable"));
+		} else {
+			siteTitle = new StringBuilder(siteVersionInfo.getName());
+		}
+
 		return siteTitle.toString();
 	}
 	
