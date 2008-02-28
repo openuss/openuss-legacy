@@ -2153,3 +2153,7 @@ table.jscalendar-DB-dropdown-style {
 .wiki_content ul li {
     margin-left: 5pt;
 }
+
+.wiki_content p {
+    margin-bottom: 10pt;
+}

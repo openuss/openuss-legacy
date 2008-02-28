@@ -1,5 +1,13 @@
 package org.openuss.web.wiki;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.Date;
+import java.util.Locale;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -34,7 +42,10 @@ public class WikiMainPage extends AbstractWikiPage {
 			final WikiSiteContentInfo backup = this.siteVersionInfo;
 			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
 			
-			if (this.siteVersionInfo == null) {
+			if (this.siteVersionInfo == null && 
+					Constants.WIKI_STARTSITE_NAME.equals(pageName)) {
+				createInfoIndexPage();
+			} else if (this.siteVersionInfo == null) {
 				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, backup);
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
 				this.siteName = null;
@@ -46,6 +57,54 @@ public class WikiMainPage extends AbstractWikiPage {
 		super.prerender();
 	}
 	
+	private void createInfoIndexPage() {
+		String text = "<h1>Wiki</h1>";
+		
+		Locale locale = new Locale(getUser().getLocale());
+		String country = locale.getCountry();
+		
+		InputStream in = getClass().getClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
+		if (in == null) {
+			in = getClass().getClassLoader().getResourceAsStream("wiki_index.xhtml");
+		}
+		if (in != null) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			byte buf[] = new byte[4096];
+			int i;
+			try {
+				while ((i = in.read(buf)) != -1) {
+					out.write(buf, 0, i);
+				}
+			} catch (IOException e) {
+				logger.error("Error reading wiki_index.xhtml", e);
+			} finally {
+				try {
+					in.close();
+					out.close();
+				} catch (IOException e) {
+					logger.error("Error reading wiki_index.xhtml", e);
+				}
+				
+			}
+			text = out.toString();
+		}
+		
+		siteVersionInfo = new WikiSiteContentInfo();
+		siteVersionInfo.setId(null);
+		siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
+		siteVersionInfo.setText(text);
+
+		siteVersionInfo.setCreationDate(new Date());
+		siteVersionInfo.setAuthorId(user.getId());
+		siteVersionInfo.setDomainId(this.courseInfo.getId());
+		siteVersionInfo.setDeleted(false);
+		siteVersionInfo.setReadOnly(false);
+		siteVersionInfo.setStable(false);
+		
+		getWikiService().saveWikiSite(this.siteVersionInfo);
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+	}
+
 	/**
 	 * Returns the Wiki Overview Page.
 	 * @return Wiki Overview Page.
