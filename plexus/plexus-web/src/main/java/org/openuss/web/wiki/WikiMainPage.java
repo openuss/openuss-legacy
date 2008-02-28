@@ -5,6 +5,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
 import org.openuss.wiki.WikiSiteContentInfo;
@@ -23,7 +24,7 @@ public class WikiMainPage extends AbstractWikiPage{
 		} else {
 			String pageName = Constants.WIKI_STARTSITE_NAME;
 			if (this.siteName != null) {
-				pageName = this.siteName;
+				pageName = URLUTF8Encoder.decode(this.siteName);
 			}
 
 			WikiSiteContentInfo backup = this.siteVersionInfo;
