@@ -10,7 +10,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.RecreateLectureIndex;
-import org.openuss.migration.MigrationService;
 import org.openuss.system.SystemProperty;
 import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
@@ -31,9 +30,6 @@ public class PropertiesPage extends BasePage  {
 	@Property(value="#{systemService}")
 	private SystemService systemService;
 
-	@Property(value="#{migrationService}")
-	private MigrationService migrationService;
-	
 	@Prerender
 	public void prerender() {
 		propertyList.setData(new ArrayList<SystemProperty>(systemService.getProperties()));
@@ -73,23 +69,10 @@ public class PropertiesPage extends BasePage  {
 		return Constants.SUCCESS;
 	}
 	
-	public String migrate() {
-		getMigrationService().migrate();
-		return Constants.SUCCESS;
-	}
-	
 	public String recreateLectureIndex() throws Exception {
 		RecreateLectureIndex recreateIndex = (RecreateLectureIndex) getBean("recreateLectureIndex");
 		recreateIndex.recreate();
 		return Constants.SUCCESS;
-	}
-
-	public MigrationService getMigrationService() {
-		return migrationService;
-	}
-
-	public void setMigrationService(MigrationService migrationService) {
-		this.migrationService = migrationService;
 	}
 
 }

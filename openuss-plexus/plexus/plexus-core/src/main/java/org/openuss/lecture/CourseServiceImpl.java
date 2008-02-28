@@ -591,10 +591,4 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			return self.equals(found);
 		}
 	}
-
-	@Override
-	protected List handleFindAllCourses() throws Exception {
-		return new ArrayList(getCourseDao().loadAll());
-	}
-
 }
