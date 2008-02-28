@@ -86,9 +86,20 @@ public class MyUniPage extends BasePage {
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 		logger.debug("Prerender MyUni-Page");
 		prerenderCalled = true;
+		
+		logger.debug("PrerenderMaxseverity: " + getFacesContext().getMaximumSeverity());
+		logger.debug("PrerenderMessages: " + getFacesContext().getMessages().hasNext());
+		for (Iterator i = getFacesContext().getMessages(); i.hasNext();  ){
+			logger.debug("PrerenderMessage: " + i.next());
+		}
+		logger.debug("PrerenderMessagesNull: " + getFacesContext().getMessages(null).hasNext());
+		for (Iterator i = getFacesContext().getMessages(null); i.hasNext();  ){
+			logger.debug("PrerenderMessageNull: " + i.next());
+		}
 		
 		// Load paramenters from request
 		loadParams();
@@ -341,9 +352,9 @@ public class MyUniPage extends BasePage {
 
 						if (universityId != null && universityId.longValue() == universityInfo.getId().longValue()) {
 							currentItem = newItem;
-							currentItem.setUrl(contextPath() + universityBasePath + universityId);
-						} else
-							items.add(newItem);
+							newItem.setUrl(contextPath() + universityBasePath + universityId);
+						}
+						items.add(newItem);
 					}
 				}
 
