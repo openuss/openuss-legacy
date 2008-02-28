@@ -99,6 +99,7 @@
 				/files/**=ROLE_ANONYMOUS, ROLE_USER
 				/rss/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/rss/secured/**=ROLE_USER
+				/services/**=ROLE_ADMIN
 			</value>
 		</property>
 	</bean>
