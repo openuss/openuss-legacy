@@ -191,6 +191,10 @@ public class CalendarServiceIntegrationTest extends
 		}
 
 	}
+	
+	public void testCalendarAdminsitrationSerialWithExc() {
+		
+	}
 
 	public void testCalendarAdministrationSerial() {
 		/*
