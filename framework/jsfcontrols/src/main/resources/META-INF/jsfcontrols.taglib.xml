@@ -81,6 +81,16 @@
 	</tag>
 	
 	<tag>
+		<tag-name>legend</tag-name>
+		<source>../facelets/legend.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>legendItem</tag-name>
+		<source>../facelets/legendItem.xhtml</source>
+	</tag>
+	
+	<tag>
 		<tag-name>breadCrumb</tag-name>
 		<source>../facelets/breadCrumb.xhtml</source>
 	</tag>

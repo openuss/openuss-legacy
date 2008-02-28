@@ -35,6 +35,9 @@
 	<ui:define name="sidebar">
 		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
+		<o:legend>
+			<o:legendItem styleClass="icon_remove" label="testio"/>
+		</o:legend>
 	</ui:define>
 	<ui:define name="content">
 	<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
