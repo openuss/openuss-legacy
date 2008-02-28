@@ -156,19 +156,6 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 	}
 
 	/**
-	 * Show profile of the selected member
-	 * 
-	 * @return outcome
-	 */
-	public String showProfile() {
-		// FIXME do not use session attribute
-		UserInfo member = members.getRowData();
-		setSessionBean(Constants.SHOW_USER_PROFILE, member);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-
-
-	/**
 	 * LocalDataModel of University Members
 	 */
 	private class MembersTable extends AbstractPagedTable<UserInfo> {

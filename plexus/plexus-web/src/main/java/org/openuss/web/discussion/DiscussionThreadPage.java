@@ -14,7 +14,6 @@ import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -26,9 +25,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	
 	@Property(value= "#{"+Constants.DISCUSSION_THREADLENGTH+"}")
 	public Integer length;
-	
-	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
-	public UserInfo profile;
 	
 	public boolean topicWatchState;
 	
@@ -172,16 +168,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		return Constants.SUCCESS;
 	}
 	
-	public String linkProfile(){
-		profile.setId(this.data.getRowData().getSubmitterId());
-		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-	
 	public DiscussionThreadDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(DiscussionThreadDataProvider data) {
 		this.data = data;
@@ -209,14 +198,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 
 	public void setTopicReadOnly(boolean topicReadOnly) {
 		this.topicReadOnly = topicReadOnly;
-	}
-
-	public UserInfo getProfile() {		
-		return profile;
-	}
-
-	public void setProfile(UserInfo profile) {
-		this.profile = profile;
 	}
 
 	public boolean isForumReadOnly() {

@@ -63,14 +63,6 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 		}
 	}
 
-	public String showProfile() {
-		CourseMemberInfo participant = data.getRowData();
-		UserInfo user = new UserInfo();
-		user.setId(participant.getUserId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-
 	public String delete() {
 		logger.info("course participant deleted");
 		CourseMemberInfo participant = data.getRowData();

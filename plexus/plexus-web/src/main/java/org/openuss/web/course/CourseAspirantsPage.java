@@ -17,7 +17,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseServiceException;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -33,7 +32,6 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 	
 	private transient Set<CourseMemberInfo> acceptAspirants = new HashSet<CourseMemberInfo>();
 	private transient Set<CourseMemberInfo> rejectAspirants = new HashSet<CourseMemberInfo>();
-
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -80,14 +78,7 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 		}
 	}
 	
-	public String showProfile() {
-		CourseMemberInfo aspirant = data.getRowData();
-		UserInfo user = new UserInfo();
-		user.setId(aspirant.getUserId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-	
+
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {
 		logger.debug("course: changed aspirant");
 		CourseMemberInfo aspirant = data.getRowData();

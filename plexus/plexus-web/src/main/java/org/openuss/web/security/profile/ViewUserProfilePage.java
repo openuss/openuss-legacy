@@ -30,11 +30,16 @@ public class ViewUserProfilePage extends BasePage {
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender - refreshing showuser session bean");
+		if (profile == null || profile.getId() == null) {
+			// No profile requested, show your own profile
+			profile = (UserInfo) getSessionBean(Constants.USER);
+		}
 		if ((profile != null) && (profile.getId() != null)) {
 			profile = securityService.getUser(profile.getId());
-			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+			setRequestBean(Constants.SHOW_USER_PROFILE, profile);
 		}
 		if (profile == null || profile.getId() == null) {
+			
 			addError(i18n("user_profile_notexisting"));
 			redirect(Constants.DESKTOP);
 		}

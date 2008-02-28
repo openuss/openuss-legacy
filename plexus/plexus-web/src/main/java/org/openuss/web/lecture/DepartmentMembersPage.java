@@ -156,19 +156,6 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 
 	}
 
-	/**
-	 * Show profile of the selected member
-	 * 
-	 * @return outcome
-	 */
-	public String showProfile() {
-		// FIXME do not use session bean
-		UserInfo member = members.getRowData();
-//		UserInfo user = securityService.getUser(member.getId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, member);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-
 
 	/**
 	 * LocalDataModel of Universitry Members
