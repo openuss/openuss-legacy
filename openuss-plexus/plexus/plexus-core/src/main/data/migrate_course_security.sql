@@ -1,81 +1,10 @@
-CREATE TABLE TEMP_MEMBERS (
-    MEMBERSHIPID  BIGINT,
-    USERID        BIGINT
-);
-INSERT INTO TEMP_MEMBERS (MEMBERSHIPID, USERID) SELECT DISTINCT * FROM security_member_membership;
-DELETE FROM security_member_membership;
-INSERT INTO security_member_membership SELECT * FROM temp_members;
-DROP TABLE TEMP_MEMBERS;
+----------------------------------------------------------------------------------
+--                              MAIN MIGRATION PART                             --
+----------------------------------------------------------------------------------
 
-ALTER TABLE SECURITY_USER
-    ADD LAST_NAME        VARCHAR(100) NOT NULL,
-    ADD FIRST_NAME           VARCHAR(100) NOT NULL,
-    ADD TITLE                VARCHAR(100),
-    ADD IMAGE_ID             BIGINT,
-    ADD LOCALE               VARCHAR(10) NOT NULL,
-    ADD THEME                VARCHAR(64) NOT NULL,
-    ADD TIMEZONE             VARCHAR(20) NOT NULL,
-    ADD ADDRESS              VARCHAR(100),
-    ADD AGE_GROUP            VARCHAR(50),
-    ADD POSTCODE             VARCHAR(50),
-    ADD TELEPHONE            VARCHAR(100),
-    ADD COUNTRY              VARCHAR(100),
-    ADD CITY                 VARCHAR(100),
-    ADD PROFESSION           VARCHAR(100),
-    ADD SMS_EMAIL            VARCHAR(100),
-    ADD STUDIES              VARCHAR(100),
-    ADD MATRICULATION        VARCHAR(100),
-    ADD PORTRAIT             BLOB SUB_TYPE 0 SEGMENT SIZE 80,
-    ADD PROFILE_PUBLIC       SMALLINT NOT NULL,
-    ADD IMAGE_PUBLIC         SMALLINT NOT NULL,
-    ADD PORTRAIT_PUBLIC      SMALLINT NOT NULL,
-    ADD TELEPHONE_PUBLIC     SMALLINT NOT NULL,
-    ADD ADDRESS_PUBLIC       SMALLINT NOT NULL,
-    ADD EMAIL_PUBLIC         SMALLINT NOT NULL;
-
-UPDATE SECURITY_USER
-SET
-    LOCALE = (SELECT LOCALE FROM security_user_preferences WHERE security_user_preferences.id = SECURITY_USER.preferences_fk),
-    THEME = (SELECT THEME FROM security_user_preferences WHERE security_user_preferences.id = SECURITY_USER.preferences_fk),
-    TIMEZONE = (SELECT TIMEZONE FROM security_user_preferences WHERE security_user_preferences.id = SECURITY_USER.preferences_fk),
-    FIRST_NAME = (SELECT FIRST_NAME FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    LAST_NAME = (SELECT LAST_NAME FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    TITLE = (SELECT TITLE FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    PROFESSION = (SELECT PROFESSION FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    ADDRESS = (SELECT ADDRESS FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    CITY = (SELECT CITY  FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    COUNTRY = ( SELECT COUNTRY  FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    TELEPHONE = (SELECT TELEPHONE FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    POSTCODE = (SELECT POSTCODE FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    SMS_EMAIL = (SELECT SMS_EMAIL FROM security_user_contact WHERE security_user_contact.id = SECURITY_USER.contact_fk),
-    PORTRAIT = (SELECT PORTRAIT  FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    AGE_GROUP = (SELECT AGE_GROUP FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    MATRICULATION = (SELECT MATRICULATION FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    STUDIES = (SELECT STUDIES FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    IMAGE_ID = (SELECT IMAGE_FILE_ID FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    EMAIL_PUBLIC = (SELECT EMAIL_PUBLIC FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    ADDRESS_PUBLIC = (SELECT ADDRESS_PUBLIC FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    TELEPHONE_PUBLIC = (SELECT TELEPHONE_PUBLIC  FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    PORTRAIT_PUBLIC = (SELECT PORTRAIT_PUBLIC  FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    IMAGE_PUBLIC = (SELECT IMAGE_PUBLIC FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk),
-    PROFILE_PUBLIC = (SELECT PROFILE_PUBLIC  FROM security_user_profile WHERE security_user_profile.id = SECURITY_USER.profile_fk);
-
-ALTER TABLE SECURITY_USER DROP CONSTRAINT SECURITY_USER_CONTACT_FKC;
-ALTER TABLE SECURITY_USER DROP CONSTRAINT SECURITY_USER_PREFERENCES_FKC;
-ALTER TABLE SECURITY_USER DROP CONSTRAINT SECURITY_USER_PROFILE_FKC;
-
-ALTER TABLE SECURITY_USER DROP CONSTRAINT INTEG_242;
-ALTER TABLE SECURITY_USER DROP CONSTRAINT INTEG_243;
-ALTER TABLE SECURITY_USER DROP CONSTRAINT INTEG_244;
-
-DROP TABLE SECURITY_USER_PROFILE;
-DROP TABLE SECURITY_USER_CONTACT;
-DROP TABLE SECURITY_USER_PREFERENCES;
-
-ALTER TABLE SECURITY_USER DROP CONTACT_FK;
-ALTER TABLE SECURITY_USER DROP PROFILE_FK;
-ALTER TABLE SECURITY_USER DROP PREFERENCES_FK;
-
+----------------------------------------------------------------------------------
+--                          adding of course-group table                        --
+----------------------------------------------------------------------------------
 
 CREATE TABLE COURSES2GROUPS (
     COURSES_FK BIGINT not null, 
@@ -84,3 +13,75 @@ CREATE TABLE COURSES2GROUPS (
 );
 ALTER TABLE COURSES2GROUPS ADD CONSTRAINT LECTURE_COURSE_GROUPS_FKC FOREIGN KEY (GROUPS_FK) REFERENCES SECURITY_GROUP;
 ALTER TABLE COURSES2GROUPS ADD CONSTRAINT SECURITY_GROUP_COURSES_FKC FOREIGN KEY (COURSES_FK) REFERENCES LECTURE_COURSE;
+
+-- adding groups for all courses --
+
+alter table SECURITY_GROUP drop constraint SECURITY_GROUPIFKC;
+
+create procedure create_groups
+as
+declare variable groupid bigint;
+declare variable courseid bigint;
+begin
+    for select id from lecture_course into :courseid do
+    begin
+        execute statement 'SELECT NEXT VALUE FOR GLOBAL_SEQUENCE FROM RDB$DATABASE'
+        into :groupid;
+
+        INSERT INTO SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE, PWD, MEMBERSHIP_FK)
+        VALUES (:groupid, ('GROUP_COURSE_'|| :courseid || '_PARTICIPANTS'), 'autogroup_participant_label', 5, NULL, NULL);
+
+        insert into courses2groups (courses_fk, groups_fk)
+        values (:courseid, :groupid);
+     end
+end;
+execute procedure create_groups;
+
+
+INSERT INTO SECURITY_AUTHORITY (ID)
+select id
+FROM security_group
+where security_group.group_type=5;
+
+alter table SECURITY_GROUP add constraint SECURITY_GROUPIFKC foreign key (ID) references SECURITY_AUTHORITY;
+
+----------------------------------------------------------------------------------
+-- move all read permissions to course to read permission for new created group --
+----------------------------------------------------------------------------------
+
+-- add all members of course to new created group --
+
+insert into security_group2authority (members_fk, groups_fk)
+select cm.user_fk, c2g.groups_fk
+from course_member cm, courses2groups c2g
+where cm.member_type = 1 and cm.course_fk = c2g.courses_fk;
+
+-- delete all read permissions to course --
+
+delete from security_permission
+where security_permission.mask = 1040 and security_permission.acl_object_identity_fk in (select id from lecture_course);
+
+-- add read permission to course to group --
+
+create procedure add_coursegroup_permissions
+as
+declare variable courseid bigint;
+declare variable permissionid bigint;
+begin
+    for select id from lecture_course into :courseid do
+    begin
+        execute statement 'SELECT NEXT VALUE FOR GLOBAL_SEQUENCE FROM RDB$DATABASE'
+        into :permissionid;
+
+        insert into security_permission select :permissionid, 1040, :courseid, c2g.groups_fk
+        from courses2groups c2g
+        where c2g.courses_fk = :courseid;
+     end
+end;
+execute procedure add_coursegroup_permissions;
+
+drop procedure add_coursegroup_permissions;
+
+drop procedure create_groups;
+
+
