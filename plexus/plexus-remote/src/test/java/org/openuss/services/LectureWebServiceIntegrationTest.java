@@ -142,7 +142,7 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 	//			"classpath*:applicationContext-messaging.xml",
 	//			"classpath*:applicationContext-resources.xml",
 	//			"classpath*:applicationContext-aop.xml",
-				"classpath*:applicationContext-webservice.xml",
+				"classpath*:applicationContext-remote.xml",
 				"classpath*:testIntegrated-webservice.xml",
 	//			"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml",
