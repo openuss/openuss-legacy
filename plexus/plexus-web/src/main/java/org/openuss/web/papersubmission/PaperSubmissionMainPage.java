@@ -31,7 +31,9 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	protected DocumentService documentService;
 	
 	/** The datamodel for all papers. */
-	private LocalDataModelExams dataExams = new LocalDataModelExams();
+	private LocalDataModelActiveExams dataActiveExams = new LocalDataModelActiveExams();
+	
+	private LocalDataModelInactiveExams dataInactiveExams = new LocalDataModelInactiveExams();
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
@@ -169,7 +171,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	//// getter/setter methods ////////////////////////////////////////////////
 
 	private ExamInfo currentExam() {
-		ExamInfo exam = this.dataExams.getRowData();
+		ExamInfo exam = this.dataActiveExams.getRowData();
 		return exam;
 	}
 	
@@ -181,16 +183,16 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	}
 	
 
-	public LocalDataModelExams getDataExams() {
-		return dataExams;
+	public LocalDataModelActiveExams getDataActiveExams() {
+		return dataActiveExams;
 	}
-	public void setDataExams(LocalDataModelExams dataExams) {
-		this.dataExams = dataExams;
+	public void setDataActiveExams(LocalDataModelActiveExams dataActiveExams) {
+		this.dataActiveExams = dataActiveExams;
 	}
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelExams extends AbstractPagedTable<ExamInfo> {
+	private class LocalDataModelActiveExams extends AbstractPagedTable<ExamInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<ExamInfo> page;
@@ -199,21 +201,41 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				// TODO: implement!
-				/*List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
-						.findCourseTypesByInstitute(instituteInfo.getId()));*/
-				List<ExamInfo> exams = new ArrayList<ExamInfo>();
-				exams = paperSubmissionService.findExamsByDomainId(courseInfo.getId());
+				
+				List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
+				activeExams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
 				
 				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
 				
-				sort(exams);
-				page = new DataPage<ExamInfo>(exams.size(), 0, exams);
+				sort(activeExams);
+				page = new DataPage<ExamInfo>(activeExams.size(), 0, activeExams);
 			}
 			return page;
 		}
 	}
 
+	
+	private class LocalDataModelInactiveExams extends AbstractPagedTable<ExamInfo> {
+		private static final long serialVersionUID = -6289875618529435428L;
+
+		private DataPage<ExamInfo> page;
+
+		@Override
+		@SuppressWarnings( { "unchecked" })
+		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				
+				List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
+				inactiveExams = paperSubmissionService.findInactiveExamsByDomainId(courseInfo.getId());
+				
+				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
+				
+				sort(inactiveExams);
+				page = new DataPage<ExamInfo>(inactiveExams.size(), 0, inactiveExams);
+			}
+			return page;
+		}
+	}
 	public DocumentService getDocumentService() {
 		return documentService;
 	}
@@ -228,6 +250,14 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 
 	public void setExamInfo(ExamInfo examInfo) {
 		this.examInfo = examInfo;
+	}
+
+	public LocalDataModelInactiveExams getDataInactiveExams() {
+		return dataInactiveExams;
+	}
+
+	public void setDataInactiveExams(LocalDataModelInactiveExams dataInactiveExams) {
+		this.dataInactiveExams = dataInactiveExams;
 	}
 	
 }

@@ -44,7 +44,7 @@
  	  		<t:saveState id="papersubmission_editing" value="#{views$secured$papersubmission$paperlist.editing}" />	  		
   			<h:form id="papersForm">
 				<ui:include src="paperstable.xhtml"/>
-				
+							
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<c:if test="#{!views$secured$papersubmission$paperlist.editing}">	
 						<o:block>

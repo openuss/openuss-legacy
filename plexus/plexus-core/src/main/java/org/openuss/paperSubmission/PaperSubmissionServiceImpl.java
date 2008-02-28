@@ -259,8 +259,19 @@ public class PaperSubmissionServiceImpl
 	@Override
 	protected List handleFindInactiveExamsByDomainId(Long domainId)
 			throws Exception {
-		// FIXME implement!!!!!!
-		return null;
+Validate.notNull(domainId, "courseId cannot be null.");
+    	
+    	//Filter the inactives --> deadline expired
+		
+    	List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
+    	List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
+    	for (ExamInfo exam : exams){
+    		if (exam.getDeadline().before(new Date()))
+    			inactiveExams.add(exam);
+    	}
+    	
+    	return inactiveExams;
+
 	}
 
 

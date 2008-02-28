@@ -10,12 +10,12 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
      <plexus:dataTable   
-        id="exams" 
+        id="activeexams" 
         label="#{msg['papersubmission_paperstable_header']}" 
-        value="views$secured$papersubmission$paperlist.dataExams" 
-        columnClasses="col_max_left, col_commands"
+        value="views$secured$papersubmission$paperlist.dataActiveExams" 
+        columnClasses="col_max_left, col_max_left, col_commands"
         var="bean" 
-        rows="20">  
+        rows="5">  
    
         <t:column>
             <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
@@ -31,6 +31,68 @@
             <small><h:outputText value="#{bean.description}"/></small>
             
         </t:column> 
+        
+        <t:column>
+        	<plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
+        	<h:outputText value="#{bean.deadline}">
+        		<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+        	</h:outputText>
+        </t:column>
+        
+        
+        <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+	        <plexus:column header="#{msg.commands_header}">   
+	            <plexus:command 
+	                bean="#{views$secured$papersubmission$paperlist}"
+	                action="editExam"
+	                label="#{msg.papersubmission_command_edit}"
+	                hint="#{msg.papersubmission_command_edit_hint}"
+	                styleClass="icon_edit">
+	            </plexus:command>
+	                
+	            <plexus:command   
+	                bean="#{views$secured$papersubmission$paperlist}"
+	                action="selectExamAndConfirmRemove"
+	                label="#{msg.papersubmission_command_remove}"
+	                hint="#{msg.papersubmission_command_remove_hint}"
+	                styleClass="icon_remove">
+	            </plexus:command>
+	        
+	        </plexus:column>
+        </s:acl>
+        
+    </plexus:dataTable>
+    
+    <plexus:dataTable   
+        id="inactiveexams" 
+        label="#{msg['papersubmission_paperstable_header']}" 
+        value="views$secured$papersubmission$paperlist.dataInactiveExams" 
+        columnClasses="col_max_left,col_max_left,  col_commands"
+        var="bean" 
+        rows="5">  
+   
+        <t:column>
+            <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
+            <!-- <o:link value="/views/secured/papersubmission/paperview.faces" title="#{bean.description}">
+                <f:param value="#{bean.id}" name="paper" />
+                <b><h:outputText value="#{bean.name}"/></b>
+            </o:link> 
+             -->
+            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectExam}" styleClass="command">
+					<b><h:outputText value="#{bean.name}"/></b>
+			</h:commandLink>
+            <br></br>
+            <small><h:outputText value="#{bean.description}"/></small>
+            
+        </t:column> 
+                
+        <t:column>
+        	<plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
+        	<h:outputText value="#{bean.deadline}">
+        		<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+        	</h:outputText>
+        </t:column>
+        
         
         <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 	        <plexus:column header="#{msg.commands_header}">   
