@@ -39,6 +39,10 @@
 		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 
 			<ui:include src="buddytable.xhtml" />
+
+			<o:block label="#{msg.openuss4us_buddylist_tags}" styleClass="form_box">
+				<t:dataList id="usedTagsList" var="aUsedTag"
+
 			<o:block label="TODO: text" styleClass="form_box" rendered="#{not empty views$secured$buddylist$buddylist.usedTags}">
 				<o:link value="/views/secured/buddylist/buddylist.faces"
 					title="TODO: show all" rendered="#{not empty views$secured$buddylist$buddylist.filtertag}">
