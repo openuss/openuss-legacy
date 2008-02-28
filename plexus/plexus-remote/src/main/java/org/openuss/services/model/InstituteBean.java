@@ -16,6 +16,9 @@ public class InstituteBean {
 	
 	@XmlElement(required = true)
 	private String shortcut;
+	
+	@XmlElement(required = true)
+	private Long departmentId;
 
 	private String description;
 
@@ -145,6 +148,14 @@ public class InstituteBean {
 
 	public void setOwnerName(String ownerName) {
 		this.ownerName = ownerName;
+	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
 	}
 
 }
