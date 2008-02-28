@@ -1,5 +1,7 @@
 package org.openuss.web.desktop;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -633,6 +635,7 @@ public class MyUniPage extends BasePage {
 	
 	private List<ListItemDAO> getVisibleExamListItems(Long universityId) {
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+		final DateFormat dateFormat = new SimpleDateFormat();
 
 		if (myUniData != null) {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
@@ -647,7 +650,7 @@ public class MyUniPage extends BasePage {
 						List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExamAndUser(exam.getId(), user.getId());
 						
 						newItem = new ListItemDAO();
-						newItem.setTitle(exam.getName()+ " - " + exam.getDeadline().toString() + " - " +courseInfo.getName());
+						newItem.setTitle(exam.getName()+ " - " + dateFormat.format(exam.getDeadline()) + " - " +courseInfo.getName());
 						
 						if(submissions!=null && !submissions.isEmpty()){
 							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=" + submissions.get(submissions.size()-1).getId());
