@@ -376,11 +376,34 @@ public class CalendarServiceImpl extends
 	protected void handleEndSubscription(
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo,
-		// org.openuss.security.UserInfo userInfo)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.calendar.CalendarService.handleEndSubscription(org.openuss.calendar.CalendarInfo calendarInfo, org.openuss.security.UserInfo userInfo) Not implemented!");
+		
+		User user = getSecurityService().getCurrentUser();		
+		Calendar parentCal = getCalendarDao().load(calendarInfo.getId());
+		Calendar childCal = getCalendarDao().findByDomainIdentifier(user.getId());
+		
+		// remove single appointments
+		List<Appointment> singleApps = parentCal.getSingleAppointments();
+		for (Appointment appIt : singleApps) {
+			childCal.getLinkedAppointments().remove(appIt);
+			appIt.getAssignedCalendars().remove(childCal);
+		}		
+		
+		// remove natural serial appointments
+		List<SerialAppointment> serialApps = parentCal.getNaturalSerialAppointments();
+		for (SerialAppointment serialAppIt : serialApps) {
+			childCal.getLinkedAppointments().remove(serialAppIt);
+			serialAppIt.getAssignedCalendars().remove(childCal);
+		}
+		
+		// remove association between calendars
+		parentCal.getSubscribedCalendars().remove(childCal);
+		childCal.getSubscriptions().remove(parentCal);
+		
+		// update all involved calendars
+		getCalendarDao().update(parentCal);
+		getCalendarDao().update(childCal);
+		
+
 	}
 
 	@Override
