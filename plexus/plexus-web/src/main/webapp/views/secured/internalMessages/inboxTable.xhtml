@@ -12,8 +12,14 @@
 	<plexus:dataTable id="inboxTable"
 		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
 		 label="@TODO Inbox" rows="10">
+		<t:column>
+			<plexus:commandSortHeader columnName="readByCurrentUser"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<img src="#{theme.imagesPath}/icons/viewstate#{inboxMessage.readByCurrentUser ? 0 : 1}.png"/>
+			</h:commandLink>
+		</t:column>
 		<t:column styleClass="userphoto">
-			<plexus:commandSortHeader columnName="inboxsender"> #{msg['discussion_thread_column_author']}</plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="senderDisplayName"> #{msg['discussion_thread_column_author']}</plexus:commandSortHeader>
 			<div class="userimage"><h:commandLink value=""
 				action="#{views$secured$internalmessages$messagecenter.linkToSender}">
 				<h:outputText value="#{inboxMessage.senderDisplayName}"
@@ -29,21 +35,28 @@
 			</h:commandLink></div>
 		</t:column>
 		<t:column styleClass="col_max_left">
-			<f:facet name="header">  
-				#{msg['discussion_thread_column_message']}  
-			</f:facet>
-			<h:outputText value="#{inboxMessage.subject}"
-				styleClass="header_font_normal" />
+			<plexus:commandSortHeader columnName="subject"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>  
+		
+			<span class="header_font_normal"><h:commandLink value="#{inboxMessage.subject}" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<!--<h:outputText value="#{inboxMessage.subject}"
+				styleClass="header_font_normal" />-->
+			</h:commandLink></span>
 			<br />
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
 			<h:outputText value="#{fn:substring(inboxMessage.content, 0, 100)}..."
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) gt 100}" />
+			</h:commandLink>
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
 			<h:outputText value="#{inboxMessage.content}"
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) le 100}" />
+			</h:commandLink>
+			
+			
 		</t:column>
 		<t:column styleClass="col_post_date">
-			<plexus:commandSortHeader columnName="inboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
+			<plexus:commandSortHeader columnName="messageDate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
 			<h:outputText value="#{inboxMessage.messageDate}"
 				styleClass="content_font_normal">
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />

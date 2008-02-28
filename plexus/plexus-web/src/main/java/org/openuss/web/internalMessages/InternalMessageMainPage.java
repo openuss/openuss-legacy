@@ -102,6 +102,7 @@ public class InternalMessageMainPage extends BasePage {
 		internalMessageService.deleteInternalMessage(message);
 		return Constants.OPENUSS4US_MESSAGECENTER;
 	}
+
 	
 	public String answerMessage(){
 		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());

@@ -84,6 +84,7 @@ public class InternalMessageServiceImpl
         for(MessageStatus im : recMessagesSet){
         	if(!im.isDeleted()){
         		InternalMessageInfo imInfo = getInternalMessageDao().toInternalMessageInfo(im.getInternalMessage());
+        		imInfo.setReadByCurrentUser(im.isMessageRead());
         		List recipients = new LinkedList();
         		recipients.addAll(im.getInternalMessage().getRecipients());
         		getMessageStatusDao().toInternalMessageRecipientsInfoCollection(recipients);

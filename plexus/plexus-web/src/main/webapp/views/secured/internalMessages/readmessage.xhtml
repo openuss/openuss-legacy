@@ -60,13 +60,32 @@
 					value="#{internalMessageInfo.content}"
 					styleClass="content_font_normal" escape="false" /></div></o:block></div>
 			</o:block>
+			
+			<o:block
+				label="#{msg.warning_attention}"
+				styleClass="warning_box"
+				rendered="#{views$secured$internalmessages$readmessage.requestdelete}">
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_messagecenter_deletemessage}" styleClass="warning" /> <br />
+				</p>
+				
+			</o:block>
+			
+			
 			<o:block>
 				<h:commandButton action="openuss4us_messagecenter"
 					value="#{msg.back}" styleClass="button" />
 				<h:commandButton action="#{views$secured$internalmessages$readmessage.answerMessage}"
-					value="TODO antworten" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
-				<h:commandButton action="#{views$secured$internalmessages$readmessage.delete}"
-					value="TODO loeschen" styleClass="button" />
+					value="#{msg.openuss4us_messagecenter_replymessage}" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
+				<h:commandButton id="requestdelete" action="#{views$secured$internalmessages$readmessage.requestdelete}"
+					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button" 
+					rendered="#{!views$secured$internalmessages$readmessage.requestdelete}"/>
+						
+				<h:commandButton id="reallydelete" action="#{views$secured$internalmessages$readmessage.delete}"
+					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button_warning" 
+					rendered="#{views$secured$internalmessages$readmessage.requestdelete}"/>	
+					
+					
 			</o:block>
 		</h:form>
 	</ui:define>

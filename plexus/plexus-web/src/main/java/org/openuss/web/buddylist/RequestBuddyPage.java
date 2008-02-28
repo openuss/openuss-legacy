@@ -13,6 +13,7 @@ import org.openuss.buddylist.BuddyService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -24,6 +25,7 @@ public class RequestBuddyPage extends BasePage {
 	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
 	public User profile;
 	
+
 	@Property(value= "#{"+Constants.OPENUSS4US_CHOSEN_BUDDYINFO+"}")
 	private BuddyInfo buddyInfo;
 	
@@ -40,6 +42,7 @@ public class RequestBuddyPage extends BasePage {
 		addPageCrumb();
 	}
 
+		
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
