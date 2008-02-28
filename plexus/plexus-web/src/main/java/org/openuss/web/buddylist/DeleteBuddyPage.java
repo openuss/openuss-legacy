@@ -39,7 +39,9 @@ private static final Logger logger = Logger.getLogger(DeleteBuddyPage.class);
 	
 	public String deleteBuddy() {
 		buddyService.deleteBuddy(buddyInfo);
+		addMessage(i18n("openuss4us_message_deletebuddy"));
 		return Constants.OPENUSS4US_BUDDYLIST;
+		
 	}
 
 	public BuddyService getBuddyService() {

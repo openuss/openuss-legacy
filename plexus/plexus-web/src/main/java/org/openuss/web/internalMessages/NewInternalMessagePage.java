@@ -52,7 +52,7 @@ public class NewInternalMessagePage extends BasePage{
 	public String linkToSendMessage(){
 		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());
 		if(profile.getId().equals(securityService.getCurrentUser().getId())){
-			this.addError("TODO: You cannot add yourself");
+			addMessage(i18n("openuss4us_message_messagecenter_addbuddy"));
 			return Constants.SUCCESS;
 		}
 		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
@@ -63,7 +63,7 @@ public class NewInternalMessagePage extends BasePage{
 	public String sendmessage() {
 		logger.debug("Send Message to " + profile.getId());
 		if(profile.getId().equals(securityService.getCurrentUser().getId())){
-			this.addWarning("TODO: You cannot add yourself");
+			addMessage(i18n("openuss4us_message_messagecenter_addbuddy"));
 			return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 		}
 		LinkedList<InternalMessageRecipientsInfo> recipients = new LinkedList<InternalMessageRecipientsInfo>(); 
@@ -73,7 +73,7 @@ public class NewInternalMessagePage extends BasePage{
 		internalMessageRecipientsInfo.setInternalMessageInfo(internalMessageInfo);
 		recipients.add(internalMessageRecipientsInfo);
 		internalMessageService.sendInternalMessage(internalMessageInfo);
-		this.addMessage("TODO: Message sent");
+		addMessage(i18n("openuss4us_message_messagecenter_sendmessage"));
 	return Constants.OPENUSS4US_MESSAGECENTER;
 	}
 

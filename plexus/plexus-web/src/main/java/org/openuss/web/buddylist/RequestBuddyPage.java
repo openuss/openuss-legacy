@@ -73,12 +73,14 @@ public class RequestBuddyPage extends BasePage {
 	public String authorizeBuddy(){
 		setBuddyInfo(this.data.getRowData());
 		buddyService.authorizeBuddyRequest(buddyInfo, true);
+		addMessage(i18n("openuss4us_message_authorizebuddy"));
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	
 	public String declineBuddy(){
 		setBuddyInfo(this.data.getRowData());
 		buddyService.authorizeBuddyRequest(buddyInfo, false);
+		addMessage(i18n("openuss4us_message_declinebuddy"));
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	

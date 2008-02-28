@@ -90,11 +90,13 @@ public class InternalMessageMainPage extends BasePage {
 	
 	public String deleteSent(){
 		logger.debug("delete sent message");
+		addMessage(i18n("openuss4us_message_messagecenter_deletesent"));
 		return delete(this.outboxData.getRowData());
 	}
 	
 	public String deleteRecieved(){
 		logger.debug("delete received message");
+		addMessage(i18n("openuss4us_message_messagecenter_deleterecieved"));
 		return delete(this.inboxData.getRowData());
 	}
 	

@@ -11,7 +11,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 	<plexus:dataTable id="inboxTable"
 		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
-		 label="@TODO Inbox" rows="10">
+		 label="#{msg.openuss4us_messagecenter_inbox_header}" rows="10">
 		<t:column>
 			<plexus:commandSortHeader columnName="readByCurrentUser"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
 			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
@@ -67,7 +67,7 @@
 				#{msg.commands_header}
 			</f:facet>
 			<h:commandButton id="read_received_message" action="#{views$secured$internalmessages$messagecenter.readReceivedMessage}"
-				value="TODO: read" title="TODO: read" styleClass="button_remove" />
+				value="#{msg.openuss4us_messagecenter_read}" title="#{msg.openuss4us_messagecenter_read}" styleClass="button_remove" />
 			<br />
 			<h:commandButton id="send_message"
 				action="#{views$secured$internalmessages$messagecenter.answerMessage}"

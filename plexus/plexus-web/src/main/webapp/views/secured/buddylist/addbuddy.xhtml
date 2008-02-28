@@ -68,7 +68,7 @@
 					
 				<h:panelGroup id="text">
 					<h:outputText value="#{msg.openuss4us_buddylist_addbuddy_text}" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
-					<h:outputText value="TODO: It is not allowed to add this buddy" rendered="#{not views$secured$buddylist$addbuddy.allowAdd}"/>
+					<h:outputText value="#{msg.openuss4us_buddylist_notallowed}" rendered="#{not views$secured$buddylist$addbuddy.allowAdd}"/>
 				</h:panelGroup>	
 				</h:panelGrid>
 				

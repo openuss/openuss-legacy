@@ -83,6 +83,7 @@ public class EditTagsPage extends BasePage {
 		String tag = this.buddyTags.getRowData();
 		logger.debug("Delete Tag: " + tag);
 		buddyService.deleteTag(buddyInfo, tag);
+		addMessage(i18n("openuss4us_message_buddylist_delelete_tag"));
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	

@@ -58,6 +58,7 @@ public class ReadInternalMessagePage extends BasePage {
 	public String delete(){
 		logger.debug("-----------------------------------  delete --> service.delete...");
 		internalMessageService.deleteInternalMessage(internalMessageInfo);
+		addMessage(i18n("openuss4us_message_messagecenter_delete"));
 		return Constants.OPENUSS4US_MESSAGECENTER;
 	}
 	
@@ -70,6 +71,7 @@ public class ReadInternalMessagePage extends BasePage {
 		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, imInfoHelp);
 		profile.setId(internalMessageInfo.getSenderId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		addMessage(i18n("openuss4us_message_messagecenter_sendmessage"));
 		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 	}
 	

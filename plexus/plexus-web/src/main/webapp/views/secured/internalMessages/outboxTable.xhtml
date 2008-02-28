@@ -10,10 +10,10 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 	<plexus:dataTable id="outboxTable"
 		value="views$secured$internalmessages$messagecenter.outboxData" var="outboxMessage"
-		 label="@TODO Outbox" rows="10">
+		 label="#{msg.openuss4us_messagecenter_outbox_header}" rows="10">
 		<t:column styleClass="userphoto">
 		<f:facet name="header">
-				TODO Empfaenger
+				#{msg.openuss4us_messagecenter_recipient}
 			</f:facet>
 			<t:dataList
 				rowCountVar="rowCount"
@@ -49,7 +49,7 @@
 				 #{msg.commands_header}
 			</f:facet>
 			<h:commandButton id="read_received_message" action="#{views$secured$internalmessages$messagecenter.readSentMessage}"
-				value="TODO: read" title="TODO: read" styleClass="button_remove" />
+				value="#{msg.openuss4us_messagecenter_read}" title="#{msg.openuss4us_messagecenter_read}" styleClass="button_remove" />
 						<br />
 			<h:commandButton id="remove_message" action="#{views$secured$internalmessages$messagecenter.deleteSent}"
 				value="delete" title="delete"
