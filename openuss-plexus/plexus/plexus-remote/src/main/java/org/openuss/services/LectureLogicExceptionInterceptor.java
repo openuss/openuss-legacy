@@ -10,11 +10,11 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Ingo Dueppe
  *
  */
-public class LectureLogicExceptionAdvice implements MethodInterceptor{
+public class LectureLogicExceptionInterceptor implements MethodInterceptor{
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(LectureLogicExceptionAdvice.class);
+	private static final Logger logger = Logger.getLogger(LectureLogicExceptionInterceptor.class);
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {

@@ -93,7 +93,15 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 		assertEquals(Role.NONE, lectureClient.isCourseMember(courseId, userId));
 		assertFalse(lectureClient.removeCourseMember(courseId, userId));
 		assertEquals(Role.NONE, lectureClient.isCourseMember(courseId, userId));
-		
+	}
+	
+	public void testMembershipFault() throws LectureLogicException {
+		try {
+			lectureClient.assignCourseMember(-1234L, -1234, Role.PARTICIPANT);
+			fail();
+		} catch (LectureLogicException ex) {
+			// success
+		}
 	}
 
 	public LectureWebService getLectureClient() {
