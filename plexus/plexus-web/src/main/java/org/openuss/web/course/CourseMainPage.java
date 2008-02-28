@@ -10,9 +10,12 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.CalendarService;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.CourseApplicationException;
@@ -33,9 +36,13 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	private String password;
 
+	@Property(value = "#{calendarService}")
+	private CalendarService calendarService;
+	
 	private List<CourseMemberInfo> assistants = new ArrayList<CourseMemberInfo>();
 	
-
+	private List<AppointmentInfo> appointments = new ArrayList<AppointmentInfo>();
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
@@ -43,6 +50,7 @@ public class CourseMainPage extends AbstractCoursePage {
 		super.prerender();
 		if (courseInfo != null) {
 			assistants = courseService.getAssistants(courseInfo);
+			appointments = calendarService.getNaturalSerialAppointments(calendarService.getCalendar(courseInfo));
 		}
 
 		BreadCrumb newCrumb = new BreadCrumb();
@@ -125,6 +133,22 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public List<CourseMemberInfo> getAssistants() {
 		return assistants;
+	}
+
+	public CalendarService getCalendarService() {
+		return calendarService;
+	}
+
+	public void setCalendarService(CalendarService calendarService) {
+		this.calendarService = calendarService;
+	}
+
+	public List<AppointmentInfo> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<AppointmentInfo> appointments) {
+		this.appointments = appointments;
 	}
 
 }

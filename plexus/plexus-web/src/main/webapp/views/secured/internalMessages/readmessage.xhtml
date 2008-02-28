@@ -76,10 +76,6 @@
 				<h:commandButton action="openuss4us_messagecenter"
 					value="#{msg.back}" styleClass="button" />
 				<h:commandButton action="#{views$secured$internalmessages$readmessage.answerMessage}"
-					value="#{msg.discussion_new_answer}" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
-				<h:commandButton action="#{views$secured$internalmessages$readmessage.delete}"
-					value="#{msg.documents_main_button_delete}" styleClass="button" />
-
 					value="#{msg.openuss4us_messagecenter_replymessage}" styleClass="button" rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
 				<h:commandButton id="requestdelete" action="#{views$secured$internalmessages$readmessage.requestdelete}"
 					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button" 
