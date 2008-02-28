@@ -190,18 +190,6 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Show profile of the selected member
-	 * 
-	 * @return outcome
-	 */
-	public String showProfile() {
-		InstituteMember member = members.getRowData();
-		UserInfo user = securityService.getUser(member.getId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-
-	/**
 	 * @param startRow
 	 *            row to start from
 	 * @param pageSize

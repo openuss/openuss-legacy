@@ -120,15 +120,6 @@ public class UserProfilePage extends BasePage{
 		securityService.saveUser(user);
 	}		
 	
-	/**
-	 * Show Profile
-	 * @return outcome
-	 */
-	public String showProfile() {
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-	
 	public void removeImage(ActionEvent event) throws DocumentApplicationException {
 		if (user.getImageId() != null) {
 			Long fileId = user.getImageId();

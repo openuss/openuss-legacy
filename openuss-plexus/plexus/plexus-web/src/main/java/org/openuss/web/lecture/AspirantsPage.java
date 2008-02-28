@@ -91,15 +91,6 @@ public class AspirantsPage extends AbstractLecturePage {
 		}
 	}
 	
-	// FIXME ShowProfile should work without session information
-	public String showProfile() {
-		UserInfo userInfo = data.getRowData();
-		UserInfo user = new UserInfo();
-		user.setId(userInfo.getId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-	
 	public void changedAspirant(ValueChangeEvent event) throws LectureException {
 		UserInfo aspirant = data.getRowData();
 		if (logger.isDebugEnabled()) {

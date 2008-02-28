@@ -48,6 +48,7 @@
 						title="#{msg['discussion_new_addpost']}"
 						styleClass="button"/>	
 					<h:commandButton 
+						id="newTopicUser"
 						action="#{views$secured$discussion$discussions.newTopic}"
 						value="#{msg['discussion_new']}"
 						title="#{msg['discussion_new']}"
@@ -55,13 +56,14 @@
 				</s:acl>
 				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
 					<h:commandButton 
-						id="addPostButtonUser"
+						id="addPostButtonAssistant"
 					    action="#{views$secured$discussion$discussionthread.addPost}"
 						value="#{msg['discussion_new_addpost']}"
 						title="#{msg['discussion_new_addpost']}"
 						rendered="#{not discussion_forum.readOnly and not discussion_topic.readOnly}"
 						styleClass="button"/>	
 					<h:commandButton 
+						id="newTopicButtonAssistant"
 						action="#{views$secured$discussion$discussions.newTopic}"
 						value="#{msg['discussion_new']}"
 						title="#{msg['discussion_new']}"
