@@ -228,7 +228,7 @@ public class FSLMainFrame extends JFrame {
     private JPanel createContextDependentInteractionPanel() {
         JPanel contextDependentInteractionPanel =
             managerOfManagers.getLearningUnitsManager().getLearningUnitViewContextDependentInteractionPanelContainer();
-        return contextDependentInteractionPanel;
+          return contextDependentInteractionPanel;
     }
     //Gunnar Thies finished
 
