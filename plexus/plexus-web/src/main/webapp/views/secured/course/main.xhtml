@@ -131,6 +131,9 @@
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 			<c:if test="#{not empty views$secured$course$coursenews.currentNews}">
 			<o:block label="#{msg.news_header}" styleClass="news_box">
+			<h:form id="appointments">
+			
+			</h:form>
 				<h:form id="news_tables">
 		   			<t:dataList id="news" value="#{views$secured$course$coursenews.currentNews}" var="item" styleClass="news">
 						<p class="header_font_normal">

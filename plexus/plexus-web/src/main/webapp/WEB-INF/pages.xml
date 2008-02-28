@@ -245,6 +245,10 @@
             OpenUSS4US
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
+	<page view-id="/views/secured/buddylist/buddylist.xhtml">
+		<parameter name="filtertag" value="#{views$secured$buddylist$buddylist.filtertag}"/>
+	</page>
+	
 
       
  </pages>   

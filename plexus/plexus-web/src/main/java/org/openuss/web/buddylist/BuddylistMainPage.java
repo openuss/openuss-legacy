@@ -2,20 +2,24 @@ package org.openuss.web.buddylist;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.faces.event.ActionEvent;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.buddylist.*;
+import org.openuss.buddylist.BuddyInfo;
+import org.openuss.buddylist.BuddyService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.internalMessage.InternalMessageInfo;
 import org.openuss.security.User;
-import org.openuss.web.Constants;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * 
@@ -38,7 +42,6 @@ public class BuddylistMainPage extends BasePage {
 	
 	private BuddytableDataProvider data = new BuddytableDataProvider();
 	
-	@Property(value = "#{filtertag}")
 	private String filtertag = null;
 	
 	@Property(value = "#{buddyService}")
@@ -70,7 +73,16 @@ public class BuddylistMainPage extends BasePage {
 		@Override 
 		public DataPage<BuddyInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<BuddyInfo> al = buddyService.getBuddyList();
+				List<BuddyInfo> al = null;
+				if(filtertag==null || filtertag.length() <= 2){
+					logger.debug("Loading Buddylist");
+					al = buddyService.getBuddyList();
+				} else {
+					//TODO correct to org.apache.commons.codec
+					filtertag = org.openuss.framework.utilities.URLUTF8Encoder.decode(filtertag);
+					logger.debug("Loading Buddylist filtered by " + filtertag);
+					al = buddyService.getAllBuddysByTag(filtertag);
+				}
 				sort(al);
 				page = new DataPage<BuddyInfo>(al.size(),0,al);
 			}
@@ -119,6 +131,11 @@ public class BuddylistMainPage extends BasePage {
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 	}
+	
+	public void filterTagsActionListener(ActionEvent event){
+		filtertag = this.getParameter("testTag");
+		logger.debug("Set filtertag to " + filtertag);
+	}
 
 
 	public void setBuddyService(BuddyService buddyService) {
@@ -155,6 +172,5 @@ public class BuddylistMainPage extends BasePage {
 
 	public void setFiltertag(String filtertag) {
 		this.filtertag = filtertag;
-	}
-	
+	}	
 }

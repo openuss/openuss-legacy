@@ -87,7 +87,7 @@ public class BuddyServiceImpl
     protected void handleAddTag(org.openuss.buddylist.BuddyInfo buddyInfo, java.lang.String tagString)
         throws java.lang.Exception
     {
-    	tagString = tagString.toLowerCase();
+    	tagString = tagString.trim().toLowerCase();
     	if(tagString.length()<=2)
     		throw new BuddyApplicationException("Tag too short");
     	Buddy buddy = getBuddyDao().load(buddyInfo.getId());
@@ -220,6 +220,10 @@ public class BuddyServiceImpl
 
 	@Override
 	protected List handleGetAllBuddysByTag(String tagString) throws Exception {
+		List<BuddyInfo> results = new LinkedList<BuddyInfo>();
+		if(!this.getAllUsedTags().contains(tagString)){
+			return results;
+		}
 		User user = getSecurityService().getCurrentUser();
 		BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(user.getId());
 		Tag tag = null;
@@ -231,6 +235,11 @@ public class BuddyServiceImpl
 		}
 		if(tag==null)
 			throw new Exception("Tag not found");
-		return getBuddyDao().findByTag(getBuddyDao().TRANSFORM_BUDDYINFO, tag);
+		for(BuddyInfo buddyCandidate : (List<BuddyInfo>)this.getBuddyList()){
+			if(buddyCandidate.getTags().contains(tagString)){
+				results.add(buddyCandidate);
+			}
+		}
+		return results;
 	}
 }

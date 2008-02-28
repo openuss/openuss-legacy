@@ -64,6 +64,7 @@
 				<o:input entity="views$secured$buddylist$edittags" property="newTag"
 					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" required="true">
 					<f:validateLength minimum="3" />
+					<f:converter converterId="xssFilter"/>
 					</o:input>
 				<br /><div styleClass="content_font_normal">
 				<t:dataList 

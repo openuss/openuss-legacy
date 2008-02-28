@@ -75,7 +75,7 @@ public class EditTagsPage extends BasePage {
 		} catch (BuddyApplicationException e) {
 			addError(i18n("openuss4us_error_buddylist_tag_add"));
 		}
-		return Constants.OPENUSS4US_BUDDYLIST;
+		return Constants.OPENUSS4US_EDITTAGS;
 	}
 
 	

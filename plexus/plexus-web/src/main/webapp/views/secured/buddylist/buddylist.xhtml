@@ -39,20 +39,24 @@
 		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 
 			<ui:include src="buddytable.xhtml" />
-			<o:block label="TODO: text" styleClass="form_box">
-				<t:dataList id="usedTagsList" var="aUsedTag"
+			<o:block label="TODO: text" styleClass="form_box" rendered="#{not empty views$secured$buddylist$buddylist.usedTags}">
+				<o:link value="/views/secured/buddylist/buddylist.faces"
+					title="TODO: show all" rendered="#{not empty views$secured$buddylist$buddylist.filtertag}">
+					<f:param name="filtertag" value="" />
+					<h:outputText value="TODO: SHOW ALL" />
+				</o:link>
+				<t:dataList id="usedTagsList" var="tag"
 					value="#{views$secured$buddylist$buddylist.usedTags}"
 					rendered="#{not empty views$secured$buddylist$buddylist.usedTags}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-					<h:outputText value="#{aUsedTag}" />
-					<h:commandLink action="openuss4us_buddylist_requests" value="test">
-						
-					</h:commandLink>
-						
+					<o:link value="/views/secured/buddylist/buddylist.faces"
+						title="#{tag}">
+						<f:param name="filtertag" value="#{tag}" />
+						<h:outputText value="#{tag}" />
+					</o:link>
 				</t:dataList>
 			</o:block>
 			<o:block>
-			<h:outputText value="#{filtertag}" rendered="#{not empty filtertag}"/>
 				<h:commandButton action="openuss4us_buddylist_requests"
 					value="#{msg.openuss4us_buddylist_button_requests}"
 					styleClass="button" />
