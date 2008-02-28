@@ -25,14 +25,19 @@ public class WebDAVPath {
 	 */
 	protected static final String URI_SANITIZATION_REGEXP = "^http.?://[^/]+/+";
 	/**
+	 * The file extension marker.
+	 * @see #getFileExt()
+	 */
+	protected static final String FILEEXT_SEP = ".";
+	/**
 	 * Path represented by this object.
 	 */
-	protected List<String> pathElems;
+	final protected List<String> pathElems;
 	/**
 	 * The String representation of this path as supplied by the client.
 	 * null if none is specified.
 	 */
-	protected String clientString;
+	final protected String clientString;
 	
 	/**
 	 * Constructor for a yet unresolved path, starting at root.
@@ -45,10 +50,11 @@ public class WebDAVPath {
 	
 	/**
 	 * @param pathElems The sanitized elements of the path.
-	 * @param clientPath The path as specified by the client.
+	 * @param clientPath The path as specified by the client or null for automatic recognition.
 	 */
 	protected WebDAVPath(List<String> pathElems, String clientPath) {
 		this.pathElems = pathElems;
+		this.clientString = clientPath;
 	}
 	
 	/**
@@ -72,6 +78,16 @@ public class WebDAVPath {
 		input = input.replaceAll(URI_SANITIZATION_REGEXP, "");
 		
 		return parse(input);
+	}
+	
+	/**
+	 * Helper method to directly parse an URI to a list of strings. 
+	 * 
+	 * @param input The input URI.
+	 * @return A changeable list of path elements.
+	 */
+	protected static List<String> parseURIToList(String input) {
+		return parseURI(input).pathElems;
 	}
 	
 	/**
@@ -187,6 +203,70 @@ public class WebDAVPath {
 	public List<String> getList() {
 		return Collections.unmodifiableList(pathElems);
 	}
+	
+	/**
+	 * @return The local file name.
+	 * 			For example, a WebDAVPath("/a/b/cd.e") would return "cd.e".
+	 * 			"" is returned for the root path.
+	 */
+	public String getFileName() {
+		if (pathElems.size() >= 1) {
+			return pathElems.get(pathElems.size() - 1);
+		} else { // root
+			return "";
+		}
+	}
+	
+	/**
+	 * @return The extension of the file represented by this path.
+	 * 			For example, a WebDAVPath("/a/b/cd.e") would return "e".
+	 * 			null if there is no recognizable extension. For example, "/a/b/cde" would return null.
+	 */
+	public String getFileExt() {
+		String fileName = getFileName();
+		
+		int dotPos = fileName.lastIndexOf(FILEEXT_SEP);
+		if ((dotPos > 0) && (dotPos < fileName.length() - 1)) {
+			return fileName.substring(dotPos + 1);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Strict equals function.
+	 * 
+	 * @param o The object to compare with.
+	 * @return true iff all requesting methods on both objects will return the same.
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof WebDAVPath) {
+			return equals((WebDAVPath)o);
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Strict equals function.
+	 * 
+	 * @param p The path to compare with.
+	 * @return true iff all requesting methods on both objects will return the same.
+	 */
+	public boolean equals(WebDAVPath p) {
+		return toClientString().equals(p.toClientString());
+	}
+		
+	/**
+	 * Compares two paths except for the client-dependant part. 
+	 * 
+	 * @param other The path to compare with.
+	 * @return true iff both paths represent the same structure.
+	 */
+	public boolean semanticEqual(WebDAVPath other) {
+		return getList().equals(other.getList());
+	}
+
 	
 	/* Helper functions */
 	

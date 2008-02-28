@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
+import org.openuss.webdav.WebDAVResourceException;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -182,6 +183,18 @@ public class WebDAVUtils {
 	}
 	
 	
+	/* Conversion */
+	
+	/**
+	 * Creates a new PropertyResponse out of a WebDAVResourceException.
+	 * 
+	 * @param wre The exception, containing information about the source.
+	 * @return A new PropertyResponse object.
+	 */
+	public static PropertyResponse createFromResourceException(WebDAVResourceException wre) {
+		return PropertyResponse.createFromResourceException(wre);
+	}
+
 
 	/* XML */	
 

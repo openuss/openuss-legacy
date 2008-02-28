@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
+import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,7 +16,7 @@ import org.w3c.dom.Node;
 /**
  * An element of a MultiStatus object detailling the answer of a PROPFIND or PROPPATCH.
  */
-public class PropertyResponse {
+public class PropertyResponse implements MultiStatusResponse {
 	/**
 	 * The (absolute or relative) path to the resource that is respresented in this response. 
 	 */
@@ -107,7 +109,7 @@ public class PropertyResponse {
 	 * 
 	 * @param element The parent node
 	 */
-	public void addToXMLElement(Element el) {
+	public void addToXML(Element el) {
 		Document doc = el.getOwnerDocument();
 		
 		// create response element
@@ -145,6 +147,15 @@ public class PropertyResponse {
 		}
 	}
 	
+	/**
+	 * Creates a new PropertyResponse out of a WebDAVResourceException.
+	 * 
+	 * @param wre The exception, containing information about the source.
+	 * @return A new PropertyResponse object.
+	 */
+	public static PropertyResponse createFromResourceException(WebDAVResourceException wre) {
+		return new PropertyResponse(wre.getHref(), wre.getMessage());
+	}
 	
 	/**
 	 * A node in a property response.
