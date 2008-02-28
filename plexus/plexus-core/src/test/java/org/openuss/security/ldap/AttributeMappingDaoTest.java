@@ -6,9 +6,7 @@
 package org.openuss.security.ldap;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -51,56 +49,22 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 	}
 	
 	
-public void testAttributeMappingDaoCreate() {		
-		
-//		create ldap server object
-		LdapServer ldapServer = LdapServer.Factory.newInstance();
-		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
-		ldapServer.setPort(389);
-		ldapServer.setRootDn("dc=uni-muenster,dc=de");
-		ldapServer.setDescription("LDAP Server WWU");
-		ldapServer.setEnabled(true);
-		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-		ldapServer.setUseConnectionPool(false);
-		ldapServer.setManagerDn("admin");
-		ldapServer.setManagerPassword("hidden");
-		ldapServer.setUseLdapContext(true);
-		Set<LdapServer> ldapServers = new HashSet<LdapServer>();
-		ldapServers.add(ldapServer);
+	public void testAttributeMappingDaoCreate() {	
 	
-//		create user dn pattern object
-		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance("memberOf");		
-		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
-		userDnPatterns.add(userDnPattern);		
-		
-//		create user dn pattern set object
-		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
-		userDnPatternSet.setName("WWU user dn pattern");
-		userDnPatternSet.setUserDnPatterns(userDnPatterns);
-		userDnPatternSet.setLdapServers(ldapServers);		
-
-		ldapServer.setUserDnPatternSet(userDnPatternSet);
-		
-//		create role attribute key object
-		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance("CN");
+//		create role attribute object
+		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
+		roleAttributeKey.setRoleAttributeKey("CN");		
 		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
 		roleAttributeKeys.add(roleAttributeKey);
 		
-//		create role attribute key set object
 		RoleAttributeKeySet roleAttributeKeySet = RoleAttributeKeySet.Factory.newInstance();
-		roleAttributeKeySet.setName("WWU role set");
+		roleAttributeKeySet.setName("role attribute key set test");
 		roleAttributeKeySet.setRoleAttributeKeys(roleAttributeKeys);
 		
-//		create authentication domain object
-		AuthenticationDomain authenticationDomain = AuthenticationDomain.Factory.newInstance();
-		authenticationDomain.setName("WWU");
-		authenticationDomain.setDescription("WWU Domain");
-		
-		authenticationDomain.setLdapServers(ldapServers);
-		Set<AuthenticationDomain> authenticationDomains = new HashSet<AuthenticationDomain>();
-		authenticationDomains.add(authenticationDomain);
-		
-		ldapServer.setAuthenticationDomain(authenticationDomain);
+		assertNull(roleAttributeKeySet.getId());
+		roleAttributeKeySetDao.create(roleAttributeKeySet);
+		assertNotNull(roleAttributeKeySet.getId());
+	
 		
 //		create attribute mapping object
 		AttributeMapping attributeMapping = AttributeMapping.Factory.newInstance();		
@@ -110,24 +74,12 @@ public void testAttributeMappingDaoCreate() {
 		attributeMapping.setLastNameKey("SN");
 		attributeMapping.setEmailKey("mail");
 		attributeMapping.setGroupRoleAttributeKey("CN");		
-		attributeMapping.setAuthenticationDomains(authenticationDomains);
-		
-		List<AttributeMapping> attributeMappings = new ArrayList<AttributeMapping>();
-		attributeMappings.add(attributeMapping);
-		
-		roleAttributeKeySet.setAttributeMappings(attributeMappings);		
-		authenticationDomain.setAttributeMapping(attributeMapping);
+//		attributeMapping.setAuthenticationDomains(authenticationDomains);
+		attributeMapping.setRoleAttributeKeySet(roleAttributeKeySet);
 		
 		assertNull(attributeMapping.getId());
 		attributeMappingDao.create(attributeMapping);
-		assertNotNull(attributeMapping.getId());		
-		setComplete();
-		endTransaction();
-		
-		startNewTransaction();
-		attributeMappingDao.remove(attributeMapping);
-		setComplete();
-		endTransaction();
+		assertNotNull(attributeMapping.getId());				
 	}
 
 

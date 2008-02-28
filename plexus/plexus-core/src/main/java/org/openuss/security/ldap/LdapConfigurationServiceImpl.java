@@ -267,7 +267,7 @@ public class LdapConfigurationServiceImpl
      */
     public void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	RoleAttributeKeyDao dao = getRoleAttributeKeyDao();
-    	RoleAttributeKey	key = dao.roleAttributeKeyInfoToEntity(roleAttributeKey)
+    	RoleAttributeKey	key = dao.roleAttributeKeyInfoToEntity(roleAttributeKey);
     	dao.update(key);
     }
 

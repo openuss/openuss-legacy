@@ -5,6 +5,9 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * JUnit Test for Spring Hibernate LdapServerDao class.
@@ -12,9 +15,10 @@ package org.openuss.security.ldap;
  */
 public class LdapServerDaoTest extends LdapServerDaoTestBase {
 	
+	private UserDnPatternSetDao userDnPatternSetDao;
+	
 	public void testLdapServerDaoCreate() {
 		LdapServer ldapServer = LdapServer.Factory.newInstance();
-//		LdapServerType ldapServer = new LdapServer.Factory.
 		ldapServer.setProviderUrl(" ");
 		ldapServer.setPort(389);
 		ldapServer.setRootDn("DC=uni-muenster,DC=de");
@@ -26,8 +30,29 @@ public class LdapServerDaoTest extends LdapServerDaoTestBase {
 		ldapServer.setDescription("WWU Ldap Server");
 		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
 		ldapServer.setEnabled(true);
+		
+		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
+		userDnPattern.setUserDnPattern("CN");
+		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
+		userDnPatterns.add(userDnPattern);
+		
+		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
+		userDnPatternSet.setName("user dn pattern test ");	
+		userDnPatternSet.setUserDnPatterns(userDnPatterns);
+		ldapServer.setUserDnPatternSet(userDnPatternSet);
+		
+		assertNull(userDnPatternSet.getId());
+		userDnPatternSetDao.create(userDnPatternSet);
+		assertNotNull(userDnPatternSet.getId());
+		
+		/*
 		assertNull(ldapServer.getId());
 		ldapServerDao.create(ldapServer);
 		assertNotNull(ldapServer.getId());
+		*/
+	}
+	
+	public void setUserDPatternSetDao(UserDnPatternSetDao userDnPatternSetDao) {
+		this.userDnPatternSetDao = userDnPatternSetDao;
 	}
 }

@@ -5,6 +5,9 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * JUnit Test for Spring Hibernate UserDnPatternSetDao class.
@@ -13,8 +16,17 @@ package org.openuss.security.ldap;
 public class UserDnPatternSetDaoTest extends UserDnPatternSetDaoTestBase {
 	
 	public void testUserDnPatternSetDaoCreate() {
+		
+		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
+		userDnPattern.setUserDnPattern("CN");
+		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
+		userDnPatterns.add(userDnPattern);
+		
 		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
-		userDnPatternSet.setName("user dn pattern test ");
+		userDnPatternSet.setName("user dn pattern test ");	
+		userDnPatternSet.setUserDnPatterns(userDnPatterns);
+		
+		
 		assertNull(userDnPatternSet.getId());
 		userDnPatternSetDao.create(userDnPatternSet);
 		assertNotNull(userDnPatternSet.getId());
