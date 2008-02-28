@@ -10,9 +10,12 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
@@ -37,6 +40,11 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	private List<UserGroupMemberInfo> moderators = new ArrayList<UserGroupMemberInfo>();
 	
+	@Property(value = "#{calendarService}")
+	private CalendarService calendarService;
+
+	private List<AppointmentInfo> appointments = new ArrayList<AppointmentInfo>();
+
 	/* ----- business logic ----- */
 	
 	@Override
@@ -45,6 +53,7 @@ public class GroupMainPage extends AbstractGroupPage {
 		super.prerender();
 		if (groupInfo != null) {
 			moderators = groupService.getModerators(groupInfo);
+			appointments = calendarService.getNaturalSerialAppointments(calendarService.getCalendar(groupInfo));
 		}
 		BreadCrumb newCrumb = new BreadCrumb();
 		// TODO - Breadcrumbs
@@ -98,6 +107,22 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public List<UserGroupMemberInfo> getModerators() {
 		return moderators;
+	}
+
+	public CalendarService getCalendarService() {
+		return calendarService;
+	}
+
+	public void setCalendarService(CalendarService calendarService) {
+		this.calendarService = calendarService;
+	}
+
+	public List<AppointmentInfo> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<AppointmentInfo> appointments) {
+		this.appointments = appointments;
 	}
 
 }
