@@ -779,6 +779,13 @@
                 <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
             </navigation-case>
         </navigation-rule>
+        <navigation-rule>
+            <from-view-id>/views/secured/papersubmission/addzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        News  - P a g e

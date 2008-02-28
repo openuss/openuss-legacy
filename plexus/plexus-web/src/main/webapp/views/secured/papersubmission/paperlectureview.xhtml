@@ -39,11 +39,11 @@
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
 	                    value="views$secured$papersubmission$paperlectureview.dataSubmissionFiles" 
-	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command"
+	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command, col_min_right"
 	                    var="bean" 
 	                    rows="20">  
 	                    
-	                    <t:column>
+	                  <t:column>
 				            <f:facet name="header">
 				                <h:selectBooleanCheckbox 
 				                    immediate="true" 
@@ -57,38 +57,42 @@
 				        
 	                    <t:column> 
 				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif"/>
+				            <h:graphicImage value="/images/filetypes/#{bean.entry.extension}.gif"/>
 				        </t:column>
 	               
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
 	                              				
-            				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
-								<f:param value="#{bean.id}" name="fileid" />
-								<h:outputText value="#{bean.name}"/>
+            				<o:link value="/files/#{bean.entry.fileName}" title="#{bean.entry.description}">
+								<f:param value="#{bean.entry.id}" name="fileid" />
+								<h:outputText value="#{bean.entry.name}"/>
 							</o:link>
 	                    </t:column>
 	                    
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.sizeAsString}"/>
+	                        <h:outputText value="#{bean.entry.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status2">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.created}">
+	                        <h:outputText value="#{bean.entry.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="status3">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.modified}">
+	                        <h:outputText value="#{bean.entry.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
-	                    
+	                     
+	                    <t:column>
+	                    	<plexus:commandSortHeader columnName="status3">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader>
+                        			<h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
+                        </t:column>
 	                </plexus:dataTable> 
 	                
 	                <o:block>

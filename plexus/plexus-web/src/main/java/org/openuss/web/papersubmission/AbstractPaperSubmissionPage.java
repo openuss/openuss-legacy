@@ -60,6 +60,43 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		
 		
 	}
+	
+	protected PaperSubmissionInfo loadPaperSubmission(){
+		//paperSubmissionInfo = new PaperSubmissionInfo();
+		List<PaperSubmissionInfo> paperInfos;
+		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
+				
+		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
+		if(paperInfos.isEmpty()){
+			PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
+			SubmissionInfo.setExamId(examInfo.getId());
+			SubmissionInfo.setUserId(user.getId());
+			paperSubmissionService.createPaperSubmission(SubmissionInfo);
+			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
+			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			if(paperSubmissionInfo.getSubmissionType().equals("INTIME"))
+				addMessage(i18n("papersubmission_message_papersubmission_intime"));
+			else
+				addWarning(i18n("papersubmission_message_papersubmission_notintime"));
+			
+			
+			return paperSubmissionInfo;
+		}
+		else{
+			//paperInfos.set(paperInfos.size()-1, paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1)));
+			//paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperInfos.get(paperInfos.size()-1).getId());
+			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1));
+			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
+			if(paperSubmissionInfo.getSubmissionType().equals("INTIME"))
+				addMessage(i18n("papersubmission_message_papersubmission_intime"));
+			else
+				addError(i18n("papersubmission_message_papersubmission_notintime"));
+			
+			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			return paperSubmissionInfo;
+		}
+}
+	
 	public DocumentService getDocumentService() {
 		return documentService;
 	}

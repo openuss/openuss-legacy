@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -293,8 +294,8 @@ public class PaperSubmissionServiceImpl
     		if(submitted==false){
     			PaperSubmissionInfo paper = new PaperSubmissionInfo();
     			paper.setUserId(member.getUserId());
-        		paper.setFirstName(member.getFirstName());
-        		paper.setLastName(member.getLastName());
+    			//FIXME Insert a name attribute into the PaperSubmissionInfo ValueObject
+          		paper.setLastName(member.getLastName()+", "+member.getFirstName());
     			paper.setSubmissionType("NOTSUBMITTED");
 				allSubmissions.add(paper);
     		}

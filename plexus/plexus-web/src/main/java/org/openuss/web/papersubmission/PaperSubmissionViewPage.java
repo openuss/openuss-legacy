@@ -70,19 +70,9 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
 		paperInfos = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
-		/*if(paperInfos.isEmpty()){
-			paperSubmissionInfo.setExamId(examInfo.getId());
-			paperSubmissionInfo.setUserId(user.getId());
-			//paperSubmissionInfo.setDeliverDate(System.currentTimeMillis());
-			paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
-		}
-		else {*/
+		
 		if(!paperInfos.isEmpty()){
-//			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
-//			paperSubmissionInfo.setId(paperInfos.get(paperInfos.size()-1).getId());
-//			paperSubmissionInfo.setExamId(examInfo.getId());
-//			paperSubmissionInfo.setUserId(user.getId());
+
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfos.get(paperInfos.size()-1));
 			return paperInfos.get(paperInfos.size()-1);
 		}
@@ -205,6 +195,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		logger.debug("Returning to method selectSubmission");
 		logger.debug(currentSubmission.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
+		
+		if(currentSubmission.getId()==null){
+			addError(i18n("papersubmission_message_submissiondoesnotexist"));
+			return Constants.FAILURE;
+		}
 
 		return Constants.PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE;
 	}

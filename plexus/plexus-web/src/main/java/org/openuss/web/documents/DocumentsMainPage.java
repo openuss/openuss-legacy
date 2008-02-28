@@ -164,7 +164,6 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 */
 	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
 		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
-		// TODO success message
 		addMessage(i18n("documents_move_files"));
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}

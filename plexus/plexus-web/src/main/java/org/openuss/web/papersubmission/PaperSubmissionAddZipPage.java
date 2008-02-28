@@ -35,10 +35,6 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (file != null && file.getCreated() == null) {
-			logger.debug("reseting date");
-			file.setCreated(new Date());
-		}
 		addPageCrumb();
 	}
 	
@@ -52,6 +48,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	public String unzip() throws DocumentApplicationException{
 		logger.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+		paperSubmissionInfo = loadPaperSubmission();
 
 		File zipFile = document.getFile(); 
 		ZipFileUnpacker unpacker;

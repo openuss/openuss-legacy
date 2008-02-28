@@ -42,7 +42,40 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 	/** The datamodel for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
 	
-	private List<FolderEntryInfo> entries;
+	private List<ExtendedFolderEntryInfo> entries;
+	
+	public class ExtendedFolderEntryInfo {
+		
+		private FolderEntryInfo entry;
+		
+		private String submissionType;
+		
+		public ExtendedFolderEntryInfo(FolderEntryInfo entry) {
+			this.entry = entry;
+			if(entry.getModified().before(examInfo.getDeadline())){
+				this.submissionType = "INTIME";
+			}else{
+				this.submissionType = "NOTINTIME";
+			}
+		}
+
+		public FolderEntryInfo getEntry() {
+			return entry;
+		}
+
+		public String getSubmissionType() {
+			return submissionType;
+		}
+
+		public void setEntry(FolderEntryInfo entry) {
+			this.entry = entry;
+		}
+
+		public void setSubmissionType(String submissionType) {
+			this.submissionType = submissionType;
+		}
+		
+	}
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
 	private PaperSubmissionSelection paperSelection;
@@ -76,7 +109,11 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 	
 
 	private List<FolderEntryInfo> selectedEntries() {
-		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFileEntries());
+		List<ExtendedFolderEntryInfo> selectedExtendedList = new ArrayList<ExtendedFolderEntryInfo>(loadFileEntries());
+		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>();
+		for(ExtendedFolderEntryInfo selectedExtended : selectedExtendedList){
+			selected.add(selectedExtended.getEntry());
+		}
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
 				return paperSelection.isSelected(object);
@@ -104,10 +141,14 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 	
 
 	@SuppressWarnings("unchecked")
-	private List<FolderEntryInfo> loadFileEntries() {
+	private List<ExtendedFolderEntryInfo> loadFileEntries() {
 		if (entries == null) {
 			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
-			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
+			List<FolderEntryInfo> normalEntries = documentService.getFolderEntries(paperSubmissionInfo, folder);
+			entries = new ArrayList<ExtendedFolderEntryInfo>();
+			for(FolderEntryInfo entry : normalEntries){
+				entries.add(new ExtendedFolderEntryInfo(entry));
+			}
 		}
 		return entries;
 	}
@@ -122,24 +163,24 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<ExtendedFolderEntryInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<FolderEntryInfo> page;
+		private DataPage<ExtendedFolderEntryInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<ExtendedFolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							
 				if(paperSubmissionInfo == null){
-					page = new DataPage<FolderEntryInfo>(0,0,null);
+					page = new DataPage<ExtendedFolderEntryInfo>(0,0,null);
 				}
 				else{
-					List<FolderEntryInfo> entries = loadFileEntries();
+					List<ExtendedFolderEntryInfo> entries = loadFileEntries();
 					
 					//sort(submissions);
-					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
+					page = new DataPage<ExtendedFolderEntryInfo>(entries.size(), 0, entries);
 				}
 			}
 			return page;
@@ -154,11 +195,11 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 		this.paperSelection = paperSelection;
 	}
 
-	public List<FolderEntryInfo> getEntries() {
+	public List<ExtendedFolderEntryInfo> getEntries() {
 		return entries;
 	}
 
-	public void setEntries(List<FolderEntryInfo> entries) {
+	public void setEntries(List<ExtendedFolderEntryInfo> entries) {
 		this.entries = entries;
 	}
 

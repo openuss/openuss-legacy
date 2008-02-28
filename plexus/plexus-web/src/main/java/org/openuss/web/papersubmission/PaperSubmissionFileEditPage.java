@@ -90,37 +90,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
-	private PaperSubmissionInfo loadPaperSubmission(){
-		//paperSubmissionInfo = new PaperSubmissionInfo();
-		List<PaperSubmissionInfo> paperInfos;
-		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
-				
-		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
-		if(paperInfos.isEmpty()){
-			PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
-			SubmissionInfo.setExamId(examInfo.getId());
-			SubmissionInfo.setUserId(user.getId());
-			paperSubmissionService.createPaperSubmission(SubmissionInfo);
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, SubmissionInfo);
-			return SubmissionInfo;
-		}
-		else{
-			//TODO if(isDeadlineExpired())...
-			//get() does not work. Don't just see why
-			
-//			paperSubmissionInfo.setDeliverDate(paperInfos.get(0).getDeliverDate());
-//			paperSubmissionInfo.setId(paperInfos.get(0).getId());
-//			paperSubmissionInfo.setExamId(examInfo.getId());
-//			paperSubmissionInfo.setUserId(user.getId());
-			
-			
-			paperInfos.set(paperInfos.size()-1, paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1)));
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfos.get(paperInfos.size()-1));
-			return paperInfos.get(paperInfos.size()-1);
-		}
-		
-		
-	}
+	
 	
 	private boolean saveNewFile() throws IOException, DocumentApplicationException {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
