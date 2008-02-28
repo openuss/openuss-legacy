@@ -157,12 +157,12 @@ public class SeminarpoolAdministrationServiceImpl
     	courseAllocation.setSeminarpool(seminarpool);
     	courseAllocation.setCourse(course);
     	
-    	Set<CourseGroup> set = new HashSet<CourseGroup>();
+    	Collection<CourseGroup> set = new HashSet<CourseGroup>();
     	for (CourseGroupInfo groupInfo : (Collection<CourseGroupInfo>) courseGroups){
     		CourseGroup courseGroupEntity = getCourseGroupDao().courseGroupInfoToEntity(groupInfo);
     		courseGroupEntity.setCourseSeminarpoolAllocation(courseAllocation);
     		set.add(courseGroupEntity);
-    		this.getCourseGroupDao().create(courseGroupEntity);
+//    		this.getCourseGroupDao().create(courseGroupEntity);
     	}
     	courseAllocation.setCourseGroup(set);
     	Long courseAllocationId = getCourseSeminarpoolAllocationDao().create(courseAllocation).getId();
@@ -255,7 +255,7 @@ public class SeminarpoolAdministrationServiceImpl
     	Validate.notNull(seminarpoolId, "handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
     	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
     	Validate.notNull(seminarpoolEntity, "handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
-    	Set<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity.getCourseSeminarpoolAllocation();
+    	Collection<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity.getCourseSeminarpoolAllocation();
     	List<CourseSeminarpoolAllocationInfo> courseAllocationList = new ArrayList<CourseSeminarpoolAllocationInfo>();
     	for (CourseSeminarpoolAllocation courseAllocation : courseAllocations){
     		courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
@@ -298,7 +298,7 @@ public class SeminarpoolAdministrationServiceImpl
     	Validate.notNull(seminarpoolId, "handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
     	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
     	Validate.notNull(seminarpoolEntity, "handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
-    	Set<SeminarUserRegistration> userRegistrations = seminarpoolEntity.getSeminarUserRegistration();
+    	Collection<SeminarUserRegistration> userRegistrations = seminarpoolEntity.getSeminarUserRegistration();
     	List<SeminarUserRegistrationInfo> userRegistrationsInfoList = new ArrayList<SeminarUserRegistrationInfo>();
     	for (SeminarUserRegistration userRegistration : userRegistrations){
     		List<SeminarPrioritiesInfo> seminarPriorityInfoList = new ArrayList<SeminarPrioritiesInfo>();
@@ -323,7 +323,7 @@ public class SeminarpoolAdministrationServiceImpl
     	Validate.notNull(seminarpoolId, "handleGetRegistrationsByCourse ==> seminarpoolId cannot be null");
     	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
     	Validate.notNull(seminarpoolEntity, "handleGetRegistrationsByCourse ==> Cannot load Seminarpool");
-    	Set<SeminarUserRegistration> userRegistrations = seminarpoolEntity.getSeminarUserRegistration();
+    	Collection<SeminarUserRegistration> userRegistrations = seminarpoolEntity.getSeminarUserRegistration();
     	List<SeminarUserRegistrationInfo> userRegistrationsInfoList = new ArrayList<SeminarUserRegistrationInfo>();
     	for (SeminarUserRegistration userRegistration : userRegistrations){
     		List<SeminarPrioritiesInfo> seminarPriorityInfoList = new ArrayList<SeminarPrioritiesInfo>();
@@ -366,7 +366,7 @@ public class SeminarpoolAdministrationServiceImpl
     				continue;
     			}
     		}    			
-    		Set<CourseGroup> courseGroups = courseAllocation.getCourseGroup();
+    		Collection<CourseGroup> courseGroups = courseAllocation.getCourseGroup();
     		for (CourseGroup courseGroup : courseGroups){    			
     			Set<User> users = courseGroup.getUser();
     			for (User user : users) {

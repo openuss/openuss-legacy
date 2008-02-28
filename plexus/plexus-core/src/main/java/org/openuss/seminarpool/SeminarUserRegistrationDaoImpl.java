@@ -5,6 +5,10 @@
  */
 package org.openuss.seminarpool;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 
 
@@ -24,6 +28,14 @@ public class SeminarUserRegistrationDaoImpl
         super.toSeminarUserRegistrationInfo(sourceEntity, targetVO);
         targetVO.setSeminarpoolId(sourceEntity.getSeminarpool().getId());
         targetVO.setUserId(sourceEntity.getUser().getId());
+        if (sourceEntity.getSeminarPriority() != null && sourceEntity.getSeminarPriority().size() > 0){
+        	List<SeminarPrioritiesInfo> seminarPriorityInfoList = new ArrayList<SeminarPrioritiesInfo>();
+        	for (SeminarPriority seminarPriorityEntity : sourceEntity.getSeminarPriority()){
+        		getSeminarPriorityDao().toSeminarPrioritiesInfo(seminarPriorityEntity);
+        		seminarPriorityInfoList.add(getSeminarPriorityDao().toSeminarPrioritiesInfo(seminarPriorityEntity));        		
+        	}
+        	targetVO.setSeminarPriorityList(seminarPriorityInfoList);
+        }
     }
     
     /**
@@ -55,6 +67,7 @@ public class SeminarUserRegistrationDaoImpl
         if ( seminarUserRegistration == null){
         	seminarUserRegistration = SeminarUserRegistration.Factory.newInstance();
         }
+        
         return seminarUserRegistration;     
     }
 
@@ -85,5 +98,13 @@ public class SeminarUserRegistrationDaoImpl
         if ( sourceVO.getUserId() != null ){
         	targetEntity.setUser(getUserDao().load(sourceVO.getUserId()));
         }
+		if ( sourceVO.getSeminarPriorityList() != null ){
+			for ( SeminarPrioritiesInfo seminarPriorityInfo : (Collection<SeminarPrioritiesInfo>)sourceVO.getSeminarPriorityList()){
+				SeminarPriority seminarPriorityEntity = getSeminarPriorityDao().seminarPrioritiesInfoToEntity(seminarPriorityInfo);
+				targetEntity.addPriority(seminarPriorityEntity);
+				seminarPriorityEntity.setSeminarUserRegistration(targetEntity);				
+			}
+		}
+        
     }
 }

@@ -36,8 +36,18 @@ public class SeminarpoolUserRegistrationServiceImpl
 			SeminarUserRegistrationInfo userRegistrationInfo,
 			 Collection conditionValue)
 			throws Exception {
-
-		return getSeminarUserRegistrationDao().create(mapSeminarUserRegistrationInfoToEntity(userRegistrationInfo, conditionValue)).getId();
+		Validate.notNull(userRegistrationInfo, "handleEditUserRegistration UserRegistrationInfo cannot be null");
+		Validate.notNull(userRegistrationInfo.getSeminarPriorityList(), "handleEditUserRegistration SeminarPriorities cannot be null");
+		SeminarUserRegistration targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(userRegistrationInfo);
+		if ( conditionValue != null ) {
+			for (SeminarUserConditionValueInfo seminarUserConditionInfo : (Collection<SeminarUserConditionValueInfo>)conditionValue){
+				SeminarUserConditionValue conditionValueEntity = getSeminarUserConditionValueDao().seminarUserConditionValueInfoToEntity(seminarUserConditionInfo);
+				targetEntity.addUserCondition(conditionValueEntity);
+				conditionValueEntity.setSeminarUserRegistration(targetEntity);
+				
+			}
+		}
+		return getSeminarUserRegistrationDao().create(targetEntity).getId();
 	}
 
 
@@ -69,7 +79,7 @@ public class SeminarpoolUserRegistrationServiceImpl
 	}
 	
 	private List<SeminarUserConditionValueInfo> findConditionValueBySeminarUserRegistration(SeminarUserRegistration userRegistration) throws Exception {
-		Set<SeminarUserConditionValue> set = userRegistration.getSeminarUserConditionValue();
+		Collection<SeminarUserConditionValue> set = userRegistration.getSeminarUserConditionValue();
 		Iterator<SeminarUserConditionValue> iter = set.iterator();
 		List<SeminarUserConditionValueInfo> list = new ArrayList<SeminarUserConditionValueInfo>();
 		while( iter.hasNext() ){
@@ -83,37 +93,19 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected void handleEditUserRegistration(
 			SeminarUserRegistrationInfo seminarUserRegistrationInfo,
-			Collection userConditions, Collection priorities) throws Exception {
-
-		getSeminarUserRegistrationDao().update(mapSeminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, userConditions));
-	}
-	
-	private SeminarUserRegistration mapSeminarUserRegistrationInfoToEntity(
-			SeminarUserRegistrationInfo seminarUserRegistrationInfo,
-			Collection userConditions) throws Exception{
+			Collection userConditions) throws Exception {
 		Validate.notNull(seminarUserRegistrationInfo, "handleEditUserRegistration UserRegistrationInfo cannot be null");
 		Validate.notNull(seminarUserRegistrationInfo.getSeminarPriorityList(), "handleEditUserRegistration SeminarPriorities cannot be null");
-		SeminarUserRegistration targetEntity = SeminarUserRegistration.Factory.newInstance();
-		getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo, targetEntity, true);
-		if ( seminarUserRegistrationInfo.getSeminarPriorityList() != null ){
-			Iterator iter = seminarUserRegistrationInfo.getSeminarPriorityList().iterator();
-			while( iter.hasNext()){
-				SeminarPriority seminarPriorityEntity = SeminarPriority.Factory.newInstance();
-				getSeminarPriorityDao().seminarPrioritiesInfoToEntity((SeminarPrioritiesInfo)iter.next(), seminarPriorityEntity, true);
-				targetEntity.addPriority(seminarPriorityEntity);
-				seminarPriorityEntity.setSeminarUserRegistration(targetEntity);
-			}
-		}
+		SeminarUserRegistration targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo);
 		if ( userConditions != null ) {
-			Iterator iter = userConditions.iterator();
-			while ( iter.hasNext() ){
-				SeminarUserConditionValue conditionValueEntity = SeminarUserConditionValue.Factory.newInstance();
-				getSeminarUserConditionValueDao().seminarUserConditionValueInfoToEntity((SeminarUserConditionValueInfo)iter.next(), conditionValueEntity, true);
-				targetEntity.addUserCondition(conditionValueEntity);
-				conditionValueEntity.setSeminarUserRegistration(targetEntity);
+			Collection<SeminarUserConditionValue> userConditionValueEntityList = new ArrayList<SeminarUserConditionValue>();
+			for (SeminarUserConditionValueInfo seminarUserConditionInfo : (Collection<SeminarUserConditionValueInfo>)userConditions){
+				SeminarUserConditionValue conditionValueEntity = getSeminarUserConditionValueDao().seminarUserConditionValueInfoToEntity(seminarUserConditionInfo);
+				userConditionValueEntityList.add(conditionValueEntity);
 			}
+			targetEntity.setSeminarUserConditionValue(userConditionValueEntityList);
 		}
-		return targetEntity;
+		getSeminarUserRegistrationDao().update(targetEntity);
 	}
 
 	@Override
@@ -124,6 +116,14 @@ public class SeminarpoolUserRegistrationServiceImpl
 		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(userRegistrationInfo.getSeminarpoolId());
 		seminarpoolEntity.removeRegistration(getSeminarUserRegistrationDao().load(userRegistrationInfo.getId()));
 		this.getSeminarUserRegistrationDao().remove(userRegistrationInfo.getId());
+	}
+
+	@Override
+	protected SeminarUserRegistrationInfo handleFindSeminarUserRegistrationById(Long id)
+			throws Exception {
+		Validate.notNull(id, "handleFindSeminarUserRegistrationById ==> id cannot be null");
+		SeminarUserRegistration seminarUserRegistrationEntity = getSeminarUserRegistrationDao().load(id);
+		return getSeminarUserRegistrationDao().toSeminarUserRegistrationInfo(seminarUserRegistrationEntity);
 	}
 
 }

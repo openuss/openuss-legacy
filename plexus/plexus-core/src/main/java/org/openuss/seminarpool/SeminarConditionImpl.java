@@ -22,8 +22,6 @@ public class SeminarConditionImpl
      */
     public void addValue(org.openuss.seminarpool.SeminarUserConditionValue value)
     {
-        // @todo implement public void addValue(org.openuss.seminarpool.SeminarUserConditionValue value)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarCondition.addValue(org.openuss.seminarpool.SeminarUserConditionValue value) Not implemented!");
     }
 
     /**
@@ -31,8 +29,6 @@ public class SeminarConditionImpl
      */
     public void removeValue(org.openuss.seminarpool.SeminarUserConditionValue value)
     {
-        // @todo implement public void removeValue(org.openuss.seminarpool.SeminarUserConditionValue value)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarCondition.removeValue(org.openuss.seminarpool.SeminarUserConditionValue value) Not implemented!");
     }
 
 }
