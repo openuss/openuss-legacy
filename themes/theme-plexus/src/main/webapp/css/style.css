@@ -2141,6 +2141,28 @@ div .space_20above {
 
 /*###################################*/
 
+.option_box .header_font_normal {
+		
+}
+
+.option_box .collapsed {
+	margin-top: 6px;
+	width: 13px;
+	height: 10px;
+	float: left;
+	background-image: url(../img/collapsed_triangle_white.png);
+	background-repeat: no-repeat;
+}
+
+.option_box .expanded {
+	margin-top: 6px;
+	width: 13px;
+	height: 10px;
+	float: left;
+	background-image: url(../img/expanded_triangle_white.png);
+	background-repeat: no-repeat;
+}
+
 #messages .messagesInfo .content_box .header_normal {
 	padding: 0;
 	margin: 0;
