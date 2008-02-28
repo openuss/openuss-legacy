@@ -28,7 +28,7 @@
 				<plexus:command 
 					bean="#{views$secured$wiki$wikioverview}"
 					action = "lockSite"
-					styleClass="icon_hide"
+					styleClass="icon_lock"
 					label="#{msg.wiki_overview_lock_site}"
 					title="#{msg.wiki_overview_lock_site}"
 					rendered="#{!wikiPage.readOnly}">
@@ -36,7 +36,7 @@
 				<plexus:command 
 					bean="#{views$secured$wiki$wikioverview}"
 					action = "unlockSite"
-					styleClass="icon_public"
+					styleClass="icon_unlock"
 					label="#{msg.wiki_overview_unlock_site}"
 					title="#{msg.wiki_overview_unlock_site}"
 					rendered="#{wikiPage.readOnly == true}">
@@ -46,14 +46,14 @@
 					action="markSiteForRemoval" 
 					label="#{msg['wiki_overview_mark_site_for_removal']}"
 					title="#{msg['wiki_overview_mark_site_for_removal']}"
-					styleClass="icon_remove"
+					styleClass="icon_mark_for_removal"
 					rendered="#{!wikiPage.deleted}" />
 				<plexus:command 
 					bean="#{views$secured$wiki$wikioverview}"
 					action="recoverSite" 
 					label="#{msg['wiki_overview_recover_site']}"
 					title="#{msg['wiki_overview_recover_site']}"
-					styleClass="icon_move"
+					styleClass="icon_recover"
 					rendered="#{wikiPage.deleted == true}" />
 				<plexus:command 
 					bean="#{views$secured$wiki$wikioverview}"

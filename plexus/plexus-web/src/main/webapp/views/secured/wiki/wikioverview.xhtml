@@ -32,8 +32,11 @@
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
+	<ui:define name="sidebar"> 
+        	<ui:include src="/views/secured/wiki/wikigeneraloptions.xhtml" />
+		</ui:define>
 	<ui:define name="content">
-		<h:form id="discussionTableView">
+		<h:form id="wikiOverviewTableView">
 			<ui:include src="wikioverviewtable.xhtml" />
 		</h:form>
 	</ui:define>
