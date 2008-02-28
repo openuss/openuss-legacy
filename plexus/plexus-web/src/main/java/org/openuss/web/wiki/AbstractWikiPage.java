@@ -59,7 +59,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 			final BreadCrumb wikiSiteBreadCrumb = new BreadCrumb();
 			wikiSiteBreadCrumb.setName(readablePageName(siteVersionInfo.getName()));
 			wikiSiteBreadCrumb.setHint(readablePageName(siteVersionInfo.getName()));
-			breadcrumbs.addCrumb(wikiBreadCrumb);
+			breadcrumbs.addCrumb(wikiSiteBreadCrumb);
 		}
 	}
 

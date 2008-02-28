@@ -27,6 +27,8 @@ public class WikiMainPage extends AbstractWikiPage {
 			String pageName = Constants.WIKI_STARTSITE_NAME;
 			if (this.siteName != null) {
 				pageName = URLUTF8Encoder.decode(this.siteName);
+			} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
+				pageName = this.siteVersionInfo.getName();
 			}
 
 			final WikiSiteContentInfo backup = this.siteVersionInfo;
