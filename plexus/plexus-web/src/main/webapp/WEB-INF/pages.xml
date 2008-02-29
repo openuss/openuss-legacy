@@ -245,6 +245,14 @@
         <parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionId}" converterId="javax.faces.Long"/>
     </page>
     
+    <page view-id="/views/secured/wiki/wikiimport.xhtml">
+    	<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    
+    <page view-id="/views/secured/wiki/wikiimportconfirmation.xhtml">
+    	<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
             Papersubmission
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
