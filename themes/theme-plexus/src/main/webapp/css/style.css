@@ -2160,43 +2160,32 @@ span.profile_text {
 	padding: 15px 15px 15px 15px;
 }
 
-.inactive-day workday {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
+table.month {
+
+	margin-left: 1px;
+	margin-right: 0px;
+	margin-top: 1px;
+	margin-down: 0px;
 }
 
-.day workday {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
+table.month td  {
+	border: 0px dotted;
+	padding: 0px;
+	margin: 0px;
+	
 }
 
-.day weekend {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
+table.day td.header {
+	border: 1px solid;
+	height: 19px;
+	font-style: bold;
 }
 
-td.inactive-day workday {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
-}
-
-td.day workday {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
-}
-
-td.day weekend {
-	height:121px;
-	width:16.6667%;
-	padding: 0px 0px 0px 0px;
-}
+table.day td.content {
+	border: 1px solid;
+}	
 
 textarea.internalmessage {
 	width="200"
-	height="200"
+	heigth="200"
 }

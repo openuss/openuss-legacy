@@ -49,27 +49,23 @@ public class SingleAppointmentCreatePage extends BasePage{
 		
 		AppointmentInfo appointmentInfo = new AppointmentInfo();
 		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
-		
-		CalendarInfo calendarInfo = new CalendarInfo();
-		setSessionBean(Constants.OPENUSS4US_CALENDAR, calendarInfo);
-		
-		
-		
 	}
 	
 	public String save(){
-
-			appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
-			appointmentInfo.setSerial(false);
-			appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
-			calendarInfo.setCalendarType(CalendarType.user_calendar);
+		
+		calendarInfo.setCalendarType(CalendarType.user_calendar);
+		
+		// appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
+		appointmentInfo.setSerial(false);
 			
-			try {
-				calendarService.createAppointment(appointmentInfo, calendarInfo);
-			} catch (CalendarApplicationException e) {
-				// TODO Auto-generated catch block
-				addError("Das Anlegen eines Appointments macht fehler");
-			}
+		appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
+		
+		try {
+			calendarService.createAppointment(appointmentInfo, calendarInfo);
+		} catch (CalendarApplicationException e) {
+			// TODO Auto-generated catch block
+			addError("Das Anlegen eines Appointments schlug fehl");
+		}
 
 		return Constants.CALENDAR_HOME;
 	}

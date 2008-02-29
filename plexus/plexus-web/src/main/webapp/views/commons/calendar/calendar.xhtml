@@ -13,6 +13,16 @@
       <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 
 	<f:subview>
+	<div id="schedule">
+	<h:panelGrid columns="6" border="0" style="width: 100.00%" >
+		<h:outputText value="Montag" />
+		<h:outputText value="Dienstag" />
+		<h:outputText value="Mittwoch" />
+		<h:outputText value="Donnerstag" />
+		<h:outputText value="Freitag" />
+		<h:outputText value="Sa. / So." />
+	</h:panelGrid>
+		
 	<sandbox:schedule value="#{scheduleHandler2.model}" id="schedule1"
 					rendered="true" visibleEndHour="#{scheduleSettings2.visibleEndHour}"
 					visibleStartHour="#{scheduleSettings2.visibleStartHour}"
@@ -30,6 +40,7 @@
 	
 	
 	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
-
+	</div>
+	
 	</f:subview>
 </ui:composition>
