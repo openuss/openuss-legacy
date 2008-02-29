@@ -442,6 +442,10 @@ public class CalendarServiceImpl extends
 	protected List handleGetSubscriptions() throws Exception {
 		User user = getSecurityService().getCurrentUser();
 		Calendar cal = getCalendarDao().findByDomainIdentifier(user.getId());
+		if(cal==null){
+			this.createCalendar(getUserDao().toUserInfo(user));
+			cal = getCalendarDao().findByDomainIdentifier(user.getId());
+		}
 		Set<Calendar> subscriptions = cal.getSubscriptions();
 		ArrayList<CalendarInfo> subs = new ArrayList<CalendarInfo>();
 		// subs.addAll(subscriptions);

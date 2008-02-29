@@ -15,7 +15,8 @@
 	<h:form id="openuss4us_calendaroverview" enctype="multipart/form-data">
 		<plexus:dataTable id="serialAppointmentTable"
 			value="views$secured$calendar$calendar.serialAppointmentData"
-			var="serialAppointment" rows="20" label="#{msg.openuss4us_calendar_serial_appointments}">
+			var="serialAppointment" rows="20"
+			label="#{msg.openuss4us_calendar_serial_appointments}">
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 				<h:outputText value="#{serialAppointment.subject}"
@@ -101,7 +102,8 @@
 		</plexus:dataTable>
 		<plexus:dataTable id="singleAppointmentTable"
 			value="views$secured$calendar$calendar.singleAppointmentData"
-			var="singleAppointment" rows="20" label="#{msg.openuss4us_calendar_single_appointments}">
+			var="singleAppointment" rows="20"
+			label="#{msg.openuss4us_calendar_single_appointments}">
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.subject}"
@@ -143,14 +145,30 @@
 			</t:column>
 		</plexus:dataTable>
 		<o:block>
-			<h:commandButton value="#{msg.openuss4us_calendar_button_create_single_appointment}"
-				title="#{msg.openuss4us_calendar_button_create_single_appointment}" action="calendar_create_single_appointment"
+			<c:if test="true">
+				<!-- test wether user is moderator/dozent -->
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					action="calendar_create_single_appointment" styleClass="button" />
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					action="calendar_create_serial_appointment" styleClass="button" />
+			</c:if>
+			<h:commandButton
+				value="#{msg.openuss4us_calendar_subscribe}"
+				title="#{msg.openuss4us_calendar_subscribe_hint}"
+				rendered="#{not views$secured$calendar$calendar.subscribed}"
+				action="#{views$secured$calendar$calendar.changeSubscription}"
+				styleClass="button" />	
+			<h:commandButton
+				value="#{msg.openuss4us_calendar_subscribe_delete}"
+				title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
+				rendered="#{views$secured$calendar$calendar.subscribed}"
+				action="#{views$secured$calendar$calendar.changeSubscription}"
 				styleClass="button" />
-			<h:commandButton value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
-				title="#{msg.openuss4us_calendar_button_create_serial_appointment}" action="calendar_create_serial_appointment"
-				styleClass="button" />
-			<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
-				title="#{msg.openuss4us_calendar_subscribe_hint}" action="openuss4us_calendar_subscribe" styleClass="button" />
+
 		</o:block>
 	</h:form>
 </ui:composition>

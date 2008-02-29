@@ -39,7 +39,7 @@ public class CalendarMainPage extends BasePage {
 	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
 	private CalendarInfo calendarInfo;
 	
-	private boolean isSubscribed;
+	private boolean subscribed;
 
 	// Data-Provider serial appointments
 	private SerialAppointmentDataProvider serialAppointmentData = new SerialAppointmentDataProvider();
@@ -57,7 +57,7 @@ public class CalendarMainPage extends BasePage {
 				int pageSize) {
 			if (page == null) {
 				List<SerialAppointmentInfo> al = null;
-				logger.debug("Loading Buddylist");
+				logger.debug("Loading serial appointments");
 				try {
 					al = calendarService.getNaturalSerialAppointments(calendarInfo);
 				} catch (CalendarApplicationException e) {
@@ -87,7 +87,7 @@ public class CalendarMainPage extends BasePage {
 				int pageSize) {
 			if (page == null) {
 				List<AppointmentInfo> al = null;
-				logger.debug("Loading Buddylist");
+				logger.debug("Loading single appointments");
 				try {
 					al = calendarService.getNaturalSingleAppointments(calendarInfo);
 				} catch (CalendarApplicationException e) {
@@ -105,6 +105,11 @@ public class CalendarMainPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (calendarInfo == null) {
+			addError(i18n("TODO: calendar not found!"));
+			redirect(Constants.DESKTOP);
+			return;
+		}
 		//TODO correct breadcrumbs
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath() + calendarBasePath);
@@ -112,6 +117,22 @@ public class CalendarMainPage extends BasePage {
 		newCrumb.setHint(i18n("openuss4us_command_groups"));
 		// breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(newCrumb);
+	}
+	
+	public String changeSubscription(){
+		try{
+		if(getSubscribed()){
+			this.addMessage("TODO: Unsubscribed");
+			getCalendarService().endSubscription(calendarInfo);
+		} else {
+			this.addMessage("TODO: Subscribed");
+			getCalendarService().addSubscription(calendarInfo);
+		}
+		} catch (CalendarApplicationException e) {
+			this.addError("Error");
+			return Constants.SUCCESS;
+		}
+		return "openuss4us_calendar_calendar";
 	}
 
 	public CalendarService getCalendarService() {
@@ -148,7 +169,7 @@ public class CalendarMainPage extends BasePage {
 		this.singleAppointmentData = singleAppointmentData;
 	}
 
-	public boolean isSubscribed() {
+	public boolean getSubscribed() {
 		try {
 			if(calendarService.getSubscriptions().contains(calendarInfo)){
 				logger.debug("Already subscribed to this calendar");
@@ -163,6 +184,6 @@ public class CalendarMainPage extends BasePage {
 	}
 
 	public void setSubscribed(boolean isSubscribed) {
-		this.isSubscribed = isSubscribed;
+		this.subscribed = isSubscribed;
 	}
 }

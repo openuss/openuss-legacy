@@ -253,11 +253,6 @@
 			<from-outcome>openuss4us_calendar_calendar</from-outcome>
 			<to-view-id>/views/secured/calendar/calendar.xhtml</to-view-id>
 		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>openuss4us_calendar_subscribe</from-outcome>
-			<to-view-id>/views/secured/calendar/subscribe.xhtml</to-view-id>
-		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>openuss4us_groups</from-outcome>
