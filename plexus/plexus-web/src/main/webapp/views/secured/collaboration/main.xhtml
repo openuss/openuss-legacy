@@ -57,7 +57,9 @@
 				</s:acl>
 			</h:form>
 			<c:if test="#{views$secured$collaboration$main.editing}">
-				<ui:include src="workspaceedit.xhtml"/>
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+					<ui:include src="workspaceedit.xhtml" rendered="#{views$secured$collaboration$main.editing}"/>
+				</s:acl>
 			</c:if>
 				
   		</ui:define>

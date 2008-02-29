@@ -67,9 +67,11 @@
 					</c:if>
 				</s:acl>
 			</h:form>
-			<c:if test="#{views$secured$papersubmission$paperlist.editing}">
-				<ui:include src="examedit.xhtml"/>
-			</c:if>
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+				<c:if test="#{views$secured$papersubmission$paperlist.editing}">
+					<ui:include src="examedit.xhtml"/>
+				</c:if>
+			</s:acl>
 				
   		</ui:define>
 	</ui:composition>
