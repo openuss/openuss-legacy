@@ -43,6 +43,15 @@
 
  	  		<t:saveState id="papersubmission_editing" value="#{views$secured$papersubmission$paperlist.editing}" />	  		
   			<h:form id="papersForm">
+  			
+	  		
+		  		<o:block label="#{msg.workspace_main_info}" styleClass="form_box">
+					<p class="content_font_normal">	  								
+						<h:outputFormat escape="false" value="#{msg.workspace_main_info_detail}" styleClass="content_font_normal" />
+					</p>
+				</o:block>
+		  		  			
+  			
 				<ui:include src="paperstable.xhtml"/>
 							
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
