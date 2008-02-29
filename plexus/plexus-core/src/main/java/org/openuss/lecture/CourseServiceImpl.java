@@ -101,10 +101,16 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		for (Group courseGroup:courseGroups){
 			getSecurityService().removeGroup(courseGroup);
 		}
+		
+		// Remove CourseMembers
+		List<CourseMember> courseMembers = getCourseMemberDao().findByCourse(course);
+		if (!(courseMembers == null || courseMembers.size()==0)){
+			getCourseMemberDao().remove(courseMembers);
+		}
 
 		// Remove Course
 		course.getCourseType().remove(course);
-		course.getPeriod().remove(course);
+		course.getPeriod().remove(course);		
 		this.getCourseDao().remove(courseId);
 	}
 
