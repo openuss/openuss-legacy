@@ -402,5 +402,12 @@
 		<property name="indexerService" ref="indexerService" />
 		<property name="postDao" ref="postDao" />
 	</bean>
+	
+	<!-- Aspect bean to notify all server instances via command about changes in ldap configuration. -->
+	
+	<bean id="LdapConfigurationAspectBean"
+		class="org.openuss.aop.LdapConfigurationAspect">
+		<property name="ldapConfigurationNotifyService" ref="ldapConfigurationNotifyService" />		
+	</bean>
 
 </beans>
