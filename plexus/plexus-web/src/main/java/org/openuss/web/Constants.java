@@ -100,6 +100,10 @@ public class Constants {
 	public static final String DEPARTMENT_REGISTRATION_START_PAGE= "department_registration_start";
 	public static final String DEPARTMENT_REGISTRATION_STEP1_PAGE = "department_registration_step1";
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
+	
+	// ldap_domain navigation outcomes and combobox long constants
+	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldap_domainRegistration";
+	
 
 	// institute navigation outcomes and combobox long constants
 	public static final String INSTITUTE_PAGE = "institute";
