@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
+
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -23,6 +25,8 @@ import org.openuss.wiki.WikiSiteInfo;
 @Bean(name = "views$secured$wiki$wikimain", scope = Scope.REQUEST)
 @View
 public class WikiMainPage extends AbstractWikiPage {
+	
+	private static final Logger LOGGER = Logger.getLogger(WikiMainPage.class);
 	
 	@Override
 	@Prerender
@@ -80,13 +84,13 @@ public class WikiMainPage extends AbstractWikiPage {
 					out.write(buf, 0, i);
 				}
 			} catch (IOException e) {
-				logger.error("Error reading wiki_index.xhtml", e);
+				LOGGER.error("Error reading wiki_index.xhtml", e);
 			} finally {
 				try {
 					in.close();
 					out.close();
 				} catch (IOException e) {
-					logger.error("Error reading wiki_index.xhtml", e);
+					LOGGER.error("Error reading wiki_index.xhtml", e);
 				}
 				
 			}
@@ -124,6 +128,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String recoverSite() {
 		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(siteVersionInfo.getWikiSiteId());
+		LOGGER.debug("Recovering Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setDeleted(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -138,6 +143,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String lockSite() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		LOGGER.debug("Locking Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setReadOnly(true);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -152,6 +158,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String unlockSite() {
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
+		LOGGER.debug("Unlocking Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setReadOnly(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -190,6 +197,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String markStable() {
+		LOGGER.debug("Marking Site " + siteVersionInfo.getName() + " stable.");
 		siteVersionInfo.setStable(true);
 		wikiService.saveWikiSite(siteVersionInfo);
 		
@@ -202,6 +210,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String unmarkStable() {
+		LOGGER.debug("Unmarking Site " + siteVersionInfo.getName() + " stable.");
 		siteVersionInfo.setStable(false);
 		wikiService.saveWikiSite(siteVersionInfo);
 		

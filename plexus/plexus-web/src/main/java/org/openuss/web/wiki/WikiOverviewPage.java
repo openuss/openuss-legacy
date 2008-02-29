@@ -1,5 +1,6 @@
 package org.openuss.web.wiki;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -15,6 +16,8 @@ import org.openuss.wiki.WikiSiteInfo;
 @Bean(name = "views$secured$wiki$wikioverview", scope = Scope.REQUEST)
 @View
 public class WikiOverviewPage extends AbstractWikiPage {
+	
+	private static final Logger LOGGER = Logger.getLogger(WikiOverviewPage.class);
 	
 	@Override
 	@Prerender
@@ -37,7 +40,8 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String markSiteForRemoval() {
-		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();
+		LOGGER.debug("Marking Site " + wikiSiteInfo.getName() + " for removal.");
 		wikiSiteInfo.setDeleted(true);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -51,7 +55,8 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String recoverSite() {
-		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();
+		LOGGER.debug("Recovering Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setDeleted(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -65,7 +70,8 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String lockSite() {
-		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();
+		LOGGER.debug("Locking Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setReadOnly(true);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);
@@ -79,7 +85,8 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String unlockSite() {
-		final WikiSiteInfo wikiSiteInfo = getData().getRowData();		
+		final WikiSiteInfo wikiSiteInfo = getData().getRowData();
+		LOGGER.debug("Unlocking Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setReadOnly(false);
 		
 		wikiService.saveWikiSite(wikiSiteInfo);

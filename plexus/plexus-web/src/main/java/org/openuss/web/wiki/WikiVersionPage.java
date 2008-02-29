@@ -21,7 +21,7 @@ import org.openuss.wiki.WikiSiteInfo;
 @View
 public class WikiVersionPage extends AbstractWikiPage{
 	
-	private static final Logger logger = Logger.getLogger(WikiVersionPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WikiVersionPage.class);
 	
 	private WikiDataProvider data = new WikiDataProvider();
 	
@@ -46,7 +46,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 	 * @return Wiki Edit Page.
 	 */
 	public String editWikiVersion() {
-		logger.debug("editing WikiSiteVersion");
+		LOGGER.debug("editing WikiSiteVersion");
 		WikiSiteInfo entry = data.getRowData();
 		siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
 		
@@ -59,7 +59,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 	 * @return Wiki Version Page.
 	 */
 	public String deleteWikiVersion() {
-		logger.debug("delete wikiSiteVersion");
+		LOGGER.debug("delete wikiSiteVersion");
 		WikiSiteInfo entry = data.getRowData();
 		wikiService.deleteWikiSiteVersion(entry.getId());
 		

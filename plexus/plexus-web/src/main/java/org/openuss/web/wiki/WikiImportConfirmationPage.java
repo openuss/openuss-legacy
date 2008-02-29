@@ -4,6 +4,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -20,6 +21,8 @@ import org.openuss.web.PageLinks;
 @Bean(name = "views$secured$wiki$wikiimportconfirmation", scope = Scope.REQUEST)
 @View
 public class WikiImportConfirmationPage extends AbstractWikiPage {
+	
+	private static final Logger LOGGER = Logger.getLogger(WikiImportConfirmationPage.class);
 
 	@Override
 	@Prerender
@@ -56,8 +59,10 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 		final String importType = (String) getSessionBean(Constants.WIKI_IMPORT_TYPE);
 		
 		if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES.equals(importType)) {
+			LOGGER.debug("Importing WikiSiteVersions from DomainID " + selectedCourseId + ".");
 			wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
 		} else if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS.equals(importType)) {
+			LOGGER.debug("Importing WikiSites from DomainID " + selectedCourseId + ".");
 			wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
 		} else {
 			throw new RuntimeException("Unexpected Wiki Import Type.");

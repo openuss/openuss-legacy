@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -23,8 +22,6 @@ import org.openuss.wiki.WikiSiteInfo;
  *
  */
 public class AbstractWikiPage extends AbstractCoursePage {
-	
-	public static final Logger logger = Logger.getLogger(AbstractWikiPage.class);
 		
 	@Property(value = "#{wikiService}")
 	protected WikiService wikiService;

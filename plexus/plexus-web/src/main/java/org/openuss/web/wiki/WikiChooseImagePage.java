@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.component.UIInput;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -25,6 +26,8 @@ import org.openuss.web.upload.UploadFileManager;
 @View
 public class WikiChooseImagePage extends AbstractWikiPage {
 	
+	private static final Logger LOGGER = Logger.getLogger(WikiChooseImagePage.class);
+	
 	private WikiImageProvider data = new WikiImageProvider();
 	
 	private UIInput fileUpload;
@@ -37,10 +40,11 @@ public class WikiChooseImagePage extends AbstractWikiPage {
 	 * @return Wiki Choose Image Page.
 	 * @throws IOException Signals that an I/O exception of some sort has occurred.
 	 */
-	public String save() throws IOException {
+	public String save() throws IOException {		
 		final FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
 		
 		if (fileInfo != null) {
+			LOGGER.debug("Saving Image " + fileInfo.getFileName() + ".");
 			getWikiService().saveImage(this.siteVersionInfo, fileInfo);		
 		}
 		

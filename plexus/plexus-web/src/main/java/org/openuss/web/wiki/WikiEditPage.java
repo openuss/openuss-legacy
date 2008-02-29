@@ -1,7 +1,9 @@
 package org.openuss.web.wiki;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -18,6 +20,8 @@ import org.openuss.wiki.WikiSiteContentInfo;
 @View
 public class WikiEditPage extends AbstractWikiPage {
 	
+	private static final Logger LOGGER = Logger.getLogger(WikiEditPage.class);
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -30,7 +34,7 @@ public class WikiEditPage extends AbstractWikiPage {
 	 * Saves a site and returns the Wiki Main Page.
 	 * @return Wiki Main Page.
 	 */
-	public String save() {	
+	public String save() {		
 		if (hasConcurrentModifcation()) {
 			return Constants.WIKI_OVERWRITE_PAGE;
 		}
@@ -39,8 +43,12 @@ public class WikiEditPage extends AbstractWikiPage {
 		if (siteVersionInfo.getName() == null) {
 			siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 		}
+		
+		Date creationDate = new Date();
+		
+		LOGGER.debug("Saving Site " + siteVersionInfo.getName() + ", (Version: " + SimpleDateFormat.getInstance().format(creationDate) + ").");
 
-		siteVersionInfo.setCreationDate(new Date());
+		siteVersionInfo.setCreationDate(creationDate);
 		siteVersionInfo.setAuthorId(user.getId());
 		siteVersionInfo.setDomainId(this.courseInfo.getId());
 		siteVersionInfo.setDeleted(false);
@@ -66,6 +74,7 @@ public class WikiEditPage extends AbstractWikiPage {
 		if (this.siteVersionInfo.getWikiSiteId() != null && this.siteVersionInfo.getWikiSiteId() != 0) {
 			final Long newestId = this.wikiService.getNewestWikiSite(this.siteVersionInfo.getWikiSiteId()).getId();
 			if (newestId > this.siteVersionInfo.getId()) {
+				LOGGER.debug("Saving Site " + this.siteVersionInfo.getName() + ". Concurrent modifications found.");
 				return true;
 			}
 		}

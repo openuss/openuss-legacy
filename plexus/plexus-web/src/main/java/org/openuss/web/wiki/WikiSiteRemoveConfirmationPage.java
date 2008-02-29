@@ -23,7 +23,7 @@ import org.openuss.wiki.WikiSiteInfo;
 @View
 public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	
-	private static final Logger logger = Logger.getLogger(WikiSiteRemoveConfirmationPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WikiSiteRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
 
@@ -38,7 +38,7 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 			newCrumb.setHint(i18n("wiki_site_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
-			logger.error(e);
+			LOGGER.error(e);
 		}
 	}
 	
@@ -46,8 +46,9 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	 * Removes a Site including all Versions and returns Wiki Main Page.
 	 * @return Wiki Main Page.
 	 */
-	public String removeSite() {
+	public String removeSite() {		
 		final WikiSiteInfo site = (WikiSiteInfo) getSessionBean(Constants.WIKI_SITE_TO_REMOVE);
+		LOGGER.debug("Removing Site " + site.getName() + ".");
 		getWikiService().deleteWikiSite(site.getWikiSiteId());
 		
 		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, null);

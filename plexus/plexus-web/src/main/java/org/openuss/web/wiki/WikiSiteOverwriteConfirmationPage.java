@@ -1,5 +1,6 @@
 package org.openuss.web.wiki;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.faces.component.UIComponent;
@@ -24,7 +25,7 @@ import org.openuss.web.Constants;
 @View
 public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	
-	private static final Logger logger = Logger.getLogger(WikiSiteOverwriteConfirmationPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WikiSiteOverwriteConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
 
@@ -40,7 +41,7 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 			newCrumb.setHint(i18n("wiki_site_overwrite_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
-			logger.error(e);
+			LOGGER.error(e);
 		}
 	}
 	
@@ -54,7 +55,11 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 			siteVersionInfo.setName((String) getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 		}
 		
-		siteVersionInfo.setCreationDate(new Date());
+		Date creationDate = new Date();
+		
+		LOGGER.debug("Overwrting Site " + siteVersionInfo.getName() + ", (Version: " + SimpleDateFormat.getInstance().format(creationDate) + ").");
+		
+		siteVersionInfo.setCreationDate(creationDate);
 		siteVersionInfo.setAuthorId(user.getId());
 		siteVersionInfo.setDomainId(courseInfo.getId());
 		siteVersionInfo.setDeleted(false);

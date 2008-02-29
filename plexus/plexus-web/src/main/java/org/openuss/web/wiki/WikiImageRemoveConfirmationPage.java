@@ -23,7 +23,7 @@ import org.openuss.web.Constants;
 @View
 public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 	
-	private static final Logger logger = Logger.getLogger(WikiImageRemoveConfirmationPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WikiImageRemoveConfirmationPage.class);
 
 	private static final long serialVersionUID = -202000019652888870L;
 
@@ -38,7 +38,7 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			newCrumb.setHint(i18n(Constants.WIKI_IMAGE_REMOVE_HEADER));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception exception) {
-			logger.error(exception);
+			LOGGER.error(exception);
 		}
 	}
 	
