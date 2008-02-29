@@ -12,7 +12,11 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
 
-
+/**
+ * Backing Bean for wikieditlinks.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$wiki$wikieditlinks", scope = Scope.REQUEST)
 @View
 public class WikiEditLinksPage extends AbstractWikiPage {
