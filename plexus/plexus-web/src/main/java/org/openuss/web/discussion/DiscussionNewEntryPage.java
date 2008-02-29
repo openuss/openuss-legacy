@@ -54,18 +54,18 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 			postInfo.setIp(ip);
 			postInfo.setSubmitter(user.getUsername());
 			postInfo.setSubmitterId(user.getId());
-			discussionService.createTopic(postInfo, getForum());
+			courseDiscussionService.createTopic(postInfo, courseInfo);
 			return Constants.DISCUSSION_MAIN;
 		}
 		if (postInfo.getId()== null){
 			postInfo.setIp(ip);
 			postInfo.setSubmitter(user.getUsername());
 			postInfo.setSubmitterId(user.getId());
-			discussionService.addPost(postInfo, topic);			
+			courseDiscussionService.addPost(postInfo, topic, courseInfo);			
 		} else if (postInfo.getId()!= null){
 			postInfo.setEditor(user.getUsername());
 			postInfo.setIsEdited(true);
-			discussionService.updatePost(postInfo);
+			courseDiscussionService.updatePost(postInfo, courseInfo);
 		}
 		return Constants.DISCUSSION_THREAD;		
 	}

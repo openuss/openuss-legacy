@@ -35,7 +35,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo) throws Exception {
+	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo, String domainName) throws Exception {
 		Validate.notNull(postInfo, "postInfo must not be null");
 		Validate.notNull(forumInfo, "forumInfo must not be null");
 
@@ -58,24 +58,24 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
  		TopicInfo topicInfo = getTopicDao().toTopicInfo(topic);
 
  		// add first post
-		handleAddPost(postInfo, topicInfo);
+		handleAddPost(postInfo, topicInfo, domainName);
 		topic = getTopicDao().load(topicInfo.getId());
 		
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
 		
-		sendNotificationsToForumWatchers(topic, topic.getForum());
+		sendNotificationsToForumWatchers(topic, topic.getForum(), domainName);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void sendNotificationsToForumWatchers(Topic topic, Forum forum) {
+	private void sendNotificationsToForumWatchers(Topic topic, Forum forum, String domainName) {
 		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
 		List<User> emails = new ArrayList<User>();
 		for (ForumWatch watch : watches){
 			emails.add(watch.getUser());			
 		}
 		logEmailAdresses(emails);
-		sendNotificationEmail(emails, topic);
+		sendNotificationEmail(emails, topic, domainName);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#addPost(org.openuss.discussion.PostInfo,
 	 *      org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo) throws Exception {
+	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo, String domainName) throws Exception {
 		Validate.notNull(postInfo, "PostInfo must not be null.");
 		Validate.notNull(topicInfo, "TopicInfo must not be null.");
 		
@@ -130,7 +130,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 		
-		sendNotifications(topic, topic.getForum());
+		sendNotifications(topic, topic.getForum(), domainName);
 		getTrackingService().setModified(topic);
 		getTrackingService().setRead(topic);
 		
@@ -139,7 +139,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void sendNotifications(Topic topic, Forum forum){
+	private void sendNotifications(Topic topic, Forum forum, String domainName){
 		List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
 		List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
 		Set<User> emails = new HashSet();
@@ -147,7 +147,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		emails.addAll(emailsByForum);		
 		logEmailAdresses(emails);
 		List l = new ArrayList(emails);
-		sendNotificationEmail(l, topic);
+		sendNotificationEmail(l, topic, domainName);
 		logger.debug("got users to notify");
 	}
 	
@@ -194,7 +194,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected void handleUpdatePost(PostInfo postInfo) throws Exception {
+	protected void handleUpdatePost(PostInfo postInfo, String domainName) throws Exception {
 		Post post = getPostDao().load(postInfo.getId());
 		post.setText(postInfo.getText());
 		post.setTitle(postInfo.getTitle());
@@ -206,7 +206,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		getPostDao().toPostInfo(post,postInfo);
 		
-		sendNotifications(post.getTopic(), post.getTopic().getForum());
+		sendNotifications(post.getTopic(), post.getTopic().getForum(), domainName);
 		
 		getTrackingService().setModified(post.getTopic());
 		getTrackingService().setRead(post.getTopic());
@@ -421,21 +421,17 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void sendNotificationEmail(List<User> recipients, Topic topic) {
+	private void sendNotificationEmail(List<User> recipients, Topic topic, String domainName) {
 		if (recipients==null||recipients.size()==0) return;
 		try {
 			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&course="+topic.getForum().getDomainIdentifier();
 
-			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;
-				
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;		
 
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
-			
-			Course course = getCourseDao().load(topic.getForum().getDomainIdentifier());
-			CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
-			
-			parameters.put("coursename", courseInfo.getName());
+				
+			parameters.put("coursename", domainName);
 			parameters.put("topiclink", link);
 			
 			getMessageService().sendMessage(
