@@ -23,7 +23,7 @@ import org.openuss.security.UserInfo;
  */
 public class CalendarServiceImpl extends
 		org.openuss.calendar.CalendarServiceBase {
-	
+
 	SecurityService securityService;
 
 	/**
@@ -160,7 +160,6 @@ public class CalendarServiceImpl extends
 		// update all subscribed Cals
 		Collection<Calendar> cals = cal.getSubscribedCalendars();
 		getCalendarDao().update(cals);
-		
 
 	}
 
@@ -180,17 +179,19 @@ public class CalendarServiceImpl extends
 			throw new Exception("Recurrence endtime before first occurence");
 		Calendar cal = getCalendarDao().load(calendar.getId());
 
-		SerialAppointment serialAppointment = getSerialAppointmentDao().create(
-				getAppointmentTypeDao().load(
-						serialAppointmentInfo.getAppointmentTypeInfo().getId()),
-				serialAppointmentInfo.getDescription(),
-				serialAppointmentInfo.getEndtime(),
-				serialAppointmentInfo.getLocation(),
-				serialAppointmentInfo.getRecurrenceEndtime(),
-				serialAppointmentInfo.getRecurrencePeriod(),
-				serialAppointmentInfo.getRecurrenceType(), true, cal,
-				serialAppointmentInfo.getStarttime(),
-				serialAppointmentInfo.getSubject());
+		SerialAppointment serialAppointment = getSerialAppointmentDao()
+				.create(
+						getAppointmentTypeDao().load(
+								serialAppointmentInfo.getAppointmentTypeInfo()
+										.getId()),
+						serialAppointmentInfo.getDescription(),
+						serialAppointmentInfo.getEndtime(),
+						serialAppointmentInfo.getLocation(),
+						serialAppointmentInfo.getRecurrenceEndtime(),
+						serialAppointmentInfo.getRecurrencePeriod(),
+						serialAppointmentInfo.getRecurrenceType(), true, cal,
+						serialAppointmentInfo.getStarttime(),
+						serialAppointmentInfo.getSubject());
 
 		cal.addSerialAppointment(serialAppointment);
 
@@ -218,7 +219,7 @@ public class CalendarServiceImpl extends
 
 		// get entities
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-		
+
 		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
 
 		// set new data
@@ -226,7 +227,6 @@ public class CalendarServiceImpl extends
 		AppointmentType appType = getAppointmentTypeDao().load(
 				serialAppointmentInfo.getAppointmentTypeInfo().getId());
 
-		
 		SerialAppointment newSerialApp = getSerialAppointmentDao().create(
 				appType, serialAppointmentInfo.getDescription(),
 				serialAppointmentInfo.getEndtime(),
@@ -284,17 +284,16 @@ public class CalendarServiceImpl extends
 	protected org.openuss.calendar.CalendarInfo handleGetCalendar(
 			org.openuss.foundation.DomainObject domainObject)
 			throws java.lang.Exception {
-		
-		
+
 		Calendar cal = getCalendarDao().findByDomainIdentifier(
 				domainObject.getId());
-		
+
 		if (cal == null) {
-			throw new Exception("No calendar found for this domain object");
-		} else {
-			CalendarInfo calInfo = getCalendarDao().toCalendarInfo(cal);
-			return calInfo;
+			this.createCalendar(domainObject);
+			cal = getCalendarDao().findByDomainIdentifier(domainObject.getId());
 		}
+		CalendarInfo calInfo = getCalendarDao().toCalendarInfo(cal);
+		return calInfo;
 
 	}
 
@@ -335,38 +334,40 @@ public class CalendarServiceImpl extends
 	protected void handleAddSubscription(
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		
+
 		User user = getSecurityService().getCurrentUser();
-		
+
 		// add the link between the subscribing and the subscribed
 		Calendar calToSubscribe = getCalendarDao().load(calendarInfo.getId());
-		
-		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(user.getId());
+
+		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(
+				user.getId());
 		calToSubscribe.getSubscribedCalendars().add(subscribingCal);
 		subscribingCal.getSubscriptions().add(calToSubscribe);
-		
-		// add already existing single appointments (including apps generated from serial app)
-		
+
+		// add already existing single appointments (including apps generated
+		// from serial app)
+
 		// get single apps from subscribed calendar
 		List<Appointment> appsToAdd = calToSubscribe.getSingleAppointments();
-		
+
 		for (Appointment app : appsToAdd) {
 			subscribingCal.getLinkedAppointments().add(app);
 			app.getAssignedCalendars().add(subscribingCal);
 		}
-		
+
 		// add natural serial appointments
-		List<SerialAppointment> serialApps = calToSubscribe.getNaturalSerialAppointments();
-		
+		List<SerialAppointment> serialApps = calToSubscribe
+				.getNaturalSerialAppointments();
+
 		for (SerialAppointment serialApp : serialApps) {
 			subscribingCal.getLinkedAppointments().add(serialApp);
 			serialApp.getAssignedCalendars().add(subscribingCal);
 		}
-		
+
 		getCalendarDao().update(subscribingCal);
 		getCalendarDao().update(calToSubscribe);
-		
-		
+
 	}
 
 	/**
@@ -376,33 +377,34 @@ public class CalendarServiceImpl extends
 	protected void handleEndSubscription(
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
-		
-		User user = getSecurityService().getCurrentUser();		
+
+		User user = getSecurityService().getCurrentUser();
 		Calendar parentCal = getCalendarDao().load(calendarInfo.getId());
-		Calendar childCal = getCalendarDao().findByDomainIdentifier(user.getId());
-		
+		Calendar childCal = getCalendarDao().findByDomainIdentifier(
+				user.getId());
+
 		// remove single appointments
 		List<Appointment> singleApps = parentCal.getSingleAppointments();
 		for (Appointment appIt : singleApps) {
 			childCal.getLinkedAppointments().remove(appIt);
 			appIt.getAssignedCalendars().remove(childCal);
-		}		
-		
+		}
+
 		// remove natural serial appointments
-		List<SerialAppointment> serialApps = parentCal.getNaturalSerialAppointments();
+		List<SerialAppointment> serialApps = parentCal
+				.getNaturalSerialAppointments();
 		for (SerialAppointment serialAppIt : serialApps) {
 			childCal.getLinkedAppointments().remove(serialAppIt);
 			serialAppIt.getAssignedCalendars().remove(childCal);
 		}
-		
+
 		// remove association between calendars
 		parentCal.getSubscribedCalendars().remove(childCal);
 		childCal.getSubscriptions().remove(parentCal);
-		
+
 		// update all involved calendars
 		getCalendarDao().update(parentCal);
 		getCalendarDao().update(childCal);
-		
 
 	}
 
@@ -421,9 +423,8 @@ public class CalendarServiceImpl extends
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getSingleAppointments();
-		
+
 		getAppointmentDao().toAppointmentInfoCollection(apps);
-		
 
 		return apps;
 
@@ -435,16 +436,12 @@ public class CalendarServiceImpl extends
 		Calendar cal = getCalendarDao().findByDomainIdentifier(user.getId());
 		Set<Calendar> subscriptions = cal.getSubscriptions();
 		ArrayList<CalendarInfo> subs = new ArrayList<CalendarInfo>();
-//		subs.addAll(subscriptions);		
-//		getCalendarDao().toCalendarInfoCollection(subs);
+		// subs.addAll(subscriptions);
+		// getCalendarDao().toCalendarInfoCollection(subs);
 		for (Calendar calIt : subscriptions) {
 			subs.add(getCalendarDao().toCalendarInfo(calIt));
 		}
 		return subs;
 	}
-	
-
-
-	
 
 }
