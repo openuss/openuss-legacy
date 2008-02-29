@@ -139,10 +139,36 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 
 	public String downloadSubmission () throws IOException{
-		logger.debug("downloading documents");
-		//FIXME Need for a method that returns a tree of FolderEntryInfos...
-		//List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		logger.debug("Downloading selected Submissions.");
+		
 		List<PaperSubmissionInfo> submissions = selectedSubmissions();
+		processDownloadSubmissions(submissions);
+		
+		return Constants.SUCCESS;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String downloadAllSubmissions () throws IOException{
+		logger.debug("Downloading all Submissions.");
+		
+		List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
+		processDownloadSubmissions(submissions);
+		
+		return Constants.SUCCESS;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String downloadInTimeSubmissions () throws IOException{
+		logger.debug("Downloading all in time Submissions.");
+		
+		List<PaperSubmissionInfo> submissions = paperSubmissionService.findInTimePaperSubmissionsByExam(examInfo.getId());
+		processDownloadSubmissions(submissions);
+		
+		return Constants.SUCCESS;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void processDownloadSubmissions(List<PaperSubmissionInfo> submissions) throws IOException {
 		List<FolderEntryInfo> files = paperSubmissionService.getPaperSubmissions(submissions, examInfo.getId());
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -153,7 +179,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
-		return Constants.SUCCESS;
 	}
 	
 	private List<PaperSubmissionInfo> selectedSubmissions() {

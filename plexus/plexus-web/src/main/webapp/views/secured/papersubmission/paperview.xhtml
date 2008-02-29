@@ -44,14 +44,6 @@
 				        rows="20">
 				        
 				        <t:column>
-				            <f:facet name="header">
-				                <h:selectBooleanCheckbox 
-				                    immediate="true" 
-				                    onchange="this.form.submit();" 
-				                    onclick="this.form.submit();" 
-				                    value="#{papersubmission_submission_selection.state}" 
-				                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
-				            </f:facet>
 				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
 				        </t:column>
 				        
@@ -88,8 +80,19 @@
 	                        value="#{msg.papersubmission_command_download}" 
 	                        title="#{msg.papersubmission_command_download_hint}"
 	                        styleClass="button_big"/> 
+	                    <h:commandButton 
+	                        id="downloadAllFiles"
+	                        action="#{views$secured$papersubmission$paperview.downloadAllSubmissions}" 
+	                        value="#{msg.papersubmission_command_download_all}" 
+	                        title="#{msg.papersubmission_command_download_all_hint}"
+	                        styleClass="button_big"/>
+	                    <h:commandButton 
+	                        id="downloadInTimeFiles"
+	                        action="#{views$secured$papersubmission$paperview.downloadInTimeSubmissions}" 
+	                        value="#{msg.papersubmission_command_download_in_time}" 
+	                        title="#{msg.papersubmission_command_download_in_time_hint}"
+	                        styleClass="button_big"/>
 	                </o:block>
-	                 
                    
                 </s:acl>
                 

@@ -8,18 +8,15 @@ package org.openuss.paperSubmission;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
 
@@ -337,6 +334,21 @@ Validate.notNull(domainId, "courseId cannot be null.");
 			allFiles.addAll(filesOfSubmission);
 		}
 		return allFiles;
+	}
+
+	@Override
+	protected List handleFindInTimePaperSubmissionsByExam(Long examId) throws Exception {
+		List<PaperSubmissionInfo> allSubmissions = findPaperSubmissionsByExam(examId);
+		List<PaperSubmissionInfo> inTimeSubmissions = new LinkedList<PaperSubmissionInfo>();
+		
+		for (PaperSubmissionInfo submission : allSubmissions) {
+			// FIXME hardcode!
+			if ("INTIME".equals(submission.getSubmissionType())) {
+				inTimeSubmissions.add(submission);
+			}
+		}
+		
+		return inTimeSubmissions;
 	}
 	
     
