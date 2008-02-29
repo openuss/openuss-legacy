@@ -27,8 +27,6 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiSiteOverwriteConfirmationPage.class);
 
-	private static final long serialVersionUID = -202000019652888870L;
-
 	@Prerender
 	public void prerender() throws LectureException {
 		try {
