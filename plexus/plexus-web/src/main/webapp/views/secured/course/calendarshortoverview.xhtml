@@ -7,9 +7,9 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:c="http://java.sun.com/jstl/core">
-	<h:outputText value="#{msg.openuss4us_calendar_serial_appointments}"
+	<t:commandLink action="openuss4us_calendar_calendar"><h:outputText value="#{msg.openuss4us_calendar_serial_appointments}"
 		styleClass="field_label"
-		rendered="#{not empty views$secured$course$main.appointments}" />
+		rendered="#{not empty views$secured$course$main.appointments}" /></t:commandLink>
 	<t:dataList id="serialappointments" var="serialapp"
 		value="#{views$secured$course$main.appointments}"
 		rendered="#{not empty views$secured$course$main.appointments}"
@@ -21,6 +21,11 @@
 			<f:convertDateTime pattern="E, dd.MM.yyyy" />
 		</h:outputText>
 		<br />
+		<h:outputText value="#{serialapp.starttime}">
+			<f:convertDateTime pattern="H:mm" />
+		</h:outputText> <h:outputText value=" - " /><h:outputText value="#{serialapp.endtime}">
+			<f:convertDateTime pattern="H:mm" />
+		</h:outputText><br/>
 		
 		<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
 			escape="false"

@@ -39,9 +39,6 @@ public class GroupMainPage extends AbstractGroupPage {
 	private String password;
 
 	private List<UserGroupMemberInfo> moderators = new ArrayList<UserGroupMemberInfo>();
-	
-	@Property(value = "#{calendarService}")
-	private CalendarService calendarService;
 
 	private List<AppointmentInfo> appointments = new ArrayList<AppointmentInfo>();
 
@@ -53,7 +50,7 @@ public class GroupMainPage extends AbstractGroupPage {
 		super.prerender();
 		if (groupInfo != null) {
 			moderators = groupService.getModerators(groupInfo);
-			appointments = calendarService.getNaturalSerialAppointments(calendarService.getCalendar(groupInfo));
+			appointments = getCalendarService().getNaturalSerialAppointments(getCalendarInfo());
 		}
 		BreadCrumb newCrumb = new BreadCrumb();
 		// TODO - Breadcrumbs
@@ -107,14 +104,6 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public List<UserGroupMemberInfo> getModerators() {
 		return moderators;
-	}
-
-	public CalendarService getCalendarService() {
-		return calendarService;
-	}
-
-	public void setCalendarService(CalendarService calendarService) {
-		this.calendarService = calendarService;
 	}
 
 	public List<AppointmentInfo> getAppointments() {

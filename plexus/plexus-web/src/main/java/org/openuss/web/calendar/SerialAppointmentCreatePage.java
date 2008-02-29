@@ -24,7 +24,7 @@ import org.openuss.web.Constants;
 @View
 public class SerialAppointmentCreatePage extends BasePage{
 	
-	@Property(value = "#{calendarInfo}")
+	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
 	private CalendarInfo calendarInfo;
 	@Property(value = "#{appointmentInfo}")
 	private AppointmentInfo appointmentInfo;

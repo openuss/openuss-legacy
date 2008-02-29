@@ -15,6 +15,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -35,9 +36,6 @@ public class CourseMainPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(CourseMainPage.class);
 
 	private String password;
-
-	@Property(value = "#{calendarService}")
-	private CalendarService calendarService;
 	
 	private List<CourseMemberInfo> assistants = new ArrayList<CourseMemberInfo>();
 	
@@ -50,7 +48,7 @@ public class CourseMainPage extends AbstractCoursePage {
 		super.prerender();
 		if (courseInfo != null) {
 			assistants = courseService.getAssistants(courseInfo);
-			appointments = calendarService.getNaturalSerialAppointments(calendarService.getCalendar(courseInfo));
+			appointments = getCalendarService().getNaturalSerialAppointments(getCalendarInfo());
 		}
 
 		BreadCrumb newCrumb = new BreadCrumb();
@@ -133,14 +131,6 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public List<CourseMemberInfo> getAssistants() {
 		return assistants;
-	}
-
-	public CalendarService getCalendarService() {
-		return calendarService;
-	}
-
-	public void setCalendarService(CalendarService calendarService) {
-		this.calendarService = calendarService;
 	}
 
 	public List<AppointmentInfo> getAppointments() {

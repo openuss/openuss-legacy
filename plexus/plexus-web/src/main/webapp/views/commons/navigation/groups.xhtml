@@ -46,7 +46,12 @@
 						activeOnViewIds="/views/secured/groups/components/groupnews.xhtml">
 						<h:outputText value="#{msg['course_command_options_news']}" />
 					</t:commandNavigation2>
-					
+					<t:commandNavigation2 action="openuss4us_calendar_calendar"
+						activeOnViewIds="/views/secured/calendar/calendar.xhtml">
+						<h:outputText value="#{msg['course_command_calendar']}" />
+					</t:commandNavigation2>
+
+
 					<c:if test="#{views$secured$groups$components$main.moderator}">
 						<t:commandNavigation2 action="group_options_moderators"
 							activeOnViewIds="/views/secured/groups/components/groupmoderators.xhtml">
@@ -54,7 +59,7 @@
 								value="#{msg['openuss4us_group_command_options_moderators']}" />
 						</t:commandNavigation2>
 					</c:if>
-					
+
 					<t:commandNavigation2 action="group_options_members"
 						activeOnViewIds="/views/secured/groups/components/groupmembers.xhtml">
 						<h:outputText
@@ -67,7 +72,7 @@
 							<h:outputText value="#{msg['course_command_options_config']}" />
 						</t:commandNavigation2>
 					</c:if>
-					
+
 				</t:commandNavigation2>
 			</t:panelNavigation2>
 		</h:form>

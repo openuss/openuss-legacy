@@ -2,6 +2,8 @@ package org.openuss.web.course;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.calendar.CalendarInfo;
+import org.openuss.calendar.CalendarService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -56,6 +58,12 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
 	
+	//added for course calendar support
+	@Property(value = "#{calendarService}")
+	private CalendarService calendarService;
+	
+	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
+	private CalendarInfo calendarInfo;
 	
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
@@ -65,6 +73,8 @@ public class AbstractCoursePage extends BasePage {
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
+			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
+			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
 		}
 		if (courseInfo == null) {
 			addError(i18n("message_error_course_page"));
@@ -74,6 +84,8 @@ public class AbstractCoursePage extends BasePage {
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
+			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
+			setSessionBean(Constants.OPENUSS4US_CALENDAR, calendarInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
 		}
@@ -173,6 +185,22 @@ public class AbstractCoursePage extends BasePage {
 
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
+	}
+
+	public CalendarService getCalendarService() {
+		return calendarService;
+	}
+
+	public void setCalendarService(CalendarService calendarService) {
+		this.calendarService = calendarService;
+	}
+
+	public CalendarInfo getCalendarInfo() {
+		return calendarInfo;
+	}
+
+	public void setCalendarInfo(CalendarInfo calendarInfo) {
+		this.calendarInfo = calendarInfo;
 	}
 
 }

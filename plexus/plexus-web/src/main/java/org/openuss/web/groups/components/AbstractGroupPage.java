@@ -2,6 +2,8 @@ package org.openuss.web.groups.components;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.calendar.CalendarInfo;
+import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
@@ -15,7 +17,7 @@ import org.openuss.web.PageLinks;
  * 
  * @author Lutz D. Kramer
  * @author Thomas Jansing
- * 
+ * @author Ralf Plattfaut
  */
 public class AbstractGroupPage extends BasePage {
 
@@ -32,11 +34,20 @@ public class AbstractGroupPage extends BasePage {
 
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
+	
+	//added for course calendar support
+	@Property(value = "#{calendarService}")
+	private CalendarService calendarService;
+	
+	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
+	private CalendarInfo calendarInfo;
 
 	@Prerender
 	public void prerender() throws Exception {
 		if (groupInfo != null && groupInfo.getId() != null) {
 			groupInfo = groupService.getGroupInfo(groupInfo.getId());
+			CalendarInfo calendarInfo = calendarService.getCalendar(groupInfo);
+			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
 		}
 		if (groupInfo == null) {
 			addError(i18n("group_page not found!"));
@@ -98,6 +109,22 @@ public class AbstractGroupPage extends BasePage {
 
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
+	}
+
+	public CalendarService getCalendarService() {
+		return calendarService;
+	}
+
+	public void setCalendarService(CalendarService calendarService) {
+		this.calendarService = calendarService;
+	}
+
+	public CalendarInfo getCalendarInfo() {
+		return calendarInfo;
+	}
+
+	public void setCalendarInfo(CalendarInfo calendarInfo) {
+		this.calendarInfo = calendarInfo;
 	}
 
 }
