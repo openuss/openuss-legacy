@@ -890,6 +890,11 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>admin_seminarpools</from-outcome>
+			<to-view-id>/views/secured/system/seminarpools.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
 			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
 		</navigation-case>

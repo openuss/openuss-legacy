@@ -360,6 +360,13 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		logger.debug("----> END access to addSeminarCondition test <---- ");
 	}
 	
+	public void testFindSeminarpoolsByUniversity(){
+		Seminarpool seminarpool1 = testUtility.createUniqueSeminarpoolinDB();
+		Seminarpool seminarpool2 = testUtility.createUniqueSeminarpoolinDB();
+		List <SeminarpoolInfo> sem = this.getSeminarpoolAdministrationService().findSeminarpoolsByUniversity(seminarpool1.getUniversity().getId());
+		assertEquals(1, sem.size());
+	}
+	
 	public void testRemoveSeminarCondition(){
 logger.debug("----> BEGIN access to removeSeminarCondition test <---- ");
 		

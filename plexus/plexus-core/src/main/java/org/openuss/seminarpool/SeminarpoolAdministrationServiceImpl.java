@@ -212,8 +212,13 @@ public class SeminarpoolAdministrationServiceImpl
     protected java.util.List handleFindSeminarpoolsByUniversity(java.lang.Long universityId)
         throws java.lang.Exception
     {
-        // @todo implement protected java.util.List handleFindSeminarpoolsByUniversity(java.lang.Long universityId)
-        return null;
+        List<SeminarpoolInfo> seminarpools = this.getAllSeminarpools();
+        for(SeminarpoolInfo sem : seminarpools){
+        	if(!sem.getUniversityId().equals(universityId)){
+        		seminarpools.remove(sem);
+        	}
+        }
+        return seminarpools;
     }
 
     /**
@@ -472,6 +477,34 @@ public class SeminarpoolAdministrationServiceImpl
 		Validate.notNull(seminarpoolEntity, "handleAddConditionToSeminarpool ==> Cannot load Seminarpool");
 		SeminarCondition seminarConditionEntity = getSeminarConditionDao().load(seminarConditionInfo.getId());
 		seminarpoolEntity.removeCondition(seminarConditionEntity);	
+	}
+
+	@Override
+	protected List handleFindSeminarpoolByInsituteAndStatus(Long instituteId,
+			SeminarpoolStatus seminarpoolStatus) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindSeminarpoolsByDepartmentAndStatus(
+			Long departmentId, SeminarpoolStatus seminarpoolStatus)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindSeminarpoolsByUniversityAndStatus(
+			Long universityId, SeminarpoolStatus seminarpoolStatus)
+			throws Exception {
+		List<SeminarpoolInfo> seminarpools = this.getAllSeminarpools();
+        for(SeminarpoolInfo sem : seminarpools){
+        	if(sem.getUniversityId() != universityId || sem.getSeminarpoolStatus().getValue() > seminarpoolStatus.getValue()){
+        		seminarpools.remove(sem);
+        	}
+        }
+        return seminarpools;
 	}
 
 
