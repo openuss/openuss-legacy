@@ -257,8 +257,12 @@ public class MyUniPage extends BasePage {
 			try {
 				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
 				ForumInfo forum = getDiscussionService().getForum(ci);
-				getDiscussionService().addForumWatch(forum);
-				addMessage(i18n("discussion_subscribe_success"));
+				if (!getDiscussionService().watchesForum(forum)) {
+					getDiscussionService().addForumWatch(forum);
+					addMessage(i18n("discussion_subscribe_success"));
+				}
+				else addError(i18n("errorpage_text"));
+				
 			} catch (Exception e) {
 				addError(i18n("errorpage_text"));
 			}
