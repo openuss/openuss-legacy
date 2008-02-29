@@ -13,6 +13,8 @@ import java.util.Set;
 /**
  * JUnit Test for Spring Hibernate LdapConfigurationService class.
  * @see org.openuss.security.ldap.LdapConfigurationService
+ * @author Damian Kemner
+ * @author Jürgen DeBraaf
  */
 public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationServiceIntegrationTestBase {
 	
@@ -23,6 +25,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	private UserDnPatternSetDao userDnPatternSetDao;
 	private LdapServerDao ldapServerDao;
 	private AttributeMappingDao attributeMappingDao;
+	private LdapConfigurationService service;
 	
 	
 	public void testAuthenticationDomainDaoInjection() {
@@ -53,6 +56,100 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(attributeMappingDao);
 	}
 	
+	public void testLdapConfigurationService() {
+		service = new LdapConfigurationServiceImpl();
+		
+//		create user dn pattern object
+		UserDnPatternInfo userDnPattern = new UserDnPatternInfo();
+		userDnPattern.setUserDnPattern("memberOf");
+		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
+		userDnPatterns.add(userDnPattern);		
+		
+//		create user dn pattern set object
+		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
+		userDnPatternSet.setName("WWU user dn pattern");
+		
+		
+//		create ldap server object
+		LdapServerInfo ldapServer = new LdapServerInfo();
+		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+		ldapServer.setPort(389);
+		ldapServer.setRootDn("dc=uni-muenster,dc=de");
+		ldapServer.setDescription("LDAP Server WWU");
+		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer.setAuthenticationType("DIGEST-MD5");
+		ldapServer.setUseConnectionPool(false);
+		ldapServer.setManagerDn("admin");
+		ldapServer.setManagerPassword("hidden");
+		ldapServer.setUseLdapContext(true);
+		
+		
+//		create another ldap server object
+		LdapServerInfo ldapServer2 = new LdapServerInfo();
+		ldapServer2.setProviderUrl("ldap://ldap.uni-bielefeld.de");
+		ldapServer2.setPort(389);
+		ldapServer2.setRootDn("dc=uni-bielefeld,dc=de");
+		ldapServer2.setDescription("LDAP Server UB");
+		ldapServer2.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer2.setAuthenticationType("DIGEST-MD5");
+		ldapServer2.setUseConnectionPool(false);
+		ldapServer2.setManagerDn("admin");
+		ldapServer2.setManagerPassword("hidden");
+		ldapServer2.setUseLdapContext(true);
+//		ldapServer2.setUserDnPatternSet(null);
+//		ldapServer2.setAuthenticationDomain(null);
+		
+		
+//		create another ldap server object
+		LdapServerInfo ldapServer3 = new LdapServerInfo();
+		ldapServer3.setProviderUrl("falsch://ldap.uni-bielefeld.de");
+		ldapServer3.setPort(389);
+		ldapServer3.setRootDn("dc=uni-bielefeld,dc=de");
+		ldapServer3.setDescription("LDAP Server UB");
+		ldapServer3.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer3.setAuthenticationType("DIGEST-MD5");
+		ldapServer3.setUseConnectionPool(false);
+		ldapServer3.setManagerDn("admin");
+		ldapServer3.setManagerPassword("hidden");
+		ldapServer3.setUseLdapContext(true);
+//		ldapServer3.setUserDnPatternSet(null);
+//		ldapServer3.setAuthenticationDomain(null);
+		
+		
+		
+// create domain
+		AuthenticationDomainInfo domain = new AuthenticationDomainInfo();
+		domain.setName("ZIV Uni Muenster");
+		domain.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
+		
+// create another domain
+		AuthenticationDomainInfo domain2 = new AuthenticationDomainInfo();
+		domain2.setName("Uni Bielefeld");
+		domain2.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Bielefeld.");
+		
+// create another domain
+		AuthenticationDomainInfo domain3 = new AuthenticationDomainInfo();
+		// name empty
+		// domain3.setName("ZIV Uni Muenster");
+		domain3.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
+		
+						
+		
+		// ldapServer1
+		service.saveLdapServer(ldapServer);
+		// ldapServer1 --> domain1
+		service.saveDomain(domain);
+		service.addServerToDomain(ldapServer, domain);
+		
+		// ldapServer2
+		service.saveLdapServer(ldapServer2);
+		// ldapServer2 --> domain1
+		service.addServerToDomain(ldapServer2, domain);
+		
+		
+		
+		
+	}
 	
 	public void testAllDaoCreate() {	
 	

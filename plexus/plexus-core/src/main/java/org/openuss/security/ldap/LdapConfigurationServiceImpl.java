@@ -5,10 +5,11 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
-import java.util.List;
 
 /**
  * @see org.openuss.security.ldap.LdapConfigurationService
@@ -362,7 +363,26 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleRemoveRoleAttributeKeyFromSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){}
+    public void handleRemoveRoleAttributeKeyFromSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
+    	RoleAttributeKeySetDao 	setDao = getRoleAttributeKeySetDao();
+    	RoleAttributeKeyDao		keyDao = getRoleAttributeKeyDao();
+    	
+    	RoleAttributeKey 	keyEntity	= keyDao.roleAttributeKeyInfoToEntity(key);
+    	RoleAttributeKeySet setEntity 	= setDao.roleAttributeKeySetInfoToEntity(keySet);
+    	
+    	Validate.notNull(keyEntity, "RoleAttributeKey must not be null");
+		Validate.notNull(keyEntity.getId(), "RoleAttributeKey must provide a valid id.");
+		Validate.notNull(setEntity, "RoleAttributeKeySet must not be null");
+		Validate.notNull(setEntity.getId(), "RoleAttributeKeySet must provide a valid id.");
+
+		keyEntity = forceRoleAttributeKeyLoad(keyEntity);
+		setEntity = forceRoleAttributeKeySetLoad(setEntity);
+
+		if (!checkRoleAttributeKeySetContainsKey(keyEntity, setEntity)) throw new LdapConfigurationServiceException("RoleAttributeKey not contained in KeySet!");
+	
+		setEntity.getRoleAttributeKeys().remove(keyEntity);
+		setDao.update(setEntity);
+    }
 
 
 }
