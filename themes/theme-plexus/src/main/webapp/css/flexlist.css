@@ -27,7 +27,7 @@
 
 .flexList .flexListItems {
 	margin: 0px;
-
+	padding: 0px;
 }
 
 .flexListItems li {
@@ -66,7 +66,9 @@
 
 .flexListItemRight {
 	float:right;
+	height:16px;
 	padding-right: 10px;
+	
 }
 
 .flexListItemLeft {
@@ -77,69 +79,13 @@
 	color: #5DBF00;
 }
 
-.flexListItemRight a .remove_bookmark{
- 	background-image: url(../img/buttons/bookmark_remove_icon.png);
- 	background-repeat: no-repeat;
-	padding: 0px 16px 3px 0px;	
-	margin-left: 5px;
-}
 
-.flexListItemRight a:hover .remove_bookmark {
-	background-image: url(../img/buttons/bookmark_remove_icon.png);
-	background-position: top right;
-}
 
 .flexListItemRight a {
 	text-decoration: none !important;
 }
 
-.flexListItemRight a .newsletter_subscribed {
-	background-image: url(../img/newsletter_subscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-	margin-left: 5px;
-}
-.flexListItemRight a:hover .newsletter_subscribed {
-	background-image: url(../img/newsletter_unsubscribe.png);
-}
-.flexListItemRight a .newsletter_notSubscribed {
-	background-image: url(../img/newsletter_notSubscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-	margin-left: 5px;
-}
-.flexListItemRight a:hover .newsletter_notSubscribed {
-	background-image: url(../img/newsletter_subscribe.png);
-}
-.flexListItemRight .newsletter_none {
-	background-image: url(../img/newsletter_none.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-	margin-left: 5px;
-}
-.flexListItemRight a .forum_subscribed {
-	background-image: url(../img/forum_subscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-	margin-left: 5px;
-}
-.flexListItemRight a:hover .forum_subscribed {
-	background-image: url(../img/forum_unsubscribe.png);
-}
-.flexListItemRight a .forum_notSubscribed {
-	background-image: url(../img/forum_notSubscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-	margin-left: 5px;
-}
-.flexListItemRight a:hover .forum_notSubscribed {
-	background-image: url(../img/forum_subscribe.png);
-}
-.flexListItemRight .forum_none {
-	background-image: url(../img/forum_none.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
+
 /* Tabs CSS */
 
 #flexlist_tabs {}

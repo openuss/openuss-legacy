@@ -28,6 +28,36 @@ a.icon_edit:focus span, a.icon_edit:hover span {
   background-position: top right;
 }
 
+a.icon_settings {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_settings span {
+  background-position: left top;
+  background-image: url(../img/buttons/settings_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_settings:focus span, a.icon_settings:hover span {
+  background-position: top right;
+}
+
 a.icon_remove {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
@@ -351,3 +381,202 @@ a.icon_reject {
   white-space: nowrap;
 }
 
+a.newsletter_subscribed {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+  cursor: hand;
+}
+
+a.newsletter_subscribed span {
+  background-position: left top;
+  background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.newsletter_subscribed:focus span, a.newsletter_subscribed:hover span {
+  background-position: top right;
+}
+
+a.newsletter_notSubscribed {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+  cursor: hand;
+}
+
+a.newsletter_notSubscribed span {
+  background-position: left top;
+  background-image: url(../img/buttons/newsletter_subscribe_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.newsletter_notSubscribed:focus span, a.newsletter_notSubscribed:hover span {
+  background-position: top right;
+}
+
+span.newsletter_none {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+span.newsletter_none span {
+  background-position: left top;
+  background-image: url(../img/buttons/newsletter_none_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.forum_subscribed {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+  cursor: hand;
+}
+
+a.forum_subscribed span {
+  background-position: left top;
+  background-image: url(../img/buttons/forum_unsubscribe_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.forum_subscribed:focus span, a.forum_subscribed:hover span {
+  background-position: top right;
+}
+
+a.forum_notSubscribed {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+  cursor: hand;
+}
+
+a.forum_notSubscribed span {
+  background-position: left top;
+  background-image: url(../img/buttons/forum_subscribe_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.forum_notSubscribed:focus span, a.forum_notSubscribed:hover span {
+  background-position: top right;
+}
+
+span.forum_none {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+span.forum_none span {
+  background-position: left top;
+  background-image: url(../img/buttons/forum_none_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.remove_bookmark {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  margin: 0 0 0 5px;
+  padding: 0 16px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+  cursor: hand;
+}
+
+a.remove_bookmark span {
+  background-position: top left;
+  background-image: url(../img/buttons/bookmark_remove_icon.png);
+  background-repeat: no-repeat;
+  display: inline;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.remove_bookmark:focus span, a.remove_bookmark:hover span {
+  background-position: top right;
+}

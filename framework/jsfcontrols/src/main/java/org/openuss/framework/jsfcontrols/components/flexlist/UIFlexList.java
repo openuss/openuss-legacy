@@ -191,10 +191,10 @@ public class UIFlexList extends UIOutput {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					
+					writer.writeAttribute("class", "remove_bookmark", null);
+					writer.writeAttribute("title", title, null);
 					writer.startElement("span", this);
-						writer.writeAttribute("class", "remove_bookmark", null);
-						writer.writeAttribute("title", title, null);
-						
+					writer.writeAttribute("title", title, null);
 					writer.endElement("span");
 				writer.endElement("a");
 			}
