@@ -106,8 +106,8 @@ public class MyUniPage extends BasePage {
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
-	private static final String examBasePath = "/views/secured/papersubmission/paperlist.faces";
-	private static final String submissionBasePath = "/views/secured/papersubmission/paperview.faces";
+	private static final String examBasePath = "/views/secured/papersubmission/examlist.faces";
+	private static final String submissionBasePath = "/views/secured/papersubmission/submissionview.faces";
 
 	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	String locale = (String) binding.getValue(getFacesContext());

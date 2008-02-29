@@ -257,13 +257,13 @@
             Papersubmission
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
-    <page view-id="/views/secured/papersubmission/paperview.xhtml">
+    <page view-id="/views/secured/papersubmission/submissionview.xhtml">
     	
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
     	<parameter name="exam" value="#{examInfo.id}" converterId="javax.faces.Long"/>
     	<parameter name="paper" value="#{paperSubmissionInfo.id}" converterId="javax.faces.Long"/>
     </page>
-    <page view-id="/views/secured/papersubmission/paperlist.xhtml">
+    <page view-id="/views/secured/papersubmission/examlist.xhtml">
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
     </page>
 </pages>

@@ -20,7 +20,7 @@ import org.openuss.web.documents.ZipFileUnpacker;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
-@Bean(name = "views$secured$papersubmission$addzip", scope = Scope.REQUEST)
+@Bean(name = "views$secured$papersubmission$submissionaddzip", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		

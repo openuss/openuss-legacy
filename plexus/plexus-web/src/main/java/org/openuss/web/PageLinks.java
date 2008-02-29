@@ -37,8 +37,8 @@ public class PageLinks{
 	public static final String COLLABORATION_MAIN = "/views/secured/collaboration/main.faces";
 	public static final String COLLABORATION_WORKSPACE = "/views/secured/collaboration/workspaceview.faces";
 	
-	public static final String PAPERSUBMISSION_EXAM = "/views/secured/papersubmission/paperlist.faces";
-	public static final String PAPERSUBMISSION_PAPERVIEW = "/views/secured/papersubmission/paperview.faces";
+	public static final String PAPERSUBMISSION_EXAM = "/views/secured/papersubmission/examlist.faces";
+	public static final String PAPERSUBMISSION_SUBMISSIONVIEW = "/views/secured/papersubmission/submissionview.faces";
 	
 	public static final String WIKI_MAIN = "/views/secured/wiki/wikimain.faces?page=" + Constants.WIKI_STARTSITE_NAME;
 	

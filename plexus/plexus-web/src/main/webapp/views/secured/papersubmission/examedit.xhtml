@@ -17,8 +17,8 @@
             <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full"/>
         </o:block> 
         <o:block>   
-            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$paperlist.saveExam}" value="#{msg.save}" styleClass="button_save" />
-            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$paperlist.cancelExam}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" styleClass="button_save" />
+            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>

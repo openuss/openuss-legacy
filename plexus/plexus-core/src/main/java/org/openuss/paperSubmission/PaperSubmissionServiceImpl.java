@@ -63,12 +63,6 @@ public class PaperSubmissionServiceImpl
     	paperSubmissionEntity.setExam(exam);
     	paperSubmissionEntity.setSender(user);
     	paperSubmissionEntity.setDeliverDate(new Date());
-//    	if(exam.getDeadline().after(paperSubmissionEntity.getDeliverDate())){
-//    		paperSubmissionEntity.setSubmissionType("INTIME");
-//    	}else{
-//    		paperSubmissionEntity.setSubmissionType("NOTINTIME");
-//    	}
-    	
     	
     	this.getPaperSubmissionDao().create(paperSubmissionEntity);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionId cannot be null");

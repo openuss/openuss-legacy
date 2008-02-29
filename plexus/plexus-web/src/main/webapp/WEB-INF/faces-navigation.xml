@@ -698,40 +698,32 @@
 			
             <!--  Papersubmission  -->
             <navigation-case>
-	            <from-outcome>papersubmission</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperlist.xhtml</to-view-id>
+	            <from-outcome>examlist</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/examlist.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>
-	            <from-outcome>paper_confirm_remove</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperremoveconfirmation.xhtml</to-view-id>
+	            <from-outcome>papersubmission_file_remove</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileremove.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>
-	            <from-outcome>papersubmission_edit_file</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperfileedit.xhtml</to-view-id>
+	            <from-outcome>papersubmission_file_edit</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileedit.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>
-	            <from-outcome>paperview</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
+	            <from-outcome>submissionview</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>
-	            <from-outcome>papersubmissionview</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
-	        </navigation-case>
-	        <navigation-case>
-	            <from-outcome>papersubmissionlectureview</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperlectureview.xhtml</to-view-id>
+	            <from-outcome>submissionviewlecturer</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionviewlecturer.xhtml</to-view-id>
 	        </navigation-case>
 	        <navigation-case>	        
                 <from-outcome>papersubmission_add_zip</from-outcome>
-                <to-view-id>/views/secured/papersubmission/addzip.xhtml</to-view-id>              
+                <to-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</to-view-id>              
             </navigation-case>  
-            <navigation-case>
-             <from-outcome>papersubmission_confirm_remove</from-outcome>
-	            <to-view-id>/views/secured/papersubmission/paperremoveconfirmation.xhtml</to-view-id>
-	        </navigation-case>
-	        <navigation-case>
-                <from-outcome>papersubmission_remove_fileentries</from-outcome>
-                <to-view-id>/views/secured/papersubmission/remove.xhtml</to-view-id>              
+  	        <navigation-case>
+                <from-outcome>papersubmission_exam_remove</from-outcome>
+                <to-view-id>/views/secured/papersubmission/examremove.xhtml</to-view-id>              
             </navigation-case>  
 	        
 	        <!--  Collaboration -->
@@ -780,10 +772,10 @@
             </navigation-case>
         </navigation-rule>
         <navigation-rule>
-            <from-view-id>/views/secured/papersubmission/addzip.xhtml</from-view-id>
+            <from-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</from-view-id>
             <navigation-case>
                 <from-outcome>success</from-outcome>
-                <to-view-id>/views/secured/papersubmission/paperview.xhtml</to-view-id>
+                <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
             </navigation-case>
         </navigation-rule>
 	

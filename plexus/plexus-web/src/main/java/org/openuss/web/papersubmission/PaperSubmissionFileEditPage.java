@@ -27,7 +27,7 @@ import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
-@Bean(name = "views$secured$papersubmission$paperfileedit", scope = Scope.REQUEST)
+@Bean(name = "views$secured$papersubmission$submissionfileedit", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	private static final Logger logger = Logger.getLogger(PaperSubmissionFileEditPage.class);

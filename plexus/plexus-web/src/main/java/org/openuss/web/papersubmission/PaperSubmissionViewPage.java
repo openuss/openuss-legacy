@@ -38,7 +38,7 @@ import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
 import org.springframework.beans.support.PropertyComparator;
 
-@Bean(name = "views$secured$papersubmission$paperview", scope = Scope.REQUEST)
+@Bean(name = "views$secured$papersubmission$submissionview", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
@@ -107,7 +107,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		if(courseInfo != null && courseInfo.getId() != null 
 				&& examInfo != null && examInfo.getId() != null){
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_PAPERVIEW);
+			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 			crumb.addParameter("course",courseInfo.getId());
 			crumb.addParameter("exam",examInfo.getId());
 		}
@@ -210,7 +210,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			logger.debug("deleting documents:");
 			setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES, entries);
 			paperSelection.getMap().clear();
-			return Constants.PAPERSUBMISSION_REMOVE_FILEENTRY_PAGE;
+			return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
@@ -221,7 +221,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		logger.debug("create new file");
 		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
-		return Constants.PAPERSUBMISSION_EDIT_FILEENTRY_PAGE;
+		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 	
 	@SuppressWarnings("unchecked")

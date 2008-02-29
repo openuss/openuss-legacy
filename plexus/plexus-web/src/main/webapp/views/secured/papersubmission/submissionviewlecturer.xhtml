@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><ui:insert name="title"/></title>
+        <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+        <!-- css-Datei mit Farbdefinitionen der Rubrik -->
+        <link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+    </head>
+
+    <body>      
+    <!-- text above will be ignored -->
+    <ui:composition template="/views/layout/layout.xhtml">
+        <!--  TODO: change to right permission -->
+        <!--  s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/ -->
+
+        <ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{instituteInfo.name}"/></ui:define>
+        
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+        
+        <ui:define name="content">
+            <h:form id="submissionsTableView">
+                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+	                <!-- lecturer-view -->
+	                <plexus:dataTable   
+	                    id="submissionfiles" 
+	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
+	                    value="views$secured$papersubmission$submissionviewlecturer.dataSubmissionFiles" 
+	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command, col_min_right"
+	                    var="bean" 
+	                    rows="20">  
+	                    
+	                  <t:column>
+				            <f:facet name="header">
+				                <h:selectBooleanCheckbox 
+				                    immediate="true" 
+				                    onchange="this.form.submit();" 
+				                    onclick="this.form.submit();" 
+				                    value="#{papersubmission_submission_selection.state}" 
+				                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
+				            </f:facet>
+				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/> 
+				        </t:column> 
+				        
+	                    <t:column> 
+				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
+				            <h:graphicImage value="/images/filetypes/#{bean.entry.extension}.gif"/>
+				        </t:column>
+	               
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
+	                              				
+            				<o:link value="/files/#{bean.entry.fileName}" title="#{bean.entry.description}">
+								<f:param value="#{bean.entry.id}" name="fileid" />
+								<h:outputText value="#{bean.entry.name}"/>
+							</o:link>
+	                    </t:column>
+	                    
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="size">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.entry.sizeAsString}"/>
+	                    </t:column>
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="creationdate">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.entry.created}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
+	                    </t:column>
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="modificationdate">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.entry.modified}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
+	                    </t:column>
+	                     
+	                    <t:column>
+	                    	<plexus:commandSortHeader columnName="submissionstatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader>
+				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionStatus}.png"/>
+				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionStatus.value == 1}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionStatus. value == 2}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionStatus.value == 3}"/>
+                        </t:column>
+	                </plexus:dataTable> 
+	                
+	                <o:block>
+	                    <h:commandButton 
+					    id="download"
+						action="#{views$secured$papersubmission$submissionviewlecturer.download}" 
+						value="#{msg.documents_main_button_download}" 
+						title="#{msg.documents_main_button_download}"
+						styleClass="button_add"/>
+						
+						                   
+	                    
+	                </o:block>   
+	                
+	            </s:acl>
+            </h:form>	        
+        </ui:define>
+    </ui:composition>
+    <!-- text above will be ignored -->
+    </body>
+</html>

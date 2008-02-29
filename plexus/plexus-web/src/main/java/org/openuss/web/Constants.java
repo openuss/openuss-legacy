@@ -225,18 +225,17 @@ public class Constants {
 	// papersubmission 
 	public static final String PAPERSUBMISSION_EXAM_INFO = "examInfo";
 	public static final String PAPERSUBMISSION_PAPER_INFO = "paperSubmissionInfo";
-	public static final String PAPERSUBMISSION_LIST_PAGE = "papersubmission";
-	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
+	public static final String PAPERSUBMISSION_EXAMLIST_PAGE = "examlist";
+	public static final String PAPERSUBMISSION_EXAM_REMOVE_PAGE = "papersubmission_exam_remove";
 	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
 	public static final String PAPERSUBMISSION_SELECTED_FILEENTRY = "papersubmission_selected_file";
-	public static final String PAPERSUBMISSION_EDIT_FILEENTRY_PAGE = "papersubmission_edit_file";
-	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "papersubmissionview";
-	public static final String PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE   = "papersubmissionlectureview";
+	public static final String PAPERSUBMISSION_FILE_EDIT_PAGE = "papersubmission_file_edit";
+	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "submissionview";
+	public static final String PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE   = "submissionviewlecturer";
 	public static final String PAPERSUBMISSION_CURRENT_FOLDER = "papersubmission_current_folder";
 	public static final String PAPERSUBMISSION_FOLDERENTRY_SELECTION = "papersubmission_entry_selection";
 	public static final String PAPERSUBMISSION_SELECTED_FILEENTRIES = "papersubmission_selected_fileentries";
-	public static final String PAPERSUBMISSION_REMOVE_FILEENTRY_PAGE = "papersubmission_remove_fileentries";
-	public static final String PAPERSUBMISSION_CONFIRM_REMOVE_PAGE = "papersubmission_confirm_remove";
+	public static final String PAPERSUBMISSION_FILE_REMOVE_PAGE = "papersubmission_file_remove";
 	
 
 	// collaboration
