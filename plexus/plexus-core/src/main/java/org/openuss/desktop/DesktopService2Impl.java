@@ -1317,8 +1317,13 @@ public class DesktopService2Impl extends DesktopService2Base {
 	@Override
 	protected boolean handleIsSeminarpoolBookmarked(Long desktopId,
 			Long seminarpoolId) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		Validate.notNull(desktopId, "DesktopId cannot be null!");
+		Desktop desktop = this.getDesktopDao().load(desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
+
+		Validate.notNull(seminarpoolId, "seminarpoolId cannot be null!");
+		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
+		return desktop.getSeminarpool().contains(seminarpool);
 	}
 
 	@Override
