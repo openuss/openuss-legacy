@@ -43,6 +43,12 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	
 	@Override
 	public void prerender() throws Exception {
+		if (courseInfo == null || courseInfo.getId() == null) {
+			addError(i18n("message_error_course_page"));
+			redirect(Constants.OUTCOME_BACKWARD);
+			return;
+		}
+		
 		super.prerender();
 		
 		if (this.workspaceInfo != null && this.workspaceInfo.getId() != null) {

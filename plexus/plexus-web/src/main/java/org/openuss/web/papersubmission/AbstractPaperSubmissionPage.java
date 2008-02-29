@@ -48,6 +48,12 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	
 	@Override
 	public void prerender() throws Exception {
+		if (courseInfo == null || courseInfo.getId() == null) {
+			addError(i18n("message_error_course_page"));
+			redirect(Constants.OUTCOME_BACKWARD);
+			return;
+		}
+		
 		super.prerender();
 		
 		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
