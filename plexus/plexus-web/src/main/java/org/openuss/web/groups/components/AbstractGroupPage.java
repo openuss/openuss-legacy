@@ -46,7 +46,7 @@ public class AbstractGroupPage extends BasePage {
 	public void prerender() throws Exception {
 		if (groupInfo != null && groupInfo.getId() != null) {
 			groupInfo = groupService.getGroupInfo(groupInfo.getId());
-			CalendarInfo calendarInfo = calendarService.getCalendar(groupInfo);
+			calendarInfo = calendarService.getCalendar(groupInfo);
 			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
 		}
 		if (groupInfo == null) {

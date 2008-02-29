@@ -38,6 +38,8 @@ public class CalendarMainPage extends BasePage {
 
 	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
 	private CalendarInfo calendarInfo;
+	
+	private boolean isSubscribed;
 
 	// Data-Provider serial appointments
 	private SerialAppointmentDataProvider serialAppointmentData = new SerialAppointmentDataProvider();
@@ -144,5 +146,23 @@ public class CalendarMainPage extends BasePage {
 	public void setSingleAppointmentData(
 			SingleAppointmentDataProvider singleAppointmentData) {
 		this.singleAppointmentData = singleAppointmentData;
+	}
+
+	public boolean isSubscribed() {
+		try {
+			if(calendarService.getSubscriptions().contains(calendarInfo)){
+				logger.debug("Already subscribed to this calendar");
+				return true;
+			}
+		} catch (CalendarApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		logger.debug("Not yet subscribed to this calendar");
+		return false;
+	}
+
+	public void setSubscribed(boolean isSubscribed) {
+		this.isSubscribed = isSubscribed;
 	}
 }

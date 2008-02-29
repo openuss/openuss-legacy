@@ -143,14 +143,14 @@
 			</t:column>
 		</plexus:dataTable>
 		<o:block>
-			<h:commandButton value="Einzeltermin erstellen"
-				title="Einzeltermin erstellen" action="view:back"
+			<h:commandButton value="#{msg.openuss4us_calendar_button_create_single_appointment}"
+				title="#{msg.openuss4us_calendar_button_create_single_appointment}" action="calendar_create_single_appointment"
 				styleClass="button" />
-			<h:commandButton value="Serientermin erstellen"
-				title="Serientermin erstellen" action="view:back"
+			<h:commandButton value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+				title="#{msg.openuss4us_calendar_button_create_serial_appointment}" action="calendar_create_serial_appointment"
 				styleClass="button" />
-			<h:commandButton value="Kalender abonnieren"
-				title="Kalender abonnieren" action="view:back" styleClass="button" />
+			<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
+				title="#{msg.openuss4us_calendar_subscribe_hint}" action="openuss4us_calendar_subscribe" styleClass="button" />
 		</o:block>
 	</h:form>
 </ui:composition>
