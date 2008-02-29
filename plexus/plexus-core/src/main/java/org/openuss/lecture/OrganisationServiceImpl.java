@@ -45,7 +45,7 @@ public class OrganisationServiceImpl extends OrganisationServiceBase {
 		Validate.isTrue(organisation.getMembership().getMembers().size() > 1, "You cannot remove the last Member!");
 
 		User user = this.getUserDao().load(userId);
-		Validate.notNull(organisation, "No User found corresponding to the ID "	+ userId);
+		Validate.notNull(user, "No User found corresponding to the ID "	+ userId);
 
 		this.getMembershipService().removeMember(organisation.getMembership(), user);
 
