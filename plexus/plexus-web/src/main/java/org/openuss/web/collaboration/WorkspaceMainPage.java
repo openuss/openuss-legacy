@@ -30,9 +30,9 @@ import org.openuss.web.documents.FolderEntrySelection;
  */
 @Bean(name = "views$secured$collaboration$main", scope = Scope.REQUEST)
 @View
-public class CollaborationMainPage extends AbstractCollaborationPage {
+public class WorkspaceMainPage extends AbstractCollaborationPage {
 	
-	public static final Logger logger = Logger.getLogger(CollaborationMainPage.class);
+	public static final Logger logger = Logger.getLogger(WorkspaceMainPage.class);
 	
 	/** The datamodel for all mapped workspaces for this user. */
 	private LocalDataModelMappedWorkspaces dataMappedWorkspaces;

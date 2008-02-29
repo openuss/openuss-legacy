@@ -20,6 +20,10 @@
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
 
+FCKConfig.FlashUpload = false;
+FCKConfig.ImageUpload = false;
+FCKConfig.LinkBrowser = false;
+
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 

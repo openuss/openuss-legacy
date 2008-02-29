@@ -757,7 +757,7 @@
             </navigation-case>          
             <navigation-case>
                 <from-outcome>collaboration_remove_folderentries</from-outcome>
-                <to-view-id>/views/secured/collaboration/remove.xhtml</to-view-id>              
+                <to-view-id>/views/secured/collaboration/documentremoveconfirmation.xhtml</to-view-id>              
             </navigation-case>          
             <navigation-case>
                 <from-outcome>collaboration_add_zip</from-outcome>
