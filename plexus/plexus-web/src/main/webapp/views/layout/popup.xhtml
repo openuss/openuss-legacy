@@ -16,14 +16,9 @@
 		<link href="#{theme.stylesheet}" rel="stylesheet" type="text/css" media="screen"/>
 	</head>
 	<body>
-		<div id="wrapper">
-			<a name="pageup"/>
-			<div class="page">
-				<ui:decorate template="#{theme.dialog}">
-					<f:loadBundle basename="resources" var="msg" />
-				</ui:decorate>
-			</div>
-		</div>
+		<ui:decorate template="#{theme.dialog}">
+			<f:loadBundle basename="resources" var="msg" />
+		</ui:decorate>
 	</body>
 </f:view>
 </html>

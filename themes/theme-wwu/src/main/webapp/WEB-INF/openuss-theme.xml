@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<theme id="wwu" name="WWU">
+	<images>/theme-wwu/img</images>
+	<layout>/layout/wwu-default.xhtml</layout>
+	<stylesheet>/theme-wwu/css/style.css</stylesheet>
+</theme>
