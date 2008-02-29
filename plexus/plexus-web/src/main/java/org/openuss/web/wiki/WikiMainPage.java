@@ -59,7 +59,7 @@ public class WikiMainPage extends AbstractWikiPage {
 		String text = "<h1>Wiki</h1>";
 		
 		Locale locale = new Locale(getUser().getLocale());
-		String country = locale.getCountry();
+		String country = locale.getLanguage();
 		
 		InputStream in = getClass().getClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
 		if (in == null) {
