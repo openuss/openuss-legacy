@@ -57,4 +57,66 @@ public class ActiveDirectoryLdapTemplateTest extends TestCase {
 		verify(ctx);
 		verify(dirContextFactory);
 	}
+	
+	public void testRetrieveUserEmptyRootDn() {		
+		// Set up
+		InitialDirContextFactory dirContextFactory = createStrictMock(InitialDirContextFactory.class);
+		DirContext ctx = createStrictMock(DirContext.class);
+		LdapEntryMapper mapper = createStrictMock(LdapEntryMapper.class);
+		String rootDn = "";
+		String relativeDn = "cn=tester,ou=myunit"; 
+		String fullDn = relativeDn+","+rootDn;
+		Attributes attributes = new BasicAttributes();
+		Object obj = new Object();
+		try {
+		// Define behaviour
+		expect(dirContextFactory.newInitialDirContext()).andReturn(ctx);
+		expect(ctx.getNameInNamespace()).andReturn(rootDn);
+		expect(ctx.getAttributes(fullDn, null)).andReturn(attributes);
+		ctx.close();
+		expect(mapper.mapAttributes(fullDn, attributes)).andReturn(obj);
+		replay(dirContextFactory);
+		replay(ctx);
+		replay(mapper);
+		} catch (NamingException ne) {
+			throw new RuntimeException(ne.getMessage(),ne);
+        }
+		// Do the test
+		ActiveDirectoryLdapTemplate activeDirectoryLdapTemplate = new ActiveDirectoryLdapTemplate(dirContextFactory);
+		Object user = activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
+		verify(mapper);
+		verify(ctx);
+		verify(dirContextFactory);
+	}
+	
+	public void testRetrieveUserRootDnEqualsFullDn() {		
+		// Set up
+		InitialDirContextFactory dirContextFactory = createStrictMock(InitialDirContextFactory.class);
+		DirContext ctx = createStrictMock(DirContext.class);
+		LdapEntryMapper mapper = createStrictMock(LdapEntryMapper.class);
+		String rootDn = "dc=mydomain,dc=org";
+		String relativeDn = "";		
+		String fullDn = rootDn;
+		Attributes attributes = new BasicAttributes();
+		Object obj = new Object();
+		try {
+		// Define behaviour
+		expect(dirContextFactory.newInitialDirContext()).andReturn(ctx);
+		expect(ctx.getNameInNamespace()).andReturn(rootDn);
+		expect(ctx.getAttributes(relativeDn, null)).andReturn(attributes);
+		ctx.close();
+		expect(mapper.mapAttributes(fullDn, attributes)).andReturn(obj);
+		replay(dirContextFactory);
+		replay(ctx);
+		replay(mapper);
+		} catch (NamingException ne) {
+			throw new RuntimeException(ne.getMessage(),ne);
+        }
+		// Do the test
+		ActiveDirectoryLdapTemplate activeDirectoryLdapTemplate = new ActiveDirectoryLdapTemplate(dirContextFactory);
+		Object user = activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
+		verify(mapper);
+		verify(ctx);
+		verify(dirContextFactory);
+	}
 }

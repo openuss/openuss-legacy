@@ -61,7 +61,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected MessageSourceAccessor messages = AcegiMessageSource.getAccessor();
 	protected MessageSource messageSource;
 	protected UserCache userCache;
-	protected Vector<LdapAuthenticationProvider> ldapAuthenticationProviders = null;
+	protected Vector<LdapAuthenticationProvider> ldapAuthenticationProviders = new Vector<LdapAuthenticationProvider>();
 	protected List<LdapServerConfiguration> ldapServerConfigurations = null;
 
 	
@@ -73,7 +73,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Reset Providers
 		ldapAuthenticationProviders.clear();
 		// Get new configurations
-		List<LdapServerConfiguration> ldapServerConfigurations = ldapConfigurationService.getEnabledLdapServerConfigurations();
+		ldapServerConfigurations = ldapConfigurationService.getEnabledLdapServerConfigurations();
 		if (ldapServerConfigurations.size()>0) {
 			// Instantiate and initialize providers and related objects
 			for (LdapServerConfiguration ldapServerConfiguration : ldapServerConfigurations) {
@@ -108,7 +108,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	 * @see org.acegisecurity.providers.AuthenticationProvider#authenticate(org.acegisecurity.Authentication)
 	 */
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		if (ldapServerConfigurations.size()==0)
+		if (ldapAuthenticationProviders.size()==0)
 			throw new ProviderNotFoundException(messages.getMessage("ProviderManager.providerNotFound", "No LDAP authentication provider found.")); 
 
 		Authentication authResponse = authenticationManager.authenticate(authentication);
@@ -220,6 +220,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		url = url.toLowerCase().replaceAll("\\s+","");
     	url = url + " ";  	
     	url = url.replaceAll("[^a-z]+\\s", "");
+    	url = url.toLowerCase().replaceAll("\\s+","");
     	// add port
     	url = url + ":" + ldapServerConfiguration.getPort().toString();
     	// add rootDn
@@ -229,8 +230,10 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
     	url = url + "/"+rootDn;
 		DefaultInitialDirContextFactory defaultInitialDirContextFactory = new DefaultInitialDirContextFactory(url);
 		defaultInitialDirContextFactory.setAuthenticationType(ldapServerConfiguration.getAuthenticationType().replaceAll("\\s+",""));
-		defaultInitialDirContextFactory.setManagerDn(ldapServerConfiguration.getManagerDn().replaceAll("\\s+",""));
-		defaultInitialDirContextFactory.setManagerPassword(ldapServerConfiguration.getManagerPassword());
+		if (ldapServerConfiguration.getManagerDn()!=null) 
+			defaultInitialDirContextFactory.setManagerDn(ldapServerConfiguration.getManagerDn().replaceAll("\\s+",""));
+		if (ldapServerConfiguration.getManagerPassword()!=null)
+			defaultInitialDirContextFactory.setManagerPassword(ldapServerConfiguration.getManagerPassword());
 		defaultInitialDirContextFactory.setMessageSource(messageSource);
 		defaultInitialDirContextFactory.setUseConnectionPool(ldapServerConfiguration.getUseConnectionPool());
 		defaultInitialDirContextFactory.setUseLdapContext(ldapServerConfiguration.getUseLdapContext());
@@ -240,7 +243,8 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected LdapUserDetailsMapper newLdapUserDetailsMapper(LdapServerConfiguration ldapServerConfiguration) {
 		ExtendedLdapUserDetailsMapper extendedLdapUserDetailsMapper = new ExtendedLdapUserDetailsMapper();
 		extendedLdapUserDetailsMapper.setRoleAttributes(ldapServerConfiguration.getRoleAttributeKeys());
-		extendedLdapUserDetailsMapper.setGroupRoleAttributeKey(ldapServerConfiguration.getGroupRoleAttributeKey());
+		if (ldapServerConfiguration.getGroupRoleAttributeKey()!= null)
+			extendedLdapUserDetailsMapper.setGroupRoleAttributeKey(ldapServerConfiguration.getGroupRoleAttributeKey());
 		return extendedLdapUserDetailsMapper;		
 	}
 	

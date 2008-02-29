@@ -88,6 +88,53 @@ public class ExtendedLdapUserDetailsMapperTest extends TestCase {
         assertEquals("Z", user.getGrantedAuthorities()[2].getAuthority());
     }
 
+    public void testMultipleRoleAttributeValuesAreMappedToAuthoritiesWithNullGroupRoleAttributeKey() throws Exception {
+        ExtendedLdapUserDetailsMapper mapper = new ExtendedLdapUserDetailsMapper();
+        mapper.setConvertToUpperCase(false);
+        mapper.setRolePrefix("");
+        
+        mapper.setGroupRoleAttributeKey(null);
+
+        mapper.setRoleAttributes(new String[] {"userRole"});
+
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute roleAttribute = new BasicAttribute("userRole");
+        roleAttribute.add("X");
+        roleAttribute.add("Y");
+        roleAttribute.add("Z");
+        attrs.put(roleAttribute);
+
+        LdapUserDetailsImpl.Essence user = (LdapUserDetailsImpl.Essence) mapper.mapAttributes("cn=someName", attrs);
+
+        assertEquals(3, user.getGrantedAuthorities().length);
+        assertEquals("X", user.getGrantedAuthorities()[0].getAuthority());
+        assertEquals("Y", user.getGrantedAuthorities()[1].getAuthority());
+        assertEquals("Z", user.getGrantedAuthorities()[2].getAuthority());
+    }
+    
+    public void testMultipleRoleAttributeValuesAreMappedToAuthoritiesWithEmptyGroupRoleAttributeKey() throws Exception {
+        ExtendedLdapUserDetailsMapper mapper = new ExtendedLdapUserDetailsMapper();
+        mapper.setConvertToUpperCase(false);
+        mapper.setRolePrefix("");
+        
+        mapper.setGroupRoleAttributeKey("");
+
+        mapper.setRoleAttributes(new String[] {"userRole"});
+
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute roleAttribute = new BasicAttribute("userRole");
+        roleAttribute.add("X");
+        roleAttribute.add("Y");
+        roleAttribute.add("Z");
+        attrs.put(roleAttribute);
+
+        LdapUserDetailsImpl.Essence user = (LdapUserDetailsImpl.Essence) mapper.mapAttributes("cn=someName", attrs);
+
+        assertEquals(3, user.getGrantedAuthorities().length);
+        assertEquals("X", user.getGrantedAuthorities()[0].getAuthority());
+        assertEquals("Y", user.getGrantedAuthorities()[1].getAuthority());
+        assertEquals("Z", user.getGrantedAuthorities()[2].getAuthority());
+    }
 // Tests from LdapUserDetailsMapperTests
     
     public void testMultipleRoleAttributeValuesAreMappedToAuthorities() throws Exception {

@@ -55,48 +55,48 @@ public class ADLdapTest extends AbstractDependencyInjectionSpringContextTests {
 	}
 	
 
-//	public void testLdapAuthenticationLive() {
-//
-////		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
-//		 										UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
-//		 										
-//		 	Authentication authResult = authManager.authenticate(authRequest);		 	
-//		 	assertNotNull(authResult);
-//		 	
-////		 	Authentifizierungs mittels LDAP Server
-//		 	if (authResult.getPrincipal() instanceof LdapUserDetails) {
-//		 		
-//		 		LdapUserDetails myLdapUserDetails = (LdapUserDetails) authResult.getPrincipal();
-//				logger.info("User is authenticated by means of LDAP!");
-//	 
-//			 	logger.info("getDetails: "+authResult.getDetails());
-//				
-//			 	NamingEnumeration<String> myNamingEnu = myLdapUserDetails.getAttributes().getIDs();
-//			 	Attributes myAttr = myLdapUserDetails.getAttributes();
-//			 	
-//			 	try {
-//			 		while (myNamingEnu.hasMore()) {
-//			 			String attrId = myNamingEnu.next().toString();
-//		                logger.info("Attribute: "+myAttr.get(attrId));
-//			 		}		 		
-//			 	} catch(NamingException ex){
-//			 		logger.info(ex);			 		
-//			 	}
-//			  	logger.info("myLdapUserDetails.getAttributes(): "+myLdapUserDetails.getAttributes());
-//			  	
-//			 	
-//
-//			 	logger.info("user DN: "+myLdapUserDetails.getDn());
-////			 	logger.info("getAuthorities(): "+authResult.getAuthorities());
-//			 	GrantedAuthority[] myGrantedAuthority = authResult.getAuthorities();
-//
-//			 	
-//			 	for (GrantedAuthority grantedAuthority : myGrantedAuthority) {
-//			 		logger.info("!!!! Authority: "+grantedAuthority.getAuthority());
-//					
-//				}			 	 
-//		 	}
-//	 }
+	public void testLdapAuthenticationLive() {
+
+//		 !!!!!!!!!!!!! ATTENTION: DON't commit your personal password !!!!!!!!!!!!!!!!!!!!
+		 										UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "");
+		 										
+		 	Authentication authResult = authManager.authenticate(authRequest);		 	
+		 	assertNotNull(authResult);
+		 	
+//		 	Authentifizierungs mittels LDAP Server
+		 	if (authResult.getPrincipal() instanceof LdapUserDetails) {
+		 		
+		 		LdapUserDetails myLdapUserDetails = (LdapUserDetails) authResult.getPrincipal();
+				logger.info("User is authenticated by means of LDAP!");
+	 
+			 	logger.info("getDetails: "+authResult.getDetails());
+				
+			 	NamingEnumeration<String> myNamingEnu = myLdapUserDetails.getAttributes().getIDs();
+			 	Attributes myAttr = myLdapUserDetails.getAttributes();
+			 	
+			 	try {
+			 		while (myNamingEnu.hasMore()) {
+			 			String attrId = myNamingEnu.next().toString();
+		                logger.info("Attribute: "+myAttr.get(attrId));
+			 		}		 		
+			 	} catch(NamingException ex){
+			 		logger.info(ex);			 		
+			 	}
+			  	logger.info("myLdapUserDetails.getAttributes(): "+myLdapUserDetails.getAttributes());
+			  	
+			 	
+
+			 	logger.info("user DN: "+myLdapUserDetails.getDn());
+//			 	logger.info("getAuthorities(): "+authResult.getAuthorities());
+			 	GrantedAuthority[] myGrantedAuthority = authResult.getAuthorities();
+
+			 	
+			 	for (GrantedAuthority grantedAuthority : myGrantedAuthority) {
+			 		logger.info("!!!! Authority: "+grantedAuthority.getAuthority());
+					
+				}			 	 
+		 	}
+	 }
 	 
 	  
 	

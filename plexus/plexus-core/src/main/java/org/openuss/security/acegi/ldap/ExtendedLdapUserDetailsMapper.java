@@ -65,7 +65,8 @@ public class ExtendedLdapUserDetailsMapper extends LdapUserDetailsMapper {
 	}
 
 	public void setGroupRoleAttributeKey(String groupRoleAttributeKey) {
-		this.groupRoleAttributeKey = groupRoleAttributeKey;
+		if (groupRoleAttributeKey != null && groupRoleAttributeKey!= "")
+			this.groupRoleAttributeKey = groupRoleAttributeKey;
 	}
 
 	public String getRolePrefix() {
