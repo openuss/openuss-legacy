@@ -81,12 +81,16 @@ public class WikiVersionPage extends AbstractWikiPage{
 		
 		private DataPage<WikiSiteInfo> page;
 		
+		public WikiDataProvider() {
+			setSortColumn("creationDate");
+			setAscending(false);
+		}
+		
 		@Override
 		public DataPage<WikiSiteInfo> getDataPage(int startRow,	int pageSize) {
 			if (page == null) {
 				List<WikiSiteInfo> entries = loadWikiSiteVersions();
 				page = new DataPage<WikiSiteInfo>(entries.size(), 0, entries);
-				setSortColumn("creationDate");
 				sort(entries);
 			}
 			return page;
