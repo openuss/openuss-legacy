@@ -17,10 +17,12 @@
 			<f:facet name="header">  
 				#{msg['discussion_thread_column_author']} 
 			</f:facet>
-			<h:commandLink value="" action="#{views$secured$discussion$discussionthread.linkProfile}">
+			<o:link value="/views/secured/user/userprofile.faces">
+				<f:param name="showuser" value="#{post.submitterId}" />
 				<h:outputText value="#{post.submitter}" styleClass="user_name"/>
-			</h:commandLink>
-			<h:commandLink value="" action="#{views$secured$discussion$discussionthread.linkProfile}">
+			</o:link>			
+			<o:link value="/views/secured/user/userprofile.faces">
+				<f:param name="showuser" value="#{post.submitterId}" />
 				<h:graphicImage styleClass="userphoto"
 					value="/files?fileid=#{post.submitterPicture}"
 					title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
@@ -29,7 +31,7 @@
 					alt="#{msg.user_profile_no_image}"
 					title="#{msg.user_profile_no_image}"
 					rendered="#{empty post.submitterPicture}" />
-				</h:commandLink>					
+			</o:link>					
 		</t:column>
 		<t:column styleClass="col_post">
 			<f:facet name="header">

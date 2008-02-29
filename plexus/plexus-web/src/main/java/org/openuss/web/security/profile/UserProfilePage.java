@@ -95,7 +95,6 @@ public class UserProfilePage extends BasePage{
 			permitRolesImageReadPermission(imageFile);
 			
 			user.setImageId(imageFile.getId());
-			user.setImageId(imageFile.getId());
 
 			removeSessionBean(Constants.UPLOADED_FILE);
 			uploadFileManager.removeDocument(uploaded);
@@ -120,15 +119,6 @@ public class UserProfilePage extends BasePage{
 		// persist user
 		securityService.saveUser(user);
 	}		
-	
-	/**
-	 * Show Profile
-	 * @return outcome
-	 */
-	public String showProfile() {
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
 	
 	public void removeImage(ActionEvent event) throws DocumentApplicationException {
 		if (user.getImageId() != null) {

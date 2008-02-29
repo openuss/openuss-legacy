@@ -29,7 +29,7 @@ public class PropertiesPage extends BasePage  {
 	
 	@Property(value="#{systemService}")
 	private SystemService systemService;
-	
+
 	@Prerender
 	public void prerender() {
 		propertyList.setData(new ArrayList<SystemProperty>(systemService.getProperties()));

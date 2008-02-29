@@ -5,13 +5,21 @@
  */
 package org.openuss.statistics;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.openuss.discussion.TopicInfo;
+import org.openuss.security.UserImpl;
+import org.openuss.viewtracking.ViewState;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
@@ -50,5 +58,23 @@ public class OnlineSessionDaoImpl extends OnlineSessionDaoBase {
 
 	public OnlineSession onlineUserInfoToEntity(OnlineUserInfo onlineUserInfo) {
 		return null;
+	}
+
+	@Override
+	protected List handleFindActiveUsers() throws Exception {
+		final Date time = DateUtils.addHours(new Date(), -1);
+		final String hqlCount = "select o from OnlineSessionImpl as o " +
+				"where o.user is not null and o.endTime is null and o.startTime > :time) ";
+		return (List) getHibernateTemplate().execute(new HibernateCallback(){
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.createQuery(hqlCount);
+				query.setDate("time", time);
+				List results = query.list();
+				ArrayList<OnlineUserInfo> activeUsers = new ArrayList<OnlineUserInfo>();
+				for  (Object result : results){
+					activeUsers.add(toOnlineUserInfo((OnlineSessionImpl) result));
+				}
+				return activeUsers;
+			}});
 	}
 }

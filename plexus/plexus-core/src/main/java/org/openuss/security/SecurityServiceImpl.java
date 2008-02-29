@@ -66,18 +66,20 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		User user = getUserDao().userInfoToEntity(userInfo);
 		getUserDao().create(user);
 		encodePassword(user);
-		getUserDao().update(user);
-		getUserDao().toUserInfo(user, userInfo);
 
-		// Define object identity security
+		// Define object identity and assign roles to user 
 		createObjectIdentity(user, null);
+		addAuthorityToGroup(user, Roles.USER);
 
+		getUserDao().update(user);
+
+		getUserDao().toUserInfo(user, userInfo);
 		return userInfo;
 	}
 
 	private void validateUserInfoForRegistration(UserInfo userInfo) {
 		if (!isValidUserName(null, userInfo.getUsername())) {
-			throw new SecurityServiceException("Invalid username.");
+			throw new SecurityServiceException("Invalid username. Maybe the username already exists.");
 		}
 		if (StringUtils.isBlank(userInfo.getPassword())) {
 			throw new SecurityServiceException("Password must not be empty");
@@ -110,10 +112,16 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected void handleSaveUser(User user) throws Exception {
-		// Do not change the user password by this method use changeUserPassword
-		// instead
-		user.setPassword(getUserDao().getPassword(user.getId()));
 		getUserDao().update(user);
+	}
+
+	@Override
+	protected void handleSaveUser(UserInfo userInfo) throws Exception {
+		if (userInfo.getId() != null) {
+			getUserDao().update(getUserDao().userInfoToEntity(userInfo));
+		} else if (userInfo.getId() == null) {
+			createUser(userInfo);
+		}
 	}
 
 	@Override
@@ -427,16 +435,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected User handleGetUserObject(Long userId) throws Exception {
 		return getUserDao().load(userId);
-	}
-
-	@Override
-	protected void handleSaveUser(UserInfo user) throws Exception {
-		if (user.getId() != null) {
-			getUserDao().update(getUserDao().userInfoToEntity(user));
-		} else if (user.getId() == null) {
-			createUser(user);
-		}
-
 	}
 
 	@Override

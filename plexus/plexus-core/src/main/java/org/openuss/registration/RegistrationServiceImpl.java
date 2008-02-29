@@ -34,14 +34,11 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	@Override
 	protected void handleRegistrateUser(UserInfo userInfo) throws RegistrationException {
 		Validate.notNull(userInfo, "User parameter must not be null!");
-
-		// ensure that user will not be activate
+		// ensure that user will not be enable after initial creation
 		userInfo.setEnabled(false);
-
 		getSecurityService().createUser(userInfo);
-		
 		// asign roles to user
-		asignRolesToUser(getSecurityService().getUserObject(userInfo));
+		//	asignRolesToUser(getSecurityService().getUserObject(userInfo));
 	}
 
 	@Override

@@ -37,18 +37,8 @@
 			<h:outputText value="#{bean.lastName}"/>
 		</t:column>      
 
-
-		
-
-		
 		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="#{views$secured$lecture$auth$universitymembers}"
-				action="showProfile"
-				label="#{msg['user_profile_command_show_profile']}"
-				title="#{msg['user_profile_command_show_profile_hint']}"
-				styleClass="icon_profile" />
-				
+			<plexus:linkProfileIcon user="#{bean.id}"/>
 			<plexus:command
 				bean="#{views$secured$lecture$auth$universitymembers}"
 				action="removeMember"

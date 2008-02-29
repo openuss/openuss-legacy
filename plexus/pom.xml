@@ -17,6 +17,7 @@
 
 	<modules>
 		<module>plexus-model</module>
+		<module>plexus-remote</module>
 		<module>plexus-api</module>
 		<module>plexus-core</module>
  		<module>plexus-web</module>

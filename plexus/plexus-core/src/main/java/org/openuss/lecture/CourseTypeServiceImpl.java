@@ -44,15 +44,8 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 
 	@Override
 	protected CourseTypeInfo handleFindCourseType(Long courseTypeId) throws Exception {
-
 		Validate.notNull(courseTypeId, "CourseTypeServiceImpl.handleFindCourseType - the courseTypeId cannot be null.");
-
-		// Load CourseType entity
-		CourseType courseType = this.getCourseTypeDao().load(courseTypeId);
-		if (courseType == null) {
-			return null;
-		}
-		return this.getCourseTypeDao().toCourseTypeInfo(courseType);
+		return (CourseTypeInfo) this.getCourseTypeDao().load(CourseTypeDao.TRANSFORM_COURSETYPEINFO, courseTypeId);
 	}
 
 	/**

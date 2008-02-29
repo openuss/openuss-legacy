@@ -47,12 +47,7 @@
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="#{views$secured$course$courseaspirants}"
-				action="showProfile"
-				label="#{msg['user_profile_command_show_profile']}"
-				title="#{msg['user_profile_command_show_profile_hint']}"
-				styleClass="icon_profile" />
+			<plexus:linkProfileIcon user="#{aspirant.userId}"/>
 		</plexus:column>
 	</plexus:dataTable>      
 	

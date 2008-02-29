@@ -20,11 +20,14 @@
 			classpath*:applicationContext-legacy.xml,
 			<!--classpath*:applicationContext-beans.xml,-->
 			classpath*:applicationContext-commands.xml,
+			classpath*:applicationContext-quartz.xml,
 			classpath*:applicationContext-messaging.xml,
 			classpath*:applicationContext-newsletter.xml,
 			classpath*:applicationContext-lucene.xml,
 			classpath*:applicationContext-resources.xml,
 			classpath*:applicationContext-aop.xml,
+			classpath*:applicationContext-remote.xml,
+			/WEB-INF/applicationContext-webservice.xml,
 			/WEB-INF/applicationContext-i18n.xml,
 			/WEB-INF/security.xml,
 			/WEB-INF/actions.xml,
@@ -315,6 +318,13 @@
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/services/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - -
 	   MyFaces Extensions Filter
 	- - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -429,8 +439,15 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>6</load-on-startup>
+	</servlet>
+
+	<servlet>
 		<servlet-name>FCKFaces</servlet-name>
 		<servlet-class>org.fckfaces.util.Servlet</servlet-class>
+		<load-on-startup>5</load-on-startup>
 	</servlet>
 	
 	<servlet>
@@ -476,6 +493,11 @@
 		<url-pattern>/rss/*</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
 <!--
 	<servlet-mapping>
 	    <servlet-name>Jenia internal servlet</servlet-name>

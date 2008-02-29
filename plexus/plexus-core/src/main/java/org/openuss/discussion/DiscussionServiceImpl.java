@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
-import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.security.User;
 import org.openuss.system.SystemProperties;
 
@@ -35,7 +33,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo, String domainName) throws Exception {
+	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo) throws Exception {
 		Validate.notNull(postInfo, "postInfo must not be null");
 		Validate.notNull(forumInfo, "forumInfo must not be null");
 
@@ -58,24 +56,24 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
  		TopicInfo topicInfo = getTopicDao().toTopicInfo(topic);
 
  		// add first post
-		handleAddPost(postInfo, topicInfo, domainName);
+		handleAddPost(postInfo, topicInfo);
 		topic = getTopicDao().load(topicInfo.getId());
 		
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
 		
-		sendNotificationsToForumWatchers(topic, topic.getForum(), domainName);
+		sendNotificationsToForumWatchers(topic, topic.getForum());
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void sendNotificationsToForumWatchers(Topic topic, Forum forum, String domainName) {
+	private void sendNotificationsToForumWatchers(Topic topic, Forum forum) {
 		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
 		List<User> emails = new ArrayList<User>();
 		for (ForumWatch watch : watches){
 			emails.add(watch.getUser());			
 		}
 		logEmailAdresses(emails);
-		sendNotificationEmail(emails, topic, domainName);
+		sendNotificationEmail(emails, topic);
 	}
 
 	/**
@@ -114,7 +112,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#addPost(org.openuss.discussion.PostInfo,
 	 *      org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo, String domainName) throws Exception {
+	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo) throws Exception {
 		Validate.notNull(postInfo, "PostInfo must not be null.");
 		Validate.notNull(topicInfo, "TopicInfo must not be null.");
 		
@@ -130,7 +128,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 		
-		sendNotifications(topic, topic.getForum(), domainName);
+		sendNotifications(topic, topic.getForum());
 		getTrackingService().setModified(topic);
 		getTrackingService().setRead(topic);
 		
@@ -139,7 +137,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void sendNotifications(Topic topic, Forum forum, String domainName){
+	private void sendNotifications(Topic topic, Forum forum){
 		List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
 		List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
 		Set<User> emails = new HashSet();
@@ -147,7 +145,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		emails.addAll(emailsByForum);		
 		logEmailAdresses(emails);
 		List l = new ArrayList(emails);
-		sendNotificationEmail(l, topic, domainName);
+		sendNotificationEmail(l, topic);
 		logger.debug("got users to notify");
 	}
 	
@@ -194,7 +192,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
 	 */
 	@SuppressWarnings("unchecked")
-	protected void handleUpdatePost(PostInfo postInfo, String domainName) throws Exception {
+	protected void handleUpdatePost(PostInfo postInfo) throws Exception {
 		Post post = getPostDao().load(postInfo.getId());
 		post.setText(postInfo.getText());
 		post.setTitle(postInfo.getTitle());
@@ -206,7 +204,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 		getPostDao().toPostInfo(post,postInfo);
 		
-		sendNotifications(post.getTopic(), post.getTopic().getForum(), domainName);
+		sendNotifications(post.getTopic(), post.getTopic().getForum());
 		
 		getTrackingService().setModified(post.getTopic());
 		getTrackingService().setRead(post.getTopic());
@@ -220,7 +218,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected PostInfo handleGetPost(PostInfo post) throws Exception {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
-		PostInfo postInfo = getPostDao().toPostInfo(getPostDao().load(post.getId()));
+		PostInfo postInfo = (PostInfo) getPostDao().load(getPostDao().TRANSFORM_POSTINFO, post.getId());
+		if (postInfo == null) {
+			return null;  
+		}
 		List<FileInfo> attachments = getAttachments(postInfo);
 		postInfo.setAttachments(attachments);
 		postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
@@ -421,17 +422,26 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void sendNotificationEmail(List<User> recipients, Topic topic, String domainName) {
+	private void sendNotificationEmail(List<User> recipients, Topic topic) {
 		if (recipients==null||recipients.size()==0) return;
 		try {
 			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&course="+topic.getForum().getDomainIdentifier();
 
-			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;		
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;
+				
 
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
-				
-			parameters.put("coursename", domainName);
+			
+//			FIXME Dependency from diskussion to lecture is not allowed
+			
+//			Course course = getCourseDao().load(topic.getForum().getDomainIdentifier());
+//			CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
+			
+//			parameters.put("coursename", courseInfo.getName());
+			
+			// FIXME use forum name and an application event if course is updated
+			parameters.put("forumname", "ISSUE: Find domain name");
 			parameters.put("topiclink", link);
 			
 			getMessageService().sendMessage(

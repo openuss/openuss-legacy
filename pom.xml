@@ -300,6 +300,7 @@
 		</plugins>
 	</build>
 	<modules>
+        <module>documentation</module>
 		<module>framework</module>
 		<module>themes</module>
 		<module>openformula</module>
@@ -323,13 +324,18 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<!-- 
-			<repository>
+		<repository>
+			<id>apache.incubation.releases</id>
+			<name>Apache Incubating Release Distribution Repository</name>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</repository>
+<!-- 
+		<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
 			<layout>legacy</layout>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-			</repository>		
+		</repository>		
 			<repository>
 			<id>andromda</id>
 			<name>andromda</name>
@@ -369,8 +375,14 @@
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</pluginRepository>
+		<pluginRepository>
+			<id>java-net</id>
+			<name>Java.Net</name>
+			<layout>legacy</layout>
+			<url>https://maven-repository.dev.java.net/nonav/repository</url>
+		</pluginRepository>	
 		<!--		
-			<pluginRepository>
+		<pluginRepository>
 			<releases><enabled>true</enabled></releases>
 			<id>central</id>
 			<name>ibiblio</name>
@@ -442,23 +454,27 @@
 				</reportSets>
 			</plugin>
 			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<id>html</id>
-						<configuration>
-							<minmemory>128</minmemory>
-							<maxmemory>384</maxmemory>
-							<charset>UTF-8</charset>
-							<sourcepath>
-								${project.build.directory}/src;${project.build.directory}/../src
-							</sourcepath>
-						</configuration>
-						<reports>
-							<report>javadoc</report>
-						</reports>
-					</reportSet>
-				</reportSets>
+		        <groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-javadoc-plugin</artifactId>
+        		<configuration>
+          			<aggregate>true</aggregate>
+ 					<reportSets>
+						<reportSet>
+							<id>html</id>
+							<configuration>
+								<minmemory>128</minmemory>
+								<maxmemory>384</maxmemory>
+								<charset>UTF-8</charset>
+								<sourcepath>
+									${project.build.directory}/src;${project.build.directory}/../src/main/java
+								</sourcepath>
+							</configuration>
+							<reports>
+								<report>javadoc</report>
+							</reports>
+						</reportSet>
+					</reportSets>
+		        </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
@@ -472,7 +488,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>1.0-beta-1</version>
 				<configuration>
 					<outputDirectory>target/site</outputDirectory>
 					<threshold>Low</threshold>
@@ -493,10 +508,16 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.0</version>
 				<configuration>
 					<aggregate>true</aggregate>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
 			<!-- 
 				<plugin>
@@ -506,11 +527,6 @@
 				<aggregate>true</aggregate>
 				</configuration>
 				</plugin>
-			-->
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
-			<!--	
 				<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
@@ -526,10 +542,6 @@
 				</reportSets>
 				</plugin>
 			-->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-			</plugin>
 		</plugins>
 	</reporting>
 	<dependencyManagement>
@@ -585,9 +597,9 @@
 				<version>1.1.6</version>
 			</dependency>
 			<dependency>
-				<groupId>org.fckfaces</groupId>
-				<artifactId>fckfaces</artifactId>
-				<version>1.7.27</version>
+				<groupId>net.sf.fck-faces</groupId>
+				<artifactId>fck-faces</artifactId>
+				<version>1.8</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shale</groupId>
@@ -957,6 +969,57 @@
 				<artifactId>backport-concurrency</artifactId>
 				<version>1.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-simple</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-databinding-aegis</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-local</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-jms</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-management</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-common-utilities</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<distributionManagement>
@@ -969,6 +1032,7 @@
 	<properties>
 		<shale.version>1.0.4</shale.version>
 		<spring.version>2.0.8</spring.version>
+		<cxf.version>2.0.4-incubator</cxf.version>
 	<!--
 		<maven.andromda.loggingConfigurationUri>
 		${project.dir}/tools/config/log4j.xml

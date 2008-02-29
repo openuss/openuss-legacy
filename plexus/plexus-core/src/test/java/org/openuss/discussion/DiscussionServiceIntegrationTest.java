@@ -56,7 +56,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		PostInfo firstPost = generatePost();
 		commit();
-		discussionService.createTopic(firstPost, loadedForum, null);
+		discussionService.createTopic(firstPost, loadedForum);
 		commit();		
 		List<TopicInfo> topics = discussionService.getTopics(loadedForum);
 		assertNotNull(topics);
@@ -93,7 +93,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 
 		//test correct creation of a example topic
 		PostInfo firstPost = generatePost();
-		discussionService.createTopic(firstPost, loadedForum, null);
+		discussionService.createTopic(firstPost, loadedForum);
 		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
@@ -106,7 +106,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(1, posts.size());
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
-		discussionService.addPost(newPost, addedTopic, null);
+		discussionService.addPost(newPost, addedTopic);
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
@@ -127,7 +127,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		//test correct creation of a example topic
 		flush();
 		PostInfo firstPost = generatePost();
-		discussionService.createTopic(firstPost, loadedForum, null);
+		discussionService.createTopic(firstPost, loadedForum);
 		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);
 		assertEquals(1, topics.size());
@@ -140,7 +140,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertEquals(1, posts.size());
 		//test correct adding of a post
 		PostInfo newPost = generatePost();
-		discussionService.addPost(newPost, addedTopic, null);
+		discussionService.addPost(newPost, addedTopic);
 		flush();
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
 		assertNotNull(topics);

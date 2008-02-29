@@ -14,7 +14,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$course$courseparticipants", scope = Scope.REQUEST)
@@ -61,14 +60,6 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 			}
 			return page;
 		}
-	}
-
-	public String showProfile() {
-		CourseMemberInfo participant = data.getRowData();
-		UserInfo user = new UserInfo();
-		user.setId(participant.getUserId());
-		setSessionBean(Constants.SHOW_USER_PROFILE, user);
-		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
 	public String delete() {

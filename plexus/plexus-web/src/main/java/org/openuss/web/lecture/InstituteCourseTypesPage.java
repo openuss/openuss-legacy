@@ -177,6 +177,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
 						.findCourseTypesByInstitute(instituteInfo.getId()));
 				sort(courseTypes);
+				// FIXME courseCount should be set with the CourseTypeDaoImpl.toCourseTypeInfo()
 				for( Iterator<CourseTypeInfo> i = courseTypes.iterator(); i.hasNext(); ) {
 					CourseTypeInfo cti = i.next();
 					cti.setCourseCount(new Long(getCourseService().findCoursesByCourseType(cti.getId()).size()));

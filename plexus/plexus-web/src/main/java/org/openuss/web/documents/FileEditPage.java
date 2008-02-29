@@ -73,6 +73,7 @@ public class FileEditPage extends AbstractDocumentPage{
 			addMessage(i18n("message_documents_save_file"));
 		}
 		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);
+		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
@@ -82,6 +83,7 @@ public class FileEditPage extends AbstractDocumentPage{
 			documentToSelectedFile(document);
 			documentService.createFileEntry(selectedFile, retrieveActualFolder());
 			uploadFileManager.removeDocument(document);
+			removeSessionBean(Constants.UPLOADED_FILE);
 			return true;
 		} else {
 			return false;

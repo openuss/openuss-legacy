@@ -116,6 +116,10 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		logger.debug("course assistant aspirant added");
 		UserInfo user = new UserInfo();
 		user.setId(userId);
+		if (user.getId().longValue()==Constants.COURSE_CHOOSE_ASSISTANT.longValue()){
+			addError(i18n(Constants.COURSE_CHOOSE_ERROR));
+			return Constants.FAILURE;
+		} 
 		courseService.addAssistant(courseInfo, user);
 		addMessage(i18n("message_course_add_assistant"));
 		resetCachedData();
@@ -147,11 +151,10 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			UserComparator userComparator = new UserComparator();
 			Collections.sort(membersUser, userComparator);
 			instituteMembers = new ArrayList<SelectItem>();
+			instituteMembers.add(new SelectItem(Constants.COURSE_CHOOSE_ASSISTANT, i18n(Constants.COURSE_CHOSSE_ASSISTANT_TEXT)));
 			for(UserInfo member : membersUser) {
 				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName()));
 			}
-
-			
 		}
 		return instituteMembers;
 	}

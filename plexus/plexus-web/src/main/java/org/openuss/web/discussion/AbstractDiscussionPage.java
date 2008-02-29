@@ -7,7 +7,6 @@ import org.acegisecurity.acl.basic.BasicAclEntry;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.course.discussion.CourseDiscussionService;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
@@ -28,9 +27,6 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
-	
-	@Property(value = "#{courseDiscussionService}")
-	protected CourseDiscussionService courseDiscussionService;
 
 	@Property(value = "#{aclManager}")
 	protected AclManager aclManager;
@@ -40,6 +36,9 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (courseInfo!=null&&courseInfo.getId()!=null){
 			forum = getDiscussionService().getForum(courseInfo);
 			setSessionBean(Constants.DISCUSSION_FORUM, forum);
@@ -114,14 +113,5 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
-	}
-
-	public CourseDiscussionService getCourseDiscussionService() {
-		return courseDiscussionService;
-	}
-
-	public void setCourseDiscussionService(
-			CourseDiscussionService courseDiscussionService) {
-		this.courseDiscussionService = courseDiscussionService;
 	}
 }

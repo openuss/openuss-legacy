@@ -2,6 +2,12 @@
 	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
 	
 	<target name="generate-sources">
+		<exec executable="${maven.executable}" dir="../plexus-api">
+			<arg line="clean"/>
+		</exec>
+		<exec executable="${maven.executable}" dir="../plexus-core">
+			<arg line="clean"/>
+		</exec>
 		<exec executable="${maven.executable}">
 			<arg line="-e -o generate-sources"/>
 		</exec>

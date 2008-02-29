@@ -27,19 +27,27 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 	 */
 	private static final long serialVersionUID = -5670314763540215921L;
 
+	private String shortenInMiddle(String str, int maxLength){
+		if (str==null){
+			return null;
+		}
+		if (str.length()<maxLength){
+			return str;
+		}
+		int halfLength = maxLength / 2;
+		String beginning = "";
+		String ending = "";
+		ending = str.substring(str.length()-halfLength);
+		beginning = str.substring(0, str.length()-halfLength);
+		return StringUtils.abbreviate(beginning, maxLength-halfLength)+ending;
+	}
+	
 	/**
 	 * Generates a guid shortcut on persisting if no shortcut is already set.
 	 */
 	private void generateShortcut() {
 		logger.debug("auto-generate shortcut for course");
-		// FIXME make this method robust against unique key violations
-		String courseTypeShortcut = getCourseType().getShortcut();
-		String id = String.valueOf(this.getId());
-		int index = courseTypeShortcut.length();
-		if (index + id.length() >= 30)
-			index -= id.length();
-		String shortcut = courseTypeShortcut.substring(0, index) + id;
-		this.setShortcut(shortcut);
+		this.setShortcut(shortenInMiddle(getCourseType().getShortcut()+"-"+getPeriod().getName(), 30));
 
 	}
 

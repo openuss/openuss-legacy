@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+ 
+	<div class="unsichtbar">
+		<a name="seitenanfang"/>
+	</div>
+	<div id="main">
+		<div id="kopf">
+			<div id="logo1">
+				<a href="http://www.uni-muenster.de/"> 
+					<img class="logo" width="278" height="60" title="Logo der Universitaet Muenster"
+						alt="Logo der Universitaet Muenster (Link zur Startseite der Universitaet Muenster)"
+						src="/theme-wwu/images/logos/wwu_logo.gif" /> 
+				</a>
+			</div>
+			<div id="logo2">
+				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/welcome.faces" styleClass="openuss_logo">
+					<div class="openuss_logo"/>
+				</h:outputLink>				
+			</div>
+			<div id="logo3"/>
+			<div id="a"/>
+			<div id="b" />
+			<div id="c">
+				<div id="userinfo">
+					<span class="userinfo">
+						<ui:insert name="userportlet" />
+					</span>
+				</div>
+				<ui:insert name="search" /> 
+			</div>
+			<div id="a1"/>
+			<div id="a2">
+				<ui:insert name="mainmenu" />
+			</div>
+		<div id="koerper">
+			<div id="d">
+				<div id="subnavigation"/>
+					<ui:insert name="navigation" />
+				</div>
+			</div>
+			<div id="content">
+				<div id="e">
+					<ui:insert name="breadcrumb" />
+					<ui:insert name="messages" /> 
+					<ui:insert name="content">
+						<ui:include src="content.xhtml" />
+					</ui:insert>
+				</div>
+				<div id="f">
+					<ui:insert name="sidebar" />
+				</div>
+			</div>
+		</div>
+		<div id="fuss">
+			<div id="g" ><span/></div>
+			<div id="h" ><span/></div>
+			<div id="i" ><span/></div>
+			<div id="k" >
+				<ui:insert name="footer">
+					<ui:include src="footer.xhtml" />
+				</ui:insert>
+			</div> 
+			<div id="l" />
+		</div>
+	</div>
+</f:subview>

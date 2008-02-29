@@ -17,7 +17,7 @@
 	<managed-bean>
 		<managed-bean-name>showuser</managed-bean-name>
 		<managed-bean-class>org.openuss.security.UserInfo</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	
 	<!-- DataTableModels -->
@@ -115,8 +115,6 @@
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
  	
-
-
  	<managed-bean>
  		<managed-bean-name>documents_current_folder</managed-bean-name>
  		<managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>

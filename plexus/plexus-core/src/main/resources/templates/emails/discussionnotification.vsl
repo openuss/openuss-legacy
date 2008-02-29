@@ -4,7 +4,7 @@
 			<h3><font color="#003366">OpenUSS discussion topic notifier</font></h3>
 		</p>
 		<p>
-			You got this email notification because there is a unread change in topic: <i>${topicname}</i> -  <i>${coursename}</i> forums, 
+			You got this email notification because there is a unread change in topic: <i>${topicname}</i> -  <i>${forumname}</i> forums, 
 			to go to topic click following link:<br/>
 			<a href="${topiclink}">${topiclink}</a>
 		</p>

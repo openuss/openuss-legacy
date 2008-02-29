@@ -50,12 +50,7 @@
 		 -->
 		
 		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="#{views$secured$course$courseparticipants}"
-				action="showProfile"
-				label="#{msg['user_profile_command_show_profile']}"
-				title="#{msg['user_profile_command_show_profile_hint']}"
-				styleClass="icon_profile" />
+			<plexus:linkProfileIcon user="#{member.userId}"/>
 			<plexus:command 
 				bean="#{views$secured$course$courseparticipants}"
 				action="delete"

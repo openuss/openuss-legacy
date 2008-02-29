@@ -16,6 +16,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
+import org.openuss.discussion.PostInfo;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
@@ -35,37 +36,84 @@ public class DiscussionNewEntryPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
-			addError(i18n("discussion_readonly"));
-			redirect(Constants.DISCUSSION_MAIN);			
-		}	
+		if (isRedirected()){
+			return;
+		}
+		//reload topic
+		if (topic != null && topic.getId() != null) {
+			topic = discussionService.getTopic(topic);
+			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+		}		
+		if (!(topic == null || topic.getId() == null)) {		
+			//check if existing topic belongs to forum
+			if (!topic.getForumId().equals(forum.getId())){
+				addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
+				redirect(Constants.DISCUSSION_MAIN);
+				return;
+			}
+			//check if forum or topic is read only
+			if ((getForum().isReadOnly()||topic.isReadOnly())&&(!isAssistant())){
+				addError(i18n("discussion_readonly"));
+				redirect(Constants.DISCUSSION_MAIN);
+				return;
+			}			
+			//case = new post or edit post
+			if (postInfo.getId()!=null){
+				//case = edit post
+				postInfo = discussionService.getPost(postInfo);				
+				//check if post belongs to topic
+				if (postInfo==null || (!postInfo.getTopicId().equals(topic.getId()))){
+					addError(i18n(Constants.DISCUSSION_POST_NOT_FOUND));
+					redirect(Constants.DISCUSSION_MAIN);
+					return;
+				}
+				//check if user is submitter
+				if ((!postInfo.getSubmitterId().equals(user.getId())) && (!isAssistant())){
+					//redirect rights
+					addError(i18n(Constants.DISCUSSION_POST_NOT_AUTHOR));
+					redirect(Constants.DISCUSSION_MAIN);
+					return;
+				}
+			} else if (postInfo.getId()==null){
+				//case = new post
+				postInfo = new PostInfo();
+			}
+		} else if ((topic == null || topic.getId() == null)){		
+			//case = new topic
+			//check if forum is read only
+			if (getForum().isReadOnly()&&(!isAssistant())){
+				addError(i18n("discussion_readonly"));
+				redirect(Constants.DISCUSSION_MAIN);
+				return;
+			}
+			postInfo = new PostInfo();
+			setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
+		}
 		addPageCrumb();
 	}
 	
 	public String send(){
-		logger.debug("new document saved");
-		
 		postInfo.setCreated(new Date(System.currentTimeMillis()));
 		String ip = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
-		logger.debug("Client IP = "+ ip);
+		logger.debug("Saving discussion post edited by Client IP = "+ ip);
 		postInfo.setIsEdited(postInfo.getId()!=null);
 		postInfo.setLastModification(new Date(System.currentTimeMillis()));
 		if (topic.getId()==null){
 			postInfo.setIp(ip);
 			postInfo.setSubmitter(user.getUsername());
 			postInfo.setSubmitterId(user.getId());
-			courseDiscussionService.createTopic(postInfo, courseInfo);
+			discussionService.createTopic(postInfo, getForum());
 			return Constants.DISCUSSION_MAIN;
 		}
 		if (postInfo.getId()== null){
 			postInfo.setIp(ip);
 			postInfo.setSubmitter(user.getUsername());
 			postInfo.setSubmitterId(user.getId());
-			courseDiscussionService.addPost(postInfo, topic, courseInfo);			
+			discussionService.addPost(postInfo, topic);			
 		} else if (postInfo.getId()!= null){
 			postInfo.setEditor(user.getUsername());
 			postInfo.setIsEdited(true);
-			courseDiscussionService.updatePost(postInfo, courseInfo);
+			discussionService.updatePost(postInfo);
 		}
 		return Constants.DISCUSSION_THREAD;		
 	}

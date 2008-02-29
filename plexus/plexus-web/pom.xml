@@ -47,6 +47,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.openuss.plexus</groupId>
+			<artifactId>plexus-remote</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<scope>provided</scope>
@@ -68,8 +74,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.fckfaces</groupId>
-			<artifactId>fckfaces</artifactId>
+			<groupId>net.sf.fck-faces</groupId>
+			<artifactId>fck-faces</artifactId>
 		</dependency>
 
 		<dependency>

@@ -137,6 +137,9 @@ public class Constants {
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
 	public static final Long   COURSES_ALL_PERIODS = -111L;
 	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
+	public static final Long   COURSE_CHOOSE_ASSISTANT = -120L;
+	public static final String COURSE_CHOSSE_ASSISTANT_TEXT = "course_assistants_select";
+	public static final String COURSE_CHOOSE_ERROR = "course_assistants_select_error";
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
@@ -172,6 +175,9 @@ public class Constants {
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
 	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
 	public static final String DISCUSSION_FORUM = "discussion_forum";
+	public static final String DISCUSSION_THREAD_NOT_FOUND = "discussion_thread_not_found";
+	public static final String DISCUSSION_POST_NOT_FOUND = "discussion_post_not_found";
+	public static final String DISCUSSION_POST_NOT_AUTHOR = "discussion_post_not_author";
 	
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";

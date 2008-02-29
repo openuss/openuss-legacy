@@ -185,6 +185,11 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
 	</page>
+	
+	<page view-id="/views/secured/discussion/discussionnew.xhtml">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="post" value="#{discussion_discussionentry.id}" converterId="javax.faces.Long" />
+	</page>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Newsletter

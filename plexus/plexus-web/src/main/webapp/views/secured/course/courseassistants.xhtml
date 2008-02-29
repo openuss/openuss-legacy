@@ -34,7 +34,11 @@
 				<ui:include src="courseassistantstable.xhtml" />
 				<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
 					<o:block>
-						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$course$courseassistants.userId}" styleClass="pulldown_inline">
+						<h:selectOneMenu 
+							id="assistantSelectBox" 
+							value="#{views$secured$course$courseassistants.userId}" 
+							styleClass="pulldown_inline"
+							layout="pageDirection">
 						   	<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}"/>
 						</h:selectOneMenu>
 						<h:commandButton 

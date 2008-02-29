@@ -30,6 +30,7 @@ public abstract class BaseBean {
 
 	transient private FacesContext facesContext;
 	
+	private boolean redirected;
 	
 	/**
 	 * Convience method to set a session attribute
@@ -412,9 +413,18 @@ public abstract class BaseBean {
 	protected void redirect(String outcome) {
 		NavigationHandler navigation = getApplication().getNavigationHandler();
 		navigation.handleNavigation(getFacesContext(), null , outcome);
+		redirected = true;
 	}
 
 	public boolean isPostBack() {
 		return "POST".equals(getRequest().getMethod());
+	}
+
+	public boolean isRedirected() {
+		return redirected;
+	}
+
+	public void setRedirected(boolean redirected) {
+		this.redirected = redirected;
 	}
 }

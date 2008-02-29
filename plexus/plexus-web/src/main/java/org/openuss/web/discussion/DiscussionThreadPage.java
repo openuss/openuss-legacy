@@ -1,5 +1,6 @@
 package org.openuss.web.discussion; 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +14,6 @@ import org.openuss.discussion.TopicInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 
@@ -26,9 +26,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	@Property(value= "#{"+Constants.DISCUSSION_THREADLENGTH+"}")
 	public Integer length;
 	
-	@Property(value= "#{"+Constants.SHOW_USER_PROFILE+"}")
-	public UserInfo profile;
-	
 	public boolean topicWatchState;
 	
 	public boolean topicReadOnly;
@@ -37,13 +34,23 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		if ( topic != null && topic.getId() != null) {
+		if (isRedirected()){
+			return;
+		}
+		if (topic != null && topic.getId() != null) {
 			topic = discussionService.getTopic(topic);
 			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		}
 		if (topic == null || topic.getId() == null) {
+			addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
 			redirect(Constants.DISCUSSION_MAIN);
 		} else { 
+			//check if topic belongs to course
+			if (!topic.getForumId().equals(forum.getId())){
+				addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
+				redirect(Constants.DISCUSSION_MAIN);
+			}
+			
 			discussionService.addHit(topic);
 			topicWatchState = discussionService.watchesTopic(topic);
 			topicReadOnly = topic.isReadOnly();
@@ -54,8 +61,8 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 					addMessage(i18n("discussion_topic_readonly_true_simple"));
 				} 
 			}
+			addPageCrumb();
 		}
-		addPageCrumb();
 	}	
 	
 	private void addPageCrumb() {
@@ -74,8 +81,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				List<PostInfo> al = discussionService.getPosts(topic);
+			if (page == null||page.getDatasetSize()==0) {
+				List<PostInfo> al = new ArrayList<PostInfo>();
+				if (!(topic == null||topic.getId()==null)){
+					al = discussionService.getPosts(topic);
+				}
 				setSessionBean(Constants.DISCUSSION_THREADLENGTH, al.size());
 				sort(al);
 				page = new DataPage<PostInfo>(al.size(),0,al);
@@ -158,16 +168,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		return Constants.SUCCESS;
 	}
 	
-	public String linkProfile(){
-		profile.setId(this.data.getRowData().getSubmitterId());
-		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
-		return Constants.USER_PROFILE_VIEW_PAGE;
-	}
-	
 	public DiscussionThreadDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(DiscussionThreadDataProvider data) {
 		this.data = data;
@@ -197,19 +200,17 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 		this.topicReadOnly = topicReadOnly;
 	}
 
-	public UserInfo getProfile() {
-		return profile;
-	}
-
-	public void setProfile(UserInfo profile) {
-		this.profile = profile;
-	}
-
 	public boolean isForumReadOnly() {
+		if (courseInfo == null || courseInfo.getId()== null){
+			return false; 
+		}
 		return getDiscussionService().getForum(courseInfo).isReadOnly();
 	}
 	
 	public boolean isForumWatchState(){
+		if (courseInfo == null || courseInfo.getId()== null){
+			return false; 
+		}
 		return getDiscussionService().watchesForum(getDiscussionService().getForum(courseInfo));
 	}
 

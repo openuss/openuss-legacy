@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Invocation Authorization Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	  
+	 <bean id="serviceSecurityInterceptor" class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+        <property name="accessDecisionManager"><ref bean="serviceAccessDecisionManager"/></property>
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="objectDefinitionSource">
+            <value>
+            </value>
+        </property>
+    </bean>
+
+</beans>

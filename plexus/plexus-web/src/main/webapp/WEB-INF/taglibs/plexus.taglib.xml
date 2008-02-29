@@ -51,5 +51,9 @@
 		<tag-name>newsItemDetail</tag-name>
 		<source>../facelets/news/newsItemDetail.xhtml</source>
 	</tag>	
+	<tag>
+		<tag-name>linkProfileIcon</tag-name>
+		<source>../facelets/common/profile_icon_link.xhtml</source>
+	</tag>	
 	
 </facelet-taglib>

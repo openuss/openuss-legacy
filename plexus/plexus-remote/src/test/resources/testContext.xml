@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          L E C T U R E  S E A R C H  I N D E X
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="scheduler" class="org.openuss.framework.tests.SchedulerMock"/>
+	<bean id="nodeScheduler" class="org.openuss.framework.tests.SchedulerMock"/>
+
+</beans>

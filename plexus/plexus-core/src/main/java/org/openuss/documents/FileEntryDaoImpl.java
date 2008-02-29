@@ -5,6 +5,8 @@
  */
 package org.openuss.documents;
 
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * @see org.openuss.documents.FileEntry author ingo dueppe
@@ -45,12 +47,50 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 		}
 		return entry;
 	}
+	
+	private String shortenInMiddle(String str, int maxLength){
+		if (str == null){
+			return null;
+		}
+		if (str.length()<maxLength){
+			return str;
+		}
+		int halfLength = maxLength / 2;
+		String beginning = "";
+		String ending = "";
+		ending = str.substring(str.length()-halfLength);
+		beginning = str.substring(0, str.length()-halfLength);
+		return StringUtils.abbreviate(beginning, maxLength-halfLength)+ending;
+	}
+	
+	private String shortenFilename(String filename){
+		int maxFileNameLength = 255;
+		int halfLength = maxFileNameLength / 2;
+		if (filename==null){
+			return null;
+		}
+		if (filename.length()>maxFileNameLength){
+			int dot = filename.lastIndexOf('.');
+			if (dot == -1){
+				return shortenInMiddle(filename, maxFileNameLength);
+			} else {
+				String ending = filename.substring(filename.lastIndexOf('.'));
+				ending = shortenInMiddle(ending, halfLength);
+				String beginning = filename.substring(0, filename.lastIndexOf('.'));
+				beginning = shortenInMiddle(beginning, maxFileNameLength-ending.length()); 
+				return beginning+ending;
+			}
+		}
+		return filename;
+	}	
 
 	/**
 	 * @see org.openuss.documents.FileEntryDao#folderEntryInfoToEntity(org.openuss.documents.FolderEntryInfo)
 	 */
 	public FileEntry folderEntryInfoToEntity(FolderEntryInfo folderEntryInfo) {
 		FileEntry entity = this.loadFileEntryFromFolderEntryInfo(folderEntryInfo);
+		folderEntryInfo.setFileName(shortenFilename(folderEntryInfo.getFileName()));
+		folderEntryInfo.setDescription(shortenInMiddle(folderEntryInfo.getDescription(), 1000));
 		this.folderEntryInfoToEntity(folderEntryInfo, entity, true);
 		return entity;
 	}
@@ -60,6 +100,8 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 	 *      org.openuss.documents.FileEntry)
 	 */
 	public void folderEntryInfoToEntity(FolderEntryInfo sourceVO, FileEntry targetEntity, boolean copyIfNull) {
+		sourceVO.setFileName(shortenFilename(sourceVO.getFileName()));
+		sourceVO.setDescription(shortenInMiddle(sourceVO.getDescription(), 1000));		
 		super.folderEntryInfoToEntity(sourceVO, targetEntity, copyIfNull);
 		if (copyIfNull || sourceVO.getFileName() != null) {
 			targetEntity.setFileName(sourceVO.getFileName());
@@ -71,6 +113,8 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 
 	public FileEntry fileInfoToEntity(FileInfo fileInfo) {
 		FileEntry entity = this.loadFileEntryFromFileInfo(fileInfo);
+		fileInfo.setFileName(shortenFilename(fileInfo.getFileName()));
+		fileInfo.setDescription(shortenInMiddle(fileInfo.getDescription(), 1000));
 		this.fileInfoToEntity(fileInfo, entity, true);
 		return entity;
 	}
@@ -97,6 +141,8 @@ public class FileEntryDaoImpl extends org.openuss.documents.FileEntryDaoBase {
 	 *      org.openuss.documents.FileEntry)
 	 */
 	public void fileInfoToEntity(FileInfo source, FileEntry target, boolean copyIfNull) {
+		source.setFileName(shortenFilename(source.getFileName()));
+		source.setDescription(shortenInMiddle(source.getDescription(), 1000));
 		super.fileInfoToEntity(source, target, copyIfNull);
 		if (copyIfNull || source.getId() != null) {
 			target.setId(source.getId());

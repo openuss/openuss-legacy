@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ======================== AUTHENTICATION ======================= -->
+
+	<bean id="anonymousAuthenticationProvider"
+		class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key">
+			<value>anonymous-key</value>
+		</property>
+	</bean>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~ AUTHENTICATION DEFINITIONS ~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- This authentication provider accepts any presented TestingAuthenticationToken -->
+	<bean id="testingAuthenticationProvider" class="org.acegisecurity.providers.TestingAuthenticationProvider"/>
+
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+			    <ref local="testingAuthenticationProvider"/>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider"
+		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+			<property name="userCache">
+				<ref bean="userCache" />
+			</property>
+		<property name="passwordEncoder">
+			<ref bean="passwordEncoder" />
+		</property>
+	</bean>
+
+	<bean id="userDetailsService"
+		class="org.openuss.security.acegi.UserDetailsServiceAdapter">
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
+	</bean>
+
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Before Invocation Authorization Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION"/>
+	</bean>
+
+	<bean id="org.acegisecurity.acl.basic.SimpleAclEntry.DELETE" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="org.acegisecurity.acl.basic.SimpleAclEntry.DELETE"/>
+	</bean>
+
+	<bean id="org.acegisecurity.acl.basic.SimpleAclEntry.READ" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION"/>
+	</bean>
+	
+	<!-- An access decision voter that reads ROLE_* configuration settings -->
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
+	
+	<bean id="aclInstituteReadVoter" class="org.acegisecurity.vote.BasicAclEntryVoter">
+		<property name="processConfigAttribute">
+			<value>ACL_INSTITUTE_READ</value>
+		</property>
+		<property name="processDomainObjectClass">
+			<value>java.lang.Long</value>
+		</property>
+		<property name="aclManager"><ref local="aclManager"/></property>
+		<property name="requirePermission">
+			<list>
+				<ref local="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION"/>
+				<ref local="org.acegisecurity.acl.basic.SimpleAclEntry.READ"/>
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="businessAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions"><value>false</value></property>
+		<property name="decisionVoters">
+			<list>
+				<ref bean="serviceDecisionVoter"/>
+				<ref local="aclInstituteReadVoter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="aclManager" class="org.acegisecurity.acl.AclProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="basicAclProvider"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="basicAclProvider" class="org.acegisecurity.acl.basic.BasicAclProvider">
+		<property name="basicAclDao">
+			<ref local="basicAclDao"/>
+		</property>
+		<property name="defaultAclObjectIdentityClass">
+			<value>
+				org.openuss.security.acegi.acl.EntityObjectIdentity
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="basicAclDao" class="org.openuss.security.acegi.acl.PermissionAclDaoAdapter">
+		<property name="permissionDao"><ref bean="permissionDao"/></property>
+		<property name="objectIdentityDao"><ref bean="objectIdentityDao"/></property>
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      After Invocation Authorization Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="afterAclRead"/>
+				<ref local="afterAclCollectionRead"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Processes AFTER_ACL_COLLECTION_READ configuration settings -->
+   <bean id="afterAclCollectionRead" class="org.acegisecurity.afterinvocation.BasicAclEntryAfterInvocationCollectionFilteringProvider">
+      <property name="aclManager"><ref local="aclManager"/></property>
+      <property name="requirePermission">
+        <list>
+          <ref local="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION"/>
+          <ref local="org.acegisecurity.acl.basic.SimpleAclEntry.READ"/>
+        </list>
+      </property>
+   </bean>
+   
+   <!-- Processes AFTER_ACL_READ configuration settings -->
+   <bean id="afterAclRead" class="org.acegisecurity.afterinvocation.BasicAclEntryAfterInvocationProvider">
+      <property name="aclManager"><ref local="aclManager"/></property>
+      <property name="requirePermission">
+        <list>
+          <ref local="org.acegisecurity.acl.basic.SimpleAclEntry.ADMINISTRATION"/>
+          <ref local="org.acegisecurity.acl.basic.SimpleAclEntry.READ"/>
+        </list>
+      </property>
+   </bean>
+   
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Invocation Authorization Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	  
+	 <bean id="serviceSecurityInterceptor" class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="accessDecisionManager"><ref bean="businessAccessDecisionManager"/></property>
+        <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property>
+        <property name="objectDefinitionSource">
+            <value>
+                org.openuss.lecture.LectureService.getInstitutes=ROLE_ADMIN, ROLE_USER, ACL_INSTITUTE_READ
+                org.openuss.lecture.LectureService.getInstitute=ACL_INSTITUTE_READ
+                org.openuss.lecture.LectureService.getCourseType=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.getPeriod=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.getCourse=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.persist=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.add=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.removeInstitute=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.removeCourseType=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.removePeriod=ROLE_ADMIN, ROLE_USER
+                org.openuss.lecture.LectureService.removeCourse=ROLE_ADMIN, ROLE_USER
+                
+                org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
+                org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
+                org.openuss.lecture.UniversityService.createUniversity=ROLE_ADMIN
+                org.openuss.lecture.UniversityService.removePeriodAndCourses=ROLE_ADMIN
+                org.openuss.lecture.UniversityService.removeCompleteUniversityTree=ROLE_ADMIN
+                org.openuss.lecture.UniversityService.setUniversityStatus=ROLE_ADMIN
+                org.openuss.lecture.DepartmentService.setDepartmentStatus=ROLE_ADMIN
+                org.openuss.lecture.DepartmentService.removeCompleteDepartmentTree=ROLE_ADMIN
+                org.openuss.lecture.OrganisationService.setOrganisationEnabled=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.removeCompleteInstituteTree=ROLE_ADMIN
+            </value>
+        </property>
+    </bean>
+    
+</beans>

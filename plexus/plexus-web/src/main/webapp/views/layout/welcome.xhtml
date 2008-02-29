@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -25,31 +26,26 @@
 		<ui:insert name="header"/>
 	</head> 
 	<body>
-		<div id="wrapper">
-			<a name="pageup"/>
-			<div class="page">
-				<ui:decorate template="#{theme.layout}">					
-					<ui:define name="userportlet">
-						<ui:include src="/views/commons/user/userportlet.xhtml"/>
-					</ui:define>
-					<ui:define name="mainmenu">
-						<ui:include src="/views/commons/mainmenu/mainmenu.xhtml"/>
-					</ui:define>
-					<ui:define name="search">
-						<ui:include src="/views/commons/search/search.xhtml"/> 
-					</ui:define>
-					<ui:define name="messages">
-						<ui:include src="messages.xhtml" />
-					</ui:define>
-					<ui:define name="navigation">
-						<ui:include src="/views/commons/navigation/default.xhtml"/>
-					</ui:define>
-					<ui:define name="sidebar">
-						<ui:include src="/views/commons/sidebar/default.xhtml"/>
-					</ui:define>
-				</ui:decorate>
-			</div>
-		</div>
+        <ui:decorate template="#{theme.layout}">					
+            <ui:define name="userportlet">
+                <ui:include src="/views/commons/user/userportlet.xhtml"/>
+            </ui:define>
+            <ui:define name="mainmenu">
+                <ui:include src="/views/commons/mainmenu/mainmenu.xhtml"/>
+            </ui:define>
+            <ui:define name="search">
+                <ui:include src="/views/commons/search/search.xhtml"/> 
+            </ui:define>
+            <ui:define name="messages">
+                <ui:include src="messages.xhtml" />
+            </ui:define>
+            <ui:define name="navigation">
+                <ui:include src="/views/commons/navigation/default.xhtml"/>
+            </ui:define>
+            <ui:define name="sidebar">
+                <ui:include src="/views/commons/sidebar/default.xhtml"/>
+            </ui:define>
+        </ui:decorate>
 	</body>
 </f:view>
 </html>

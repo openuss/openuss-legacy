@@ -6,7 +6,9 @@
 package org.openuss.security;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 
@@ -116,12 +118,29 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 		Validate.notNull(membership, "MembershipService.handleRemoveMember - Membership cannot be null");
 		Validate.notNull(membership.getId(), "MembershipService.handleRemoveMember - Membership must have a valid ID");
 
-		// Remove User from the List of Members
-		boolean isRemoved = membership.getMembers().remove(user);
-		if (!isRemoved) {
+
+		//check if user is last administrator of membership
+		Set<User> members = new HashSet<User>();
+		for (Group group: membership.getGroups()){
+			if (group.getGroupType().equals(GroupType.ADMINISTRATOR)){
+				for (Authority groupMember : group.getMembers()){
+					if (groupMember instanceof UserImpl){
+						members.add((UserImpl) groupMember);
+					}
+				}
+			}
+		}     //size == 0 should not occur
+		if ((members.size()==0)||(members.size()==1&&members.iterator().next().getId().equals(user.getId()))) {
 			throw new IllegalArgumentException("MembershipService.handleRemoveMember - the User " + user.getUsername()
 					+ " couldn't be removed.");
 		}
+		
+		//Remove User from Membership Groups
+		for (Group group : membership.getGroups()){
+			getSecurityService().removeAuthorityFromGroup(user, group);
+		}
+		// Remove User from the List of Members
+		membership.getMembers().remove(user);
 
 		// TODO Send Email to inform the Members and the removed Member
 

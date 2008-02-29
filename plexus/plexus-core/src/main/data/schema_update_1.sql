@@ -1,3 +1,12 @@
+/* 
+ * Migration script for security refactoring. 
+ * Consolidation of user preferences, contact, and profile to one user object
+ * 
+ * Be aware that ibexpert logging on security_user table is switched of before. 
+ * Otherwise the script cannot drop the foreign key reference columns in the user table 
+ * 
+ */
+
 ALTER TABLE SECURITY_USER
     ADD LAST_NAME        VARCHAR(100) NOT NULL,
     ADD FIRST_NAME           VARCHAR(100) NOT NULL,
@@ -26,20 +35,20 @@ ALTER TABLE SECURITY_USER
 
 UPDATE SECURITY_USER u
 SET
-    LOCALE = (SELECT LOCALE FROM security_user_preferences preferences WHERE preferences.id = ui.preference_fk),
-    THEME = (SELECT THEME FROM security_user_preferences preferences WHERE preferences.id = ui.preference_fk),
-    TIMEZONE = (SELECT TIMEZONE FROM security_user_preferences preferences WHERE preferences.id = ui.preference_fk),
-    FIRST_NAME = (SELECT FIRST_NAME FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    LAST_NAME = (SELECT LAST_NAME FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    TITLE = (SELECT TITLE FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    PROFESSION = (SELECT PROFESSION FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    ADDRESS = (SELECT ADDRESS FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    CITY = (SELECT CITY  FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    COUNTRY = ( SELECT COUNTRY  FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    TELEPHONE = (SELECT TELEPHONE FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    POSTCODE = (SELECT POSTCODE FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-    SMS_EMAIL = (SELECT SMS_EMAIL FROM security_user_contact contact WHERE contact.id = ui.contact_fk),
-	PORTRAIT = (SELECT PORTRAIT  FROM security_user_profile profile WHERE profile.id = u.profile_fk),
+    LOCALE = (SELECT LOCALE FROM security_user_preferences preferences WHERE preferences.id = u.preferences_fk),
+    THEME = (SELECT THEME FROM security_user_preferences preferences WHERE preferences.id = u.preferences_fk),
+    TIMEZONE = (SELECT TIMEZONE FROM security_user_preferences preferences WHERE preferences.id = u.preferences_fk),
+    FIRST_NAME = (SELECT FIRST_NAME FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    LAST_NAME = (SELECT LAST_NAME FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    TITLE = (SELECT TITLE FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    PROFESSION = (SELECT PROFESSION FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    ADDRESS = (SELECT ADDRESS FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    CITY = (SELECT CITY  FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    COUNTRY = ( SELECT COUNTRY  FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    TELEPHONE = (SELECT TELEPHONE FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    POSTCODE = (SELECT POSTCODE FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    SMS_EMAIL = (SELECT SMS_EMAIL FROM security_user_contact contact WHERE contact.id = u.contact_fk),
+    PORTRAIT = (SELECT PORTRAIT  FROM security_user_profile profile WHERE profile.id = u.profile_fk),
     AGE_GROUP = (SELECT AGE_GROUP FROM security_user_profile profile WHERE profile.id = u.profile_fk),
     MATRICULATION = (SELECT MATRICULATION FROM security_user_profile profile WHERE profile.id = u.profile_fk),
     STUDIES = (SELECT STUDIES FROM security_user_profile profile WHERE profile.id = u.profile_fk),
@@ -50,6 +59,7 @@ SET
     PORTRAIT_PUBLIC = (SELECT PORTRAIT_PUBLIC  FROM security_user_profile profile WHERE profile.id = u.profile_fk),
     IMAGE_PUBLIC = (SELECT IMAGE_PUBLIC FROM security_user_profile profile WHERE profile.id = u.profile_fk),
     PROFILE_PUBLIC = (SELECT PROFILE_PUBLIC  FROM security_user_profile profile WHERE profile.id = u.profile_fk);
+
 
 ALTER TABLE SECURITY_USER DROP CONSTRAINT SECURITY_USER_CONTACT_FKC;
 ALTER TABLE SECURITY_USER DROP CONSTRAINT SECURITY_USER_PREFERENCES_FKC;

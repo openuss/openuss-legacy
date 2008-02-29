@@ -78,7 +78,7 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 	 * @see org.openuss.statistics.OnlineStatisticService#getActiveUsers()
 	 */
 	protected List handleGetActiveUsers() throws Exception {
-		return getOnlineSessionDao().findActiveUsers(OnlineSessionDao.TRANSFORM_ONLINEUSERINFO);
+		return getOnlineSessionDao().findActiveUsers();
 	}
 
 	@Override
