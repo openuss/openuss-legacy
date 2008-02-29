@@ -264,6 +264,20 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected void handleRemoveGroup(Group group) throws Exception {
+		//remove members of group
+		for (Authority auth:group.getMembers()){
+			if (auth instanceof Group){
+				Group childGroup = (Group) auth;
+				childGroup.getGroups().remove(group);
+				getGroupDao().update(childGroup);
+			} else if (auth instanceof User){
+				User user = (User) auth;
+				user.getGroups().remove(group);
+				getUserDao().update(user);
+			}
+		}
+		group.setMembers(null);
+		getGroupDao().update(group);
 		getGroupDao().remove(group);
 	}
 
