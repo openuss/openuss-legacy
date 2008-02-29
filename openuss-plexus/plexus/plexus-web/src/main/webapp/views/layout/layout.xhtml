@@ -25,34 +25,29 @@
 		<ui:insert name="header"/>
 	</head> 
 	<body>
-		<div id="wrapper">
-			<a name="pageup"/>
-			<div class="page">
-				<ui:decorate template="#{theme.layout}">					
-					<ui:define name="userportlet">
-						<ui:include src="/views/commons/user/userportlet.xhtml"/>
-					</ui:define>
-					<ui:define name="mainmenu">
-						<ui:include src="/views/commons/mainmenu/mainmenu.xhtml"/>
-					</ui:define>
-					<ui:define name="search">
-						<ui:include src="/views/commons/search/search.xhtml"/> 
-					</ui:define>
-					<ui:define name="messages">
-						<h:messages layout="list" id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
-					</ui:define>
-					<ui:define name="breadcrumb">
-						<ui:include src="/views/commons/navigation/crumb.xhtml" />
-					</ui:define>
-					<ui:define name="navigation">
-						<ui:include src="/views/commons/navigation/default.xhtml"/>
-					</ui:define>
-					<ui:define name="sidebar">
-						<ui:include src="/views/commons/sidebar/default.xhtml"/>
-					</ui:define>
-				</ui:decorate>
-			</div>
-		</div>
+		<ui:decorate template="#{theme.layout}">					
+			<ui:define name="userportlet">
+				<ui:include src="/views/commons/user/userportlet.xhtml"/>
+			</ui:define>
+			<ui:define name="mainmenu">
+				<ui:include src="/views/commons/mainmenu/mainmenu.xhtml"/>
+			</ui:define>
+			<ui:define name="search">
+				<ui:include src="/views/commons/search/search.xhtml"/> 
+			</ui:define>
+			<ui:define name="messages">
+				<h:messages layout="list" id="messages" styleClass="messages" errorClass="error" infoClass="info" fatalClass="fatal" warnClass="warn" globalOnly="true" showSummary="true" showDetail="false"/>
+			</ui:define>
+			<ui:define name="breadcrumb">
+				<ui:include src="/views/commons/navigation/crumb.xhtml" />
+			</ui:define>
+			<ui:define name="navigation">
+				<ui:include src="/views/commons/navigation/default.xhtml"/>
+			</ui:define>
+			<ui:define name="sidebar">
+				<ui:include src="/views/commons/sidebar/default.xhtml"/>
+			</ui:define>
+		</ui:decorate>
 	</body>
 </f:view>
 </html>

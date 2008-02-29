@@ -1,0 +1,11 @@
+@import url("http://www.uni-muenster.de/wwucss/ffffff/schrift1.css");
+@import url("http://www.uni-muenster.de/wwucss/ffffff/schrift2.css");
+
+.openuss_logo {
+	background-image: url(../img/logo.jpg);
+	background-repeat: no-repeat;
+	background-position: 10px 0px;
+	height:79px;
+	position:relative;
+	width:11.9375em;
+}

@@ -26,6 +26,7 @@
 		<module>theme-plexus</module>
 		<module>theme-plexus-none</module>
 		<module>theme-university-of-muenster</module>
+        <module>theme-wwu</module>
 	</modules>
 
 	<build>
