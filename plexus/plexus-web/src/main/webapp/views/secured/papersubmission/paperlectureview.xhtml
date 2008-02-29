@@ -90,8 +90,11 @@
 	                    </t:column>
 	                     
 	                    <t:column>
-	                    	<plexus:commandSortHeader columnName="status3">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader>
-                        			<h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
+	                    	<plexus:commandSortHeader columnName="submissionstatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader>
+                        		<h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
+                        		<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionType=='INTIME'}"/>
+								<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionType=='NOTINTIME'}"/>
+								<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>	
                         </t:column>
 	                </plexus:dataTable> 
 	                

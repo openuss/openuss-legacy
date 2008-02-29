@@ -72,9 +72,9 @@
 				        <t:column>
 				        	<plexus:commandSortHeader columnName="submissionTime">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
 				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
-				            <h:outputText value="&#160;&#160;fristgerecht" rendered="#{bean.submissionType=='INTIME'}"/>
-							<h:outputText value="&#160;&#160;nicht fristgerecht" rendered="#{bean.submissionType=='NOTINTIME'}"/>
-							<h:outputText value="&#160;&#160;nicht abgegeben" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>
+				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionType=='INTIME'}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionType=='NOTINTIME'}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>
 				        </t:column>
 				        
 				    			      
@@ -170,7 +170,7 @@
 	                    <h:commandButton 
                         id="addFile"
                         action="#{views$secured$papersubmission$paperview.addFile}" 
-                        value="#{msg.papersubmission_command_addfile}" 
+                        value="#{msg.documents_main_button_newfile}" 
                         title="#{msg.papersubmission_command_addfile_hint}"
                         styleClass="button_add"/> 
 	                        

@@ -11,10 +11,10 @@
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
     <h:form id="paperForm">
-        <o:block label="#{msg.papersubmission_paper_header}" styleClass="form_box">
-            <o:input entity="examInfo" property="name" required="true" maxlength="100"/>
-            <o:input entity="examInfo" property="description" maxlength="250" type="textarea"/>
-            <o:input entity="examInfo" property="deadline" required="true" type="full"/>
+        <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
+            <o:input label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
+            <o:input label="#{msg.papersubmission_exam_edit_description}" entity="examInfo" property="description" maxlength="250" type="textarea"/>
+            <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full"/>
         </o:block> 
         <o:block>   
             <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$paperlist.saveExam}" value="#{msg.save}" styleClass="button_save" />

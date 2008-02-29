@@ -26,6 +26,7 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.web.collaboration.WorkspaceMemberSelection;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
@@ -99,11 +100,40 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
-		crumb.setName(i18n("papersubmission_paper_header"));
-		crumb.setHint(i18n("papersubmission_paper_header"));
+		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
+		crumb.setName(i18n("papersubmission_paperlist_header"));
+		crumb.setHint(i18n("papersubmission_paperlist_header"));
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		crumb = new BreadCrumb();
+		crumb.setName(examInfo.getName());
+		crumb.setHint(examInfo.getName());
+		
+		if(courseInfo != null && courseInfo.getId() != null 
+				&& examInfo != null && examInfo.getId() != null){
+			
+			crumb.setLink(PageLinks.PAPERSUBMISSION_PAPERVIEW);
+			crumb.addParameter("course",courseInfo.getId());
+			crumb.addParameter("exam",examInfo.getId());
+			//crumb.addParameter("paper",paperSubmissionInfo.getId());
+		}
+		breadcrumbs.addCrumb(crumb);
+		
+		crumb = new BreadCrumb();
+		crumb.setName(paperSubmissionInfo.getFirstName() + " " + paperSubmissionInfo.getLastName());
+		crumb.setHint(paperSubmissionInfo.getFirstName() + " " + paperSubmissionInfo.getLastName());
+		
+		if(courseInfo != null && courseInfo.getId() != null 
+				&& examInfo != null && examInfo.getId() != null
+				&& paperSubmissionInfo != null && paperSubmissionInfo.getId() != null){
+			
+			crumb.setLink(PageLinks.PAPERSUBMISSION_PAPERVIEW);
+			crumb.addParameter("course",courseInfo.getId());
+			crumb.addParameter("exam",examInfo.getId());
+			crumb.addParameter("paper",paperSubmissionInfo.getId());
+		}
 		breadcrumbs.addCrumb(crumb);
 	}
 	

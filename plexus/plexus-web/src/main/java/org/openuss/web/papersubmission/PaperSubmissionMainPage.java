@@ -77,21 +77,19 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	}
 	
 	/**
-	 * Set selected paper into session scope
+	 * Set selected active exam into session scope
 	 * 
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String editExam() throws LectureException {
-		examInfo = currentExam();
+	public String editActiveExam() throws LectureException {
+		examInfo = currentActiveExam();
 		if (examInfo == null) {
 			return Constants.FAILURE;
 		}
-		// TODO: implement find paper...
-		//paperInfo = courseTypeService.findCourseType(paperInfo.getId());
-		//examInfo = new ExamInfo(1l, 1l, "VOFI mit Steuern", "Bauen Sie einen VOFI mit Steuern!");
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
+			//TODO change message name
 			addWarning(i18n("error_paper_not_found"));
 			return Constants.FAILURE;
 
@@ -103,7 +101,31 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	}
 	
 	/**
-	 * Saves new paper or updates changes to paper and removes current
+	 * Set selected inactive exam into session scope
+	 * 
+	 * @return outcome
+	 * @throws LectureException
+	 */
+	public String editInactiveExam() throws LectureException {
+		examInfo = currentInactiveExam();
+		if (examInfo == null) {
+			return Constants.FAILURE;
+		}
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		if (examInfo == null) {
+			//TODO change message name
+			addWarning(i18n("error_paper_not_found"));
+			return Constants.FAILURE;
+
+		} else {
+			logger.debug("selected examInfo " + examInfo.getName());
+			editing = true;
+			return Constants.SUCCESS;
+		}
+	}
+	
+	/**
+	 * Saves new exam or updates changes to paper and removes current
 	 * paper selection from session scope.
 	 * 
 	 * @return outcome
@@ -143,14 +165,14 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	}
 	
 	/**
-	 * Store the selected paper into session scope and go to paper
+	 * Store the selected active exam into session scope and go to exam
 	 * remove confirmation page. 
 	 * 
 	 * @return outcome
 	 */
-	public String selectExamAndConfirmRemove() {
+	public String selectActiveExamAndConfirmRemove() {
 		logger.debug("Starting method selectPaperAndConfirmRemove");
-		ExamInfo currentExam = currentExam();
+		ExamInfo currentExam = currentActiveExam();
 		logger.debug("Returning to method selectExamAndConfirmRemove");
 		logger.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
@@ -158,9 +180,35 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPER_CONFIRM_REMOVE_PAGE;
 	}
 	
-	public String selectExam(){
+	/**
+	 * Store the selected inactive exam into session scope and go to exam
+	 * remove confirmation page. 
+	 * 
+	 * @return outcome
+	 */
+	public String selectInactiveExamAndConfirmRemove() {
+		logger.debug("Starting method selectPaperAndConfirmRemove");
+		ExamInfo currentExam = currentInactiveExam();
+		logger.debug("Returning to method selectExamAndConfirmRemove");
+		logger.debug(currentExam.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
+
+		return Constants.PAPER_CONFIRM_REMOVE_PAGE;
+	}
+	
+	public String selectActiveExam(){
 		logger.debug("Starting method selectExam");
-		ExamInfo currentExam = currentExam();
+		ExamInfo currentExam = currentActiveExam();
+		logger.debug("Returning to method selectExam");
+		logger.debug(currentExam.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
+
+		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
+	}
+	
+	public String selectInactiveExam(){
+		logger.debug("Starting method selectExam");
+		ExamInfo currentExam = currentInactiveExam();
 		logger.debug("Returning to method selectExam");
 		logger.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
@@ -170,8 +218,15 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 	
 	//// getter/setter methods ////////////////////////////////////////////////
 
-	private ExamInfo currentExam() {
+	private ExamInfo currentActiveExam() {
 		ExamInfo exam = this.dataActiveExams.getRowData();
+		
+		return exam;
+	}
+	
+	private ExamInfo currentInactiveExam() {
+		ExamInfo exam = this.dataInactiveExams.getRowData();
+		
 		return exam;
 	}
 	

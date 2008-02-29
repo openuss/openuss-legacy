@@ -26,6 +26,7 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.web.collaboration.WorkspaceMemberSelection;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
@@ -65,16 +66,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
-		//paperSubmissionInfo = new PaperSubmissionInfo();
 		List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
-		//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
 		paperInfos = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
 		if(!paperInfos.isEmpty()){
-
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperInfos.get(paperInfos.size()-1));
-			return paperInfos.get(paperInfos.size()-1);
+			paperSubmissionInfo = paperInfos.get(paperInfos.size()-1);
+			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			return paperSubmissionInfo;
 		}
 		else{
 			return null;
@@ -87,13 +86,28 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
-		crumb.setName(i18n("papersubmission_paper_header"));
-		crumb.setHint(i18n("papersubmission_paper_header"));
+		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
+		crumb.setName(i18n("papersubmission_paperlist_header"));
+		crumb.setHint(i18n("papersubmission_paperlist_header"));
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
+		
+		crumb = new BreadCrumb();
+		crumb.setName(examInfo.getName());
+		crumb.setHint(examInfo.getName());
+		
+		if(courseInfo != null && courseInfo.getId() != null 
+				&& examInfo != null && examInfo.getId() != null){
+			
+			crumb.setLink(PageLinks.PAPERSUBMISSION_PAPERVIEW);
+			crumb.addParameter("course",courseInfo.getId());
+			crumb.addParameter("exam",examInfo.getId());
+		}
+		
+		breadcrumbs.addCrumb(crumb);
 	}
+	
 	
 
 	private List<FolderEntryInfo> selectedEntries() {

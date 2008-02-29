@@ -11,7 +11,7 @@
       
      <plexus:dataTable   
         id="activeexams" 
-        label="#{msg['papersubmission_paperstable_header']}" 
+        label="#{msg['papersubmission_activeexamstable_header']}" 
         value="views$secured$papersubmission$paperlist.dataActiveExams" 
         columnClasses="col_max_left, col_max_left, col_commands"
         var="bean" 
@@ -24,7 +24,7 @@
                 <b><h:outputText value="#{bean.name}"/></b>
             </o:link> 
              -->
-            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectExam}" styleClass="command">
+            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectActiveExam}" styleClass="command">
 					<b><h:outputText value="#{bean.name}"/></b>
 			</h:commandLink>
             <br></br>
@@ -33,7 +33,7 @@
         </t:column> 
         
         <t:column>
-        	<plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
+        	<plexus:commandSortHeader columnName="deadline">#{msg.papersubmission_colheader_deadline}</plexus:commandSortHeader>
         	<h:outputText value="#{bean.deadline}">
         		<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
         	</h:outputText>
@@ -44,7 +44,7 @@
 	        <plexus:column header="#{msg.commands_header}">   
 	            <plexus:command 
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="editExam"
+	                action="editActiveExam"
 	                label="#{msg.papersubmission_command_edit}"
 	                hint="#{msg.papersubmission_command_edit_hint}"
 	                styleClass="icon_edit">
@@ -52,7 +52,7 @@
 	                
 	            <plexus:command   
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="selectExamAndConfirmRemove"
+	                action="selectActiveExamAndConfirmRemove"
 	                label="#{msg.papersubmission_command_remove}"
 	                hint="#{msg.papersubmission_command_remove_hint}"
 	                styleClass="icon_remove">
@@ -65,9 +65,9 @@
     
     <plexus:dataTable   
         id="inactiveexams" 
-        label="#{msg['papersubmission_paperstable_header']}" 
+        label="#{msg['papersubmission_inactiveexamstable_header']}" 
         value="views$secured$papersubmission$paperlist.dataInactiveExams" 
-        columnClasses="col_max_left,col_max_left,  col_commands"
+        columnClasses="col_max_left,col_max_left,col_commands"
         var="bean" 
         rows="5">  
    
@@ -78,7 +78,7 @@
                 <b><h:outputText value="#{bean.name}"/></b>
             </o:link> 
              -->
-            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectExam}" styleClass="command">
+            <h:commandLink action="#{views$secured$papersubmission$paperlist.selectInactiveExam}" styleClass="command">
 					<b><h:outputText value="#{bean.name}"/></b>
 			</h:commandLink>
             <br></br>
@@ -87,7 +87,7 @@
         </t:column> 
                 
         <t:column>
-        	<plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader>
+        	<plexus:commandSortHeader columnName="deadline">#{msg.papersubmission_colheader_deadline}</plexus:commandSortHeader>
         	<h:outputText value="#{bean.deadline}">
         		<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
         	</h:outputText>
@@ -98,7 +98,7 @@
 	        <plexus:column header="#{msg.commands_header}">   
 	            <plexus:command 
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="editExam"
+	                action="editInactiveExam"
 	                label="#{msg.papersubmission_command_edit}"
 	                hint="#{msg.papersubmission_command_edit_hint}"
 	                styleClass="icon_edit">
@@ -106,7 +106,7 @@
 	                
 	            <plexus:command   
 	                bean="#{views$secured$papersubmission$paperlist}"
-	                action="selectExamAndConfirmRemove"
+	                action="selectInactiveExamAndConfirmRemove"
 	                label="#{msg.papersubmission_command_remove}"
 	                hint="#{msg.papersubmission_command_remove_hint}"
 	                styleClass="icon_remove">
