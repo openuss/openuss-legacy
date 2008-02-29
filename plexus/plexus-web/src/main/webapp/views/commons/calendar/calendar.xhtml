@@ -12,6 +12,7 @@
       
       <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 
+	<f:subview>
 	<sandbox:schedule value="#{scheduleHandler2.model}" id="schedule1"
 					rendered="true" visibleEndHour="#{scheduleSettings2.visibleEndHour}"
 					visibleStartHour="#{scheduleSettings2.visibleStartHour}"
@@ -30,4 +31,5 @@
 	
 	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
 
+	</f:subview>
 </ui:composition>

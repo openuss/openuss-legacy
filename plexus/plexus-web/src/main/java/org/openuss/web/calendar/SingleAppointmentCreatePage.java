@@ -16,6 +16,7 @@ import org.openuss.calendar.AppointmentTypeInfo;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
+import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -24,14 +25,15 @@ import org.openuss.web.Constants;
 @View
 public class SingleAppointmentCreatePage extends BasePage{
 	
-	@Property(value = "#{calendarInfo}")
+	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
 	private CalendarInfo calendarInfo;
-	@Property(value = "#{appointmentInfo}")
+	@Property(value = "#{" + Constants.APPOINTMENT_INFO + "}")
 	private AppointmentInfo appointmentInfo;
 	@Property(value = "#{calendarService}")
 	private CalendarService calendarService;
 
 	private Integer appointmentType;
+	
 	private List<AppointmentTypeInfo> appointmentTypes;
 	
 	/* ----- business logic ----- */
@@ -45,19 +47,31 @@ public class SingleAppointmentCreatePage extends BasePage{
 		newCrumb.setHint(i18n("calender_create_single_appointment_page"));
 		breadcrumbs.addCrumb(newCrumb);
 		
+		AppointmentInfo appointmentInfo = new AppointmentInfo();
+		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		
+		CalendarInfo calendarInfo = new CalendarInfo();
+		setSessionBean(Constants.OPENUSS4US_CALENDAR, calendarInfo);
+		
+		
+		
 	}
 	
 	public String save(){
-		try {
+
 			appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
 			appointmentInfo.setSerial(false);
 			appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
-			calendarService.createAppointment(appointmentInfo, calendarInfo);
-		} catch (CalendarApplicationException e) {
-			// TODO - Properties
-			addError("Das Anlegen eines Appointments macht fehler");
-		}
-		return Constants.SUCCESS;
+			calendarInfo.setCalendarType(CalendarType.user_calendar);
+			
+			try {
+				calendarService.createAppointment(appointmentInfo, calendarInfo);
+			} catch (CalendarApplicationException e) {
+				// TODO Auto-generated catch block
+				addError("Das Anlegen eines Appointments macht fehler");
+			}
+
+		return Constants.CALENDAR_HOME;
 	}
 	
 	public List<SelectItem> getAppointTypes() {

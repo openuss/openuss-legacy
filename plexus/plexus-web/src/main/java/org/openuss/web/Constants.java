@@ -263,6 +263,13 @@ public class Constants {
 
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
 
+	
+	// openuss4us calendar
+	public static final String CALENDAR_HOME = "openuss4us_calendar";
+	public static final String CALENDAR_CREATE_SINGLE_APPOINTMENT = "calendar_create_single_appointment";
+	public static final String CALENDAR_CREATE_SERIAL_APPOINTMENT = "calendar_create_serial_appointment";
+	public static final String APPOINTMENT_INFO = "appointmentInfo";
+	
 	// openuss4us navigation outcomes
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
 	public static final String OPENUSS4US_MESSAGECENTER_CREATE = "openuss4us_newinternalmessage";

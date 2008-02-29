@@ -323,6 +323,19 @@
 			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>calendar_create_single_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createsingleappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>calendar_create_serial_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		
+		
+		
 		
 	</navigation-rule>
 

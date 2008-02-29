@@ -48,15 +48,15 @@ public class SerialAppointmentCreatePage extends BasePage{
 	}
 	
 	public String save(){
-		try {
-			appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
-			appointmentInfo.setSerial(false);
-			appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
-			calendarService.createAppointment(appointmentInfo, calendarInfo);
-		} catch (CalendarApplicationException e) {
-			// TODO - Properties
-			addError("Das Anlegen eines Appointments macht fehler");
-		}
+//		try {
+//			appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
+//			appointmentInfo.setSerial(false);
+//			appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
+//			calendarService.createAppointment(appointmentInfo, calendarInfo);
+//		} catch (CalendarApplicationException e) {
+//			// TODO - Properties
+//			addError("Das Anlegen eines Appointments macht fehler");
+//		}
 		return Constants.SUCCESS;
 	}
 	
