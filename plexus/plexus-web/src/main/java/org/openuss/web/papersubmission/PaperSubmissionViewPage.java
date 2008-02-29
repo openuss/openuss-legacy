@@ -2,12 +2,17 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.comparators.ComparatorChain;
+import org.apache.commons.collections.comparators.ReverseComparator;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -21,6 +26,7 @@ import org.openuss.documents.FileEntryDao;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
@@ -30,6 +36,7 @@ import org.openuss.web.PageLinks;
 import org.openuss.web.collaboration.WorkspaceMemberSelection;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
+import org.springframework.beans.support.PropertyComparator;
 
 @Bean(name = "views$secured$papersubmission$paperview", scope = Scope.REQUEST)
 @View
@@ -253,6 +260,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return submission;
 	}
 	
+	
+	
 	//// getter/setter methods ////////////////////////////////////////////////
 	
 	
@@ -273,26 +282,32 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 
 		private DataPage<PaperSubmissionInfo> page;
 
-		@Override
-		@SuppressWarnings( { "unchecked" })
+
 		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
 				List<PaperSubmissionInfo> submissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examInfo.getId());
 				
-				//sort(entries);
+				sort(submissions);
 				page = new DataPage<PaperSubmissionInfo>(submissions.size(), 0, submissions);
 			}
 			return page;
 		}
+		
+		@Override
+		protected void sort(List<PaperSubmissionInfo> submissions) {
+			if (StringUtils.equals("submittersname", dataSubmissions.getSortColumn())) {
+				Collections.sort(submissions, new SubmittersNameComparator());
+			} else if (StringUtils.equals("submissionstatus", dataSubmissions.getSortColumn())){
+				Collections.sort(submissions, new SubmissionTypeComparator());
+			}
+		}		
 	}
 	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<FolderEntryInfo> page;
 
-		@Override
-		@SuppressWarnings( { "unchecked" })
 		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							
@@ -302,20 +317,92 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 				else{
 					List<FolderEntryInfo> entries = loadFileEntries();
 					
-					//sort(submissions);
+					sort(entries);
 					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
 				}
 			}
 			return page;
 		}
+		
+		
+		//FIXME not all Comparators are added
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<FolderEntryInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			if (isAscending()) {
+				chain.addComparator(folderComparator);
+			} else {
+				chain.addComparator(new ReverseComparator(folderComparator));
+			}
+			
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("name", true, isAscending()));
+			}
+			Collections.sort(list, chain);
+		}
+
+		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
+				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
+					return 0;
+				} else {
+					return info1.isFolder()?-1:1;
+				}
+			}
+			
+		};	
 	}
-//	public FolderEntrySelection getEntrySelection() {
-//		return entrySelection;
+	
+	
+	
+
+/* ----------- institute sorting comparators -------------*/
+	
+	private class SubmittersNameComparator implements Comparator<PaperSubmissionInfo> {
+		public int compare(PaperSubmissionInfo f1, PaperSubmissionInfo f2) {
+			if (dataSubmissions.isAscending()) {
+				if(f1.getLastName().equals(f2.getLastName())){
+					return f1.getFirstName().compareToIgnoreCase(f2.getFirstName());
+				}else{
+					return f1.getLastName().compareToIgnoreCase(f2.getLastName());
+				}
+			} else {
+				if(f2.getLastName().equals(f1.getLastName())){
+					return f2.getFirstName().compareToIgnoreCase(f1.getFirstName());
+				}else{
+					return f2.getLastName().compareToIgnoreCase(f1.getLastName());
+				}
+			}
+		}
+	}
+
+	private class SubmissionTypeComparator implements Comparator<PaperSubmissionInfo> {
+		public int compare(PaperSubmissionInfo f1, PaperSubmissionInfo f2) {
+			if (dataSubmissions.isAscending()) {
+				return f1.getSubmissionStatus().compareTo(f2.getSubmissionStatus());
+			} else {
+				return f2.getSubmissionStatus().compareTo(f1.getSubmissionStatus());
+			}
+		}
+	}
+	
+//	private class PeriodComparator implements Comparator<CourseInfo> {
+//		public int compare(CourseInfo f1, CourseInfo f2) {
+//			if (allCoursesTable.isAscending()) {
+//				return f1.getPeriodName().compareToIgnoreCase(f2.getPeriodName());
+//			} else {
+//				return f2.getPeriodName().compareToIgnoreCase(f1.getPeriodName());
+//			}
+//		}
 //	}
-//
-//	public void setEntrySelection(FolderEntrySelection entrySelection) {
-//		this.entrySelection = entrySelection;
-//	}
+	
 	
 	
 	public PaperSubmissionSelection getPaperSelection() {

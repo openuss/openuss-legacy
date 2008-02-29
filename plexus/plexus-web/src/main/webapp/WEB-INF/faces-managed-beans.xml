@@ -182,6 +182,12 @@
  		<managed-bean-class>org.openuss.newsletter.MailDetail</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope> 	 		
  	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>submissionStatus</managed-bean-name>
+ 		<managed-bean-class>org.openuss.papersubmission.SubmissionStatus</managed-bean-class>
+ 		<managed-bean-scope>application</managed-bean-scope>
+ 	</managed-bean>
  	<managed-bean>
         <managed-bean-name>papersubmission_submission_selection</managed-bean-name>
         <managed-bean-class>org.openuss.web.papersubmission.PaperSubmissionSelection</managed-bean-class>

@@ -262,6 +262,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 				
 				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
 				
+				setSortColumn("deadline");
 				sort(activeExams);
 				page = new DataPage<ExamInfo>(activeExams.size(), 0, activeExams);
 			}
@@ -285,6 +286,7 @@ public class PaperSubmissionMainPage extends AbstractPaperSubmissionPage {
 				
 				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
 				
+				setSortColumn("deadline");
 				sort(inactiveExams);
 				page = new DataPage<ExamInfo>(inactiveExams.size(), 0, inactiveExams);
 			}

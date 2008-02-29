@@ -71,19 +71,19 @@
 	                    
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="status">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="size">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.entry.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="status2">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="creationdate">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.entry.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="status3">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="modifictaiondate">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.entry.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
@@ -91,10 +91,10 @@
 	                     
 	                    <t:column>
 	                    	<plexus:commandSortHeader columnName="submissionstatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader>
-                        		<h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
-                        		<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionType=='INTIME'}"/>
-								<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionType=='NOTINTIME'}"/>
-								<h:outputText value="&#160;&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>	
+				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionStatus}.png"/>
+				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionStatus.value == 1}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionStatus. value == 2}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionStatus.value == 3}"/>
                         </t:column>
 	                </plexus:dataTable> 
 	                

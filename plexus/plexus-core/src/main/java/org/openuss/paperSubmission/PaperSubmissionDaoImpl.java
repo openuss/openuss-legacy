@@ -21,15 +21,12 @@ public class PaperSubmissionDaoImpl
         org.openuss.paperSubmission.PaperSubmission sourceEntity,
         org.openuss.paperSubmission.PaperSubmissionInfo targetVO)
     {
-        // @todo verify behavior of toPaperSubmissionInfo
-        //super.toPaperSubmissionInfo(sourceEntity, targetVO);
+
     	targetVO.setId(sourceEntity.getId());
     	targetVO.setExamId(sourceEntity.getExam().getId());
     	targetVO.setUserId(sourceEntity.getSender().getId());
         targetVO.setDeliverDate(sourceEntity.getDeliverDate());
-        targetVO.setSubmissionType(sourceEntity.getSubmissionType());
-        
-//        //targetVO.setFiles()
+              
     }
 
 

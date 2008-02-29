@@ -57,20 +57,17 @@ public class PaperSubmissionServiceImpl
     	PaperSubmission paperSubmissionEntity = this.getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionEntity cannot be null.");
     	
-    	//FIXME: Add to a course and exam (NOT VERY SURE)
-    	
-    	//Course course = this.getCourseDao().load(paperSubmissionEntity.getId());
     	Exam exam = this.getExamDao().load(paperSubmissionInfo.getExamId());
     	User user = this.getUserDao().load(paperSubmissionInfo.getUserId());
     	    	
     	paperSubmissionEntity.setExam(exam);
     	paperSubmissionEntity.setSender(user);
     	paperSubmissionEntity.setDeliverDate(new Date());
-    	if(exam.getDeadline().after(paperSubmissionEntity.getDeliverDate())){
-    		paperSubmissionEntity.setSubmissionType("INTIME");
-    	}else{
-    		paperSubmissionEntity.setSubmissionType("NOTINTIME");
-    	}
+//    	if(exam.getDeadline().after(paperSubmissionEntity.getDeliverDate())){
+//    		paperSubmissionEntity.setSubmissionType("INTIME");
+//    	}else{
+//    		paperSubmissionEntity.setSubmissionType("NOTINTIME");
+//    	}
     	
     	
     	this.getPaperSubmissionDao().create(paperSubmissionEntity);
@@ -86,28 +83,6 @@ public class PaperSubmissionServiceImpl
     	
 	}
 
-	@Override
-	protected List handleFindActiveExamsByUser(Long userId)
-			throws Exception {
-		Validate.notNull(userId, "userId cannot be null.");
-    	
-		// FIXME implement!
-		/*
-    	User member = getSecurityService().getUser(userId);
-    	getCourseService().
-
-    	//Filter the inactive exams --> deadline expired
-    	List<Exam> exams = this.getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO,member.getgetCourse());
-
-    	for (int i = 0; i < list.size(); i++){
-    		if (this.handleIsExamDeadlineExpired(list.get(i).getId())) {
-    			list.remove(i);
-    		}
-    	}
-		*/
-    	return null; //list;
-    }
-
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindPaperSubmissionsByExam(Long examId)
@@ -115,10 +90,17 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(examId, "examId cannot be null.");
     	Exam exam = this.getExamDao().load(examId);
     	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
+    	
     	for(PaperSubmissionInfo submission : submissions){
     		User user = getSecurityService().getUser(submission.getUserId());
     		submission.setFirstName(user.getFirstName());
     		submission.setLastName(user.getLastName());
+    		submission.setDisplayName(user.getDisplayName());
+    		if(exam.getDeadline().after(submission.getDeliverDate())){
+    			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
+    		}else{
+    			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
+    		}
        	}
     	return submissions;
 	}
@@ -132,7 +114,20 @@ public class PaperSubmissionServiceImpl
     	User user = this.getUserDao().load(userId);
     	Exam exam = this.getExamDao().load(examId);
     	
-    	return this.getPaperSubmissionDao().findByExamAndUser(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam, user);
+    	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExamAndUser(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam, user);;
+    	
+    	for(PaperSubmissionInfo submission : submissions){
+    		submission.setFirstName(user.getFirstName());
+    		submission.setLastName(user.getLastName());
+    		submission.setDisplayName(user.getDisplayName());
+    		if(exam.getDeadline().after(submission.getDeliverDate())){
+    			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
+    		}else{
+    			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
+    		}
+       	}
+    	
+    	return submissions;
 	}
 
 	@Override
@@ -146,12 +141,23 @@ public class PaperSubmissionServiceImpl
 	protected PaperSubmissionInfo handleGetPaperSubmission(
 			Long paperSubmissionId) throws Exception {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
-		PaperSubmissionInfo submissionInfo = new PaperSubmissionInfo();
-		submissionInfo = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
-		submissionInfo.setFiles(getDocumentService().getFileEntries(submissionInfo));
 		
-		return submissionInfo;
-    	//return (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
+		PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId); 
+		
+		Exam exam = this.getExamDao().load(submission.getExamId());
+		User user = getSecurityService().getUser(submission.getUserId());
+		
+		submission.setFirstName(user.getFirstName());
+		submission.setLastName(user.getLastName());
+		submission.setDisplayName(user.getDisplayName());
+		if(exam.getDeadline().after(submission.getDeliverDate())){
+			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
+		}else{
+			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
+		}
+
+		return submission;
+    	
 	}
 
 	@Override
@@ -163,15 +169,15 @@ public class PaperSubmissionServiceImpl
         this.getExamDao().remove(examEntity);
 	}
 
-	@Override
-	protected void handleRemovePaperSubmission(Long paperSubmissionId)
-			throws Exception {
-		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null.");
-    	
-    	//delete paperSubmissionId
-    	PaperSubmission  paperSubmissionEntity = this.getPaperSubmissionDao().load(paperSubmissionId);
-    	getPaperSubmissionDao().remove(paperSubmissionEntity);   	
-	}
+//	@Override
+//	protected void handleRemovePaperSubmission(Long paperSubmissionId)
+//			throws Exception {
+//		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null.");
+//    	
+//    	//delete paperSubmissionId
+//    	PaperSubmission  paperSubmissionEntity = this.getPaperSubmissionDao().load(paperSubmissionId);
+//    	getPaperSubmissionDao().remove(paperSubmissionEntity);   	
+//	}
 
 	@Override
 	protected void handleUpdateExam(ExamInfo examInfo) throws Exception {
@@ -196,7 +202,7 @@ public class PaperSubmissionServiceImpl
 		ExamInfo exam = this.getExam(paperSubmissionInfo.getExamId());
 		
 		paperSubmissionInfo.setDeliverDate(new Date());		
-		if(paperSubmissionInfo.getSubmissionType().equals("INTIME") && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())){
+		if(paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.IN_TIME) && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())){
 			PaperSubmissionInfo newSubmissionInfo = new PaperSubmissionInfo();			
 			newSubmissionInfo.setDeliverDate(paperSubmissionInfo.getDeliverDate());
 			newSubmissionInfo.setExamId(paperSubmissionInfo.getExamId());
@@ -204,10 +210,8 @@ public class PaperSubmissionServiceImpl
 			this.createPaperSubmission(newSubmissionInfo);
 			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 			List<FileInfo> files = getDocumentService().getFileEntries(paperSubmissionInfo);
-		//	FolderInfo newFolder = new FolderInfo();
-		//	newFolder.setName(paperSubmissionInfo.getDeliverDate().toString());
-		//	getDocumentService().createFolder(newFolder, getDocumentService().getFolder(newSubmissionInfo));
-			
+		
+			//Copy Files from the old submission to the new
 			FolderInfo newFolder = getDocumentService().getFolder(newSubmissionInfo);
 			for(FileInfo file : files){
 				file = getDocumentService().getFileEntry(file.getId(), true);
@@ -219,8 +223,6 @@ public class PaperSubmissionServiceImpl
 		}else{
 			//Transfor VO to an entity
 			PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
-			
-			// FIXME update files!!!
 			
 			//update the PaperSubmission
 			getPaperSubmissionDao().update(paperSubmissionEntity);
@@ -234,7 +236,6 @@ public class PaperSubmissionServiceImpl
 			throws Exception {
 		Validate.notNull(domainId, "courseId cannot be null.");
     	
-    	//Filter the inactives --> deadline expired
 		
     	List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
@@ -256,10 +257,8 @@ public class PaperSubmissionServiceImpl
 	@Override
 	protected List handleFindInactiveExamsByDomainId(Long domainId)
 			throws Exception {
-Validate.notNull(domainId, "courseId cannot be null.");
+		Validate.notNull(domainId, "courseId cannot be null.");
     	
-    	//Filter the inactives --> deadline expired
-		
     	List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
     	for (ExamInfo exam : exams){
@@ -268,33 +267,32 @@ Validate.notNull(domainId, "courseId cannot be null.");
     	}
     	
     	return inactiveExams;
-
 	}
-
 
 
 	@Override
 	protected List handleGetMembersAsPaperSubmissionsByExam(Long examId)
 			throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
-    	List<PaperSubmissionInfo> allSubmissions = new ArrayList();
-    	Exam exam = this.getExamDao().load(examId);
-    	List<PaperSubmissionInfo> submissions = this.getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
+		
+		Exam exam = this.getExamDao().load(examId);
+    	
+		List<PaperSubmissionInfo> allSubmissions = new ArrayList();
+    	List<PaperSubmissionInfo> submissions = this.findPaperSubmissionsByExam(exam.getId());
     	//FIXME CourseMembers will be deprecated soon. Alternatives?
     	CourseInfo course = this.getCourseService().getCourseInfo(exam.getDomainId());
     	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
+    	
     	for(CourseMemberInfo member : members){
     		boolean submitted = false;
-    		
     		
     		for(PaperSubmissionInfo submission : submissions){
     			if(member.getUserId().equals(submission.getUserId())){
     				PaperSubmissionInfo paper = new PaperSubmissionInfo();
     				paper.setUserId(member.getUserId());
-    				//FIXME Insert a name attribute into the PaperSubmissionInfo ValueObject
-    				paper.setLastName(member.getLastName()+", "+member.getFirstName());
+    				paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
     	    		paper.setId(submission.getId());
-    				paper.setSubmissionType(submission.getSubmissionType());
+    				paper.setSubmissionStatus(submission.getSubmissionStatus());
     				allSubmissions.add(paper);
  					submitted=true;
     			}
@@ -302,9 +300,8 @@ Validate.notNull(domainId, "courseId cannot be null.");
     		if(submitted==false){
     			PaperSubmissionInfo paper = new PaperSubmissionInfo();
     			paper.setUserId(member.getUserId());
-    			//FIXME Insert a name attribute into the PaperSubmissionInfo ValueObject
-          		paper.setLastName(member.getLastName()+", "+member.getFirstName());
-    			paper.setSubmissionType("NOTSUBMITTED");
+          		paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
+    			paper.setSubmissionStatus(SubmissionStatus.NOT_SUBMITTED);
 				allSubmissions.add(paper);
     		}
     	}
@@ -315,17 +312,20 @@ Validate.notNull(domainId, "courseId cannot be null.");
 	protected List handleGetPaperSubmissions(Collection submissions, Long examId)
 			throws Exception {
 		List<FileInfo> allFiles = new ArrayList<FileInfo>();
-		//List<FolderEntryInfo> folderEntries = new ArrayList<FolderEntryInfo>();
+		
 		for(PaperSubmissionInfo submission: (Collection<PaperSubmissionInfo>)submissions){
 			List<FileInfo> filesOfSubmission = new ArrayList<FileInfo>();
+			
 			FolderInfo folder = getDocumentService().getFolder(submission); 
 			List<FolderEntryInfo> files = getDocumentService().getFolderEntries(submission, folder);
 			filesOfSubmission.addAll(getDocumentService().allFileEntries(files));
+			
 			for(FileInfo file : filesOfSubmission){
 				String path = submission.getFirstName()+"_"+submission.getLastName();
 				
-				if(submission.getSubmissionType().equals("NOTINTIME")){
-					path += "_"+submission.getSubmissionType();
+				if(submission.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME)){
+					//FIXME i18n should be done
+					path += "_NOT_IN_TIME";
 				}
 				
 				file.setAbsoluteName(path+"/"+file.getFileName());
@@ -339,18 +339,15 @@ Validate.notNull(domainId, "courseId cannot be null.");
 	@Override
 	protected List handleFindInTimePaperSubmissionsByExam(Long examId) throws Exception {
 		List<PaperSubmissionInfo> allSubmissions = findPaperSubmissionsByExam(examId);
-		List<PaperSubmissionInfo> inTimeSubmissions = new LinkedList<PaperSubmissionInfo>();
+		List<PaperSubmissionInfo> inTimeSubmissions = new ArrayList<PaperSubmissionInfo>();
 		
 		for (PaperSubmissionInfo submission : allSubmissions) {
-			// FIXME hardcode!
-			if ("INTIME".equals(submission.getSubmissionType())) {
+			if (SubmissionStatus.IN_TIME.equals(submission.getSubmissionStatus())) {
 				inTimeSubmissions.add(submission);
 			}
 		}
 		
 		return inTimeSubmissions;
 	}
-	
-    
 
 }

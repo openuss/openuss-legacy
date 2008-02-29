@@ -25,6 +25,7 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
+import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.collaboration.WorkspaceMemberSelection;
@@ -49,14 +50,14 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 		
 		private FolderEntryInfo entry;
 		
-		private String submissionType;
+		private SubmissionStatus submissionStatus;
 		
 		public ExtendedFolderEntryInfo(FolderEntryInfo entry) {
 			this.entry = entry;
 			if(entry.getModified().before(examInfo.getDeadline())){
-				this.submissionType = "INTIME";
+				this.submissionStatus = SubmissionStatus.IN_TIME;
 			}else{
-				this.submissionType = "NOTINTIME";
+				this.submissionStatus = SubmissionStatus.NOT_IN_TIME;
 			}
 		}
 
@@ -64,18 +65,9 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 			return entry;
 		}
 
-		public String getSubmissionType() {
-			return submissionType;
+		public SubmissionStatus getSubmissionStatus() {
+			return submissionStatus;
 		}
-
-		public void setEntry(FolderEntryInfo entry) {
-			this.entry = entry;
-		}
-
-		public void setSubmissionType(String submissionType) {
-			this.submissionType = submissionType;
-		}
-		
 	}
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
@@ -122,8 +114,8 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 		breadcrumbs.addCrumb(crumb);
 		
 		crumb = new BreadCrumb();
-		crumb.setName(paperSubmissionInfo.getFirstName() + " " + paperSubmissionInfo.getLastName());
-		crumb.setHint(paperSubmissionInfo.getFirstName() + " " + paperSubmissionInfo.getLastName());
+		crumb.setName(paperSubmissionInfo.getDisplayName());
+		crumb.setHint(paperSubmissionInfo.getDisplayName());
 		
 		if(courseInfo != null && courseInfo.getId() != null 
 				&& examInfo != null && examInfo.getId() != null
@@ -209,7 +201,7 @@ public class PaperSubmissionLectureViewPage extends AbstractPaperSubmissionPage 
 				else{
 					List<ExtendedFolderEntryInfo> entries = loadFileEntries();
 					
-					//sort(submissions);
+					sort(entries);
 					page = new DataPage<ExtendedFolderEntryInfo>(entries.size(), 0, entries);
 				}
 			}

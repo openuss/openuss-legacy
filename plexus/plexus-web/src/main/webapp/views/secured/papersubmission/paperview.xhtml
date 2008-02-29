@@ -47,26 +47,25 @@
 				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
 				        </t:column>
 				        
-				        <t:column> 
-							<plexus:commandSortHeader columnName="folder"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
+				        <t:column header="#{msg.documents_main_column_type}"> 
 							<h:graphicImage value="/images/filetypes/folder.gif"/>
 						</t:column>
 				   
 				        <t:column>
-				        	<plexus:commandSortHeader columnName="Name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
+				        	<plexus:commandSortHeader columnName="submittersname"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
 				            <h:commandLink action="#{views$secured$papersubmission$paperview.selectSubmission}" styleClass="command">
-									<b><h:outputText value="#{bean.lastName}"/></b>
+									<b><h:outputText value="#{bean.displayName}"/></b>
 							</h:commandLink>
 				            
 				        </t:column>
 				        
 				       
 				        <t:column>
-				        	<plexus:commandSortHeader columnName="submissionTime">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
-				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionType}.png"/>
-				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionType=='INTIME'}"/>
-							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionType=='NOTINTIME'}"/>
-							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionType=='NOTSUBMITTED'}"/>
+				        	<plexus:commandSortHeader columnName="submissionstatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
+				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionStatus}.png"/>
+				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionStatus.value == 1}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionStatus. value == 2}"/>
+							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionStatus.value == 3}"/>
 				        </t:column>
 				        
 				    			      
