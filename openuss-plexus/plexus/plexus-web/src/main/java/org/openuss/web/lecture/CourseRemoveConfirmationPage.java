@@ -61,7 +61,6 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 			addMessage(i18n("institute_course_removed_succeed"));
 			return Constants.INSTITUTE_COURSES_PAGE;
 		} catch (Exception e) {
-			e.printStackTrace();
 			addMessage(i18n("institute_course_cannot_be_removed"));
 			return Constants.INSTITUTE_COURSES_PAGE;
 		}
