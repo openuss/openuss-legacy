@@ -52,8 +52,6 @@ public class CalendarServiceIntegrationTest extends
 
 	public AppointmentTypeDao appointmentTypeDao;
 	
-	public ScheduleExceptionDao scheduleExceptionDao;
-
 	public TestUtility testUtil;
 
 	private DefaultDomainObject defaultDomainObject;
@@ -916,13 +914,5 @@ public class CalendarServiceIntegrationTest extends
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
-	}
-
-	public ScheduleExceptionDao getScheduleExceptionDao() {
-		return scheduleExceptionDao;
-	}
-
-	public void setScheduleExceptionDao(ScheduleExceptionDao scheduleExceptionDao) {
-		this.scheduleExceptionDao = scheduleExceptionDao;
 	}
 }

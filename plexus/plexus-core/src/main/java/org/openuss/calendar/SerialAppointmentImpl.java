@@ -51,26 +51,4 @@ public class SerialAppointmentImpl
 	public void addSingleAppointment(Appointment appointment) {
 		this.getAppointments().add(appointment);
 	}
-
-	@Override
-	public void addException(ScheduleException scheduleException) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteException(ScheduleException scheduleException) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void addExceptions(ScheduleException scheduleException) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void deleteExceptions(ScheduleException scheduleException) {
-		// TODO Auto-generated method stub
-		
-	}
 }
