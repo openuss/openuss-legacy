@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -29,6 +30,10 @@ import org.openuss.lecture.University;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserProfile;
+import org.openuss.seminarpool.Seminarpool;
+import org.openuss.seminarpool.SeminarpoolAdministrationService;
+import org.openuss.seminarpool.SeminarpoolInfo;
+import org.openuss.seminarpool.SeminarpoolStatus;
 
 /**
  * @see org.openuss.desktop.DesktopService2
@@ -593,7 +598,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 		myUniDataSet.setCourseDao(getCourseDao());
 		myUniDataSet.setCourseNewsletterService(getCourseNewsletterService());
 		myUniDataSet.setDiscussionService(getDiscussionService());
-		
+		myUniDataSet.setSeminarpoolAdministrationSerce(getSeminarpoolAdministrationService());
 		myUniDataSet.loadData();
 		return myUniDataSet.getMyUniInfo();
 	}
@@ -612,6 +617,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 			this.desktop = desktop;
 		}
 		
+		private SeminarpoolAdministrationService seminarpoolAdministrationService;
 		private CourseNewsletterService courseNewsletterService;
 		private org.openuss.lecture.CourseDao courseDao;
 		
@@ -632,6 +638,15 @@ public class DesktopService2Impl extends DesktopService2Base {
 	    {
 	        this.courseDao = courseDao;
 	    }
+	    
+		public SeminarpoolAdministrationService getSeminarpoolAdministrationSerce() {
+			return seminarpoolAdministrationService;
+		}
+
+		public void setSeminarpoolAdministrationSerce(
+				SeminarpoolAdministrationService seminarpoolAdministrationSerce) {
+			this.seminarpoolAdministrationService = seminarpoolAdministrationSerce;
+		}
 
 		/*
 		 * Fills the MyUni data structure
@@ -647,7 +662,8 @@ public class DesktopService2Impl extends DesktopService2Base {
 			List<Course> courseBookmarks = desktop.getCourses();
 			List<Institute> instituteBookmarks = desktop.getInstitutes();
 			List<Department> departmentBookmarks = desktop.getDepartments();
-
+			Set<Seminarpool> seminarpoolBookmarks = desktop.getSeminarpool();
+ 
 			if (courseBookmarks != null) {
 				// Process each course bookmark
 				Iterator<Course> courseIterator = courseBookmarks.iterator();
@@ -672,6 +688,15 @@ public class DesktopService2Impl extends DesktopService2Base {
 				while (departmentIterator.hasNext()) {
 					Department department = (Department) departmentIterator.next();
 					processDepartmentBookmark(department);
+				}
+			}
+			
+			if (seminarpoolBookmarks != null) {
+				// Process each department bookmark
+				Iterator<Seminarpool> seminarpoolIterator = seminarpoolBookmarks.iterator();
+				while (seminarpoolIterator.hasNext()) {
+					Seminarpool seminarpool = (Seminarpool) seminarpoolIterator.next();
+					processSeminarpoolBookmark(seminarpool);
 				}
 			}
 		}
@@ -711,7 +736,49 @@ public class DesktopService2Impl extends DesktopService2Base {
 			// Process the department as bookmarked
 			return processDepartment(department, true);
 		}
+		
+		private Long processSeminarpoolBookmark(Seminarpool seminarpool) {
+			// Process the Seminarpool as bookmarked
+			return processSeminarpool(seminarpool, true);
+		}
 
+		/*
+		 * Adds a department to its corresponding university data set. If there
+		 * is no university data set for the department's university a new one
+		 * is created.
+		 */
+		private Long processSeminarpool(Seminarpool seminarpool, boolean bookmarked) {
+			if (seminarpool == null)
+				return null;
+
+			University university = seminarpool.getUniversity();
+			if (university == null)
+				return null;
+
+			Long universityID = university.getId();
+			if (universityID == null)
+				return null;
+
+			// Create a new data set for the university if it does not exist yet
+			assert uniDataSets != null;
+			if (!uniDataSets.containsKey(universityID)) {
+				UniversityDataSet universityDataSet = new UniversityDataSet(university);
+				
+				universityDataSet.setCourseDao(this.courseDao);
+				universityDataSet.setCourseNewsletterService(this.courseNewsletterService);
+				universityDataSet.setDiscussionService(this.discussionService);
+				universityDataSet.setSeminarpoolAdministrationService(this.seminarpoolAdministrationService);
+				uniDataSets.put(universityID, universityDataSet);
+			}
+
+			// Add the department to the university data set
+			uniDataSets.get(universityID).addSeminarpool(seminarpool, bookmarked);
+
+			// Return the university id
+			return universityID;
+		}
+
+		
 		/*
 		 * Adds a department to its corresponding university data set. If there
 		 * is no university data set for the department's university a new one
@@ -737,7 +804,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 				universityDataSet.setCourseDao(this.courseDao);
 				universityDataSet.setCourseNewsletterService(this.courseNewsletterService);
 				universityDataSet.setDiscussionService(this.discussionService);
-				
+				universityDataSet.setSeminarpoolAdministrationService(this.seminarpoolAdministrationService);
 				uniDataSets.put(universityID, universityDataSet);
 			}
 
@@ -839,6 +906,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 
 		}
 
+		private Long processSeminarpool(Seminarpool seminarpool) {
+			return null;
+		}
+		
 		/*
 		 * Holds all relevant information that is displayed on the MyUni page
 		 * for one university
@@ -849,6 +920,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 			Map<Long, MyUniInstituteInfo> currentInstitutes;
 			Map<Long, MyUniInstituteInfo> pastInstitutes;
 			Map<Long, MyUniDepartmentInfo> departments;
+			Map<Long, MyUniSeminarpoolInfo> seminarpools;
 			Map<Long, Integer> instituteCurrentCoursesCount;
 			MyUniUniversityInfo university;
 
@@ -859,6 +931,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 				pastInstitutes = new HashMap<Long, MyUniInstituteInfo>();
 				departments = new HashMap<Long, MyUniDepartmentInfo>();
 				instituteCurrentCoursesCount = new HashMap<Long, Integer>();
+				seminarpools = new HashMap<Long, MyUniSeminarpoolInfo>();
 
 				this.university = universityEntityToInfo(university);
 			}
@@ -888,6 +961,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 				newInfo.setPastInstitutes(pastInstitutes.values());
 				newInfo.setDepartments(departments.values());
 				newInfo.setMyUniUniversityInfo(university);
+				newInfo.setMySeminarpoolInfo(seminarpools.values());
 
 				return newInfo;
 			}
@@ -896,6 +970,38 @@ public class DesktopService2Impl extends DesktopService2Base {
 				return university;
 			}
 
+			/*
+			 * Adds a department to the data set and ensures proper handling of
+			 * the department's bookmark flag
+			 */
+			public void addSeminarpool(Seminarpool seminarpool, boolean bookmarked) {
+				// Convert entity to info object
+				MyUniSeminarpoolInfo seminarpoolInfo = seminarpoolEntityToInfo(seminarpool);
+
+				if (seminarpoolInfo != null) {
+					Long seminarpoolId = seminarpoolInfo.getId();
+
+					if (seminarpools.containsKey(seminarpoolId)) {
+						// The seminarpool has been added before
+						// If this semiarpool is a bookmark
+						// get the former seminarpool object from the departments
+						// hash
+						// and set the bookmark flag to true,
+						// regardless of the former value
+						if (bookmarked == true) {
+							seminarpoolInfo = seminarpools.get(seminarpoolId);
+							seminarpoolInfo.setBookmarked(true);
+						}
+					} else {
+						// The department is added to the set for the first time
+						seminarpoolInfo.setBookmarked(bookmarked);
+						seminarpools.put(seminarpoolId, seminarpoolInfo);
+					}
+				}
+			}
+
+			
+			
 			/*
 			 * Adds a department to the data set and ensures proper handling of
 			 * the department's bookmark flag
@@ -1071,6 +1177,26 @@ public class DesktopService2Impl extends DesktopService2Base {
 					return null;
 				}
 			}
+			
+			private MyUniSeminarpoolInfo seminarpoolEntityToInfo(Seminarpool seminarpool) {
+				if (seminarpool != null) {
+					Long seminarpoolId = seminarpool.getId();
+
+					if (seminarpoolId == null)
+						return null;
+
+					MyUniSeminarpoolInfo seminarpoolInfo = new MyUniSeminarpoolInfo();
+					seminarpoolInfo.setId(seminarpoolId);
+					seminarpoolInfo.setName(seminarpool.getName());
+					seminarpoolInfo.setBookmarked(false);
+					seminarpoolInfo.setDescription(seminarpool.getDescription());
+					seminarpoolInfo.setSeminarpoolStatus(seminarpool.getSeminarpoolStatus());
+					seminarpoolInfo.setShortcut(seminarpool.getShortcut());
+					return seminarpoolInfo;
+				} else {
+					return null;
+				}
+			}
 
 			private MyUniInstituteInfo instituteEntityToInfo(Institute institute) {
 				if (institute != null) {
@@ -1171,6 +1297,54 @@ public class DesktopService2Impl extends DesktopService2Base {
 				this.discussionService = discussionService;
 			}
 			
+			private SeminarpoolAdministrationService seminarpoolAdministrationService;
+			
+			public void setSeminarpoolAdministrationService(SeminarpoolAdministrationService seminarpoolAdministrationService){
+				this.seminarpoolAdministrationService = seminarpoolAdministrationService;
+			}
+			
+			public SeminarpoolAdministrationService getSeminarpoolAdministrationService(){
+				return seminarpoolAdministrationService;
+			}
+			
 		}
+
+
 	}
+
+
+
+	@Override
+	protected boolean handleIsSeminarpoolBookmarked(Long desktopId,
+			Long seminarpoolId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void handleLinkSeminarpool(Long desktopId, Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(desktopId, "DesktopId cannot be null!");
+		Desktop desktop = this.getDesktopDao().load(desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
+
+		Validate.notNull(seminarpoolId, "seminarpoolId cannot be null!");
+		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpool, "No Institute found corresponding to the seminarpoolId "	+ seminarpoolId);
+
+		if (!desktop.getSeminarpool().contains(seminarpool)) {
+			desktop.getSeminarpool().add(seminarpool);
+		}	}
+
+	@Override
+	protected void handleUnlinkSeminarpool(Long desktopId, Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(desktopId, "DesktopId cannot be null!");
+		Desktop desktop = this.getDesktopDao().load(desktopId);
+		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
+		Validate.notNull(seminarpoolId, "DesktopService2.handleUnlinkCourse - courseId cannot be null!");
+		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the courseId " + seminarpoolId);
+		desktop.getSeminarpool().remove(seminarpool);	
+		}
 }

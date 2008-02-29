@@ -14,6 +14,10 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.View;
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopException;
+import org.openuss.desktop.DesktopInfo;
+import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.LectureException;
@@ -45,7 +49,10 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 	@Property(value="#{universityService}")
 	protected UniversityService universityService;
-		
+
+	@Property(value="#{desktopService2}")
+	protected DesktopService2 desktopService2;
+	
 	private String name;
 	private String shortcut;
 	private String password;
@@ -87,7 +94,20 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			// create seminarpool and set id
 			Long newSeminarpoolId = seminarpoolAdministrationService.createSeminarpool(seminarpoolInfo, user.getId());
 			seminarpoolInfo.setId(newSeminarpoolId);
-			
+			try{
+				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId()); 
+				desktopService2.linkSeminarpool(desktopInfo.getId(), newSeminarpoolId);
+			} catch (DesktopException ex){
+				return "seminarpool_create_failure";
+			}
+		
+/*			// clear fields
+			name = null;
+			shortcut = null;
+			description = null;
+			password = null;
+//			accessType = 0;
+*/		
 			logger.debug("END CREATE SEMINARPOOL");
 			return "desktop";
 	}
@@ -246,6 +266,14 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
+	}
+
+	public DesktopService2 getDesktopService2() {
+		return desktopService2;
+	}
+
+	public void setDesktopService2(DesktopService2 desktopService2) {
+		this.desktopService2 = desktopService2;
 	}
 	
 

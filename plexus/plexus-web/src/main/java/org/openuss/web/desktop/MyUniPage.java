@@ -54,7 +54,7 @@ public class MyUniPage extends BasePage {
 
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
-	
+
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
@@ -79,9 +79,10 @@ public class MyUniPage extends BasePage {
 	private Long paramUnsubscribeNewsletter = null;
 	private Long paramSubscribeForum = null;
 	private Long paramUnsubscribeForum = null;
+	private Long paramRemoveSeminarpool = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
-	private UIFlexList seminarpoolsList;
+	private UIFlexList seminarpoolsList;	
 	private CourseUIFlexList coursesList;
 	private UITabs tabs;
 	private Desktop desktop;
@@ -90,8 +91,8 @@ public class MyUniPage extends BasePage {
 	private boolean tabDataLoaded = false;
 	private boolean instituteListDataLoaded = false;
 	private boolean departmentListDataLoaded = false;
-	private boolean courseListDataLoaded = false;
 	private boolean seminarpoolListDataLoaded = false;
+	private boolean courseListDataLoaded = false;
 
 	private Map<Long, MyUniInfo> myUniData;
 
@@ -99,7 +100,7 @@ public class MyUniPage extends BasePage {
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
-	private static final String seminarpoolsBasePath = "/views/secured/seminarpool/main.faces";
+	private static final String seminarpoolBasePath = "/views/secured/seminarpool/main.faces";
 
 	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 	String locale = (String) binding.getValue(getFacesContext());
@@ -206,6 +207,12 @@ public class MyUniPage extends BasePage {
 		} catch (Exception e) {
 			paramUnsubscribeForum = null;
 		}
+		try {
+			String stringRemoveBookmarkSeminarpool = (String) params.get("remove_seminarpool");
+			paramRemoveSeminarpool = Long.valueOf(stringRemoveBookmarkSeminarpool);
+		} catch (Exception e) {
+			paramUnsubscribeForum = null;
+		}
 	}
 
 	/*
@@ -246,6 +253,14 @@ public class MyUniPage extends BasePage {
 				if (paramRemoveCourse != null) {
 					try {
 						desktopService2.unlinkCourse(desktopInfo.getId(), paramRemoveCourse);
+					} catch (Exception e) {
+						logger.error(e);
+					}
+				}
+				// Remove course bookmark
+				if (paramRemoveSeminarpool != null) {
+					try {
+						desktopService2.unlinkSeminarpool(desktopInfo.getId(), paramRemoveSeminarpool);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -318,9 +333,9 @@ public class MyUniPage extends BasePage {
 
 		if (coursesList != null)
 			loadValuesForCourseList(coursesList);
-		
+
 		if (seminarpoolsList != null)
-			loadValuesForSeminarpoolList(seminarpoolsList);    //todo
+			loadValuesForSeminarpoolList(seminarpoolsList);
 	}
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
@@ -341,6 +356,7 @@ public class MyUniPage extends BasePage {
 			}
 		}
 	}
+	
 
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
 		if (instituteListDataLoaded == false && prerenderCalled == true && institutesList != null) {
@@ -474,21 +490,20 @@ public class MyUniPage extends BasePage {
 	
 	/*
 	 * Returns a list of ListItemDAOs that contain the information to be shown
-	 * by the seminarpools flexlist
+	 * by the departments flexlist
 	 */
 	private List<ListItemDAO> getSeminarpoolListItems(Long universityId) {
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
-
 		if (myUniData != null) {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo.getSeminarpools();
+				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo.getMySeminarpoolInfo();
 
 				for (MyUniSeminarpoolInfo seminarpoolInfo : seminarpoolCollection) {
 					newItem = new ListItemDAO();
 					newItem.setTitle(seminarpoolInfo.getName());
-					newItem.setUrl(contextPath()+seminarpoolsBasePath + "?seminarpool=" + seminarpoolInfo.getId());
+					newItem.setUrl(contextPath()+seminarpoolBasePath + "?seminarpool=" + seminarpoolInfo.getId());
 					if (seminarpoolInfo.isBookmarked())
 						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
 								+ "&remove_seminarpool=" + seminarpoolInfo.getId());
@@ -500,8 +515,6 @@ public class MyUniPage extends BasePage {
 
 		return listItems;
 	}
-	
-
 	/*
 	 * Returns a list of ListItemDAOs that contain the information to be shown
 	 * by the institutes flexlist
@@ -701,22 +714,7 @@ public class MyUniPage extends BasePage {
 		loadValuesForDepartmentList(departmentsList);
 	}
 	
-	public UIFlexList getSeminarpoolsList() {
-		return seminarpoolsList;
-	}
 
-	public void setSeminarpoolsList(UIFlexList seminarpoolsList) {
-		logger.debug("Setting seminarpools flexlist component");
-		this.seminarpoolsList = seminarpoolsList;
-		seminarpoolsList.getAttributes().put("title", bundle.getString("flexlist_seminarpools"));
-		seminarpoolsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_seminarpools"));
-		seminarpoolsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_seminarpools"));
-		seminarpoolsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
-				bundle.getString("flexlist_remove_bookmark"));
-
-		// Load values into the component
-		loadValuesForSeminarpoolList(seminarpoolsList);
-	}
 
 	public UIFlexList getInstitutesList() {
 		return institutesList;
@@ -732,6 +730,22 @@ public class MyUniPage extends BasePage {
 
 		// Load values into the component
 		loadValuesForInstituteList(institutesList);
+	}
+	
+	public UIFlexList getSeminarpoolsList() {
+		return seminarpoolsList;
+	}
+
+	public void setSeminarpoolsList(UIFlexList seminarpoolsList) {
+		logger.debug("Setting seminarpools flexlist component");
+		this.seminarpoolsList = seminarpoolsList;
+		seminarpoolsList.getAttributes().put("title", bundle.getString("flexlist_seminarpools"));
+		seminarpoolsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_items"));
+		seminarpoolsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_items"));
+		seminarpoolsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	bundle.getString("flexlist_remove_bookmark"));
+
+		// Load values into the component
+		loadValuesForSeminarpoolList(seminarpoolsList);
 	}
 
 	public CourseUIFlexList getCoursesList() {

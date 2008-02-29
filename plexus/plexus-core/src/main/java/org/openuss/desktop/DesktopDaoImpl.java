@@ -19,6 +19,7 @@ import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityInfo;
+import org.openuss.seminarpool.Seminarpool;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
@@ -119,6 +120,13 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 			if (course != null)
 				targetVO.getCourseInfos().add(this.getCourseDao().toCourseInfo(course));
 		}
+		
+		// Seminapools
+		targetVO.setSeminarpoolInfos(new ArrayList(sourceEntity.getCourses().size()));
+		for (Seminarpool seminarpool : sourceEntity.getSeminarpool()) {
+			if (seminarpool != null)
+				targetVO.getSeminarpoolInfos().add(this.getSeminarpoolDao().toSeminarpoolInfo(seminarpool));
+		}
 
 	}
 
@@ -207,6 +215,15 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 			Iterator iter2 = sourceVO.getCourseInfos().iterator();
 			while (iter2.hasNext()) {
 				targetEntity.getCourses().add(this.getCourseDao().load(((Course) iter2.next()).getId()));
+			}
+		}
+		
+		// Seminarpools
+		if (copyIfNull && (sourceVO.getSeminarpoolInfos() != null)) {
+			targetEntity.getSeminarpool().clear();
+			Iterator iter2 = sourceVO.getSeminarpoolInfos().iterator();
+			while (iter2.hasNext()) {
+				targetEntity.getSeminarpool().add(this.getSeminarpoolDao().load(((Seminarpool) iter2.next()).getId()));
 			}
 		}
 
