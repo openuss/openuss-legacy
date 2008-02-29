@@ -168,7 +168,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 
 	public String delete() {
-		if (paperSubmissionInfo.getId() == null) {
+		if ((paperSubmissionInfo == null) || (paperSubmissionInfo.getId() == null)) {
 			addError(i18n("messages_error_no_documents_selected"));
 			return Constants.SUCCESS;
 		}
