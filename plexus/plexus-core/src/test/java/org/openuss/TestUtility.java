@@ -976,7 +976,7 @@ public class TestUtility {
 //		app.setStarttime(start);
 //		app.setEndtime(end);
 		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
-		Appointment app = appointmentDao.create(appType, "description", end, "location", false, cal, start, unique("subject"));
+		Appointment app = appointmentDao.create(appType, "description", end, "location", false, cal, start, unique("subject"),true);
 		
 		cal.addAppointment(app);
 		calendarDao.update(cal);
@@ -1000,7 +1000,7 @@ public class TestUtility {
 				1,
 				RecurrenceType.weekly, true, cal,
 				start,
-				unique("subject"));
+				unique("subject"), true);
 
 		cal.addSerialAppointment(serialAppointment);
 		

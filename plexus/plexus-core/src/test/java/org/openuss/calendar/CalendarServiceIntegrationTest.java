@@ -51,6 +51,8 @@ public class CalendarServiceIntegrationTest extends
 	public AppointmentDao appointmentDao;
 
 	public AppointmentTypeDao appointmentTypeDao;
+	
+	public ScheduleExceptionDao scheduleExceptionDao;
 
 	public TestUtility testUtil;
 
@@ -192,9 +194,7 @@ public class CalendarServiceIntegrationTest extends
 
 	}
 	
-	public void testCalendarAdminsitrationSerialWithExc() {
-		
-	}
+	
 
 	public void testCalendarAdministrationSerial() {
 		/*
@@ -264,8 +264,12 @@ public class CalendarServiceIntegrationTest extends
 			SerialAppointmentInfo serialAppInfo = serialAppointments.get(0);
 			assertNotNull(serialAppInfo.getId());
 
-			// test if an appointmentType is associated to the serial
-			// appointment
+			/*********************** test exceptions *************************/
+			
+			// test if exceptions are exisiting
+			List<AppointmentInfo> calcAppInfos = calendarService.getCalculatedAppointments(serialAppInfo);
+			assertNotNull(calcAppInfos);
+			assertEquals(6, calcAppInfos.size());
 
 			/** ***************** test update serial appointment **************** */
 
@@ -841,7 +845,7 @@ public class CalendarServiceIntegrationTest extends
 			
 			// test if the numbers of subscriptions equals 0
 			List<CalendarInfo> subscribedCalInfos2 = calendarService.getSubscriptions();
-			assertEquals(0, subscribedCalInfos2);
+			assertEquals(0, subscribedCalInfos2.size());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -912,5 +916,13 @@ public class CalendarServiceIntegrationTest extends
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
+	}
+
+	public ScheduleExceptionDao getScheduleExceptionDao() {
+		return scheduleExceptionDao;
+	}
+
+	public void setScheduleExceptionDao(ScheduleExceptionDao scheduleExceptionDao) {
+		this.scheduleExceptionDao = scheduleExceptionDao;
 	}
 }

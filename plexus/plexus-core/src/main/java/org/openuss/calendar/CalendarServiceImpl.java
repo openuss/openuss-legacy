@@ -75,7 +75,8 @@ public class CalendarServiceImpl extends
 		Appointment app = getAppointmentDao().create(appType,
 				appointmentInfo.getDescription(), appointmentInfo.getEndtime(),
 				appointmentInfo.getLocation(), false, calendar,
-				appointmentInfo.getStarttime(), appointmentInfo.getSubject());
+				appointmentInfo.getStarttime(), appointmentInfo.getSubject(),
+				true);
 
 		// add associations to the source and to the assigned calendars
 
@@ -191,7 +192,7 @@ public class CalendarServiceImpl extends
 						serialAppointmentInfo.getRecurrencePeriod(),
 						serialAppointmentInfo.getRecurrenceType(), true, cal,
 						serialAppointmentInfo.getStarttime(),
-						serialAppointmentInfo.getSubject());
+						serialAppointmentInfo.getSubject(), true);
 
 		cal.addSerialAppointment(serialAppointment);
 
@@ -235,7 +236,7 @@ public class CalendarServiceImpl extends
 				serialAppointmentInfo.getRecurrencePeriod(),
 				serialAppointmentInfo.getRecurrenceType(), true, cal,
 				serialAppointmentInfo.getStarttime(),
-				serialAppointmentInfo.getSubject());
+				serialAppointmentInfo.getSubject(), true);
 
 		// add the serial appointment again with updated data
 		this.createSerialAppointment(serialAppointmentInfo, calendarInfo);
@@ -304,9 +305,12 @@ public class CalendarServiceImpl extends
 			org.openuss.calendar.CalendarInfo calendar)
 			throws java.lang.Exception {
 		Calendar cal = getCalendarDao().load(calendar.getId());
-		List apps = cal.getNaturalSerialAppointments();
-		getSerialAppointmentDao().toSerialAppointmentInfoCollection(apps);
-		return apps;
+		List<SerialAppointment> apps = cal.getNaturalSerialAppointments();
+		List<SerialAppointmentInfo> serialAppInfos = new ArrayList<SerialAppointmentInfo>();
+		for (SerialAppointment saIt : apps) {
+			serialAppInfos.add(getSerialAppointmentDao().toSerialAppointmentInfo(saIt));
+		}
+		return serialAppInfos;
 	}
 
 	/**
@@ -413,8 +417,11 @@ public class CalendarServiceImpl extends
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getNaturalSingleAppointments();
-		getAppointmentDao().toAppointmentInfoCollection(apps);
-		return apps;
+		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
+		for (Appointment appIt: apps) {
+			appInfos.add(getAppointmentDao().toAppointmentInfo(appIt));
+		}
+		return appInfos;
 
 	}
 
@@ -423,10 +430,11 @@ public class CalendarServiceImpl extends
 			throws Exception {
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getSingleAppointments();
-
-		getAppointmentDao().toAppointmentInfoCollection(apps);
-
-		return apps;
+		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
+		for (Appointment appIt : apps) {
+			appInfos.add(getAppointmentDao().toAppointmentInfo(appIt));
+		}
+		return appInfos;
 
 	}
 
@@ -443,5 +451,40 @@ public class CalendarServiceImpl extends
 		}
 		return subs;
 	}
+
+	@Override
+	protected void handleAddException(
+			SerialAppointmentInfo serialAppointmentInfo,
+			AppointmentInfo appointmentInfo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleDeleteException(
+			SerialAppointmentInfo serialAppointmentInfo,
+			AppointmentInfo appointmentInfo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected List handleGetCalculatedAppointments(
+			SerialAppointmentInfo serialAppointmentInfo) throws Exception {
+		SerialAppointment serialApp = getSerialAppointmentDao().load(serialAppointmentInfo.getId());
+		Set<Appointment> calcApps = serialApp.getAppointments();
+		List<AppointmentInfo> calAppInfos = new ArrayList<AppointmentInfo>();
+		if (!calcApps.isEmpty()) {
+			for (Appointment calcAppIt : calcApps) {
+				calAppInfos.add(getAppointmentDao().toAppointmentInfo(calcAppIt));
+			}
+		}
+		return calAppInfos;
+	}
+
+
+
+
+
 
 }
