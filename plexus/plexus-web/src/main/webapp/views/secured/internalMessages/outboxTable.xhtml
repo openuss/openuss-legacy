@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -20,7 +20,8 @@
 				rowIndexVar="index"
 				layout="simple"
 				value="#{outboxMessage.internalMessageRecipientsInfos}" var="rec"
-				styleClass="content_font_normal">
+				styleClass="content_font_normal"
+				>
 				<h:outputText value="#{rec.recipientDisplayName}"/><h:outputText value=" - " rendered="#{index + 1 lt rowCount}"/>
 			</t:dataList>
 		</t:column>
@@ -28,6 +29,7 @@
 		<f:facet name="header">
 				#{msg['discussion_thread_column_message']} 
 			</f:facet>
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readSentMessage}">
 			<h:outputText value="#{outboxMessage.subject}"
 				styleClass="header_font_normal" /><br />
 			<h:outputText value="#{fn:substring(outboxMessage.content, 0, 100)}..."
@@ -36,6 +38,7 @@
 			<h:outputText value="#{outboxMessage.content}"
 				syleClass="content_font_normal"
 				rendered="#{fn:length(outboxMessage.content) le 100}" />
+			</h:commandLink>
 		</t:column>
 		<t:column styleClass="col_post_date">
 			<plexus:commandSortHeader columnName="outboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>

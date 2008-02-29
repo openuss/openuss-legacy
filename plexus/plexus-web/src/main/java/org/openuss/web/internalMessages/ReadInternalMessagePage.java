@@ -35,15 +35,8 @@ public class ReadInternalMessagePage extends BasePage {
 	@Property(value= "#{"+Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE+"}")
 	private InternalMessageInfo internalMessageInfo = new InternalMessageInfo();
 	
-	private boolean requestdelete;
-	
-	public String requestdelete(){
-		logger.debug("----------------------------------- request delete");
-		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, internalMessageInfo);
-		requestdelete=true;
-		return Constants.OPENUSS4US_MESSAGECENTER_READMSG;
-	}
-	
+
+		
 	private static final Logger logger = Logger
 			.getLogger(ReadInternalMessagePage.class);
 	
@@ -56,7 +49,6 @@ public class ReadInternalMessagePage extends BasePage {
 	
 	
 	public String delete(){
-		logger.debug("-----------------------------------  delete --> service.delete...");
 		internalMessageService.deleteInternalMessage(internalMessageInfo);
 		addMessage(i18n("openuss4us_message_messagecenter_delete"));
 		return Constants.OPENUSS4US_MESSAGECENTER;
@@ -122,12 +114,5 @@ public class ReadInternalMessagePage extends BasePage {
 	}
 
 
-	public boolean isRequestdelete() {
-		return requestdelete;
-	}
 
-
-	public void setRequestdelete(boolean requestdelete) {
-		this.requestdelete = requestdelete;
-	}
 }

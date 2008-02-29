@@ -238,7 +238,12 @@
 			<from-outcome>openuss4us_read_message</from-outcome>
 			<to-view-id>/views/secured/internalMessages/readmessage.xhtml</to-view-id>
 		</navigation-case>
-
+		
+		<navigation-case>
+			<from-outcome>openuss4us_delete_message</from-outcome>
+			<to-view-id>/views/secured/internalMessages/confirmdelete.xhtml</to-view-id>
+		</navigation-case>
+		
 		<navigation-case>
 			<from-outcome>openuss4us_calendar</from-outcome>
 			<to-view-id>/views/secured/calendar/usercalendar.xhtml</to-view-id>

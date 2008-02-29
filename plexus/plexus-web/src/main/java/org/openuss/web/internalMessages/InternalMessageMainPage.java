@@ -88,20 +88,27 @@ public class InternalMessageMainPage extends BasePage {
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
-	public String deleteSent(){
+	
+		public String deleteSent(){
 		logger.debug("delete sent message");
-		addMessage(i18n("openuss4us_message_messagecenter_deletesent"));
-		return delete(this.outboxData.getRowData());
+		InternalMessageInfo imInfo = this.outboxData.getRowData();
+		return this.deleteMessageRequest(imInfo);
 	}
 	
 	public String deleteRecieved(){
 		logger.debug("delete received message");
-		addMessage(i18n("openuss4us_message_messagecenter_deleterecieved"));
-		return delete(this.inboxData.getRowData());
+		InternalMessageInfo imInfo = this.inboxData.getRowData();
+		return this.deleteMessageRequest(imInfo);
 	}
 	
+	private String deleteMessageRequest(InternalMessageInfo imInfo){
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, imInfo);
+		return Constants.OPENUSS4US_MESSAGECENTER_REQUESTDELETE;
+	}
+		
 	private String delete(InternalMessageInfo message){
 		internalMessageService.deleteInternalMessage(message);
+		addMessage(i18n("openuss4us_message_messagecenter_deletesent"));
 		return Constants.OPENUSS4US_MESSAGECENTER;
 	}
 
