@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-
+import java.util.Collections;
+import java.util.Comparator;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -650,7 +651,8 @@ public class MyUniPage extends BasePage {
 						List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExamAndUser(exam.getId(), user.getId());
 						
 						newItem = new ListItemDAO();
-						newItem.setTitle(exam.getName()+ " - " + dateFormat.format(exam.getDeadline()) + " - " +courseInfo.getName());
+						newItem.setTitle(courseInfo.getName() + ": " + exam.getName());
+						newItem.setMetaInformation(dateFormat.format(exam.getDeadline()));
 						
 						if(submissions!=null && !submissions.isEmpty()){
 							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=" + submissions.get(submissions.size()-1).getId());
@@ -664,6 +666,20 @@ public class MyUniPage extends BasePage {
 						listItems.add(newItem);
 					}
 				}
+				
+				Collections.sort( listItems, new Comparator <ListItemDAO>() 
+                {
+                public int compare(ListItemDAO a, ListItemDAO b )
+                   {
+	                	try {
+	                		return(dateFormat.parse(a.getMetaInformation()).compareTo(dateFormat.parse(b.getMetaInformation())));
+	                	}
+	                    catch (Throwable th)
+	                    {
+	                        return 0;
+	                    }
+                   }
+                } );
 			}
 		}
 
