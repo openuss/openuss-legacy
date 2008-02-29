@@ -97,6 +97,7 @@ public class WikiMainPage extends AbstractWikiPage {
 		siteVersionInfo.setId(null);
 		siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
 		siteVersionInfo.setText(text);
+		siteVersionInfo.setNote(i18n("wiki_index_description_note"));
 
 		siteVersionInfo.setCreationDate(new Date());
 		siteVersionInfo.setAuthorId(user.getId());
