@@ -36,7 +36,13 @@
 		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 		<o:legend>
-			<o:legendItem styleClass="icon_remove" label="testio"/>
+			<o:legendItem styleClass="newsletter_none" label="#{msg.flexlist_title_newsletter_none}"/>
+			<o:legendItem styleClass="newsletter_notSubscribed" label="#{msg.flexlist_title_newsletter_subscribe}"/>
+			<o:legendItem styleClass="newsletter_subscribed" label="#{msg.flexlist_title_newsletter_unsubscribe}"/>
+			<o:legendItem styleClass="forum_none" label="#{msg.flexlist_title_forum_none}"/>
+			<o:legendItem styleClass="forum_notSubscribed" label="#{msg.flexlist_title_forum_subscribe}"/>
+			<o:legendItem styleClass="forum_subscribed" label="#{msg.flexlist_title_forum_unsubscribe}"/>
+			<o:legendItem styleClass="remove_bookmark" label="#{msg.flexlist_title_removeBookmarkUrl}"/>
 		</o:legend>
 	</ui:define>
 	<ui:define name="content">
