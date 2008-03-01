@@ -278,6 +278,17 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
+    <!--  SEMINARPOOL BEANS -->
+     <managed-bean>
+ 		<managed-bean-name>seminarpoolInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.seminarpool.SeminarpoolInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	<managed-bean>
+ 		<managed-bean-name>seminarpool</managed-bean-name>
+ 		<managed-bean-class>org.openuss.seminarpool.SeminarpoolInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
    
     
     <!-- Schedule Beans -->

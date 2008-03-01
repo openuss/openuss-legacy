@@ -278,4 +278,9 @@ public class Constants {
 	// seminarpool constants and outcomes
 	public static final String SEMINARPOOL_CREATION_CONTROLLER = "seminarpoolRegistration";
 	public static final String SEMINARPOOL_MAIN = "seminarpoolMain";
+	
+	public static final String SEMINARPOOL_INFO = "seminarpoolInfo";
+	public static final String SEMINARPOOL = "seminarpool";
+
+
 }

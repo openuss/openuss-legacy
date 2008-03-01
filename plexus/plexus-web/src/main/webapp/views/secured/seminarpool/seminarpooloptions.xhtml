@@ -10,7 +10,9 @@
 	xmlns:oc="http://www.openuss.org/jsf-core"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+	
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -35,12 +37,97 @@
 	<ui:define name="content">
 		<h:form id="seminarpool_update_seminarpool">
 			<o:block label="#{msg['seminarpool_update_block']}" styleClass="form_box">
-				<ui:include src="/views/commons/seminarpool/seminarpoolData.xhtml" />	
+				<h:outputLabel value="#{msg.seminarpool_preferences_university}" 
+ 				   for="universitySelect" 
+ 				   styleClass="field_label" />
+ 				   
+				<h:selectOneListbox 
+					id="seminarpool_preferences_university" 
+					size="1" 
+					styleClass="pulldown" 
+					value="#{seminarpoolInfo.universityId}"
+					valueChangeListener="#{views$secured$seminarpool$seminarpooloptions.processUniversitySelectChanged}"
+					
+					required="true">
+ 					<f:selectItems value="#{views$secured$seminarpool$seminarpooloptions.allUniversities}"/>
+ 					<f:validator validatorId="universityDepartmentSelectValidator"/>
+				</h:selectOneListbox>
+
+<!-- LUECKE OBEN	 
+					onchange="this.form.submit();"
+					immediate="true"   -->
+				
+				<o:input 
+					label="#{msg.seminarpool_name}"
+					entity="seminarpoolInfo" 
+					property="name" 
+					maxlength="100" 
+					required="true"/>
+				<o:input 
+					label="#{msg.seminarpool_shortcut}"
+					entity="seminarpoolInfo" 
+					property="shortcut" 
+					maxlength="30" 
+					required="true" />
+									
+				<o:input 
+					label="#{msg.seminarpool_max_seminar_allocations}"
+					entity="seminarpoolInfo" 
+					property="maxSeminarAllocations" 
+					size="5"
+					maxlength="5"
+					required="true" />
+				<o:input 
+					label="#{msg.seminarpool_priorities}"
+					entity="seminarpoolInfo" 
+					property="priorities"
+					size="5"
+					maxlength="5" 
+					required="true" />
+<!--					maxlength="100"  --> 
+				<o:input
+					label="#{msg.seminarpool_registration_start_time}"
+					entity="seminarpoolInfo"
+					property="registrationStartTime"
+					maxlength="16"
+					required="true" />
+				<o:input
+					label="#{msg.seminarpool_registration_end_time}"
+					entity="seminarpoolInfo"
+					property="registrationEndTime"
+					maxlength="16"
+					required="true" />
+					
+				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
+					
+				<div id="descriptionTextField" class="content_iframe">
+					<fck:editor value="#{sessionScope.seminarpoolInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+				</div>
+					
+				<h:outputLabel for="accessType" value="#{msg.seminarpool_accesstype}" styleClass="field_label"/>
+				<h:selectOneMenu id="accessType" 
+					layout="pageDirection" 
+					value="#{sessionScope.seminarpoolInfo.accessType}" 
+					valueChangeListener="#{views$secured$seminarpool$seminarpooloptions.processAccessTypeChanged}"
+					onchange="this.form.submit();"
+					immediate="true"
+					styleClass="pulldown">
+					<f:converter converterId="seminarpoolAccessTypeConverter" />
+					<f:selectItems value="#{views$secured$seminarpool$seminarpooloptions.accessTypes}"/>
+				</h:selectOneMenu>
+				<h:message for="accessType" styleClass="field_error"/>
+				<c:if test="#{sessionScope.seminarpoolInfo.accessType.value == 1}">	
+	 				<o:input 
+	 					label="#{msg.seminarpool_password}"
+	 					entity="seminarpoolInfo" 
+	 					property="password" 
+	 					required="true"/>
+ 				</c:if> 	
 			</o:block>
 			
 			<o:block>
 				<h:commandButton value="#{msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true" />
-				<h:commandButton value="#{msg.save}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" />
+				<h:commandButton value="#{msg.save}" action="#{views$secured$seminarpool$seminarpooloptions.saveSeminarpool}" styleClass="button_continue" />
 			</o:block>	
 	 	</h:form> 
 	</ui:define>

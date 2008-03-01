@@ -39,19 +39,10 @@
 				<div class="content_font_normal">
 					<h:outputText value="#{seminarpoolInfo.description}" escape="false"/>
 				</div>
-				<h:outputText value="#{msg.seminarpool_main_admins}" styleClass="field_label" />
+					<h:outputText value="#{msg.seminarpool_main_admins}" styleClass="field_label" />
 				<span class="content_font_normal">
-		<!--		<t:dataList 
-					id="admins"  
-					var="admins"
-					value="#{views$secured$seminarpool$main.admins}"
-					rendered="#{not empty views$secured$seminarpool$main.admins}"
-					layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
-					<o:link value="/views/secured/user/userprofile.faces?showuser=#{admin.userId}">
-						<h:outputText value="#{admin.title} #{admin.firstName} #{admin.lastName}"/>
-					</o:link>
-				</t:dataList>
-		-->		</span>
+<!-- FIXME Admin-Ausgabe -->
+				</span>
 			</o:block>
 
 	</ui:define>

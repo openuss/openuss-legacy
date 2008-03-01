@@ -1,6 +1,5 @@
 package org.openuss.web.seminarpool;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
+import org.openuss.seminarpool.SeminarpoolAccessType;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
 
@@ -57,7 +57,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	private String shortcut;
 	private String password;
 	private String description;
-	private Integer accessType;
+	private SeminarpoolAccessType accessType;
 	private Integer maxSeminarAllocations;
 	private Integer priorities;
 	private Date registrationStartTime;
@@ -78,7 +78,8 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			seminarpoolInfo.setShortcut(shortcut);
 			// XSS Filter Content
 			seminarpoolInfo.setDescription(new HtmlInputFilter().filter(description));
-			if (accessType == 0){
+			seminarpoolInfo.setAccessType(accessType);
+			if (accessType == SeminarpoolAccessType.OPEN){
 				password = null;
 			}	
 			seminarpoolInfo.setPassword(password);
@@ -112,6 +113,27 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			return "desktop";
 	}
 
+	//NEW 
+	public List<SelectItem> getAccessTypes() {
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		items.add(new SelectItem(SeminarpoolAccessType.OPEN, i18n("seminarpool_accesstype_open")));
+		items.add(new SelectItem(SeminarpoolAccessType.PASSWORD, i18n("seminarpool_accesstype_password")));
+		return items;
+	}
+
+	public void processAccessTypeChanged(ValueChangeEvent event) {
+		Object accessTypeGroup = event.getNewValue();
+		accessType = (SeminarpoolAccessType) accessTypeGroup;
+		if ( accessType == SeminarpoolAccessType.PASSWORD){
+			password = "Password";
+		} else {
+			password = null;
+		}
+	}
+	// END NEW
+	
+	// OLD  
+	/*
 	public List<SelectItem> getAccessTypes() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
 		items.add(new SelectItem(0, i18n("seminarpool_accesstype_open")));
@@ -128,7 +150,8 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			password = null;
 		}
 	}
-	
+	*/
+	//END OLD
 	
 /**** University selection stuff  *****/
 	
@@ -196,11 +219,11 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		this.description = description;
 	}
 
-	public Integer getAccessType() {
+	public SeminarpoolAccessType getAccessType() {
 		return accessType;
 	}
 
-	public void setAccessType(Integer accessType) {
+	public void setAccessType(SeminarpoolAccessType accessType) {
 		this.accessType = accessType;
 	}
 

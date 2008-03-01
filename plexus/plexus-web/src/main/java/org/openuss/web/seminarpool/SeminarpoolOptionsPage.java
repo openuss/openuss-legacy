@@ -19,12 +19,14 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.ApplicationInfo;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.seminarpool.SeminarpoolAccessType;
 import org.openuss.seminarpool.SeminarpoolInfo;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.web.Constants;
@@ -33,45 +35,57 @@ import org.openuss.web.BasePage;
 
 /**
  * 
- * @author Simon Weiﬂ
+ * @author PS-Seminarplaceallocation
  */
-/*
-@Bean(name = "views$secured$seminarpool$seminarpooloptions", scope = Scope.REQUEST)
-@View */
-public class SeminarpoolOptionsPage extends BasePage {
 
+@Bean(name = "views$secured$seminarpool$seminarpooloptions", scope = Scope.REQUEST)
+@View 
+public class SeminarpoolOptionsPage extends BasePage {
+	
 	private static final long serialVersionUID = -202776319652385870L;
 	private static final Logger logger = Logger.getLogger(SeminarpoolOptionsPage.class);
 	
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;
 
-	private ApplicationInfo applicationInfo = new ApplicationInfo();
-
 	private Long universityId;
+//	private Integer accessType; 
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
-	
-	@Property(value = "#{seminarpoolService}")
-	protected SeminarpoolAdministrationService seminarpoolService;
+	@Property(value = "#{seminarpoolAdministrationService}")
+	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 	
 	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
 
-/*	@Prerender
-	public void prerender() {
-		super.prerender();
-		addPageCrumb();
+	@Prerender
+	public void prerender() throws Exception {
+		if (seminarpoolInfo == null) {
+			seminarpoolInfo = (SeminarpoolInfo) getSessionBean(Constants.SEMINARPOOL);
+		}
+		if (seminarpoolInfo == null) {
+			addMessage(i18n("message_error_seminarpool_page"));
+			redirect(Constants.OUTCOME_BACKWARD);
+		} else {
+			if (!isPostBack()) {
+				logger.debug("---------- is not postback ---------- refreshing seminarpool");
+//				super.prerender();
+			} else {
+//FIXME				breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
+			}
+		}
+		setSessionBean(Constants.SEMINARPOOL, seminarpoolInfo);
+//FIXME		addPageCrumb();
 	}
-*/
+
 /*	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("institute_command_settings"));
-		crumb.setHint(i18n("institute_command_settings"));
+		crumb.setName(i18n("test1"));
+		crumb.setHint(i18n("test test"));
 
-		breadcrumbs.loadInstituteCrumbs(instituteInfo);
+		breadcrumbs.loadInstituteCrumbs(seminarpoolInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
 */
@@ -83,7 +97,7 @@ public class SeminarpoolOptionsPage extends BasePage {
 	 */
 	public String saveSeminarpool()  {
 		// save actual seminarpool data
-		seminarpoolService.updateSeminarpool(seminarpoolInfo);
+		seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
 		addMessage(i18n("seminarpool_message_command_save_succeed"));
 
 		return Constants.SUCCESS;
@@ -93,14 +107,25 @@ public class SeminarpoolOptionsPage extends BasePage {
 
 	/** ***************************** begin application ******************** */
 
-/*	public Long getUniversityId() {
-		if (universityId == null) {
-			universityId = SeminarpoolService.findDepartment(departmentId).getUniversityId();
-		} 
-		return universityId;
-	}
-*/
 
+	public List<SelectItem> getAccessTypes() {
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		items.add(new SelectItem(SeminarpoolAccessType.OPEN, i18n("seminarpool_accesstype_open")));
+		items.add(new SelectItem(SeminarpoolAccessType.PASSWORD, i18n("seminarpool_accesstype_password")));
+		return items;
+	}
+
+	public void processAccessTypeChanged(ValueChangeEvent event) {
+		Object accessTypeGroup = event.getNewValue();
+		seminarpoolInfo.setAccessType((SeminarpoolAccessType) accessTypeGroup);
+		if ( seminarpoolInfo.getAccessType() == SeminarpoolAccessType.PASSWORD){
+			seminarpoolInfo.setPassword("Password");
+		} else {
+			seminarpoolInfo.setPassword(null);
+		}
+	}
+	
+	
 	public List<SelectItem> getAllUniversities() {
 		List<SelectItem> universityItems = new ArrayList<SelectItem>();
 		List<UniversityInfo> allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
@@ -138,11 +163,11 @@ public class SeminarpoolOptionsPage extends BasePage {
 	 * @return Outcome
 	 *
 	public String selectInstituteAndConfirmDisable() {
-		logger.debug("Starting method selectInstituteAndConfirmDisable");
-		logger.debug(instituteInfo.getId());
-		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		logger.debug("Starting method selectSeminarpoolAndConfirmDisable");
+		logger.debug(seminarpoolInfo.getId());
+		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
 
-		return Constants.INSTITUTE_CONFIRM_DISABLE_PAGE;
+		return Constants.SEMINARPOOL_CONFIRM_DISABLE_PAGE;
 	}
 */
 
@@ -154,58 +179,6 @@ public class SeminarpoolOptionsPage extends BasePage {
 		this.securityService = securityService;
 	}
 
-	public ApplicationInfo getApplicationInfo() {
-		return applicationInfo;
-	}
-
-	public void setApplicationInfo(ApplicationInfo applicationInfo) {
-		this.applicationInfo = applicationInfo;
-	}
-
-
-/*	public String getPendingApplicationInfo() {
-		// abort, when there is no seminarpoolId set
-		if (seminarpoolInfo == null || seminarpoolInfo.getId() == null) {
-			return null;
-		}
-		// check whether there is a pending application request
-		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo
-				.getId(), false);
-		String appStatusDescription = "";
-		if (pendingApplication != null) {
-			appStatusDescription = i18n("application_pending_info", pendingApplication.getDepartmentInfo().getName());
-		}
-		// return information string if there is a pending application
-		if (!appStatusDescription.equals("")) {
-			return appStatusDescription;
-		} else {
-			return null;
-		}
-	}
-
-
-	public String getPendingApplicationResponsibleInfo() {
-		// abort, when there is no instituteId set
-		if (seminarpoolInfo == null || seminarpoolInfo.getId() == null) {
-			return null;
-		}
-		// check whether there is a pending application request
-		ApplicationInfo pendingApplication = instituteService.findApplicationByInstituteAndConfirmed(instituteInfo
-				.getId(), false);
-		String appStatusDescription = "";
-		if (pendingApplication != null) {
-			appStatusDescription = i18n("application_pending_responsible_info", pendingApplication.getDepartmentInfo()
-					.getOwnerName());
-		}
-		// return information string if there is a pending application
-		if (!appStatusDescription.equals("")) {
-			return appStatusDescription;
-		} else {
-			return null;
-		}
-	}
-*/
-
 	public void setUniversityId(Long universityId) {
 		this.universityId = universityId;
 	}
@@ -214,4 +187,39 @@ public class SeminarpoolOptionsPage extends BasePage {
 		return universityId;
 	}
 
+	public SeminarpoolInfo getSeminarpoolInfo() {
+		return seminarpoolInfo;
+	}
+
+	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
+		this.seminarpoolInfo = seminarpoolInfo;
+	}
+
+	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
+		return seminarpoolAdministrationService;
+	}
+
+	public void setSeminarpoolAdministrationService(
+			SeminarpoolAdministrationService seminarpoolAdministrationService) {
+		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
+	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
+	
+
+/*	public Integer getAccessType() {
+		return accessType;
+	}
+	
+
+	public void setAccessType(Integer accessType) {
+		this.accessType = accessType;
+	}
+*/
 }
