@@ -99,9 +99,13 @@ public class SeminarpoolMainPage extends BasePage {
 	}
 */
 
+	/**
+	 * Returns true, if seminarpool is boookmarked, otherwise false
+	 * @return bookmarked-flag
+	 */
 	public Boolean getBookmarked() {
 		try {
-			return desktopService2.isSeminarpoolBookmarked(seminarpoolInfo.getId(), user.getId());
+			return desktopService2.isSeminarpoolBookmarked(desktopInfo.getId(), seminarpoolInfo.getId());
 		} catch (Exception e) {
 			logger.error(e);
 			return false;
@@ -128,10 +132,10 @@ public class SeminarpoolMainPage extends BasePage {
 	 * removes the Bookmark for the selected seminarpool on the MyUni Page.
 	 * @return Outcome
 	 */
-	public String removeCourseShortcut() {
+	public String removeSeminarpoolShortcut() {
 		try {
 			desktopService2.unlinkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
-			addMessage(i18n("desktop_command_add_seminarpool_succeed"));
+			addMessage(i18n("desktop_command_remove_seminarpool_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
 			logger.error(e);
