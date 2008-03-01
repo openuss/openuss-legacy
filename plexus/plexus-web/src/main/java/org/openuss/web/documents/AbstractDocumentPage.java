@@ -9,6 +9,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
@@ -19,6 +20,9 @@ import org.openuss.web.course.AbstractCoursePage;
 public class AbstractDocumentPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(AbstractDocumentPage.class);
 
+	@Property(value = "#{groupInfo}")
+	protected UserGroupInfo groupInfo;
+	
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
 	
@@ -63,6 +67,14 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
+	}
+	
+	public UserGroupInfo getGroupInfo() {
+		return groupInfo;
+	}
+
+	public void setGroupInfo(UserGroupInfo groupInfo) {
+		this.groupInfo = groupInfo;
 	}
 
 	public FolderInfo getCurrentFolder() {

@@ -61,9 +61,13 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 
 	private List<FolderEntryInfo> loadFolderEntries() {
-		if (entries == null) {
+		if (entries == null & courseInfo.getId() != null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
 		}
+		if (entries == null & groupInfo.getId() != null) {
+			entries = documentService.getFolderEntries(groupInfo, currentFolder);
+		}
+		
 		return entries;
 	}
 
@@ -163,7 +167,15 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 * @throws DocumentApplicationException 
 	 */
 	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
-		documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+		
+		if (courseInfo.getId() != null) {
+			documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+		}
+		
+		if (groupInfo.getId() != null) {
+			documentService.moveFolderEntries(groupInfo, targetFolder, selectedEntries() );
+		}
+		
 		// TODO success message
 		addMessage(i18n("documents_move_files"));
 		return Constants.DOCUMENTS_MAIN_PAGE;
@@ -223,7 +235,17 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
 			//get Folder List from Document Service
-			List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(courseInfo);
+
+			List<FolderInfo> allFolderInfos;
+			
+			if (courseInfo.getId() != null) {
+				allFolderInfos = super.documentService.getAllSubfolders(courseInfo);
+			}
+			if (groupInfo.getId() != null) {
+				allFolderInfos = super.documentService.getAllSubfolders(groupInfo);
+			} 
+			else allFolderInfos = new ArrayList<FolderInfo>();
+			
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {

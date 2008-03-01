@@ -305,7 +305,7 @@
 	
 		<navigation-case>
 			<from-outcome>group_documents_main</from-outcome>
-			<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
+			<to-view-id>/views/secured/groups/components/groupdocuments.xhtml</to-view-id>				
 		</navigation-case>		
 	
 		<navigation-case>

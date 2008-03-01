@@ -119,6 +119,22 @@
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			OPENUss4US Groups
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+	
+	<page view-id="/views/secured/groups/*">
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/groups/components/*">
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/documents/*">
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Periods
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
@@ -141,8 +157,10 @@
 	<page view-id="/views/secured/documents/*">
 	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
 		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">
