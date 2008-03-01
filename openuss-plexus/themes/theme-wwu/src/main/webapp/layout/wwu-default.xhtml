@@ -27,20 +27,24 @@
 			<div id="a"/>
 			<div id="b" />
 			<div id="c">
+				<div class="abstand"> 
+					<ui:insert name="search" />
+				</div> 
+			</div>
+			<div id="a1">
 				<div id="userinfo">
 					<span class="userinfo">
 						<ui:insert name="userportlet" />
 					</span>
 				</div>
-				<ui:insert name="search" /> 
 			</div>
-			<div id="a1"/>
 			<div id="a2">
 				<ui:insert name="mainmenu" />
 			</div>
+		</div>
 		<div id="koerper">
 			<div id="d">
-				<div id="subnavigation"/>
+				<div class="abstand">
 					<ui:insert name="navigation" />
 				</div>
 			</div>
@@ -48,12 +52,23 @@
 				<div id="e">
 					<ui:insert name="breadcrumb" />
 					<ui:insert name="messages" /> 
-					<ui:insert name="content">
-						<ui:include src="content.xhtml" />
-					</ui:insert>
+					<div class="abstand">
+						<ui:insert name="content">
+							<ui:include src="content.xhtml" />
+						</ui:insert>
+					</div>
 				</div>
 				<div id="f">
-					<ui:insert name="sidebar" />
+					<div class="abstand">
+						<ui:insert name="sidebar" />
+					</div>
+				</div>
+				<div id="content_fuss">
+					<div class="abstand">
+						<ui:insert name="footer">
+							<ui:include src="footer.xhtml" />
+						</ui:insert>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -62,9 +77,8 @@
 			<div id="h" ><span/></div>
 			<div id="i" ><span/></div>
 			<div id="k" >
-				<ui:insert name="footer">
-					<ui:include src="footer.xhtml" />
-				</ui:insert>
+				<label>(c) Copyright OpenUSS 2000 - 2007 </label> <a class="smalllink" href="${facesContext.externalContext.requestContextPath}/views/public/impressum.faces" title="#{msg.impressum_header}">#{msg.impressum_header}</a>				
+				<label>Servicecenter E-Learning: </label> <a class="smalllink" href="mailto:openuss@e-learning.uni-muenster.de" title="openuss@e-learning.uni-muenster.de">openuss@e-learning.uni-muenster.de</a>
 			</div> 
 			<div id="l" />
 		</div>

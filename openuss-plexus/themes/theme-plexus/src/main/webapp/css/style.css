@@ -125,7 +125,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	color: #FFF !important;
 }
 
-.openuss_logo {
+#openuss_logo {
 	background-image: url(../img/logo.jpg);
 	background-repeat: no-repeat;
 	background-position: -5px 10px;
@@ -279,13 +279,13 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	background-image: url(../img/button_80_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+	
 	outline-style: none;
 }
 
@@ -307,7 +307,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 #left .content_box ul.int a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #right .content_box ul.ext {
@@ -324,12 +324,12 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 #right .content_box ul.ext a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #left .content_box a:hover {
 	text-decoration: underline;
-	font-weight: none;
+	font-weight: normal;
 }
 
 .send_form {
@@ -728,7 +728,7 @@ ul.navigation li ul li ul li.active_item a:hover {
 #right .content_box ul.int a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #right .content_box a.button_search {
@@ -737,7 +737,7 @@ ul.navigation li ul li ul li.active_item a:hover {
 	color: #505050;
 	background: none;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #right .content_box a.button_search:hover {
@@ -746,7 +746,7 @@ ul.navigation li ul li ul li.active_item a:hover {
 
 #right .content_box a:hover {
 	text-decoration: underline;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #center .content_box ul {
@@ -763,25 +763,25 @@ ul.navigation li ul li ul li.active_item a:hover {
 	color: #505050;
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #center a:hover {
 	text-decoration: underline;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #center span {
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 }
 
 #center span.warning {
 	display: block;
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
+	font-weight: normal;
 	padding-bottom: 3px;
 }
 
@@ -1102,13 +1102,13 @@ p.header_font_normal,span.header_font_normal {
 }
 
 .userphoto {
-	display: run-in;
+	/*display: run-in;*/
 	width: 60px;
 	height: 60px;
 }
 
 .organisation_logo {
-	display: run-in;
+	/*display: run-in;*/
 	max-width: 240px;
 	max-height: 240px;
 }
@@ -1408,7 +1408,7 @@ span.table_data_info {
 	font-size: 9pt;
 	color: #797979;
 	font-weight: bold;
-	font-decoration: none;
+	text-decoration: none;
 	padding: 2px;
 	background: #FFFFFF none repeat scroll 0%;
 }
@@ -1417,7 +1417,7 @@ span.table_data_info {
 	font-size: 9pt;
 	color: #797979;
 	font-weight: bold;
-	font-decoration: none;
+	text-decoration: none;
 }
 
 #center .tablenavigator table.paginator td.active {
@@ -1448,15 +1448,15 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	background-image: url(../img/button_70_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 7pt;
 	text-decoration: none;
 	font-weight: normal;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+	
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
+	/*filter: DropShadow(color =   #FFF, offx =   1, offy =   1);*/
 }
 
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
@@ -1473,15 +1473,15 @@ td .remove_shortcut_button {
 	background-image: url(../img/button_120_normal_remove2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 7pt;
 	text-decoration: none;
 	font-weight: normal;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+	
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
+	/*filter: DropShadow(color =   #FFF, offx =   1, offy =   1);*/
 }
 
 td .remove_shortcut_button:hover {
@@ -1497,13 +1497,13 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_120_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+
 	outline-style: none;
 }
 
@@ -1520,13 +1520,13 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_120_red2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+
 	outline-style: none;
 }
 
@@ -1544,13 +1544,13 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_140_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+
 	outline-style: none;
 }
 
@@ -1568,13 +1568,13 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_180_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
-	font-size: 8pt;
+	color: #313131;
+	font-size: 8pt; 
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
+ 
 	outline-style: none;
 }
 
@@ -1634,7 +1634,7 @@ td {
 	padding: 5px 5px 5px 10px;
 	text-align: left;
 	font-size: 8pt;
-	font-weight: none;
+	font-weight: normal;
 	background: none;
 }
 
