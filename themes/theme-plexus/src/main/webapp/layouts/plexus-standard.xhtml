@@ -12,9 +12,9 @@
 	<div id="main">
 		<div id="left">
 			<h:form>
-				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/views/welcome.faces" styleClass="openuss_logo">
-					<div class="openuss_logo"/>
-				</h:outputLink>			
+				<a href="#{facesContext.externalContext.requestContextPath}/views/welcome.faces">
+					<div id="openuss_logo"/>
+				</a>			
 			</h:form>
 		<ui:insert name="navigation"/>
 		</div>

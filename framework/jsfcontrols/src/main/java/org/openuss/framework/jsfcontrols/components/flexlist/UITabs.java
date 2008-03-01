@@ -52,7 +52,7 @@ public class UITabs extends UIOutput {
 									
 									writer.startElement("a", this);
 										writer.writeAttribute("class", "tab_details", null);
-										writer.writeAttribute("style", "size: small; color: #5493D4;", null);
+										writer.writeAttribute("style", "font-size: small; color: #5493D4;", null);
 										writer.writeAttribute("href", url, null);
 										
 										writer.write(" (");
