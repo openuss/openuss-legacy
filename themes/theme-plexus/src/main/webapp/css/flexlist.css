@@ -67,8 +67,7 @@
 .flexListItemRight {
 	float:right;
 	height:16px;
-	padding-right: 10px;
-	
+	padding-right: 10px;	
 }
 
 .flexListItemLeft {
@@ -79,12 +78,9 @@
 	color: #5DBF00;
 }
 
-
-
 .flexListItemRight a {
 	text-decoration: none !important;
 }
-
 
 /* Tabs CSS */
 

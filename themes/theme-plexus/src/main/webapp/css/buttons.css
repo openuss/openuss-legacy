@@ -381,6 +381,8 @@ a.icon_reject {
   white-space: nowrap;
 }
 
+/*MyUni Icons*/
+
 a.newsletter_subscribed {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
@@ -579,4 +581,55 @@ a.remove_bookmark span {
 
 a.remove_bookmark:focus span, a.remove_bookmark:hover span {
   background-position: top right;
+}
+
+/*Legende*/
+
+/*@Max Budde, bitte mal anschaun, auch im IE und so...*/
+
+ul.legend_list {
+  list-style: none;
+  padding:0px;
+}
+
+ul.legend_list li {
+  margin: 0; padding: 0;
+  margin-top:5px;
+}
+  
+ul.legend_list li span {
+  height:16px;
+  width:16px;
+  display:block;
+  float:left;
+  background-repeat:no-repeat;
+  margin-right:5px;
+}
+  
+ul.legend_list li.newsletter_none span {
+  background-image:url(../img/buttons/newsletter_none_icon.png);
+}
+
+ul.legend_list li.newsletter_notSubscribed span {
+  background-image:url(../img/buttons/newsletter_subscribe_icon.png);
+}
+
+ul.legend_list li.newsletter_subscribed span {
+  background-image:url(../img/buttons/newsletter_unsubscribe_icon.png);
+}
+
+ul.legend_list li.forum_none span {
+  background-image:url(../img/buttons/forum_none_icon.png);
+}
+
+ul.legend_list li.forum_notSubscribed span {
+  background-image:url(../img/buttons/forum_subscribe_icon.png);
+}
+
+ul.legend_list li.forum_subscribed span {
+  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+}
+
+ul.legend_list li.remove_bookmark span {
+  background-image:url(../img/buttons/bookmark_remove_icon.png);
 }
