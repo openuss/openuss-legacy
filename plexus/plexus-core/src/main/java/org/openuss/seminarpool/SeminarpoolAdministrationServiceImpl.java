@@ -212,13 +212,15 @@ public class SeminarpoolAdministrationServiceImpl
     protected java.util.List handleFindSeminarpoolsByUniversity(java.lang.Long universityId)
         throws java.lang.Exception
     {
-        List<SeminarpoolInfo> seminarpools = this.getAllSeminarpools();
-        for(SeminarpoolInfo sem : seminarpools){
-        	if(!sem.getUniversityId().equals(universityId)){
-        		seminarpools.remove(sem);
-        	}
-        }
-        return seminarpools;
+    	Validate.notNull(universityId, "handleFindSeminarpoolsByUniversity ==> universityId cannot be null");
+    	University university = getUniversityDao().load(universityId);
+    	
+        List<Seminarpool> seminarpools = getSeminarpoolDao().findByUniversity(university);
+    	List<SeminarpoolInfo> seminarpoolInfoList = new ArrayList<SeminarpoolInfo>();
+    	for (Seminarpool seminarpool : seminarpools){
+    		seminarpoolInfoList.add(getSeminarpoolDao().toSeminarpoolInfo(seminarpool));
+    	}
+        return seminarpoolInfoList;
     }
 
     /**
@@ -498,13 +500,15 @@ public class SeminarpoolAdministrationServiceImpl
 	protected List handleFindSeminarpoolsByUniversityAndStatus(
 			Long universityId, SeminarpoolStatus seminarpoolStatus)
 			throws Exception {
-		List<SeminarpoolInfo> seminarpools = this.getAllSeminarpools();
-        for(SeminarpoolInfo sem : seminarpools){
-        	if(sem.getUniversityId() != universityId || sem.getSeminarpoolStatus().getValue() > seminarpoolStatus.getValue()){
-        		seminarpools.remove(sem);
-        	}
-        }
-        return seminarpools;
+    	Validate.notNull(universityId, "handleFindSeminarpoolsByUniversityAndStatus ==> universityId cannot be null");
+    	University university = getUniversityDao().load(universityId);
+    	
+        List<Seminarpool> seminarpools = getSeminarpoolDao().findByUniversityAndStatus(university, seminarpoolStatus);
+    	List<SeminarpoolInfo> seminarpoolInfoList = new ArrayList<SeminarpoolInfo>();
+    	for (Seminarpool seminarpool : seminarpools){
+    		seminarpoolInfoList.add(getSeminarpoolDao().toSeminarpoolInfo(seminarpool));
+    	}
+        return seminarpoolInfoList;
 	}
 
 

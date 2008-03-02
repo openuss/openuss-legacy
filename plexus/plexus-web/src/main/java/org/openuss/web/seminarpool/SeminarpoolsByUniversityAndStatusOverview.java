@@ -1,5 +1,6 @@
 package org.openuss.web.seminarpool;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -38,6 +39,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
+		logger.debug("Starting method selectInstitute");		
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 			UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
 			// get all institutes. Does not depend whether it is enabled or
 			// disabled
-			List<SeminarpoolInfo> seminarpoolList = getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.PREPARATIONPHASE);
+			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.PREPARATIONPHASE));
 			sort(seminarpoolList);
 			dataPage = new DataPage<SeminarpoolInfo>(seminarpoolList.size(), 0, seminarpoolList);
 		}

@@ -253,5 +253,8 @@
 	<page view-id="/views/secured/seminarpool/*">
 		<parameter name="seminarpool" value="#{seminarpoolInfo.id}" converterId="javax.faces.Long"/>
 	</page>
+		<page view-id="/views/secured/seminarpool/add/*">
+		<parameter name="university" value="#{universityInfo.id}" converterId="javax.faces.Long"/>
+	</page>
       
  </pages>   

@@ -29,6 +29,14 @@
 					  	</h:commandLink>
 					</li>
 				</c:if>
+				<s:authorize ifAllGranted="ROLE_ADMIN">
+					<li class="int">
+					  	<h:commandLink	action="seminarpool_add_seminar">
+					  		<h:outputText value="#{msg['seminarpool_add_seminar']}" />
+					  	</h:commandLink>
+					</li>
+				</s:authorize>
+
 			</ul>
 		</o:block>
 		</h:form>

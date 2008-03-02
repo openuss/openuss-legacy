@@ -1320,7 +1320,6 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Validate.notNull(desktopId, "DesktopId cannot be null!");
 		Desktop desktop = this.getDesktopDao().load(desktopId);
 		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
-
 		Validate.notNull(seminarpoolId, "seminarpoolId cannot be null!");
 		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
 		return desktop.getSeminarpool().contains(seminarpool);

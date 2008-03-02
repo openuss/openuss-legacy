@@ -24,6 +24,7 @@ public class Constants {
 	public static final String DESKTOP_INFO = "desktopInfo";
 	public static final String GROUP = "group";
 	public static final String GROUP_INFO = "groupInfo";
+	public static final String SEMINAPOOL_COURSE_ALLOCATION_INFO = "courseSeminarpoolAllocationInfo";
 
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";
@@ -280,9 +281,15 @@ public class Constants {
 	public static final String SEMINARPOOL_REGISTRATION_STEP1_PAGE = "seminarpool_create_step1";
 	public static final String SEMINARPOOL_REGISTRATION_STEP2_PAGE = "seminarpool_create_step2";
 	public static final String SEMINARPOOL_MAIN = "seminarpoolMain";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP1 = "seminarpoolCourseAllocationStep1";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP2 = "seminarpoolCourseAllocationStep2";	
 	
 	public static final String SEMINARPOOL_INFO = "seminarpoolInfo";
 	public static final String SEMINARPOOL = "seminarpool";
+	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";
+	public static final String SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO = "SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO";
+	
+
 
 
 }
