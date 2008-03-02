@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -197,6 +198,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		});
 		logger.debug("selected " + selected.size() + " files");
 		return selected;
+	}
+	
+	public String editFolderEntry() {
+		logger.debug("editing folder entry");
+		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
+		FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
+		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
+		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 
 	public String delete() {

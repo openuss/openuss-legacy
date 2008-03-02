@@ -1,6 +1,7 @@
 package org.openuss.web.papersubmission;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,28 +15,28 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.documents.FileEntryDao;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.paperSubmission.ExamInfo;
-import org.openuss.paperSubmission.PaperSubmission;
+import org.openuss.paperSubmission.ExtendedFolderEntryInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.collaboration.WorkspaceMemberSelection;
-import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.FolderEntrySelection;
+import org.openuss.web.documents.Selection;
 
 @Bean(name = "views$secured$papersubmission$submissionviewlecturer", scope = Scope.REQUEST)
 @View
-public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage {
+public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5655754663161874020L;
+
 	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
 	
 //	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
@@ -46,32 +47,40 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	
 	private List<ExtendedFolderEntryInfo> entries;
 	
-	public class ExtendedFolderEntryInfo {
-		
-		private FolderEntryInfo entry;
-		
-		private SubmissionStatus submissionStatus;
-		
-		public ExtendedFolderEntryInfo(FolderEntryInfo entry) {
-			this.entry = entry;
-			if(entry.getModified().before(examInfo.getDeadline())){
-				this.submissionStatus = SubmissionStatus.IN_TIME;
-			}else{
-				this.submissionStatus = SubmissionStatus.NOT_IN_TIME;
-			}
-		}
-
-		public FolderEntryInfo getEntry() {
-			return entry;
-		}
-
-		public SubmissionStatus getSubmissionStatus() {
-			return submissionStatus;
-		}
-	}
+//	public class ExtendedFolderEntryInfo implements Serializable{
+//		
+//		/**
+//		 * 
+//		 */
+//		private static final long serialVersionUID = -129692767678796733L;
+//
+//		private FolderEntryInfo entry;
+//		
+//		private SubmissionStatus submissionStatus;
+//		
+//		public ExtendedFolderEntryInfo(FolderEntryInfo entry) {
+//			this.entry = entry;
+//			if(entry.getModified().before(examInfo.getDeadline())){
+//				this.submissionStatus = SubmissionStatus.IN_TIME;
+//			}else{
+//				this.submissionStatus = SubmissionStatus.NOT_IN_TIME;
+//			}
+//		}
+//
+//		public FolderEntryInfo getEntry() {
+//			return entry;
+//		}
+//
+//		public SubmissionStatus getSubmissionStatus() {
+//			return submissionStatus;
+//		}
+//	}
 	
-	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
-	private PaperSubmissionSelection paperSelection;
+//	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
+//	private PaperSubmissionSelection paperSelection;
+	
+	@Property(value = "#{" + Constants.PAPERSUBMISSION_EXTENDEDFOLDERENTRY_SELECTION + "}")
+	private PaperSubmissionFileSelection entrySelection;
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
@@ -80,12 +89,13 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		super.prerender();
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		
-		paperSelection.processSwitch();
+		entrySelection.setEntries(loadFileEntries());
+		entrySelection.processSwitch();
 	
 		addPageCrumbs();
 	}
-
 	
+
 
 	/** Adds an additional breadcrumb to the course-crumbs.
 	 * 
@@ -132,21 +142,34 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 
 	private List<FolderEntryInfo> selectedEntries() {
 		List<ExtendedFolderEntryInfo> selectedExtendedList = new ArrayList<ExtendedFolderEntryInfo>(loadFileEntries());
-		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>();
-		for(ExtendedFolderEntryInfo selectedExtended : selectedExtendedList){
-			selected.add(selectedExtended.getEntry());
-		}
-		CollectionUtils.filter(selected, new Predicate() {
+		
+		CollectionUtils.filter(selectedExtendedList, new Predicate() {
 			public boolean evaluate(Object object) {
-				return paperSelection.isSelected(object);
+				return entrySelection.isSelected(object);
 			}
 		});
-		logger.debug("selected " + selected.size() + " files");
+		logger.debug("selected " + selectedExtendedList.size() + " files");
+		
+		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>();
+		for(ExtendedFolderEntryInfo selectedExtended : selectedExtendedList){
+			FolderEntryInfo normalEntry = new FolderEntryInfo();
+			normalEntry.setCreated(selectedExtended.getCreated());
+			normalEntry.setExtension(selectedExtended.getExtension());
+			normalEntry.setFileName(selectedExtended.getFileName());
+			normalEntry.setFileSize(selectedExtended.getFileSize());
+			normalEntry.setId(selectedExtended.getId());
+			normalEntry.setName(selectedExtended.getName());
+			normalEntry.setReleaseDate(selectedExtended.getReleaseDate());
+			normalEntry.setSizeAsString(selectedExtended.getSizeAsString());
+			normalEntry.setDescription(selectedExtended.getDescription());
+			normalEntry.setModified(selectedExtended.getModified());
+			selected.add(normalEntry);
+		}
 		return selected;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String download () throws IOException{
+	public String download() throws IOException{
 		logger.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
@@ -154,7 +177,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
 			getFacesContext().responseComplete();
-			paperSelection.getMap().clear();
+			entrySelection.getMap().clear();
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
@@ -169,7 +192,25 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			List<FolderEntryInfo> normalEntries = documentService.getFolderEntries(paperSubmissionInfo, folder);
 			entries = new ArrayList<ExtendedFolderEntryInfo>();
 			for(FolderEntryInfo entry : normalEntries){
-				entries.add(new ExtendedFolderEntryInfo(entry));
+				ExtendedFolderEntryInfo extentry = new ExtendedFolderEntryInfo();
+				extentry.setCreated(entry.getCreated());
+				extentry.setExtension(entry.getExtension());
+				extentry.setFileName(entry.getFileName());
+				extentry.setFileSize(entry.getFileSize());
+				extentry.setId(entry.getId());
+				extentry.setName(entry.getName());
+				extentry.setReleaseDate(entry.getReleaseDate());
+				extentry.setSizeAsString(entry.getSizeAsString());
+				extentry.setDescription(entry.getDescription());
+				extentry.setModified(entry.getModified());
+				
+				if(entry.getModified().before(examInfo.getDeadline())){
+					extentry.setSubmissionStatus(SubmissionStatus.IN_TIME);
+				}else{
+					extentry.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
+				}
+				
+				entries.add(extentry);
 			}
 		}
 		return entries;
@@ -185,7 +226,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<ExtendedFolderEntryInfo> {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<ExtendedFolderEntryInfo> implements Serializable {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<ExtendedFolderEntryInfo> page;
@@ -209,13 +250,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		}
 	}
 	
-	public PaperSubmissionSelection getPaperSelection() {
-		return paperSelection;
-	}
 	
-	public void setPaperSelection(PaperSubmissionSelection paperSelection) {
-		this.paperSelection = paperSelection;
-	}
 
 	public List<ExtendedFolderEntryInfo> getEntries() {
 		return entries;
@@ -235,4 +270,31 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	public LocalDataModelSubmissionFiles getDataSubmissionFiles() {
 		return dataSubmissionFiles;
 	}
+
+
+
+	public PaperSubmissionFileSelection getEntrySelection() {
+		return entrySelection;
+	}
+
+
+
+	public void setEntrySelection(PaperSubmissionFileSelection entrySelection) {
+		this.entrySelection = entrySelection;
+	}
+
+
+
+//	public PaperSubmissionSelection getPaperSelection() {
+//		return paperSelection;
+//	}
+//
+//
+//
+//	public void setPaperSelection(PaperSubmissionSelection paperSelection) {
+//		this.paperSelection = paperSelection;
+//	}
+
+
+
 }

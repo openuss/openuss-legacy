@@ -39,7 +39,7 @@
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
 	                    value="views$secured$papersubmission$submissionviewlecturer.dataSubmissionFiles" 
-	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command, col_min_right"
+	                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date, col_commands"
 	                    var="bean" 
 	                    rows="20">  
 	                    
@@ -49,42 +49,42 @@
 				                    immediate="true" 
 				                    onchange="this.form.submit();" 
 				                    onclick="this.form.submit();" 
-				                    value="#{papersubmission_submission_selection.state}" 
-				                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
+				                    value="#{papersubmission_extendedfolderentry_selection.state}" 
+				                    valueChangeListener="#{papersubmission_extendedfolderentry_selection.switchSelection}"/>
 				            </f:facet>
-				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/> 
+				            <h:selectBooleanCheckbox value="#{papersubmission_extendedfolderentry_selection.map[bean]}"/> 
 				        </t:column> 
 				        
 	                    <t:column> 
 				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-				            <h:graphicImage value="/images/filetypes/#{bean.entry.extension}.gif"/>
+				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif"/>
 				        </t:column>
 	               
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
 	                              				
-            				<o:link value="/files/#{bean.entry.fileName}" title="#{bean.entry.description}">
-								<f:param value="#{bean.entry.id}" name="fileid" />
-								<h:outputText value="#{bean.entry.name}"/>
+            				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
+								<f:param value="#{bean.id}" name="fileid" />
+								<h:outputText value="#{bean.name}"/>
 							</o:link>
 	                    </t:column>
 	                    
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="size">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.entry.sizeAsString}"/>
+	                        <h:outputText value="#{bean.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="creationdate">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.entry.created}">
+	                        <h:outputText value="#{bean.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
 	                        <plexus:commandSortHeader columnName="modificationdate">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
-	                        <h:outputText value="#{bean.entry.modified}">
+	                        <h:outputText value="#{bean.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
@@ -100,15 +100,12 @@
 	                
 	                <o:block>
 	                    <h:commandButton 
-					    id="download"
-						action="#{views$secured$papersubmission$submissionviewlecturer.download}" 
-						value="#{msg.documents_main_button_download}" 
-						title="#{msg.documents_main_button_download}"
-						styleClass="button_add"/>
-						
-						                   
-	                    
-	                </o:block>   
+						    id="download"
+							action="#{views$secured$papersubmission$submissionviewlecturer.download}" 
+							value="#{msg.documents_main_button_download}" 
+							title="#{msg.documents_main_button_download}"
+							styleClass="button_add"/>
+	               </o:block>   
 	                
 	            </s:acl>
             </h:form>	        

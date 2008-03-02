@@ -1807,6 +1807,14 @@ td.col_filesize {
 	text-align: right;
 }
 
+td.col_filetype {
+	background-image:url(../img/default.gif);
+	background-position: 15px 9px;
+	background-repeat: no-repeat;
+	width:16px;
+	text-align: center;
+}
+
 td.col_min_center {
 	width: 5px;
 	text-align: center;

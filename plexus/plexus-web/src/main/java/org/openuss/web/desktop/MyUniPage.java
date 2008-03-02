@@ -657,7 +657,7 @@ public class MyUniPage extends BasePage {
 						if(submissions!=null && !submissions.isEmpty()){
 							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=" + submissions.get(submissions.size()-1).getId());
 						}else{
-							newItem.setUrl(contextPath()+examBasePath + "?course=" + courseInfo.getId());
+							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=");
 						}
 						
 						

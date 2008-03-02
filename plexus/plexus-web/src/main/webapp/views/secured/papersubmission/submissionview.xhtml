@@ -39,7 +39,7 @@
 				        id="submissions" 
 				        label="#{msg['papersubmission_submissionstable_header']}" 
 				        value="views$secured$papersubmission$submissionview.dataSubmissions" 
-				        columnClasses="col_min_center, col_min_center, col_max_center, col_max_center"
+				        columnClasses="col_min_center, col_min_center, col_max_center, col_commands"
 				        var="bean" 
 				        rows="20">
 				        
@@ -47,9 +47,9 @@
 				            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
 				        </t:column>
 				        
-				        <t:column header="#{msg.documents_main_column_type}"> 
+				        <plexus:column header="#{msg.documents_main_column_type}"> 
 							<h:graphicImage value="/images/filetypes/folder.gif"/>
-						</t:column>
+						</plexus:column>
 				   
 				        <t:column>
 				        	<plexus:commandSortHeader columnName="submittersname"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
@@ -101,7 +101,7 @@
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
 	                    value="views$secured$papersubmission$submissionview.dataSubmissionFiles" 
-	                    columnClasses="col_max_left, col_max_left, col_max_left, col_command"
+	                    columnClasses="col_min_center, col_filetype, col_max_left, col_filesize, col_date, col_date, col_commands"
 	                    var="bean" 
 	                    rows="20">  
 	                    
@@ -119,7 +119,7 @@
 				        
 	                    <t:column> 
 				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif"/>
+				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" onError="this.value = /images/filetypes/default.gif"/>
 				        </t:column>
 	               
 	                    <t:column>
@@ -139,21 +139,29 @@
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="createdate">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="created">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="changedate">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="modified">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
-	                </plexus:dataTable> 
-	                
+						<plexus:column header="#{msg.documents_main_column_actions}">
+							<plexus:command 
+							    bean="#{views$secured$papersubmission$submissionview}"
+								action="editFolderEntry" 
+								label="#{msg.documents_main_button_change}" 
+								title="#{msg.documents_main_button_change}"
+								styleClass="icon_edit"/>
+						</plexus:column>
+					</plexus:dataTable> 
+				                
 	                <o:block>
 	                    <h:commandButton 
 					    id="download"
