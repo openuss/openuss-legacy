@@ -10,15 +10,14 @@
 	xmlns:oc="http://www.openuss.org/jsf-core"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><ui:insert name="title" /></title>
-<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
-	media="screen,screen" />
-<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
-	media="screen" />
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 <!-- text above will be ignored -->
@@ -29,27 +28,12 @@
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
 	</ui:define>
+
 	<ui:define name="content" styleClass="footer_normal">
-		<o:block>
-			<h:outputText
-				value="TODO: Seminarpool-Administratoren-Verwaltung hinzufügen" />
-		</o:block>
-		<h:form id="adminsForm">
-			<ui:include src="seminarpooladminstable.xhtml" />
-		</h:form>
-		<h:form id="newAdminsForm">
-			<o:block label="#{msg['department_members_add_subheading']}"
-				styleClass="form_box">
-				<o:input entity="views$secured$seminarpool$seminarpooladmins"
-					property="username" required="true" label="#{msg['user_username']}">
-					<f:validator validatorId="usernameExistValidator" />
-				</o:input>
-				<h:commandButton value="#{msg['seminarpool_admins_command_add']}"
-					actionListener="#{views$secured$seminarpool$seminarpooladmins.addMember}"
-					title="#{msg['seminarpool_admins_command_add_hint']}"
-					styleClass="button_save" />
+			<o:block>
+				<h:outputText value="TODO: Seminarpool-Voraussetzungen hinzufügen"/>
 			</o:block>
-		</h:form>
+
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

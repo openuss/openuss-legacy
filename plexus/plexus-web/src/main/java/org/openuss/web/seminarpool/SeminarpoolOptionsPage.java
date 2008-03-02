@@ -53,6 +53,7 @@ public class SeminarpoolOptionsPage extends BasePage {
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
+	
 	@Property(value = "#{seminarpoolAdministrationService}")
 	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 	
@@ -70,25 +71,25 @@ public class SeminarpoolOptionsPage extends BasePage {
 		} else {
 			if (!isPostBack()) {
 				logger.debug("---------- is not postback ---------- refreshing seminarpool");
-//				super.prerender();
+// ??				super.prerender();
 			} else {
-//FIXME				breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
+				breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 			}
 		}
 		setSessionBean(Constants.SEMINARPOOL, seminarpoolInfo);
-//FIXME		addPageCrumb();
+		addPageCrumb();
 	}
 
-/*	private void addPageCrumb() {
+	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
 		crumb.setName(i18n("test1"));
 		crumb.setHint(i18n("test test"));
 
-		breadcrumbs.loadInstituteCrumbs(seminarpoolInfo);
+		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-*/
+
 
 	/**
 	 * Save seminarpool options.

@@ -65,16 +65,17 @@ public class SeminarpoolMainPage extends BasePage {
 		} else {
 //remove?			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 //remove?			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
-//FIXME			breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
+			breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 			setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
 		}
-/*
+
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("nametest1"));
 		newCrumb.setHint(i18n("hinttest2"));
 		breadcrumbs.addCrumb(newCrumb);
-*/	}
+	}
 
+	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
 		if (!StringUtils.equalsIgnoreCase(password, seminarpoolInfo.getPassword())) {

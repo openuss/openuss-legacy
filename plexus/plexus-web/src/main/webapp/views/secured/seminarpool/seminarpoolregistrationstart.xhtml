@@ -21,7 +21,8 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
-  			<h:form id="seminarpool_registration_start_form">
+  			<h:form id="seminarpool_registration_form">
+				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
   				<o:block label="#{msg.seminarpool_registration_start_headline}">
 					<div class="content_font_normal"> 
 						<h:outputText value="#{msg.seminarpool_registration_start_text}" escape="false"/>
@@ -29,7 +30,7 @@
 			   	</o:block>
 			   	<o:block>
 			   		<h:commandButton action="view:backward" value="#{msg.cancel}" styleClass="button_cancel"/>
-					<h:commandButton action="seminarpool_create_step1" value="#{msg.forward}" styleClass="button_continue"/>
+					<h:commandButton action="#{seminarpoolRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
 		  		</o:block>
 		  	</h:form>
   		</ui:define>

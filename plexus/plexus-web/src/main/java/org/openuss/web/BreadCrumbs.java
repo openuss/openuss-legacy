@@ -23,6 +23,8 @@ import org.openuss.lecture.OrganisationHierarchy;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.seminarpool.SeminarpoolAdministrationService;
+import org.openuss.seminarpool.SeminarpoolInfo;
 
 /**
  * Utility Bean for hierarchical bread crumb generation This bean knows how to
@@ -54,6 +56,9 @@ public class BreadCrumbs extends BaseBean {
 
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
+	
+	@Property(value = "#{seminarpoolAdministrationService}")
+	private SeminarpoolAdministrationService seminarpoolAdministrationService;
 	
 //	@Property(value = "#{groupService}")
 //	private GroupService groupService;
@@ -367,6 +372,69 @@ public class BreadCrumbs extends BaseBean {
 
 		return courseTypeCrumb;
 	}
+	
+	
+	// Seminarpool Crump Generation
+
+	private List<BreadCrumb> getSeminarpoolCrumbs(Long seminarpoolId) {
+		/*
+		 * ValueBinding binding =
+		 * getFacesContext().getApplication().createValueBinding("#{seminarpoolAdministrationService}");
+		 * if(binding == null) return getEmptyList();
+		 * 
+		 * SeminarpoolAdministrationService seminarpoolAdministrationService =
+		 * (SeminarpoolAdministrationService)binding.getValue(getFacesContext());
+		 */
+		if (seminarpoolAdministrationService == null)
+			return getEmptyList();
+
+		SeminarpoolInfo info = seminarpoolAdministrationService.findSeminarpool(seminarpoolId);
+		if (info == null)
+			return getEmptyList();
+
+		List<BreadCrumb> crumbs;
+
+		if (organisationHierarchy.getUniversityInfo() != null)
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
+		else
+			crumbs = getUniversityCrumbs(info.getUniversityId());
+
+		BreadCrumb seminarpoolCrumb = getSeminarpoolCrumb(info);
+
+		assert crumbs != null;
+		crumbs.add(seminarpoolCrumb);
+		return crumbs;
+	}
+
+	private List<BreadCrumb> getSeminarpoolCrumbs(SeminarpoolInfo info) {
+		if (info == null)
+			return getEmptyList();
+
+		List<BreadCrumb> crumbs;
+
+		if (organisationHierarchy.getUniversityInfo() != null)
+			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
+		else
+			crumbs = getUniversityCrumbs(info.getUniversityId());
+
+		BreadCrumb seminarpoolCrumb = getSeminarpoolCrumb(info);
+
+		assert crumbs != null;
+		crumbs.add(seminarpoolCrumb);
+		return crumbs;
+	}
+
+	private BreadCrumb getSeminarpoolCrumb(SeminarpoolInfo info) {
+		assert info != null;
+
+		BreadCrumb seminarpoolCrumb = new BreadCrumb();
+		seminarpoolCrumb.setName(info.getShortcut());
+		seminarpoolCrumb.setHint(info.getName());
+		seminarpoolCrumb.setLink(PageLinks.SEMINARPOOL_PAGE);
+		seminarpoolCrumb.addParameter("seminarpool", info.getId());
+
+		return seminarpoolCrumb;
+	}
 
 	// Group Crumb Generation
 	
@@ -533,6 +601,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
 	
+	public void loadSeminarpoolCrumbs(SeminarpoolInfo seminarpoolInfo) {
+		setCrumbs(getSeminarpoolCrumbs(seminarpoolInfo));
+	}
+	
 //	public void loadGroupCrumbs(Long groupId) {
 //		setCrumbs(getGroupCrumbs(groupId));
 //	}
@@ -646,6 +718,15 @@ public class BreadCrumbs extends BaseBean {
 	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
 		// TODO Thomas: Implement !
 		
+	}
+
+	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
+		return seminarpoolAdministrationService;
+	}
+
+	public void setSeminarpoolAdministrationService(
+			SeminarpoolAdministrationService seminarpoolAdministrationService) {
+		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
 	}
 
 }
