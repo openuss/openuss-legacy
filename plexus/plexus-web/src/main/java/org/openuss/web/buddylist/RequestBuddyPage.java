@@ -84,6 +84,16 @@ public class RequestBuddyPage extends BasePage {
 		return Constants.OPENUSS4US_BUDDYLIST;
 	}
 	
+	public String addBuddy(){
+		setBuddyInfo(this.data.getRowData());
+		buddyService.authorizeBuddyRequest(buddyInfo, true);
+		addMessage(i18n("openuss4us_message_authorizebuddy"));
+		profile.setId(this.data.getRowData().getRequesterId());
+		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		return "openuss4us_addbuddy";
+		}
+	
+	
 	
 	public RequesttableDataProvider getData() {
 		return data;
