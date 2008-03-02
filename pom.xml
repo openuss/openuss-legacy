@@ -381,6 +381,11 @@
 			<layout>legacy</layout>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
 		</pluginRepository>	
+        <pluginRepository>
+			<id>apache.incubation.releases</id>
+			<name>Apache Incubating Release Distribution Repository</name>
+			<url>http://people.apache.org/repo/m2-incubating-repository</url>
+		</pluginRepository>
 		<!--		
 		<pluginRepository>
 			<releases><enabled>true</enabled></releases>
