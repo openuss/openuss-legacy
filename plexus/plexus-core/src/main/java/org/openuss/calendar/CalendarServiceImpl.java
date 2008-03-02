@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +45,8 @@ public class CalendarServiceImpl extends
 			calType = CalendarType.course_calendar;
 		} else if (domainObject instanceof UserGroupInfo) {
 			calType = CalendarType.group_calendar;
-		} else if (domainObject instanceof UserInfo) {
+		} else if ((domainObject instanceof UserInfo)
+				|| (domainObject instanceof User)) {
 			calType = CalendarType.user_calendar;
 		} else {
 			throw new CalendarApplicationException(
@@ -194,8 +196,102 @@ public class CalendarServiceImpl extends
 						serialAppointmentInfo.getStarttime(),
 						serialAppointmentInfo.getSubject(), true);
 
-		cal.addSerialAppointment(serialAppointment);
+		// cal.addSerialAppointment(serialAppointment); is replaced by the next
+		// block
 
+		/** ********************** calculate appointments ********************* */
+
+		GregorianCalendar absoluteEnd = new GregorianCalendar();
+		absoluteEnd.setTime(serialAppointment.getRecurrenceEndtime());
+		GregorianCalendar calculatedEnd = new GregorianCalendar();
+		calculatedEnd.setTime(serialAppointment.getEndtime());
+		GregorianCalendar calculatedStart = new GregorianCalendar();
+		calculatedStart.setTime(serialAppointment.getStarttime());
+
+		// apply recurrence type to field used by gregorian calendar
+		int field = GregorianCalendar.MONTH;
+		if (serialAppointment.getRecurrenceType().equals(RecurrenceType.daily)) {
+			field = GregorianCalendar.DAY_OF_MONTH;
+		} else if (serialAppointment.getRecurrenceType().equals(
+				RecurrenceType.weekly)) {
+			field = GregorianCalendar.WEEK_OF_YEAR;
+		} else if (serialAppointment.getRecurrenceType().equals(
+				RecurrenceType.monthly)) {
+			field = GregorianCalendar.MONTH;
+		} else if (serialAppointment.getRecurrenceType().equals(
+				RecurrenceType.yearly)) {
+			field = GregorianCalendar.YEAR;
+		}
+
+		Set<Calendar> subscribedCalendars = cal.getSubscribedCalendars();
+
+		// Manage the natural serial appointment
+
+		// set source calendar for the serial appointment
+		serialAppointment.setSourceCalendar(cal);
+		cal.getOwnAppointments().add(serialAppointment);
+
+		// add the natural serial appointment to the subscribed calendars
+		if (!subscribedCalendars.isEmpty()) {
+			for (Calendar subCal : subscribedCalendars) {
+				subCal.getLinkedAppointments().add(serialAppointment);
+				serialAppointment.getAssignedCalendars().add(subCal);
+			}
+		}
+
+		// calculate resulting single appointments
+		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
+			// TODO Logger!
+			System.out.println("Generate Appointment "
+					+ calculatedStart.getTime().toGMTString() + " to "
+					+ calculatedEnd.getTime().toGMTString());
+
+			// set appointment data
+
+			Appointment app = getAppointmentDao().create(
+					serialAppointment.getAppointmentType(),
+					serialAppointment.getDescription(),
+					calculatedEnd.getTime(), serialAppointment.getLocation(),
+					true, cal, calculatedStart.getTime(),
+					serialAppointment.getSubject(), true);
+
+			// manage association to the created single appointment for source
+			// calendar
+			cal.addAppointment(app);
+
+			// associate created appointment to the corresponding serial
+			// appointment
+			app.setSerialAppointment(serialAppointment);
+
+			// add created single appointment to every subscribed calendar and
+			// manage
+			// associations for them
+
+			if (!subscribedCalendars.isEmpty()) {
+				for (Calendar subCal : subscribedCalendars) {
+					// add calculated single appointment
+					subCal.getLinkedAppointments().add(app);
+					// add the assigned calendar to the created appointment
+					app.getAssignedCalendars().add(subCal);
+				}
+			}
+
+			// set source calendar for the created appointment
+			app.setSourceCalendar(cal);
+			// add appointment to the own appointments
+			cal.getOwnAppointments().add(app);
+
+			serialAppointment.addSingleAppointment(app);
+
+			// add timespan depending on the recurrencetype
+
+			calculatedStart.add(field, serialAppointment.getRecurrencePeriod());
+			calculatedEnd.add(field, serialAppointment.getRecurrencePeriod());
+		}
+
+		/** ************************************************************** */
+
+		getSerialAppointmentDao().update(serialAppointment);
 		// make changes persistent for the source calendar
 		getCalendarDao().update(cal);
 
@@ -308,7 +404,8 @@ public class CalendarServiceImpl extends
 		List<SerialAppointment> apps = cal.getNaturalSerialAppointments();
 		List<SerialAppointmentInfo> serialAppInfos = new ArrayList<SerialAppointmentInfo>();
 		for (SerialAppointment saIt : apps) {
-			serialAppInfos.add(getSerialAppointmentDao().toSerialAppointmentInfo(saIt));
+			serialAppInfos.add(getSerialAppointmentDao()
+					.toSerialAppointmentInfo(saIt));
 		}
 		return serialAppInfos;
 	}
@@ -418,7 +515,7 @@ public class CalendarServiceImpl extends
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getNaturalSingleAppointments();
 		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
-		for (Appointment appIt: apps) {
+		for (Appointment appIt : apps) {
 			appInfos.add(getAppointmentDao().toAppointmentInfo(appIt));
 		}
 		return appInfos;
@@ -442,7 +539,7 @@ public class CalendarServiceImpl extends
 	protected List handleGetSubscriptions() throws Exception {
 		User user = getSecurityService().getCurrentUser();
 		Calendar cal = getCalendarDao().findByDomainIdentifier(user.getId());
-		if(cal==null){
+		if (cal == null) {
 			this.createCalendar(getUserDao().toUserInfo(user));
 			cal = getCalendarDao().findByDomainIdentifier(user.getId());
 		}
@@ -460,35 +557,77 @@ public class CalendarServiceImpl extends
 	protected void handleAddException(
 			SerialAppointmentInfo serialAppointmentInfo,
 			AppointmentInfo appointmentInfo) throws Exception {
-		// TODO Auto-generated method stub
-		
+
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());
+		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
+
+		Set<Appointment> calculatedApps = serialApp.getAppointments();
+		if (!calculatedApps.contains(app))
+			throw new CalendarApplicationException(
+					"Appointment does not belong to serial appointment");
+
+		// update appointment
+		app.setTakingPlace(false);
+		getAppointmentDao().update(app);
+
+		// remove appointment from source calendar
+		Calendar sourceCal = serialApp.getSourceCalendar();
+		sourceCal.getOwnAppointments().remove(app);
+		getCalendarDao().update(sourceCal);
+
+		// remove appointment from assigned calendars
+		Set<Calendar> assignedCals = serialApp.getAssignedCalendars();
+		for (Calendar calIt : assignedCals) {
+			calIt.getLinkedAppointments().remove(app);
+			getCalendarDao().update(calIt);
+		}
+
 	}
 
 	@Override
 	protected void handleDeleteException(
 			SerialAppointmentInfo serialAppointmentInfo,
 			AppointmentInfo appointmentInfo) throws Exception {
-		// TODO Auto-generated method stub
+
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());
+		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
+		Set<Appointment> calcApps = serialApp.getAppointments();
+		if (!calcApps.contains(app))
+			throw new CalendarApplicationException(
+					"Appointment does not belong the serial appointment.");
 		
+		app.setTakingPlace(true);
+		getAppointmentDao().update(app);
+		
+		Calendar sourceCal = app.getSourceCalendar();
+		sourceCal.getOwnAppointments().add(app);
+		getCalendarDao().update(sourceCal);
+		
+		Set<Calendar> assignedCals = app.getAssignedCalendars();
+		for (Calendar calIt : assignedCals) {
+			calIt.getLinkedAppointments().add(app);
+			getCalendarDao().update(calIt);
+		}
+
 	}
 
 	@Override
 	protected List handleGetCalculatedAppointments(
 			SerialAppointmentInfo serialAppointmentInfo) throws Exception {
-		SerialAppointment serialApp = getSerialAppointmentDao().load(serialAppointmentInfo.getId());
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());
 		Set<Appointment> calcApps = serialApp.getAppointments();
+		System.out.println(" get calcAphier: " + calcApps.size());
 		List<AppointmentInfo> calAppInfos = new ArrayList<AppointmentInfo>();
 		if (!calcApps.isEmpty()) {
 			for (Appointment calcAppIt : calcApps) {
-				calAppInfos.add(getAppointmentDao().toAppointmentInfo(calcAppIt));
+				calAppInfos.add(getAppointmentDao()
+						.toAppointmentInfo(calcAppIt));
 			}
 		}
 		return calAppInfos;
 	}
-
-
-
-
-
 
 }

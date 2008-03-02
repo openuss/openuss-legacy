@@ -47,17 +47,13 @@ public class SerialAppointmentDaoImpl
      */
     private org.openuss.calendar.SerialAppointment loadSerialAppointmentFromSerialAppointmentInfo(org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo)
     {
-        // @todo implement loadSerialAppointmentFromSerialAppointmentInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.loadSerialAppointmentFromSerialAppointmentInfo(org.openuss.calendar.SerialAppointmentInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
+    	//TODO check wether it is correct
         org.openuss.calendar.SerialAppointment serialAppointment = this.load(serialAppointmentInfo.getId());
         if (serialAppointment == null)
         {
             serialAppointment = org.openuss.calendar.SerialAppointment.Factory.newInstance();
         }
         return serialAppointment;
-        */
     }
 
     
@@ -116,17 +112,13 @@ public class SerialAppointmentDaoImpl
      */
     private org.openuss.calendar.SerialAppointment loadSerialAppointmentFromAppointmentInfo(org.openuss.calendar.AppointmentInfo appointmentInfo)
     {
-        // @todo implement loadSerialAppointmentFromAppointmentInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.loadSerialAppointmentFromAppointmentInfo(org.openuss.calendar.AppointmentInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
-        org.openuss.calendar.SerialAppointment serialAppointment = this.load(appointmentInfo.getId());
+    	//TODO Check wether this is correct
+    	org.openuss.calendar.SerialAppointment serialAppointment = this.load(appointmentInfo.getId());
         if (serialAppointment == null)
         {
             serialAppointment = org.openuss.calendar.SerialAppointment.Factory.newInstance();
         }
         return serialAppointment;
-        */
     }
 
     

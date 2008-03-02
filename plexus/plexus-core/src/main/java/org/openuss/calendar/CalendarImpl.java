@@ -152,6 +152,9 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		
 	}
 
+	/**
+	 * not used anymore. Functionality is passed to CalendarServiceImpl.handleCreateSerialAppointment
+	 */
 	public void addSerialAppointment(SerialAppointment serialAppointment) {
 
 		GregorianCalendar absoluteEnd = new GregorianCalendar();
@@ -232,6 +235,8 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 			
 			// set source calendar for the created appointment
 			app.setSourceCalendar(this);
+			// add appointment to the own appointments
+			this.getOwnAppointments().add(app);
 
 			serialAppointment.addSingleAppointment(app);
 

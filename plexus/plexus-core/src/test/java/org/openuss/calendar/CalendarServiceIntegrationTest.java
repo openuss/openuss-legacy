@@ -51,7 +51,7 @@ public class CalendarServiceIntegrationTest extends
 	public AppointmentDao appointmentDao;
 
 	public AppointmentTypeDao appointmentTypeDao;
-	
+
 	public TestUtility testUtil;
 
 	private DefaultDomainObject defaultDomainObject;
@@ -145,6 +145,7 @@ public class CalendarServiceIntegrationTest extends
 			List<AppointmentInfo> singleAppInfos = calendarService
 					.getSingleAppointments(userCalInfo);
 			assertEquals(1, singleAppInfos.size());
+			assertNotNull(singleAppInfos.get(0).getId());
 			AppointmentInfo singleAppInfo = singleAppInfos.get(0);
 			assertEquals(naturalAppInfo, singleAppInfo);
 
@@ -191,8 +192,6 @@ public class CalendarServiceIntegrationTest extends
 		}
 
 	}
-	
-	
 
 	public void testCalendarAdministrationSerial() {
 		/*
@@ -254,20 +253,40 @@ public class CalendarServiceIntegrationTest extends
 			// test if the single appointments are created from the serial
 			// appointment
 
-			List singleAppointments = calendarService
+			List<AppointmentInfo> singleAppointments = calendarService
 					.getSingleAppointments(userCalendarInfo);
 			assertNotNull(singleAppointments);
 			assertEquals(6, singleAppointments.size());
+			System.out.println("getId" + singleAppointments.get(0).getId());
+			assertNotNull(singleAppointments.get(0).getId());
 
 			SerialAppointmentInfo serialAppInfo = serialAppointments.get(0);
 			assertNotNull(serialAppInfo.getId());
 
-			/*********************** test exceptions *************************/
-			
+			/** ********************* test exceptions ************************ */
+
 			// test if exceptions are exisiting
-			List<AppointmentInfo> calcAppInfos = calendarService.getCalculatedAppointments(serialAppInfo);
+			List<AppointmentInfo> calcAppInfos = calendarService
+					.getCalculatedAppointments(serialAppInfo);
 			assertNotNull(calcAppInfos);
 			assertEquals(6, calcAppInfos.size());
+
+			// appointment which will not take place
+			AppointmentInfo appException = calcAppInfos.get(1);
+			calendarService.addException(serialAppInfo, appException);
+
+			// test if the number of single apps is decreased
+			List<AppointmentInfo> appInfos = calendarService
+					.getSingleAppointments(userCalendarInfo);
+			assertNotNull(appInfos);
+			assertEquals(5, appInfos.size());
+
+			// put the appointment exception back to the schedule
+			calendarService.deleteException(serialAppInfo, appException);
+			List<Appointment> appInfos2 = calendarService
+					.getSingleAppointments(userCalendarInfo);
+			assertNotNull(appInfos2);
+			assertEquals(6, appInfos2.size());
 
 			/** ***************** test update serial appointment **************** */
 
@@ -634,7 +653,8 @@ public class CalendarServiceIntegrationTest extends
 			// create serial app for course
 			// TODO Serienterminerzeugung ersetzen durch eine Methode in
 			// testUtil
-			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden prüfen
+			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden
+			// prüfen
 			// testUtil.createUniqueSeriallAppForCalendarInDB(courseCalInfo);
 			SerialAppointmentInfo serialAppointmentInfo = new SerialAppointmentInfo();
 			serialAppointmentInfo.setSubject("subject");
@@ -659,38 +679,42 @@ public class CalendarServiceIntegrationTest extends
 					courseCalInfo);
 
 			// add subscription
-			
+
 			calendarService.addSubscription(courseCalInfo);
-			
+
 			// test if subscription is added
-			List<CalendarInfo> subscribedCalInfos = calendarService.getSubscriptions();
+			List<CalendarInfo> subscribedCalInfos = calendarService
+					.getSubscriptions();
 			assertEquals(1, subscribedCalInfos.size());
 
 			// test if natural serial app is added
-			
-			List<SerialAppointmentInfo> serialAppInfos = calendarService.getNaturalSerialAppointments(userCalInfo);
+
+			List<SerialAppointmentInfo> serialAppInfos = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
 			assertNotNull(serialAppInfos);
 			assertEquals(1, serialAppInfos.size());
 
 			// test if generated single apps are added
-			
-			List<AppointmentInfo> singleAppInfos = calendarService.getSingleAppointments(userCalInfo);
+
+			List<AppointmentInfo> singleAppInfos = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertNotNull(serialAppInfos);
 			assertEquals(6, singleAppInfos.size());
 
 			// create additional serial app for course
-			
+
 			// TODO Serienterminerzeugung ersetzen durch eine Methode in
 			// testUtil
-			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden prüfen
+			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden
+			// prüfen
 			// testUtil.createUniqueSeriallAppForCalendarInDB(courseCalInfo);
 			SerialAppointmentInfo serialAppointmentInfo2 = new SerialAppointmentInfo();
 			serialAppointmentInfo2.setSubject("subject");
 			serialAppointmentInfo2.setDescription("description");
 			GregorianCalendar gregCal2 = new GregorianCalendar();
 			gregCal2.set(2008, 06, 07, 17, 00);
-			serialAppointmentInfo2.setStarttime(new Timestamp(gregCal2.getTime()
-					.getTime()));
+			serialAppointmentInfo2.setStarttime(new Timestamp(gregCal2
+					.getTime().getTime()));
 			gregCal2.add(GregorianCalendar.HOUR, 1);
 			serialAppointmentInfo2.setEndtime(new Timestamp(gregCal2.getTime()
 					.getTime()));
@@ -707,55 +731,97 @@ public class CalendarServiceIntegrationTest extends
 					courseCalInfo);
 
 			// test if natural serial app is added
-			
-			List<SerialAppointmentInfo> serialAppInfos2 = calendarService.getNaturalSerialAppointments(userCalInfo);
+
+			List<SerialAppointmentInfo> serialAppInfos2 = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
 			assertEquals(2, serialAppInfos2.size());
-			
+
 			// test if generated single apps are added
 
-			List<AppointmentInfo> singleAppInfos2 = calendarService.getSingleAppointments(userCalInfo);
+			List<AppointmentInfo> singleAppInfos2 = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertEquals(12, singleAppInfos2.size());
-			
+
 			// test delete of serial appointment
-			
+
 			// test if natural serial appointment is deletet
-			calendarService.deleteSerialAppointment(serialAppInfos2.get(1),	courseCalInfo);
-			List<SerialAppointmentInfo> serialAppInfos3 = calendarService.getNaturalSerialAppointments(userCalInfo);
+			calendarService.deleteSerialAppointment(serialAppInfos2.get(1),
+					courseCalInfo);
+			List<SerialAppointmentInfo> serialAppInfos3 = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
 			assertEquals(1, serialAppInfos3.size());
-			
+
 			// test if generated single appointments are also deleted
-			List<AppointmentInfo> singleAppInfos3 = calendarService.getSingleAppointments(userCalInfo);
+			List<AppointmentInfo> singleAppInfos3 = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertEquals(6, singleAppInfos3.size());
-			
+
 			// test update of serial appointment
-			
+
 			// change description
 			SerialAppointmentInfo serialAppInfo = serialAppInfos2.get(0);
 			serialAppInfo.setDescription("new description");
 			// change appointment type
-			AppointmentType newAppointmentType = testUtil.createAppointmentTypeInDB("special");
-			AppointmentTypeInfo newAppTypeInfo = getAppointmentTypeDao().toAppointmentTypeInfo(newAppointmentType);
+			AppointmentType newAppointmentType = testUtil
+					.createAppointmentTypeInDB("special");
+			AppointmentTypeInfo newAppTypeInfo = getAppointmentTypeDao()
+					.toAppointmentTypeInfo(newAppointmentType);
 			serialAppInfo.setAppointmentTypeInfo(newAppTypeInfo);
-			
-			calendarService.updateSerialAppointment(serialAppInfo, courseCalInfo);
-			
+
+			calendarService.updateSerialAppointment(serialAppInfo,
+					courseCalInfo);
+
 			// test if the descr of the serial app has changed
-			List<SerialAppointmentInfo> serialAppInfos4 = calendarService.getNaturalSerialAppointments(userCalInfo);
+			List<SerialAppointmentInfo> serialAppInfos4 = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
 			assertEquals(1, serialAppInfos4.size());
-			assertEquals("new description", serialAppInfos4.get(0).getDescription());
-			// test if the app type has changed 
-			assertEquals(newAppTypeInfo, serialAppInfos4.get(0).getAppointmentTypeInfo());
-			assertEquals("special", serialAppInfos4.get(0).getAppointmentTypeInfo().getName());
-			
+			assertEquals("new description", serialAppInfos4.get(0)
+					.getDescription());
+			// test if the app type has changed
+			assertEquals(newAppTypeInfo, serialAppInfos4.get(0)
+					.getAppointmentTypeInfo());
+			assertEquals("special", serialAppInfos4.get(0)
+					.getAppointmentTypeInfo().getName());
+
 			// test if the generated single apps of the serial app have changed
-			List<AppointmentInfo> singleAppInfos4 = calendarService.getSingleAppointments(userCalInfo);
+			List<AppointmentInfo> singleAppInfos4 = calendarService
+					.getSingleAppointments(userCalInfo);
 			for (AppointmentInfo appIt : singleAppInfos4) {
 				assertEquals(appIt.getDescription(), "new description");
-				assertEquals("special", appIt.getAppointmentTypeInfo().getName());
+				assertEquals("special", appIt.getAppointmentTypeInfo()
+						.getName());
 			}
+
 			
-			// TODO Calendar: test subscription with serial appointments an more than 1 calendar
+			 /*********************** test exception*******/
+
+			// Anzahl der Termine im User Kalender
+			List<AppointmentInfo> appInfos = calendarService
+					.getSingleAppointments(userCalInfo);
+			assertNotNull(appInfos);
+			assertEquals(6, appInfos.size());
+
+			// Im Kurs Kalender eine Ausnahme hinzufügen
+			List<SerialAppointmentInfo> courseSerialAppInfos = calendarService
+					.getNaturalSerialAppointments(courseCalInfo);
+			assertNotNull(courseSerialAppInfos);
+			List<AppointmentInfo> calcAppInfos = calendarService
+					.getCalculatedAppointments(courseSerialAppInfos.get(0));
+			assertNotNull(calcAppInfos);
+			assertEquals(6, calcAppInfos.size());
 			
+			// TODO warum geht das nicht 
+			calendarService.addException(serialAppInfo, calcAppInfos.get(1));
+
+			// Anzahl überprüfen
+			List<AppointmentInfo> userAppInfos = calendarService
+					.getSingleAppointments(userCalInfo);
+			assertNotNull(userAppInfos);
+			assertEquals(5, userAppInfos.size());
+
+			// TODO Calendar: test subscription with serial appointments an more
+			// than 1 calendar
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -783,18 +849,21 @@ public class CalendarServiceIntegrationTest extends
 
 			calendarService.createCalendar(currentUserInfo);
 			calendarService.createCalendar(courseInfo);
-			CalendarInfo courseCalInfo = calendarService.getCalendar(courseInfo);
-			CalendarInfo userCalInfo = calendarService.getCalendar(currentUserInfo);
-		
+			CalendarInfo courseCalInfo = calendarService
+					.getCalendar(courseInfo);
+			CalendarInfo userCalInfo = calendarService
+					.getCalendar(currentUserInfo);
+
 			// create appointments for course
 			testUtil.createUniqueAppointmentForCalendarInDB(courseCalInfo);
-			
+
 			// create serialappointment
-			
+
 			// create serial app for course
 			// TODO Serienterminerzeugung ersetzen durch eine Methode in
 			// testUtil
-			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden prüfen
+			// TODO Erzeugung der Zeitpunkte in den createUnique... Methoden
+			// prüfen
 			// testUtil.createUniqueSeriallAppForCalendarInDB(courseCalInfo);
 			SerialAppointmentInfo serialAppointmentInfo = new SerialAppointmentInfo();
 			serialAppointmentInfo.setSubject("subject");
@@ -817,34 +886,41 @@ public class CalendarServiceIntegrationTest extends
 
 			calendarService.createSerialAppointment(serialAppointmentInfo,
 					courseCalInfo);
-						
+
 			// add subscription
-			
+
 			calendarService.addSubscription(courseCalInfo);
-			
+
 			// test if subscription is added
-			List<CalendarInfo> subscribedCalInfos = calendarService.getSubscriptions();
+			List<CalendarInfo> subscribedCalInfos = calendarService
+					.getSubscriptions();
 			assertEquals(1, subscribedCalInfos.size());
-			
+
 			// test if all appointments are added
-			
-			List<AppointmentInfo> singleAppInfos = calendarService.getSingleAppointments(userCalInfo);
+
+			List<AppointmentInfo> singleAppInfos = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertEquals(7, singleAppInfos.size());
-			List<SerialAppointmentInfo> serialAppInfos = calendarService.getNaturalSerialAppointments(userCalInfo);
-			
+			List<SerialAppointmentInfo> serialAppInfos = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
+
 			// end subscription
 			calendarService.endSubscription(courseCalInfo);
-			
-			// test if the appointments of the course are removed from the user calendar
-			List<AppointmentInfo> singleAppInfos2 = calendarService.getSingleAppointments(userCalInfo);
+
+			// test if the appointments of the course are removed from the user
+			// calendar
+			List<AppointmentInfo> singleAppInfos2 = calendarService
+					.getSingleAppointments(userCalInfo);
 			assertEquals(0, singleAppInfos2.size());
-			List<SerialAppointmentInfo> serialAppInfos2 = calendarService.getNaturalSerialAppointments(userCalInfo);
+			List<SerialAppointmentInfo> serialAppInfos2 = calendarService
+					.getNaturalSerialAppointments(userCalInfo);
 			assertEquals(0, serialAppInfos2.size());
-			
+
 			// test if the numbers of subscriptions equals 0
-			List<CalendarInfo> subscribedCalInfos2 = calendarService.getSubscriptions();
+			List<CalendarInfo> subscribedCalInfos2 = calendarService
+					.getSubscriptions();
 			assertEquals(0, subscribedCalInfos2.size());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

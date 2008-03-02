@@ -28,7 +28,6 @@ public class AppointmentDaoImpl extends org.openuss.calendar.AppointmentDaoBase
 	public void toAppointmentInfo(
 			org.openuss.calendar.Appointment sourceEntity,
 			org.openuss.calendar.AppointmentInfo targetVO) {
-		
 	        super.toAppointmentInfo(sourceEntity, targetVO);
 	        			
 	        // create association between the value objects
