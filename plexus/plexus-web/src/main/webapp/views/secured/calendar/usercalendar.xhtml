@@ -42,8 +42,13 @@
    			 	</o:block>
    			 	<o:block>
    			 		<h:commandButton 
-   			 			value="Insert data"
-   			 			title="Insert data"
+   			 			value="Load appointmemnts"
+   			 			title="Load appointmemnts"
+   			 			actionListener="#{views$secured$calendar$usercalendar.loadEntries}"  
+   			 			styleClass="button"/>
+   			 		<h:commandButton 
+   			 			value="Load appointmemnts 2"
+   			 			title="Load appointmemnts 2"
    			 			actionListener="#{scheduleHandler2.addSampleEntries}"  
    			 			styleClass="button"/>
 					<h:commandButton 

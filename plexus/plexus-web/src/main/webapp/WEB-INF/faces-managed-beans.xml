@@ -371,6 +371,18 @@
     </managed-bean>
 
     <managed-bean>
+    	<managed-bean-name>userScheduleHandler</managed-bean-name>
+    	<managed-bean-class>
+    		org.openuss.web.calendar.CalendarMainPage
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
     	<managed-bean-name>bindingScheduleHandler</managed-bean-name>
     	<managed-bean-class>
     		org.apache.myfaces.examples.schedule.BindingScheduleExampleHandler
@@ -399,7 +411,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>visibleEndHour</property-name>
-    		<value>18</value>
+    		<value>20</value>
     	</managed-property>
     	<managed-property>
     		<property-name>workingStartHour</property-name>
@@ -407,7 +419,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>workingEndHour</property-name>
-    		<value>17</value>
+    		<value>19</value>
     	</managed-property>
     	<managed-property>
     		<property-name>tooltip</property-name>

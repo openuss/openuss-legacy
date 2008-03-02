@@ -6,6 +6,7 @@ import java.util.List;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -18,20 +19,17 @@ import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.groups.GroupsMainPage;
 
 @Bean(name = "views$secured$calendar$createsingleappointment", scope = Scope.REQUEST)
 @View
-public class SingleAppointmentCreatePage extends BasePage{
+public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 	
-	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
-	private CalendarInfo calendarInfo;
-	@Property(value = "#{" + Constants.APPOINTMENT_INFO + "}")
-	private AppointmentInfo appointmentInfo;
-	@Property(value = "#{calendarService}")
-	private CalendarService calendarService;
-
+	private static final Logger logger = Logger.getLogger(SingleAppointmentCreatePage.class);
+	
 	private Integer appointmentType;
 	
 	private List<AppointmentTypeInfo> appointmentTypes;
@@ -46,9 +44,13 @@ public class SingleAppointmentCreatePage extends BasePage{
 		newCrumb.setName(i18n("calender_create_single_appointment_page"));
 		newCrumb.setHint(i18n("calender_create_single_appointment_page"));
 		breadcrumbs.addCrumb(newCrumb);
-		
+
+		// Create new AppointmentInfo Object - Load CalendarInfo Object
 		AppointmentInfo appointmentInfo = new AppointmentInfo();
-		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		CalendarInfo calendarInfo = calendarService.getCalendar(user);
+		
+		setSessionBean(Constants.CALENDAR_INFO, calendarInfo);	
+		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);	
 	}
 	
 	public String save(){
@@ -57,7 +59,9 @@ public class SingleAppointmentCreatePage extends BasePage{
 		
 		// appointmentInfo.setAppointmentTypeInfo(appointmentTypes.get(appointmentType));
 		appointmentInfo.setSerial(false);
-			
+		AppointmentTypeInfo appTInfo = new AppointmentTypeInfo();
+		appTInfo.setId(1l);
+		appointmentInfo.setAppointmentTypeInfo(appTInfo);
 		appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
 		
 		try {
@@ -114,4 +118,5 @@ public class SingleAppointmentCreatePage extends BasePage{
 	public void setAppointmentType(Integer appointmentType) {
 		this.appointmentType = appointmentType;
 	}
+
 }

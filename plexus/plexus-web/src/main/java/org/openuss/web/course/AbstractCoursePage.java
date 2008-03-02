@@ -62,7 +62,7 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{calendarService}")
 	private CalendarService calendarService;
 	
-	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
+	@Property(value = "#{" + Constants.CALENDAR_INFO + "}")
 	private CalendarInfo calendarInfo;
 	
 	@Property(value = "#{periodInfo}")
@@ -85,7 +85,7 @@ public class AbstractCoursePage extends BasePage {
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
-			setSessionBean(Constants.OPENUSS4US_CALENDAR, calendarInfo);
+			setSessionBean(Constants.CALENDAR_INFO, calendarInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
 		}

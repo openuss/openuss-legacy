@@ -39,7 +39,7 @@ public class AbstractGroupPage extends BasePage {
 	@Property(value = "#{calendarService}")
 	private CalendarService calendarService;
 	
-	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
+	@Property(value = "#{" + Constants.CALENDAR_INFO + "}")
 	private CalendarInfo calendarInfo;
 
 	@Prerender
@@ -60,15 +60,15 @@ public class AbstractGroupPage extends BasePage {
 	}
 
 	private void addGroupCrumb() {
-		BreadCrumb groupMain = new BreadCrumb();
-		groupMain.setName(i18n("openuss4us_command_groups"));
-		groupMain.setHint(i18n("openuss4us_command_groups"));
-		groupMain.setLink(PageLinks.GROUPS_MAIN);
-		// groupMain.addParameter("group",groupInfo.getId());
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("openuss4us_command_groups"));
+		crumb.setHint(i18n("openuss4us_command_groups"));
+		crumb.setLink(PageLinks.GROUPS_MAIN);
+		crumb.addParameter("group",groupInfo.getId());
 		// TODO: Thomas: change from openuss4us to group
 		// -> breadcrumbs.loadGroupCrumbs(groupInfo);
 		breadcrumbs.loadOpenuss4usCrumbs();
-		breadcrumbs.addCrumb(groupMain);
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	public boolean isMember() {

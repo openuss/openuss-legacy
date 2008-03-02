@@ -15,7 +15,7 @@
 	<f:subview>
 	<div id="schedule">
 	<h:panelGrid columns="6" border="0" style="width: 100.00%" >
-		<h:outputText value="Montag" />
+		<h:outputText value="Montag" /> width:20px
 		<h:outputText value="Dienstag" />
 		<h:outputText value="Mittwoch" />
 		<h:outputText value="Donnerstag" />
@@ -29,7 +29,7 @@
 					workingEndHour="#{scheduleSettings2.workingEndHour}"
 					workingStartHour="#{scheduleSettings2.workingStartHour}"
 					readonly="#{scheduleSettings2.readonly}"
-					theme="default"
+					theme="evolution"
 					tooltip="#{scheduleSettings2.tooltip}"
 					renderZeroLengthEntries="true"
 					expandToFitEntries="#{scheduleSettings2.expandToFitEntries}"
@@ -38,8 +38,7 @@
 					compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
 					detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/> 
 	
-	
-	<h:outputText value="#{views$secured$calendar$usercalendar.firstDate}" />
+
 	</div>
 	
 	</f:subview>
