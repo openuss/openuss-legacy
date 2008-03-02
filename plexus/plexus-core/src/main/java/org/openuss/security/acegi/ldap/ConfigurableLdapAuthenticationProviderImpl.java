@@ -74,7 +74,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		ldapAuthenticationProviders.clear();
 		// Get new configurations
 		ldapServerConfigurations = ldapConfigurationService.getEnabledLdapServerConfigurations();
-		if (ldapServerConfigurations.size()>0) {
+		if (ldapServerConfigurations!=null && ldapServerConfigurations.size()>0) {
 			// Instantiate and initialize providers and related objects
 			for (LdapServerConfiguration ldapServerConfiguration : ldapServerConfigurations) {
 				InitialDirContextFactory initialDirContextFactory = newInitialDirContextFactory(ldapServerConfiguration);
@@ -116,7 +116,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Authentication successful
 		
 		LdapUserDetails ldapUserDetails = (LdapUserDetailsImpl) authResponse.getPrincipal();
-		LdapServerConfiguration ldapServerConfiguration = retrieveSuccessfulLdapServerConfiguration(ldapServerConfigurations, ldapUserDetails);
+		LdapServerConfiguration ldapServerConfiguration = retrieveSuccessfulLdapServerConfiguration(ldapUserDetails);
 		
 		assignAttributes(ldapServerConfiguration, ldapUserDetails);
 		ldapUserDetails = assignDefaultRole(ldapUserDetails);
@@ -133,7 +133,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	 * @param ldapUserDetails
 	 * @return LdapServerConfiguration of corresponding LDAP server
 	 */
-	protected LdapServerConfiguration retrieveSuccessfulLdapServerConfiguration(List<LdapServerConfiguration> ldapServerConfigurations, LdapUserDetails ldapUserDetails) {
+	protected LdapServerConfiguration retrieveSuccessfulLdapServerConfiguration(LdapUserDetails ldapUserDetails) {
 		LdapServerConfiguration usedLdapServerConfiguration = null;
 		String dn = ldapUserDetails.getDn();
 		dn = dn.toLowerCase().replaceAll("\\s+","");
@@ -156,6 +156,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Assign username
 		destKey = AttributeMappingKeys.USERNAME_KEY;
 		sourceKey = ldapServerConfiguration.getUsernameKey();
+		Assert.notNull(sourceKey,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullUsernameKey", "Username key must not be null."));		
 		try {
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
@@ -165,7 +166,8 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 				
 		// Assign firstname
 		destKey = AttributeMappingKeys.FIRSTNAME_KEY;
-		sourceKey = ldapServerConfiguration.getFirstNameKey();		
+		sourceKey = ldapServerConfiguration.getFirstNameKey();
+		Assert.notNull(sourceKey,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullFirstnameKey", "Firstname key must not be null."));
 		try {
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
@@ -176,6 +178,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Assign lastname
 		destKey = AttributeMappingKeys.LASTNAME_KEY;
 		sourceKey = ldapServerConfiguration.getLastNameKey();
+		Assert.notNull(sourceKey,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullLastnameKey", "Lastname key must not be null."));
 		try {
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
@@ -186,6 +189,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Assign email address
 		destKey = AttributeMappingKeys.EMAIL_KEY;
 		sourceKey = ldapServerConfiguration.getEmailKey();
+		Assert.notNull(sourceKey,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullEmailKey", "E-Mail key must not be null."));
 		try {
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
@@ -216,6 +220,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 
 	protected InitialDirContextFactory newInitialDirContextFactory(LdapServerConfiguration ldapServerConfiguration) {
 		String url = ldapServerConfiguration.getProviderUrl();
+		Assert.notNull(url,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullProviderUrl", "Provider URL must not be null."));
         // preprocess url, so that it ends with the top-level domain. 
 		url = url.toLowerCase().replaceAll("\\s+","");
     	url = url + " ";  	
@@ -224,12 +229,17 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
     	// add port
     	url = url + ":" + ldapServerConfiguration.getPort().toString();
     	// add rootDn
-    	String rootDn = ldapServerConfiguration.getRootDn().toLowerCase();
+    	String rootDn = ldapServerConfiguration.getRootDn();
+		Assert.notNull(rootDn,messages.getMessage("ConfigurableLdapAuthenticationProvider.nullRootD", "Root DN must not be null."));
+    	rootDn = rootDn.toLowerCase();
     	rootDn = rootDn.replaceAll("\\s+","");
     	rootDn = rootDn.replaceAll("/+","");
     	url = url + "/"+rootDn;
 		DefaultInitialDirContextFactory defaultInitialDirContextFactory = new DefaultInitialDirContextFactory(url);
-		defaultInitialDirContextFactory.setAuthenticationType(ldapServerConfiguration.getAuthenticationType().replaceAll("\\s+",""));
+		String authenticationType = ldapServerConfiguration.getAuthenticationType();
+		if (authenticationType == null || "".equals(authenticationType))
+			authenticationType = "SIMPLE";
+		defaultInitialDirContextFactory.setAuthenticationType(authenticationType.replaceAll("\\s+",""));
 		if (ldapServerConfiguration.getManagerDn()!=null) 
 			defaultInitialDirContextFactory.setManagerDn(ldapServerConfiguration.getManagerDn().replaceAll("\\s+",""));
 		if (ldapServerConfiguration.getManagerPassword()!=null)
