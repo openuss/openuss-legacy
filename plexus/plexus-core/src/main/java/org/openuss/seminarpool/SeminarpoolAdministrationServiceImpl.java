@@ -20,6 +20,7 @@ import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
 /**
@@ -509,6 +510,24 @@ public class SeminarpoolAdministrationServiceImpl
     		seminarpoolInfoList.add(getSeminarpoolDao().toSeminarpoolInfo(seminarpool));
     	}
         return seminarpoolInfoList;
+	}
+
+	@Override
+	protected List handleFindSeminarpoolAdministratorsBySeminarpool(
+			Long seminarpoolId) throws Exception {
+    	Validate.notNull(seminarpoolId, "handleFindSeminarpoolAdministratorsBySeminarpool ==> seminarpoolId cannot be null");
+    	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
+    	Validate.notNull(seminarpoolEntity, "handleFindSeminarpoolAdministratorsBySeminarpool ==> seminarpool cannot loaded");
+    	Membership membership = seminarpoolEntity.getMembership();
+    	List<User> userList = membership.getMembers();
+    	Validate.notNull(userList, "handleFindSeminarpoolAdministratorsBySeminarpool ==> userList cannot be null");
+    	Validate.notEmpty(userList, "handleFindSeminarpoolAdministratorsBySeminarpool ==> userList is empty");
+    	List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+    	for (User user: userList){
+    		UserInfo userInfo = getUserDao().toUserInfo(user);
+    		userInfoList.add(userInfo);
+    	}
+		return userInfoList;
 	}
 
 

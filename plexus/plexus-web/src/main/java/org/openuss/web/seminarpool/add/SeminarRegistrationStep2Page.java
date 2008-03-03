@@ -4,6 +4,7 @@ package org.openuss.web.seminarpool.add;
 
 
 	import java.util.ArrayList;
+import java.util.Collection;
 	import java.util.Collections;
 	import java.util.Comparator;
 	import java.util.List;
@@ -11,6 +12,7 @@ package org.openuss.web.seminarpool.add;
 import java.util.Map;
 	import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 	import javax.faces.el.ValueBinding;
 
@@ -63,9 +65,10 @@ import org.openuss.web.Constants;
 	public class SeminarRegistrationStep2Page extends BasePage {		
 		private static final long serialVersionUID = 5069930000478432045L;
 		
+		@Property(value = "#{seminarpoolAdministrationService}")
+		protected SeminarpoolAdministrationService seminarpoolAdministrationService; 
+		
 		private CourseGroupOverview courseGroupOverview;
-
-		private DataPage<SeminarpoolInfo> dataPage;
 
 		private DataPage<CourseGroupInfo> dataPageCourseGroups;
 
@@ -77,7 +80,7 @@ import org.openuss.web.Constants;
 		
 		private int courseGroupCapacity;
 		
-		private static final Logger logger = Logger.getLogger(SeminarRegistrationStep1Page.class);
+		private static final Logger logger = Logger.getLogger(SeminarRegistrationStep2Page.class);
 
 		
 		@Init
@@ -85,57 +88,88 @@ import org.openuss.web.Constants;
 			courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
 			if (courseGroupInfoList == null){
 				courseGroupInfoList = new ArrayList<CourseGroupInfo>();
-				CourseGroupInfo courseGroupInfo = new CourseGroupInfo();
-				courseGroupInfo.setCapacity(0);
-				courseGroupInfo.setName("Gruppe 1");
-				courseGroupInfo.setIsTimeSet(false);
-				courseGroupInfoList.add(courseGroupInfo);				
+//				CourseGroupInfo courseGroupInfo = new CourseGroupInfo();
+//				courseGroupInfo.setCapacity(0);
+//				courseGroupInfo.setName(Constants.SEMINARPOOL_COURSE_ALLOCATION_GROUP + " 1");
+//				courseGroupInfo.setIsTimeSet(false);
+//				courseGroupInfoList.add(courseGroupInfo);				
 				setSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION, courseGroupInfoList);
 			}
 			courseSeminarpoolAllocationInfo = (CourseSeminarpoolAllocationInfo)getSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
-			if (courseSeminarpoolAllocationInfo == null){
-				courseSeminarpoolAllocationInfo = new CourseSeminarpoolAllocationInfo();
-				Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-				try {
-					String stringParamSeminarpool = (String) params.get("seminarpool");
-					Long paramSeminarpool = Long.valueOf(stringParamSeminarpool);
-					Validate.notNull(paramSeminarpool, "seminarpoolId cannot be null");
-					courseSeminarpoolAllocationInfo.setSeminarpoolId(paramSeminarpool);
-				} catch (Exception e) {
-					throw new IllegalArgumentException("seminarpoolId cannot be null");
-				}
-				setSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO, courseSeminarpoolAllocationInfo);
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			try {
+				String stringParamSeminarpool = (String) params.get("seminarpool");
+				Long paramSeminarpool = Long.valueOf(stringParamSeminarpool);
+				Validate.notNull(paramSeminarpool, "seminarpoolId cannot be null");
+				courseSeminarpoolAllocationInfo.setSeminarpoolId(paramSeminarpool);
+			} catch (Exception e) {
+				throw new IllegalArgumentException("seminarpoolId cannot be null");
 			}
 			courseGroupOverview = new CourseGroupOverview();		
 		}
 		
 		public String addGroup(){
-			courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
-			CourseGroupInfo courseGroupInfo = new CourseGroupInfo();
-			courseGroupInfo.setCapacity(courseGroupCapacity);
-			courseGroupInfo.setName(courseGroupName);
-			courseGroupInfo.setIsTimeSet(false);
-			courseGroupInfoList.add(courseGroupInfo);
+			if (courseGroupCapacity != 0){
+				courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
+				CourseGroupInfo courseGroupInfo = new CourseGroupInfo();
+				courseGroupInfo.setCapacity(courseGroupCapacity);
+				courseGroupInfo.setName(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_GROUP) + " " + (courseGroupInfoList.size()+1));
+				courseGroupInfo.setIsTimeSet(false);
+				courseGroupInfo.setIsDefault(false);
+				courseGroupInfo.setId(new Long(courseGroupInfoList.size()));
+				courseGroupInfoList.add(courseGroupInfo);
+			} else {
+				addError(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NUMBER));
+			}
 			return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP2;
 		}
 		
-		public String selectCourseGroup() {
-			logger.debug("Starting method selectInstitute");
-			CourseGroupInfo seminarpoolInfo = currentCourseGroup();
-			logger.debug("Returning to method selectInstitute");
-			logger.debug(seminarpoolInfo.getId());
-			// setSessionBean(Constants.INSTITUTE, institute);
-			return Constants.INSTITUTE_PAGE;
+		
+		/**
+		 * Adds the current course to the selected seminarpool
+		 * @return
+		 */
+		public String addSeminar(){
+			courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
+			courseSeminarpoolAllocationInfo = (CourseSeminarpoolAllocationInfo)getSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
+			if (courseGroupInfoList.size() == 0){
+				// Error checking. no groups?
+				addError(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NO_GROUPS) );
+				return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP2;
+			} else {
+				// add course to Seminarpool
+				clearCourseGroupInfoId(courseGroupInfoList);
+				getSeminarpoolAdministrationService().addSeminar(courseSeminarpoolAllocationInfo, courseGroupInfoList);
+				removeSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
+				removeSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
+				return Constants.SEMINARPOOL_COURSE_ALLOCATION_FINISH;
+			}
+			
+		}
+		
+		/**
+		 * Store the selected institute into session scope and go to institute main
+		 * page.
+		 * 
+		 * @return Outcome
+		 */
+		public String selectCurrentCourseGroup() {
+			logger.info("Starting method selectCurrentCourseGroup");
+			CourseGroupInfo courseGroupInfo = currentCourseGroup();
+			logger.info("Returning to method selectInstitute");
+			logger.info(courseGroupInfo.getId());
+			setSessionBean(Constants.SEMINARPOOL_COURSEGROUP_INFO, courseGroupInfo);
+			return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3;
 		}
 		
 		private CourseGroupInfo currentCourseGroup() {
-			logger.debug("Starting method currentSeminarpool");
-			CourseGroupInfo courseGroupDetails = courseGroupOverview.getRowData();
-			CourseGroupInfo newCourseGroup = new CourseGroupInfo();
-			newCourseGroup.setId(courseGroupDetails.getId());
-			return newCourseGroup;
+			logger.debug("Starting method currentCourseGroup");
+			CourseGroupInfo courseGroupInfo = courseGroupOverview.getRowData();
+			CourseGroupInfo newcourseGroupInfo = new CourseGroupInfo();
+			newcourseGroupInfo.setId(courseGroupInfo.getId());
+			return newcourseGroupInfo;
 		}
-		
+
 		// Start CourseGroup Overview 
 		public DataPage<CourseGroupInfo> fetchDataPageCourseGroups(int startRow, int pageSize) {
 
@@ -209,6 +243,21 @@ import org.openuss.web.Constants;
 
 		public void setCourseGroupCapacity(int courseGroupCapacity) {
 			this.courseGroupCapacity = courseGroupCapacity;
+		}
+
+		public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
+			return seminarpoolAdministrationService;
+		}
+
+		public void setSeminarpoolAdministrationService(
+				SeminarpoolAdministrationService seminarpoolAdministrationService) {
+			this.seminarpoolAdministrationService = seminarpoolAdministrationService;
+		}
+		
+		private void clearCourseGroupInfoId(Collection<CourseGroupInfo> collection){
+			for(CourseGroupInfo courseGroupInfo: collection){
+				courseGroupInfo.setId(null);
+			}
 		}
 		
 	}

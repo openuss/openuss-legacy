@@ -14,6 +14,7 @@ import java.util.List;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * JUnit Test for Spring Hibernate SeminarpoolAdministrationService class.
@@ -38,6 +39,7 @@ public class SeminarpoolAdministrationServiceIntegrationTest extends Seminarpool
 		seminarpoolInfo.setMaxSeminarAllocations(1);
 		seminarpoolInfo.setPassword(testUtility.unique("passwort"));
 		seminarpoolInfo.setPriorities(3);
+		seminarpoolInfo.setAccessType(SeminarpoolAccessType.OPEN);
 		seminarpoolInfo.setRegistrationStartTime(new Timestamp(123456L));
 		seminarpoolInfo.setRegistrationEndTime(new Timestamp(123456L));
 		seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REVIEWPHASE);
@@ -392,5 +394,17 @@ logger.debug("----> BEGIN access to removeSeminarCondition test <---- ");
 		assertEquals(0, seminarpool.getSeminarCondition().size());
 		
 		logger.debug("----> END access to removeSeminarCondition test <---- ");
+	}
+	
+	public void testFindSeminarpoolAdministratorsBySeminarpool(){
+		logger.debug("----> BEGIN access to testFindSeminarpoolAdministratorsBySeminarpool test <---- ");
+		
+		//Create Seminarpool
+		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
+		flush();
+		List<UserInfo> userInfoList = seminarpoolAdministrationService.findSeminarpoolAdministratorsBySeminarpool(seminarpool.getId());
+		assertNotNull(userInfoList);
+		assertEquals(userInfoList.size(), 1);
+		logger.debug("----> END access to testFindSeminarpoolAdministratorsBySeminarpool test <---- ");
 	}
 }

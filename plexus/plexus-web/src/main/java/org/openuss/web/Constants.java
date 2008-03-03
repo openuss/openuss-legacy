@@ -282,8 +282,13 @@ public class Constants {
 	public static final String SEMINARPOOL_REGISTRATION_STEP2_PAGE = "seminarpool_create_step2";
 	public static final String SEMINARPOOL_MAIN = "seminarpoolMain";
 	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP1 = "seminarpoolCourseAllocationStep1";
-	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP2 = "seminarpoolCourseAllocationStep2";	
-	
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP2 = "seminarpoolCourseAllocationStep2";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_STEP3 = "seminarpoolCourseAllocationStep3";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_FINISH = "seminarpoolCourseAllocationFinish";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_GROUP = "seminarpool_course_groups_add_goups";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NO_GROUPS = "seminarpool_course_allocation_message_error_no_group";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NUMBER = "seminarpool_course_allocation_message_error_number";
+	public static final String SEMINARPOOL_COURSEGROUP_INFO = "SEMINARPOOL_COURSEGROUP_INFO"; 
 	public static final String SEMINARPOOL_INFO = "seminarpoolInfo";
 	public static final String SEMINARPOOL = "seminarpool";
 	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";

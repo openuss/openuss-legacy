@@ -47,10 +47,14 @@
 						<plexus:commandSortHeader columnName="name">
 							#{msg['seminarpool_course_groups_add_goups']}
 						</plexus:commandSortHeader>
-						<o:link value="/views/secured/seminarpool/add/courseAllocationStep2.xhtml">
-							<f:param name="seminarpool" value="#{bean.id}"/>
+						<o:link value="/views/secured/seminarpool/add/courseAllocationStep3.xhtml">
+							<f:param name="courseGroup" value="#{bean.id}"/>
 							<h:outputText value="#{bean.name}"/>
 						</o:link>
+						<h:commandLink action="#{seminarpoolCourseAllocationStep2.selectCurrentCourseGroup}">
+								<f:param name="courseGroup" value="#{bean.id}"/>
+								<h:outputText value="#{bean.name}"/>
+						</h:commandLink>
 					</t:column>
 					<t:column>
 						<plexus:commandSortHeader columnName="capacity">
@@ -65,13 +69,7 @@
 						<h:outputText value="#{bean.isTimeSet}"/>
 					</t:column>			
 				</plexus:dataTable>
-								<o:block label="#{msg.seminarpool_course_groups_add_new}">
-					<o:input 
-						label="#{msg.seminarpool_course_groups_add_name}"
-						entity="seminarpoolCourseAllocationStep2" 
-						property="courseGroupName" 
-						maxlength="100" 
-						required="true"/>
+				<o:block label="#{msg.seminarpool_course_groups_add_new}">
 					<o:input 
 						label="#{msg.seminarpool_course_groups_add_capacity}"
 						entity="seminarpoolCourseAllocationStep2" 
@@ -80,6 +78,10 @@
 						required="true"/>
 					<h:commandButton action="#{seminarpoolCourseAllocationStep2.addGroup}" value="#{msg.seminarpool_course_groups_add}" styleClass="button_continue"/>
 			   	</o:block>
+			   	<o:block>
+			   		<h:commandButton action="view:backward" value="#{msg.cancel}" styleClass="button_cancel"/>
+					<h:commandButton action="#{seminarpoolCourseAllocationStep2.addSeminar}" value="#{msg.seminarpool_course_add_seminar}" styleClass="button_continue"/>
+		  		</o:block>
 				
 		</h:form>
 		</ui:define>

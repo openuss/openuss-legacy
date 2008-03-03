@@ -78,29 +78,20 @@ public class SeminarRegistrationStep1Page extends BasePage{
 
 	private static final Logger logger = Logger.getLogger(SeminarRegistrationStep1Page.class);
 
+	private CourseInfo courseInfo;
 	
 	@Init
 	public void init() throws Exception {
-		seminarpoolOverview = new SeminarpoolOverview();  
+		courseInfo = (CourseInfo)getSessionBean(Constants.COURSE_INFO);
+		seminarpoolOverview = new SeminarpoolOverview();
+		CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo = (CourseSeminarpoolAllocationInfo)getSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
+		if (courseSeminarpoolAllocationInfo == null){
+			courseSeminarpoolAllocationInfo = new CourseSeminarpoolAllocationInfo();
+			setSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO, courseSeminarpoolAllocationInfo);
+		}
+		courseSeminarpoolAllocationInfo.setCourseId(courseInfo.getId());
 	}
 	
-
-	public String selectSeminarpool() {
-		logger.debug("Starting method selectInstitute");
-		SeminarpoolInfo seminarpoolInfo = currentSeminarpool();
-		logger.debug("Returning to method selectInstitute");
-		logger.debug(seminarpoolInfo.getId());
-		// setSessionBean(Constants.INSTITUTE, institute);
-		return Constants.INSTITUTE_PAGE;
-	}
-	
-	private SeminarpoolInfo currentSeminarpool() {
-		logger.debug("Starting method currentSeminarpool");
-		SeminarpoolInfo seminarpoolDetails = seminarpoolOverview.getRowData();
-		SeminarpoolInfo newSeminarpoolInfo = new SeminarpoolInfo();
-		newSeminarpoolInfo.setId(seminarpoolDetails.getId());
-		return newSeminarpoolInfo;
-	}
 	
 
 	// Start Seminarpool Overview 
@@ -112,7 +103,6 @@ public class SeminarRegistrationStep1Page extends BasePage{
 				logger.debug("fetch seminarpools data page at " + startRow + ", " + pageSize + " sorted by "
 						+ seminarpoolOverview.getSortColumn());
 			}
-			CourseInfo courseInfo = (CourseInfo)getSessionBean("courseInfo");
 			InstituteInfo instituteInfo = getInstituteService().findInstitute(courseInfo.getInstituteId());
 			DepartmentInfo departmentInfo = getDepartmentService().findDepartment(instituteInfo.getDepartmentId());
 			UniversityInfo universityInfo = getUniversityService().findUniversity(departmentInfo.getUniversityId());
