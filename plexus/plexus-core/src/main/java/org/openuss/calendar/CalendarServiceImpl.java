@@ -34,8 +34,6 @@ public class CalendarServiceImpl extends
 			org.openuss.foundation.DomainObject domainObject)
 			throws java.lang.Exception {
 
-		// TODO check whether the calendar was already created for this domain
-		// object
 		Calendar calendar = getCalendarDao().findByDomainIdentifier(domainObject.getId());
 		if (calendar == null) {		
 			Calendar cal = Calendar.Factory.newInstance();
