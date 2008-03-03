@@ -88,11 +88,12 @@
 				PATTERN_TYPE_APACHE_ANT 
 				/views/commons/**=ROLE_USER
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
-				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
+				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
 				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
 				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
+				/views/secured/migration/**=ROLE_LDAPUSER
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER
 				/views/**=ROLE_ADMIN
@@ -113,6 +114,7 @@
 				<ref local="daoAuthenticationProvider" />
 				<ref local="anonymousAuthenticationProvider" />
 				<ref local="rememberMeAuthenticationProvider"/>
+				<ref local="configurableLdapAuthenticationProvider"/>
 			</list>
 		</property>
 	</bean>
@@ -196,6 +198,17 @@
   
     <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider"> 
         <property name="key" value="openuss-plexus"/>
+    </bean>
+    
+    
+    <!-- ===================== LDAP ==================== -->
+    
+	<bean id="ldapConfigurationServiceDummy" class="org.openuss.security.ldap.LdapConfigurationServiceDummy">
+    </bean>
+    
+    <bean id="configurableLdapAuthenticationProvider" class="org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderImpl"> 
+        <property name="userCache" ref="userCache"/>
+        <property name="ldapConfigurationService" ref="ldapConfigurationServiceDummy"/>
     </bean>
     
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
