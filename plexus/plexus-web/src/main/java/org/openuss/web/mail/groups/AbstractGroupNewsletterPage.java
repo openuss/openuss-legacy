@@ -20,7 +20,7 @@ import org.openuss.web.groups.components.AbstractGroupPage;
 
 public class AbstractGroupNewsletterPage extends AbstractGroupPage {
 
-	@Property(value = "#{courseNewsletterService}")
+	@Property(value = "#{groupNewsletterService}")
 	protected GroupNewsletterService groupNewsletterService;
 
 	@Property(value = "#{" + Constants.NEWSLETTER_MAIL + "}")
