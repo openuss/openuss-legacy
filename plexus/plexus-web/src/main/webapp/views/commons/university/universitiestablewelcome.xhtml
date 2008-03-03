@@ -17,6 +17,15 @@
 		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 		rows="15"
 		infoText="#{msg.table_info_text_universities}">
+		
+		<t:column>
+			<h:graphicImage renderer="${not empty bean.imageId}"
+						value="/files?fileid=#{bean.imageId}"
+						alt="#{msg.logo} #{bean.name}"
+						title="#{msg.logo} #{bean.name}"
+						style="height:40px; display:block;"/>		
+		</t:column>
+		
 		<t:column>
 			<plexus:commandSortHeader columnName="name">
 				#{msg['university_name']}
