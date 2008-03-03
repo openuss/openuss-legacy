@@ -65,15 +65,15 @@ public class InstituteIndexingAspect {
 			if (instituteInfo.isEnabled()) {
 				logger.debug("method updateInstituteIndex: updateIndex");
 				indexerService.updateIndex(institute);
-				/*
-				Course course;
-				for(Object courseTemp : institute.getAllCourses()) {
-					course = (Course) courseTemp;
-					if (course.getAccessType() != AccessType.CLOSED) {
-						indexerService.updateIndex(course);
-					}
-				}
-				*/
+//				Course course;
+//				for(Object courseTemp : institute.getAllCourses()) {
+//					if (courseTemp instanceof CourseImpl){
+//						course = (Course) courseTemp;
+//						if (course.getAccessType() != AccessType.CLOSED) {
+//							indexerService.updateIndex(course);
+//						}
+//					}
+//				}
 			} else {
 				logger.debug("method updateInstituteIndex: deleteIndex");
 				deleteInstituteFromIndexCascade(institute);
