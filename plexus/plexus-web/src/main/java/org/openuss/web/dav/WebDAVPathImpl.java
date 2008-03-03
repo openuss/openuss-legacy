@@ -85,23 +85,23 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	public String getFileName() {
 		// Find end of file name
-		int endPos = path.length()-1; // Last character of the file name
-		while ((endPos - PATH_SEP.length() + 1 >= 0) && PATH_SEP.equals(path.substring(endPos - PATH_SEP.length() + 1, endPos+1))) {
+		int endPos = path.length(); // Last character of the file name + 1
+		while ((endPos - PATH_SEP.length() >= 0) && PATH_SEP.equals(path.substring(endPos - PATH_SEP.length(), endPos))) {
 			endPos -= PATH_SEP.length();
 		}
 		
 		// No content
-		if (endPos < 0) {
+		if (endPos <= 0) {
 			return null;
 		}
 		
 		// Find previous path separator
-		int startPos = toResolve.lastIndexOf(PATH_SEP, endPos);
+		int startPos = path.lastIndexOf(PATH_SEP, endPos - 1);
 		if (startPos < 0) {
 			startPos = 0;
 		}
 		
-		String res = toResolve.substring(startPos, endPos + 1);
+		String res = path.substring(startPos, endPos);
 		if ("".equals(res)) {
 			return null;
 		}
@@ -262,5 +262,12 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	public boolean isResolved() {
 		return (toResolve == null);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#asResolved()
+	 */
+	public WebDAVPath asResolved() {
+		return new WebDAVPathImpl(path + toResolve, null);
 	}
 }

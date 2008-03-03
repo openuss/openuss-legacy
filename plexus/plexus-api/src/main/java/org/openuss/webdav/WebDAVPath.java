@@ -25,7 +25,7 @@ public interface WebDAVPath {
 	
 	/**
 	 * @return The local file name.
-	 * 			For example, a WebDAVPath("/a/b/cd.e") would return "cd.e".
+	 * 			For example, a fully resolved WebDAVPath("/a/b/cd.e") would return "cd.e".
 	 * 			null is returned for the root path.
 	 */
 	public String getFileName();
@@ -90,6 +90,11 @@ public interface WebDAVPath {
 	 * 			null if no more elements are to be resolved. 
 	 */
 	public WebDAVPath next();
+
+	/**
+	 * @return The fully resolved path. This should be equal to sequentially calling next() until it returns null. 
+	 */
+	public WebDAVPath asResolved();
 	
 	/**
 	 * Returns the common path of two yet unresolved WebDAV paths.
