@@ -103,6 +103,9 @@ public class Constants {
 	
 	// ldap_domain navigation outcomes and combobox long constants
 	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldap_domainRegistration";
+	public static final String LDAP_DOMAIN_REGISTRATION_STEP1_PAGE = "ldap_domain_registration_step1";
+	public static final String AUTHENTICATIONDOMAIN_INFO = "authenticationDomainInfo";
+	
 	
 
 	// institute navigation outcomes and combobox long constants
