@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.course_main_title} - #{groupInfo.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<!-- removed ACL tags -->
+
+		<h:form id="newsletterSubscribers">
+			<plexus:dataTable id="subscribertable"
+				label="#{msg.newsletter_subscribertable_header}"
+				value="views$secured$newsletter$groups$newslettersubscribers.data"
+		    	columnClasses="col_max_left, col_max_center, col_commands"
+				var="subscriber" rows="30">
+
+
+				<t:column>
+					<plexus:commandSortHeader columnName="displayName">#{msg['newsletter_contact_name']}</plexus:commandSortHeader>
+					<h:commandLink value="#{subscriber.displayName}" action="#{views$secured$newsletter$groups$newslettersubscribers.showProfile}" title="#{subscriber.displayName}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
+					<h:outputText value="#{subscriber.email}" />
+				</t:column>
+
+				<plexus:column header="#{msg.commands_header}">
+					<plexus:command 
+						bean="#{views$secured$newsletter$groups$newslettersubscribers}" 
+						action="showProfile" 
+						label="#{msg['user_profile_command_show_profile']}"
+						title="#{msg['user_profile_command_show_profile_hint']}"
+						styleClass="icon_profile"  />
+					<plexus:command
+						bean="#{views$secured$newsletter$groups$newslettersubscribers}"
+						action="removeSubscriber"
+						label="#{msg['newsletter_subscriber_remove']}"
+						title="#{msg['newsletter_subscriber_remove_hint']}"
+						styleClass="icon_remove" />
+				</plexus:column>
+
+			</plexus:dataTable>
+			<o:block>
+				<h:commandButton
+					action="#{views$secured$newsletter$groups$newslettersubscribers.exportSubscribers}"
+					value="#{msg['mailingjob_newmail_button_export']}"
+					title="#{msg['mailingjob_newmail_button_export']}"
+					styleClass="button" />
+				<h:commandButton value="${msg.back}" title="#{msg.back}"
+					action="course_newsletter" styleClass="button"
+					immediate="true" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>

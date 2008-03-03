@@ -35,6 +35,7 @@ public class PageLinks{
 	public static final String UNIVERSITY_PERIODS = "/views/secured/lecture/universityperiods.faces";
 	
 	public static final String COURSE_NEWSLETTER = "/views/secured/newsletter/newsletter.faces";
+	public static final String GROUP_NEWSLETTER = "/views/secured/newsletter/groups/newsletter.faces";
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
 	

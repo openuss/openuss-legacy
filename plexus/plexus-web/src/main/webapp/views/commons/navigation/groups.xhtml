@@ -23,7 +23,7 @@
 						<h:outputText value="#{msg['course_command_overview']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="group_newsletter"
-						activeOnViewIds="/views/secured/newsletter/newsletter.xhtml,/views/secured/newsletter/newslettersubscribers.xhtml,/views/secured/newsletter/exportedsubscribers.xhtml,/views/secured/newsletter/showmail.xhtml,/views/secured/newsletter/newmail.xhtml"
+						activeOnViewIds="/views/secured/newsletter/groups/newsletter.xhtml,/views/secured/newsletter/groups/newslettersubscribers.xhtml,/views/secured/newsletter/groups/exportedsubscribers.xhtml,/views/secured/newsletter/groups/showmail.xhtml,/views/secured/newsletter/groups/newmail.xhtml"
 						rendered="#{groupInfo.newsletter}">
 						<h:outputText value="#{msg['course_command_newsletter']}" />
 					</t:commandNavigation2>
@@ -47,7 +47,8 @@
 						<h:outputText value="#{msg['course_command_options_news']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="openuss4us_calendar_calendar"
-						activeOnViewIds="/views/secured/calendar/calendar.xhtml">
+						activeOnViewIds="/views/secured/calendar/calendar.xhtml"
+						rendered="#{groupInfo.calendar}">
 						<h:outputText value="#{msg['course_command_calendar']}" />
 					</t:commandNavigation2>
 

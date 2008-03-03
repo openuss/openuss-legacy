@@ -260,6 +260,38 @@
 		</navigation-case>	
 		
 		<navigation-case>
+			<from-outcome>openuss4us_groups_create</from-outcome>
+			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
+		</navigation-case>
+				
+		<navigation-case>
+			<from-outcome>openuss4us_groups_join</from-outcome>
+			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_leave</from-outcome>
+			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>calendar_create_single_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createsingleappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>calendar_create_serial_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
+		</navigation-case>
+			
+	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	G r o u p s - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    	<navigation-rule>
+    	
+    		<navigation-case>
 			<from-outcome>group_main</from-outcome>
 			<to-view-id>/views/secured/groups/components/main.xhtml</to-view-id>
 		</navigation-case>
@@ -272,6 +304,11 @@
 		<navigation-case>
 			<from-outcome>group_news_edit</from-outcome>
 			<to-view-id>/views/secured/groups/components/groupnewsedit.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>group_newsletter</from-outcome>
+			<to-view-id>/views/secured/newsletter/groups/newsletter.xhtml</to-view-id>
 		</navigation-case>
 		
 		<navigation-case>
@@ -303,37 +340,7 @@
 			<to-view-id>/views/secured/discussion/groups/discussions.xhtml</to-view-id>
 		</navigation-case>
 	
-		<navigation-case>
-			<from-outcome>openuss4us_groups_create</from-outcome>
-			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
-		</navigation-case>
-				
-		<navigation-case>
-			<from-outcome>openuss4us_groups_join</from-outcome>
-			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>openuss4us_groups_leave</from-outcome>
-			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>calendar_create_single_appointment</from-outcome>
-			<to-view-id>/views/secured/calendar/createsingleappointment.xhtml</to-view-id>
-		</navigation-case>
-		
-		<navigation-case>
-			<from-outcome>calendar_create_serial_appointment</from-outcome>
-			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
-		</navigation-case>
-			
-	</navigation-rule>
 	
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-    	G r o u p s - P a g e
-    - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    	<navigation-rule>
     		
     		<!-- documents -->
 
@@ -392,6 +399,29 @@
 			<navigation-case>
 				<from-outcome>group_discussion_removethread</from-outcome>
 				<to-view-id>/views/secured/discussion/groups/removethread.xhtml</to-view-id>				
+			</navigation-case>
+		
+		<!-- newsletter -->
+			
+			<navigation-case>
+				<from-outcome>group_newsletter_newmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/groups/newmail.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>group_newsletter_subscribers</from-outcome>
+				<to-view-id>/views/secured/newsletter/groups/newslettersubscribers.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			
+			<navigation-case>
+				<from-outcome>group_newsletter_showmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/groups/showmail.xhtml</to-view-id>				
+			</navigation-case>			
+		
+			<navigation-case>
+				<from-outcome>group_newsletter_export</from-outcome>
+				<to-view-id>/views/secured/newsletter/groups/exportedsubscribers.xhtml</to-view-id>				
 			</navigation-case>
 				
 	</navigation-rule>
