@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.openuss.web.dav.backends.WebDAVRootResource;
+import org.openuss.web.dav.backends.RootResource;
 import org.openuss.web.dav.MultiStatusAnswerImpl;
 import org.openuss.web.dav.SimpleStatusResponse;
 import org.openuss.web.dav.NullIOContext;
@@ -67,7 +67,7 @@ public class WebDAVServlet extends HttpServlet {
 			boolean overwrite;
 			boolean recursive;
 			int depth;
-			WebDAVRootResource root = new WebDAVRootResource();
+			RootResource root = new RootResource();
 			WebDAVPath path;
 			WebDAVResource resource;
 			Document doc;
