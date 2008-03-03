@@ -1,8 +1,8 @@
 package org.openuss.web.dav;
 
 import org.apache.commons.lang.StringUtils;
-import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.webdav.WebDAVPath;
+import org.openuss.webdav.WebDAVURLUTF8Encoder;
 
 /**
  * A WebDAVPath in OpenUSS.
@@ -55,9 +55,9 @@ public class WebDAVPathImpl implements WebDAVPath {
 			prefix = prefix + PATH_SEP;
 		}
 		
-		clientInput = URLUTF8Encoder.decode(clientInput);
+		clientInput = WebDAVURLUTF8Encoder.decode(clientInput);
 		
-		if (clientInput.startsWith(clientInput)) {
+		if (!clientInput.startsWith(prefix)) {
 			throw new IllegalArgumentException("Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
 		}
 		
@@ -163,7 +163,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @see org.openuss.webdav.WebDAVPath#toClientString()
 	 */
 	public String toClientString() {
-		return URLUTF8Encoder.encode(path);
+		return WebDAVURLUTF8Encoder.encode(path);
 	}
 
 	/* (non-Javadoc)
