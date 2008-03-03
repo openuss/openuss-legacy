@@ -229,4 +229,32 @@ public class BuddyServiceImpl
 		}
 		return results;
 	}
+
+	@Override
+	protected boolean handleIsUserBuddy(User buddy) throws Exception {
+		User user = getSecurityService().getCurrentUser();
+		if(user == null)
+			throw new Exception("No current user");
+		BuddyList buddylist = getBuddyListDao().findByDomainIdentifier(user.getId());
+		if(buddylist == null || buddylist.getBuddies() == null)
+			return false;
+		for(Buddy b : buddylist.getBuddies()){
+			if(b.getUser().equals(buddy))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected boolean handleIsUserBuddy(UserInfo userInfo) throws Exception {
+		return this.isUserBuddy(userInfo.getId());
+	}
+
+	@Override
+	protected boolean handleIsUserBuddy(Long userId) throws Exception {
+		User user = getUserDao().load(userId);
+		if(user == null)
+			throw new Exception("User could not be found!");
+		return this.isUserBuddy(user);
+	}
 }
