@@ -87,6 +87,9 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
 	
+	// Default combinations of base workspace permissions
+	public static final int WORKSPACE_PARTICIPANT = READ | CREATE | UPDATE | DELETE;
+	
 	// Combinations of base permissions we permit
 	public static final int RU = READ | UPDATE;
 	public static final int CRU = CREATE | RU;
