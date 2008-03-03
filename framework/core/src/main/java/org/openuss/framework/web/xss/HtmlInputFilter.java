@@ -107,6 +107,32 @@ public class HtmlInputFilter {
 		a_atts.add("color");
 		a_atts.add("style");
 		vAllowed.put("a", a_atts);
+		
+		ArrayList<String> table_atts  = new ArrayList<String>();
+		table_atts.add("width");
+		table_atts.add("cellspacing");
+		table_atts.add("cellpadding");
+		table_atts.add("border");
+		table_atts.add("style");
+		vAllowed.put("table", table_atts);
+		
+		ArrayList<String> col_atts  = new ArrayList<String>();
+		col_atts.add("width");
+		col_atts.add("span");
+		col_atts.add("style");
+		vAllowed.put("col", col_atts);
+		
+		ArrayList<String> tr_atts  = new ArrayList<String>();
+		tr_atts.add("height");
+		tr_atts.add("style");
+		vAllowed.put("tr", tr_atts);
+
+		ArrayList<String> td_atts  = new ArrayList<String>();
+		td_atts.add("height");
+		td_atts.add("align");
+		td_atts.add("style");
+		td_atts.add("class");
+		vAllowed.put("td", td_atts);
 
 		ArrayList<String> img_atts = new ArrayList<String>();
 		img_atts.add("src");
@@ -133,10 +159,12 @@ public class HtmlInputFilter {
 		vAllowed.put("font", default_atts );
 		vAllowed.put("strike", default_atts );
 		vAllowed.put("u", default_atts );
+		vAllowed.put("tbody", default_atts );
+		
 		
 
-		vSelfClosingTags = new String[] { "img" , "br"};
-		vNeedClosingTags = new String[] { "a", "b", "strong", "i", "em" };
+		vSelfClosingTags = new String[] { "img" , "br", "col"};
+		vNeedClosingTags = new String[] { "a", "b", "strong", "i", "em", "table", "tbody", "tr", "td" };
 		vAllowedProtocols = new String[] { "http", "mailto" }; // no ftp.
 		vProtocolAtts = new String[] { "src", "href" };
 		vRemoveBlanks = new String[] { "a", "b", "strong", "i", "em", "p", "ul", "ol", "li" };
