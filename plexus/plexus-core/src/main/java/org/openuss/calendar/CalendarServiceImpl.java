@@ -643,7 +643,7 @@ public class CalendarServiceImpl extends
 	@Override
 	protected void handleDeleteAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
-		// TODO Auto-generated method stub
+		// TODO Calendar Implement deleteAppointmentType
 		
 	}
 
@@ -660,7 +660,9 @@ public class CalendarServiceImpl extends
 	@Override
 	protected void handleUpdateAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
-		// TODO Auto-generated method stub
+		AppointmentType appType = getAppointmentTypeDao().load(appointmentTypeInfo.getId());
+		appType.setName(appointmentTypeInfo.getName());
+		getAppointmentTypeDao().update(appType);
 		
 	}
 
