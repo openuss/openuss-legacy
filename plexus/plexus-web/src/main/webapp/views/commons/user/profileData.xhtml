@@ -57,6 +57,7 @@
 					<o:input entity="user" property="matriculation" maxlength="50"/>
 					<o:input entity="user" property="studies" maxlength="50"/>
 					<o:input entity="user" property="smsEmail" maxlength="100">
+						<h:outputText value="#{msg.user_smsemail_explain}" styleClass="content_font_normal" />
 						<t:validateEmail/>
 					</o:input>
 				
