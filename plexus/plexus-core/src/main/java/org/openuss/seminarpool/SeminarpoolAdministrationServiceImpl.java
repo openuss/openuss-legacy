@@ -520,17 +520,22 @@ public class SeminarpoolAdministrationServiceImpl
     	Validate.notNull(seminarpoolEntity, "handleFindSeminarpoolAdministratorsBySeminarpool ==> seminarpool cannot loaded");
     	Membership membership = seminarpoolEntity.getMembership();
     	List<User> userList = membership.getMembers();
-    	Validate.notNull(userList, "handleFindSeminarpoolAdministratorsBySeminarpool ==> userList cannot be null");
-    	Validate.notEmpty(userList, "handleFindSeminarpoolAdministratorsBySeminarpool ==> userList is empty");
     	List<UserInfo> userInfoList = new ArrayList<UserInfo>();
     	for (User user: userList){
-    		UserInfo userInfo = getUserDao().toUserInfo(user);
-    		userInfoList.add(userInfo);
+    		userInfoList.add(getUserDao().toUserInfo(user));
     	}
 		return userInfoList;
 	}
 
 	@Override
+	protected SeminarConditionInfo handleFindConditionById(Long conditionId)
+			throws Exception {
+    	Validate.notNull(conditionId, "handleFindConditionById ==> conditionId cannot be null");
+    	SeminarCondition seminarCondition = getSeminarConditionDao().load(conditionId);
+    	Validate.notNull(seminarCondition, "handleFindConditionById ==> SeminarCondition cannot be loaded");
+    	SeminarConditionInfo seminarCondtionInfo = getSeminarConditionDao().toSeminarConditionInfo(seminarCondition);
+		return seminarCondtionInfo;
+	}
 	protected void handleActivateSeminar(
 			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocation)
 			throws Exception {
@@ -541,6 +546,17 @@ public class SeminarpoolAdministrationServiceImpl
     	courseAllocationEntity.setAccepted(true);
     	getCourseSeminarpoolAllocationDao().update(courseAllocationEntity);
 	}
-
-
+	@Override
+	protected List handleFindConditionBySeminarpool(Long seminarpoolId)
+			throws Exception {
+    	Validate.notNull(seminarpoolId, "handleFindConditionBySeminarpool ==> seminarpoolId cannot be null");
+    	Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+    	Validate.notNull(seminarpool, "handleFindConditionById ==> seminarpool cannot be loaded");
+    	Collection<SeminarCondition> seminarConditionList = seminarpool.getSeminarCondition();
+    	List<SeminarConditionInfo> seminarConditionInfoList = new ArrayList<SeminarConditionInfo>();
+    	for (SeminarCondition seminarCondition :  seminarConditionList){
+    		seminarConditionInfoList.add(getSeminarConditionDao().toSeminarConditionInfo(seminarCondition));
+    	}
+		return seminarConditionInfoList;
+	}
 }

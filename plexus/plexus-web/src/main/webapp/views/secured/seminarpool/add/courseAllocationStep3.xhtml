@@ -36,17 +36,51 @@
 						<h:outputText value="#{msg.seminarpool_cours_schedule_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
-			   	<o:block label="#{msg.seminarpool_cours_schedule_edit_capacity_label}">
+			   	<o:block label="#{msg.seminarpool_course_schedule_edit_label}">
 					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_cours_schedule_edit_capacity_text}" escape="false"/>
-	<!--					<o:input 
-						label="#{msg.seminarpool_course_groups_add_capacity}"
-						entity="seminarpoolCourseAllocationStep3" 
-						property="aktCourseGroupInfo.capacity" 
+						<o:input 
+						label="#{msg['seminarpool_course_groups_add_capacity']}"
+						entity="SEMINARPOOL_COURSEGROUP_INFO" 
+						property="capacity" 
 						maxlength="100" 
 						required="true"/>
-						
-			   		</div>-->
+							<div class="content_font_normal"> 
+								<plexus:dataTable 
+								id="coursegroups" 
+								label="#{msg.seminarpool_course_groups_add_header}" 
+								value="seminarpoolCourseAllocationStep3.courseScheduleOverview" 
+								var="bean" 
+								columnClasses="col_max_left, col_max_left, col_commands"
+								rows="20">
+								<t:column>
+									<plexus:commandSortHeader columnName="start">
+										#{msg['seminarpool_course_schedule_edit_startdate']}
+									</plexus:commandSortHeader>
+									<h:outputText value="#{bean.startTime}"/>
+								</t:column>
+								<t:column>
+									<plexus:commandSortHeader columnName="end">
+										#{msg['seminarpool_course_schedule_edit_enddate']}
+									</plexus:commandSortHeader>
+									<h:outputText value="#{bean.endTime}"/>
+								</t:column>
+							</plexus:dataTable>
+							<o:input
+								label="#{msg.seminarpool_registration_start_time}"
+								entity="seminarpoolRegistration"
+								property="startTime"
+								maxlength="16"
+								required="true" />
+							<o:input
+								label="#{msg.seminarpool_registration_end_time}"
+								entity="seminarpoolRegistration"
+								property="endTime"
+								maxlength="16"
+								required="true" />
+							<h:commandButton value="#{msg.back}" action="seminarpool_create_start" styleClass="button_back" immediate="true" />
+							<h:commandButton value="#{msg.forward}" action="seminarpool_create_step2" styleClass="button_continue" />
+						</div>
+			   		</div>
 			   	</o:block>
 		</h:form>
 		</ui:define>

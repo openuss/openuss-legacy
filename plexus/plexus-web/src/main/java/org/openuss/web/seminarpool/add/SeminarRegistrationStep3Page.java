@@ -1,16 +1,14 @@
 package org.openuss.web.seminarpool.add;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import javax.faces.context.FacesContext;
-
-import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Init;
+import org.apache.shale.tiger.view.Preprocess;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -25,39 +23,28 @@ public class SeminarRegistrationStep3Page extends BasePage {
 	
 	private DataPage<CourseScheduleInfo> dataPageCourseSchedule;
 
-	private CourseScheduleOverview courseScheduleOverview;
+	private CourseScheduleOverview courseScheduleOverview = new CourseScheduleOverview();
 	
 	private List<CourseScheduleInfo> courseScheduleInfoList;
 	
-	private List<CourseGroupInfo> courseGroupInfoList;
+	private int capacity;
 	
-	private CourseGroupInfo aktCourseGroupInfo;
+	private Date startTime;
 	
-
+	private Date endTime;
 	
 	
 	private static final Logger logger = Logger.getLogger(SeminarRegistrationStep3Page.class);
 	
-	@Init
-	public void init() throws Exception {
+	
+	@Prerender
+	public void prerender() throws Exception  {
 		loadRequiredParams();
-		courseScheduleOverview= new CourseScheduleOverview();		
 	}
 	
 	private void loadRequiredParams(){
-		courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
-//		Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//		Long paramCourseGroup;
-//		try {
-//			String stringCourseGroup = (String) params.get("courseGroup");
-//			paramCourseGroup = Long.valueOf(stringCourseGroup);
-//			Validate.notNull(paramCourseGroup, "seminarpoolId cannot be null");
-//
-//		} catch (Exception e) {
-//			throw new IllegalArgumentException("seminarpoolId cannot be null");
-//		}
-//		aktCourseGroupInfo = courseGroupInfoList.get(paramCourseGroup.intValue());
-		aktCourseGroupInfo = (CourseGroupInfo) getSessionBean(Constants.SEMINARPOOL_COURSEGROUP_INFO);
+		CourseGroupInfo aktCourseGroupInfo = (CourseGroupInfo) getSessionBean(Constants.SEMINARPOOL_COURSEGROUP_INFO);
+		capacity = aktCourseGroupInfo.getCapacity();
 		logger.info("Seminarpool CourseGroupInfo " + aktCourseGroupInfo == null);
 		if ( aktCourseGroupInfo.getCourseSchedule() == null){
 			courseScheduleInfoList = new ArrayList<CourseScheduleInfo>();
@@ -69,7 +56,7 @@ public class SeminarRegistrationStep3Page extends BasePage {
 	
 	// Start CourseScheduleInfo Overview 
 	public DataPage<CourseScheduleInfo> fetchDataPageCourseSchedule(int startRow, int pageSize) {
-
+		loadRequiredParams();
 		if (dataPageCourseSchedule == null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch seminarpools data page at " + startRow + ", " + pageSize + " sorted by "
@@ -118,20 +105,29 @@ public class SeminarRegistrationStep3Page extends BasePage {
 		this.courseScheduleInfoList = courseScheduleInfoList;
 	}
 
-	public List<CourseGroupInfo> getCourseGroupInfoList() {
-		return courseGroupInfoList;
+	public int getCapacity() {
+		return capacity;
 	}
 
-	public void setCourseGroupInfoList(List<CourseGroupInfo> courseGroupInfoList) {
-		this.courseGroupInfoList = courseGroupInfoList;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
-	public CourseGroupInfo getAktCourseGroupInfo() {
-		return aktCourseGroupInfo;
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public void setAktCourseGroupInfo(CourseGroupInfo aktCourseGroupInfo) {
-		this.aktCourseGroupInfo = aktCourseGroupInfo;
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
 
 }

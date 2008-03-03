@@ -47,7 +47,7 @@
 							<plexus:commandSortHeader columnName="name">
 								#{msg['seminarpool_name']}
 							</plexus:commandSortHeader>
-							<h:commandLink action="SEMINARPOOL_COURSE_ALLOCATION_STEP2">
+							<h:commandLink action="#{seminarpoolCourseAllocationStep1.selectCurrentSeminarpool}">
 								<f:param name="seminarpool" value="#{bean.id}"/>
 								<h:outputText value="#{bean.name}"/>
 							</h:commandLink>

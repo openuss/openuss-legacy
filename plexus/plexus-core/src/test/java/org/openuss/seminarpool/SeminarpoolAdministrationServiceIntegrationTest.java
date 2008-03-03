@@ -407,4 +407,18 @@ logger.debug("----> BEGIN access to removeSeminarCondition test <---- ");
 		assertEquals(userInfoList.size(), 1);
 		logger.debug("----> END access to testFindSeminarpoolAdministratorsBySeminarpool test <---- ");
 	}
+	
+	public void testFindConditionById(){
+		SeminarCondition seminarCondition = testUtility.createSeminarCondition();
+		SeminarConditionInfo newSeminarCondtion = getSeminarpoolAdministrationService().findConditionById(seminarCondition.getId());
+		assertNotNull(newSeminarCondtion);
+	}
+	
+	public void testFindConditionBySeminarpoolId(){
+		SeminarCondition seminarCondition = testUtility.createSeminarCondition();
+		List<SeminarConditionInfo> seminarCondtionInfoList = getSeminarpoolAdministrationService().findConditionBySeminarpool(seminarCondition.getSeminarpool().getId());
+		assertNotNull(seminarCondtionInfoList);
+	}
+
+	
 }

@@ -1247,7 +1247,7 @@
 			<to-view-id>/views/secured/seminarpool/add/courseAllocationStep1.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>SEMINARPOOL_COURSE_ALLOCATION_STEP2</from-outcome>
+			<from-outcome>seminarpoolCourseAllocationStep2</from-outcome>
 			<to-view-id>/views/secured/seminarpool/add/courseAllocationStep2.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
