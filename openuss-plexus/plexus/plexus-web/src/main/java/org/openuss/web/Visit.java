@@ -89,14 +89,13 @@ public class Visit extends BaseBean implements Serializable{
 		if (locale == null) {
 			locale = getViewRoot().getLocale().toString();
 		}
-		
 		if (logger.isTraceEnabled()) {
 			logger.trace("get locale "+locale);
 		}
-		if (locale == null) {
-			logger.error("locale is still null - set to default en");
-			locale = "en";
-		}
+//		if (locale == null) {
+//			logger.error("locale is still null - set to default en");
+//			locale = "en";
+//		}
 		return locale;
 	}
 
