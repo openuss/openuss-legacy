@@ -56,6 +56,11 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 		return super.equals(object);
 	}
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	/**
 	 * @see org.openuss.security.User#isAccountNonLocked()
 	 */

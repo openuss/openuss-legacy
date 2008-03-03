@@ -39,7 +39,7 @@ public class LabelRenderer extends Renderer {
 
 		String renderedId = (input != null) ? input.getClientId(context) : component.getClientId(context);
 		writer.writeAttribute("for", renderedId, null);
-		writer.write(attrs.get("value").toString());
+		writer.write(attrs.get("value"));
 	}
 
 	public void encodeEnd(FacesContext context, UIComponent component) throws java.io.IOException {

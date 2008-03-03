@@ -152,12 +152,12 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 			setAutowireMode(AUTOWIRE_BY_NAME);
 			return new String[] { 
 				"classpath*:applicationContext.xml", 
-	//			"classpath*:applicationContext-beans.xml",
-	//			"classpath*:applicationContext-lucene.xml",
+				"classpath*:applicationContext-beans.xml",
+				"classpath*:applicationContext-lucene.xml",
 				"classpath*:applicationContext-cache.xml", 
-	//			"classpath*:applicationContext-messaging.xml",
-	//			"classpath*:applicationContext-resources.xml",
-	//			"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-messaging.xml",
+				"classpath*:applicationContext-resources.xml",
+				"classpath*:applicationContext-aop.xml",
 				"classpath*:applicationContext-remote.xml",
 				"classpath*:testIntegrated-webservice.xml",
 	//			"classpath*:testContext.xml", 
