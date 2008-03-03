@@ -155,7 +155,7 @@ public class Constants {
 	public static final String GROUP_DOCUMENTS_ADD_ZIP_PAGE = "group_documents_add_zip";
 	public static final String GROUP_DOCUMENTS_EDIT_FOLDER_PAGE = "group_documents_edit_folder";
 	public static final String GROUP_DOCUMENTS_EDIT_FILEENTRY_PAGE = "group_documents_edit_file";
-	public static final String GROUP_DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "dgroup_ocuments_remove_folderentries";
+	public static final String GROUP_DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "group_documents_remove_folderentries";
 	
 	// forum navigation outcomes and combobox long constants
 	public static final String FORUM_NEW = "group_discussion_new";

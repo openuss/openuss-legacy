@@ -53,7 +53,7 @@ public class AbstractGroupDocumentPage extends AbstractGroupPage {
 				crumb.setName(folder.getName());
 				crumb.setHint(folder.getDescription());
 			}
-			crumb.setLink(PageLinks.DOCUMENTS_MAIN);
+			crumb.setLink(PageLinks.GROUP_DOCUMENTS_MAIN);
 			crumb.addParameter("group",groupInfo.getId());
 			crumb.addParameter("folder",folder.getId());
 			breadcrumbs.addCrumb(crumb);
@@ -85,11 +85,12 @@ public class AbstractGroupDocumentPage extends AbstractGroupPage {
 	}
 
 	protected FolderInfo retrieveActualFolder() {
+		logger.debug("Scheisse die Wand an");
 		return documentService.getFolder(groupInfo, currentFolder);
 	}	
 	
 	public List<FolderInfo> getCurrentPath() {
-		logger.debug("getting current path");
+		logger.debug("getting current path:NOW");
 		if (currentFolder != null && currentFolder.getId() != null) {
 			return documentService.getFolderPath(retrieveActualFolder());
 		} else {

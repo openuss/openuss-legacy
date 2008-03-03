@@ -152,7 +152,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 			logger.debug("deleting documents:");
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
-			return Constants.DOCUMENTS_REMOVE_FOLDERENTRY_PAGE;
+			return Constants.GROUP_DOCUMENTS_REMOVE_FOLDERENTRY_PAGE;
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}

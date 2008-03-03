@@ -11,7 +11,7 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 
-@Bean(name = "views$secured$documents$grouops$folderedit", scope = Scope.REQUEST)
+@Bean(name = "views$secured$documents$groups$folderedit", scope = Scope.REQUEST)
 @View
 public class GroupFolderEditPage extends AbstractGroupDocumentPage{
 	private static final Logger logger = Logger.getLogger(GroupFolderEditPage.class);

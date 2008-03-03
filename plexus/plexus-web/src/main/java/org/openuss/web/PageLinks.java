@@ -39,6 +39,8 @@ public class PageLinks{
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
 	
+	public static final String GROUP_DOCUMENTS_MAIN = "/views/secured/documents/groups/documents.faces";
+	
 	public static final String COLLABORATION_MAIN = "/views/secured/collaboration/main.faces";
 	public static final String COLLABORATION_WORKSPACE = "/views/secured/collaboration/workspaceview.faces";
 	

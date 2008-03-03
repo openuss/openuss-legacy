@@ -36,7 +36,7 @@
 
 		<t:column>
 			<plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
-			<o:link value="/views/secured/documents/documents.faces" title="#{entry.description}" rendered="#{entry.folder}">
+			<o:link value="/views/secured/documents/groups/documents.faces" title="#{entry.description}" rendered="#{entry.folder}">
 				<f:param value="#{groupInfo.id}" name="group" />
 				<f:param value="#{entry.id}" name="folder" />
 				<h:outputText value="#{entry.name}"/>
