@@ -76,23 +76,21 @@
 			</h:outputText>
 		</t:column>
 		
-		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-			<plexus:column header="#{msg.documents_main_column_actions}">
-				<plexus:command 
+		<plexus:column header="#{msg.documents_main_column_actions}">
+			<plexus:command 
 				    bean="#{views$secured$collaboration$workspaceview}"
 					action="editFolderEntry" 
 					label="#{msg.documents_main_button_change}" 
 					title="#{msg.documents_main_button_change}"
 					styleClass="icon_edit"/>
 					
-				<plexus:command   
+			<plexus:command   
                     bean="#{views$secured$collaboration$workspaceview}"
                     action="selectFileAndConfirmRemove"
                     label="#{msg.collaboration_command_remove_file}"
                     hint="#{msg.collaboration_command_remove_file_hint}"
                     styleClass="icon_remove"/>
-			</plexus:column>
-		</s:acl>
+		</plexus:column>
 		
 	</plexus:dataTable>      
 </ui:composition>
