@@ -134,7 +134,7 @@ public class PagesTest extends AbstractJsfTestCase {
 	}
 
 	private void registerManagedBeans() {
-		registerBean(EL_ACL, new Integer(5));
+		registerBean(EL_ACL, 5);
 		registerBean(EL_ACL_MANAGER, new MockAclManager());
 		registerBean(EL_TEST, new TestBean(1L));
 		registerBean(EL_TEST_BEAN, new TestBean(1L));

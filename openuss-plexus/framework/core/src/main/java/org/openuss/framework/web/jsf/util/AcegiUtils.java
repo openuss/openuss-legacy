@@ -1,5 +1,6 @@
 package org.openuss.framework.web.jsf.util;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -48,7 +49,7 @@ public class AcegiUtils {
 					for (Integer required : requiredIntegers) {
 						if (processableAcl.isPermitted(required)) {
 							if (logger.isDebugEnabled()) {
-								logger.debug("Including tag body as found permission: " + requiredIntegers	+ " due to AclEntry: '" + processableAcl + "'");
+								logger.debug("Including tag body as found permission: " + Arrays.toString(requiredIntegers)	+ " due to AclEntry: '" + processableAcl + "'");
 							}
 							return true;
 						}

@@ -1,5 +1,7 @@
 package org.openuss.framework.web.jsf.events;
 
+import java.io.ObjectInputStream;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -46,7 +48,7 @@ public class PostRedirectGetPhaseListener implements PhaseListener {
 	public static final String POST_REDIRECT_GET_KEY = "org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener";
 	public static final String POST_REDIRECT_GET_VALUE = "skip";
 
-	private ThreadLocal<Boolean> prgGetPhase = new ThreadLocal<Boolean>();
+	private transient ThreadLocal<Boolean> prgGetPhase = new ThreadLocal<Boolean>();
 
 	public PhaseId getPhaseId() {
 		return PhaseId.ANY_PHASE;
@@ -147,5 +149,9 @@ public class PostRedirectGetPhaseListener implements PhaseListener {
 		// */
 		// ConversationUtil.resetComponentValues(viewRoot.getChildren());
 		// }
+	}
+	
+	private void readObject(ObjectInputStream in) {
+		prgGetPhase = new ThreadLocal<Boolean>();
 	}
 }

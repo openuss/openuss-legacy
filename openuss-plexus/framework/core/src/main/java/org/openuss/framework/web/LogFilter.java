@@ -42,7 +42,7 @@ public class LogFilter implements Filter {
 			GrantedAuthority[] authorities = securityContext.getAuthentication().getAuthorities();
 			String auth = "";
 			for (GrantedAuthority authority : authorities) {
-				auth += authority.getAuthority().toString()+ " | ";
+				auth += authority.getAuthority()+ " | ";
 			}
 			logger.debug("--------> "+auth);
 		} else {

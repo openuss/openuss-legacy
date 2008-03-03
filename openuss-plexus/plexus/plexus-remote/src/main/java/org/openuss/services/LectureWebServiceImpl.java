@@ -9,6 +9,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.desktop.DesktopService2Exception;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMemberInfo;
@@ -114,8 +115,11 @@ public class LectureWebServiceImpl implements LectureWebService {
 		try {
 			courseService.removeCourse(courseId);
 			return true;
+		} catch (DesktopService2Exception ex) {
+			logger.debug(ex);
+			return false;
 		} catch (CourseServiceException ex) {
-			logger.info(ex);
+			logger.debug(ex);
 			return false;
 		}
 	}
