@@ -39,11 +39,11 @@
 		<h:form id="openuss4us_buddylist" enctype="multipart/form-data">
 
 			<ui:include src="buddytable.xhtml" />
-			<o:block label="TODO: text" styleClass="form_box" rendered="#{not empty views$secured$buddylist$buddylist.usedTags}">
+			<o:block label="#{msg.openuss4us_buddylist_assignedtags}" styleClass="form_box" rendered="#{not empty views$secured$buddylist$buddylist.usedTags}">
 				<o:link value="/views/secured/buddylist/buddylist.faces"
-					title="TODO: show all" rendered="#{not empty views$secured$buddylist$buddylist.filtertag}">
+					title="#{msg.openuss4us_buddylist_showall}" rendered="#{not empty views$secured$buddylist$buddylist.filtertag}">
 					<f:param name="filtertag" value="" />
-					<h:outputText value="TODO: SHOW ALL" />
+					<h:outputText value="#{msg.openuss4us_buddylist_showall}" />
 				</o:link>
 				<t:dataList id="usedTagsList" var="tag"
 					value="#{views$secured$buddylist$buddylist.usedTags}"
