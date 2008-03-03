@@ -2302,3 +2302,18 @@ div .space_20above {
 	background-repeat: no-repeat;
 }
 /*###################################*/
+a:hover {
+	text-decoration: underline !important;	
+}
+div#center a {
+	color:#2C5885 !important;
+}
+div#center div#header_center a, div#center div.flexList li.header a {
+	color:#FFFFFF !important;
+}
+div#center div.empty_box a {
+	color:#505050 !important;
+}
+div#center th.table_header a {
+	color:#505050 !important;
+}
