@@ -21,7 +21,7 @@ public final class Roles {
 	public static final long ANONYMOUS_ID = -1L;
 	public static final long USER_ID = -2L;
 	public static final long ADMINISTRATOR_ID = -4L;
-	public static final long LDAPUSER_ID = -5L;
+	public static final long LDAPUSER_ID = -6L;
 	public static final String LDAPUSER_NAME = "LDAPUSER";
 	
 	public static final Group ANONYMOUS = Group.Factory.newInstance();

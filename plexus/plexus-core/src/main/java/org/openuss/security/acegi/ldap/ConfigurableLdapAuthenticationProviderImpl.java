@@ -89,11 +89,11 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 				LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(ldapAuthenticator);
 				ldapAuthenticationProvider.setMessageSource(messageSource);
 				ldapAuthenticationProvider.setUserCache(userCache);
-				try {
-					ldapAuthenticationProvider.afterPropertiesSet();
-				} catch (Exception e) {
-					throw new RuntimeException(e.getMessage(),e);
-				}
+//				try {
+//					ldapAuthenticationProvider.afterPropertiesSet();
+//				} catch (Exception e) {
+//					throw new RuntimeException(e.getMessage(),e);
+//				}
 				ldapAuthenticationProviders.add(ldapAuthenticationProvider);			
 			}
 			authenticationManager.setProviders(ldapAuthenticationProviders);
@@ -201,6 +201,8 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected LdapUserDetails assignDefaultRole(LdapUserDetails ldapUserDetails) {
 		LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
 		essence.addAuthority(new GrantedAuthorityImpl(Roles.LDAPUSER.getName()));
+		if (defaultRole!=null && !"".equals(defaultRole))
+			essence.addAuthority(new GrantedAuthorityImpl(defaultRole));
 		return essence.createUserDetails();
 	}
 	

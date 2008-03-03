@@ -384,5 +384,110 @@ public class LdapConfigurationServiceImpl
 		setDao.update(setEntity);
     }
 
+	@Override
+	protected void handleAddAttributeMappingToRoleAttributeKeySet(
+			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleAddDomainToAttributeMapping(
+			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleAddServerToUserDnPatternSet(LdapServerInfo server,
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleAddUserDnPatternToSet(
+			UserDnPatternSetInfo userDnPattern,
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected UserDnPattern handleCreateUserDnPattern(
+			UserDnPatternInfo userDnPattern) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected UserDnPatternSet handleCreateUserDnPatternSet(
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleDeleteUserDnPatternSet(
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRemoveAttributeMappingFromRoleAttributeKeySet(
+			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRemoveDomainFromAttributeMapping(
+			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRemoveServerFromUserDnPatternSet(
+			LdapServerInfo server, UserDnPatternSetInfo userDnPatternSet)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRemoveUserDnPatternFromSet(
+			UserDnPatternInfo userDnPattern,
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleSaveUserDnPatternSet(
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

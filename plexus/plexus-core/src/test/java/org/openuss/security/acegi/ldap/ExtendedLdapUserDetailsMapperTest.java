@@ -87,6 +87,30 @@ public class ExtendedLdapUserDetailsMapperTest extends TestCase {
         assertEquals("Y", user.getGrantedAuthorities()[1].getAuthority());
         assertEquals("Z", user.getGrantedAuthorities()[2].getAuthority());
     }
+    
+    public void testMultipleRoleAttributeValuesAreMappedToAuthoritiesWithGivenNonUniqueGroupRoleAttributeKey() throws Exception {
+        ExtendedLdapUserDetailsMapper mapper = new ExtendedLdapUserDetailsMapper();
+        mapper.setConvertToUpperCase(false);
+        mapper.setRolePrefix("");
+        
+        mapper.setGroupRoleAttributeKey("dc");
+
+        mapper.setRoleAttributes(new String[] {"userRole"});
+
+        BasicAttributes attrs = new BasicAttributes();
+        BasicAttribute roleAttribute = new BasicAttribute("userRole");
+        roleAttribute.add("cn=A,dc=X,dc=org");
+        roleAttribute.add("cn=A,dc=Y,dc=org");
+        roleAttribute.add("cn=A,dc=Z,dc=org");
+        attrs.put(roleAttribute);
+
+        LdapUserDetailsImpl.Essence user = (LdapUserDetailsImpl.Essence) mapper.mapAttributes("cn=someName", attrs);
+
+        assertEquals(3, user.getGrantedAuthorities().length);
+        assertEquals("X", user.getGrantedAuthorities()[0].getAuthority());
+        assertEquals("Y", user.getGrantedAuthorities()[1].getAuthority());
+        assertEquals("Z", user.getGrantedAuthorities()[2].getAuthority());
+    }
 
     public void testMultipleRoleAttributeValuesAreMappedToAuthoritiesWithNullGroupRoleAttributeKey() throws Exception {
         ExtendedLdapUserDetailsMapper mapper = new ExtendedLdapUserDetailsMapper();
