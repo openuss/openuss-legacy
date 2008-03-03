@@ -28,7 +28,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @param toResolve The yet unresolved path of the path or null.
 	 */
 	public WebDAVPathImpl(String path, String toResolve) {
-		if ("".equals(toResolve)) {
+		if ((toResolve == null) || "".equals(toResolve)) {
 			toResolve = null;
 		} else if(PATH_SEP.equals(toResolve)) {
 			path = path + PATH_SEP;

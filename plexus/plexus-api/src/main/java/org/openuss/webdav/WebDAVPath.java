@@ -104,7 +104,7 @@ public interface WebDAVPath {
 	 * @return A struct consisting of the two resolved paths with updated prefixes.
 	 */
 	public CommonPathRes common(WebDAVPath other);
-	public final class CommonPathRes {
+	public static class CommonPathRes {
 		public final WebDAVPath newThis;
 		public final WebDAVPath newOther;
 		
