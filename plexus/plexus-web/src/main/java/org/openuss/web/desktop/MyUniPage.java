@@ -318,7 +318,7 @@ public class MyUniPage extends BasePage {
 						newItem.setTitle(universityInfo.getName());
 						newItem.setUrl(contextPath()+myUniBasePath + "?university=" + universityInfo.getId().toString());
 
-						if (universityId != null && universityId.longValue() == universityInfo.getId().longValue()) {
+						if (universityId.longValue() == universityInfo.getId().longValue()) {
 							currentItem = newItem;
 							currentItem.setUrl(contextPath() + universityBasePath + universityId);
 						} else

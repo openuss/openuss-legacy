@@ -1,0 +1,9 @@
+<FindBugsFilter>
+     <Match>
+     	<Or>
+       	<Class name="~.*Base" />
+       	<Class name="~.*Enum" />
+       	<Package name="~org.andromda.*"/>
+       	</Or>
+     </Match>
+</FindBugsFilter>
