@@ -17,7 +17,11 @@ public class MimeType {
 	 * The default mime type for resources.
 	 */
 	public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
-
+	/**
+	 * Mimetype for directories.
+	 */
+	public static final String DIRECTORY_MIMETYPE = "httpd/unix-directory";
+	
 	private static final Logger logger = Logger.getLogger(MimeType.class);
 	
 	private static final Properties mimeTypes = new Properties();

@@ -21,19 +21,20 @@ public class WebDAVPathImpl implements WebDAVPath {
 	protected final String toResolve;
 	
 	/**
-	 * Constructor for arbitrary client-supplied values.
+	 * Constructor for parsed client-supplied values.
 	 * 
+	 * @see #parse(String, String)
 	 * @param path A prefix to the already resolved path. If toResolve != null, this should end with a path separator.
 	 * @param toResolve The yet unresolved path of the path or null.
 	 */
-	protected WebDAVPathImpl(String path, String toResolve) {
+	public WebDAVPathImpl(String path, String toResolve) {
 		if ("".equals(toResolve)) {
 			toResolve = null;
 		} else if(PATH_SEP.equals(toResolve)) {
 			path = path + PATH_SEP;
 			toResolve = null;
 		} else if ((!path.endsWith(PATH_SEP)) && toResolve.startsWith(PATH_SEP)) {
-			path = path.substring(0, path.length() - PATH_SEP.length());
+			path = path + PATH_SEP;
 			toResolve = toResolve.substring(PATH_SEP.length());
 		}
 		
@@ -141,7 +142,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @see org.openuss.webdav.WebDAVPath#equals(org.openuss.webdav.WebDAVPath)
 	 */
 	public boolean equals(WebDAVPath p) {
-		return toClientString().equals(p.toClientString());
+		return getCompleteString().equals(p.getCompleteString());
 	}
 
 	/* (non-Javadoc)
@@ -162,7 +163,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @see org.openuss.webdav.WebDAVPath#toClientString()
 	 */
 	public String toClientString() {
-		return path;
+		return URLUTF8Encoder.encode(path);
 	}
 
 	/* (non-Javadoc)
