@@ -73,7 +73,7 @@ public class AbstractCoursePage extends BasePage {
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
-			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
+			calendarInfo = calendarService.getCalendar(courseInfo);
 			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
 		}
 		if (courseInfo == null) {
@@ -84,7 +84,7 @@ public class AbstractCoursePage extends BasePage {
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
-			CalendarInfo calendarInfo = calendarService.getCalendar(courseInfo);
+			calendarInfo = calendarService.getCalendar(courseInfo);
 			setSessionBean(Constants.CALENDAR_INFO, calendarInfo);
 			setSessionBean(Constants.COURSE_INFO, courseInfo);
 			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	

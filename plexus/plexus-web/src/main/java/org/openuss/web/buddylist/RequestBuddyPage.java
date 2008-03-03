@@ -109,9 +109,7 @@ public class RequestBuddyPage extends BasePage {
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-	
-	
-	
+		
 	public void setBuddyService(BuddyService buddyService) {
 		this.buddyService = buddyService;
 	}

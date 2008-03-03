@@ -27,27 +27,55 @@
 	<ui:define name="content">
 		<h:form>
 			<o:block>
-				<o:input id="appointment" label="Betreff" entity="appointmentInfo"
-					property="subject" maxlength="100" required="true" />
-				<o:input label="Starttime" entity="appointmentInfo"
-					property="starttime" maxlength="16" required="true" />
-				<o:input label="Endtime" entity="appointmentInfo" property="endtime"
-					maxlength="16" required="true" />
-				<o:input id="location" label="Location" entity="appointmentInfo"
-					property="location" maxlength="100" />
-				<h:outputLabel for="accessType" value="Appointment Type"
-					styleClass="field_label" />
+				<o:input id="appointment"
+					label="#{msg.openuss4us_calendar_appointment_subject}"
+					entity="appointmentInfo" property="subject" maxlength="100"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_subject_hint}" />
+				<o:input label="#{msg.openuss4us_calendar_appointment_starttime}"
+					entity="appointmentInfo" property="starttime" maxlength="16"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_starttime_hint}" />
+				<o:input label="#{msg.openuss4us_calendar_appointment_endtime}"
+					entity="appointmentInfo" property="endtime" maxlength="16"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_endtime_hint}" />
+				<o:input entity="appointmentInfo" property="recurrencePeriod"
+					maxlength="10" required="true"
+					label="#{msg.openuss4us_calendar_appointment_recurrence_period}"
+					title="#{msg.openuss4us_calendar_appointment_recurrence_period_hint}" />
+				<h:selectOneMenu id="recurrenceType" layout="pageDirection"
+					value="#{views$secured$calendar$createserialappointment.recurrenceType}"
+					styleClass="pulldown">
+					<f:selectItems
+						value="#{views$secured$calendar$createserialappointment.recTypes}" />
+				</h:selectOneMenu>
+				<o:input entity="appointmentInfo" property="recurrenceEndtime"
+					label="#{msg.openuss4us_calendar_appointment_recurrence_endtime}"
+					title="#{msg.openuss4us_calendar_appointment_recurrence_endtime_hint}"
+					required="true" maxlength="16" />
+				<o:input id="location"
+					label="#{msg.openuss4us_calendar_appointment_location}"
+					entity="appointmentInfo" property="location" maxlength="100"
+					title="#{msg.openuss4us_calendar_appointment_location_hint}" />
+				<h:outputLabel for="accessType"
+					value="#{msg.appointmenttypeinfo_name}" styleClass="field_label" />
 				<h:selectOneMenu id="appointmentType" layout="pageDirection"
 					value="#{views$secured$calendar$createserialappointment.appointmentType}"
-					valueChangeListener="#{views$secured$calendar$createserialappointment.processAppointmentTypeChanged}"
-					onchange="this.form.submit();" immediate="true"
 					styleClass="pulldown">
 					<f:selectItems
 						value="#{views$secured$calendar$createserialappointment.appointTypes}" />
 				</h:selectOneMenu>
 				<h:message for="appointmentType" styleClass="field_error" />
-				<o:input id="location" label="Description" entity="appointmentInfo"
-					property="description" maxlength="180" type="textarea" />
+				<o:input entity="appointmentInfo" property="description"
+					id="descriptioN" type="textarea" styleClass="field_message"
+					maxlength="300" label="#{msg.openuss4us_calendar_description}"
+					title="#{msg.openuss4us_calendar_description_hint}" minlength="0"
+					required="false">
+					<f:validateLength maximum="300" />
+					<f:converter converterId="xssFilter" />
+				</o:input>
+
 			</o:block>
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"

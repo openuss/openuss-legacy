@@ -301,6 +301,7 @@ public class Constants {
 	public static final String OPENUSS4US_MESSAGECENTER_READMSG = "openuss4us_read_message";
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
+	public static final String OPENUSS4US_APPOINTMENT_DETAILS = "view_appointment_details";
 	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
 	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
@@ -311,5 +312,6 @@ public class Constants {
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 	public static final String OPENUSS4US_INTERNALMESSAGE_RECIPIENT = "internalMessageRecipientsInfo";
 	public static final String OPENUSS4US_INTERNALMESSAGE_MESSAGE = "internalMessageInfo";
+
 	
 }

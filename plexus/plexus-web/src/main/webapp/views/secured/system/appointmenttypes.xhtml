@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/admin.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="appointmentTypesDeleteForm">
+			<plexus:dataTable id="appointmentTypeTable"
+				value="views$secured$system$appointmenttypes.data" var="appointmenttype"
+				rows="20" label="#{msg['openuss4us_buddylist_open_requests']}">
+				<t:column styleClass="col_max_left">
+					<h:outputText value="#{appointmenttype.name}"
+						styleClass="content_font_normal" />
+				</t:column>
+				<t:column styleClass="col_commands">
+					<h:commandButton id="delete"
+						action="#{views$secured$system$appointmenttypes.delete}"
+						value="#{msg.remove}"
+						title="#{msg.remove}"
+						styleClass="button_remove" />
+				</t:column>
+			</plexus:dataTable>
+			</h:form>
+			<h:form id="appointmentTypesAddForm">
+			<o:block label="Create new appointment type" styleClass="form_box">
+				<o:input entity="appointmentTypeInfo" property="name"
+					id="appointmentTypeName" styleClass="field" maxlength="75"
+					required="true" />
+			</o:block>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
+				<o:block>
+					<h:commandButton id="addAppointmentType"
+						action="#{views$secured$system$appointmenttypes.addAppointmentType}"
+						value="#{msg.openuss4us_calendar_button_create_appointmenttype}"
+						title="#{msg.openuss4us_calendar_button_create_appointmenttype_hint}"
+						styleClass="button" />
+				</o:block>
+			</s:authorize>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

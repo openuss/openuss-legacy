@@ -48,6 +48,7 @@
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="recurrenceType">#{msg.openuss4us_calendar_recurrence}</plexus:commandSortHeader>
+				TODO CORRECT EVERY DAY
 				<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
 					escape="false"
 					rendered="#{(serialAppointment.recurrenceType eq 'DAILY') and (serialAppointmentointment.recurrencePeriod eq 1)}">
@@ -90,8 +91,8 @@
 				</h:outputFormat>
 			</t:column>
 			<t:column styleClass="col_commands">
-				<h:commandButton id="send_message" action="view:backwards"
-					value="TODO: angucken" title="#{msg.user_send_internalmessage}"
+				<h:commandButton id="details_serial" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+					value="#{msg.openuss4us_calendar_view_appointment_details}" title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
 				<br />
 				<h:commandButton id="editTags" action="view:backwards"
@@ -134,8 +135,8 @@
 				<h:outputText value="#{singleAppointment.location}" />
 			</t:column>
 			<t:column styleClass="col_commands">
-				<h:commandButton id="send_message" action="view:backwards"
-					value="TODO: angucken" title="#{msg.user_send_internalmessage}"
+				<h:commandButton id="details_single" action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
+					value="#{msg.openuss4us_calendar_view_appointment_details}" title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
 				<br />
 				<h:commandButton id="editTags" action="view:backwards"

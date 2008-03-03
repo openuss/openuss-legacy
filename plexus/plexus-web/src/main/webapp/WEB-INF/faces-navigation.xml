@@ -253,6 +253,11 @@
 			<from-outcome>openuss4us_calendar_calendar</from-outcome>
 			<to-view-id>/views/secured/calendar/calendar.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>view_appointment_details</from-outcome>
+			<to-view-id>/views/secured/calendar/viewappointmentdetails.xhtml</to-view-id>
+		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>openuss4us_groups</from-outcome>
@@ -1027,6 +1032,11 @@
 		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
 			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_calendar</from-outcome>
+			<to-view-id>/views/secured/system/appointmenttypes.xhtml</to-view-id>
 		</navigation-case>
 
 	</navigation-rule>

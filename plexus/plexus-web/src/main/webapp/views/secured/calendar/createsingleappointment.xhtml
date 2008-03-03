@@ -27,27 +27,31 @@
 	<ui:define name="content">
 		<h:form>
 			<o:block>
-				<o:input id="appointment" label="Betreff" entity="appointmentInfo"
-					property="subject" maxlength="100" required="true" />
-				<o:input label="Starttime" entity="appointmentInfo"
-					property="starttime" maxlength="16" required="true" />
-				<o:input label="Endtime" entity="appointmentInfo" property="endtime"
-					maxlength="16" required="true" />
-				<o:input id="location" label="Location" entity="appointmentInfo"
-					property="location" maxlength="100" />
-				<h:outputLabel for="accessType" value="Appointment Type"
+				<o:input id="appointment" label="#{msg.openuss4us_calendar_appointment_subject}" entity="appointmentInfo"
+					property="subject" maxlength="100" required="true" title="#{msg.openuss4us_calendar_appointment_subject_hint}" />
+				<o:input label="#{msg.openuss4us_calendar_appointment_starttime}" entity="appointmentInfo"
+					property="starttime" maxlength="16" required="true" title="#{msg.openuss4us_calendar_appointment_starttime_hint}"/>
+				<o:input label="#{msg.openuss4us_calendar_appointment_endtime}" entity="appointmentInfo"
+					property="endtime" maxlength="16" required="true" title="#{msg.openuss4us_calendar_appointment_endtime_hint}"/>
+				<o:input id="location" label="#{msg.openuss4us_calendar_appointment_location}" entity="appointmentInfo"
+					property="location" maxlength="100" title="#{msg.openuss4us_calendar_appointment_location_hint}"/>
+				<h:outputLabel for="accessType" value="#{msg.appointmenttypeinfo_name}"
 					styleClass="field_label" />
 				<h:selectOneMenu id="appointmentType" layout="pageDirection"
 					value="#{views$secured$calendar$createsingleappointment.appointmentType}"
-					valueChangeListener="#{views$secured$calendar$createsingleappointment.processAppointmentTypeChanged}"
-					onchange="this.form.submit();" immediate="true"
 					styleClass="pulldown">
 					<f:selectItems
 						value="#{views$secured$calendar$createsingleappointment.appointTypes}" />
 				</h:selectOneMenu>
 				<h:message for="appointmentType" styleClass="field_error" />
-				<o:input id="location" label="Description" entity="appointmentInfo"
-					property="description" maxlength="180" type="textarea"/>
+				<o:input entity="appointmentInfo" property="description"  id="descriptioN"
+					type="textarea" styleClass="field_message" maxlength="300"
+					label="#{msg.openuss4us_calendar_description}"
+					title="#{msg.openuss4us_calendar_description_hint}"
+					minlength="0" required="false">
+					<f:validateLength maximum="300" />
+					<f:converter converterId="xssFilter" />
+				</o:input>
 			</o:block>
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"

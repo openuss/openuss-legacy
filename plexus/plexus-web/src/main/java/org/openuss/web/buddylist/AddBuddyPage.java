@@ -117,12 +117,7 @@ public class AddBuddyPage extends BasePage{
 		if(profile.getId().equals(securityService.getCurrentUser().getId())){
 			return false;
 		}
-		for(BuddyInfo buddy : (List<BuddyInfo>)buddyService.getBuddyList()){
-			if(buddy.getUserId().equals(profile.getId())){
-				return false;
-			}
-		}
-		return true;
+		return !buddyService.isUserBuddy(profile.getId());
 	}
 
 	public void setProfile(User profile) {

@@ -96,7 +96,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-
+		super.prerender();
 		//TODO correct breadcrumbs
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath() + calendarBasePath);
@@ -104,8 +104,8 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		newCrumb.setHint(i18n("openuss4us_command_groups"));
 		breadcrumbs.addCrumb(newCrumb);
 	
-		CalendarInfo calendarInfo = calendarService.getCalendar(user);
-		setSessionBean(Constants.CALENDAR_INFO, calendarInfo);	
+//		CalendarInfo calendarInfo = calendarService.getCalendar(user);
+//		setSessionBean(Constants.CALENDAR_INFO, calendarInfo);	
 
 	}
 	
@@ -124,6 +124,19 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		}
 		return "openuss4us_calendar_calendar";
 	}
+	
+	public String serialAppointmentDetails(){
+		appointmentInfo = this.serialAppointmentData.getRowData();
+		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
+	}
+	
+	public String singleAppointmentDetails(){
+		appointmentInfo = this.singleAppointmentData.getRowData();
+		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
+	}
+
 
 	public SerialAppointmentDataProvider getSerialAppointmentData() {
 		return serialAppointmentData;
