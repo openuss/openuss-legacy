@@ -140,11 +140,11 @@
 		</s:authorize>
 		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
 			<c:if
-				test="#{not empty views$secured$group$components$groupnews.currentNews}">
+				test="#{not empty views$secured$groups$components$groupnews.currentNews}">
 				<o:block label="#{msg.news_header}" styleClass="news_box">
 					<h:form id="news_tables">
 						<t:dataList id="news"
-							value="#{views$secured$group$components$groupnews.currentNews}"
+							value="#{views$secured$groups$components$groupnews.currentNews}"
 							var="item" styleClass="news">
 							<h:outputText value="#{item.publishDate}" styleClass="news_date">
 								<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"

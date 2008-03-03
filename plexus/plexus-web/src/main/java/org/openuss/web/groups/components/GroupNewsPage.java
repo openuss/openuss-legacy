@@ -61,7 +61,6 @@ public class GroupNewsPage extends AbstractGroupPage {
 	@Override
 	public void prerender() throws Exception {
 		super.prerender();
-		logger.debug("THIS IS THE PRERENDER-METHOD OF THE GROUP NEWS PAGE");
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_news"));
 		crumb.setHint(i18n("group_command_news"));

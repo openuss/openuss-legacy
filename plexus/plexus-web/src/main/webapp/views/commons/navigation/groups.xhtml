@@ -28,12 +28,12 @@
 						<h:outputText value="#{msg['course_command_newsletter']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="group_documents_main"
-						activeOnViewIds="/views/secured/groups/components/groupdocuments.xhtml,/views/secured/documents/groups/documents.xhtml,/views/secured/documents/groups/fileedit.xhtml,/views/secured/documents/groups/addzip.xhtml,/views/secured/documents/groups/folderedit.xhtml,/views/secured/documents/groups/remove.faces"
+						activeOnViewIds="/views/secured/groups/components/groupdocuments.xhtml,/views/secured/documents/groups/documents.xhtml,/views/secured/documents/groups/fileedit.xhtml,/views/secured/documents/groups/addzip.xhtml,/views/secured/documents/groups/folderedit.xhtml,/views/secured/documents/groups/remove.xhtml"
 						rendered="#{groupInfo.documents}">
 						<h:outputText value="#{msg['course_command_documents']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="group_discussion"
-						activeOnViewIds="/views/secured/discussion/discussions.xhtml,/views/secured/discussion/discussionnew.xhtml,/views/secured/discussion/discussionthread.xhtml,/views/secured/discussion/discussionsearch.xhtml"
+						activeOnViewIds="/views/secured/discussion/groups/discussions.xhtml,/views/secured/discussion/groups/discussionnew.xhtml,/views/secured/discussion/groups/discussionthread.xhtml,/views/secured/discussion/groups/discussionsearch.xhtml,/views/secured/discussion/groups/removethread.xhtml"
 						rendered="#{groupInfo.forum}">
 						<h:outputText value="#{msg['group_command_forum']}" />
 					</t:commandNavigation2>
@@ -43,7 +43,7 @@
 						<h:outputText value="#{msg['course_command_chat']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="group_news"
-						activeOnViewIds="/views/secured/groups/components/groupnews.xhtml">
+						activeOnViewIds="/views/secured/groups/components/groupnews.xhtml,/views/secured/groups/components/groupnewsedit.xhtml">
 						<h:outputText value="#{msg['course_command_options_news']}" />
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="openuss4us_calendar_calendar"
