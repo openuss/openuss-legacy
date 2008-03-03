@@ -83,7 +83,7 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 		boolean accept = (Boolean) value;
 		if (!accept) {
 			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_overwrite"), null);
+			addError(toValidate.getClientId(context), i18n("wiki_error_need_to_confirm_overwrite"), null);
 		}
 	}
 }
