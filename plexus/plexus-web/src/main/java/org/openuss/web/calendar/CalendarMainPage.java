@@ -27,25 +27,17 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$calendar$calendar", scope = Scope.REQUEST)
 @View
-public class CalendarMainPage extends BasePage {
+public class CalendarMainPage extends AbstractCalendarPage {
 
-	private static final Logger logger = Logger
-			.getLogger(CalendarMainPage.class);
+	private static final Logger logger = Logger	.getLogger(CalendarMainPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
 
-	@Property(value = "#{calendarService}")
-	private CalendarService calendarService;
-
-	@Property(value = "#{" + Constants.OPENUSS4US_CALENDAR + "}")
-	private CalendarInfo calendarInfo;
-	
 	private boolean subscribed;
 
 	// Data-Provider serial appointments
 	private SerialAppointmentDataProvider serialAppointmentData = new SerialAppointmentDataProvider();
 
-	private class SerialAppointmentDataProvider extends
-			AbstractPagedTable<SerialAppointmentInfo> {
+	private class SerialAppointmentDataProvider extends	AbstractPagedTable<SerialAppointmentInfo> {
 
 		private static final long serialVersionUID = -2279124328223684543L;
 
@@ -104,51 +96,33 @@ public class CalendarMainPage extends BasePage {
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-		super.prerender();
-		if (calendarInfo == null) {
-			addError(i18n("TODO: calendar not found!"));
-			redirect(Constants.DESKTOP);
-			return;
-		}
+
 		//TODO correct breadcrumbs
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath() + calendarBasePath);
 		newCrumb.setName(i18n("openuss4us_command_groups"));
 		newCrumb.setHint(i18n("openuss4us_command_groups"));
-		// breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(newCrumb);
+	
+		CalendarInfo calendarInfo = calendarService.getCalendar(user);
+		setSessionBean(Constants.CALENDAR_INFO, calendarInfo);	
+
 	}
 	
 	public String changeSubscription(){
 		try{
 		if(getSubscribed()){
 			this.addMessage("TODO: Unsubscribed");
-			getCalendarService().endSubscription(calendarInfo);
+			calendarService.endSubscription(calendarInfo);
 		} else {
 			this.addMessage("TODO: Subscribed");
-			getCalendarService().addSubscription(calendarInfo);
+			calendarService.addSubscription(calendarInfo);
 		}
 		} catch (CalendarApplicationException e) {
 			this.addError("Error");
 			return Constants.SUCCESS;
 		}
 		return "openuss4us_calendar_calendar";
-	}
-
-	public CalendarService getCalendarService() {
-		return calendarService;
-	}
-
-	public void setCalendarService(CalendarService calendarService) {
-		this.calendarService = calendarService;
-	}
-
-	public CalendarInfo getCalendarInfo() {
-		return calendarInfo;
-	}
-
-	public void setCalendarInfo(CalendarInfo calendarInfo) {
-		this.calendarInfo = calendarInfo;
 	}
 
 	public SerialAppointmentDataProvider getSerialAppointmentData() {
@@ -186,4 +160,6 @@ public class CalendarMainPage extends BasePage {
 	public void setSubscribed(boolean isSubscribed) {
 		this.subscribed = isSubscribed;
 	}
+	
+	
 }
