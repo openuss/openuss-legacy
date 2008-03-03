@@ -34,29 +34,32 @@ public class CalendarServiceImpl extends
 			org.openuss.foundation.DomainObject domainObject)
 			throws java.lang.Exception {
 
-		// TODO check wheather the calendar was already created for this domain
+		// TODO check whether the calendar was already created for this domain
 		// object
-		Calendar cal = Calendar.Factory.newInstance();
-		CalendarType calType;
-		Date date = new Date();
-
-		// check calendarType
-		if (domainObject instanceof CourseInfo) {
-			calType = CalendarType.course_calendar;
-		} else if (domainObject instanceof UserGroupInfo) {
-			calType = CalendarType.group_calendar;
-		} else if ((domainObject instanceof UserInfo)
-				|| (domainObject instanceof User)) {
-			calType = CalendarType.user_calendar;
-		} else {
-			throw new CalendarApplicationException(
-					"DomainObject is not valid for calendar type.");
-		}
-
-		cal.setLastUpdate(new Timestamp(date.getTime()));
-		cal.setCalendarType(calType);
-		cal.setDomainIdentifier(domainObject.getId());
-		getCalendarDao().create(cal);
+		Calendar calendar = getCalendarDao().findByDomainIdentifier(domainObject.getId());
+		if (calendar == null) {		
+			Calendar cal = Calendar.Factory.newInstance();
+			CalendarType calType;
+			Date date = new Date();
+	
+			// check calendarType
+			if (domainObject instanceof CourseInfo) {
+				calType = CalendarType.course_calendar;
+			} else if (domainObject instanceof UserGroupInfo) {
+				calType = CalendarType.group_calendar;
+			} else if ((domainObject instanceof UserInfo)
+					|| (domainObject instanceof User)) {
+				calType = CalendarType.user_calendar;
+			} else {
+				throw new CalendarApplicationException(
+						"DomainObject is not valid for calendar type.");
+			}
+	
+			cal.setLastUpdate(new Timestamp(date.getTime()));
+			cal.setCalendarType(calType);
+			cal.setDomainIdentifier(domainObject.getId());
+			getCalendarDao().create(cal);
+		} 
 
 	}
 
@@ -558,11 +561,12 @@ public class CalendarServiceImpl extends
 			SerialAppointmentInfo serialAppointmentInfo,
 			AppointmentInfo appointmentInfo) throws Exception {
 
-		SerialAppointment serialApp = getSerialAppointmentDao().load(
-				serialAppointmentInfo.getId());
-		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
 
+		SerialAppointment serialApp = getSerialAppointmentDao().load(
+				serialAppointmentInfo.getId());		
+		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
 		Set<Appointment> calculatedApps = serialApp.getAppointments();
+		
 		if (!calculatedApps.contains(app))
 			throw new CalendarApplicationException(
 					"Appointment does not belong to serial appointment");
@@ -619,7 +623,6 @@ public class CalendarServiceImpl extends
 		SerialAppointment serialApp = getSerialAppointmentDao().load(
 				serialAppointmentInfo.getId());
 		Set<Appointment> calcApps = serialApp.getAppointments();
-		System.out.println(" get calcAphier: " + calcApps.size());
 		List<AppointmentInfo> calAppInfos = new ArrayList<AppointmentInfo>();
 		if (!calcApps.isEmpty()) {
 			for (Appointment calcAppIt : calcApps) {

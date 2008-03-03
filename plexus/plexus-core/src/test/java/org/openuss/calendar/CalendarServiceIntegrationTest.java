@@ -88,7 +88,7 @@ public class CalendarServiceIntegrationTest extends
 			calendarService.createCalendar(userInfo1);
 			calendarService.createCalendar(userInfo2);
 			calendarService.createCalendar(userGroupInfo);
-
+			
 			CalendarInfo courseCalInfo = calendarService
 					.getCalendar(courseInfo);
 			assertNotNull(courseCalInfo);
@@ -96,11 +96,13 @@ public class CalendarServiceIntegrationTest extends
 			CalendarInfo groupCalInfo = calendarService
 					.getCalendar(userGroupInfo);
 			CalendarInfo userCalInfo = calendarService.getCalendar(userInfo1);
+			
 
 		} catch (Exception e) {
 			fail();
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void testCalendarAdministrationSingle() {
@@ -257,7 +259,6 @@ public class CalendarServiceIntegrationTest extends
 					.getSingleAppointments(userCalendarInfo);
 			assertNotNull(singleAppointments);
 			assertEquals(6, singleAppointments.size());
-			System.out.println("getId" + singleAppointments.get(0).getId());
 			assertNotNull(singleAppointments.get(0).getId());
 
 			SerialAppointmentInfo serialAppInfo = serialAppointments.get(0);
@@ -795,29 +796,47 @@ public class CalendarServiceIntegrationTest extends
 			
 			 /*********************** test exception*******/
 
-			// Anzahl der Termine im User Kalender
+			// number of appointments in the user calendar
 			List<AppointmentInfo> appInfos = calendarService
 					.getSingleAppointments(userCalInfo);
 			assertNotNull(appInfos);
 			assertEquals(6, appInfos.size());
 
-			// Im Kurs Kalender eine Ausnahme hinzufügen
+			// add exception to the serial appointment of the course
 			List<SerialAppointmentInfo> courseSerialAppInfos = calendarService
 					.getNaturalSerialAppointments(courseCalInfo);
 			assertNotNull(courseSerialAppInfos);
+			SerialAppointmentInfo courseSerialAppInfo = courseSerialAppInfos.get(0);
+			assertNotNull(courseSerialAppInfo);
+			assertNotNull(courseSerialAppInfo.getId());
 			List<AppointmentInfo> calcAppInfos = calendarService
 					.getCalculatedAppointments(courseSerialAppInfos.get(0));
 			assertNotNull(calcAppInfos);
 			assertEquals(6, calcAppInfos.size());
 			
-			// TODO warum geht das nicht 
-			calendarService.addException(serialAppInfo, calcAppInfos.get(1));
+			assertNotNull(calcAppInfos.get(1).getId());
+			calendarService.addException(courseSerialAppInfo, calcAppInfos.get(1));
 
-			// Anzahl überprüfen
+			// check if the number of appointments in the user calendar is decreased
 			List<AppointmentInfo> userAppInfos = calendarService
 					.getSingleAppointments(userCalInfo);
 			assertNotNull(userAppInfos);
 			assertEquals(5, userAppInfos.size());
+			
+			// add another exception
+			calendarService.addException(courseSerialAppInfo, calcAppInfos.get(2));
+			
+			// check if the number of apps in the user calendar is deacreased
+			List<AppointmentInfo> userAppInfos2 = calendarService.getSingleAppointments(userCalInfo);
+			assertNotNull(userAppInfos2);
+			assertEquals(4, userAppInfos2.size());
+			
+			// put exception back to the schedule
+			
+			calendarService.deleteException(courseSerialAppInfo, calcAppInfos.get(1));
+			
+			List<AppointmentInfo> userAppInfos3 = calendarService.getSingleAppointments(userCalInfo);
+			assertEquals(5, userAppInfos3.size());
 
 			// TODO Calendar: test subscription with serial appointments an more
 			// than 1 calendar
