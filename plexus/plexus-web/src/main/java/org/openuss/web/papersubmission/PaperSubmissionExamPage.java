@@ -133,22 +133,29 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public String saveExam() throws DesktopException, LectureException {
 		logger.debug("Starting method savePaper()");
 		// TODO implement save/update
-		if (examInfo.getId() == null) {
 
+		Date currentDate = new Date();
+		if (examInfo.getDeadline().before(currentDate)) {
+			addError(i18n("papersubmission_illegal_exam_message"));
+			return Constants.SUCCESS;
+		}
+
+		if (examInfo.getId() == null) {
 			examInfo.setDomainId(courseInfo.getId());
 			paperSubmissionService.createExam(examInfo);
 
 			addMessage(i18n("papersubmission_message_add_paper_succeed"));
 		} else {
-			//courseTypeService.update(courseTypeInfo);
+			// courseTypeService.update(courseTypeInfo);
 			paperSubmissionService.updateExam(examInfo);
-			
+
 			addMessage(i18n("papersubmission_message_persist_paper_succeed"));
 		}
 
 		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		examInfo = null;
 		editing = false;
+
 		return Constants.SUCCESS;
 	}
 	
