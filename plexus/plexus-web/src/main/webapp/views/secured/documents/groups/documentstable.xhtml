@@ -12,7 +12,7 @@
     <plexus:dataTable 
     	id="documentstable" 
     	label="#{msg.documents_main_header}" 
-    	value="views$secured$documents$documents.data" 
+    	value="views$secured$documents$groups$documents.data" 
     	columnClasses=" col_min_center, col_min_center,col_max_left, col_filesize, col_date, col_date, col_commands"
     	var="entry" 
     	rows="20">  
@@ -48,15 +48,14 @@
 			</o:link>
 		</t:column>
 
-		<!-- TODO: Check permission -->
-		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
 			<t:column>
 				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
 				<h:outputText value="#{entry.sizeAsString}"/>
 			</t:column>
 		</s:acl>
-		<!-- TODO: Check permission -->
-		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+
+		<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.ASSIST}">
 			<t:column>
 				<plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
 				<h:outputText value="#{entry.sizeAsString}" rendered="${!entry.folder}"/>
@@ -76,11 +75,11 @@
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			</h:outputText>
 		</t:column>
-		<!-- TODO: Check permission -->
-		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+		
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
 			<plexus:column header="#{msg.documents_main_column_actions}">
 				<plexus:command 
-				    bean="#{views$secured$documents$documents}"
+				    bean="#{views$secured$documents$groups$documents}"
 					action="editFolderEntry" 
 					label="#{msg.documents_main_button_change}" 
 					title="#{msg.documents_main_button_change}"

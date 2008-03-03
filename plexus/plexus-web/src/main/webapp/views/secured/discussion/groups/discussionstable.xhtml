@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable id="discussionstable" label="#{msg.discussion_main_header}" 
+    	value="views$secured$discussion$groups$discussions.data" var="topic" rows="20"
+    	columnClasses="col_min_center, col_max_left, col_min_center, col_min_center, col_min_center, col_date, col_commands">  
+      
+		<t:column>
+			<img src="#{theme.imagesPath}/icons/viewstate#{topic.viewState}.png"/>
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="title"> #{msg['discussion_main_column_name']} </plexus:commandSortHeader>
+			<o:link value="/views/secured/discussion/groups/discussionthread.faces" title="#{topic.title}" >
+				<f:param value="#{groupInfo.id}" name="group" />
+				<f:param value="#{topic.id}" name="topic"/>
+				<h:outputText value="#{topic.title}" />
+			</o:link>			
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="answerCount"> #{msg['discussion_main_column_answers']} </plexus:commandSortHeader>
+			<h:outputText value="#{topic.answerCount}" />
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="submitter"> #{msg['discussion_main_column_author']} </plexus:commandSortHeader>
+			<h:outputText value="#{topic.submitter}" />
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="hits"> #{msg['discussion_main_column_clicks']} </plexus:commandSortHeader>
+			<h:outputText value="#{topic.hits}" />
+		</t:column>
+		<t:column>
+			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
+			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
+		</t:column>
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}" >
+			<t:column>
+				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+				<plexus:command 
+					bean="#{views$secured$discussion$groups$discussions}"
+					action="removeTopic" 
+					label="#{msg['discussion_thread_remove_topic']}"
+					title="#{msg['discussion_thread_remove_topic']}"
+					styleClass="icon_remove"/>				
+			</t:column>
+		</s:acl>
+	</plexus:dataTable>      
+</ui:composition>
