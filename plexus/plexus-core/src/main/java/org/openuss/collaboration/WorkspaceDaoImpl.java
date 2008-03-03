@@ -38,6 +38,9 @@ public class WorkspaceDaoImpl
      * Retrieves the entity object that is associated with the specified value object
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
+     * 
+     * @param workspaceInfo of the workspace to be loaded
+     * @return the loaded workspace
      */
     private org.openuss.collaboration.Workspace loadWorkspaceFromWorkspaceInfo(org.openuss.collaboration.WorkspaceInfo workspaceInfo)
     {
