@@ -532,14 +532,6 @@ public class BreadCrumbs extends BaseBean {
 		// setOrganisationHierarchy(organisationService.findCourseTypeHierarchy(courseTypeInfo.getId()));
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
-	
-//	public void loadGroupCrumbs(Long groupId) {
-//		setCrumbs(getGroupCrumbs(groupId));
-//	}
-//
-//	public void loadGroupCrumbs(GroupInfo groupInfo) {
-//		setCrumbs(getGroupCrumbs(groupInfo));
-//	}
 
 	public void loadMyUniCrumbs() {
 		setCrumbs(getMyUniCrumbs());

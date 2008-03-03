@@ -31,9 +31,6 @@ public class AbstractGroupPage extends BasePage {
 
 	@Property(value = "#{lectureService}")
 	protected LectureService lectureService;
-
-	@Property(value = "#{courseService}")
-	protected CourseService courseService;
 	
 	//added for course calendar support
 	@Property(value = "#{calendarService}")
@@ -101,14 +98,6 @@ public class AbstractGroupPage extends BasePage {
 
 	public void setLectureService(LectureService lectureService) {
 		this.lectureService = lectureService;
-	}
-
-	public CourseService getCourseService() {
-		return courseService;
-	}
-
-	public void setCourseService(CourseService courseService) {
-		this.courseService = courseService;
 	}
 
 	public CalendarService getCalendarService() {

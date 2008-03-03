@@ -300,13 +300,8 @@
 	
 		<navigation-case>
 			<from-outcome>group_discussion</from-outcome>
-			<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
+			<to-view-id>/views/secured/discussion/groups/discussions.xhtml</to-view-id>
 		</navigation-case>
-	
-		<navigation-case>
-			<from-outcome>group_documents_main</from-outcome>
-			<to-view-id>/views/secured/groups/components/groupdocuments.xhtml</to-view-id>				
-		</navigation-case>		
 	
 		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>
@@ -332,11 +327,73 @@
 			<from-outcome>calendar_create_serial_appointment</from-outcome>
 			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
 		</navigation-case>
+			
+	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	G r o u p s - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    	<navigation-rule>
+    		
+    		<!-- documents -->
+
+			<navigation-case>
+				<from-outcome>group_documents_main</from-outcome>
+				<to-view-id>/views/secured/documents/groups/documents.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>group_documents_edit_file</from-outcome>
+				<to-view-id>/views/secured/documents/groups/fileedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>group_documents_edit_folder</from-outcome>
+				<to-view-id>/views/secured/documents/groups/folderedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>group_documents_remove_folderentries</from-outcome>
+				<to-view-id>/views/secured/documents/groups/remove.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>group_documents_add_zip</from-outcome>
+				<to-view-id>/views/secured/documents/groups/addzip.xhtml</to-view-id>				
+			</navigation-case>
+			
+		<!-- discussion -->	
 		
-		
-		
-		
-		
+			<navigation-case>
+				<from-outcome>group_discussion_new</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/discussionnew.xhtml</to-view-id>				
+			</navigation-case>	
+			
+			<navigation-case>
+				<from-outcome>group_discussion_search</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>		
+			
+			<navigation-case>
+				<from-outcome>group_discussion_search_result</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>group_discussion_thread</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/discussionthread.xhtml</to-view-id>				
+			</navigation-case>					
+
+			<navigation-case>
+				<from-outcome>group_discussion_main</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/discussions.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			<navigation-case>
+				<from-outcome>group_discussion_removethread</from-outcome>
+				<to-view-id>/views/secured/discussion/groups/removethread.xhtml</to-view-id>				
+			</navigation-case>
+				
 	</navigation-rule>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  

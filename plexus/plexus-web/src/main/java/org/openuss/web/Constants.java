@@ -150,6 +150,22 @@ public class Constants {
 	public static final String GROUP_NEWS_PAGE = "group_news";
 	public static final String GROUP_DELETE_CONFIRMATION = "group_delete_confirmation";
 	
+	// group documents page
+	public static final String GROUP_DOCUMENTS_MAIN_PAGE = "group_documents_main";
+	public static final String GROUP_DOCUMENTS_ADD_ZIP_PAGE = "group_documents_add_zip";
+	public static final String GROUP_DOCUMENTS_EDIT_FOLDER_PAGE = "group_documents_edit_folder";
+	public static final String GROUP_DOCUMENTS_EDIT_FILEENTRY_PAGE = "group_documents_edit_file";
+	public static final String GROUP_DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "dgroup_ocuments_remove_folderentries";
+	
+	// forum navigation outcomes and combobox long constants
+	public static final String FORUM_NEW = "group_discussion_new";
+	public static final String FORUM_MAIN = "group_discussion_main";
+	public static final String FORUM_THREAD = "group_discussion_thread";
+	public static final String FORUM_THREADLENGTH = "group_discussion_threadlength";
+	public static final String FORUM_REMOVETHREAD = "group_discussion_removethread";
+	public static final String FORUM_FORUM = "group_discussion_forum";
+	public static final String FORUM_SEARCH = "group_discussion_search";	
+	public static final String FORUM_SEARCH_RESULT = "group_discussion_search_result";
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";

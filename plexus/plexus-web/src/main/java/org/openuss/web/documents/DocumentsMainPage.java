@@ -64,9 +64,6 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		if (entries == null & courseInfo.getId() != null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
 		}
-		if (entries == null & groupInfo.getId() != null) {
-			entries = documentService.getFolderEntries(groupInfo, currentFolder);
-		}
 		
 		return entries;
 	}
@@ -172,10 +169,6 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
 		}
 		
-		if (groupInfo.getId() != null) {
-			documentService.moveFolderEntries(groupInfo, targetFolder, selectedEntries() );
-		}
-		
 		// TODO success message
 		addMessage(i18n("documents_move_files"));
 		return Constants.DOCUMENTS_MAIN_PAGE;
@@ -241,9 +234,6 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			if (courseInfo.getId() != null) {
 				allFolderInfos = super.documentService.getAllSubfolders(courseInfo);
 			}
-			if (groupInfo.getId() != null) {
-				allFolderInfos = super.documentService.getAllSubfolders(groupInfo);
-			} 
 			else allFolderInfos = new ArrayList<FolderInfo>();
 			
 			folderList = new ArrayList<SelectItem>();
