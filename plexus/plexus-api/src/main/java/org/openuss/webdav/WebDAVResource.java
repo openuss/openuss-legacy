@@ -1,7 +1,6 @@
 package org.openuss.webdav;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import org.w3c.dom.Document;
@@ -26,12 +25,12 @@ public interface WebDAVResource {
 	/**
 	 * Resolves a resource in this directory. 
 	 * 
-	 * @param path The remaining elements of the path.
+	 * @param path A representation of the complete path to resolve.
 	 * @return A new WebDAVResource. Its path consists of this one's and the path argument.
 	 * 			This object may not point to an existing file.Use exists() to find out.
 	 * @throws WebDAVResourceException An error that can be handed directly to the client. 
 	 */
-	public WebDAVResource resolvePath(List<String> path) throws WebDAVResourceException;
+	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVResourceException;
 	
 	/**
 	 * Obtain information about this object.
