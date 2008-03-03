@@ -12,8 +12,6 @@ import org.openuss.web.Constants;
 
 @Bean(name="instituteActivationAction", scope=Scope.REQUEST)
 public class InstituteActivationAction extends BaseBean {
-
-
 	
 	@Property(value="#{registrationService}")
 	private RegistrationService registrationService;
@@ -58,5 +56,4 @@ public class InstituteActivationAction extends BaseBean {
 	public void setActivationCode(String activationCode) {
 		this.activationCode = activationCode;
 	}
-
 }
