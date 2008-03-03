@@ -239,9 +239,16 @@ public class CalendarServiceImpl extends
 				serialAppointment.getAssignedCalendars().add(subCal);
 			}
 		}
+		
+		// List stores the created Apps
+		List<Appointment> createdApp = new ArrayList<Appointment>();
+		
+		// count number of created appointments
+		int appCounter = 0;
 
 		// calculate resulting single appointments
 		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
+			if (appCounter > 500) throw new CalculatedAppointmentException("Too many calculated appointments");
 			// TODO Logger!
 			System.out.println("Generate Appointment "
 					+ calculatedStart.getTime().toGMTString() + " to "
@@ -291,6 +298,8 @@ public class CalendarServiceImpl extends
 		}
 
 		/** ************************************************************** */
+		
+		
 
 		getSerialAppointmentDao().update(serialAppointment);
 		// make changes persistent for the source calendar
