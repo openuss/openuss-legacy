@@ -56,6 +56,17 @@ public class SeminarpoolsOverview extends BasePage {
 
 		return Constants.INSTITUTE_PAGE;
 	}
+	
+	public String selectSeminarpoolAndConfirmRemove() {
+		logger.debug("Starting method selectSeminarpoolAndConfirmRemove");
+		SeminarpoolInfo currentSeminarpool = currentSeminarpool();
+		logger.debug("Returning to method selectUniversityAndConfirmRemove");
+		logger.debug(currentSeminarpool.getId());	
+		setSessionBean(Constants.SEMINARPOOL_INFO, currentSeminarpool);
+		
+		return Constants.SEMINARPOOL_CONFIRM_REMOVE_PAGE;
+	}
+
 
 	public String shortcutSeminarpool() throws DesktopException {
 		logger.debug("Starting method shortcutInstitute");
@@ -66,6 +77,8 @@ public class SeminarpoolsOverview extends BasePage {
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;
 	}
+	
+
 
 	public Boolean getBookmarked() {
 		try {
@@ -121,7 +134,7 @@ public class SeminarpoolsOverview extends BasePage {
 			UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
 			// get all institutes. Does not depend whether it is enabled or
 			// disabled
-			List<SeminarpoolInfo> seminarpoolList = getSeminarpoolAdministrationService().findSeminarpoolsByUniversity(universityInfo.getId());
+			List<SeminarpoolInfo> seminarpoolList = getSeminarpoolAdministrationService().getAllSeminarpools();
 			sort(seminarpoolList);
 			dataPage = new DataPage<SeminarpoolInfo>(seminarpoolList.size(), 0, seminarpoolList);
 		}

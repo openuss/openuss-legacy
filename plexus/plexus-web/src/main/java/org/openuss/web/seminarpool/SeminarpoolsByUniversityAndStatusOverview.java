@@ -54,7 +54,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 		logger.debug("Returning to method selectInstitute");
 		logger.debug(seminarpoolInfo.getId());
 		// setSessionBean(Constants.INSTITUTE, institute);
-		setSessionBean(Constants.INSTITUTE_INFO, seminarpoolInfo);
+		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
 
 		return Constants.INSTITUTE_PAGE;
 	}
@@ -65,7 +65,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 		// desktopService.linkInstitute(desktop, currentSeminarpool);
 		desktopService2.linkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
 
-		addMessage(i18n("message_institute_shortcut_created"));
+		addMessage(i18n("message_seminarpool_shortcut_created"));
 		return Constants.SUCCESS;
 	}
 
@@ -79,17 +79,18 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 
 		return false;
 	}
-
+	
+	
 	public String removeShortcut() {
 		try {
 			SeminarpoolInfo currentSeminarpool = currentSeminarpool();
 			desktopService2.unlinkSeminarpool(desktopInfo.getId(), currentSeminarpool.getId());
 		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			addError(i18n("seminarpool_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
 
-		addMessage(i18n("institute_success_remove_shortcut"));
+		addMessage(i18n("seminarpool_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
 

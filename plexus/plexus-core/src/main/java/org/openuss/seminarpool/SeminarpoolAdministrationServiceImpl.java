@@ -530,5 +530,17 @@ public class SeminarpoolAdministrationServiceImpl
 		return userInfoList;
 	}
 
+	@Override
+	protected void handleActivateSeminar(
+			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocation)
+			throws Exception {
+		Validate.notNull(courseSeminarpoolAllocation, "handleActivateSeminar ==> courseSeminarpoolAllocation cannot be null");
+		Validate.notNull(courseSeminarpoolAllocation.getId(), "handleActivateSeminar ==> courseSeminarpoolAllocation.getId() cannot be null");
+    	CourseSeminarpoolAllocation courseAllocationEntity = getCourseSeminarpoolAllocationDao().load(courseSeminarpoolAllocation.getId());
+    	Validate.notNull(courseAllocationEntity, "handleActivateSeminar ==> Cannot load CourseSeminarpoolAllocation");
+    	courseAllocationEntity.setAccepted(true);
+    	getCourseSeminarpoolAllocationDao().update(courseAllocationEntity);
+	}
+
 
 }

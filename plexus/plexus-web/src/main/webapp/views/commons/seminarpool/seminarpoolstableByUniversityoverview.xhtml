@@ -41,8 +41,8 @@
 		<plexus:column header="#{msg.commands_header}">
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<plexus:command 
-						bean = "#{views$public$university$universities}"
-						action = "selectUniversityAndConfirmRemove"
+						bean = "#{views$public$institute$seminarpoolsbyuniversityoverview}"
+						action = "selectSeminarpoolAndConfirmRemove"
 						styleClass = "icon_remove"
 						label = "#{msg.seminarpool_command_remove}"
 						title = "#{msg.seminarpool_command_remove_hint}">
