@@ -946,6 +946,25 @@ public class CalendarServiceIntegrationTest extends
 		}
 
 	}
+	
+	public void testCreateAppointmentType() {
+		AppointmentTypeInfo appTypeInfo = new AppointmentTypeInfo();
+		appTypeInfo.setName("Vorlesung");
+		try {
+			List<AppointmentType> appTypeInfos = calendarService.getAllAppointmentTypes();
+			assertNotNull(appTypeInfos);
+			assertEquals(0, appTypeInfos.size());
+			calendarService.createAppointmentType(appTypeInfo);
+			List<AppointmentType> appTypeInfos2 = calendarService.getAllAppointmentTypes();
+			assertNotNull(appTypeInfos2);
+			assertEquals(1, appTypeInfos2.size());
+			
+		} catch (CalendarApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail();
+		}
+	}
 
 	public SecurityService getSecurityService() {
 		return securityService;

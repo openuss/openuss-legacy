@@ -633,4 +633,35 @@ public class CalendarServiceImpl extends
 		return calAppInfos;
 	}
 
+	@Override
+	protected void handleCreateAppointmentType(
+			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
+		getAppointmentTypeDao().create(appointmentTypeInfo.getName());
+		
+	}
+
+	@Override
+	protected void handleDeleteAppointmentType(
+			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected List handleGetAllAppointmentTypes() throws Exception {
+		List<AppointmentType> appTypes = (List)getAppointmentTypeDao().loadAll();
+		List<AppointmentTypeInfo> appTypeInfos = new ArrayList<AppointmentTypeInfo>();
+		for (AppointmentType appTypeIt : appTypes) {
+			appTypeInfos.add(getAppointmentTypeDao().toAppointmentTypeInfo(appTypeIt));
+		}
+		return appTypeInfos;
+	}
+
+	@Override
+	protected void handleUpdateAppointmentType(
+			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
