@@ -132,7 +132,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		assistantsUserIds = null;
 		page = null;
 	}
-
+	
 	public Collection<SelectItem> getInstituteMemberList() {
 		if (instituteMembers == null) {
 			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(courseInfo.getInstituteId());
