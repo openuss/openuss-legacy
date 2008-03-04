@@ -14,6 +14,45 @@
         <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
             <o:input label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
             <o:input label="#{msg.papersubmission_exam_edit_description}" entity="examInfo" property="description" maxlength="250" type="textarea"/>
+            <h:outputLabel value="#{msg.braincontest_attachment}" for="attachmentUpload" styleClass="field_label" />
+					<f:subview rendered="#{!(empty sessionScope.braincontest_contest.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{sessionScope.braincontest_contest.attachments}" 
+								binding="${views$secured$braincontest$braincontestnew.attachmentList}">
+						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
+									action="#{views$secured$braincontest$braincontestnew.removeAttachment}"
+									immediate="true" styleClass="button_remove" />
+						  		&#160;
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<f:subview rendered="#{empty attachment.id}">
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</f:subview> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+	
+					<t:inputFileUpload 
+						id="attachmentUpload" 
+						storage="file" 
+						accept="*"
+						immediate="true" styleClass="uploadField">
+						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					</t:inputFileUpload>
+					
+					<h:commandButton value="#{msg.braincontest_add_attachment}"
+						action="#{views$secured$braincontest$braincontestnew.addAttachment}"
+						immediate="true"
+						styleClass="button_add"/> 
+					
+					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
             <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full"/>
         </o:block> 
         <o:block>   

@@ -1,17 +1,23 @@
 package org.openuss.web.papersubmission;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.component.UIData;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -20,6 +26,7 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
+import org.openuss.web.upload.UploadFileManager;
               
 @Bean(name = "views$secured$papersubmission$examlist", scope = Scope.REQUEST)
 @View
@@ -34,6 +41,11 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	private LocalDataModelActiveExams dataActiveExams = new LocalDataModelActiveExams();
 	
 	private LocalDataModelInactiveExams dataInactiveExams = new LocalDataModelInactiveExams();
+	
+	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
+	private UploadFileManager uploadFileManager;
+	
+	private UIData attachmentList;
 
 	/** If <code>true</code> the page is in editing mode. */
 	private Boolean editing = false;
@@ -223,6 +235,43 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
+	public String removeAttachment() {
+		logger.debug("exam attachment removed");
+		FileInfo attachment = (FileInfo) attachmentList.getRowData();
+		if (examInfo.getAttachments() != null) {
+			examInfo.getAttachments().remove(attachment);
+		}
+		return Constants.SUCCESS;
+	}
+
+	public String addAttachment() throws IOException, BrainContestApplicationException {
+		logger.debug("braincontest attachment add");
+		if (examInfo.getAttachments() == null) {
+			examInfo.setAttachments(new ArrayList<FileInfo>());
+		}
+		FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
+		if (fileInfo != null && !examInfo.getAttachments().contains(fileInfo)) {
+			if (validFileName(fileInfo.getFileName())) {
+				examInfo.getAttachments().add(fileInfo);
+			} else {
+				addError(i18n("braincontest_filename_already_exists"));
+				return Constants.FAILURE;
+			}
+			
+		}
+		
+		return Constants.SUCCESS;
+	}
+	
+	private boolean validFileName(String fileName) {
+		for (FileInfo attachment : examInfo.getAttachments()) {
+			if (StringUtils.equalsIgnoreCase(fileName, attachment.getFileName())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	//// getter/setter methods ////////////////////////////////////////////////
 
 	private ExamInfo currentActiveExam() {
@@ -322,6 +371,14 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 
 	public void setDataInactiveExams(LocalDataModelInactiveExams dataInactiveExams) {
 		this.dataInactiveExams = dataInactiveExams;
+	}
+
+	public UIData getAttachmentList() {
+		return attachmentList;
+	}
+
+	public void setAttachmentList(UIData attachmentList) {
+		this.attachmentList = attachmentList;
 	}
 	
 }
