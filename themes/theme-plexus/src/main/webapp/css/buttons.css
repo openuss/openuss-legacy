@@ -4,10 +4,10 @@ a.icon_edit {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -18,9 +18,9 @@ a.icon_edit span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -34,10 +34,10 @@ a.icon_settings {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -48,9 +48,9 @@ a.icon_settings span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -64,10 +64,10 @@ a.icon_remove {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -78,9 +78,9 @@ a.icon_remove span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -94,10 +94,10 @@ a.icon_profile {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -108,14 +108,15 @@ a.icon_profile span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
 a.icon_profile:focus span, a.icon_profile:hover span {
   background-position: top right;
+  cursor: pointer;
 }
 
 a.icon_bookmark {
@@ -124,10 +125,10 @@ a.icon_bookmark {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -138,9 +139,9 @@ a.icon_bookmark span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -154,10 +155,10 @@ a.icon_bookmark_remove {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -168,9 +169,9 @@ a.icon_bookmark_remove span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -184,10 +185,10 @@ a.icon_send {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -198,9 +199,9 @@ a.icon_send span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -214,10 +215,10 @@ a.icon_sendnow {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -228,9 +229,9 @@ a.icon_sendnow span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -244,10 +245,10 @@ a.icon_public {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -258,9 +259,9 @@ a.icon_public span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -274,10 +275,10 @@ a.icon_hide {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -288,9 +289,9 @@ a.icon_hide span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -304,10 +305,10 @@ a.icon_move {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -318,9 +319,9 @@ a.icon_move span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -334,10 +335,10 @@ a.icon_cancel {
   float: left;
   font-size: 0pt;
   height: 16px;
-  line-height: 0px;
+  /*line-height: 0px;*/
   margin: 0 5px 0 0;
   overflow: hidden;
-  position: relative;
+  /*position: relative;*/
   white-space: nowrap;
   width: 16px;
 }
@@ -348,9 +349,9 @@ a.icon_cancel span {
   background-repeat: no-repeat;
   display: block;
   height: 16px;
-  left: 0pt;
+  /*left: 0pt;
   position: absolute;
-  top: 0pt;
+  top: 0pt;*/
   width: 16px;
 }
 
@@ -585,12 +586,11 @@ a.remove_bookmark:focus span, a.remove_bookmark:hover span {
 
 /*Legende*/
 
-/*@Max Budde, bitte mal anschaun, auch im IE und so...*/
-
 ul.legend_list {
   list-style: none;
   padding:0px;
-  color: #a5a5a5;
+  margin:0px;
+  color: #a5a5a5;  
 }
 
 ul.legend_list li {
