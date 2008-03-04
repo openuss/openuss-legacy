@@ -126,4 +126,18 @@ public class SeminarpoolUserRegistrationServiceImpl
 		return getSeminarUserRegistrationDao().toSeminarUserRegistrationInfo(seminarUserRegistrationEntity);
 	}
 
+	@Override
+	protected SeminarUserRegistrationInfo handleFindSeminarUserRegistrationByUserAndSeminarpool(
+			Long userId, Long seminarpoolId) throws Exception {
+		SeminarUserRegistrationInfo sem = null;
+		if(userId != null && seminarpoolId != null){
+			SeminarUserRegistration semEntity = getSeminarUserRegistrationDao().findByUserAndSeminarpool(this.getUserDao().load(userId), this.getSeminarpoolDao().load(seminarpoolId));
+			sem = this.getSeminarUserRegistrationDao().toSeminarUserRegistrationInfo(semEntity);
+		}
+		if(sem == null){
+			sem = new SeminarUserRegistrationInfo();
+		}
+		return sem;
+	}
+
 }

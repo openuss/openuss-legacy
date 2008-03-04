@@ -22,16 +22,17 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
-  			<h:form id="seminarpool_user_registration_form">
+  			<h:form id="seminarpool_user_registration_form2">
 				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
-  				<o:block label="#{msg.seminarpool_user_registration_start_headline}">
-					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_user_registration_start_text}" escape="false"/>
-			   		</div>
-			   	</o:block>
+				<t:saveState value="#{seminarUserRegistrationInfo}" id="seminarUserRegistrationInfo"/>
+  				
 			   	<o:block>
+			   	
+			   
+				
 			   		<h:commandButton action="view:backward" value="#{msg.cancel}" styleClass="button_cancel"/>
-					<h:commandButton action="#{seminarpoolUserRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
+					<h:commandButton action="#{seminarpoolUserRegistration.create}" value="#{msg.seminarpool_create_button}" styleClass="button_continue"/>
+					<h:messages/>
 		  		</o:block>
 		  	</h:form>
   		</ui:define>

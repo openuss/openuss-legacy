@@ -22,16 +22,44 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
-  			<h:form id="seminarpool_user_registration_form">
+  			<h:form id="seminarpool_user_registration_form2">
 				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
-  				<o:block label="#{msg.seminarpool_user_registration_start_headline}">
-					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_user_registration_start_text}" escape="false"/>
-			   		</div>
-			   	</o:block>
+				<t:saveState value="#{seminarUserRegistrationInfo}" id="seminarUserRegistrationInfo"/>
+  				
 			   	<o:block>
+			   	
+			   	<o:input 
+					label="#{msg.seminarpool_neededseminars}"
+					entity="seminarpoolUserRegistration.seminarUserRegistrationInfo" 
+					property="neededSeminars" 
+					maxlength="30" 
+					required="true" />
+			   	
+			   	<c:forEach var="i" begin="1" end="#{seminarpoolUserRegistration.maxPriority}">
+			   	
+			   	<h:outputLabel value="#{i}. #{msg.seminarpool_user_registration_seminar}" 
+ 				   for="seminar_list#{i}" 
+ 				   styleClass="field_label" />
+ 				   
+				<h:selectOneListbox 
+					id="seminar_list#{i}" 
+					size="1" 
+					styleClass="pulldown" 
+					value="#{seminarpoolUserRegistration.priority}"
+					valueChangeListener="#{seminarpoolUserRegistration.processSeminarSelectChanged}"
+					required="false"
+					immediate="true">
+ 					<f:selectItems value="#{seminarpoolUserRegistration.allSeminars}"/>
+				</h:selectOneListbox>
+				
+				</c:forEach>
+				<h:messages/>
+				</o:block>
+
+				<o:block>
+				
 			   		<h:commandButton action="view:backward" value="#{msg.cancel}" styleClass="button_cancel"/>
-					<h:commandButton action="#{seminarpoolUserRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
+					<h:commandButton action="#{seminarpoolUserRegistration.step2}" value="#{msg.forward}" styleClass="button_continue"/>
 		  		</o:block>
 		  	</h:form>
   		</ui:define>
