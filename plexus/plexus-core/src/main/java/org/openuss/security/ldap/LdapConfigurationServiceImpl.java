@@ -129,7 +129,9 @@ public class LdapConfigurationServiceImpl
     		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
     	}
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
-    	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
+    	if(domain.getAttributeMappingId() != null ) {
+    		authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));    		
+    	}    	
     	getAuthenticationDomainDao().update(authDomain);    	
     	return authDomain;
     }
@@ -151,7 +153,9 @@ public class LdapConfigurationServiceImpl
     		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
     	}
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().authenticationDomainInfoToEntity(domain);
-    	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
+    	if(domain.getAttributeMappingId() != null ) {
+    		authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));    		
+    	}
     	getAuthenticationDomainDao().update(authDomain);
     }
 
@@ -162,7 +166,6 @@ public class LdapConfigurationServiceImpl
     protected java.util.List<AuthenticationDomain> handleGetAllDomains() {
     	return (java.util.List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
     }
-
     
     /**
      * 
@@ -217,7 +220,7 @@ public class LdapConfigurationServiceImpl
 	}
 
     /**
-     * 
+     * @deprecated remove server from domain not allowed?!
      */
 	@Override
 	protected void handleRemoveServerFromDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain){
@@ -295,10 +298,9 @@ public class LdapConfigurationServiceImpl
 	protected RoleAttributeKey handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
     		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
-    	}
-    	RoleAttributeKeyDao dao = getRoleAttributeKeyDao();
-    	RoleAttributeKey	key = dao.roleAttributeKeyInfoToEntity(roleAttributeKey);
-    	return dao.create(key);
+    	}    	
+    	RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
+    	return getRoleAttributeKeyDao().create(key);
     }
 
     /**
@@ -314,9 +316,8 @@ public class LdapConfigurationServiceImpl
      */
 	@Override
 	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
-    	RoleAttributeKeyDao dao = getRoleAttributeKeyDao();
-    	RoleAttributeKey	key = dao.roleAttributeKeyInfoToEntity(roleAttributeKey);
-    	dao.update(key);
+    	RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
+    	getRoleAttributeKeyDao().update(key);
     }
 
     /**
@@ -396,8 +397,7 @@ public class LdapConfigurationServiceImpl
 	
 		setEntity.getRoleAttributeKeys().add(keyEntity);
 		keySetDao.update(setEntity);
-    }
-    
+    }    
 	
 	private RoleAttributeKeySet forceRoleAttributeKeySetLoad(RoleAttributeKeySet set) {
 		set = getRoleAttributeKeySetDao().load(set.getId());
@@ -493,61 +493,77 @@ public class LdapConfigurationServiceImpl
 	protected void handleAddDomainToAttributeMapping(
 			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
 			throws Exception {
-		// TODO Auto-generated method stub
-		
+		AuthenticationDomain authenticationDomain = getAuthenticationDomainDao().load(domain.getId());		
+		AttributeMapping attributeMapping = getAttributeMappingDao().load(mapping.getId());
+		authenticationDomain.setAttributeMapping(attributeMapping);
+		getAuthenticationDomainDao().update(authenticationDomain);		
 	}
 
 	@Override
 	protected void handleAddServerToUserDnPatternSet(LdapServerInfo server,
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
-		
+		LdapServer ldapServer = getLdapServerDao().load(server.getId());
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
+		ldapServer.setUserDnPatternSet(userDnPatternSetEntity);
+		getLdapServerDao().update(ldapServer);
 	}
 
 	@Override
 	protected void handleAddUserDnPatternToSet(
 			UserDnPatternSetInfo userDnPattern,
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
-		
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());				
+		userDnPatternSetEntity.addUserDnPattern(userDnPatternEntity);
+		getUserDnPatternSetDao().update(userDnPatternSetEntity);		
 	}
 
 	@Override
 	protected UserDnPattern handleCreateUserDnPattern(
 			UserDnPatternInfo userDnPattern) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().userDnPatternInfoToEntity(userDnPattern);
+		return getUserDnPatternDao().create(userDnPatternEntity);
 	}
 
 	@Override
 	protected UserDnPatternSet handleCreateUserDnPatternSet(
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().userDnPatternSetInfoToEntity(userDnPatternSet);
+		return getUserDnPatternSetDao().create(userDnPatternSetEntity);
 	}
 
 	@Override
 	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern)
 			throws Exception {
-		// TODO Auto-generated method stub
-		
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
+		getUserDnPatternDao().remove(userDnPatternEntity);		
 	}
 
 	@Override
 	protected void handleDeleteUserDnPatternSet(
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
+		getUserDnPatternSetDao().remove(userDnPatternSetEntity);
 		
 	}
 
+	/**
+	 * 
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveAttributeMappingFromRoleAttributeKeySet(org.openuss.security.ldap.AttributeMappingInfo, org.openuss.security.ldap.RoleAttributeKeySetInfo)
+	 * @deprecated no use for it?!
+	 */
 	@Override
 	protected void handleRemoveAttributeMappingFromRoleAttributeKeySet(
 			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
 	}
 
+	/**
+	 * 
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveDomainFromAttributeMapping(org.openuss.security.ldap.AuthenticationDomainInfo, org.openuss.security.ldap.AttributeMappingInfo)
+	 * @deprecated no use for it?!
+	 */
 	@Override
 	protected void handleRemoveDomainFromAttributeMapping(
 			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
@@ -556,6 +572,11 @@ public class LdapConfigurationServiceImpl
 		
 	}
 
+	/**
+	 * 
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveServerFromUserDnPatternSet(org.openuss.security.ldap.LdapServerInfo, org.openuss.security.ldap.UserDnPatternSetInfo)
+	 * @deprecated no use for it?!
+	 */
 	@Override
 	protected void handleRemoveServerFromUserDnPatternSet(
 			LdapServerInfo server, UserDnPatternSetInfo userDnPatternSet)
@@ -568,22 +589,29 @@ public class LdapConfigurationServiceImpl
 	protected void handleRemoveUserDnPatternFromSet(
 			UserDnPatternInfo userDnPattern,
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
-		
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
+		userDnPatternSetEntity.removeUserDnPattern(userDnPatternEntity);
+		getUserDnPatternSetDao().update(userDnPatternSetEntity);		
 	}
 
+	/**
+	 * 
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleSaveUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)
+	 * @deprecated no use for it?!
+	 */
 	@Override
 	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
 			throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void handleSaveUserDnPatternSet(
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		// TODO Auto-generated method stub
-		
+			UserDnPatternSetInfo userDnPatternSet) throws Exception {	
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().userDnPatternSetInfoToEntity(userDnPatternSet);		
+//		userDnPatternSetEntity.setUserDnPatterns(userDnPatternSet.getUserDNPatternIds());
+		getUserDnPatternSetDao().update(userDnPatternSetEntity);
 	}
 
 
