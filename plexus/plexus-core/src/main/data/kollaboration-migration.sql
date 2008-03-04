@@ -1,1 +1,2 @@
-asdsad
+create table PAPERSUBMISSION_EXAM (ID BIGINT not null, DOMAIN_ID BIGINT not null, NAME VARCHAR(100) not null, DEADLINE TIMESTAMP not null, DESCRIPTION VARCHAR(32000), primary key (ID));
+create table PAPERSUBMISSION_PAPER (ID BIGINT not null, DELIVER_DATE TIMESTAMP not null, EXAM_FK BIGINT, SENDER_FK BIGINT, primary key (ID));

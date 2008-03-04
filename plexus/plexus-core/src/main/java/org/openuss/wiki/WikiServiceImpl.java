@@ -157,7 +157,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 		getWikiSiteVersionDao().create(wikiSiteVersion);
 
-		wikiSite.getWikiPageVersions().add(wikiSiteVersion);
+		wikiSite.getWikiSiteVersions().add(wikiSiteVersion);
 		wikiSiteVersion.setWikiSite(wikiSite);
 
 		getWikiSiteDao().update(wikiSite);
