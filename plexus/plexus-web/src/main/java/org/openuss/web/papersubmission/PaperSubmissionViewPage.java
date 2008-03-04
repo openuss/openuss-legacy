@@ -66,11 +66,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		paperSubmissionInfo = getCurrentPaperSubmission();
-		
+				
 		paperSelection.processSwitch();
 	
 		addPageCrumbs();
+		paperSubmissionInfo = getCurrentPaperSubmission();
 	}
 
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
@@ -204,7 +204,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		logger.debug("editing folder entry");
 		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
 		FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
-		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
+		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, selectedFile);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 
@@ -217,7 +217,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
 			logger.debug("deleting documents:");
-			setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES, entries);
+			setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, entries);
 			paperSelection.getMap().clear();
 			return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
 		} else {
@@ -228,7 +228,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	public String addFile() {
 		logger.debug("create new file");
-		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, new FileInfo());
+		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}

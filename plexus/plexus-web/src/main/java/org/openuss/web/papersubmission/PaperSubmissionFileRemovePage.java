@@ -17,6 +17,7 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 @Bean(name = "views$secured$papersubmission$submissionfileremove", scope = Scope.REQUEST)
 @View
@@ -35,6 +36,28 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
+		crumb.setName(i18n("papersubmission_paperlist_header"));
+		crumb.setHint(i18n("papersubmission_paperlist_header"));
+
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.addCrumb(crumb);
+		
+		crumb = new BreadCrumb();
+		crumb.setName(examInfo.getName());
+		crumb.setHint(examInfo.getName());
+		
+		if(courseInfo != null && courseInfo.getId() != null 
+				&& examInfo != null && examInfo.getId() != null){
+			
+			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+			crumb.addParameter("course",courseInfo.getId());
+			crumb.addParameter("exam",examInfo.getId());
+		}
+		
+		breadcrumbs.addCrumb(crumb);
+		
+		crumb = new BreadCrumb();
 		crumb.setName(i18n("documents_remove_header"));
 		crumb.setHint(i18n("documents_remove_header"));
 		breadcrumbs.addCrumb(crumb);
@@ -49,7 +72,7 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		logger.trace("removing entries");
 		if (entries != null) {
 			documentService.removeFolderEntries(entries);
-			removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES);
+			removeSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION);
 			addMessage(i18n("documents_message_removing_files_succeed"));
 		}
 		return Constants.OUTCOME_BACKWARD;
@@ -60,7 +83,7 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 	 * @return OUTCOME_BACKWARD
 	 */
 	public String cancelEntries() {
-		removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRIES);
+		removeSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION);
 		return Constants.OUTCOME_BACKWARD;
 	}
 	

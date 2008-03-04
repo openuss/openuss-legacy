@@ -202,16 +202,16 @@ public class PaperSubmissionServiceImpl
 			newSubmissionInfo.setExamId(paperSubmissionInfo.getExamId());
 			newSubmissionInfo.setUserId(paperSubmissionInfo.getUserId());
 			this.createPaperSubmission(newSubmissionInfo);
-			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
-			List<FileInfo> files = getDocumentService().getFileEntries(paperSubmissionInfo);
-		
-			//Copy Files from the old submission to the new
-			FolderInfo newFolder = getDocumentService().getFolder(newSubmissionInfo);
-			for(FileInfo file : files){
-				file = getDocumentService().getFileEntry(file.getId(), true);
-				file.setId(null);
-				getDocumentService().createFileEntry(file, newFolder);
-			}
+//			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+//			List<FileInfo> files = getDocumentService().getFileEntries(paperSubmissionInfo);
+//		
+//			//Copy Files from the old submission to the new
+//			FolderInfo newFolder = getDocumentService().getFolder(newSubmissionInfo);
+//			for(FileInfo file : files){
+//				file = getDocumentService().getFileEntry(file.getId(), true);
+//				file.setId(null);
+//				getDocumentService().createFileEntry(file, newFolder);
+//			}
 			return newSubmissionInfo;
 			
 		}else{

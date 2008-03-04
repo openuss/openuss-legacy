@@ -39,7 +39,7 @@
 	                    id="submissionfiles" 
 	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
 	                    value="views$secured$papersubmission$submissionviewlecturer.dataSubmissionFiles" 
-	                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date, col_commands"
+	                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date"
 	                    var="bean" 
 	                    rows="20">  
 	                    
@@ -49,10 +49,10 @@
 				                    immediate="true" 
 				                    onchange="this.form.submit();" 
 				                    onclick="this.form.submit();" 
-				                    value="#{papersubmission_extendedfolderentry_selection.state}" 
-				                    valueChangeListener="#{papersubmission_extendedfolderentry_selection.switchSelection}"/>
+				                    value="#{papersubmission_folderentry_selection.state}" 
+				                    valueChangeListener="#{papersubmission_folderentry_selection.switchSelection}"/>
 				            </f:facet>
-				            <h:selectBooleanCheckbox value="#{papersubmission_extendedfolderentry_selection.map[bean]}"/> 
+				            <h:selectBooleanCheckbox value="#{papersubmission_folderentry_selection.map[bean]}"/> 
 				        </t:column> 
 				        
 	                    <t:column> 
@@ -89,13 +89,6 @@
 	                        </h:outputText>
 	                    </t:column>
 	                     
-	                    <t:column>
-	                    	<plexus:commandSortHeader columnName="submissionstatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader>
-				            <h:graphicImage value="/images/papersubmission/status#{bean.submissionStatus}.png"/>
-				            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionStatus.value == 1}"/>
-							<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionStatus. value == 2}"/>
-							<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionStatus.value == 3}"/>
-                        </t:column>
 	                </plexus:dataTable> 
 	                
 	                <o:block>
