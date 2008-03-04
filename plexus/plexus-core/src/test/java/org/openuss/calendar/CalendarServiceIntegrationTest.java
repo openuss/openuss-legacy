@@ -528,6 +528,15 @@ public class CalendarServiceIntegrationTest extends
 
 			// add subscription
 			calendarService.addSubscription(courseCalInfo);
+			
+			try {
+				// test if it is possible to subscribe to the own calendar
+				calendarService.addSubscription(userCalInfo);
+				fail();
+			} catch (CalendarApplicationException e) {
+				e.printStackTrace();
+			}
+			
 
 			// test if subscription is added
 
@@ -620,7 +629,6 @@ public class CalendarServiceIntegrationTest extends
 			}
 
 		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail();
 		}

@@ -71,6 +71,10 @@ public class CalendarServiceImpl extends
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
 
+		if (appointmentInfo.getStarttime().after(
+				appointmentInfo.getEndtime()))
+			throw new Exception("Duration of appointment is negative");
+		
 		Calendar calendar = getCalendarDao().load(calendarInfo.getId());
 
 		AppointmentType appType = getAppointmentTypeDao().load(
@@ -249,6 +253,7 @@ public class CalendarServiceImpl extends
 
 		// calculate resulting single appointments
 		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
+			appCounter ++;
 			if (appCounter > 500)
 				throw new CalculatedAppointmentException(
 						"Too many calculated appointments");
