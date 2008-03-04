@@ -14,6 +14,7 @@
 
 	<f:subview>
 	<div id="schedule">
+	
 	<h:panelGrid columns="6" border="0" style="width: 100.00%" >
 		<h:outputText value="Montag" />
 		<h:outputText value="Dienstag" />
@@ -38,6 +39,8 @@
 					compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
 					detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/> 
 	
+	<t:inputCalendar id="scheduleNavigator"
+					value="#{scheduleHandler2.model.selectedDate}" />
 
 	</div>
 	

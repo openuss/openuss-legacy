@@ -295,53 +295,12 @@
     
     <!-- Schedule Beans -->
     
-     <managed-bean>
+	<managed-bean>
     	<managed-bean-name>today</managed-bean-name>
     	<managed-bean-class>java.util.Date</managed-bean-class>
     	<managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-
-
-    <managed-bean>
-    	<managed-bean-name>scheduleModel1</managed-bean-name>
-    	<managed-bean-class>
-    		org.apache.myfaces.custom.schedule.model.SimpleScheduleModel
-    	</managed-bean-class>
-    	<managed-bean-scope>session</managed-bean-scope>
-    	<managed-property>
-    		<property-name>mode</property-name>
-    		<value>1</value>
-    	</managed-property>
-    	<managed-property>
-    		<property-name>selectedDate</property-name>
-    		<value>#{today}</value>
-    	</managed-property>
-    </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>scheduleHandler1</managed-bean-name>
-    	<managed-bean-class>
-    		org.apache.myfaces.examples.schedule.ScheduleExampleHandler
-    	</managed-bean-class>
-    	<managed-bean-scope>session</managed-bean-scope>
-    	<managed-property>
-    		<property-name>model</property-name>
-    		<value>#{scheduleModel1}</value>
-    	</managed-property>
-    </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>addEntryHandler</managed-bean-name>
-    	<managed-bean-class>
-    		org.apache.myfaces.examples.schedule.AddEntryHandler
-    	</managed-bean-class>
-    	<managed-bean-scope>request</managed-bean-scope>
-    	<managed-property>
-    		<property-name>model</property-name>
-    		<value>#{scheduleModel1}</value>
-    	</managed-property>
-    </managed-bean>
-
+    
     <managed-bean>
     	<managed-bean-name>scheduleModel2</managed-bean-name>
     	<managed-bean-class>
@@ -369,32 +328,7 @@
     		<value>#{scheduleModel2}</value>
     	</managed-property>
     </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>userScheduleHandler</managed-bean-name>
-    	<managed-bean-class>
-    		org.openuss.web.calendar.CalendarMainPage
-    	</managed-bean-class>
-    	<managed-bean-scope>session</managed-bean-scope>
-    	<managed-property>
-    		<property-name>model</property-name>
-    		<value>#{scheduleModel2}</value>
-    	</managed-property>
-    </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>bindingScheduleHandler</managed-bean-name>
-    	<managed-bean-class>
-    		org.apache.myfaces.examples.schedule.BindingScheduleExampleHandler
-    	</managed-bean-class>
-    	<managed-bean-scope>session</managed-bean-scope>
-    	<managed-property>
-    		<property-name>model</property-name>
-    		<value>#{scheduleModel2}</value>
-    	</managed-property>
-    </managed-bean>
-
-
+    
     <managed-bean>
     	<managed-bean-name>scheduleSettings2</managed-bean-name>
     	<managed-bean-class>
@@ -411,7 +345,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>visibleEndHour</property-name>
-    		<value>20</value>
+    		<value>18</value>
     	</managed-property>
     	<managed-property>
     		<property-name>workingStartHour</property-name>
@@ -419,7 +353,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>workingEndHour</property-name>
-    		<value>19</value>
+    		<value>17</value>
     	</managed-property>
     	<managed-property>
     		<property-name>tooltip</property-name>
@@ -450,38 +384,6 @@
     		<value>22</value>
     	</managed-property>
     </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>scheduleThemeChoices</managed-bean-name>
-    	<managed-bean-class>java.util.TreeMap</managed-bean-class>
-    	<managed-bean-scope>application</managed-bean-scope>
-    	<map-entries>
-    		<map-entry>
-    			<key>default</key>
-    			<value>default</value>
-    		</map-entry>
-    		<map-entry>
-    			<key>evolution</key>
-    			<value>evolution</value>
-    		</map-entry>
-    		<map-entry>
-    			<key>outlookxp</key>
-    			<value>outlookxp</value>
-    		</map-entry>
-    	</map-entries>
-    </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>randomColorEntryRenderer</managed-bean-name>
-    	<managed-bean-class>org.apache.myfaces.examples.schedule.RandomColorScheduleEntryRenderer</managed-bean-class>
-    	<managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-	<managed-bean>
-		<managed-bean-name>filterTag</managed-bean-name>
-		<managed-bean-class>java.lang.String</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
     
 
 </faces-config>

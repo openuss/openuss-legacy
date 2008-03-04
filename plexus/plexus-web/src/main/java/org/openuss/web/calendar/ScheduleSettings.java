@@ -1,5 +1,3 @@
-package org.openuss.web.calendar;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,12 +17,11 @@ package org.openuss.web.calendar;
  * under the License.
  */
 
+package org.openuss.web.calendar;
+
 import java.io.Serializable;
 
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
-import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.View;
 
 /**
  * Handler class that contains the settings of the customizable schedule
@@ -33,7 +30,6 @@ import org.apache.shale.tiger.view.View;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */
-
 public class ScheduleSettings implements Serializable
 {
     private static final long serialVersionUID = -8547428935814382762L;
@@ -222,13 +218,5 @@ public class ScheduleSettings implements Serializable
     public void setExpandToFitEntries(boolean expandToFitEntries)
     {
         this.expandToFitEntries = expandToFitEntries;
-    }
-    
-    public String getMode() {
-        return String.valueOf(getModel().getMode());
-    }
-    
-    public void setMode(String mode) {
-        getModel().setMode(Integer.valueOf(mode).intValue());
     }
 }

@@ -130,8 +130,30 @@
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/documents/*">
+	<page view-id="/views/secured/documents/groups/*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/discussion/groups/*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+		<parameter name="topic" value="#{discussion_topic.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/newsletter/groups/*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/newsletter/groups/showmail.xhtml">
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
+	</page>
+
+	<page view-id="/views/secured/newsletter/groups/newmail.xhtml">
+		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -157,10 +179,8 @@
 	<page view-id="/views/secured/documents/*">
 	 	<securityConstraint domainObject="#{documents_current_folder}" permissions="#{ACL.READ}"/>
 		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
-		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="folder" value="#{documents_current_folder.id}" converterId="javax.faces.Long"/>
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
-		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/documents/folderedit.xhtml">

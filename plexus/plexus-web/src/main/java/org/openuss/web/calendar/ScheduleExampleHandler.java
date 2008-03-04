@@ -1,5 +1,3 @@
-package org.openuss.web.calendar;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,25 +17,18 @@ package org.openuss.web.calendar;
  * under the License.
  */
 
+package org.openuss.web.calendar;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 import org.apache.myfaces.custom.schedule.model.SimpleScheduleModel;
-import org.apache.shale.tiger.managed.Property;
-import org.openuss.calendar.AppointmentInfo;
-import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarInfo;
-import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.security.User;
-import org.openuss.web.Constants;
 
 /**
  * Handler class for the schedule example 
@@ -45,13 +36,10 @@ import org.openuss.web.Constants;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */
-
-public class ScheduleExampleHandler extends AbstractCalendarPage implements Serializable
+public class ScheduleExampleHandler implements Serializable
 {
-	private static final long serialVersionUID = -8815771399735333108L;
+    private static final long serialVersionUID = -8815771399735333108L;
 
-	private static final Logger logger = Logger	.getLogger(ScheduleExampleHandler.class);
-    
     private ScheduleModel model;
 
     public ScheduleModel getModel()
@@ -92,124 +80,77 @@ public class ScheduleExampleHandler extends AbstractCalendarPage implements Seri
         calendar.setTime(model.getSelectedDate());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
         calendar.set(Calendar.HOUR_OF_DAY, 14);
-//        DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
-//        // every entry in a schedule must have a unique id
-//        entry1.setId(RandomStringUtils.randomNumeric(32));
-//        entry1.setStartTime(calendar.getTime());
-//        calendar.add(Calendar.MINUTE, 45);
-//        entry1.setEndTime(calendar.getTime());
-//        entry1.setTitle("Test MyFaces schedule component");
-//        entry1.setSubtitle("my office");
-//        entry1
-//                .setDescription("We need to get this thing out of the sandbox ASAP");
-//        model.addEntry(entry1);
-//        DefaultScheduleEntry entry2 = new DefaultScheduleEntry();
-//        entry2.setId(RandomStringUtils.randomNumeric(32));
-//        // entry2 overlaps entry1
-//        calendar.add(Calendar.MINUTE, -20);
-//        entry2.setStartTime(calendar.getTime());
-//        calendar.add(Calendar.HOUR, 2);
-//        entry2.setEndTime(calendar.getTime());
-//        entry2.setTitle("Show schedule component to boss");
-//        entry2.setSubtitle("my office");
-//        entry2.setDescription("Convince him to get time to thoroughly test it");
-//        model.addEntry(entry2);
-//        DefaultScheduleEntry entry3 = new DefaultScheduleEntry();
-//        entry3.setId(RandomStringUtils.randomNumeric(32));
-//        calendar.add(Calendar.DATE, 1);
-//        calendar.set(Calendar.HOUR_OF_DAY, 9);
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 0);
-//        entry3.setStartTime(calendar.getTime());
-//        calendar.set(Calendar.HOUR_OF_DAY, 17);
-//        entry3.setEndTime(calendar.getTime());
-//        entry3.setTitle("Thoroughly test schedule component");
-//        model.addEntry(entry3);
-//        DefaultScheduleEntry entry4 = new DefaultScheduleEntry();
-//        entry4.setId(RandomStringUtils.randomNumeric(32));
-//        calendar.add(Calendar.MONTH, -1);
-//        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-//        calendar.set(Calendar.HOUR_OF_DAY, 11);
-//        entry4.setStartTime(calendar.getTime());
-//        calendar.set(Calendar.HOUR_OF_DAY, 14);
-//        entry4.setEndTime(calendar.getTime());
-//        entry4.setTitle("Long lunch");
-//        model.addEntry(entry4);
-//        DefaultScheduleEntry entry5 = new DefaultScheduleEntry();
-//        entry5.setId(RandomStringUtils.randomNumeric(32));
-//        calendar.add(Calendar.MONTH, 2);
-//        calendar.set(Calendar.DAY_OF_MONTH, 1);
-//        calendar.set(Calendar.HOUR_OF_DAY, 1);
-//        entry5.setStartTime(calendar.getTime());
-//        calendar.set(Calendar.HOUR_OF_DAY, 5);
-//        entry5.setEndTime(calendar.getTime());
-//        entry5.setTitle("Fishing trip");
-//        model.addEntry(entry5);
-//        //Let's add a zero length entry...
-//        DefaultScheduleEntry entry6 = new DefaultScheduleEntry();
-//        calendar.setTime(model.getSelectedDate());
-//        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-//        calendar.set(Calendar.HOUR_OF_DAY, 16);
-//        entry6.setId(RandomStringUtils.randomNumeric(32));
-//        entry6.setStartTime(calendar.getTime());
-//        entry6.setEndTime(calendar.getTime());
-//        entry6.setTitle("Zero length entry");
-//        entry6.setDescription("Is only rendered when the 'renderZeroLengthEntries' attribute is 'true'");
-//        model.addEntry(entry6);
+        DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
+        // every entry in a schedule must have a unique id
+        entry1.setId(RandomStringUtils.randomNumeric(32));
+        entry1.setStartTime(calendar.getTime());
+        calendar.add(Calendar.MINUTE, 45);
+        entry1.setEndTime(calendar.getTime());
+        entry1.setTitle("Test MyFaces schedule component");
+        entry1.setSubtitle("my office");
+        entry1
+                .setDescription("We need to get this thing out of the sandbox ASAP");
+        model.addEntry(entry1);
+        DefaultScheduleEntry entry2 = new DefaultScheduleEntry();
+        entry2.setId(RandomStringUtils.randomNumeric(32));
+        // entry2 overlaps entry1
+        calendar.add(Calendar.MINUTE, -20);
+        entry2.setStartTime(calendar.getTime());
+        calendar.add(Calendar.HOUR, 2);
+        entry2.setEndTime(calendar.getTime());
+        entry2.setTitle("Show schedule component to boss");
+        entry2.setSubtitle("my office");
+        entry2.setDescription("Convince him to get time to thoroughly test it");
+        model.addEntry(entry2);
+        DefaultScheduleEntry entry3 = new DefaultScheduleEntry();
+        entry3.setId(RandomStringUtils.randomNumeric(32));
+        calendar.add(Calendar.DATE, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        entry3.setStartTime(calendar.getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        entry3.setEndTime(calendar.getTime());
+        entry3.setTitle("Thoroughly test schedule component");
+        model.addEntry(entry3);
+        DefaultScheduleEntry entry4 = new DefaultScheduleEntry();
+        entry4.setId(RandomStringUtils.randomNumeric(32));
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        entry4.setStartTime(calendar.getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        entry4.setEndTime(calendar.getTime());
+        entry4.setTitle("Long lunch");
+        model.addEntry(entry4);
+        DefaultScheduleEntry entry5 = new DefaultScheduleEntry();
+        entry5.setId(RandomStringUtils.randomNumeric(32));
+        calendar.add(Calendar.MONTH, 2);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        entry5.setStartTime(calendar.getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 5);
+        entry5.setEndTime(calendar.getTime());
+        entry5.setTitle("Fishing trip");
+        model.addEntry(entry5);
+        //Let's add a zero length entry...
+        DefaultScheduleEntry entry6 = new DefaultScheduleEntry();
+        calendar.setTime(model.getSelectedDate());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        entry6.setId(RandomStringUtils.randomNumeric(32));
+        entry6.setStartTime(calendar.getTime());
+        entry6.setEndTime(calendar.getTime());
+        entry6.setTitle("Zero length entry");
+        entry6.setDescription("Is only rendered when the 'renderZeroLengthEntries' attribute is 'true'");
+        model.addEntry(entry6);
         //And also an allday event
-        
-        
-//        DefaultScheduleEntry entry7 = new DefaultScheduleEntry();
-
-
-
-//			
-//			List<AppointmentInfo> apps = null;
-			
-//			try {
-//				
-//				CalendarInfo calendarInfo = calendarService.getCalendar(user);
-//				apps = calendarService.getNaturalSingleAppointments(calendarInfo);
-//				
-//			} catch (CalendarApplicationException e) {
-//					this.addError(Constants.ERROR);
-//					e.printStackTrace();
-//				}
-						
-//			try {
-//				calendarInfo = calendarService.getCalendar(user);
-//			} catch (CalendarApplicationException e) {
-//				CalendarInfo calendarInfo = new CalendarInfo();
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
-		
-        
-//        entry7.setId(RandomStringUtils.randomNumeric(32));
-//        
-//        entry7.setTitle(apps.get(1).getSubject());
-//        entry7.setSubtitle(apps.get(1).getDescription());
-//        entry7.setAllDay(true);
-//        model.addEntry(entry7);
-			
-			
+        DefaultScheduleEntry entry7 = new DefaultScheduleEntry();
+        entry7.setId(RandomStringUtils.randomNumeric(32));
+        entry7.setTitle("All day event");
+        entry7.setSubtitle("This event renders as an all-day event");
+        entry7.setAllDay(true);
+        model.addEntry(entry7);
         model.refresh();
     }
-
-	public CalendarInfo getCalendarInfo() {
-		return calendarInfo;
-	}
-
-	public void setCalendarInfo(CalendarInfo calendarInfo) {
-		this.calendarInfo = calendarInfo;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 }
