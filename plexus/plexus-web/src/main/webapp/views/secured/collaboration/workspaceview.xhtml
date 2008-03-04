@@ -25,7 +25,7 @@
 	    <!--  TODO: change to right permission -->
 		<!--s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/-->
 
-  		<ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{instituteInfo.name}"/></ui:define>
+  		<ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}"/></ui:define>
  		
  		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/course.xhtml" />

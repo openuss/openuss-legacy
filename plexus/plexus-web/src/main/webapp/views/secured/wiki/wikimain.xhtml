@@ -24,7 +24,9 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
 	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error" />
-    
+ 		
+ 		<ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut} - #{msg.wiki_main_header}"/></ui:define>
+ 		   
         <ui:define name="navigation">
             <ui:include src="/views/commons/navigation/course.xhtml" />
         </ui:define>
