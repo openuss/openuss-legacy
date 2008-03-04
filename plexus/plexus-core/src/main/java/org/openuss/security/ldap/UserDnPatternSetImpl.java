@@ -34,20 +34,6 @@ public class UserDnPatternSetImpl
         // @todo implement public void removeUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern)
         throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.UserDnPatternSet.removeUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern) Not implemented!");
     }
-
-	@Override
-	public void addLdapServer(LdapServer ldapServer) {
-		if(ldapServer != null) {
-			getLdapServers().add(ldapServer);			
-		}
-	}
-
-	@Override
-	public void removeLdapServer(LdapServer ldapServer) {
-		if(ldapServer != null) {
-			getLdapServers().remove(ldapServer);		
-		}
-	}
     
 
 }
