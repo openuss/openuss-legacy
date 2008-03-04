@@ -48,10 +48,9 @@
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="recurrenceType">#{msg.openuss4us_calendar_recurrence}</plexus:commandSortHeader>
-				TODO CORRECT EVERY DAY
 				<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
 					escape="false"
-					rendered="#{(serialAppointment.recurrenceType eq 'DAILY') and (serialAppointmentointment.recurrencePeriod eq 1)}">
+					rendered="#{(serialAppointment.recurrenceType eq 'DAILY') and (serialAppointment.recurrencePeriod eq 1)}">
 					<f:param value="#{serialAppointment.recurrencePeriod}" />
 				</h:outputFormat>
 				<h:outputFormat value="#{msg.openuss4us_calendar_every_day_nr}"
@@ -91,13 +90,10 @@
 				</h:outputFormat>
 			</t:column>
 			<t:column styleClass="col_commands">
-				<h:commandButton id="details_serial" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
-					value="#{msg.openuss4us_calendar_view_appointment_details}" title="#{msg.openuss4us_calendar_view_appointment_details}"
-					styleClass="button_remove" />
-				<br />
-				<h:commandButton id="editTags" action="view:backwards"
-					value="TODO: edit"
-					title="#{msg.openuss4us_buddylist_button_edit_tags}"
+				<h:commandButton id="details_serial"
+					action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+					value="#{msg.openuss4us_calendar_view_appointment_details}"
+					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
 			</t:column>
 		</plexus:dataTable>
@@ -114,7 +110,7 @@
 					styleClass="content_font_normal" />
 			</t:column>
 			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_first_occurence}</plexus:commandSortHeader>
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.starttime}">
 					<f:convertDateTime pattern="E, dd.MM.yyyy" />
 				</h:outputText>
@@ -135,19 +131,16 @@
 				<h:outputText value="#{singleAppointment.location}" />
 			</t:column>
 			<t:column styleClass="col_commands">
-				<h:commandButton id="details_single" action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
-					value="#{msg.openuss4us_calendar_view_appointment_details}" title="#{msg.openuss4us_calendar_view_appointment_details}"
-					styleClass="button_remove" />
-				<br />
-				<h:commandButton id="editTags" action="view:backwards"
-					value="TODO: edit"
-					title="#{msg.openuss4us_buddylist_button_edit_tags}"
+				<h:commandButton id="details_single"
+					action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
+					value="#{msg.openuss4us_calendar_view_appointment_details}"
+					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
 			</t:column>
 		</plexus:dataTable>
 		<o:block>
 			<c:if test="true">
-				<!-- test wether user is moderator/dozent -->
+				<!-- TODO test wether user is moderator/dozent -->
 				<h:commandButton
 					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
 					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
@@ -157,14 +150,12 @@
 					title="#{msg.openuss4us_calendar_button_create_serial_appointment}"
 					action="calendar_create_serial_appointment" styleClass="button" />
 			</c:if>
-			<h:commandButton
-				value="#{msg.openuss4us_calendar_subscribe}"
+			<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
 				title="#{msg.openuss4us_calendar_subscribe_hint}"
 				rendered="#{not views$secured$calendar$calendar.subscribed}"
 				action="#{views$secured$calendar$calendar.changeSubscription}"
-				styleClass="button" />	
-			<h:commandButton
-				value="#{msg.openuss4us_calendar_subscribe_delete}"
+				styleClass="button" />
+			<h:commandButton value="#{msg.openuss4us_calendar_subscribe_delete}"
 				title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
 				rendered="#{views$secured$calendar$calendar.subscribed}"
 				action="#{views$secured$calendar$calendar.changeSubscription}"

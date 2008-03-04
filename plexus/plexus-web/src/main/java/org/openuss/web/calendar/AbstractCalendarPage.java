@@ -28,7 +28,7 @@ public class AbstractCalendarPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (calendarInfo == null) {
+		if (calendarInfo == null || calendarInfo.getId() == null) {
 			addError(i18n("TODO: calendar not found!"));
 			redirect(Constants.DESKTOP);
 			return;

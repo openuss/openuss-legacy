@@ -13,6 +13,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.AppointmentTypeInfo;
+import org.openuss.calendar.CalculatedAppointmentException;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
@@ -70,8 +71,11 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 			appointmentInfo.setCalendarType(calendarInfo.getCalendarType());
 			((SerialAppointmentInfo)(appointmentInfo)).setRecurrenceType(RecurrenceType.fromString(recurrenceType));
 			calendarService.createSerialAppointment((SerialAppointmentInfo)appointmentInfo, calendarInfo);
+		} catch (CalculatedAppointmentException e) {
+			//TODO correct here
+			addError("Ein Serientermin darf nicht mehr als 500 Einzeltermine umfassen. Es wurden die ersten 500 Einzeltermine angelegt.");
 		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
+			// TODO correct here
 			addError("Das Anlegen eines Appointments schlug fehl");
 		}
 		//TODO correct navigation outcome

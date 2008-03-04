@@ -126,8 +126,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	}
 	
 	public String serialAppointmentDetails(){
-		appointmentInfo = this.serialAppointmentData.getRowData();
-		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		setSessionBean(Constants.APPOINTMENT_INFO, this.serialAppointmentData.getRowData());
 		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
 	}
 	

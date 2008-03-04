@@ -4,19 +4,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarInfo;
-import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
@@ -30,15 +26,12 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	private static final Logger logger = Logger	.getLogger(AppointmentDetailPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
 
-	//checks weather the user watches a serial or a normal appointment
-	private boolean serial;
-
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		if (appointmentInfo == null) {
-			addError(i18n("TODO: calendar not found!"));
+			addError(i18n("TODO: appointment not found!"));
 			redirect(Constants.CALENDAR_HOME);
 			return;
 		}
@@ -48,19 +41,79 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		newCrumb.setName(i18n("openuss4us_command_groups"));
 		newCrumb.setHint(i18n("openuss4us_command_groups"));
 		breadcrumbs.addCrumb(newCrumb);
-		//Load appointmentinfo
-		//TODO check wether appointmentInfo.getId() == null
-		appointmentInfo = calendarService.getAppointment(appointmentInfo.getId());
-		if(appointmentInfo instanceof SerialAppointmentInfo)
-			this.serial = true;
-		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+	}
+	
+	// Data-Provider single appointments
+	private SingleAppointmentDataProvider data = new SingleAppointmentDataProvider();
+
+	private class SingleAppointmentDataProvider extends
+			AbstractPagedTable<AppointmentInfo> {
+
+		private static final long serialVersionUID = -2279124328223684543L;
+
+		private DataPage<AppointmentInfo> page;
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public DataPage<AppointmentInfo> getDataPage(int startRow,
+				int pageSize) {
+			if(!isSerial()){
+				return null;
+			}
+			if (page == null) {
+				List<AppointmentInfo> al = null;
+				logger.debug("Loading single appointments");
+				try {
+					al = calendarService.getCalculatedAppointments((SerialAppointmentInfo)appointmentInfo);
+				} catch (CalendarApplicationException e) {
+					this.addError(Constants.ERROR);
+					e.printStackTrace();
+				}
+				sort(al);
+				page = new DataPage<AppointmentInfo>(al.size(), 0, al);
+			}
+			return page;
+		}
+	}
+	
+	public String deactivate(){
+		try {
+			AppointmentInfo app = data.getRowData();
+			if(app.isTakingPlace()){
+				calendarService.addException((SerialAppointmentInfo)appointmentInfo, app);
+				addMessage(i18n("openuss4us_calendar_message_exception_added"));
+			} else {
+				calendarService.deleteException((SerialAppointmentInfo)appointmentInfo, app);
+				addMessage(i18n("openuss4us_calendar_message_exception_deleted"));
+			}
+		} catch (CalendarApplicationException e) {
+			addError(i18n("openuss4us_calendar_message_exception_error"));
+		}
+		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
+	}
+	
+	/**
+	 * Checks whether the appointment viewed is serial.
+	 */
+	public boolean isSerial() {
+		return (appointmentInfo instanceof SerialAppointmentInfo);
+	}
+	
+	public boolean isSameDay() {
+		return (appointmentInfo.getStarttime().getYear()==appointmentInfo.getEndtime().getYear()) && (appointmentInfo.getStarttime().getMonth() == appointmentInfo.getEndtime().getMonth()) && (appointmentInfo.getStarttime().getDate() == appointmentInfo.getEndtime().getDate());
+	}
+	
+	public boolean isSuperuser() {
+		//TODO 
+		return true;
 	}
 
-	public boolean getSerial() {
-		return serial;
+	public SingleAppointmentDataProvider getData() {
+		return data;
 	}
 
-	public void setSerial(boolean serial) {
-		this.serial = serial;
+	public void setData(SingleAppointmentDataProvider data) {
+		this.data = data;
 	}
+
 }

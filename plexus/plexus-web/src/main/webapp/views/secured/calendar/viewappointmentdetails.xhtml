@@ -6,6 +6,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:news="http://www.openuss.org/news/jsf"
@@ -26,7 +27,7 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
-		<h:outputText value="#{msg['openuss4us_navigation_header']}" />
+		<h:outputText value="#{appointmentInfo.subject}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -36,15 +37,115 @@
 		<ui:include src="/views/commons/sidebar/default.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-	<h:form id="view_details">
-		<o:block
-			label="#{msg.openuss4us_calendar_view_appointment_details} #{appointmentInfo.subject}">
-			Content
-		</o:block>
-		<o:block>
-			<h:commandButton action="view:backward" value="#{msg.back}"
-				styleClass="button_back" immediate="true" />
-		</o:block></h:form>
+		<h:form id="view_details">
+			<o:block label="#{appointmentInfo.subject}" styleClass="content_box">
+				<c:if test="#{not empty appointmentInfo.description}">
+					<p class="content_font_normal"><h:outputText
+						value="#{appointmentInfo.description}" /></p>
+				</c:if>
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_calendar_appointment_time}: "
+					rendered="#{not views$secured$calendar$viewappointmentdetails.serial}" />
+				<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: "
+					rendered="#{views$secured$calendar$viewappointmentdetails.serial}" />
+				<h:outputText value="#{appointmentInfo.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" />
+				</h:outputText> <h:outputText value=" - " /> <h:outputText
+					value="#{appointmentInfo.endtime}"
+					rendered="#{not views$secured$calendar$viewappointmentdetails.sameDay}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" />
+				</h:outputText> <h:outputText value="#{appointmentInfo.endtime}"
+					rendered="#{views$secured$calendar$viewappointmentdetails.sameDay}">
+					<f:convertDateTime pattern="H:mm" />
+				</h:outputText>
+				<c:if
+					test="#{views$secured$calendar$viewappointmentdetails.serial}">
+					<br />
+					<h:outputText value="#{msg.openuss4us_calendar_last_occurence}: "/><h:outputText value="#{appointmentInfo.recurrenceEndtime}" />
+					<br />
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'DAILY') and (appointmentInfo.recurrencePeriod eq 1)}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_day_nr}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'DAILY') and (not (appointmentInfo.recurrencePeriod eq 1))}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_week}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'WEEKLY') and (appointmentInfo.recurrencePeriod eq 1)}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_week_nr}"
+						escape="false"
+						rendered="#{(not (appointmentInfo.recurrencePeriod eq 1)) and (appointmentInfo.recurrenceType eq 'WEEKLY')}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_month}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'MONTHLY') and (appointmentInfo.recurrencePeriod eq 1)}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_month_nr}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'MONTHLY') and (not (appointmentInfo.recurrencePeriod eq 1))}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_year}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'YEARLY') and (appointmentInfo.recurrencePeriod eq 1)}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+					<h:outputFormat value="#{msg.openuss4us_calendar_every_year_nr}"
+						escape="false"
+						rendered="#{(appointmentInfo.recurrenceType eq 'YEARLY') and (not (appointmentInfo.recurrencePeriod eq 1))}">
+						<f:param value="#{appointmentInfo.recurrencePeriod}" />
+					</h:outputFormat>
+				</c:if></p>
+				<c:if test="#{not empty appointmentInfo.location}">
+					<p class="content_font_normal"><h:outputText
+						value="#{msg.openuss4us_calendar_location}: #{appointmentInfo.location}" /></p>
+				</c:if>
+				<c:if
+					test="#{views$secured$calendar$viewappointmentdetails.serial}">
+					
+					<plexus:dataTable id="singleAppointmentTable"
+			value="views$secured$calendar$viewappointmentdetails.data"
+			var="singleAppointment" rows="20"
+			label="#{msg.openuss4us_calendar_single_appointments}">
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
+				<h:outputText value="#{singleAppointment.subject}"
+					styleClass="header_font_normal" />
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
+				<h:outputText value="#{singleAppointment.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy" />
+				</h:outputText>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="takingPlace">#{msg.openuss4us_calendar_taking_place}</plexus:commandSortHeader>
+				<h:selectBooleanCheckbox value="#{singleAppointment.takingPlace}" disabled="true"/>
+			</t:column>
+			<t:column styleClass="col_commands" rendered="#{views$secured$calendar$viewappointmentdetails.superuser}">
+				<h:commandButton id="delete" action="#{views$secured$calendar$viewappointmentdetails.deactivate}"
+					value="#{msg.openuss4us_calendar_appointment_change_status}" title="#{msg.openuss4us_calendar_appointment_change_status_hint}"
+					styleClass="button_remove" />
+			</t:column>
+		</plexus:dataTable>
+						
+				</c:if>
+			</o:block>
+			<o:block>
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button_back" immediate="true" />
+				<h:commandButton action="view:backword" value="TODO: delete termin"
+					styleClass="button_back" />
+			</o:block>
+		</h:form>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
