@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
+import org.w3c.dom.Attr;
 
 /**
  * @see org.openuss.security.ldap.LdapConfigurationService
@@ -135,17 +136,16 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleSaveDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
-    	AuthenticationDomainDao dao = getAuthenticationDomainDao();
-    	AuthenticationDomain authDomain = dao.authenticationDomainInfoToEntity(domain);
-    	dao.update(authDomain);
+    public void handleSaveDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {    	
+    	AuthenticationDomain authDomain = getAuthenticationDomainDao().authenticationDomainInfoToEntity(domain);
+    	getAuthenticationDomainDao().update(authDomain);
     }
 
     /**
      * 
      */
-    public java.util.List handleGetAllDomains() {
-    	return (java.util.List) getAuthenticationDomainDao().loadAll();
+    public java.util.List<AuthenticationDomain> handleGetAllDomains() {
+    	return (java.util.List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
     }
 
     
@@ -231,19 +231,29 @@ public class LdapConfigurationServiceImpl
      * 
      */
     public AttributeMapping handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
-    	return null;
+    	
+    	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
+    		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
+    	}
+    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);    	
+    	return getAttributeMappingDao().create(attributeMappingEntity);    	
     }
 
     /**
      * 
      */
-    public void handleDeleteAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){}
+    public void handleDeleteAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+    	getAttributeMappingDao().remove(attributeMapping.getId());
+    }
 
     /**
      * 
      */
-    public void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){}
-
+    public void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
+    	getAttributeMappingDao().update(attributeMappingEntity);    	
+    }
+       
     /**
      * 
      */
@@ -275,18 +285,17 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public java.util.List handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+    public java.util.List<RoleAttributeKey> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
     	RoleAttributeKeySet set = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
-    	return (java.util.List) set.getRoleAttributeKeys();
+    	return set.getRoleAttributeKeys();
     }
 
     /**
      * 
      */
-    public RoleAttributeKeySet handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
-    	RoleAttributeKeySetDao 	dao = getRoleAttributeKeySetDao();
-    	RoleAttributeKeySet		set = dao.roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
-    	return dao.create(set);
+    public RoleAttributeKeySet handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){    	
+    	RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
+    	return getRoleAttributeKeySetDao().create(set);
     }
 
     /**
@@ -300,16 +309,15 @@ public class LdapConfigurationServiceImpl
      * 
      */
     public void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
-    	RoleAttributeKeySetDao 	dao = getRoleAttributeKeySetDao();
-    	RoleAttributeKeySet		set = dao.roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
-    	dao.update(set);
+    	RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
+    	getRoleAttributeKeySetDao().update(set);
     }
 
     /**
      * 
      */
-    public java.util.List handleGetAllAttributeKeySets(){
-    	return (java.util.List) getRoleAttributeKeySetDao().loadAll();
+    public java.util.List<RoleAttributeKeySet> handleGetAllAttributeKeySets(){
+    	return (java.util.List<RoleAttributeKeySet>) getRoleAttributeKeySetDao().loadAll();
     }
 
     /**
@@ -353,9 +361,25 @@ public class LdapConfigurationServiceImpl
 		return key;
 	}
 
+	private AttributeMapping forceAttributeMappingLoad(AttributeMapping mapping) {
+		mapping = getAttributeMappingDao().load(mapping.getId());
+		if (mapping == null) {
+			throw new LdapConfigurationServiceException("AttributeMapping not found");
+		}
+		return mapping;
+	}
+
+	
 	private boolean checkRoleAttributeKeySetContainsKey(RoleAttributeKey key, RoleAttributeKeySet set) {
-		List keys = (List) set.getRoleAttributeKeys();
+		List<RoleAttributeKey> keys = set.getRoleAttributeKeys();
 		if (keys.contains(key)) {
+			return true;
+		} else return false;
+	}
+	
+	private boolean checkRoleAttributeKeySetContainsAttributeMapping(AttributeMapping mapping, RoleAttributeKeySet set) {
+		List<AttributeMapping> keys = set.getAttributeMappings();
+		if (keys.contains(mapping)) {
 			return true;
 		} else return false;
 	}
@@ -388,7 +412,25 @@ public class LdapConfigurationServiceImpl
 	protected void handleAddAttributeMappingToRoleAttributeKeySet(
 			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
 			throws Exception {
-		// TODO Auto-generated method stub
+		
+		RoleAttributeKeySetDao 	keySetDao = getRoleAttributeKeySetDao();
+    	AttributeMappingDao		mappingDao = getAttributeMappingDao();
+    	
+    	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
+    	AttributeMapping mappingEntity = mappingDao.attributeMappingInfoToEntity(mapping);
+    	
+    	Validate.notNull(mappingEntity, "AttributeMapping must not be null");
+		Validate.notNull(mappingEntity.getId(), "AttributeMapping must provide a valid id.");
+		Validate.notNull(setEntity, "RoleAttributeKeySet must not be null");
+		Validate.notNull(setEntity.getId(), "RoleAttributeKeySet must provide a valid id.");
+
+		mappingEntity = forceAttributeMappingLoad(mappingEntity);
+		setEntity = forceRoleAttributeKeySetLoad(setEntity);
+
+		if (checkRoleAttributeKeySetContainsAttributeMapping(mappingEntity, setEntity)) throw new LdapConfigurationServiceException("RoleAttributeKeySet already contains AttributeMapping!");
+	
+		setEntity.getAttributeMappings().add(mappingEntity);
+		keySetDao.update(setEntity);
 		
 	}
 
