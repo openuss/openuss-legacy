@@ -210,7 +210,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 //		service.saveLdapServer(ldapServer);
 //		service.saveLdapServer(ldapServer2);
 //		service.saveLdapServer(ldapServer3);
-		
+//		
 //		service.addServerToDomain(ldapServer, domain3);
 //		service.addServerToDomain(ldapServer2, domain);
 //		service.removeServerFromDomain(ldapServer, domain);

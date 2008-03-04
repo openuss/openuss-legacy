@@ -5,8 +5,11 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.List;
+
 /**
  * @see org.openuss.security.ldap.RoleAttributeKeySet
+ * @author Damian Kemner
  */
 public class RoleAttributeKeySetImpl
     extends org.openuss.security.ldap.RoleAttributeKeySetBase
@@ -22,8 +25,12 @@ public class RoleAttributeKeySetImpl
      */
     public void addRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttribute)
     {
-        // @todo implement public void addRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttribute)
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.RoleAttributeKeySet.addRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttribute) Not implemented!");
+    	if (roleAttribute != null) {
+    		List<RoleAttributeKey> keys = getRoleAttributeKeys();
+        	if (!keys.contains(roleAttribute)) {
+        		keys.add(roleAttribute);
+        	}
+    	}
     }
 
     /**
@@ -31,14 +38,17 @@ public class RoleAttributeKeySetImpl
      */
     public void removeAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttributeKey)
     {
-        // @todo implement public void removeAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttributeKey)
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.RoleAttributeKeySet.removeAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttributeKey) Not implemented!");
+    	if (roleAttributeKey != null) {
+    		List<RoleAttributeKey> keys = getRoleAttributeKeys();
+        	if (keys.contains(roleAttributeKey)) {
+        		keys.remove(roleAttributeKey);
+        	}
+    	}
     }
 
 	@Override
 	public void removeRoleAttributeKey(RoleAttributeKey roleAttributeKey) {
-		// TODO Auto-generated method stub
-		
+		removeAttributeKey(roleAttributeKey);
 	}
     
     

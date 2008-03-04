@@ -5,9 +5,12 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.List;
+
 /**
  * @see org.openuss.security.ldap.UserDnPatternSet
- */
+ * @author Damian Kemner
+ *  */
 public class UserDnPatternSetImpl
     extends org.openuss.security.ldap.UserDnPatternSetBase
 	implements org.openuss.security.ldap.UserDnPatternSet
@@ -22,8 +25,12 @@ public class UserDnPatternSetImpl
      */
     public void addUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern)
     {
-        // @todo implement public void addUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern)
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.UserDnPatternSet.addUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern) Not implemented!");
+    	if (userDnPattern != null) {
+    		List<UserDnPattern> patterns = getUserDnPatterns();
+        	if (!patterns.contains(userDnPattern)) {
+        		patterns.add(userDnPattern);
+        	}
+    	}
     }
 
     /**
@@ -31,8 +38,12 @@ public class UserDnPatternSetImpl
      */
     public void removeUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern)
     {
-        // @todo implement public void removeUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern)
-        throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.UserDnPatternSet.removeUserDnPattern(org.openuss.security.ldap.UserDnPattern userDnPattern) Not implemented!");
+    	if (userDnPattern != null) {
+    		List<UserDnPattern> patterns = getUserDnPatterns();
+        	if (patterns.contains(userDnPattern)) {
+        		patterns.remove(userDnPattern);
+        	}
+    	}
     }
     
 
