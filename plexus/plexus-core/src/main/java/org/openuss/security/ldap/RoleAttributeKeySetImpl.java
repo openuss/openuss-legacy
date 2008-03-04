@@ -35,4 +35,12 @@ public class RoleAttributeKeySetImpl
         throw new java.lang.UnsupportedOperationException("org.openuss.security.ldap.RoleAttributeKeySet.removeAttributeKey(org.openuss.security.ldap.RoleAttributeKey roleAttributeKey) Not implemented!");
     }
 
+	@Override
+	public void removeRoleAttributeKey(RoleAttributeKey roleAttributeKey) {
+		// TODO Auto-generated method stub
+		
+	}
+    
+    
+
 }
