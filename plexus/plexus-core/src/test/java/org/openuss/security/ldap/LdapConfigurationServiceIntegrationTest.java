@@ -57,97 +57,163 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	}
 	
 	public void testLdapConfigurationService() {
-		service = new LdapConfigurationServiceImpl();
 		
-////		create user dn pattern object
-//		UserDnPatternInfo userDnPattern = new UserDnPatternInfo();
-//		userDnPattern.setUserDnPattern("memberOf");
-//		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
-//		userDnPatterns.add(userDnPattern);		
+//////////////////////////////
+//// CREATE INFO OBJECTS /////
+//////////////////////////////
+		
+		
+// create user dn pattern object
+		UserDnPatternInfo userDnPattern = new UserDnPatternInfo();
+		userDnPattern.setUserDnPattern("memberOf");
+		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
+		userDnPatterns.add(userDnPattern);		
+		
+// create user dn pattern set object
+		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
+		userDnPatternSet.setName("WWU user dn pattern");
+		userDnPatternSet.setUserDNPatternIds(userDnPatterns);
+		
+// create role attribute key object
+		RoleAttributeKeyInfo roleAttributeKey = new RoleAttributeKeyInfo();
+		roleAttributeKey.setRoleAttributeKey("CN");
+		List<RoleAttributeKeyInfo> roleAttributeKeys = new ArrayList<RoleAttributeKeyInfo>();
+		roleAttributeKeys.add(roleAttributeKey);
+		
+// create role attribute key set object
+		RoleAttributeKeySetInfo roleAttributeKeySet = new RoleAttributeKeySetInfo();
+		roleAttributeKeySet.setName("role attribute key set test");
+		roleAttributeKeySet.setRoleAttributeKeyIds(roleAttributeKeys);
+		
+//		create attribute mapping object
+		AttributeMappingInfo attributeMapping = new AttributeMappingInfo();		
+		attributeMapping.setMappingName(testUtility.unique("Mapping Test"));
+		attributeMapping.setUsernameKey("CN");
+		attributeMapping.setFirstNameKey("givenName");
+		attributeMapping.setLastNameKey("SN");
+		attributeMapping.setEmailKey("mail");
+		attributeMapping.setGroupRoleAttributeKey("CN");
+		attributeMapping.setRoleAttributeKeySetId(roleAttributeKeySet.getId());
+		
+
+
+// create domain
+		AuthenticationDomainInfo domain = new AuthenticationDomainInfo();
+		domain.setName("ZIV Uni Muenster");
+		domain.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
+		domain.setAttributeMappingId(attributeMapping.getId());
+		
+// create another domain
+		AuthenticationDomainInfo domain2 = new AuthenticationDomainInfo();
+		domain2.setName("Uni Bielefeld");
+		domain2.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Bielefeld.");
+		domain2.setAttributeMappingId(attributeMapping.getId());
+		
+// create another domain
+		AuthenticationDomainInfo domain3 = new AuthenticationDomainInfo();
+		domain3.setName("ZIV Uni Muenster");
+		domain3.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
+		domain3.setAttributeMappingId(attributeMapping.getId());
+		
+		
+		List<AuthenticationDomainInfo> domains = new ArrayList<AuthenticationDomainInfo>();
+		domains.add(domain);
+		domains.add(domain2);
+		domains.add(domain3);
+		attributeMapping.setAuthenticationDomainIds(domains);
+		
+		
+		
+//		create ldap server object
+		LdapServerInfo ldapServer = new LdapServerInfo();
+		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+		ldapServer.setPort(389);
+		ldapServer.setRootDn("dc=uni-muenster,dc=de");
+		ldapServer.setDescription("LDAP Server WWU");
+		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer.setAuthenticationType("DIGEST-MD5");
+		ldapServer.setUseConnectionPool(false);
+		ldapServer.setManagerDn("admin");
+		ldapServer.setManagerPassword("hidden");
+		ldapServer.setUseLdapContext(true);
+		ldapServer.setUserDnPatternSetId(userDnPatternSet.getId());
+		ldapServer.setAuthenticationDomainId(domain.getId());
+		
+		
+//		create another ldap server object
+		LdapServerInfo ldapServer2 = new LdapServerInfo();
+		ldapServer2.setProviderUrl("ldap://ldap.uni-bielefeld.de");
+		ldapServer2.setPort(389);
+		ldapServer2.setRootDn("dc=uni-bielefeld,dc=de");
+		ldapServer2.setDescription("LDAP Server UB");
+		ldapServer2.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer2.setAuthenticationType("DIGEST-MD5");
+		ldapServer2.setUseConnectionPool(false);
+		ldapServer2.setManagerDn("admin");
+		ldapServer2.setManagerPassword("hidden");
+		ldapServer2.setUseLdapContext(true);
+		ldapServer2.setUserDnPatternSetId(userDnPatternSet.getId());
+		ldapServer2.setAuthenticationDomainId(domain2.getId());
+		
+		
+//		create another ldap server object
+		LdapServerInfo ldapServer3 = new LdapServerInfo();
+		ldapServer3.setProviderUrl("falsch://ldap.uni-bielefeld.de");
+		ldapServer3.setPort(389);
+		ldapServer3.setRootDn("dc=uni-bielefeld,dc=de");
+		ldapServer3.setDescription("LDAP Server UB");
+		ldapServer3.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServer3.setAuthenticationType("DIGEST-MD5");
+		ldapServer3.setUseConnectionPool(false);
+		ldapServer3.setManagerDn("admin");
+		ldapServer3.setManagerPassword("hidden");
+		ldapServer3.setUseLdapContext(true);
+		ldapServer3.setUserDnPatternSetId(userDnPatternSet.getId());
+		ldapServer3.setAuthenticationDomainId(domain3.getId());
+		
+		
+//////////////////////////////
+//// SERVICE TEST 		 /////
+//////////////////////////////		
+	
+		
+		
+		
+		service = getLdapConfigurationService();
+		
+		UserDnPattern pattern = service.createUserDnPattern(userDnPattern);
+		UserDnPatternSet patternSet = service.createUserDnPatternSet(userDnPatternSet);
+		
+		service.saveUserDnPattern(userDnPattern);
+		service.saveUserDnPatternSet(userDnPatternSet);
+		
+		
+		
+		
+		
+		// not implemented yet
+		
+//		AttributeMapping mapping = service.createAttributeMapping(attributeMapping);
 //		
-////		create user dn pattern set object
-//		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
-//		userDnPatternSet.setName("WWU user dn pattern");
+//		AuthenticationDomain authDomain = service.createDomain(domain);
+//		AuthenticationDomain authDomain2 = service.createDomain(domain2);
+//		AuthenticationDomain authDomain3 = service.createDomain(domain3);
 //		
+//		LdapServer server = service.createLdapServer(ldapServer);
+//		LdapServer server2 = service.createLdapServer(ldapServer2);
+//		LdapServer server3 = service.createLdapServer(ldapServer3);
 //		
-////		create ldap server object
-//		LdapServerInfo ldapServer = new LdapServerInfo();
-//		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
-//		ldapServer.setPort(389);
-//		ldapServer.setRootDn("dc=uni-muenster,dc=de");
-//		ldapServer.setDescription("LDAP Server WWU");
-//		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-//		ldapServer.setAuthenticationType("DIGEST-MD5");
-//		ldapServer.setUseConnectionPool(false);
-//		ldapServer.setManagerDn("admin");
-//		ldapServer.setManagerPassword("hidden");
-//		ldapServer.setUseLdapContext(true);
-//		
-//		
-////		create another ldap server object
-//		LdapServerInfo ldapServer2 = new LdapServerInfo();
-//		ldapServer2.setProviderUrl("ldap://ldap.uni-bielefeld.de");
-//		ldapServer2.setPort(389);
-//		ldapServer2.setRootDn("dc=uni-bielefeld,dc=de");
-//		ldapServer2.setDescription("LDAP Server UB");
-//		ldapServer2.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-//		ldapServer2.setAuthenticationType("DIGEST-MD5");
-//		ldapServer2.setUseConnectionPool(false);
-//		ldapServer2.setManagerDn("admin");
-//		ldapServer2.setManagerPassword("hidden");
-//		ldapServer2.setUseLdapContext(true);
-////		ldapServer2.setUserDnPatternSet(null);
-////		ldapServer2.setAuthenticationDomain(null);
-//		
-//		
-////		create another ldap server object
-//		LdapServerInfo ldapServer3 = new LdapServerInfo();
-//		ldapServer3.setProviderUrl("falsch://ldap.uni-bielefeld.de");
-//		ldapServer3.setPort(389);
-//		ldapServer3.setRootDn("dc=uni-bielefeld,dc=de");
-//		ldapServer3.setDescription("LDAP Server UB");
-//		ldapServer3.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-//		ldapServer3.setAuthenticationType("DIGEST-MD5");
-//		ldapServer3.setUseConnectionPool(false);
-//		ldapServer3.setManagerDn("admin");
-//		ldapServer3.setManagerPassword("hidden");
-//		ldapServer3.setUseLdapContext(true);
-////		ldapServer3.setUserDnPatternSet(null);
-////		ldapServer3.setAuthenticationDomain(null);
-//		
-//		
-//		
-//// create domain
-//		AuthenticationDomainInfo domain = new AuthenticationDomainInfo();
-//		domain.setName("ZIV Uni Muenster");
-//		domain.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
-//		
-//// create another domain
-//		AuthenticationDomainInfo domain2 = new AuthenticationDomainInfo();
-//		domain2.setName("Uni Bielefeld");
-//		domain2.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Bielefeld.");
-//		
-//// create another domain
-//		AuthenticationDomainInfo domain3 = new AuthenticationDomainInfo();
-//		// name empty
-//		// domain3.setName("ZIV Uni Muenster");
-//		domain3.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
-//		
-//						
-//		
-//		// ldapServer1
-//		service.saveLdapServer(ldapServer);
-//		// ldapServer1 --> domain1
 //		service.saveDomain(domain);
-//		service.addServerToDomain(ldapServer, domain);
+//		service.saveDomain(domain2);
+//		service.saveDomain(domain3);
 //		
-//		// ldapServer2
+//		service.saveLdapServer(ldapServer);
 //		service.saveLdapServer(ldapServer2);
-//		// ldapServer2 --> domain1
+//		service.saveLdapServer(ldapServer3);
+		
+//		service.addServerToDomain(ldapServer, domain3);
 //		service.addServerToDomain(ldapServer2, domain);
-//		
-//		
-//		
+//		service.removeServerFromDomain(ldapServer, domain);
 		
 	}
 	
