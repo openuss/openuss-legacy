@@ -67,29 +67,15 @@ private static final Logger logger = Logger.getLogger(GroupDiscussionSearchPage.
 		
 		if (StringUtils.isNotBlank(discussionSearchResults.getTextToSearch()) || StringUtils.isNotBlank(discussionSearchResults.getSubmitter())) {
 						
-			try {
-				logger.debug("START LOGGER TEST BLOG");
-				logger.debug("discussionSearcher: " + discussionSearcher.toString());
-				logger.debug("discussionSearchResults.getTextToSearch(): " + discussionSearchResults.getTextToSearch());
-				logger.debug("discussionSearchResults.getGroupInfo().getId(): " + discussionSearchResults.getGroupInfo().getId());
-				logger.debug("groupInfo.getId(): " + groupInfo.getId());
-				logger.debug("discussionSearchResults.isTitleOnly(): " + discussionSearchResults.isTitleOnly());
-				logger.debug("discussionSearchResults.getIsFuzzy(): " + discussionSearchResults.getIsFuzzy());
-				logger.debug("discussionSearchResults.getSubmitter(): " + discussionSearchResults.getSubmitter());
-				
+			try {	
 				searchResult = 	discussionSearcher.groupSearch(
 								discussionSearchResults.getTextToSearch(),
-								//discussionSearchResults.getGroupInfo().getId(),
-								new Long(1008),
+								discussionSearchResults.getGroupInfo().getId(),
 								discussionSearchResults.isTitleOnly(),
 								discussionSearchResults.getIsFuzzy(),
 								discussionSearchResults.getSubmitter()
 							);
 							discussionSearchResults.setHits(searchResult);
-				logger.debug("discussionSearchResults.getHints(): " + discussionSearchResults.getHits());
-				logger.debug("searchResult: " + searchResult);
-				logger.debug("searchResult.size(): " + searchResult.size());
-				logger.debug("END LOGGER TEST BLOG");
 				if(searchResult == null || searchResult.size() == 0){
 					logger.debug("search_no_matches_found");
 					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
