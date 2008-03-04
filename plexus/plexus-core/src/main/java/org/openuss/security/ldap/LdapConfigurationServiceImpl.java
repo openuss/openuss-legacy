@@ -6,59 +6,51 @@
 package org.openuss.security.ldap;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
-import org.w3c.dom.Attr;
 
 /**
  * @see org.openuss.security.ldap.LdapConfigurationService
+ * @author Juergen de Braaf
  * @author Damian Kemner
  */
 public class LdapConfigurationServiceImpl
     extends org.openuss.security.ldap.LdapConfigurationServiceBase
 {
 
-    /**
-     * @see org.openuss.security.ldap.LdapConfigurationService#getLdapServerConfigurations()
-     */
-    protected java.util.List handleGetLdapServerConfigurations()
-        throws java.lang.Exception
-    {
-        // @todo implement protected java.util.List handleGetLdapServerConfigurations()
-        return null;
-    }
     
     /**
-     * 
+     * @see org.openuss.security.ldap.LdapConfigurationService#getEnabledLdapServerConfigurations()
      */
-    public java.util.List handleGetEnabledLdapServerConfigurations() {
+    @Override
+    protected java.util.List handleGetEnabledLdapServerConfigurations() {
     	return null;
     }
 
     /**
      * 
      */
-    public LdapServer handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
+    @Override
+    protected LdapServer handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
     	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
     		throw new LdapConfigurationServiceException("URL must not be empty!");
     	}
     	if (!handleIsValidURL(ldapServer.getProviderUrl())) {
     		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
     	}
-    	if (! (ldapServer.getPort()>0)) {
+    	if (! (ldapServer.getPort() > 0)) {
     		throw new LdapConfigurationServiceException("Port must be not negative!");
     	}
 
     	// TODO: check if root dn is valid
     	// TODO: check if auth type is valid
     	
-    	if (StringUtils.isBlank(ldapServer.getManagerDn())){
-    		throw new LdapConfigurationServiceException("Manager DN must not be empty!");
-    	}
     	// TODO: check if valid manager DN
     	// TODO: other validation
+    	
     	
     	
     	return getLdapServerDao().create(
@@ -72,14 +64,15 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getUseLdapContext(), 
     			ldapServer.getDescription(), 
     			ldapServer.getLdapServerType(), 
-    			true);
+    			ldapServer.isEnabled());
     }
     
     
     /**
      * 
      */
-    public boolean handleIsValidURL(String url) {
+    @Override
+    protected boolean handleIsValidURL(String url) {
     	String[] schemes = {"ldap"};
     	UrlValidator urlValidator = new UrlValidator(schemes);
     	return urlValidator.isValid(url);
@@ -88,14 +81,16 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+    @Override
+    protected void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
     	getLdapServerDao().remove(ldapServer.getId());
     }
 
     /**
      * 
      */
-    public void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+    @Override
+    protected void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
     	LdapServerDao dao = getLdapServerDao();
     	LdapServer ldap = dao.ldapServerInfoToEntity(ldapServer);
     	dao.update(ldap);
@@ -104,14 +99,16 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public java.util.List handleGetAllLdapServers() {
+    @Override
+    protected java.util.List handleGetAllLdapServers() {
     	return (java.util.List) getLdapServerDao().loadAll();
     }
 
     /**
      * 
      */
-    public java.util.List handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
+    @Override
+    protected java.util.List handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().load(domain.getId());
     	return (java.util.List) authDomain.getLdapServers();
     }
@@ -119,32 +116,43 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public AuthenticationDomain handleCreateDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
+    @Override
+    protected AuthenticationDomain handleCreateDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	if (StringUtils.isBlank(domain.getName())){
     		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
     	}
-    	return getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
+    	AuthenticationDomain authDomain = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
+    	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
+    	getAuthenticationDomainDao().update(authDomain);
+    	return authDomain;
     }
 
     /**
      * 
      */
-    public void handleDeleteDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain){
+    @Override
+    protected void handleDeleteDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain){
     	getAuthenticationDomainDao().remove(domain.getId());
     }
 
     /**
      * 
      */
-    public void handleSaveDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {    	
+    @Override
+    protected void handleSaveDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {    	
+    	if (StringUtils.isBlank(domain.getName())){
+    		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
+    	}
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().authenticationDomainInfoToEntity(domain);
+    	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
     	getAuthenticationDomainDao().update(authDomain);
     }
 
     /**
      * 
      */
-    public java.util.List<AuthenticationDomain> handleGetAllDomains() {
+    @Override
+    protected java.util.List<AuthenticationDomain> handleGetAllDomains() {
     	return (java.util.List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
     }
 
@@ -152,7 +160,8 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
+    @Override
+    protected void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	AuthenticationDomainDao domainDao = getAuthenticationDomainDao();
     	LdapServerDao serverDao = getLdapServerDao();
     	
@@ -193,7 +202,7 @@ public class LdapConfigurationServiceImpl
 	}
 
 	private boolean checkDomainContainsServer(LdapServer server, AuthenticationDomain domain) {
-		List servers = (List) domain.getLdapServers();
+		Set<LdapServer> servers = domain.getLdapServers();
 		if (servers.contains(server)) {
 			//throw new LdapConfigurationServiceException("Domain already contains server!");
 			return true;
@@ -203,7 +212,8 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleRemoveServerFromDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain){
+	@Override
+	protected void handleRemoveServerFromDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain){
     	AuthenticationDomainDao domainDao = getAuthenticationDomainDao();
     	LdapServerDao serverDao = getLdapServerDao();
     	
@@ -230,34 +240,52 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public AttributeMapping handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
+	@Override
+	protected AttributeMapping handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
     	
     	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
-    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);    	
-    	return getAttributeMappingDao().create(attributeMappingEntity);    	
+    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
+    	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
+    	getAttributeMappingDao().create(attributeMappingEntity);
+    	return attributeMappingEntity;    	
     }
 
     /**
      * 
      */
-    public void handleDeleteAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+	@Override
+	protected void handleDeleteAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
     	getAttributeMappingDao().remove(attributeMapping.getId());
     }
 
     /**
      * 
      */
-    public void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+	@Override
+	protected void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+    	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
+    		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
+    	}
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
+    	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
     	getAttributeMappingDao().update(attributeMappingEntity);    	
     }
-       
+     
+	/**
+     * 
+     */
+    @Override
+    protected List handleGetAllAttributeMappings() {
+    	return (List<AttributeMapping>) getAttributeMappingDao().loadAll();
+    }
+	
     /**
      * 
      */
-    public RoleAttributeKey handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
+	@Override
+	protected RoleAttributeKey handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
     		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
     	}
@@ -269,14 +297,16 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleDeleteRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
+	@Override
+	protected void handleDeleteRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	getRoleAttributeKeyDao().remove(roleAttributeKey.getId());
     }
 
     /**
      * 
      */
-    public void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
+	@Override
+	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	RoleAttributeKeyDao dao = getRoleAttributeKeyDao();
     	RoleAttributeKey	key = dao.roleAttributeKeyInfoToEntity(roleAttributeKey);
     	dao.update(key);
@@ -285,7 +315,8 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public java.util.List<RoleAttributeKey> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+	@Override
+	protected java.util.List<RoleAttributeKey> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
     	RoleAttributeKeySet set = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
     	return set.getRoleAttributeKeys();
     }
@@ -293,37 +324,53 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public RoleAttributeKeySet handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){    	
+	@Override
+	protected RoleAttributeKeySet handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){    	
     	RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
-    	return getRoleAttributeKeySetDao().create(set);
+    	
+    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();    	
+    	for (Long key : keyIds) {
+    		set.addRoleAttributeKey(getRoleAttributeKeyDao().load(key));    			
+		}
+    	getRoleAttributeKeySetDao().create(set);
+    	return set;
     }
 
     /**
      * 
      */
-    public void handleDeleteRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+	@Override
+	protected void handleDeleteRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
     	getRoleAttributeKeySetDao().remove(roleAttributeKeySet.getId());
     }
 
     /**
      * 
      */
-    public void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
-    	RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
-    	getRoleAttributeKeySetDao().update(set);
+	@Override
+	protected void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+		RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
+    	
+    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();    	
+    	for (Long key : keyIds) {
+    		set.addRoleAttributeKey(getRoleAttributeKeyDao().load(key));    			
+		}
+    	getRoleAttributeKeySetDao().update(set);    	
     }
 
     /**
      * 
      */
-    public java.util.List<RoleAttributeKeySet> handleGetAllAttributeKeySets(){
+	@Override
+	protected java.util.List<RoleAttributeKeySet> handleGetAllRoleAttributeKeySets(){
     	return (java.util.List<RoleAttributeKeySet>) getRoleAttributeKeySetDao().loadAll();
     }
 
     /**
      * 
      */
-    public void handleAddRoleAttributeKeyToSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
+	@Override
+	protected void handleAddRoleAttributeKeyToSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
     	RoleAttributeKeySetDao 	keySetDao 	= getRoleAttributeKeySetDao();
     	RoleAttributeKeyDao		keyDao 		= getRoleAttributeKeyDao();
     	
@@ -345,14 +392,15 @@ public class LdapConfigurationServiceImpl
 		keySetDao.update(setEntity);
     }
     
-    private RoleAttributeKeySet forceRoleAttributeKeySetLoad(RoleAttributeKeySet set) {
+	
+	private RoleAttributeKeySet forceRoleAttributeKeySetLoad(RoleAttributeKeySet set) {
 		set = getRoleAttributeKeySetDao().load(set.getId());
 		if (set == null) {
 			throw new LdapConfigurationServiceException("RoleAttributeKeySet not found");
 		}
 		return set;
-	}
-
+	}	
+	
 	private RoleAttributeKey forceRoleAttributeKeyLoad(RoleAttributeKey key) {
 		key = getRoleAttributeKeyDao().load(key.getId());
 		if (key == null) {
@@ -360,7 +408,7 @@ public class LdapConfigurationServiceImpl
 		}
 		return key;
 	}
-
+	
 	private AttributeMapping forceAttributeMappingLoad(AttributeMapping mapping) {
 		mapping = getAttributeMappingDao().load(mapping.getId());
 		if (mapping == null) {
@@ -369,13 +417,13 @@ public class LdapConfigurationServiceImpl
 		return mapping;
 	}
 
-	
 	private boolean checkRoleAttributeKeySetContainsKey(RoleAttributeKey key, RoleAttributeKeySet set) {
 		List<RoleAttributeKey> keys = set.getRoleAttributeKeys();
 		if (keys.contains(key)) {
 			return true;
 		} else return false;
 	}
+	
 	
 	private boolean checkRoleAttributeKeySetContainsAttributeMapping(AttributeMapping mapping, RoleAttributeKeySet set) {
 		List<AttributeMapping> keys = set.getAttributeMappings();
@@ -387,7 +435,8 @@ public class LdapConfigurationServiceImpl
     /**
      * 
      */
-    public void handleRemoveRoleAttributeKeyFromSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
+	@Override
+	protected void handleRemoveRoleAttributeKeyFromSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
     	RoleAttributeKeySetDao 	setDao = getRoleAttributeKeySetDao();
     	RoleAttributeKeyDao		keyDao = getRoleAttributeKeyDao();
     	

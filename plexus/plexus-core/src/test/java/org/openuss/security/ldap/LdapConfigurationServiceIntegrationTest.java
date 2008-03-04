@@ -14,7 +14,7 @@ import java.util.Set;
  * JUnit Test for Spring Hibernate LdapConfigurationService class.
  * @see org.openuss.security.ldap.LdapConfigurationService
  * @author Damian Kemner
- * @author Jürgen DeBraaf
+ * @author Jürgen de Braaf
  */
 public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationServiceIntegrationTestBase {
 	

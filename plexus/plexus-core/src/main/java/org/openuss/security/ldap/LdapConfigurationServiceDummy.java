@@ -31,6 +31,8 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		return ldapServerConfigurations;
 	}
 
+	
+	
 	public void addAttributeMappingToRoleAttributeKeySet(
 			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet) {
 		// TODO Auto-generated method stub
@@ -136,8 +138,12 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public List getAllAttributeMappings() {
+		return null;
+	}
 
-	public List getAllAttributeKeySets() {
+	public List getAllRoleAttributeKeySets() {
 		// TODO Auto-generated method stub
 		return null;
 	}
