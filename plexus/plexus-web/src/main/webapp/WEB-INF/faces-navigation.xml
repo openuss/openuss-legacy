@@ -344,9 +344,7 @@
 			<from-outcome>group_discussion</from-outcome>
 			<to-view-id>/views/secured/discussion/groups/discussions.xhtml</to-view-id>
 		</navigation-case>
-	
-	
-    		
+
     		<!-- documents -->
 
 			<navigation-case>

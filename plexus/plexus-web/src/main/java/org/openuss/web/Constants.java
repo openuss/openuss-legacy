@@ -166,7 +166,7 @@ public class Constants {
 	public static final String FORUM_FORUM = "group_discussion_forum";
 	public static final String FORUM_SEARCH = "group_discussion_search";	
 	public static final String FORUM_SEARCH_RESULT = "group_discussion_search_result";
-	
+
 	// groupnewsletter navigation outcomes and combobox long constants
 	public static final String GROUP_NEWSLETTER_NEWMAIL = "group_newsletter_newmail";
 	public static final String GROUP_NEWSLETTER_SUBSCRIBERS = "group_newsletter_subscribers";

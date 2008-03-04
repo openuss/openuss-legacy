@@ -29,6 +29,7 @@ public class PageLinks{
 	public static final String COURSE_NEWS = "/views/secured/course/coursenews.faces";
 	
 	public static final String DISCUSSION_MAIN = "/views/secured/discussion/discussions.faces";
+	public static final String FORUM_MAIN = "/views/secured/discussion/groups/discussions.faces";
 	
 	public static final String INSTITUTE_NEWS =  "/views/secured/lecture/news.faces";
 		

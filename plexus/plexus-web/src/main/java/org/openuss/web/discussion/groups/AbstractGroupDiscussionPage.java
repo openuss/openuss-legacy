@@ -65,7 +65,7 @@ public class AbstractGroupDiscussionPage extends AbstractGroupPage{
 		BreadCrumb discussionMain = new BreadCrumb();
 		discussionMain.setName(i18n("course_command_discussion"));
 		discussionMain.setHint(i18n("course_command_discussion"));
-		discussionMain.setLink(PageLinks.DISCUSSION_MAIN);
+		discussionMain.setLink(PageLinks.FORUM_MAIN);
 		discussionMain.addParameter("group",groupInfo.getId());
 		breadcrumbs.loadGroupCrumbs(groupInfo);
 		breadcrumbs.addCrumb(discussionMain);

@@ -24,7 +24,7 @@ import org.openuss.groups.UserGroupInfo;
  * @author Lutz D. Kramer
  */
 
-@Bean(name="group_discussion_search_results", scope=Scope.SESSION)
+@Bean(name="discussion_search_results", scope=Scope.SESSION)
 public class GroupDiscussionSearchResults implements Serializable {
 	
 	private static final long serialVersionUID = 2103663293293922929L;
@@ -43,14 +43,14 @@ public class GroupDiscussionSearchResults implements Serializable {
 	protected UserGroupInfo groupInfo;
 		
 	private List<SelectItem> postIds;
-	private List<SelectItem> courseIds;
+	private List<SelectItem> groupIds;
 	
 	public GroupDiscussionSearchResults(){
 		titleOnly = false;
 		isFuzzy = true;
 		postId = 0L;		
 		postIds = new ArrayList<SelectItem>();
-		courseIds = new ArrayList<SelectItem>();
+		groupIds = new ArrayList<SelectItem>();
 	}
 	
 	public List<DiscussionSearchDomainResult> getHits() {
@@ -123,12 +123,12 @@ public class GroupDiscussionSearchResults implements Serializable {
 		this.postIds = postIds;
 	}
 	
-	public List<SelectItem> getCourseIds() {
-		return courseIds;
+	public List<SelectItem> getGroupIds() {
+		return groupIds;
 	}
 
-	public void setCourseIds(List<SelectItem> courseIds) {
-		this.courseIds = courseIds;
+	public void setGroupIds(List<SelectItem> courseIds) {
+		this.groupIds = courseIds;
 	}
 
 	public int getHitCounts() {
