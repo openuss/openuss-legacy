@@ -45,6 +45,16 @@
 							</h:outputFormat>
 						</p>
 	  				</o:block>
+	  				
+		            <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+	  					<o:block label="#{views$secured$wiki$wikimain.siteTitle}">
+		                    <div class="wiki_content">
+		                    	<h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" />
+		                    </div>
+		                </o:block>
+		            </s:acl>
+	  				
+	  				
 	  				<o:block>
 	  					<h:commandButton
 							value="${msg.wiki_main_button_version}"
