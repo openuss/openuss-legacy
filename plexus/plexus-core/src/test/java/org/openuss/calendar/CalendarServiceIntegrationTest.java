@@ -953,11 +953,11 @@ public class CalendarServiceIntegrationTest extends
 		try {
 			List<AppointmentTypeInfo> appTypeInfos = calendarService.getAllAppointmentTypes();
 			assertNotNull(appTypeInfos);
-			assertEquals(0, appTypeInfos.size());
+			assertEquals(1, appTypeInfos.size());
 			calendarService.createAppointmentType(appTypeInfo);
 			List<AppointmentTypeInfo> appTypeInfos2 = calendarService.getAllAppointmentTypes();
 			assertNotNull(appTypeInfos2);
-			assertEquals(1, appTypeInfos2.size());
+			assertEquals(2, appTypeInfos2.size());
 			AppointmentTypeInfo appTypeForUpdate = appTypeInfos2.get(0);
 			appTypeForUpdate.setName("Übung");
 			calendarService.updateAppointmentType(appTypeForUpdate);
@@ -966,7 +966,6 @@ public class CalendarServiceIntegrationTest extends
 			
 			
 		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail();
 		}

@@ -34,12 +34,13 @@ public class CalendarServiceImpl extends
 			org.openuss.foundation.DomainObject domainObject)
 			throws java.lang.Exception {
 
-		Calendar calendar = getCalendarDao().findByDomainIdentifier(domainObject.getId());
-		if (calendar == null) {		
+		Calendar calendar = getCalendarDao().findByDomainIdentifier(
+				domainObject.getId());
+		if (calendar == null) {
 			Calendar cal = Calendar.Factory.newInstance();
 			CalendarType calType;
 			Date date = new Date();
-	
+
 			// check calendarType
 			if (domainObject instanceof CourseInfo) {
 				calType = CalendarType.course_calendar;
@@ -52,12 +53,12 @@ public class CalendarServiceImpl extends
 				throw new CalendarApplicationException(
 						"DomainObject is not valid for calendar type.");
 			}
-	
+
 			cal.setLastUpdate(new Timestamp(date.getTime()));
 			cal.setCalendarType(calType);
 			cal.setDomainIdentifier(domainObject.getId());
 			getCalendarDao().create(cal);
-		} 
+		}
 
 	}
 
@@ -239,16 +240,18 @@ public class CalendarServiceImpl extends
 				serialAppointment.getAssignedCalendars().add(subCal);
 			}
 		}
-		
+
 		// List stores the created Apps
 		List<Appointment> createdApp = new ArrayList<Appointment>();
-		
+
 		// count number of created appointments
 		int appCounter = 0;
 
 		// calculate resulting single appointments
 		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
-			if (appCounter > 500) throw new CalculatedAppointmentException("Too many calculated appointments");
+			if (appCounter > 500)
+				throw new CalculatedAppointmentException(
+						"Too many calculated appointments");
 			// TODO Logger!
 			System.out.println("Generate Appointment "
 					+ calculatedStart.getTime().toGMTString() + " to "
@@ -298,8 +301,6 @@ public class CalendarServiceImpl extends
 		}
 
 		/** ************************************************************** */
-		
-		
 
 		getSerialAppointmentDao().update(serialAppointment);
 		// make changes persistent for the source calendar
@@ -453,6 +454,11 @@ public class CalendarServiceImpl extends
 
 		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(
 				user.getId());
+
+		// test if the user wants to subscribe his own calendar
+		if (subscribingCal.equals(calToSubscribe))
+			throw new CalendarApplicationException(
+					"It is not possible to subscribe to the own calendar!");
 		calToSubscribe.getSubscribedCalendars().add(subscribingCal);
 		subscribingCal.getSubscriptions().add(calToSubscribe);
 
@@ -568,12 +574,11 @@ public class CalendarServiceImpl extends
 			SerialAppointmentInfo serialAppointmentInfo,
 			AppointmentInfo appointmentInfo) throws Exception {
 
-
 		SerialAppointment serialApp = getSerialAppointmentDao().load(
-				serialAppointmentInfo.getId());		
+				serialAppointmentInfo.getId());
 		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
 		Set<Appointment> calculatedApps = serialApp.getAppointments();
-		
+
 		if (!calculatedApps.contains(app))
 			throw new CalendarApplicationException(
 					"Appointment does not belong to serial appointment");
@@ -608,14 +613,14 @@ public class CalendarServiceImpl extends
 		if (!calcApps.contains(app))
 			throw new CalendarApplicationException(
 					"Appointment does not belong the serial appointment.");
-		
+
 		app.setTakingPlace(true);
 		getAppointmentDao().update(app);
-		
+
 		Calendar sourceCal = app.getSourceCalendar();
 		sourceCal.getOwnAppointments().add(app);
 		getCalendarDao().update(sourceCal);
-		
+
 		Set<Calendar> assignedCals = app.getAssignedCalendars();
 		for (Calendar calIt : assignedCals) {
 			calIt.getLinkedAppointments().add(app);
@@ -644,22 +649,29 @@ public class CalendarServiceImpl extends
 	protected void handleCreateAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
 		getAppointmentTypeDao().create(appointmentTypeInfo.getName());
-		
+
 	}
 
 	@Override
 	protected void handleDeleteAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
-		// TODO Calendar Implement deleteAppointmentType
 		
+		AppointmentType appType = getAppointmentTypeDao().load(appointmentTypeInfo.getId());
+		// get standard appointment type
+		AppointmentType standardType;
+		Set<Appointment> apps = appType.getAppointments();
+		// TODO Calendar Implement handleDeleteAppointment
+
 	}
 
 	@Override
 	protected List handleGetAllAppointmentTypes() throws Exception {
-		List<AppointmentType> appTypes = (List)getAppointmentTypeDao().loadAll();
+		List<AppointmentType> appTypes = (List) getAppointmentTypeDao()
+				.loadAll();
 		List<AppointmentTypeInfo> appTypeInfos = new ArrayList<AppointmentTypeInfo>();
 		for (AppointmentType appTypeIt : appTypes) {
-			appTypeInfos.add(getAppointmentTypeDao().toAppointmentTypeInfo(appTypeIt));
+			appTypeInfos.add(getAppointmentTypeDao().toAppointmentTypeInfo(
+					appTypeIt));
 		}
 		return appTypeInfos;
 	}
@@ -667,10 +679,11 @@ public class CalendarServiceImpl extends
 	@Override
 	protected void handleUpdateAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
-		AppointmentType appType = getAppointmentTypeDao().load(appointmentTypeInfo.getId());
+		AppointmentType appType = getAppointmentTypeDao().load(
+				appointmentTypeInfo.getId());
 		appType.setName(appointmentTypeInfo.getName());
 		getAppointmentTypeDao().update(appType);
-		
+
 	}
 
 }
