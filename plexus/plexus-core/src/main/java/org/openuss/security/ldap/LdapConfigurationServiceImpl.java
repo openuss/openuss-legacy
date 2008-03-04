@@ -521,8 +521,8 @@ public class LdapConfigurationServiceImpl
 	@Override
 	protected UserDnPattern handleCreateUserDnPattern(
 			UserDnPatternInfo userDnPattern) throws Exception {
-		UserDnPattern userDnPatternEntity = getUserDnPatternDao().userDnPatternInfoToEntity(userDnPattern);
-		return getUserDnPatternDao().create(userDnPatternEntity);
+		//UserDnPattern userDnPatternEntity = getUserDnPatternDao().userDnPatternInfoToEntity(userDnPattern);
+		return getUserDnPatternDao().create(userDnPattern.getName());
 	}
 
 	@Override
