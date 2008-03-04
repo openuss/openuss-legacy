@@ -218,6 +218,18 @@ public class WikiMainPage extends AbstractWikiPage {
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
+	/**
+	 * Shows Wiki Start Page. Resets Session.
+	 * @return Wiki Main Page.
+	 */
+	public String showStartPage() {
+		siteVersionInfo = null;
+		siteVersionId = null;
+		siteName = null;
+		
+		return Constants.WIKI_MAIN_PAGE;
+	}
+	
 	public String getSiteTitleNoVersion() {
 		if (siteVersionInfo.getName() == null) {
 			return siteName;
