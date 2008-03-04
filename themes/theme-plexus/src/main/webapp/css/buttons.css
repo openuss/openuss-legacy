@@ -590,6 +590,7 @@ a.remove_bookmark:focus span, a.remove_bookmark:hover span {
 ul.legend_list {
   list-style: none;
   padding:0px;
+  color: #a5a5a5;
 }
 
 ul.legend_list li {
@@ -607,29 +608,29 @@ ul.legend_list li span {
 }
   
 ul.legend_list li.newsletter_none span {
-  background-image:url(../img/buttons/newsletter_none_icon.png);
+  background-image:url(../img/capturebox/newsletter_none_icon.png);
 }
 
 ul.legend_list li.newsletter_notSubscribed span {
-  background-image:url(../img/buttons/newsletter_subscribe_icon.png);
+  background-image:url(../img/capturebox/newsletter_subscribe_icon.png);
 }
 
 ul.legend_list li.newsletter_subscribed span {
-  background-image:url(../img/buttons/newsletter_unsubscribe_icon.png);
+  background-image:url(../img/capturebox/newsletter_unsubscribe_icon.png);
 }
 
 ul.legend_list li.forum_none span {
-  background-image:url(../img/buttons/forum_none_icon.png);
+  background-image:url(../img/capturebox/forum_none_icon.png);
 }
 
 ul.legend_list li.forum_notSubscribed span {
-  background-image:url(../img/buttons/forum_subscribe_icon.png);
+  background-image:url(../img/capturebox/forum_subscribe_icon.png);
 }
 
 ul.legend_list li.forum_subscribed span {
-  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+  background-image:url(../img/capturebox/forum_unsubscribe_icon.png);
 }
 
 ul.legend_list li.remove_bookmark span {
-  background-image:url(../img/buttons/bookmark_remove_icon.png);
+  background-image:url(../img/capturebox/bookmark_remove_icon.png);
 }
