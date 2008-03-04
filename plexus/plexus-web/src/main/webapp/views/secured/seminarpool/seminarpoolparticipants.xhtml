@@ -29,10 +29,11 @@
 	</ui:define>
 
 	<ui:define name="content" styleClass="footer_normal">
-			<o:block>
-				<h:outputText value="TODO: Seminarpool-Anmeldungen und -Teilnehmer-Verwaltung hinzufügen"/>
-			</o:block>
-
+			
+				<h:form id="participantsform">
+					<ui:include src="seminarpoolparticipantstable.xhtml" />
+				</h:form>
+			
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

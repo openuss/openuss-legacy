@@ -559,4 +559,18 @@ public class SeminarpoolAdministrationServiceImpl
     	}
 		return seminarConditionInfoList;
 	}
+
+	@Override
+	protected List handleGetRegistrationsAsUserInfo(Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(seminarpoolId, "handleGetRegistrationsAsUserInfo ==> seminarpoolId cannot be null");
+    	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
+    	Validate.notNull(seminarpoolEntity, "handleGetRegistrationsAsUserInfo ==> Cannot load Seminarpool");
+    	Collection<SeminarUserRegistration> userRegistrations = seminarpoolEntity.getSeminarUserRegistration();
+    	List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+    	for (SeminarUserRegistration userRegistration : userRegistrations){
+    		userInfoList.add(getUserDao().toUserInfo(userRegistration.getUser()));
+    	}
+    	return userInfoList;
+	}
 }
