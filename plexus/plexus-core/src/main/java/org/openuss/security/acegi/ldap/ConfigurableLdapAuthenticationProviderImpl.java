@@ -89,11 +89,11 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 				LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(ldapAuthenticator);
 				ldapAuthenticationProvider.setMessageSource(messageSource);
 				ldapAuthenticationProvider.setUserCache(userCache);
-//				try {
-//					ldapAuthenticationProvider.afterPropertiesSet();
-//				} catch (Exception e) {
-//					throw new RuntimeException(e.getMessage(),e);
-//				}
+				try {
+					ldapAuthenticationProvider.afterPropertiesSet();
+				} catch (Exception e) {
+					throw new RuntimeException(e.getMessage(),e);
+				}
 				ldapAuthenticationProviders.add(ldapAuthenticationProvider);			
 			}
 			authenticationManager.setProviders(ldapAuthenticationProviders);

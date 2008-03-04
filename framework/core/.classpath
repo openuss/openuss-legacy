@@ -51,7 +51,7 @@
 	<classpathentry kind="var" path="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/sun/facelets/jsf-facelets/1.1.12/jsf-facelets-1.1.12.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.5.ga/hibernate-3.2.5.ga.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.6/acegi-security-1.0.6.jar" sourcepath="/M2_REPO/org/acegisecurity/acegi-security/1.0.4/acegi-security-1.0.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.6/acegi-security-1.0.6.jar" sourcepath="/M2_REPO/org/acegisecurity/acegi-security/1.0.6/acegi-security-1.0.6-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.0.7/spring-web-2.0.7.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.7/spring-2.0.7-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

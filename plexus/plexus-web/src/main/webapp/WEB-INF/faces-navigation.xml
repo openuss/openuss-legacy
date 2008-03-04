@@ -214,7 +214,13 @@
 			<from-outcome>openuss4us_groups</from-outcome>
 			<to-view-id>/views/secured/openuss4us/groups.xhtml</to-view-id>
 		</navigation-case>	
+
+		<navigation-case>
+			<from-outcome>migration_centraluser_registration</from-outcome>
+			<to-view-id>/views/secured/migration/userAgreement.xhtml</to-view-id>
+		</navigation-case>	
 		
+
 		
 	</navigation-rule>
 	

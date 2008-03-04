@@ -26,6 +26,7 @@ import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -93,6 +94,11 @@ public class AuthenticationController extends BasePage {
 		try {
 			// Perform authentication
 			auth = getAuthenticationManager().authenticate(authRequest);
+			if (auth.getPrincipal() instanceof LdapUserDetails) {
+				logger.info("==============LDAPUSER==========");
+				return LOGIN;
+			}
+
 			// Initialize the security context
 			final SecurityContext securityContext = SecurityContextHolder.getContext();
 			securityContext.setAuthentication(auth);

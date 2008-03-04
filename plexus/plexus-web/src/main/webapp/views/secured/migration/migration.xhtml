@@ -29,7 +29,7 @@
   		</ui:define>
   		<ui:define name="navigation">  			
 			<h:form id="loginPortletRegister">
-				<o:block label="${msg['migration_navigation_header']}">
+				<o:block label="#{msg['migration_navigation_header']}">
 					<ul class="int">
 						<li>
 							<h:commandLink value="${msg.password_send_link}" action="forgot_password" immediate="true"/>
@@ -44,22 +44,22 @@
   		<ui:define name="content">
 			<h:form id="migration_login" enctype="multipart/form-data">
 	   			<o:block label="#{msg.login_headline}">
-		   			<o:input entity="migration" property="username" label="${msg['login_username']}" required="true"/>
-		   			<o:input entity="migration" property="password" label="${msg['login_password']}" required="true" type="password"/>		   					
+		   			<o:input entity="migrationController" property="username" label="#{msg['login_username']}" required="true"/>
+		   			<o:input entity="migrationController" property="password" label="#{msg['login_password']}" required="true" type="password"/>		   					
 		   		</o:block>
    			 	<o:block>
 				    <h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login"/>
 		 		</o:block>
 	 		</h:form> 
 			<h:form id="migration_register" enctype="multipart/form-data">
-	   			<o:block label="#{msg.login_headline}">
-		   			<o:input entity="views$secured$migration$centralUserInfo" property="username" label="${msg['user_username']}" disabled="true"/>
-		   			<o:input entity="views$secured$migration$centralUserInfo" property="firstName" label="${msg['user_contact_firstname']}" disabled="true"/>
-					<o:input entity="views$secured$migration$centralUserInfo" property="lastName" label="${msg['user_contact_lastname']}" disabled="true"/>		   			
-		   			<o:input entity="views$secured$migration$centralUserInfo" property="email" label="${msg['user_email']}" disabled="true"/>		   					   					
+	   			<o:block label="#{msg.migration_register_headline}">
+		   			<o:input entity="centralUserData" property="username" label="${msg['user_username']}" disabled="true"/>
+		   			<o:input entity="centralUserData" property="firstName" label="${msg['user_contact_firstname']}" disabled="#{centralUserData.authenticationDomainId gt 0}"/>
+					<o:input entity="centralUserData" property="lastName" label="${msg['user_contact_lastname']}" disabled="true"/>		   			
+		   			<o:input entity="centralUserData" property="email" label="${msg['user_email']}" disabled="true"/>		   					   					
 		   		</o:block>
    			 	<o:block>
-				    <h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login"/>
+				    <h:commandButton id="migrationRegisterButton" action="migration_centraluser_registration" value="${msg.migration_register_button}" styleClass="button_login"/>
 		 		</o:block>
 	 		</h:form> 	 		
   		</ui:define>

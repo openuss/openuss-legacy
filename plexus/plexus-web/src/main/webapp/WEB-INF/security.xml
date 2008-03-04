@@ -93,7 +93,7 @@
 				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
-				/views/secured/migration/**=ROLE_LDAPUSER
+				/views/secured/migration/**=ROLE_LDAPUSER, ROLE_ADMIN
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER
 				/views/**=ROLE_ADMIN
@@ -112,9 +112,9 @@
 		<property name="providers">
 			<list>
 				<ref local="daoAuthenticationProvider" />
+				<ref local="configurableLdapAuthenticationProvider"/>
 				<ref local="anonymousAuthenticationProvider" />
 				<ref local="rememberMeAuthenticationProvider"/>
-				<ref local="configurableLdapAuthenticationProvider"/>
 			</list>
 		</property>
 	</bean>
