@@ -171,6 +171,19 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
+    protected AuthenticationDomainInfo handleGetDomainById(Long authDomainId) {
+    	AuthenticationDomain authenticationDomain = getAuthenticationDomainDao().load(authDomainId);
+    	AuthenticationDomainInfo authenticationDomainInfo = new AuthenticationDomainInfo();
+    	authenticationDomainInfo.setId(authenticationDomain.getId());
+    	authenticationDomainInfo.setDescription(authenticationDomain.getDescription());
+    	authenticationDomainInfo.setName(authenticationDomain.getName());    	
+    	return authenticationDomainInfo;
+    }
+    
+    /**
+     * 
+     */
+    @Override
     protected void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	AuthenticationDomainDao domainDao = getAuthenticationDomainDao();
     	LdapServerDao serverDao = getLdapServerDao();
