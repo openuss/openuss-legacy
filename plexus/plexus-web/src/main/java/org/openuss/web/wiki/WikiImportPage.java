@@ -27,6 +27,8 @@ public class WikiImportPage extends AbstractWikiPage {
 	
 	protected Long selectedCourseId;
 	
+	private static final String EXPORTABLE_WIKI_COURSE_NAME_FORMAT = "%s (%s)";
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -92,7 +94,8 @@ public class WikiImportPage extends AbstractWikiPage {
 		}
 		
 		for (CourseInfo exportableWikiCourse : exportableWikiCourses) {
-			final SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourse.getName());
+			String exportableWikiCourseName = String.format(EXPORTABLE_WIKI_COURSE_NAME_FORMAT, exportableWikiCourse.getName(), exportableWikiCourse.getPeriodName());
+			final SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourseName);
 			exportableSelectItems.add(exportableSelectItem);
 		}
 		
