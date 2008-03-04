@@ -77,13 +77,6 @@
 		<converter-id>xssFilter</converter-id>
 		<converter-class>org.openuss.web.utils.HtmlInputFilterConverter</converter-class>
 	</converter>
-	
-	<converter>
-        <description>Sanitize text inputs against cross scripting attacks (Wiki-version adds some tags, attributes)</description>
-        <display-name>WikiHtmlInputFilterConverter</display-name>
-        <converter-id>xssWikiFilter</converter-id>
-        <converter-class>org.openuss.web.utils.WikiHtmlInputFilterConverter</converter-class>
-    </converter>
 
     <converter>
     	<description>Converts a UniversityType object to a string representation and vice versa</description>

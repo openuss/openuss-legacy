@@ -1,5 +1,7 @@
 package org.openuss.web.wiki;
 
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -12,6 +14,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
+import org.openuss.wiki.WikiSiteInfo;
 
 /**
  * Backing Bean for wikiimportconfirmation.xhtml.
@@ -30,6 +33,18 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 		super.prerender();
 		
 		addBreadCrumbs();
+		
+		//Check if Confirmation is required
+		final List<WikiSiteInfo> wikiSites = wikiService.findWikiSitesByDomainObject(courseInfo.getId());
+		if(wikiSites.size() == 1){
+			final List<WikiSiteInfo> wikiSiteVersions = wikiService.findWikiSiteVersionsByWikiSite(wikiSites.get(0).getWikiSiteId());
+			if(wikiSiteVersions.size() == 1){
+				importWiki();
+				redirect(Constants.WIKI_OVERVIEW);
+				return;
+			}
+		}
+		
 	}
 	
 	/**
