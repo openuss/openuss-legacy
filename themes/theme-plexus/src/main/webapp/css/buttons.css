@@ -594,43 +594,37 @@ ul.legend_list {
 }
 
 ul.legend_list li {
-  margin: 0; padding: 0;
-  margin-top:5px;
-}
-  
-ul.legend_list li span {
-  height:16px;
-  width:16px;
-  display:block;
-  float:left;
+  margin:4px 0px 0px 0px; padding:0px 2px 0px 20px;
+  background-position:left center;
   background-repeat:no-repeat;
-  margin-right:5px;
+  min-height:16px;
+  vertical-align:middle;
 }
-  
-ul.legend_list li.newsletter_none span {
+   
+ul.legend_list li.newsletter_none {
   background-image:url(../img/capturebox/newsletter_none_icon.png);
 }
 
-ul.legend_list li.newsletter_notSubscribed span {
+ul.legend_list li.newsletter_notSubscribed {
   background-image:url(../img/capturebox/newsletter_subscribe_icon.png);
 }
 
-ul.legend_list li.newsletter_subscribed span {
+ul.legend_list li.newsletter_subscribed {
   background-image:url(../img/capturebox/newsletter_unsubscribe_icon.png);
 }
 
-ul.legend_list li.forum_none span {
+ul.legend_list li.forum_none {
   background-image:url(../img/capturebox/forum_none_icon.png);
 }
 
-ul.legend_list li.forum_notSubscribed span {
+ul.legend_list li.forum_notSubscribed {
   background-image:url(../img/capturebox/forum_subscribe_icon.png);
 }
 
-ul.legend_list li.forum_subscribed span {
+ul.legend_list li.forum_subscribed {
   background-image:url(../img/capturebox/forum_unsubscribe_icon.png);
 }
 
-ul.legend_list li.remove_bookmark span {
+ul.legend_list li.remove_bookmark {
   background-image:url(../img/capturebox/bookmark_remove_icon.png);
 }
