@@ -74,7 +74,7 @@ public class AbstractCoursePage extends BasePage {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 			calendarInfo = calendarService.getCalendar(courseInfo);
-			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
+			setSessionAttribute(Constants.CALENDAR_INFO, calendarInfo);
 		}
 		if (courseInfo == null) {
 			addError(i18n("message_error_course_page"));

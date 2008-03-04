@@ -44,7 +44,7 @@ public class AbstractGroupPage extends BasePage {
 		if (groupInfo != null && groupInfo.getId() != null) {
 			groupInfo = groupService.getGroupInfo(groupInfo.getId());
 			calendarInfo = calendarService.getCalendar(groupInfo);
-			setSessionAttribute(Constants.OPENUSS4US_CALENDAR, calendarInfo);
+			setSessionAttribute(Constants.CALENDAR_INFO, calendarInfo);
 		}
 		if (groupInfo == null) {
 			addError(i18n("group_page not found!"));
