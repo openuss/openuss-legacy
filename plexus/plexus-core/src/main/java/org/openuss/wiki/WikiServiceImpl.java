@@ -14,6 +14,7 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteMember;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -312,22 +313,54 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		
 		Validate.notNull(importCourse, "Parameter importCourse must not be null!");
 		Validate.notNull(importCourse.getId(), "Parameter importCourse.getId must not be null!");
-
-		final List<CourseInfo> exportableWikiCourses = new LinkedList<CourseInfo>();
 		
 		final List<CourseInfo> availableCourses = this.getCourseService().findAllCoursesByInstitute(institute.getId());
 		availableCourses.remove(importCourse);
+		
+		if (userIsInstituteMember(institute, user)) {
+			return availableCourses;
+		}
+		
+		return findAssistantCourses(availableCourses, user);
+	}
+	
+	/**
+	 * Checks if a User is Member of an Institute.
+	 * @param institute Specified Institute.
+	 * @param user Specified User.
+	 * @return <code>true</code> if the User is Member of the Institute, otherwise <code>false</code>.
+	 */
+	private boolean userIsInstituteMember(InstituteInfo institute, User user) {
+		final List<InstituteMember> instituteMembers = getInstituteService().getInstituteSecurity(institute.getId()).getMembers();
+		for (InstituteMember instituteMember : instituteMembers) {
+			if (user.getId().equals(instituteMember.getId())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Finds all Courses a User is Assistant of.
+	 * @param availableCourses List of checkable Courses.
+	 * @param user Specified User.
+	 * @return List of all Courses the User is Assistant of.
+	 */
+	@SuppressWarnings("unchecked")
+	private List<CourseInfo> findAssistantCourses(List<CourseInfo> availableCourses, User user) {
+		final List<CourseInfo> assistantCourses = new LinkedList<CourseInfo>();
 
 		for (CourseInfo availableCourse : availableCourses) {
 			final List<CourseMemberInfo> assistants = getCourseService().getAssistants(availableCourse);
 			for (CourseMemberInfo assistant : assistants) {
 				if (assistant.getUserId().equals(user.getId())) {
-					exportableWikiCourses.add(availableCourse);
+					assistantCourses.add(availableCourse);
 				}
 			}
 		}
 		
-		return exportableWikiCourses;
+		return assistantCourses;
 	}
 
 }
