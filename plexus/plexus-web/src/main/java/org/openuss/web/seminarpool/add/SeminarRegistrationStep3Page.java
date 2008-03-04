@@ -1,68 +1,73 @@
 package org.openuss.web.seminarpool.add;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseGroupInfo;
+import org.openuss.seminarpool.CourseSchedule;
 import org.openuss.seminarpool.CourseScheduleInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
-@Bean(name = Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3, scope = Scope.REQUEST)
+@Bean(name = "views$secured$seminarpool$add$courseAllocationStep3", scope = Scope.REQUEST)
 @View
 public class SeminarRegistrationStep3Page extends BasePage {
 	
-	private DataPage<CourseScheduleInfo> dataPageCourseSchedule;
+	@Property(value = "#{" + Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION + "}")
+	private List<CourseGroupInfo> courseGroupInfoList;
 
-	private CourseScheduleOverview courseScheduleOverview = new CourseScheduleOverview();
+	@Property(value = "#{" + Constants.COURSE_GROUP_INDEX + "}")
+	private Integer groupIndex;
+
 	
-	private List<CourseScheduleInfo> courseScheduleInfoList;
-	
-	private int capacity;
-	
-	private Date startTime;
-	
-	private Date endTime;
-	
+	public DataPage<CourseScheduleInfo> dataPageCourseSchedule;
+
+	public CourseScheduleOverview courseScheduleOverview = new CourseScheduleOverview();
 	
 	private static final Logger logger = Logger.getLogger(SeminarRegistrationStep3Page.class);
 	
 	
 	@Prerender
 	public void prerender() throws Exception  {
-		loadRequiredParams();
+		breadcrumbs.init();	
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("seminarpool_add_course_allocation_breadcrumb_step3"));
+		newCrumb.setHint(i18n("seminarpool_add_course_allocation_breadcrumb_step3"));
+		breadcrumbs.addCrumb(newCrumb);	
 	}
 	
-	private void loadRequiredParams(){
-		CourseGroupInfo aktCourseGroupInfo = (CourseGroupInfo) getSessionBean(Constants.SEMINARPOOL_COURSEGROUP_INFO);
-		capacity = aktCourseGroupInfo.getCapacity();
-		logger.info("Seminarpool CourseGroupInfo " + aktCourseGroupInfo == null);
-		if ( aktCourseGroupInfo.getCourseSchedule() == null){
-			courseScheduleInfoList = new ArrayList<CourseScheduleInfo>();
-			aktCourseGroupInfo.setCourseSchedule(courseScheduleInfoList);
-		}
-		
+	public String removeCurrentCourseSchedule(){
+		int rowIndex = courseScheduleOverview.getRowIndex();
+		List<CourseScheduleInfo> list = (List<CourseScheduleInfo>)courseGroupInfoList.get(groupIndex).getCourseSchedule(); 
+		list.remove(rowIndex);
+		setSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION, courseGroupInfoList);
+		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3; 
 	}
-
 	
-	// Start CourseScheduleInfo Overview 
 	public DataPage<CourseScheduleInfo> fetchDataPageCourseSchedule(int startRow, int pageSize) {
-		loadRequiredParams();
+		courseGroupInfoList = (List<CourseGroupInfo>)getSessionBean("SEMINARPOOL_COURSE_GROUPS_COLLECTION");
 		if (dataPageCourseSchedule == null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("fetch seminarpools data page at " + startRow + ", " + pageSize + " sorted by "
 						+ courseScheduleOverview.getSortColumn());
 			}
-			dataPageCourseSchedule = new DataPage<CourseScheduleInfo>(courseScheduleInfoList.size(), 0, courseScheduleInfoList);
+			if ( courseGroupInfoList.get(groupIndex).getCourseSchedule() == null){
+				courseGroupInfoList.get(groupIndex).setCourseSchedule(new ArrayList<CourseScheduleInfo>());
+				setSessionBean("SEMINARPOOL_COURSEGROUP_INFO", courseGroupInfoList.get(groupIndex));
+			}
+			dataPageCourseSchedule = new DataPage<CourseScheduleInfo>(courseGroupInfoList.get(groupIndex).getCourseSchedule().size(), 0, (List<CourseScheduleInfo>)courseGroupInfoList.get(groupIndex).getCourseSchedule());
 		}
 		return dataPageCourseSchedule;
 	}
@@ -96,38 +101,19 @@ public class SeminarRegistrationStep3Page extends BasePage {
 		this.courseScheduleOverview = courseScheduleOverview;
 	}
 
-	public List<CourseScheduleInfo> getCourseScheduleInfoList() {
-		return courseScheduleInfoList;
+	public List<CourseGroupInfo> getCourseGroupInfoList() {
+		return courseGroupInfoList;
 	}
 
-	public void setCourseScheduleInfoList(
-			List<CourseScheduleInfo> courseScheduleInfoList) {
-		this.courseScheduleInfoList = courseScheduleInfoList;
+	public void setCourseGroupInfoList(List<CourseGroupInfo> courseGroupInfoList) {
+		this.courseGroupInfoList = courseGroupInfoList;
 	}
 
-	public int getCapacity() {
-		return capacity;
+	public Integer getGroupIndex() {
+		return groupIndex;
 	}
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+	public void setGroupIndex(Integer groupIndex) {
+		this.groupIndex = groupIndex;
 	}
-
-	public Date getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-
-
 }

@@ -30,59 +30,71 @@
   			<h:outputText value="#{msg.university_maintitle}"/>
   		</ui:define>
   		<ui:define name="content">
-	 	<h:form id="courseSchedule">
-				<o:block label="#{msg.seminarpool_cours_schedule_label}">
+  		<h:form id="courseScheduleTable">
+				<o:block label="#{msg.seminarpool_add_course_schedule_label}">
 					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_cours_schedule_text}" escape="false"/>
+						<h:outputText value="#{msg.seminarpool_add_course_schedule_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
-			   	<o:block label="#{msg.seminarpool_course_schedule_edit_label}">
-					<div class="content_font_normal"> 
-						<o:input 
-						label="#{msg['seminarpool_course_groups_add_capacity']}"
-						entity="SEMINARPOOL_COURSEGROUP_INFO" 
-						property="capacity" 
-						maxlength="100" 
-						required="true"/>
-							<div class="content_font_normal"> 
+			   <!-- <o:block label="#{msg.seminarpool_add_course_schedule_edit_label}">-->
+					<div class="content_font_normal">
+						<br />
+						
 								<plexus:dataTable 
 								id="coursegroups" 
-								label="#{msg.seminarpool_course_groups_add_header}" 
-								value="seminarpoolCourseAllocationStep3.courseScheduleOverview" 
+								label="#{msg.seminarpool_add_course_schedule_add_header}" 
+								value="views$secured$seminarpool$add$courseAllocationStep3.courseScheduleOverview" 
 								var="bean" 
 								columnClasses="col_max_left, col_max_left, col_commands"
 								rows="20">
 								<t:column>
 									<plexus:commandSortHeader columnName="start">
-										#{msg['seminarpool_course_schedule_edit_startdate']}
+										#{msg['seminarpool_add_course_schedule_edit_startdate']}
 									</plexus:commandSortHeader>
 									<h:outputText value="#{bean.startTime}"/>
 								</t:column>
 								<t:column>
 									<plexus:commandSortHeader columnName="end">
-										#{msg['seminarpool_course_schedule_edit_enddate']}
+										#{msg['seminarpool_add_course_schedule_edit_enddate']}
 									</plexus:commandSortHeader>
 									<h:outputText value="#{bean.endTime}"/>
 								</t:column>
+								<plexus:column header="#{msg.commands_header}">				
+									<plexus:command 
+										bean="#{views$secured$seminarpool$add$courseAllocationStep3}"
+										action="removeCurrentCourseSchedule"
+										label="#{msg.seminarpool_add_course_allocation_remove_time}"
+										title="#{msg.seminarpool_add_course_allocation_remove_time}"
+										styleClass="icon_bookmark_remove"
+										>
+								</plexus:command>
+								</plexus:column>
 							</plexus:dataTable>
-							<o:input
-								label="#{msg.seminarpool_registration_start_time}"
-								entity="seminarpoolRegistration"
-								property="startTime"
-								maxlength="16"
-								required="true" />
-							<o:input
-								label="#{msg.seminarpool_registration_end_time}"
-								entity="seminarpoolRegistration"
-								property="endTime"
-								maxlength="16"
-								required="true" />
-							<h:commandButton value="#{msg.back}" action="seminarpool_create_start" styleClass="button_back" immediate="true" />
-							<h:commandButton value="#{msg.forward}" action="seminarpool_create_step2" styleClass="button_continue" />
-						</div>
+							<o:block label="#{msg.seminarpool_add_course_allocation_add_time}">
+								<o:input
+									label="#{msg.seminarpool_registration_start_time}"
+									entity="courseAllocationController"
+									property="startTime"
+									maxlength="16"
+									 />
+								<o:input
+									label="#{msg.seminarpool_registration_end_time}"
+									entity="courseAllocationController"
+									property="endTime"
+									maxlength="16"
+									/>
+									<br />
+									<br />
+								<p>
+									<h:commandButton value="#{msg.seminarpool_add_course_schedule_add}" action="#{courseAllocationController.addCourseSchedule}" styleClass="button_continue" />
+								</p>
+								
+							</o:block>
 			   		</div>
-			   	</o:block>
-		</h:form>
+			        <o:block>
+						<h:commandButton value="#{msg.back}" action="#{courseAllocationController.saveGroup}" styleClass="button_back" immediate="true" />
+					</o:block>
+				</h:form>
 		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

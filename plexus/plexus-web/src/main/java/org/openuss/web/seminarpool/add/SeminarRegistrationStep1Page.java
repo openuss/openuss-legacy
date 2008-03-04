@@ -52,7 +52,7 @@ import org.openuss.web.Constants;
  * 
  */
 
-@Bean(name = Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP1, scope = Scope.REQUEST)
+@Bean(name = "views$secured$seminarpool$add$courseAllocationStep1", scope = Scope.REQUEST)
 @View
 public class SeminarRegistrationStep1Page extends BasePage{
 	
@@ -71,32 +71,26 @@ public class SeminarRegistrationStep1Page extends BasePage{
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService; 
 	
-//		
 	protected SeminarpoolOverview seminarpoolOverview  = new SeminarpoolOverview();
 	
 	private DataPage<SeminarpoolInfo> dataPage;
 
 	private static final Logger logger = Logger.getLogger(SeminarRegistrationStep1Page.class);
 
+	@Property(value = "#{courseInfo}")
 	private CourseInfo courseInfo;
 	
 	@Prerender
 	public void prerender() throws Exception {
-		initParams();
+		breadcrumbs.init();	
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("seminarpool_add_course_allocation_breadcrumb_step1"));
+		newCrumb.setHint(i18n("seminarpool_add_course_allocation_breadcrumb_step1"));
+		breadcrumbs.addCrumb(newCrumb);	
 	}
 	
-	private void initParams(){
-		courseInfo = (CourseInfo)getSessionBean(Constants.COURSE_INFO);
-		CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo = (CourseSeminarpoolAllocationInfo)getSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
-		if (courseSeminarpoolAllocationInfo == null){
-			courseSeminarpoolAllocationInfo = new CourseSeminarpoolAllocationInfo();
-			setSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO, courseSeminarpoolAllocationInfo);
-		}
-		courseSeminarpoolAllocationInfo.setCourseId(courseInfo.getId());	
-	}
 	
 	public String selectCurrentSeminarpool() {
-		initParams();
 		logger.info("Starting method selectCurrentCourseGroup");
 		SeminarpoolInfo seminarpoolInfo = seminarpoolOverview.getRowData();
 		logger.info("Returning to method selectSeminarpool");
@@ -190,5 +184,13 @@ public class SeminarRegistrationStep1Page extends BasePage{
 
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
-	}	
+	}
+	
+	public CourseInfo getCourseInfo() {
+		return courseInfo;
+	}
+
+	public void setCourseInfo(CourseInfo courseInfo) {
+		this.courseInfo = courseInfo;
+	}
 }
