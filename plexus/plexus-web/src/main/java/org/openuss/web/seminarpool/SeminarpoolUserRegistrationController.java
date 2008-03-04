@@ -88,10 +88,17 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 		// create new seminarpoolInfo object for session
 		seminarUserRegistrationInfo = this.getSeminarpoolUserRegistrationService().findSeminarUserRegistrationByUserAndSeminarpool(user.getId(), seminarpoolInfo.getId());
+		this.setSessionBean("seminarUserRegistrationInfo", seminarUserRegistrationInfo);
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
 	}
 	
 	public String step2(){
+		seminarUserRegistrationInfo = (SeminarUserRegistrationInfo) this.getSessionBean("seminarUserRegistrationInfo");
+		List<SeminarPrioritiesInfo> seminarPriorityList2 = new ArrayList<SeminarPrioritiesInfo>();
+		seminarPriorityList2 = seminarUserRegistrationInfo.getSeminarPriorityList();
+		if(seminarPriorityList == null){
+			seminarPriorityList = seminarPriorityList2;
+		}
 		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
 		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());
 		seminarUserRegistrationInfo.setUserId(user.getId());
