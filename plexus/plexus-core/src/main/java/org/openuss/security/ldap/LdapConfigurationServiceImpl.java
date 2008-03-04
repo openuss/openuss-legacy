@@ -65,11 +65,11 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getLdapServerType(), 
     			ldapServer.isEnabled());
     	
-    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
-    	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));
+    	
+    	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
+    	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));
     	getLdapServerDao().update(ldapServerEntity);
-    	authDomainEntity.addServer(ldapServerEntity);
-    	getAuthenticationDomainDao().update(authDomainEntity);
+    	
     	return ldapServerEntity;
     }
     
@@ -88,7 +88,7 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+    protected void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {    	
     	getLdapServerDao().remove(ldapServer.getId());
     }
 
@@ -97,26 +97,27 @@ public class LdapConfigurationServiceImpl
      */
     @Override
     protected void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
-    	LdapServerDao dao = getLdapServerDao();
-    	LdapServer ldap = dao.ldapServerInfoToEntity(ldapServer);
-    	dao.update(ldap);
+    	LdapServer ldapServerEntity = getLdapServerDao().ldapServerInfoToEntity(ldapServer);
+    	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
+    	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));    	
+    	getLdapServerDao().update(ldapServerEntity);
     }
 
     /**
      * 
      */
     @Override
-    protected java.util.List handleGetAllLdapServers() {
-    	return (java.util.List) getLdapServerDao().loadAll();
+    protected java.util.List<LdapServer> handleGetAllLdapServers() {
+    	return (java.util.List<LdapServer>) getLdapServerDao().loadAll();
     }
 
     /**
      * 
      */
     @Override
-    protected java.util.List handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
+    protected java.util.List<LdapServer> handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().load(domain.getId());
-    	return (java.util.List) authDomain.getLdapServers();
+    	return (java.util.List<LdapServer>) authDomain.getLdapServers();
     }
 
     /**
@@ -129,8 +130,7 @@ public class LdapConfigurationServiceImpl
     	}
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
     	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
-    	getAuthenticationDomainDao().update(authDomain);
-    	getAttributeMappingDao().load(domain.getAttributeMappingId()).addAuthenticationDomain(authDomain);
+    	getAuthenticationDomainDao().update(authDomain);    	
     	return authDomain;
     }
 
@@ -284,7 +284,7 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected List handleGetAllAttributeMappings() {
+    protected List<AttributeMapping> handleGetAllAttributeMappings() {
     	return (List<AttributeMapping>) getAttributeMappingDao().loadAll();
     }
 	
@@ -383,7 +383,6 @@ public class LdapConfigurationServiceImpl
     	
     	RoleAttributeKey keyEntity = keyDao.roleAttributeKeyInfoToEntity(key);
     	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
-    	
     	
     	Validate.notNull(keyEntity, "RoleAttributeKey must not be null");
 		Validate.notNull(keyEntity.getId(), "RoleAttributeKey must provide a valid id.");
