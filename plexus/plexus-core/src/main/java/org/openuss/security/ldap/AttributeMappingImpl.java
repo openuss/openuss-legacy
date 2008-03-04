@@ -16,5 +16,16 @@ public class AttributeMappingImpl
      * The serial version UID of this class. Needed for serialization.
      */
     private static final long serialVersionUID = -2092439924857081239L;
-
+    
+    public void addAuthenticationDomain(org.openuss.security.ldap.AuthenticationDomain authDomain) {
+    	if (authDomain != null) {
+    		getAuthenticationDomains().add(authDomain);
+    	}
+    }
+    
+    public void removeAuthenticationDomain(org.openuss.security.ldap.AuthenticationDomain authDomain) {
+    	if (authDomain != null) {
+    		getAuthenticationDomains().remove(authDomain);
+    	}
+    }
 }

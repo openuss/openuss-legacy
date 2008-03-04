@@ -52,8 +52,7 @@ public class LdapConfigurationServiceImpl
     	// TODO: other validation
     	
     	
-    	
-    	return getLdapServerDao().create(
+    	LdapServer ldapServerEntity = getLdapServerDao().create(
     			ldapServer.getProviderUrl(), 
     			ldapServer.getPort(), 
     			ldapServer.getRootDn(), 
@@ -65,6 +64,13 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getDescription(), 
     			ldapServer.getLdapServerType(), 
     			ldapServer.isEnabled());
+    	
+    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
+    	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));
+    	getLdapServerDao().update(ldapServerEntity);
+    	authDomainEntity.addServer(ldapServerEntity);
+    	getAuthenticationDomainDao().update(authDomainEntity);
+    	return ldapServerEntity;
     }
     
     
@@ -124,6 +130,7 @@ public class LdapConfigurationServiceImpl
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
     	authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));
     	getAuthenticationDomainDao().update(authDomain);
+    	getAttributeMappingDao().load(domain.getAttributeMappingId()).addAuthenticationDomain(authDomain);
     	return authDomain;
     }
 
