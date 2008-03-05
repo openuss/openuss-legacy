@@ -231,7 +231,7 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate/3.2.5.ga/hibernate-3.2.5.ga.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/acegisecurity/acegi-security/1.0.4/acegi-security-1.0.4.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/acegisecurity/acegi-security/1.0.6/acegi-security-1.0.6.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-web/2.0.7/spring-web-2.0.7.jar">
