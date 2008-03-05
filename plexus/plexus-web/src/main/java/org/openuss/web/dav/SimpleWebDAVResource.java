@@ -213,6 +213,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	
 	/**
 	 * @param id The Id of the child to resolve or ID_NONE
+	 * @param name The name of the resource. This should only be used if id == ID_NONE.
 	 * @param path The WebDAVPath representing the full address of the resource to resolve.
 	 * @return A WebDAVResource representing the child.
 	 * @throws WebDAVResourceException If the resource can not be found.
