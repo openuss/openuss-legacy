@@ -95,6 +95,14 @@
 					value="#{msg.openuss4us_calendar_view_appointment_details}"
 					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
+					<br />
+					<h:commandButton id="delete_serialappointment"
+					action="#{views$secured$calendar$calendar.deleteSerialAppointment}"
+					value="#{msg.openuss4us_calendar_button_delete}"
+					title="#{msg.openuss4us_calendar_appointment_delete}"
+					styleClass="button_remove" 
+					rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
+				
 			</t:column>
 		</plexus:dataTable>
 		<plexus:dataTable id="singleAppointmentTable"
@@ -136,6 +144,13 @@
 					value="#{msg.openuss4us_calendar_view_appointment_details}"
 					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
+					<br />
+					<h:commandButton id="delete_singleappointment"
+					action="#{views$secured$calendar$calendar.deleteSingleAppointment}"
+					value="#{msg.openuss4us_calendar_button_delete}"
+					title="#{msg.openuss4us_calendar_appointment_delete}"
+					styleClass="button_remove" 
+					rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
 			</t:column>
 		</plexus:dataTable>
 		<o:block>

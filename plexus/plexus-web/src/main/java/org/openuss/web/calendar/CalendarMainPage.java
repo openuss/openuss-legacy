@@ -125,10 +125,23 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		return "openuss4us_calendar_calendar";
 	}
 	
+	public String deleteSerialAppointment(){
+		setSessionBean(Constants.APPOINTMENT_INFO, this.serialAppointmentData.getRowData());
+		return Constants.CALENDAR_DELETE_APPOINTMENT;
+	}
+	
 	public String serialAppointmentDetails(){
 		setSessionBean(Constants.APPOINTMENT_INFO, this.serialAppointmentData.getRowData());
 		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
 	}
+	
+	
+	public String deleteSingleAppointment(){
+		appointmentInfo = this.singleAppointmentData.getRowData();
+		setSessionBean(Constants.APPOINTMENT_INFO, appointmentInfo);
+		return Constants.CALENDAR_DELETE_APPOINTMENT;
+	}
+	
 	
 	public String singleAppointmentDetails(){
 		appointmentInfo = this.singleAppointmentData.getRowData();
@@ -136,6 +149,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
 	}
 
+	
 
 	public SerialAppointmentDataProvider getSerialAppointmentData() {
 		return serialAppointmentData;

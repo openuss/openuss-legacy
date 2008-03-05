@@ -263,6 +263,11 @@
 			<from-outcome>view_appointment_details</from-outcome>
 			<to-view-id>/views/secured/calendar/viewappointmentdetails.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>delete_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/deleteappointment.xhtml</to-view-id>
+		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>openuss4us_groups</from-outcome>

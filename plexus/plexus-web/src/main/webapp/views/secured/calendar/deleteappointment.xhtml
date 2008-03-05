@@ -139,11 +139,25 @@
 						
 				</c:if>
 			</o:block>
+			
+			<o:block
+				label="#{msg.warning_attention}"
+				styleClass="warning_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_calendar_appointment_delete}" styleClass="warning" /> <br />
+				</p>
+				
+			</o:block>
+			
+			
+			
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
-				<h:commandButton action="delete_appointment" value="#{msg.openuss4us_calendar_button_delete}"
-					styleClass="button_back"  rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
+				<h:commandButton id="reallydelete" action="#{views$secured$calendar$viewappointmentdetails.delete}"
+					value="#{msg.openuss4us_calendar_button_delete}" styleClass="button_warning" 
+					rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>	
+				
 			</o:block>
 		</h:form>
 	</ui:define>
