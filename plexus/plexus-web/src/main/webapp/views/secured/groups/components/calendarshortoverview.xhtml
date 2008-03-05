@@ -7,9 +7,9 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:c="http://java.sun.com/jstl/core">
-	<t:commandLink action="openuss4us_calendar_calendar"><h:outputText value="#{msg.openuss4us_calendar_serial_appointments}"
+	<t:commandLink action="group_calendar" value="#{msg.openuss4us_calendar_serial_appointments}"
 		styleClass="field_label"
-		rendered="#{not empty views$secured$groups$components$main.appointments}" /></t:commandLink>
+		rendered="#{not empty views$secured$groups$components$main.appointments}" />
 	<t:dataList id="serialappointments" var="serialapp"
 		value="#{views$secured$groups$components$main.appointments}"
 		rendered="#{not empty views$secured$groups$components$main.appointments}"

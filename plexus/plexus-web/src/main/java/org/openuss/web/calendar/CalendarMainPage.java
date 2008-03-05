@@ -12,6 +12,7 @@ import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
+import org.openuss.calendar.CalendarType;
 import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -121,6 +122,10 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		} catch (CalendarApplicationException e) {
 			this.addError("Error");
 			return Constants.SUCCESS;
+		}
+		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
+			//group calendar
+			return Constants.GROUP_CALENDAR;
 		}
 		return "openuss4us_calendar_calendar";
 	}

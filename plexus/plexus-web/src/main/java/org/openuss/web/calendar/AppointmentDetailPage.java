@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -14,6 +15,7 @@ import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.security.SecurityService;
 import org.openuss.web.Constants;
 
 /**
@@ -27,6 +29,9 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	private static final Logger logger = Logger	.getLogger(AppointmentDetailPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
 
+	@Property(value ="#{securityService}")
+	protected SecurityService securityService;
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -105,17 +110,20 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	}
 	
 	public boolean isSuperuser() {
-		//TODO 
-		if(calendarInfo.getCalendarType().equals(CalendarType.user_calendar)){
-			//User Calendar
-			return true;
-		}
-		if(calendarInfo.getCalendarType().equals(CalendarType.course_calendar)){
-			//Course calendar
-			return true;
-		}
-		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
-			return true;
+		try {
+			if(calendarInfo.getCalendarType().equals(CalendarType.user_calendar)){
+				//User Calendar
+				return calendarService.getCalendar(securityService.getCurrentUser()).getId().equals(calendarInfo.getId());
+			}
+			if(calendarInfo.getCalendarType().equals(CalendarType.course_calendar)){
+				//Course calendar
+				return true;
+			}
+			if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
+				return true;
+			}
+		} catch (CalendarApplicationException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -133,6 +141,10 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			e.printStackTrace();
 			addError(i18n("openuss4us_calendar_message_appointment_deleted_error"));
 		}
+		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
+			//group calendar
+			return Constants.GROUP_CALENDAR;
+		}
 		return Constants.CALENDAR_HOME;
 	}
 
@@ -142,6 +154,14 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 
 	public void setData(SingleAppointmentDataProvider data) {
 		this.data = data;
+	}
+
+	public SecurityService getSecurityService() {
+		return securityService;
+	}
+
+	public void setSecurityService(SecurityService securityService) {
+		this.securityService = securityService;
 	}
 
 }

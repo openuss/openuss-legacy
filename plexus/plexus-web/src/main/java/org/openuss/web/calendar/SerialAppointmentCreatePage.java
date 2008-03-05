@@ -79,6 +79,10 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 			addError("Das Anlegen eines Appointments schlug fehl");
 		}
 		//TODO correct navigation outcome
+		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
+			//group calendar
+			return Constants.GROUP_CALENDAR;
+		}
 		return Constants.CALENDAR_HOME;
 	}
 

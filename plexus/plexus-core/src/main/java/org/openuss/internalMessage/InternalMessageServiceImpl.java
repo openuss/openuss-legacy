@@ -111,7 +111,6 @@ public class InternalMessageServiceImpl
 				return -1;
 			return 0;
 		}
-    	
     }
 
     /**

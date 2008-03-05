@@ -148,6 +148,7 @@ public class Constants {
 	public static final String GROUP_OPTIONS_PAGE = "group_options";
 	public static final String GROUP_NEWS_EDIT_PAGE = "group_news_edit";
 	public static final String GROUP_NEWS_PAGE = "group_news";
+	public static final String GROUP_CALENDAR = "group_calendar";
 	public static final String GROUP_DELETE_CONFIRMATION = "group_delete_confirmation";
 	
 	// group documents page
