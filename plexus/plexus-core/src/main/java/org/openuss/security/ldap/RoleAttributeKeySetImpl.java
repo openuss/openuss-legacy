@@ -5,10 +5,13 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @see org.openuss.security.ldap.RoleAttributeKeySet
+ * @author Juergen de Braaf
  * @author Damian Kemner
  */
 public class RoleAttributeKeySetImpl
@@ -50,7 +53,17 @@ public class RoleAttributeKeySetImpl
 	public void removeRoleAttributeKey(RoleAttributeKey roleAttributeKey) {
 		removeAttributeKey(roleAttributeKey);
 	}
+
+	@Override
+	public List<Long> getAllRoleAttributeKeyIds() {
+		List<Long> idList = new ArrayList<Long>();
+		for (Iterator<RoleAttributeKey> iterator = getRoleAttributeKeys().iterator(); iterator.hasNext();) {
+			idList.add((iterator.next()).getId());			
+		}
+		return idList;
+	}
     
+	
     
 
 }

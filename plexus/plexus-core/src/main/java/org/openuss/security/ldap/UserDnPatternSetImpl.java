@@ -5,10 +5,13 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @see org.openuss.security.ldap.UserDnPatternSet
+ * @author Juergen de Braaf
  * @author Damian Kemner
  *  */
 public class UserDnPatternSetImpl
@@ -45,6 +48,18 @@ public class UserDnPatternSetImpl
         	}
     	}
     }
+
+	@Override
+	public List<Long> getAllUserDnPatternIds() {
+		List<Long> idList = new ArrayList<Long>();
+		for (Iterator<UserDnPattern> iterator = getUserDnPatterns().iterator(); iterator.hasNext();) {
+			idList.add((iterator.next()).getId());			
+		}
+		
+		return idList;
+	}
+    
+    
     
 
 }

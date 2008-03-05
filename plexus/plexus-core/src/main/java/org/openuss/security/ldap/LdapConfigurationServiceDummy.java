@@ -252,4 +252,12 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		return ldapServer2;
 	}
 
+
+
+	public AuthenticationDomainInfo getDomainById(Long authDomainId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

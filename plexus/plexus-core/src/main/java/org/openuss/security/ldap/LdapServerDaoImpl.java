@@ -26,7 +26,9 @@ public class LdapServerDaoImpl
      */
     public org.openuss.security.ldap.LdapServerInfo toLdapServerInfo(final org.openuss.security.ldap.LdapServer entity)
     {
-       return super.toLdapServerInfo(entity);
+    	LdapServerInfo ldapServerInfo = super.toLdapServerInfo(entity);
+    	ldapServerInfo.setAuthenticationDomainId(entity.getAuthenticationDomain().getId());
+    	return ldapServerInfo;
     }
 
 
@@ -56,6 +58,7 @@ public class LdapServerDaoImpl
     {
         org.openuss.security.ldap.LdapServer entity = this.loadLdapServerFromLdapServerInfo(ldapServerInfo);
         this.ldapServerInfoToEntity(ldapServerInfo, entity, true);
+        
         return entity;
     }
 

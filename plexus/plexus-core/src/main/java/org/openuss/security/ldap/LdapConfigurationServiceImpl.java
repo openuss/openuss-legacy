@@ -5,6 +5,9 @@
  */
 package org.openuss.security.ldap;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -26,15 +29,22 @@ public class LdapConfigurationServiceImpl
      * @see org.openuss.security.ldap.LdapConfigurationService#getEnabledLdapServerConfigurations()
      */
     @Override
-    protected java.util.List handleGetEnabledLdapServerConfigurations() {
-    	return null;
+    protected java.util.List<LdapServerInfo> handleGetEnabledLdapServerConfigurations() {
+    	    	
+    	List<LdapServerInfo> ldapServerInfoList = new ArrayList<LdapServerInfo>();
+    	List<LdapServer> ldapServerList = getLdapServerDao().findAllEnabledServers();
+    	for (LdapServer ldapServer : ldapServerList) {
+			ldapServerInfoList.add(getLdapServerDao().toLdapServerInfo(ldapServer));						
+		}   	
+    	
+    	return ldapServerInfoList;
     }
 
     /**
      * 
      */
     @Override
-    protected LdapServer handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
+    protected LdapServerInfo handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
     	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
     		throw new LdapConfigurationServiceException("URL must not be empty!");
     	}
@@ -51,7 +61,6 @@ public class LdapConfigurationServiceImpl
     	// TODO: check if valid manager DN
     	// TODO: other validation
     	
-    	
     	LdapServer ldapServerEntity = getLdapServerDao().create(
     			ldapServer.getProviderUrl(), 
     			ldapServer.getPort(), 
@@ -65,12 +74,13 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getLdapServerType(), 
     			ldapServer.isEnabled());
     	
-    	
     	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
     	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));
     	getLdapServerDao().update(ldapServerEntity);
     	
-    	return ldapServerEntity;
+    	ldapServer.setId(ldapServerEntity.getId());
+    	
+    	return ldapServer;
     }
     
     
@@ -97,6 +107,7 @@ public class LdapConfigurationServiceImpl
      */
     @Override
     protected void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+//    	TODO check method ldapServerInfoEntity
     	LdapServer ldapServerEntity = getLdapServerDao().ldapServerInfoToEntity(ldapServer);
     	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
     	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));    	
@@ -107,33 +118,49 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected java.util.List<LdapServer> handleGetAllLdapServers() {
-    	return (java.util.List<LdapServer>) getLdapServerDao().loadAll();
+    protected java.util.List<LdapServerInfo> handleGetAllLdapServers() {
+    	List<LdapServerInfo> ldapList = new ArrayList<LdapServerInfo>();
+    	List<LdapServer> ldapEntityList = (List<LdapServer>) getLdapServerDao().loadAll();
+    	
+    	for (LdapServer ldapServer : ldapEntityList) {
+    		ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));    					
+		}
+    	
+    	return ldapList;
     }
 
     /**
      * 
      */
     @Override
-    protected java.util.List<LdapServer> handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
+    protected java.util.List<LdapServerInfo> handleGetLdapServersByDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) {
+    	List<LdapServerInfo> ldapList = new ArrayList<LdapServerInfo>();
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().load(domain.getId());
-    	return (java.util.List<LdapServer>) authDomain.getLdapServers();
+    	
+    	Set<LdapServer> ldapServerSet = authDomain.getLdapServers();
+    	for (Iterator<LdapServer> iterator = ldapServerSet.iterator(); iterator.hasNext();) {    		
+			LdapServer ldapServer = iterator.next();
+			ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));
+		}
+    	return ldapList;
     }
 
     /**
      * 
      */
     @Override
-    protected AuthenticationDomain handleCreateDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
+    protected AuthenticationDomainInfo handleCreateDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	if (StringUtils.isBlank(domain.getName())){
     		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
     	}
-    	AuthenticationDomain authDomain = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
+    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
     	if(domain.getAttributeMappingId() != null ) {
-    		authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));    		
+    		authDomainEntity.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));        	
     	}    	
-    	getAuthenticationDomainDao().update(authDomain);    	
-    	return authDomain;
+    	domain.setId(authDomainEntity.getId());
+    	getAuthenticationDomainDao().update(authDomainEntity);
+    	
+    	return domain;
     }
 
     /**
@@ -152,6 +179,7 @@ public class LdapConfigurationServiceImpl
     	if (StringUtils.isBlank(domain.getName())){
     		throw new LdapConfigurationServiceException("Name of new authentication domain must not be empty!");
     	}
+//    	TODO check method authenticationDomainInfoToEntity
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().authenticationDomainInfoToEntity(domain);
     	if(domain.getAttributeMappingId() != null ) {
     		authDomain.setAttributeMapping(getAttributeMappingDao().load(domain.getAttributeMappingId()));    		
@@ -163,8 +191,22 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected java.util.List<AuthenticationDomain> handleGetAllDomains() {
-    	return (java.util.List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
+    protected java.util.List<AuthenticationDomainInfo> handleGetAllDomains() {
+    	List<AuthenticationDomainInfo> authDomainInfoList = new ArrayList<AuthenticationDomainInfo>();
+    	
+    	List<AuthenticationDomain> authDomainEntityList = (List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
+
+    	for (AuthenticationDomain authenticationDomain : authDomainEntityList) {
+    		
+    		AuthenticationDomainInfo authenticationDomainInfo = getAuthenticationDomainDao().toAuthenticationDomainInfo(authenticationDomain);
+    		if(authenticationDomain.getAttributeMapping() != null) {
+    			authenticationDomainInfo.setAttributeMappingId(authenticationDomain.getAttributeMapping().getId());
+    		}
+			authDomainInfoList.add(authenticationDomainInfo);			
+		}
+    	
+    	return authDomainInfoList;    	
+    	
     }
     
     /**
@@ -176,7 +218,11 @@ public class LdapConfigurationServiceImpl
     	AuthenticationDomainInfo authenticationDomainInfo = new AuthenticationDomainInfo();
     	authenticationDomainInfo.setId(authenticationDomain.getId());
     	authenticationDomainInfo.setDescription(authenticationDomain.getDescription());
-    	authenticationDomainInfo.setName(authenticationDomain.getName());    	
+    	authenticationDomainInfo.setName(authenticationDomain.getName());
+    	if(authenticationDomain.getAttributeMapping()!= null) {
+    		authenticationDomainInfo.setAttributeMappingId(authenticationDomain.getAttributeMapping().getId());    		
+    	}    	
+    	
     	return authenticationDomainInfo;
     }
     
@@ -187,8 +233,8 @@ public class LdapConfigurationServiceImpl
     protected void handleAddServerToDomain(org.openuss.security.ldap.LdapServerInfo server, org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	AuthenticationDomainDao domainDao = getAuthenticationDomainDao();
     	LdapServerDao serverDao = getLdapServerDao();
-    	
-    	LdapServer ldapServer = serverDao.ldapServerInfoToEntity(server);
+
+       	LdapServer ldapServer = serverDao.ldapServerInfoToEntity(server);
     	AuthenticationDomain authDomain  = domainDao.authenticationDomainInfoToEntity(domain);
     	
     	Validate.notNull(ldapServer, "Server must not be null");
@@ -200,9 +246,9 @@ public class LdapConfigurationServiceImpl
 		authDomain = forceDomainLoad(authDomain);
 
 		if (checkDomainContainsServer(ldapServer, authDomain)) throw new LdapConfigurationServiceException("Domain already contains server!");
-	
-		authDomain.getLdapServers().add(ldapServer);
+		
 		ldapServer.setAuthenticationDomain(authDomain);
+		authDomain.getLdapServers().add(ldapServer);
 		
 		domainDao.update(authDomain);
 		serverDao.update(ldapServer);
@@ -226,8 +272,7 @@ public class LdapConfigurationServiceImpl
 
 	private boolean checkDomainContainsServer(LdapServer server, AuthenticationDomain domain) {
 		Set<LdapServer> servers = domain.getLdapServers();
-		if (servers.contains(server)) {
-			//throw new LdapConfigurationServiceException("Domain already contains server!");
+		if (servers.contains(server)) {			
 			return true;
 		} else return false;
 	}
@@ -264,15 +309,17 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected AttributeMapping handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
+	protected AttributeMappingInfo handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
     	
     	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
+//    	TODO check method attributeMappingInfoToEntity
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
     	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
     	getAttributeMappingDao().create(attributeMappingEntity);
-    	return attributeMappingEntity;    	
+    	attributeMapping.setId(attributeMappingEntity.getId());
+    	return attributeMapping;    	
     }
 
     /**
@@ -291,6 +338,7 @@ public class LdapConfigurationServiceImpl
     	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
+//    	TODO check method attributeMappingInfoToEntity
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
     	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
     	getAttributeMappingDao().update(attributeMappingEntity);    	
@@ -300,20 +348,31 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected List<AttributeMapping> handleGetAllAttributeMappings() {
-    	return (List<AttributeMapping>) getAttributeMappingDao().loadAll();
+    protected List<AttributeMappingInfo> handleGetAllAttributeMappings() {
+    	
+    	List<AttributeMappingInfo> attributeMappingInfoList = new ArrayList<AttributeMappingInfo>();
+    	
+    	Collection<AttributeMapping> attributeMappingEntityList = getAttributeMappingDao().loadAll();
+    	for (Iterator<AttributeMapping> iterator = attributeMappingEntityList.iterator(); iterator.hasNext();) {
+			AttributeMapping attributeMappingEntity = (AttributeMapping) iterator.next();
+			attributeMappingInfoList.add(getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity));			
+		}
+    	
+    	return attributeMappingInfoList;
     }
 	
     /**
      * 
      */
 	@Override
-	protected RoleAttributeKey handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
+	protected RoleAttributeKeyInfo handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
     	if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
     		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
     	}    	
-    	RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
-    	return getRoleAttributeKeyDao().create(key);
+    	RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().create(roleAttributeKey.getRoleAttributeKey());    	
+    	roleAttributeKey.setId(roleAttributeKeyEntity.getId());
+    	
+    	return roleAttributeKey;
     }
 
     /**
@@ -337,24 +396,37 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected java.util.List<RoleAttributeKey> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
-    	RoleAttributeKeySet set = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
-    	return set.getRoleAttributeKeys();
+	protected java.util.List<RoleAttributeKeyInfo> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+    	
+		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
+		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
+    	
+    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
+    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
+			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
+			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
+		}
+    	
+    	return roleAttributeKeyInfoList;
     }
 
     /**
      * 
      */
 	@Override
-	protected RoleAttributeKeySet handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){    	
-    	RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
+	protected RoleAttributeKeySetInfo handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) {    	
     	
-    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();    	
-    	for (Long key : keyIds) {
-    		set.addRoleAttributeKey(getRoleAttributeKeyDao().load(key));    			
-		}
-    	getRoleAttributeKeySetDao().create(set);
-    	return set;
+		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().create(roleAttributeKeySet.getName());
+		roleAttributeKeySet.setId(roleAttributeKeySetEntity.getId());
+		
+    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();
+    	for (Iterator<Long> iterator = keyIds.iterator(); iterator.hasNext();) {
+			Long keyId = iterator.next();
+			roleAttributeKeySetEntity.addRoleAttributeKey(getRoleAttributeKeyDao().load(keyId));  
+		}    	
+    	getRoleAttributeKeySetDao().update(roleAttributeKeySetEntity);    	
+    	
+    	return roleAttributeKeySet;
     }
 
     /**
@@ -383,8 +455,17 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected java.util.List<RoleAttributeKeySet> handleGetAllRoleAttributeKeySets(){
-    	return (java.util.List<RoleAttributeKeySet>) getRoleAttributeKeySetDao().loadAll();
+	protected java.util.List<RoleAttributeKeySetInfo> handleGetAllRoleAttributeKeySets(){
+		List<RoleAttributeKeySetInfo> roleAttributeKeySetInfoList = new ArrayList<RoleAttributeKeySetInfo>();
+		Collection<RoleAttributeKeySet> roleAttributeKeySetEntityList = getRoleAttributeKeySetDao().loadAll();
+		
+		for (Iterator<RoleAttributeKeySet> iterator = roleAttributeKeySetEntityList.iterator(); iterator.hasNext();) {
+			RoleAttributeKeySet roleAttributeKeySetEntity = iterator.next();
+			RoleAttributeKeySetInfo roleAttributeKeySetInfo = getRoleAttributeKeySetDao().toRoleAttributeKeySetInfo(roleAttributeKeySetEntity);
+			roleAttributeKeySetInfo.setRoleAttributeKeyIds(roleAttributeKeySetEntity.getAllRoleAttributeKeyIds());			
+		}
+		
+    	return roleAttributeKeySetInfoList;
     }
 
     /**
@@ -395,6 +476,8 @@ public class LdapConfigurationServiceImpl
     	RoleAttributeKeySetDao 	keySetDao 	= getRoleAttributeKeySetDao();
     	RoleAttributeKeyDao		keyDao 		= getRoleAttributeKeyDao();
     	
+//    	TODO check method roleAttributeKeyInfoToEntity
+//    	TODO check method roleAttributeKeySetInfoToEntity
     	RoleAttributeKey keyEntity = keyDao.roleAttributeKeyInfoToEntity(key);
     	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
     	
@@ -485,6 +568,7 @@ public class LdapConfigurationServiceImpl
     	AttributeMappingDao		mappingDao = getAttributeMappingDao();
     	
     	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
+//    	TODO check method attributeMappingInfoToEntity
     	AttributeMapping mappingEntity = mappingDao.attributeMappingInfoToEntity(mapping);
     	
     	Validate.notNull(mappingEntity, "AttributeMapping must not be null");
@@ -532,17 +616,28 @@ public class LdapConfigurationServiceImpl
 	}
 
 	@Override
-	protected UserDnPattern handleCreateUserDnPattern(
-			UserDnPatternInfo userDnPattern) throws Exception {
-		//UserDnPattern userDnPatternEntity = getUserDnPatternDao().userDnPatternInfoToEntity(userDnPattern);
-		return getUserDnPatternDao().create(userDnPattern.getName());
+	protected UserDnPatternInfo handleCreateUserDnPattern(
+			UserDnPatternInfo userDnPattern) throws Exception {		
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().create(userDnPattern.getName());
+		userDnPattern.setId(userDnPatternEntity.getId());
+		
+		return userDnPattern;
 	}
 
 	@Override
-	protected UserDnPatternSet handleCreateUserDnPatternSet(
+	protected UserDnPatternSetInfo handleCreateUserDnPatternSet(
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().userDnPatternSetInfoToEntity(userDnPatternSet);
-		return getUserDnPatternSetDao().create(userDnPatternSetEntity);
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().create(userDnPatternSet.getName());
+		
+		List<UserDnPattern> userDnPatternEntityList = new ArrayList<UserDnPattern>();
+		
+		List<Long> idList = userDnPatternSet.getUserDnPatternIds();
+		for (Iterator<Long> iterator = idList.iterator(); iterator.hasNext();) {
+			userDnPatternEntityList.add(getUserDnPatternDao().load(iterator.next()));			
+		}
+		userDnPatternSetEntity.setUserDnPatterns(userDnPatternEntityList);	
+		
+		return userDnPatternSet;
 	}
 
 	@Override
@@ -622,8 +717,13 @@ public class LdapConfigurationServiceImpl
 	@Override
 	protected void handleSaveUserDnPatternSet(
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {	
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().userDnPatternSetInfoToEntity(userDnPatternSet);		
-//		userDnPatternSetEntity.setUserDnPatterns(userDnPatternSet.getUserDNPatternIds());
+		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().create(userDnPatternSet.getName());
+		List<UserDnPattern> userDnPatternList = new ArrayList<UserDnPattern>();
+		List<Long> idList = userDnPatternSet.getUserDnPatternIds();
+		for (Iterator<Long> iterator = idList.iterator(); iterator.hasNext();) {
+			userDnPatternList.add(getUserDnPatternDao().load(iterator.next()));
+		}
+		userDnPatternSetEntity.setUserDnPatterns(userDnPatternList);
 		getUserDnPatternSetDao().update(userDnPatternSetEntity);
 	}
 

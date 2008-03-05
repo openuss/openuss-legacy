@@ -18,15 +18,22 @@ public class AuthenticationDomainDaoImpl
         org.openuss.security.ldap.AuthenticationDomainInfo targetVO)
     {
         super.toAuthenticationDomainInfo(sourceEntity, targetVO);
+        
     }
 
 
     /**
      * @see org.openuss.security.ldap.AuthenticationDomainDao#toAuthenticationDomainInfo(org.openuss.security.ldap.AuthenticationDomain)
      */
-    public org.openuss.security.ldap.AuthenticationDomainInfo toAuthenticationDomainInfo(final org.openuss.security.ldap.AuthenticationDomain entity)
-    {
-        return super.toAuthenticationDomainInfo(entity);
+    public org.openuss.security.ldap.AuthenticationDomainInfo toAuthenticationDomainInfo(final org.openuss.security.ldap.AuthenticationDomain entity) {
+    	
+    	AuthenticationDomainInfo authenticationDomainInfo = super.toAuthenticationDomainInfo(entity);
+    	
+    	if(entity.getAttributeMapping() != null) {
+    		authenticationDomainInfo.setAttributeMappingId(entity.getAttributeMapping().getId());	
+    	}
+    	    	
+    	return authenticationDomainInfo;
     }
 
 
