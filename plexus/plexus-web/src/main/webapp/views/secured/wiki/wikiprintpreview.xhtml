@@ -18,12 +18,13 @@
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="#{theme.stylesheet}" rel="stylesheet" type="text/css" media="screen,screen"/>
 	</head>
 
 	<body>
 	<!-- text above will be ignored -->
+	
 	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
-    
            	<c:if test="${wiki_current_site_version.deleted}">
            		<o:block label="#{msg.wiki_main_header_site_deleted}" styleClass="form_box">
   					<p class="content_font_normal">
@@ -44,7 +45,7 @@
 	        	</c:if>
 	        	
 	        	<c:if test="${not empty wiki_current_site_version.text}">
-	        	  <div class="wiki_content"><h:outputText escape="false" value="#{wiki_current_site_version.text}"></h:outputText></div>
+	        	  <div class="wiki_content"><h:outputText escape="false" value="#{wiki_current_site_version.text}" class="content_font_normal"></h:outputText></div>
 	        	</c:if>
         	</c:if>
 	<!-- text above will be ignored -->

@@ -60,9 +60,15 @@
 						<o:input entity="courseInfo" property="chat"/>
 						<o:input entity="courseInfo" property="braincontest"/>
 						<o:input entity="courseInfo" property="freestylelearning"/>
-                        <o:input entity="courseInfo" property="papersubmission"/>
-                        <o:input entity="courseInfo" property="collaboration"/>
-                        <o:input entity="courseInfo" property="wiki"/>
+						<o:input entity="courseInfo" property="wiki"/>
+						<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
+		 					<o:input entity="courseInfo" property="papersubmission"/>
+                        	<o:input entity="courseInfo" property="collaboration"/>
+	 					</c:if>
+	 					<c:if test="#{sessionScope.courseInfo.accessType.value == 4}">
+		 					<o:input entity="courseInfo" property="papersubmission"/>
+                        	<o:input entity="courseInfo" property="collaboration"/>
+	 					</c:if>
 					</div>
 				</o:block>
 				<o:block>
