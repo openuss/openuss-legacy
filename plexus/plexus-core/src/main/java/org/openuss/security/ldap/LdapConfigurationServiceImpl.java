@@ -382,10 +382,10 @@ public class LdapConfigurationServiceImpl
      */
 	@Override
 	protected RoleAttributeKeyInfo handleCreateRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
-    	if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
+    	if (StringUtils.isBlank(roleAttributeKey.getName())){
     		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
     	}    	
-    	RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().create(roleAttributeKey.getRoleAttributeKey());    	
+    	RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().create(roleAttributeKey.getName());    	
     	roleAttributeKey.setId(roleAttributeKeyEntity.getId());
     	
     	return roleAttributeKey;
@@ -404,7 +404,7 @@ public class LdapConfigurationServiceImpl
      */
 	@Override
 	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey) throws Exception {
-		if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
+		if (StringUtils.isBlank(roleAttributeKey.getName())){
     		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
     	}    	
 		RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
