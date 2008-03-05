@@ -62,22 +62,23 @@ public class LdapConfigurationServiceImpl
     	// TODO: other validation
     	
     	LdapServer ldapServerEntity = getLdapServerDao().create(
-    			ldapServer.getProviderUrl(), 
-    			ldapServer.getPort(), 
-    			ldapServer.getRootDn(), 
+    			getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()), 
     			ldapServer.getAuthenticationType(), 
-    			ldapServer.getManagerDn(), 
-    			ldapServer.getManagerPassword(), 
-    			ldapServer.getUseConnectionPool(), 
-    			ldapServer.getUseLdapContext(), 
     			ldapServer.getDescription(), 
+    			ldapServer.isEnabled(), 
     			ldapServer.getLdapServerType(), 
-    			ldapServer.isEnabled());
+    			ldapServer.getPort(),
+    			ldapServer.getProviderUrl(),
+    			ldapServer.getRootDn(), 
+    			ldapServer.getUseConnectionPool(),
+    			ldapServer.getUseLdapContext(), 
+    			getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId())
+    		);
     	
-    	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
-    	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));
+    	ldapServerEntity.setManagerDn(ldapServer.getManagerDn());
+    	ldapServerEntity.setManagerPassword(ldapServer.getManagerPassword());
+    	
     	getLdapServerDao().update(ldapServerEntity);
-    	
     	ldapServer.setId(ldapServerEntity.getId());
     	
     	return ldapServer;
@@ -628,6 +629,7 @@ public class LdapConfigurationServiceImpl
 	protected UserDnPatternSetInfo handleCreateUserDnPatternSet(
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
 		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().create(userDnPatternSet.getName());
+		userDnPatternSet.setId(userDnPatternSetEntity.getId());
 		
 		List<UserDnPattern> userDnPatternEntityList = new ArrayList<UserDnPattern>();
 		

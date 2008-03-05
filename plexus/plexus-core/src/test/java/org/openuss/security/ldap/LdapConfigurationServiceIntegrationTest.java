@@ -78,8 +78,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	}
 	
 	private UserDnPatternSetInfo createUserDnPatternSetInfoDummy(UserDnPatternInfo userDnPattern) {
-		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
-		userDnPatterns.add(userDnPattern);		
+		List<Long> userDnPatterns = new ArrayList<Long>();
+		userDnPatterns.add(userDnPattern.getId());		
 		
 		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
 		userDnPatternSet.setName("WWU user dn pattern");
@@ -118,16 +118,13 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	public void testCreateUserDnPattern() {
 		service = getLdapConfigurationService();
 		
-		UserDnPatternInfo patternInfo1 = createUserDnPatternInfoDummy();
-		assertNotNull(patternInfo1);
-		assertNull(patternInfo1.getId());
-		assertTrue("memberOf" == patternInfo1.getName());
+		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();
+		assertNotNull(patternInfo);
+		assertNull(patternInfo.getId());
+		assertTrue("memberOf" == patternInfo.getName());
 		
-		UserDnPatternInfo patternInfo2 = service.createUserDnPattern(patternInfo1);		
-		assertNotNull(patternInfo2.getId());
-		
-//		setComplete();
-//		endTransaction();
+		patternInfo = service.createUserDnPattern(patternInfo);		
+		assertNotNull(patternInfo.getId());
 	}
 	
 	
@@ -137,18 +134,20 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	public void testCreateUserDnPatternSet() {
 		service = getLdapConfigurationService();
 		
-		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();
-		UserDnPatternSetInfo patternInfo1 = createUserDnPatternSetInfoDummy(patternInfo);
-		assertNotNull(patternInfo1);
-		assertNull(patternInfo1.getId());
-//		assertTrue("memberOf" == patternInfo1.getName());
+		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();		
+		patternInfo = service.createUserDnPattern(patternInfo);
 		
-		UserDnPatternSetInfo patternInfo2 = service.createUserDnPatternSet(patternInfo1);		
-		assertNotNull(patternInfo2.getId());
+		UserDnPatternSetInfo patternSet = createUserDnPatternSetInfoDummy(patternInfo);
+		assertNotNull(patternInfo.getId());
 		
-//		setComplete();
-//		endTransaction();
+		assertNotNull(patternSet);
+		assertNull(patternSet.getId());
+		
+		patternSet = service.createUserDnPatternSet(patternSet);		
+		assertNotNull(patternSet.getId());
 	}
+	
+	
 	
 	/*
 	 * Tests creation and manipulation of AuthenticationDomain/Info objects
@@ -156,54 +155,138 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	public void testCreateDomain() {
 		service = getLdapConfigurationService();
 		
-		AuthenticationDomainInfo domainInfo1 = createAuthenticationDomainInfoDummy();
-		assertNull(domainInfo1.getId());
+		// create info object
+		AuthenticationDomainInfo domainInfo = createAuthenticationDomainInfoDummy();
+		assertNull(domainInfo.getId());
 		
-		AuthenticationDomainInfo domainInfo2 = service.createDomain(domainInfo1);
-		assertNotNull(domainInfo2);
+		// save info object to DB
+		domainInfo = service.createDomain(domainInfo);
+		assertNotNull(domainInfo);
 		
-//		assertTrue("ZIV Uni Muenster" == domainEntity.getName());
-//		assertTrue("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster." == domainEntity.getDescription());
-//		assertNull(domainEntity.getAttributeMapping());
+		// test values
+		assertTrue("ZIV Uni Muenster" == domainInfo.getName());
+		assertTrue("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster." == domainInfo.getDescription());
+		assertNull(domainInfo.getAttributeMappingId());
 		
-//		domain.setName(null);
-//		domain.setDescription("Test description");
-//		assertNull(domain.getName());
-//		
-//		try {
-//		      service.saveDomain(domain);
-//		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
-//		    } catch (LdapConfigurationServiceException expected) {
-//		    }
-//		    
-//		domain.setName("Test domain");
-//		assertNotNull(domain.getName());
-//		
-//		try {
-//		      service.saveDomain(domain);
-//		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
-//		    } catch (LdapConfigurationServiceException expected) {
-//		    }
+		// set new values
+		domainInfo.setName(null);
+		domainInfo.setDescription("Test description");
+		assertNull(domainInfo.getName());
+		
+		// test exception
+		try {
+		      service.saveDomain(domainInfo);
+		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
+		    } catch (LdapConfigurationServiceException expected) {
+		    }
+		    
+		// set new values
+		domainInfo.setName("Test domain");
+		assertNotNull(domainInfo.getName());
+		
+		// try again
+		try {
+		      service.saveDomain(domainInfo);
+		    } catch (LdapConfigurationServiceException expected) {
+		    	fail("Should NOT have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
+		    }
 	}
+	
+	
 	
 	/*
 	 * Tests creation and manipulation of LdapServer/Info objects
 	 */
 	public void testCreateLdapServer() {
-//		service = getLdapConfigurationService();
-//		
-//		UserDnPatternInfo pattern = createUserDnPatternInfoDummy();
-//		service.createUserDnPattern(pattern);
-//		
-//		UserDnPatternSetInfo patternSet = createUserDnPatternSetInfoDummy(pattern);
-//		service.createUserDnPatternSet(patternSet);
-//		
-//		AuthenticationDomainInfo domain = createAuthenticationDomainInfoDummy();
-//		service.createDomain(domain);
-//		
-//		LdapServerInfo server = createLdapServerInfoDummy(domain, patternSet);
+		service = getLdapConfigurationService();
+		
+		// already tested 
+		UserDnPatternInfo pattern = createUserDnPatternInfoDummy();
+		pattern = service.createUserDnPattern(pattern);
+		
+		UserDnPatternSetInfo patternSet = createUserDnPatternSetInfoDummy(pattern);
+		patternSet = service.createUserDnPatternSet(patternSet);
+		
+		AuthenticationDomainInfo domain = createAuthenticationDomainInfoDummy();
+		domain = service.createDomain(domain);
+		// ---
+		
+		LdapServerInfo server = createLdapServerInfoDummy(domain, patternSet);
+		assertNotNull(server);
+		assertNull(server.getId());
+		
 
-		//service.createLdapServer(server);
+		// set values
+		server.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+		server.setPort(389);
+		server.setRootDn("dc=uni-muenster,dc=de");
+		server.setDescription("LDAP Server WWU");
+		server.setAuthenticationType("DIGEST-MD5");
+		server.setUseConnectionPool(false);
+		server.setManagerDn("admin");
+		server.setManagerPassword("hidden");
+		server.setUseLdapContext(true);
+		server.setAuthenticationDomainId(domain.getId());
+		server.setUserDnPatternSetId(patternSet.getId());
+		
+		// test values
+		assertTrue("ldap://wwusv1.uni-muenster.de" == server.getProviderUrl());
+		assertTrue(389 == server.getPort());
+		assertTrue("dc=uni-muenster,dc=de" == server.getRootDn());
+		assertTrue("LDAP Server WWU" == server.getDescription());
+		assertTrue("DIGEST-MD5" == server.getAuthenticationType());
+		assertTrue(false == server.getUseConnectionPool());
+		assertTrue("admin" == server.getManagerDn());
+		assertTrue("hidden" == server.getManagerPassword());
+		assertTrue(true == server.getUseLdapContext());
+		assertNotNull(server.getAuthenticationDomainId());
+		assertNotNull(server.getUserDnPatternSetId());
+		
+		// save info object to DB
+		server = service.createLdapServer(server);
+		assertNotNull(server.getId());
+
+		// set new value
+		server.setProviderUrl("http://www.invalid-url.com");
+		
+		// test exception
+		try {
+			service.saveLdapServer(server);
+			fail("Should have raised an LdapConfigurationServiceException: URL must be a valid ldap-url!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+		
+		// set new value
+		server.setProviderUrl(null);
+		
+		// test exception
+		try {
+			service.saveLdapServer(server);
+			fail("Should have raised an LdapConfigurationServiceException: URL must not be empty!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+		
+		// set new value
+		server.setProviderUrl("ldap://12345678");
+		
+		// test exception
+		try {
+			service.saveLdapServer(server);
+			fail("Should have raised an LdapConfigurationServiceException: URL must be a valid ldap-url!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+		
+		// set new value
+		server.setProviderUrl("ldap://valid.ldap.com");
+		server.setPort(-2);
+		
+		// test exception
+		try {
+			service.saveLdapServer(server);
+			fail("Should have raised an LdapConfigurationServiceException: port must not be negative!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+			
 		
 	}
 	
@@ -390,7 +473,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 //		create user dn pattern object
 		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
-		userDnPattern.setUserDnPattern("memberOf");
+		userDnPattern.setName("memberOf");
 		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
 		userDnPatterns.add(userDnPattern);		
 		

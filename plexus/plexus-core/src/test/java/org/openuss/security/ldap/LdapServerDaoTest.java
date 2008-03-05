@@ -32,7 +32,7 @@ public class LdapServerDaoTest extends LdapServerDaoTestBase {
 		ldapServer.setEnabled(true);
 		
 		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
-		userDnPattern.setUserDnPattern("CN");
+		userDnPattern.setName("CN");
 		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
 		userDnPatterns.add(userDnPattern);
 		

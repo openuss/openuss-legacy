@@ -18,7 +18,7 @@ public class UserDnPatternSetDaoTest extends UserDnPatternSetDaoTestBase {
 	public void testUserDnPatternSetDaoCreate() {
 		
 		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
-		userDnPattern.setUserDnPattern("CN");
+		userDnPattern.setName("CN");
 		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
 		userDnPatterns.add(userDnPattern);
 		
