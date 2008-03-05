@@ -94,28 +94,36 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 		model.refresh();
     }
 
-    public void changeToDayMode(ActionEvent event) {
+    public String changeToDayMode() {
     	if (model == null)
-            return;
+    		// TODO - Properties
+           addError("Calendar Fehler");
     	model.setMode(0);
+    	return Constants.OPENUSS4US_CALENDAR;
     }
     
-    public void changeToWorkWeekMode(ActionEvent event) {
+    public String changeToWorkWeekMode() {
     	if (model == null)
-            return;
+    		// TODO - Properties
+            addError("Calendar Fehler");
     	model.setMode(1);
+    	return Constants.OPENUSS4US_CALENDAR;
     }
     
-    public void changeToWeekMode(ActionEvent event) {
+    public String changeToWeekMode() {
     	if (model == null)
-            return;
+    		// TODO - Properties
+            addError("Calendar Fehler");
     	model.setMode(2);
+    	return Constants.OPENUSS4US_CALENDAR;
     }
     
-    public void changeToMonthMode(ActionEvent event) {
+    public String changeToMonthMode() {
     	if (model == null)
-            return;
+    		// TODO - Properties
+            addError("Calendar Fehler");
     	model.setMode(3);
+    	return Constants.OPENUSS4US_CALENDAR;
     }
     
 	public ScheduleModel getModel() {

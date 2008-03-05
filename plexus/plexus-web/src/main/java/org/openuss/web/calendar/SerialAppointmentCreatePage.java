@@ -62,7 +62,6 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 	}
 
 	public String save() {
-		calendarInfo.setCalendarType(CalendarType.user_calendar);
 		try {
 			AppointmentTypeInfo appTI = new AppointmentTypeInfo();
 			appTI.setId(appointmentType.longValue());
