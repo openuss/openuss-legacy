@@ -106,6 +106,37 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		return ldapServer;
 	}
 	
+	private RoleAttributeKeyInfo createRoleAttributeKeyInfoDummy() {
+		RoleAttributeKeyInfo key = new RoleAttributeKeyInfo();
+		key.setRoleAttributeKey("CN");
+		
+		return key;
+	}
+	
+	private RoleAttributeKeySetInfo createRoleAttributeKeySetInfoDummy(RoleAttributeKeyInfo key) {
+		RoleAttributeKeySetInfo set = new RoleAttributeKeySetInfo();
+		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
+		roleAttributeKeyIds.add(key.getId());
+		
+		set.setName("some role attribute key set for testing");
+		set.setRoleAttributeKeyIds(roleAttributeKeyIds);
+		
+		return set;
+	}
+	
+	private AttributeMappingInfo createAttributeMappingInfoDummy(RoleAttributeKeySetInfo set) {
+		AttributeMappingInfo mapping = new AttributeMappingInfo();
+		mapping.setMappingName("Mapping Test");
+		mapping.setEmailKey("mail");
+		mapping.setFirstNameKey("givenName");
+		mapping.setGroupRoleAttributeKey("CN");
+		mapping.setLastNameKey("SN");
+		mapping.setUsernameKey("CN");
+		mapping.setRoleAttributeKeySetId(set.getId());
+		
+		return mapping;
+	}
+	
 	/*
 	 * *************************************************************************
 	 * *************************************************************************
@@ -190,6 +221,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		    } catch (LdapConfigurationServiceException expected) {
 		    	fail("Should NOT have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
 		    }
+		    
+		// TODO: create some ldap server object and test domain.setLdapServerIds
 	}
 	
 	
@@ -211,6 +244,9 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		domain = service.createDomain(domain);
 		// ---
 		
+		
+		
+		// create info object
 		LdapServerInfo server = createLdapServerInfoDummy(domain, patternSet);
 		assertNotNull(server);
 		assertNull(server.getId());
@@ -286,9 +322,108 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 			fail("Should have raised an LdapConfigurationServiceException: port must not be negative!");
 		} catch (LdapConfigurationServiceException expected) {
 		}
+		
+		// set new value
+		server.setProviderUrl("ldap://valid.ldap.com");
+		server.setPort(389);
+		
+		// test exception
+		try {
+			service.saveLdapServer(server);
+		} catch (LdapConfigurationServiceException expected) {
+			fail("Should NOT have raised any LdapConfigurationServiceException");
+		}
+		
 			
+		// TODO: update userDnPatternSet and authDomain
 		
 	}
+	
+	
+	/*
+	 * Tests creation and manipulation of RoleAttributeKey/Info objects
+	 */
+	public void testCreateRoleAttributeKey() {
+		service = getLdapConfigurationService();
+		
+		// create value object
+		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
+		key.setRoleAttributeKey("CN");
+		assertNotNull(key);
+		assertNull(key.getId());
+		assertTrue("CN" == key.getRoleAttributeKey());
+		
+		// save value object to DB
+		key = service.createRoleAttributeKey(key);
+		assertNotNull(key);
+		assertNotNull(key.getId());
+		assertTrue("CN" == key.getRoleAttributeKey());
+		
+		// set new value
+		key.setRoleAttributeKey(null);
+		try {
+			service.saveRoleAttributeKey(key);
+			fail("Should have raised an LdapConfigurationServiceException: new attribute key must not be empty!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+		
+	}
+	
+	
+	
+	/*
+	 * Tests creation and manipulation of RoleAttributeKeySet/Info objects
+	 */
+	public void testCreateRoleAttributeKeySet() {
+		service = getLdapConfigurationService();
+		
+		// create value object
+		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
+		key = service.createRoleAttributeKey(key);
+		RoleAttributeKeySetInfo set = createRoleAttributeKeySetInfoDummy(key);
+		assertNotNull(set);
+		assertNull(set.getId());
+		set.setName("test");
+		
+		// save value object to DB
+		set = service.createRoleAttributeKeySet(set);
+		assertNotNull(set.getId());
+		assertTrue("test" == set.getName());	
+		
+		// set new value
+		set.setName(null);
+		try {
+			service.saveRoleAttributeKeySet(set);
+			fail("Should have raised an LdapConfigurationServiceException: name new attribute key set must not be empty!");
+		} catch (LdapConfigurationServiceException expected) {
+		}
+	}
+	
+	
+	
+	/*
+	 * Tests creation and manipulation of AttributeMapping/Info objects
+	 */
+	public void testCreateAttributeMapping() {
+		service = getLdapConfigurationService();
+		
+		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
+		key = service.createRoleAttributeKey(key);
+		
+		RoleAttributeKeySetInfo set = createRoleAttributeKeySetInfoDummy(key);
+		set = service.createRoleAttributeKeySet(set);
+		
+		AttributeMappingInfo mapping = createAttributeMappingInfoDummy(set);
+		assertNotNull(mapping);
+		assertNull(mapping.getId());
+		
+		mapping = service.createAttributeMapping(mapping);
+		assertNotNull(mapping);
+		assertNotNull(mapping.getId());
+	}
+	
+	
+	
 	
 	public void testLdapConfigurationService() {
 //		LdapConfigurationService service = getLdapConfigurationService();
@@ -455,93 +590,93 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 	}
 	
-	public void testAllDaoCreate() {	
-	
-//		create role attribute object
-		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
-		roleAttributeKey.setRoleAttributeKey("CN");		
-		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
-		roleAttributeKeys.add(roleAttributeKey);
-		
-		RoleAttributeKeySet roleAttributeKeySet = RoleAttributeKeySet.Factory.newInstance();
-		roleAttributeKeySet.setName("role attribute key set test");
-		roleAttributeKeySet.setRoleAttributeKeys(roleAttributeKeys);
-		
-		assertNull(roleAttributeKeySet.getId());
-		roleAttributeKeySetDao.create(roleAttributeKeySet);
-		assertNotNull(roleAttributeKeySet.getId());
-		
-//		create user dn pattern object
-		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
-		userDnPattern.setName("memberOf");
-		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
-		userDnPatterns.add(userDnPattern);		
-		
-//		create user dn pattern set object
-		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
-		userDnPatternSet.setName("WWU user dn pattern");
-		userDnPatternSet.setUserDnPatterns(userDnPatterns);
-		
-		assertNull(userDnPatternSet.getId());
-		userDnPatternSetDao.create(userDnPatternSet);
-		assertNotNull(userDnPatternSet.getId());		
-		
-//		create attribute mapping object
-		AttributeMapping attributeMapping = AttributeMapping.Factory.newInstance();		
-		attributeMapping.setMappingName(testUtility.unique("Mapping Test"));
-		attributeMapping.setUsernameKey("CN");
-		attributeMapping.setFirstNameKey("givenName");
-		attributeMapping.setLastNameKey("SN");
-		attributeMapping.setEmailKey("mail");
-		attributeMapping.setGroupRoleAttributeKey("CN");		
-//		attributeMapping.setAuthenticationDomains(authenticationDomains);
-		attributeMapping.setRoleAttributeKeySet(roleAttributeKeySet);
-		
-		assertNull(attributeMapping.getId());
-		attributeMappingDao.create(attributeMapping);
-		assertNotNull(attributeMapping.getId());
-		
-//		create authentication domain object
-		AuthenticationDomain authenticationDomain = AuthenticationDomain.Factory.newInstance();
-		authenticationDomain.setName(testUtility.unique("WWU"));
-		authenticationDomain.setDescription("WWU Domain");
-		authenticationDomain.setAttributeMapping(attributeMapping);
-		Set<AuthenticationDomain> authenticationDomains = new HashSet<AuthenticationDomain>();
-		authenticationDomains.add(authenticationDomain);
-		
-		assertNull(authenticationDomain.getId());
-		authenticationDomainDao.create(authenticationDomain);
-		assertNotNull(authenticationDomain.getId());
-		
-//		create ldap server object
-		LdapServer ldapServer = LdapServer.Factory.newInstance();
-		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
-		ldapServer.setPort(389);
-		ldapServer.setRootDn("dc=uni-muenster,dc=de");
-		ldapServer.setDescription("LDAP Server WWU");
-		ldapServer.setEnabled(true);
-		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-		ldapServer.setAuthenticationType("DIGEST-MD5");
-		ldapServer.setUseConnectionPool(false);
-		ldapServer.setManagerDn("admin");
-		ldapServer.setManagerPassword("hidden");
-		ldapServer.setUseLdapContext(true);
-		ldapServer.setUserDnPatternSet(userDnPatternSet);
-		ldapServer.setAuthenticationDomain(authenticationDomain);		
-		
-		assertNull(ldapServer.getId());
-		ldapServerDao.create(ldapServer);
-		assertNotNull(ldapServer.getId());
-		
-		setComplete();
-		endTransaction();
-		
-		startNewTransaction();
-		ldapServerDao.remove(ldapServer);
-		setComplete();
-		endTransaction();
-				
-	}
+//	public void testAllDaoCreate() {	
+//	
+////		create role attribute object
+//		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
+//		roleAttributeKey.setRoleAttributeKey("CN");		
+//		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
+//		roleAttributeKeys.add(roleAttributeKey);
+//		
+//		RoleAttributeKeySet roleAttributeKeySet = RoleAttributeKeySet.Factory.newInstance();
+//		roleAttributeKeySet.setName("role attribute key set test");
+//		roleAttributeKeySet.setRoleAttributeKeys(roleAttributeKeys);
+//		
+//		assertNull(roleAttributeKeySet.getId());
+//		roleAttributeKeySetDao.create(roleAttributeKeySet);
+//		assertNotNull(roleAttributeKeySet.getId());
+//		
+////		create user dn pattern object
+//		UserDnPattern userDnPattern = UserDnPattern.Factory.newInstance();
+//		userDnPattern.setName("memberOf");
+//		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
+//		userDnPatterns.add(userDnPattern);		
+//		
+////		create user dn pattern set object
+//		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
+//		userDnPatternSet.setName("WWU user dn pattern");
+//		userDnPatternSet.setUserDnPatterns(userDnPatterns);
+//		
+//		assertNull(userDnPatternSet.getId());
+//		userDnPatternSetDao.create(userDnPatternSet);
+//		assertNotNull(userDnPatternSet.getId());		
+//		
+////		create attribute mapping object
+//		AttributeMapping attributeMapping = AttributeMapping.Factory.newInstance();		
+//		attributeMapping.setMappingName(testUtility.unique("Mapping Test"));
+//		attributeMapping.setUsernameKey("CN");
+//		attributeMapping.setFirstNameKey("givenName");
+//		attributeMapping.setLastNameKey("SN");
+//		attributeMapping.setEmailKey("mail");
+//		attributeMapping.setGroupRoleAttributeKey("CN");		
+////		attributeMapping.setAuthenticationDomains(authenticationDomains);
+//		attributeMapping.setRoleAttributeKeySet(roleAttributeKeySet);
+//		
+//		assertNull(attributeMapping.getId());
+//		attributeMappingDao.create(attributeMapping);
+//		assertNotNull(attributeMapping.getId());
+//		
+////		create authentication domain object
+//		AuthenticationDomain authenticationDomain = AuthenticationDomain.Factory.newInstance();
+//		authenticationDomain.setName(testUtility.unique("WWU"));
+//		authenticationDomain.setDescription("WWU Domain");
+//		authenticationDomain.setAttributeMapping(attributeMapping);
+//		Set<AuthenticationDomain> authenticationDomains = new HashSet<AuthenticationDomain>();
+//		authenticationDomains.add(authenticationDomain);
+//		
+//		assertNull(authenticationDomain.getId());
+//		authenticationDomainDao.create(authenticationDomain);
+//		assertNotNull(authenticationDomain.getId());
+//		
+////		create ldap server object
+//		LdapServer ldapServer = LdapServer.Factory.newInstance();
+//		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+//		ldapServer.setPort(389);
+//		ldapServer.setRootDn("dc=uni-muenster,dc=de");
+//		ldapServer.setDescription("LDAP Server WWU");
+//		ldapServer.setEnabled(true);
+//		ldapServer.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+//		ldapServer.setAuthenticationType("DIGEST-MD5");
+//		ldapServer.setUseConnectionPool(false);
+//		ldapServer.setManagerDn("admin");
+//		ldapServer.setManagerPassword("hidden");
+//		ldapServer.setUseLdapContext(true);
+//		ldapServer.setUserDnPatternSet(userDnPatternSet);
+//		ldapServer.setAuthenticationDomain(authenticationDomain);		
+//		
+//		assertNull(ldapServer.getId());
+//		ldapServerDao.create(ldapServer);
+//		assertNotNull(ldapServer.getId());
+//		
+//		setComplete();
+//		endTransaction();
+//		
+//		startNewTransaction();
+//		ldapServerDao.remove(ldapServer);
+//		setComplete();
+//		endTransaction();
+//				
+//	}
 
 
 	

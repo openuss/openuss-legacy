@@ -45,21 +45,7 @@ public class LdapConfigurationServiceImpl
      */
     @Override
     protected LdapServerInfo handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
-    	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
-    		throw new LdapConfigurationServiceException("URL must not be empty!");
-    	}
-    	if (!handleIsValidURL(ldapServer.getProviderUrl())) {
-    		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
-    	}
-    	if (! (ldapServer.getPort() > 0)) {
-    		throw new LdapConfigurationServiceException("Port must be not negative!");
-    	}
-
-    	// TODO: check if root dn is valid
-    	// TODO: check if auth type is valid
-    	
-    	// TODO: check if valid manager DN
-    	// TODO: other validation
+    	validateLdapServer(ldapServer);
     	
     	LdapServer ldapServerEntity = getLdapServerDao().create(
     			getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()), 
@@ -82,6 +68,28 @@ public class LdapConfigurationServiceImpl
     	ldapServer.setId(ldapServerEntity.getId());
     	
     	return ldapServer;
+    }
+    
+    /**
+     * validates an LdapServerInfo object if it contains valid attributes
+     * used to create and save (update) a LdapServer
+     */
+    protected void validateLdapServer(LdapServerInfo ldapServer) throws Exception {
+    	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
+    		throw new LdapConfigurationServiceException("URL must not be empty!");
+    	}
+    	if (!handleIsValidURL(ldapServer.getProviderUrl())) {
+    		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
+    	}
+    	if (! (ldapServer.getPort() > 0)) {
+    		throw new LdapConfigurationServiceException("Port must be not negative!");
+    	}
+
+    	// TODO: check if root dn is valid
+    	// TODO: check if auth type is valid
+    	
+    	// TODO: check if valid manager DN
+    	// TODO: other validation
     }
     
     
@@ -107,8 +115,9 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {
+    protected void handleSaveLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
 //    	TODO check method ldapServerInfoEntity
+    	validateLdapServer(ldapServer);
     	LdapServer ldapServerEntity = getLdapServerDao().ldapServerInfoToEntity(ldapServer);
     	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
     	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));    	
@@ -316,10 +325,16 @@ public class LdapConfigurationServiceImpl
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
 //    	TODO check method attributeMappingInfoToEntity
-    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
-    	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
-    	getAttributeMappingDao().create(attributeMappingEntity);
-    	attributeMapping.setId(attributeMappingEntity.getId());
+    	AttributeMapping attributeMappingEntity = getAttributeMappingDao().create(
+    			attributeMapping.getEmailKey(), 
+    			attributeMapping.getFirstNameKey(), 
+    			attributeMapping.getGroupRoleAttributeKey(), 
+    			attributeMapping.getLastNameKey(), 
+    			attributeMapping.getMappingName(), 
+    			getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()),
+    			attributeMapping.getUsernameKey()
+    		);
+       	attributeMapping.setId(attributeMappingEntity.getId());
     	return attributeMapping;    	
     }
 
@@ -388,8 +403,11 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey){
-    	RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
+	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey) throws Exception {
+		if (StringUtils.isBlank(roleAttributeKey.getRoleAttributeKey())){
+    		throw new LdapConfigurationServiceException("Name of new attribute key must not be empty!");
+    	}    	
+		RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
     	getRoleAttributeKeyDao().update(key);
     }
 
@@ -415,8 +433,10 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected RoleAttributeKeySetInfo handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) {    	
-    	
+	protected RoleAttributeKeySetInfo handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) throws Exception {    	
+		if (StringUtils.isBlank(roleAttributeKeySet.getName())){
+    		throw new LdapConfigurationServiceException("Name of new attribute key set must not be empty!");
+    	} 
 		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().create(roleAttributeKeySet.getName());
 		roleAttributeKeySet.setId(roleAttributeKeySetEntity.getId());
 		
@@ -442,7 +462,11 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+	protected void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) throws Exception{
+		if (StringUtils.isBlank(roleAttributeKeySet.getName())){
+    		throw new LdapConfigurationServiceException("Name of new attribute key set must not be empty!");
+    	} 
+		
 		RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
     	
     	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();    	
