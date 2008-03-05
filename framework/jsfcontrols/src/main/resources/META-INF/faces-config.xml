@@ -46,7 +46,7 @@
     	<description>Workaround for Shale Issue: Converts a Long object to a string representation and vice versa</description>
     	<display-name>LongConverter</display-name>
     	<converter-for-class>java.lang.Long</converter-for-class>
-    	<converter-class>org.openuss.framework.jsfcontrols.converter.LongConverter</converter-class>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.ShaleLongConverter</converter-class>
     </converter>
     
     <converter>

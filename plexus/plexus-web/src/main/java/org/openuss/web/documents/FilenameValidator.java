@@ -30,7 +30,9 @@ public class FilenameValidator extends BaseBean implements Validator {
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final String filename = (String) value;
 		if (!isValidFilename(filename)) {
-			((UIInput) component).setValid(false);
+			if (component instanceof UIInput) {
+				((UIInput) component).setValid(false);
+			}
 			addError(component.getClientId(context), i18n(NO_VALID_FILENAME),null);
 		}
 		

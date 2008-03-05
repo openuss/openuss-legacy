@@ -23,7 +23,9 @@ public class UniversityDepartmentSelectValidator extends BaseBean implements Val
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final Long universityId = (Long) value;
 			if ((universityId.longValue() == Constants.UNIVERSITIES_DISABLED) || (universityId.longValue() == Constants.UNIVERSITIES_ENABLED)) {
-				((UIInput) component).setValid(false);
+				if (component instanceof UIInput) {
+					((UIInput) component).setValid(false);
+				}
 				addError(i18n(UNIVERSITY_DEPARTMENT_MESSAGE_ID), null);
 			}
 	}

@@ -34,7 +34,9 @@ public class CalendarDateValidator extends BaseBean implements Validator {
 
 			if (startDate != null) {
 				if (endDate == null) {
-					((UIInput) component).setValid(false);
+					if (component instanceof UIInput) {
+						((UIInput) component).setValid(false);
+					}
 					addError(component.getClientId(context), "Enddate", i18n("validate_error_need_to_define_end_date"));
 				}
 
@@ -45,14 +47,18 @@ public class CalendarDateValidator extends BaseBean implements Validator {
 				logger.debug(startDate.after(endDate));
 
 				if (startDate.after(endDate)) {
-					((UIInput) component).setValid(false);
+					if (component instanceof UIInput) {
+						((UIInput) component).setValid(false);
+					}
 					addError(component.getClientId(context), "Enddate", i18n("validate_error_end_date_after_start_date"));
 				}
 			}
 
 		} catch (UniversityServiceException e) {
 			logger.error(e);
-			((UIInput) component).setValid(false);
+			if (component instanceof UIInput) {
+				((UIInput) component).setValid(false);
+			}
 			addError(i18n(e.getMessage()));
 		}
 	}

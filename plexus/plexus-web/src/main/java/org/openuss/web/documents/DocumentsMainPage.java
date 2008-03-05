@@ -1,6 +1,7 @@
 package org.openuss.web.documents;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,7 +68,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;
-		
+
 		private DataPage<FolderEntryInfo> page;
 
 		@Override
@@ -89,11 +90,11 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
 			if (isAscending()) {
-				chain.addComparator(folderComparator);
+				chain.addComparator(new FolderEntryInfoComparator());
 			} else {
-				chain.addComparator(new ReverseComparator(folderComparator));
+				chain.addComparator(new ReverseComparator(new FolderEntryInfoComparator()));
 			}
-			
+
 			if (StringUtils.isNotBlank(getSortColumn())) {
 				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
 			} else {
@@ -102,16 +103,18 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			Collections.sort(list, chain);
 		}
 
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
-			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
-				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
-					return 0;
-				} else {
-					return info1.isFolder()?-1:1;
-				}
+	}
+
+	private static final class FolderEntryInfoComparator implements Comparator<FolderEntryInfo>, Serializable {
+		private static final long serialVersionUID = -2966816757063701789L;
+
+		public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
+			if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
+				return 0;
+			} else {
+				return info1.isFolder() ? -1 : 1;
 			}
-			
-		};	
+		}
 	}
 
 	public String download() throws IOException {

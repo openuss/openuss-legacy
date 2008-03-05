@@ -6,6 +6,7 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.DepartmentServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
@@ -61,7 +62,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String removeDepartment() throws Exception {
+	public String removeDepartment() {
 		try {
 			departmentService.removeDepartment(departmentInfo.getId());
 			setSessionBean("departmentInfo", null);
@@ -70,7 +71,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 			setSessionBean("courseInfo", null);
 			addMessage(i18n("message_department_removed"));
 			return Constants.DEPARTMENTS_PAGE;
-		} catch (Exception e) {
+		} catch (DepartmentServiceException e) {
 			addMessage(i18n("message_department_cannot_be_removed"));
 			return Constants.OUTCOME_BACKWARD;
 		}

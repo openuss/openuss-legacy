@@ -218,7 +218,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected PostInfo handleGetPost(PostInfo post) throws Exception {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
-		PostInfo postInfo = (PostInfo) getPostDao().load(getPostDao().TRANSFORM_POSTINFO, post.getId());
+		PostInfo postInfo = (PostInfo) getPostDao().load(PostDao.TRANSFORM_POSTINFO, post.getId());
 		if (postInfo == null) {
 			return null;  
 		}

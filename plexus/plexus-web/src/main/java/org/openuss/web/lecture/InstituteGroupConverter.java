@@ -30,9 +30,7 @@ public class InstituteGroupConverter implements Converter  {
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		if (value instanceof InstituteGroup) {
 			final InstituteGroup group = (InstituteGroup) value;
-			if (group != null) {
-				return group.getId()+":"+group.getName();
-			}
+			return group.getId()+":"+group.getName();
 		} else if (value instanceof String) {
 			return (String) value;
 		} 

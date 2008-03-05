@@ -62,6 +62,19 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		breadcrumbs.addCrumb(crumb);
 	}	
 	
+	private static final class FilterByUserIdsPredicte implements Predicate {
+		private final Set<Long> userIds;
+
+		private FilterByUserIdsPredicte(Set<Long> userIds) {
+			this.userIds = userIds;
+		}
+
+		public boolean evaluate(Object object) {
+			InstituteMember member = (InstituteMember) object;
+			return !userIds.contains(member.getId());
+		}
+	}
+
 	private class AssistantsDataProvider extends AbstractPagedTable<CourseMemberInfo> {
 		
 		private static final long serialVersionUID = -5342817757466323535L;
@@ -138,12 +151,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(courseInfo.getInstituteId());
 			List<InstituteMember> members = instituteSecurity.getMembers();
 			final Set<Long> userIds = getAssistantsUserIdMap();
-			CollectionUtils.filter(members, new Predicate() {
-				public boolean evaluate(Object object) {
-					InstituteMember member = (InstituteMember) object;
-					return !userIds.contains(member.getId());
-				}
-			});
+			CollectionUtils.filter(members, new FilterByUserIdsPredicte(userIds));
 			List<UserInfo> membersUser = new ArrayList<UserInfo>();
 			for(InstituteMember member : members) {
 				membersUser.add(getSecurityService().getUserByName(member.getUsername()));

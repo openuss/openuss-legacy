@@ -1,5 +1,6 @@
 package org.openuss.web.lecture;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -208,27 +209,39 @@ public class InstituteMembersPage extends AbstractLecturePage {
 
 	private void sortMembers(List<InstituteMember> members, final String column, final boolean ascending) {
 		logger.debug("sorting members by " + column + " ascending " + ascending);
-		Comparator<InstituteMember> comparator = new Comparator<InstituteMember>() {
-			public int compare(InstituteMember m1, InstituteMember m2) {
-				if (column == null) {
-					return 0;
-				} else if (column.equals("username")) {
-					return ascending ? m1.getUsername().compareTo(m2.getUsername()) : m2.getUsername().compareTo(
-							m1.getUsername());
-				} else if (column.equals("firstname")) {
-					return ascending ? m1.getFirstName().compareTo(m2.getFirstName()) : m2.getFirstName().compareTo(
-							m1.getFirstName());
-				} else if (column.equals("lastname")) {
-					return ascending ? m1.getLastName().compareTo(m2.getLastName()) : m2.getLastName().compareTo(
-							m1.getLastName());
-				}
-				return 0;
-			}
-		};
+		Comparator<InstituteMember> comparator = new InstitutsMemberComparator(ascending, column);
 		Collections.sort(members, comparator);
 	}
 
 	/* ------------------------------------ SORTING ------------------- */
+
+	private static final class InstitutsMemberComparator implements Comparator<InstituteMember>, Serializable {
+		private static final long serialVersionUID = 3956574526313677933L;
+		
+		private final boolean ascending;
+		private final String column;
+
+		private InstitutsMemberComparator(boolean ascending, String column) {
+			this.ascending = ascending;
+			this.column = column;
+		}
+
+		public int compare(InstituteMember m1, InstituteMember m2) {
+			if (column == null) {
+				return 0;
+			} else if (column.equals("username")) {
+				return ascending ? m1.getUsername().compareTo(m2.getUsername()) : m2.getUsername().compareTo(
+						m1.getUsername());
+			} else if (column.equals("firstname")) {
+				return ascending ? m1.getFirstName().compareTo(m2.getFirstName()) : m2.getFirstName().compareTo(
+						m1.getFirstName());
+			} else if (column.equals("lastname")) {
+				return ascending ? m1.getLastName().compareTo(m2.getLastName()) : m2.getLastName().compareTo(
+						m1.getLastName());
+			}
+			return 0;
+		}
+	}
 
 	/**
 	 * LocalDataModel of Institute Members

@@ -24,9 +24,10 @@ public class InstituteDepartmentSelectValidator extends BaseBean implements Vali
 		final Long departmentId = (Long) value;
 			if ((departmentId.longValue() == Constants.DEPARTMENTS_DISABLED) 
 					|| (departmentId.longValue() == Constants.DEPARTMENTS_ENABLED)
-					|| (departmentId.longValue() == Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED)
-			) {
-				((UIInput) component).setValid(false);
+					|| (departmentId.longValue() == Constants.DEPARTMENTS_NO_UNIVERSITY_SELECTED)) {
+				if (component instanceof UIInput) {
+					((UIInput) component).setValid(false);
+				}
 				addError(i18n(INSTITUTE_DEPARTMENT_MESSAGE_ID), null);
 			}
 	}

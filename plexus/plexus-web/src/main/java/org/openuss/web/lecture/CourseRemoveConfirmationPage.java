@@ -12,6 +12,7 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
@@ -54,13 +55,13 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String removeCourse() throws LectureException {
+	public String removeCourse() {
 		try {
 			courseService.removeCourse(courseInfo.getId());
 			setSessionBean("courseInfo", null);
 			addMessage(i18n("institute_course_removed_succeed"));
 			return Constants.INSTITUTE_COURSES_PAGE;
-		} catch (Exception e) {
+		} catch (CourseServiceException e) {
 			addMessage(i18n("institute_course_cannot_be_removed"));
 			return Constants.INSTITUTE_COURSES_PAGE;
 		}
@@ -76,7 +77,9 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}

@@ -12,9 +12,9 @@ import javax.faces.convert.ConverterException;
  * Workaround for shale issue https://issues.apache.org/struts/browse/SHALE-406 
  * @author Ingo Dueppe
  */
-public class LongConverter extends javax.faces.convert.LongConverter implements Converter {
+public class ShaleLongConverter extends javax.faces.convert.LongConverter implements Converter {
 
-	private static final Logger logger = Logger.getLogger(LongConverter.class);
+	private static final Logger logger = Logger.getLogger(ShaleLongConverter.class);
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
 		if (component == null) {
