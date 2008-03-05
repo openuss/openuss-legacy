@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable id="discussionstable" label="#{msg.wiki_overview_header}" 
+    	value="views$secured$wiki$wikioverview.data" var="wikiPage" rows="20"
+    	columnClasses="col_max_left, col_commands">  
+
+		<t:column defaultSorted="true">
+			<plexus:commandSortHeader columnName="name" > #{msg['wiki_overview_column_name']} </plexus:commandSortHeader>
+			
+			<o:link value="/views/secured/wiki/wikimain.faces">
+              <f:param value="#{wikiPage.name}" name="page" />
+			  <h:outputText value="#{wikiPage.name}" />
+			</o:link>
+		</t:column>
+		
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >			
+			<t:column>
+				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action = "lockSite"
+					styleClass="icon_lock"
+					label="#{msg.wiki_overview_lock_site}"
+					title="#{msg.wiki_overview_lock_site}"
+					rendered="#{!wikiPage.readOnly}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action = "unlockSite"
+					styleClass="icon_unlock"
+					label="#{msg.wiki_overview_unlock_site}"
+					title="#{msg.wiki_overview_unlock_site}"
+					rendered="#{wikiPage.readOnly == true}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="markSiteForRemoval" 
+					label="#{msg['wiki_overview_mark_site_for_removal']}"
+					title="#{msg['wiki_overview_mark_site_for_removal']}"
+					styleClass="icon_mark_for_removal"
+					rendered="#{!wikiPage.deleted}" />
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="recoverSite" 
+					label="#{msg['wiki_overview_recover_site']}"
+					title="#{msg['wiki_overview_recover_site']}"
+					styleClass="icon_recover"
+					rendered="#{wikiPage.deleted == true}" />
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="removeSite" 
+					label="#{msg['wiki_site_remove']}"
+					title="#{msg['wiki_site_remove']}"
+					styleClass="icon_remove"/>
+			</t:column>
+		</s:acl>
+		
+		<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
+			<t:column>
+				<plexus:commandSortHeader columnName="actions"> #{msg['discussion_main_column_actions']} </plexus:commandSortHeader>
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="markSiteForRemoval" 
+					label="#{msg['wiki_overview_mark_site_for_removal']}"
+					title="#{msg['wiki_overview_mark_site_for_removal']}"
+					styleClass="icon_remove"
+					rendered="#{!wikiPage.deleted}" />
+				<plexus:command 
+					bean="#{views$secured$wiki$wikioverview}"
+					action="recoverSite" 
+					label="#{msg['wiki_overview_recover_site']}"
+					title="#{msg['wiki_overview_recover_site']}"
+					styleClass="icon_move"
+					rendered="#{wikiPage.deleted == true}" />
+			</t:column>
+		</s:acl>
+	</plexus:dataTable>      
+</ui:composition>

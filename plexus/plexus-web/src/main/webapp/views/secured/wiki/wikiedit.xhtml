@@ -27,21 +27,27 @@
 		<ui:define name="navigation">
 			<ui:include src="/views/commons/navigation/course.xhtml" />
 		</ui:define>
+		
+		<ui:define name="sidebar"> 
+        	<ui:include src="/views/secured/wiki/wikigeneraloptions.xhtml" />
+		</ui:define>
  		 
   		<ui:define name="content">
-			<h:form id="editWikiForm">
-				<o:block label="#{msg.wiki_edit_header}" styleClass="form_box">
+  			<h:form id="editWikiForm">
+                <o:block label="#{views$secured$wiki$wikiedit.siteTitle}" styleClass="form_box">
 					<div class="content_iframe">
-						<fck:editor value="#{views$secured$wiki$wikimain.wikiPage.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400">
+						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400">
 							<f:converter converterId="xssFilter"/>
 						</fck:editor>	 				
 					</div>
-				</o:block>					
+					<o:input entity="wiki_current_site_version" property="note" maxlength="100" />
+				</o:block>
+				
 				<o:block>
-					<plexus:command bean="#{views$secured$wiki$wikimain}"
-						action="save" label="#{msg['wiki_edit_button_save']}"
-						title="#{msg['wiki_edit_button_save']}"
-						styleClass="button" />				
+				    <h:commandButton 
+						value="#{msg['wiki_edit_button_save']}" 
+						action="#{views$secured$wiki$wikiedit.save}" 
+						styleClass="button"/>
 					<h:commandButton 
 						value="${msg.wiki_edit_button_cancel}" 
 						action="course_wiki" 

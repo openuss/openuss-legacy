@@ -218,5 +218,51 @@
 		<parameter name="news" value="#{news_selected_newsitem.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Collaboration
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/collaboration/*">
+        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.READ}"/>
+        <securityConstraint domainObject="#{workspaceInfo}" permissions="#{ACL.READ}"/>
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+        <parameter name="folder" value="#{collaboration_current_folder.id}" converterId="javax.faces.Long"/>
+        <parameter name="workspace" value="#{workspaceInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Papersubmission
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/papersubmission/submissionview.xhtml">
+    	
+    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="exam" value="#{examInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="paper" value="#{paperSubmissionInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    <page view-id="/views/secured/papersubmission/examlist.xhtml">
+    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+            Wiki
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <page view-id="/views/secured/wiki/*">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+    </page>
+    
+   	<page view-id="/views/secured/wiki/wikimain.xhtml">
+        <parameter name="page" value="#{views$secured$wiki$wikimain.siteName}"/>
+        <parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionId}" converterId="javax.faces.Long"/>
+    </page>
+    
+    <page view-id="/views/secured/wiki/wikiimport.xhtml">
+    	<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+    </page>
+    
+    <page view-id="/views/secured/wiki/wikiimportconfirmation.xhtml">
+    	<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+    </page>
 	
 </pages>

@@ -382,6 +382,110 @@ a.icon_reject {
   white-space: nowrap;
 }
 
+a.icon_lock {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_lock span {
+  background-position: left top;
+  background-image: url(../img/buttons/lock_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_unlock {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_unlock span {
+  background-position: left top;
+  background-image: url(../img/buttons/unlock_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_mark_for_removal {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_mark_for_removal span {
+  background-position: left top;
+  background-image: url(../img/buttons/mark_delete_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_recover {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_recover span {
+  background-position: left top;
+  background-image: url(../img/buttons/unmark_delete_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
 /*MyUni Icons*/
 
 a.newsletter_subscribed {

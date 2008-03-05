@@ -484,11 +484,6 @@
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>course_wiki</from-outcome>
-				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
-			</navigation-case>
-	
-			<navigation-case>
 				<from-outcome>freestyle_learning</from-outcome>
 				<to-view-id>/views/secured/course/fslinstall.xhtml</to-view-id>
 			</navigation-case>
@@ -648,7 +643,114 @@
 			<navigation-case>
 				<from-outcome>wiki_edit</from-outcome>
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
-			</navigation-case>					
+			</navigation-case>	
+			
+			<!--  Wiki  -->
+			<navigation-case>
+				<from-outcome>course_wiki</from-outcome>
+				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>wiki_edit</from-outcome>
+				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>wiki_overview</from-outcome>
+				<to-view-id>/views/secured/wiki/wikioverview.xhtml</to-view-id>
+			</navigation-case>
+            <navigation-case>
+				<from-outcome>wiki_version</from-outcome>
+				<to-view-id>/views/secured/wiki/wikiversion.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
+                <from-outcome>wiki_choose_image</from-outcome>
+                <to-view-id>/views/secured/wiki/wikichooseimage.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_remove_image</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimageremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_remove_site</from-outcome>
+                <to-view-id>/views/secured/wiki/wikisiteremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_import</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimport.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_import_confirmation</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimportconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_print_preview</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiprintpreview.xhtml</to-view-id>
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_overwrite</from-outcome>
+                <to-view-id>/views/secured/wiki/wikisiteoverwriteconfirmation.xhtml</to-view-id>
+            </navigation-case>
+			
+            <!--  Papersubmission  -->
+            <navigation-case>
+	            <from-outcome>examlist</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/examlist.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>papersubmission_file_remove</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileremove.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>papersubmission_file_edit</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileedit.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>submissionview</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>submissionviewlecturer</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionviewlecturer.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>	        
+                <from-outcome>papersubmission_add_zip</from-outcome>
+                <to-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</to-view-id>              
+            </navigation-case>  
+  	        <navigation-case>
+                <from-outcome>papersubmission_exam_remove</from-outcome>
+                <to-view-id>/views/secured/papersubmission/examremove.xhtml</to-view-id>              
+            </navigation-case>  
+	        
+	        <!--  Collaboration -->
+	        <navigation-case>
+	            <from-outcome>collaboration</from-outcome>
+	            <to-view-id>/views/secured/collaboration/main.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>collaboration_confirm_remove</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceremoveconfirmation.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>workspaceview</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+                <from-outcome>collaboration_edit_file</from-outcome>
+                <to-view-id>/views/secured/collaboration/fileedit.xhtml</to-view-id>                
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_edit_folder</from-outcome>
+                <to-view-id>/views/secured/collaboration/folderedit.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_remove_folderentries</from-outcome>
+                <to-view-id>/views/secured/collaboration/documentremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_add_zip</from-outcome>
+                <to-view-id>/views/secured/collaboration/addzip.xhtml</to-view-id>              
+            </navigation-case>
+							
 		</navigation-rule>
 		
 		<navigation-rule>
@@ -658,6 +760,20 @@
 				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>
 			</navigation-case>
 		</navigation-rule>
+		<navigation-rule>
+            <from-view-id>/views/secured/collaboration/addzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
+        <navigation-rule>
+            <from-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
 	
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
        News  - P a g e

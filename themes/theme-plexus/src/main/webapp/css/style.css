@@ -2317,3 +2317,28 @@ div#center div.empty_box a {
 div#center th.table_header a {
 	color:#505050 !important;
 }
+
+/* WIKI STYLES */
+
+.wiki_content {
+	color:#505050;
+    font-size:9pt;
+    padding:10px;
+    text-decoration:none;
+}
+
+.wiki_content a {
+	text-decoration: underline !important;
+}
+
+.wiki_content ul {
+  list-style-type: disc !important;
+}
+
+.wiki_content ul li {
+    margin-left: 5pt;
+}
+
+.wiki_content p {
+    margin-bottom: 10pt;
+}

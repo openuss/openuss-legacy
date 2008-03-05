@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"    
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+    <h:form id="paperForm" enctype="multipart/form-data">
+        <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
+            <o:input label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
+            <o:input label="#{msg.papersubmission_exam_edit_description}" entity="examInfo" property="description" maxlength="250" type="textarea"/>
+            <h:outputLabel value="#{msg.braincontest_attachment}" for="attachmentUpload" styleClass="field_label" />
+					<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{sessionScope.examInfo.attachments}" 
+								binding="${views$secured$papersubmission$examlist.attachmentList}">
+						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
+									action="#{views$secured$papersubmission$examlist.removeAttachment}"
+									immediate="true" styleClass="button_remove" />
+						  		&#160;
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<f:subview rendered="#{empty attachment.id}">
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</f:subview> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+	
+					<t:inputFileUpload 
+						id="attachmentUpload" 
+						storage="file" 
+						accept="*"
+						immediate="true" styleClass="uploadField">
+						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					</t:inputFileUpload>
+					
+					<h:commandButton value="#{msg.braincontest_add_attachment}"
+						action="#{views$secured$papersubmission$examlist.addAttachment}"
+						immediate="true"
+						styleClass="button_add"/> 
+					
+					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
+            <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full"/>
+        </o:block> 
+        <o:block>   
+            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" styleClass="button_save" />
+            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+        </o:block>
+    </h:form>
+</ui:composition>

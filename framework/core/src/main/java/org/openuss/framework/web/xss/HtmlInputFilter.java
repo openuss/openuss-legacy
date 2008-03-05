@@ -118,6 +118,7 @@ public class HtmlInputFilter {
 		ArrayList<String> default_atts = new ArrayList<String>();
 		default_atts.add("color");
 		default_atts.add("style");
+		default_atts.add("align");		
 
 		vAllowed.put("b", default_atts );
 		vAllowed.put("em", default_atts );
@@ -133,6 +134,16 @@ public class HtmlInputFilter {
 		vAllowed.put("font", default_atts );
 		vAllowed.put("strike", default_atts );
 		vAllowed.put("u", default_atts );
+		vAllowed.put("h1", default_atts );
+		vAllowed.put("h2", default_atts );
+		vAllowed.put("h3", default_atts );
+		vAllowed.put("h4", default_atts );
+		vAllowed.put("h5", default_atts );
+		vAllowed.put("h6", default_atts );
+		vAllowed.put("div", default_atts );
+		vAllowed.put("pre", default_atts );
+		vAllowed.put("sup", default_atts );
+		vAllowed.put("sub", default_atts );
 		
 
 		vSelfClosingTags = new String[] { "img" , "br"};

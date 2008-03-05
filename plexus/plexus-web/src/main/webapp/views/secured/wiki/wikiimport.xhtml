@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+	</ui:define>
+	
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/course.xhtml" />
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:form id="importWikiSelectCourseForm">
+			<o:block label="#{msg.wiki_import_select_course_headline}" styleClass="form_box">
+				<p class="content_font_normal">
+					<c:if test="#{not empty views$secured$wiki$wikiimport.exportableWikiCourses}">
+						<h:outputLabel value="#{msg.wiki_import_select_course_detail}" for="assistantSelectBox" styleClass="field_label" />
+						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$wiki$wikiimport.selectedCourseId}" required="true" styleClass="pulldown">
+							<f:selectItems value="#{views$secured$wiki$wikiimport.exportableWikiCourses}" />
+						</h:selectOneMenu>
+						
+						<br />
+						<h:commandButton id="importWikiSitesButton"
+							action="#{views$secured$wiki$wikiimport.importWikiSites}"
+							value="#{msg.wiki_import_newest_versions}"
+							hint="#{msg.wiki_import_newest_versions_hint}"
+							styleClass="button_add" />
+						<h:commandButton id="importWikiVersionsButton"
+							action="#{views$secured$wiki$wikiimport.importWikiVersions}"
+							value="#{msg.wiki_import_all_versions}"
+							hint="#{msg.wiki_import_all_versions_hint}"
+							styleClass="button_add" />
+					</c:if>
+				
+					<c:if test="#{empty views$secured$wiki$wikiimport.exportableWikiCourses}">
+						<h:outputLabel value="#{msg.wiki_import_select_course_detail_no_course}" for="assistantSelectBox" styleClass="field_label" />
+					</c:if>
+				</p>
+			</o:block>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+
+<!-- text above will be ignored -->
+</body>
+</html>

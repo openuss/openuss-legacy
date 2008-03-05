@@ -10,8 +10,7 @@
 	  xmlns:c="http://java.sun.com/jstl/core"      
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -24,26 +23,175 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/course.xhtml" />
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error" />
+ 		
+ 		<ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut} - #{msg.wiki_main_header}"/></ui:define>
+ 		   
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+        
+        <ui:define name="sidebar"> 
+        	<ui:include src="/views/secured/wiki/wikigeneraloptions.xhtml" />
 		</ui:define>
- 		 
-  		<ui:define name="content">
-			<h:form id="mainWikiForm">
-				<o:block label="#{msg.wiki_main_header}">
-					<h:outputText value="#{views$secured$wiki$wikimain.wikiPage.text}"></h:outputText>
-				</o:block>					
-				<s:acl domainObject="#{course}" hasPermission="#{ACL.ASSIST}">
-					<o:block>
-						<h:commandButton 
-							value="${msg.wiki_main_button_edit}" 
-							action="wiki_edit" 
+         
+        <ui:define name="content">
+            <h:form id="mainWikiForm">
+            	<c:if test="${wiki_current_site_version.deleted}">
+            		<o:block label="#{msg.wiki_main_header_site_deleted}" styleClass="form_box">
+	  					<p class="content_font_normal">
+	  						<h:outputFormat value="#{msg.wiki_main_site_deleted_detail}" styleClass="content_font_normal">
+								<f:param value="#{wiki_current_site_version.name}" />
+							</h:outputFormat>
+						</p>
+	  				</o:block>
+	  				
+		            <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+	  					<o:block label="#{views$secured$wiki$wikimain.siteTitle}">
+		                    <div class="wiki_content">
+		                    	<h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" />
+		                    </div>
+		                </o:block>
+		            </s:acl>
+	  				
+	  				
+	  				<o:block>
+	  					<h:commandButton
+							value="${msg.wiki_main_button_version}"
+							action="wiki_version"
 							immediate="true" 
 							styleClass="button"/>
+	  					<h:commandButton 
+							value="#{msg.wiki_overview_recover_site}" 
+							action="#{views$secured$wiki$wikimain.recoverSite}"
+							styleClass="button"/>
 					</o:block>
-				</s:acl>
-			</h:form>
-  		</ui:define>
+	            </c:if>
+	            
+	            <c:if test="${not wiki_current_site_version.deleted}">
+	            	<c:if test="${empty wiki_current_site_version.text}">
+		  				<o:block label="#{msg.wiki_create_site_header}" styleClass="form_box">
+		  					<p class="content_font_normal">
+		  						<h:outputFormat value="#{msg.wiki_edit_create_msg}" styleClass="content_font_normal">
+									<f:param value="#{wiki_new_site_name}" />
+								</h:outputFormat>
+							</p>
+		  				</o:block>
+		  				<o:block>
+		  					<h:commandButton 
+								value="#{msg.wiki_edit_button_create}" 
+								action="#{views$secured$wiki$wikiedit.create}"
+								styleClass="button"/>
+							<h:commandButton 
+								value="${msg.wiki_edit_button_cancel}" 
+								action="#{views$secured$wiki$wikiedit.cancelCreate}" 
+								styleClass="button"/>
+						</o:block>
+		  			</c:if>
+		  			
+		  			<c:if test="${not empty wiki_current_site_version.text}">
+		  				<c:if test="${wiki_current_site_version.readOnly}">
+	            			<o:block label="#{msg.wiki_main_header_site_read_only}" styleClass="form_box">
+	  							<p class="content_font_normal">	  								
+	  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+								</p>
+	  						</o:block>
+	  					</c:if>
+	  					
+	  					<c:if test="${wiki_current_site_version.stable}">
+	            			<o:block label="#{msg.wiki_main_header_site_stable}" styleClass="form_box">
+	  							<p class="content_font_normal">	  								
+	  								<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
+								</p>
+	  						</o:block>
+	  					</c:if>
+		  				
+		                <o:block label="#{views$secured$wiki$wikimain.siteTitle}">
+		                    <div class="wiki_content">
+		                    	<h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" />
+		                    </div>
+		                </o:block>
+		                                  
+		                <o:block>
+		                	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		                		<h:commandButton 
+		                        	value="${msg.wiki_main_button_edit}" 
+		                        	action="wiki_edit" 
+		                        	immediate="true" 
+		                        	styleClass="button" />
+		                    </s:acl>
+		                    
+		                    <c:if test="${not wiki_current_site_version.readOnly}">
+		                    	<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
+		                    		<h:commandButton 
+		                        		value="${msg.wiki_main_button_edit}" 
+		                        		action="wiki_edit" 
+		                        		immediate="true" 
+		                        		styleClass="button" />
+		                       	</s:acl>
+		                    </c:if>
+		                    
+		                    <h:commandButton
+								value="${msg.wiki_main_button_version}"
+								action="wiki_version"
+								immediate="true" 
+								styleClass="button"/>
+								
+							<h:commandButton
+								value="${msg.wiki_main_button_showStable}"
+								action="#{views$secured$wiki$wikimain.showStable}" 
+								immediate="true" 
+								styleClass="button"
+								rendered="#{views$secured$wiki$wikimain.hasStableVersion}" />
+								
+							<c:if test="${not wiki_current_site_version.readOnly}">
+		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		                    		<h:commandButton 
+		                        		value="${msg.wiki_overview_lock_site}" 
+		                        		action="#{views$secured$wiki$wikimain.lockSite}"
+		                        		immediate="true" 
+		                        		styleClass="button" />
+		                       	</s:acl>
+		                    </c:if>
+		                    
+		                    <c:if test="${wiki_current_site_version.readOnly}">
+		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+		                    		<h:commandButton 
+		                        		value="${msg.wiki_overview_unlock_site}" 
+		                        		action="#{views$secured$wiki$wikimain.unlockSite}" 
+		                        		immediate="true" 
+		                        		styleClass="button" />
+		                       	</s:acl>
+		                    </c:if>
+							
+							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+								<c:if test="${not wiki_current_site_version.stable}">
+									<h:commandButton
+										value="${msg.wiki_main_button_markStable}"
+										action="#{views$secured$wiki$wikimain.markStable}" 
+										immediate="true" 
+										styleClass="button"/>
+								</c:if>
+								<c:if test="${wiki_current_site_version.stable}">		
+									<h:commandButton
+										value="${msg.wiki_main_button_unmarkStable}"
+										action="#{views$secured$wiki$wikimain.unmarkStable}" 
+										immediate="true" 
+										styleClass="button"/>
+								</c:if>
+							</s:acl>
+							
+							<h:commandButton
+		                    	value="${msg.wiki_main_button_preview}" 
+	                            immediate="true" 
+	                            styleClass="button"
+	                            onclick="window.open('wikiprintpreview.faces');" />
+								
+		                </o:block>
+		        	</c:if>
+	        	</c:if>
+            </h:form>
+        </ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->
 	</body>

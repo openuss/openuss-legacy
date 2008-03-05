@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+	<h:form>
+		<o:block styleClass="option_box" label="#{msg.options}">
+			<ul class="int">
+				<li>
+					<h:commandLink action="wiki_overview"
+						value="#{msg.wiki_main_button_overview}"
+						title="#{msg.wiki_main_button_overview}" />
+				</li>
+				
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+					<li>
+						<h:commandLink
+							action="#{views$secured$wiki$wikimain.showImportPage}"
+							value="#{msg.wiki_main_import_wiki}"
+							title="#{msg.wiki_main_import_wiki}" />
+						</li>
+				</s:acl>
+			</ul>
+		</o:block>
+	</h:form>
+
+</ui:composition>

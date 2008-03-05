@@ -17,6 +17,27 @@
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
+ 
+FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/openuss/' ;
+
+FCKConfig.FlashUpload = false;
+FCKConfig.ImageUpload = false;
+FCKConfig.LinkBrowser = false;
+
+// only working in wiki!!
+if (window.document.location.href.match(/Wiki/)) {
+
+    FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
+
+    // Wiki link plugin
+    var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
+    FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
+
+    FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+    
+    FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
+    FCKConfig.BodyClass = 'wiki_content';
+}
 
 FCKConfig.ToolbarSets["OpenUSS"] = [
 	['Preview'],
@@ -48,16 +69,15 @@ FCKConfig.ToolbarSets["News"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Wiki"] = [
-	['FitWindow','Preview'],
+    ['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
 	['Undo','Redo','-','SelectAll','RemoveFormat'],
-	'/',
-	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+    ['Image','-','OpenUSSWikiLink','Unlink','-', 'Smiley'],
+    '/',
+	['FontFormat','-','Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-	['Link','Unlink'],
-	['TextColor','BGColor'],
-	['Smiley']
+	['TextColor','BGColor']	
 ] ;
 
 FCKConfig.ToolbarSets["Description"] = [

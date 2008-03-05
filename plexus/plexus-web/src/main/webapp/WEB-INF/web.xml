@@ -247,6 +247,13 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
+	
+	<filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/fckfaces/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Shale Filter
@@ -324,6 +331,13 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
+	
+	<filter-mapping>
+        <filter-name>Acegi Security Chain Filter</filter-name>
+        <url-pattern>*.asp</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - -
 	   MyFaces Extensions Filter
@@ -443,11 +457,12 @@
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>6</load-on-startup>
 	</servlet>
-
+		
 	<servlet>
 		<servlet-name>FCKFaces</servlet-name>
-		<servlet-class>org.fckfaces.util.Servlet</servlet-class>
-		<load-on-startup>5</load-on-startup>
+		<!-- new servlet to get a special FCKeditor for wiki! -->
+<!-- 	<servlet-class>org.fckfaces.util.Servlet</servlet-class> -->
+        <servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
@@ -463,6 +478,23 @@
 	    <load-on-startup>2</load-on-startup>
 	</servlet>
 -->	
+
+    <!-- ADDITION FOR FCKEDITOR -->
+    <servlet>
+        <servlet-name>Connector</servlet-name>
+        <servlet-class>org.openuss.web.servlets.ConnectorServlet</servlet-class>
+        <init-param>
+                <param-name>debug</param-name>
+                <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+	        <servlet-name>Connector</servlet-name>
+	        <url-pattern>/fckfaces/FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp</url-pattern>
+	</servlet-mapping>
+	<!--  END OF ADDITION -->
+
 	<servlet-mapping>
 		<servlet-name>DocumentServlet</servlet-name>
 		<url-pattern>/files/*</url-pattern>

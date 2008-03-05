@@ -227,6 +227,68 @@ public class Constants {
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
 
+	// papersubmission 
+	public static final String PAPERSUBMISSION_EXAM_INFO = "examInfo";
+	public static final String PAPERSUBMISSION_PAPER_INFO = "paperSubmissionInfo";
+	public static final String PAPERSUBMISSION_EXAMLIST_PAGE = "examlist";
+	public static final String PAPERSUBMISSION_EXAM_REMOVE_PAGE = "papersubmission_exam_remove";
+	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
+	public static final String PAPERSUBMISSION_EXTENDEDFOLDERENTRY_SELECTION = "papersubmission_extendedfolderentry_selection";
+	public static final String PAPERSUBMISSION_SELECTED_FILEENTRY = "papersubmission_selected_file";
+	public static final String PAPERSUBMISSION_FILE_EDIT_PAGE = "papersubmission_file_edit";
+	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "submissionview";
+	public static final String PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE   = "submissionviewlecturer";
+	public static final String PAPERSUBMISSION_CURRENT_FOLDER = "papersubmission_current_folder";
+	public static final String PAPERSUBMISSION_FOLDERENTRY_SELECTION = "papersubmission_folderentry_selection";
+	public static final String PAPERSUBMISSION_SELECTED_FILEENTRIES = "papersubmission_selected_fileentries";
+	public static final String PAPERSUBMISSION_FILE_REMOVE_PAGE = "papersubmission_file_remove";
+	
+	// collaboration
+	public static final String COLLABORATION_WORKSPACE_INFO = "workspaceInfo";
+	public static final String COLLABORATION_MAIN_PAGE      = "collaboration";
+	public static final String COLLABORATION_WORKSPACE_PAGE   = "workspaceview";
+	public static final String COLLABORATION_CONFIRM_REMOVE_PAGE = "collaboration_confirm_remove";
+	public static final String COLLABORATION_REMOVE_FOLDERENTRY_PAGE = "collaboration_remove_folderentries";
+	public static final String COLLABORATION_EDIT_FOLDER_PAGE = "collaboration_edit_folder";
+	public static final String COLLABORATION_EDIT_FILEENTRY_PAGE = "collaboration_edit_file";
+	public static final String COLLABORATION_WORKSPACE_MEMBER_SELECTION = "collaboration_member_selection";
+	public static final String COLLABORATION_FOLDERENTRY_SELECTION = "collaboration_entry_selection";
+	public static final String COLLABORATION_SELECTED_FILEENTRY = "collaboration_selected_file";
+	public static final String COLLABORATION_SELECTED_FOLDERENTRIES = "collaboration_selected_folderentries";
+	public static final String COLLABORATION_SELECTED_FILEENTRIES = "collaboration_selected_fileentries";
+	public static final String COLLABORATION_SELECTED_FOLDER = "collaboration_selected_folder";
+	public static final String COLLABORATION_CURRENT_FOLDER = "collaboration_current_folder";
+
+	// wiki
+	public static final String WIKI_CURRENT_SITE_VERSION = "wiki_current_site_version";
+	public static final String WIKI_STARTSITE_NAME = "index";
+	public static final String WIKI_STARTSITE_NAME_I18N = "wiki_index_page_readable";
+	public static final String WIKI_MAIN_PAGE = "course_wiki";
+	public static final String WIKI_EDIT_PAGE = "wiki_edit";
+	public static final String WIKI_OVERVIEW = "wiki_overview";
+	public static final String WIKI_NEW_SITE_NAME = "wiki_new_site_name";
+	public static final String WIKI_IMAGE = "wiki_image";
+	public static final String WIKI_CHOOSE_IMAGE_PAGE = "wiki_choose_image";
+	public static final String WIKI_REMOVE_IMAGE_PAGE = "wiki_remove_image";
+	public static final String WIKI_REMOVE_SITE_PAGE = "wiki_remove_site";
+	public static final String WIKI_SITE_TO_REMOVE = "wiki_site_to_remove";
+	public static final String WIKI_VERSION_PAGE = "wiki_version";
+	public static final String WIKI_IMPORT_PAGE = "wiki_import";
+	public static final String WIKI_IMPORT_CONFIRMATION_PAGE = "wiki_import_confirmation";
+	public static final String WIKI_IMPORT_COURSE = "wiki_import_course";
+	public static final String WIKI_IMPORT_TYPE = "wiki_import_type";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
+	public static final String WIKI_OVERWRITE_PAGE = "wiki_overwrite";
+	public static final String WIKI_MAIN_HEADER = "wiki_main_header";
+	public static final String WIKI_IMPORT_WIKI = "wiki_import_wiki";
+	public static final String WIKI_NEW_TAG = "__new__";
+	public static final String WIKI_EDIT_LINKS_NEWPAGE = "wiki_editlinks_newpage";
+	public static final String WIKI_SITE_SAVE_SUCCEEDED = "wiki_site_save_succeeded";
+	public static final String WIKI_IMAGE_REMOVE_HEADER = "wiki_image_remove_header";
+	public static final String WIKI_IMAGE_REMOVE_SUCCEEDED = "wiki_image_removed_succeed";
+	public static final String WIKI_IMAGE_CANNOT_BE_REMOVED = "wiki_image_cannot_be_removed";
+	public static final String WIKI_NEW_SITE_BACKUP = "wiki_create_backup";
 
 	
 }

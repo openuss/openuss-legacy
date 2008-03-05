@@ -59,6 +59,26 @@
 								activeOnViewIds="/views/secured/course/fslinstall.xhtml"
 								rendered="#{courseInfo.freestylelearning}">
 								<h:outputText value="Freestyle Learning"/>
+							</t:commandNavigation2>	
+							
+							<!-- ps bachelor collaboration -->
+							<t:commandNavigation2 
+                                action="examlist" 
+                                activeOnViewIds="/views/secured/papersubmission/examlist.xhtml,/views/secured/papersubmission/submissionview.xhtml,/views/secured/papersubmission/submissionaddzip.xhtml,/views/secured/papersubmission/submissionfileedit.xhtml,/views/secured/papersubmission/submissionfileremove.xhtml,/views/secured/papersubmission/examremove.xhtml,/views/secured/papersubmission/submissionviewlecturer.xhtml"                                                                
+                                rendered="#{courseInfo.papersubmission}">
+                                <h:outputText  value="#{msg['course_command_papersubmission']}"/>
+                            </t:commandNavigation2>
+                            <t:commandNavigation2 
+                                action="collaboration" 
+                                activeOnViewIds="/views/secured/collaboration/main.xhtml,/views/secured/collaboration/workspaceview.xhtml,/views/secured/collaboration/workspaceremoveconfirmation.xhtml,/views/secured/collaboration/addzip.xhtml,/views/secured/collaboration/fileedit.xhtml,/views/secured/collaboration/folderedit.xhtml"
+                                rendered="#{courseInfo.collaboration}">
+                                <h:outputText  value="#{msg['course_command_collaboration']}"/>
+                            </t:commandNavigation2>
+							<t:commandNavigation2 
+								action="#{views$secured$wiki$wikimain.showStartPage}" 
+								activeOnViewIds="/views/secured/wiki/wikimain.xhtml,/views/secured/wiki/wikiedit.xhtml,/views/secured/wiki/wikiversion.xhtml,/views/secured/wiki/wikioverview.xhtml,/views/secured/wiki/wikiversion.xhtml,/views/secured/wiki/wikisiteremoveconfirmation.xhtml,/views/secured/wiki/wikiimport.xhtml,/views/secured/wiki/wikiimportconfirmation.xhtml"
+								rendered="#{courseInfo.wiki}">
+								<h:outputText value="Wiki"/>
 							</t:commandNavigation2>					
 						</s:authorize> 
 						<s:authorize ifAllGranted="ROLE_USER">

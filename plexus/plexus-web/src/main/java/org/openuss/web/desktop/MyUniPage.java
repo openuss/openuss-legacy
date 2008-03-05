@@ -1,7 +1,11 @@
 package org.openuss.web.desktop;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,9 @@ import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.paperSubmission.ExamInfo;
+import org.openuss.paperSubmission.PaperSubmissionInfo;
+import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
@@ -57,6 +64,9 @@ public class MyUniPage extends BasePage {
 	@Property(value ="#{securityService}")
 	protected SecurityService securityService;
 	
+	@Property(value = "#{paperSubmissionService}")
+	protected PaperSubmissionService paperSubmissionService;
+	
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
 
 	private Long paramUniversity = null;
@@ -70,6 +80,7 @@ public class MyUniPage extends BasePage {
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private CourseUIFlexList coursesList;
+	private UIFlexList examsList;
 	private UITabs tabs;
 
 	private boolean prerenderCalled = false;
@@ -77,6 +88,7 @@ public class MyUniPage extends BasePage {
 	private boolean instituteListDataLoaded = false;
 	private boolean departmentListDataLoaded = false;
 	private boolean courseListDataLoaded = false;
+	private boolean examListDataLoaded = false;
 
 	private Map<Long, MyUniInfo> myUniData;
 
@@ -84,6 +96,7 @@ public class MyUniPage extends BasePage {
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
+	private static final String submissionBasePath = "/views/secured/papersubmission/submissionview.faces";
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -118,6 +131,7 @@ public class MyUniPage extends BasePage {
 		loadValuesForDepartmentList(departmentsList);
 		loadValuesForInstituteList(institutesList);
 		loadValuesForCourseList(coursesList);
+		loadValuesForExamList(examsList);
 		breadcrumbs.loadMyUniCrumbs();
 	}
 
@@ -331,6 +345,23 @@ public class MyUniPage extends BasePage {
 			}
 		}
 	}
+	
+	private void loadValuesForExamList(UIFlexList submissionsList2) {
+		if (examListDataLoaded == false && prerenderCalled == true && examsList != null) {
+			logger.debug("Loading data for submissions flexlist");
+
+			// Get the current university id
+			Long universityId = chooseUniversity();
+
+			// Put data in the component's attributes
+			if (universityId != null && myUniData != null) {
+				examsList.getAttributes().put("visibleItems", getVisibleExamListItems(universityId));
+				
+				// Make sure this isn't executed twice
+				examListDataLoaded = true;
+			}
+		}
+	}
 
 	private void loadValuesForTabs(UITabs tabs) {
 		if (tabDataLoaded == false && prerenderCalled == true && tabs != null) {
@@ -432,6 +463,58 @@ public class MyUniPage extends BasePage {
 
 					listItems.add(newItem);
 				}
+			}
+		}
+
+		return listItems;
+	}
+	
+	private List<ListItemDAO> getVisibleExamListItems(Long universityId) {
+		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+		final DateFormat dateFormat = new SimpleDateFormat();
+
+		if (myUniData != null) {
+			MyUniInfo myUniInfo = myUniData.get(universityId);
+			if (myUniInfo != null) {
+				ListItemDAO newItem;
+				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getCurrentCourses();
+
+				for (MyUniCourseInfo courseInfo : courseCollection) {
+					
+					List<ExamInfo> exams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
+					for(ExamInfo exam : exams){
+						List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExamAndUser(exam.getId(), user.getId());
+						
+						newItem = new ListItemDAO();
+						newItem.setTitle(courseInfo.getName() + ": " + exam.getName());
+						newItem.setMetaInformation(dateFormat.format(exam.getDeadline()));
+						
+						if(submissions!=null && !submissions.isEmpty()){
+							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=" + submissions.get(submissions.size()-1).getId());
+						}else{
+							newItem.setUrl(contextPath()+submissionBasePath + "?course=" + courseInfo.getId() + "&exam=" + exam.getId() + "&paper=");
+						}
+						
+						
+																	
+						//newItem.setMetaInformation(courseInfo.getPeriod());
+						listItems.add(newItem);
+					}
+				}
+				
+				Collections.sort( listItems, new Comparator <ListItemDAO>() 
+                {
+                public int compare(ListItemDAO a, ListItemDAO b )
+                   {
+	                	try {
+	                		return(dateFormat.parse(a.getMetaInformation()).compareTo(dateFormat.parse(b.getMetaInformation())));
+	                	}
+	                    catch (Throwable th)
+	                    {
+	                        return 0;
+	                    }
+                   }
+                } );
 			}
 		}
 
@@ -631,6 +714,19 @@ public class MyUniPage extends BasePage {
 		// Load values into the component
 		loadValuesForCourseList(coursesList);
 	}
+	
+	public UIFlexList getExamsList() {
+		return examsList;
+	}
+
+	public void setExamsList(UIFlexList examsList) {
+		logger.debug("Setting exams flexlist component");
+		this.examsList = examsList;
+		examsList.getAttributes().put("title", i18n("flexlist_exams"));
+
+		// Load values into the component
+		loadValuesForExamList(examsList);
+	}
 
 	public UITabs getTabs() {
 		return tabs;
@@ -683,6 +779,15 @@ public class MyUniPage extends BasePage {
 
 	public void setMyUniData(Map<Long, MyUniInfo> myUniData) {
 		this.myUniData = myUniData;
+	}
+	
+	public PaperSubmissionService getPaperSubmissionService() {
+		return paperSubmissionService;
+	}
+
+	public void setPaperSubmissionService(
+			PaperSubmissionService paperSubmissionService) {
+		this.paperSubmissionService = paperSubmissionService;
 	}
 
 }
