@@ -9,40 +9,65 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:sandbox="http://myfaces.apache.org/sandbox">
-      
-      <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 
 	<f:subview>
-	<div id="schedule">
+		<div id="schedule">
 	
-	<h:panelGrid columns="6" border="0" style="width: 100.00%" >
-		<h:outputText value="Montag" />
-		<h:outputText value="Dienstag" />
-		<h:outputText value="Mittwoch" />
-		<h:outputText value="Donnerstag" />
-		<h:outputText value="Freitag" />
-		<h:outputText value="Sa. / So.ewewe" />
-	</h:panelGrid>
+			<c:if test="#{scheduleHandler.model.mode == 0}" >
+				<h:panelGrid columns="2" border="0" columnClasses="col_30px_left, col_max_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_today}" />
+				</h:panelGrid>
+			</c:if>
+			
+			<c:if test="#{scheduleHandler.model.mode == 1}" >
+				<h:panelGrid columns="6" border="0" columnClasses="col_30px_left, col_20p_center, col_20p_center, col_20p_center, col_20p_center, col_20p_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_monday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_tuesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_wednesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_thursday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_friday}" />
+				</h:panelGrid>
+			</c:if>
+			
+			<c:if test="#{scheduleHandler.model.mode == 2}" >
+				<h:panelGrid columns="2" border="0" columnClasses="col_30px_left, col_max_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_this_week}" />
+				</h:panelGrid>
+			</c:if>	
+					
+			<c:if test="#{scheduleHandler.model.mode == 3}" >
+				<h:panelGrid columns="6" border="0" styleClass="calendar_header" >
+					<h:outputText value="#{msg.openuss4us_calendar_header_monday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_tuesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_wednesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_thursday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_friday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_weekend}" />
+				</h:panelGrid>
+			</c:if>
 		
-	<sandbox:schedule value="#{scheduleHandler2.model}" id="schedule1"
-					rendered="true" visibleEndHour="#{scheduleSettings2.visibleEndHour}"
-					visibleStartHour="#{scheduleSettings2.visibleStartHour}"
-					workingEndHour="#{scheduleSettings2.workingEndHour}"
-					workingStartHour="#{scheduleSettings2.workingStartHour}"
-					readonly="#{scheduleSettings2.readonly}"
-					theme="evolution"
-					tooltip="#{scheduleSettings2.tooltip}"
-					renderZeroLengthEntries="true"
-					expandToFitEntries="#{scheduleSettings2.expandToFitEntries}"
-					headerDateFormat="dd-MM-yyyy"
-					compactWeekRowHeight="#{scheduleSettings2.compactWeekRowHeight}"
-					compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
-					detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/> 
-	
-	<t:inputCalendar id="scheduleNavigator"
-					value="#{scheduleHandler2.model.selectedDate}" />
-
-	</div>
+			<sandbox:schedule value="#{scheduleHandler.model}" id="schedule1"
+							rendered="true" visibleEndHour="#{scheduleSettings.visibleEndHour}"
+							visibleStartHour="#{scheduleSettings.visibleStartHour}"
+							workingEndHour="#{scheduleSettings.workingEndHour}"
+							workingStartHour="#{scheduleSettings.workingStartHour}"
+							readonly="#{scheduleSettings.readonly}"
+							theme="default"
+							tooltip="false"
+							renderZeroLengthEntries="true"
+							expandToFitEntries="false"
+							headerDateFormat="dd-MM-yyyy"
+							compactWeekRowHeight="#{scheduleSettings.compactWeekRowHeight}"
+							compactMonthRowHeight="#{scheduleSettings.compactMonthRowHeight}"
+							detailedRowHeight="#{scheduleSettings.detailedRowHeight}"/> 
+		
+			<o:input entity="scheduleHandler.model" property="selectedDate" type="date" popupCalendar="false" />
+			<h:commandButton action="refresh" value="refresh"/>
+			
+		</div>
 	
 	</f:subview>
 </ui:composition>

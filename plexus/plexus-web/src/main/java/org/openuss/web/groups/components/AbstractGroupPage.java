@@ -34,10 +34,10 @@ public class AbstractGroupPage extends BasePage {
 	
 	//added for course calendar support
 	@Property(value = "#{calendarService}")
-	private CalendarService calendarService;
+	protected CalendarService calendarService;
 	
 	@Property(value = "#{" + Constants.CALENDAR_INFO + "}")
-	private CalendarInfo calendarInfo;
+	protected CalendarInfo calendarInfo;
 
 	@Prerender
 	public void prerender() throws Exception {

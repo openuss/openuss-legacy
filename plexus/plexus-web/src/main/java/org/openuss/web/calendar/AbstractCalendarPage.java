@@ -28,16 +28,11 @@ public class AbstractCalendarPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (calendarInfo == null || calendarInfo.getId() == null) {
-			addError(i18n("TODO: calendar not found!"));
-			redirect(Constants.DESKTOP);
-			return;
-		}
-
-		
-		
-		// Test 
-//		calendarService.createCalendar(user);
+		// TODO Thomas: check calendarInfo
+//		if (calendarInfo == null || calendarInfo.getId() == null) {
+//			addError(i18n("TODO: Calendar not found!"));
+//			redirect(Constants.OUTCOME_BACKWARD);
+//			return; }
 		
 	}
 

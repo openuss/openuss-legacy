@@ -302,7 +302,7 @@
     </managed-bean>
     
     <managed-bean>
-    	<managed-bean-name>scheduleModel2</managed-bean-name>
+    	<managed-bean-name>scheduleModel</managed-bean-name>
     	<managed-bean-class>
     		org.apache.myfaces.custom.schedule.model.SimpleScheduleModel
     	</managed-bean-class>
@@ -318,26 +318,26 @@
     </managed-bean>
 
     <managed-bean>
-    	<managed-bean-name>scheduleHandler2</managed-bean-name>
+    	<managed-bean-name>scheduleHandler</managed-bean-name>
     	<managed-bean-class>
     		org.openuss.web.calendar.ScheduleExampleHandler
     	</managed-bean-class>
     	<managed-bean-scope>session</managed-bean-scope>
     	<managed-property>
     		<property-name>model</property-name>
-    		<value>#{scheduleModel2}</value>
+    		<value>#{scheduleModel}</value>
     	</managed-property>
     </managed-bean>
     
     <managed-bean>
-    	<managed-bean-name>scheduleSettings2</managed-bean-name>
+    	<managed-bean-name>scheduleSettings</managed-bean-name>
     	<managed-bean-class>
     		org.openuss.web.calendar.ScheduleSettings
     	</managed-bean-class>
     	<managed-bean-scope>session</managed-bean-scope>
     	<managed-property>
     		<property-name>model</property-name>
-    		<value>#{scheduleModel2}</value>
+    		<value>#{scheduleModel}</value>
     	</managed-property>
     	<managed-property>
     		<property-name>visibleStartHour</property-name>
@@ -345,7 +345,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>visibleEndHour</property-name>
-    		<value>18</value>
+    		<value>20</value>
     	</managed-property>
     	<managed-property>
     		<property-name>workingStartHour</property-name>
@@ -353,7 +353,7 @@
     	</managed-property>
     	<managed-property>
     		<property-name>workingEndHour</property-name>
-    		<value>17</value>
+    		<value>19</value>
     	</managed-property>
     	<managed-property>
     		<property-name>tooltip</property-name>
@@ -369,19 +369,19 @@
     	</managed-property>
     	<managed-property>
     		<property-name>headerDateFormat</property-name>
-    		<value>yyyy-MM-dd</value>
+    		<value>dd-MM-yyyy</value>
     	</managed-property>
     	<managed-property>
     		<property-name>compactWeekRowHeight</property-name>
-    		<value>200</value>
+    		<value>180</value>
     	</managed-property>
     	<managed-property>
     		<property-name>compactMonthRowHeight</property-name>
-    		<value>100</value>
+    		<value>90</value>
     	</managed-property>
     	<managed-property>
     		<property-name>detailedRowHeight</property-name>
-    		<value>22</value>
+    		<value>20</value>
     	</managed-property>
     </managed-bean>
     

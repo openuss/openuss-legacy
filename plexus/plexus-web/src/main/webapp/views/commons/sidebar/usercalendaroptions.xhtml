@@ -1,0 +1,35 @@
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+
+	<h:form>
+		<o:block label="#{msg['openuss4us_calendar_sidebar_options_header']}" styleClass="option_box">
+			<h:outputText value="#{msg['openuss4us_calendar_sidebar_options_text']}" styleClass="content_font_normal" escape="false" />
+			<ul class="int">
+				<li>
+					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_list_mode']}" action="openuss4us_usercalendar_list" />
+				</li>
+				<li>
+					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_day_mode']}" actionListener="#{views$secured$calendar$usercalendar.changeToDayMode}" />
+				</li>
+				<li>
+					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_workweek_mode']}" actionListener="#{views$secured$calendar$usercalendar.changeToWorkWeekMode}" />
+				</li>
+				<li>
+					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_week_mode']}" actionListener="#{views$secured$calendar$usercalendar.changeToWeekMode}" />
+				</li>
+				<li>
+					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_month_mode']}" actionListener="#{views$secured$calendar$usercalendar.changeToMonthMode}" />
+				</li>
+			</ul>
+		</o:block>
+	</h:form>
+</f:subview>

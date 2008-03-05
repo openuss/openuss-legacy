@@ -32,7 +32,8 @@ import org.apache.myfaces.custom.schedule.model.ScheduleModel;
  */
 public class ScheduleSettings implements Serializable
 {
-    private static final long serialVersionUID = -8547428935814382762L;
+    
+	private static final long serialVersionUID = -8547428935814382762L;
 
     private int compactMonthRowHeight;
 

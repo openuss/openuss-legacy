@@ -32,40 +32,31 @@
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
   		</ui:define>
   		<ui:define name="sidebar">  			
-			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/usercalendaroptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
+			
   		</ui:define>
   		<ui:define name="content">
 			<h:form id="openuss4us_usercalendar" enctype="multipart/form-data">
-				<o:block label="#{msg['openuss4us_navigation_header']}" styleClass="form_box">
+				<o:block label="#{msg['openuss4us_usercalendar']}" styleClass="content_box">
 					<ui:include src="/views/commons/calendar/calendar.xhtml" />
    			 	</o:block>
    			 	<o:block>
-   			 		<h:commandButton 
-   			 			value="Load appointmemnts"
-   			 			title="Load appointmemnts"
-   			 			actionListener="#{views$secured$calendar$usercalendar.loadEntries}"  
-   			 			styleClass="button"/>
-   			 		<h:commandButton 
-   			 			value="Load appointmemnts 2"
-   			 			title="Load appointmemnts 2"
-   			 			actionListener="#{scheduleHandler2.addSampleEntries}"  
-   			 			styleClass="button"/>
 					<h:commandButton 
 						value="#{msg.openuss4us_calendar_button_create_single_appointment}" 
 						title="#{msg.openuss4us_calendar_button_create_single_appointment}" 
 						action="calendar_create_single_appointment" 
-						styleClass="button" />
+						styleClass="button_big" />
 					<h:commandButton 
 						value="#{msg.openuss4us_calendar_button_create_serial_appointment}" 
 						title="#{msg.openuss4us_calendar_button_create_serial_appointment}" 
 						action="calendar_create_serial_appointment" 
-						styleClass="button" />
+						styleClass="button_big" />
 					<h:commandButton 
 						value="#{msg.openuss4us_calendar_button_view_subscriptions}" 
 						title="#{msg.openuss4us_calendar_button_view_subscriptions}" 
 						action="openuss4us_calendar_export" 
-						styleClass="button" /> 
+						styleClass="button_big" /> 
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

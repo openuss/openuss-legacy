@@ -64,7 +64,6 @@ p {
 	font-size: 8pt;
 }
 
-
 @media all {
 	* html b\ody #left {
 		margin-left: -95px;
@@ -215,7 +214,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	border-left-color: #ECECEC;
 }
 
-#left p.content_font_normal, #left span.content_font_normal  {
+#left p.content_font_normal,#left span.content_font_normal {
 	padding-left: 10px;
 	font-size: 8pt;
 	text-decoration: none;
@@ -1031,7 +1030,7 @@ ul#header_navigation li:hover {
 	background-repeat: repeat-x;
 }
 
-.chat_box .header_normal   , .news_box .header_normal {
+.chat_box .header_normal    , .news_box .header_normal {
 	padding: 0;
 	height: 28px;
 	background-image: url(../img/news_bg.jpg);
@@ -1174,7 +1173,8 @@ p.content_font_normal,p.content_font_normal p {
 	color: #505050;
 }
 
-.warning_box p.content_font_normal,.warning_box p.content_font_normal p 	{
+.warning_box p.content_font_normal,.warning_box p.content_font_normal p
+	{
 	padding: 0;
 	font-size: 8pt;
 	text-decoration: none;
@@ -1341,7 +1341,7 @@ ul {
 	display: block;
 }
 
-.field_message{
+.field_message {
 	width: 500px;
 	height: 150px;
 	font-size: 9pt;
@@ -1350,9 +1350,7 @@ ul {
 	border: 1px solid #B4B4B4;
 	margin: 3px 0 0 10px;
 	display: block;
-	
 }
-	
 
 .field_inline,.pulldown_inline {
 	width: 500px;
@@ -1363,9 +1361,6 @@ ul {
 	margin: 1px 10px 0px 10px;
 	display: inline;
 }
-
-
-
 
 .dateField {
 	margin-left: 10px;
@@ -1383,7 +1378,7 @@ ul {
 	margin: 0 3px 0 0;
 }
 
-.field_error,.field_message_error{
+.field_error,.field_message_error {
 	display: block;
 	font-size: 9pt;
 	color: #FF0000;
@@ -1472,7 +1467,7 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	cursor: pointer;
 	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
+	filter: DropShadow(color =     #FFF, offx =     1, offy =     1)
 }
 
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
@@ -1497,7 +1492,7 @@ td .remove_shortcut_button {
 	cursor: pointer;
 	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
+	filter: DropShadow(color =     #FFF, offx =     1, offy =     1)
 }
 
 td .remove_shortcut_button:hover {
@@ -1523,7 +1518,8 @@ td .remove_shortcut_button:hover {
 	outline-style: none;
 }
 
-.button_save:hover,.button_send:hover,.button_cancel:hover,.button_back:hover,.button_continue:hover {
+.button_save:hover,.button_send:hover,.button_cancel:hover,.button_back:hover,.button_continue:hover
+	{
 	background-position: top right;
 }
 
@@ -1823,6 +1819,31 @@ td.col_filesize {
 	text-align: right;
 }
 
+td.col_30px_left {
+	width: 5%;
+	text-align: left;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_20p_center {
+	width: 19%;
+	text-align: center;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_max_center {
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_nowidth_center {
+	text-align: center;
+}
+
 td.col_min_center {
 	width: 5px;
 	text-align: center;
@@ -1848,7 +1869,7 @@ span.news_publisher {
 
 span.news_date {
 	color: #000;
-	display:inline;
+	display: inline;
 	font-weight: normal;
 	font-size: 8pt;
 }
@@ -1864,8 +1885,8 @@ span.news_title {
 	background: url(../img/link_int.png);
 	background-repeat: no-repeat;
 	background-position: 1px 2px;
-	padding-left:15px;	
-	color:#000;
+	padding-left: 15px;
+	color: #000;
 }
 
 span.news_text {
@@ -1895,7 +1916,7 @@ span.news_text {
 }
 
 .jscalendar-WH-title-style {
-	text-align:center;
+	text-align: center;
 	padding: 2px;
 	font-family: arial;
 	font-size: 12px;
@@ -2160,37 +2181,101 @@ span.profile_text {
 	padding: 15px 15px 15px 15px;
 }
 
-table.month {
-
-	margin-left: 0px;
-	margin-right: 0px;
-	margin-top: 1px;
-	margin-down: 0px;
+div.schedule-compact-default table.day td.header {
+	background-image: url(../img/option_box_header.jpg);
+	background-repeat: repeat-x;
+	color: #FFFFFF;
+	font-size: 8pt;
 }
 
-table.month td  {
-	border: 0px dotted;
-	border-color: #333333;
+div.schedule-detailed-default table.background td.header {
+	background: #5493D4 none repeat scroll 0%;
+	color: #FFFFFF;
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+div.schedule-detailed-default td.gutter {
+	background: #5493D4 none repeat scroll 0%;
+	color: #FFFFFF;
+}
+
+div.schedule-compact-default td.inactive-day td.content {
+	height: 45px;
+}
+
+div.schedule-detailed-default {
+	border: 0px none;
+}
+
+table.month {
+	margin-left: 0px;
+	margin-right: 1px;
+	margin-top: 1px;
+	margin-down: 1px;
+	border: 0px solid;
+	border-bottom: 1px;
+	border-bottom-style: none;
+	padding: 1px;
+}
+
+table.week {
+	margin-left: 0px;
+	margin-right: 1px;
+	margin-top: 1px;
+	margin-down: 1px;
+	border: 0px solid;
+}
+
+table.week td {
+	border: 0px solid;
+	border-color: #FFFFFF;
+	border-collapse: colapse;
+	padding: 0px;
+	margin-left: 0px;
+	margin-right: 1px;
+	margin-top: 1px;
+	margin-down: 1px;
+}
+
+table.month td {
+	border: 0px none;
+	border-color: #FFFFFF;
 	border-collapse: colapse;
 	padding: 0px;
 	margin: 0px;
-	
+}
+
+table.month td.inactive-day weekend {
+
+	background-color: #FFFFFF
 }
 
 table.day td.header {
-	border: 0px dotted;
-	border-color: #333333;
+	border: 0px none;
+	border-color: #FFFFFF;
 	border-collapse: colapse;
-	height: 19px;
-	font-style: bold;
 	padding: 0px;
 	margin: 0px;
 }
 
-table.day td.content {
-}	
+table.calendar_header {
+	border: 0px none;
+	border-color: #FFFFFF;
+	border-collapse: colapse;
+	padding: 0px;
+	margin: 0px;
+	font-weight: bold;
+	width: 100%;
+}
+
+table.calendar_header td {
+	width: 16.66667%;
+	border: 0px none;
+	color: #505050;
+}
 
 textarea.internalmessage {
-	width="200"
-	heigth="200"
+	width: 200px;
+	heigth: 200px;
 }
