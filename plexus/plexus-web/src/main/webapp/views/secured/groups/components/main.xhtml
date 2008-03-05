@@ -73,13 +73,16 @@
 			<c:if test="#{groupInfo.accessType.value == 0}">
 				<c:if test="#{!views$secured$groups$components$main.member}">
 					<h:form id="join_group_form">
-						<o:block label="#{msg.group_main_access}">
-							<h:outputText value="NO MEMBER. PLEASE JOIN GROUP!"
-								styleClass="content_font_normal" />
+						<o:block label="#{msg.group_main_access}"  styleClass="form_box">
+						<p class="content_font_normal">
+							<h:outputText value="#{msg['group_access_no_member']}"
+								styleClass="content_font_normal" /></p>
+						</o:block>
+						<o:block>
 							<h:commandButton
 								action="#{views$secured$groups$components$main.apply}"
-								value="#{msg['group_main_access']}"
-								hint="#{msg['group_main_access']}" styleClass="button" />
+								value="#{msg['group_main_join']}"
+								hint="#{msg['group_main_join']}" styleClass="button" />
 						</o:block>
 					</h:form>
 				</c:if>
@@ -90,21 +93,25 @@
 				<!-- check if access type is AccessType.CLOSED -->
 				<c:if test="#{groupInfo.accessType.value == 1}">
 					<c:if test="#{views$secured$groups$components$main.aspirant}">
-						<o:block label="#{msg.group_main_access}">
+						<o:block label="#{msg.group_main_access}"  styleClass="form_box">
+						<p class="content_font_normal">
 							<h:outputText
-								value="ASPIRANT WAIT UNTIL YOU ARE ACCEPTED OR REJECTED"
-								styleClass="content_font_normal" />
+								value="#{msg['group_access_aspirant_wait']}"
+								styleClass="content_font_normal" /></p>
 						</o:block>
 					</c:if>
 					<c:if test="#{!views$secured$groups$components$main.aspirant}">
 						<h:form id="group_main_apply_form">
-							<o:block label="#{msg.group_main_access}">
-								<h:outputText value="NO ASPIRANT. PLEASE APPLY !!!"
-									styleClass="content_font_normal" />
+							<o:block label="#{msg.group_main_access}"  styleClass="form_box">
+							<p class="content_font_normal">
+								<h:outputText value="#{msg['group_access_no_aspirant']}"
+									styleClass="content_font_normal" /></p>
+							</o:block>
+							<o:block>
 								<h:commandButton
 									action="#{views$secured$groups$components$main.applyAsAspirant}"
-									value="#{msg['group_main_access']}"
-									hint="#{msg['group_main_access']}" styleClass="button" />
+									value="#{msg['group_main_aspirant']}"
+									hint="#{msg['group_main_aspirant']}" styleClass="button" />
 							</o:block>
 						</h:form>
 					</c:if>
@@ -128,6 +135,8 @@
 							</h:inputSecret>
 							<h:message for="group_password" styleClass="field_error"
 								showDetail="true" showSummary="false" />
+						</o:block>
+						<o:block>
 							<h:commandButton
 								action="#{views$secured$groups$components$main.applyWithPassword}"
 								value="#{msg['group_main_access']}"

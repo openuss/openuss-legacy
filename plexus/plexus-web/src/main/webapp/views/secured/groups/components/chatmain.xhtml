@@ -32,7 +32,7 @@
  		 
   		<ui:define name="content">
 			<h:form id="chatroomstable">
-			   <script src="/openuss-plexus/js/groupchat.js" type="text/javascript"></script>
+			   <script src="${facesContext.externalContext.requestContextPath}/js/groupchat.js" type="text/javascript"></script>
 			   <plexus:dataTable 
 			    	id="chatrooms" 
 			    	label="#{msg.chat_rooms_subheading}" 

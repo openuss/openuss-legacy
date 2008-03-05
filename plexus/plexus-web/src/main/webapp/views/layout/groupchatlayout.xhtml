@@ -18,10 +18,10 @@
 		<title><ui:insert name="title">OpenUSS Plexus</ui:insert></title>
 		<!-- stylesheet for layouts -->
 		<link href="#{theme.stylesheet}" rel="stylesheet" type="text/css" media="screen"/>
-		<script src="/openuss-plexus/js/ajax.js" type="text/javascript"></script>
-		<script src="/openuss-plexus/js/ajaxchat.js" type="text/javascript"></script>
+		<script src="${facesContext.externalContext.requestContextPath}/js/ajax.js" type="text/javascript"></script>
+		<script src="${facesContext.externalContext.requestContextPath}/js/ajaxchat.js" type="text/javascript"></script>
 	</head>
-	<body onload="initChat('${facesContext.externalContext.requestContextPath}/chat',#{courseInfo.id});" onunload="destroyChat()">
+	<body onload="initChat('${facesContext.externalContext.requestContextPath}/chat',#{groupInfo.id});" onunload="destroyChat()">
 		<div id="wrapper">
 			<a name="pageup"/>
 			<div class="page" style="width:600px">
