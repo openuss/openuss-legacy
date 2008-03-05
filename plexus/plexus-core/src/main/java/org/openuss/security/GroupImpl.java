@@ -72,6 +72,11 @@ public class GroupImpl extends org.openuss.security.GroupBase implements org.ope
 		return super.equals(object);
 	}
 	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

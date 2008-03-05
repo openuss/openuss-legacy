@@ -89,11 +89,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Folder root = getRootFolderForDomainObject(domainObject);
 		List<?> entries = new ArrayList<FolderEntry>(root.getEntries());
 
-		CollectionUtils.filter(entries, new Predicate() {
-			public boolean evaluate(Object object) {
-				return (object instanceof FileEntry);
-			}
-		});
+		CollectionUtils.filter(entries, new FileEntryPredicate());
 		filterEntriesByPermission(entries);
 		getFileEntryDao().toFileInfoCollection(entries);
 		return entries;
@@ -287,23 +283,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
 			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.ASSIST })) {
-				CollectionUtils.filter(entries, new Predicate() {
-					public boolean evaluate(Object object) {
-						boolean eval = false;
-						if (object instanceof FolderEntry) {
-							eval = ((FolderEntry) object).isReleased();
-						} else if (object instanceof FileInfo) {
-							eval = ((FileInfo) object).isReleased();
-						} else if (object instanceof FolderEntryInfo) {
-							eval = ((FolderEntryInfo) object).isReleased();
-						} 
-						if (!eval) {
-							logger.trace("------------------------------------> removing file "+object);
-						}
-						
-						return eval;
-					}
-				});
+				CollectionUtils.filter(entries, new ReleasedFolderEntryPredicate());
 			}
 		}
 	}
@@ -471,6 +451,30 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected boolean handleIsFolderOfDomainObject(FolderInfo folderInfo, DomainObject domainObject) throws Exception {
 		Folder folder = getFolderDao().load(folderInfo.getId());
 		return isFolderOfDomainObject(domainObject, folder);
+	}
+
+	private static final class ReleasedFolderEntryPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			boolean eval = false;
+			if (object instanceof FolderEntry) {
+				eval = ((FolderEntry) object).isReleased();
+			} else if (object instanceof FileInfo) {
+				eval = ((FileInfo) object).isReleased();
+			} else if (object instanceof FolderEntryInfo) {
+				eval = ((FolderEntryInfo) object).isReleased();
+			} 
+			if (!eval) {
+				logger.trace("------------------------------------> removing file "+object);
+			}
+			
+			return eval;
+		}
+	}
+
+	private static final class FileEntryPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return (object instanceof FileEntry);
+		}
 	}
 
 }

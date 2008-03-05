@@ -506,10 +506,9 @@ public class LectureServiceImpl extends LectureServiceBase {
 	}
 
 	private User getUser(Long userId) throws LectureException {
-		User user = User.Factory.newInstance();
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(userId);
-		user = getSecurityService().getUserObject(userInfo);
+		User user = getSecurityService().getUserObject(userInfo);
 		if (user == null) {
 			logger.error("Coun't find user with id " + userId);
 			throw new LectureException("user_cannot_be_found");

@@ -325,11 +325,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, false));
 
 		assertEquals(1, addedContest.getTries().intValue());
-		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
+		brainContestService.getAnswers(addedContest);		
 		//check case wrong answer + no adding to top list
 		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", userInfo, addedContest, false));
 
-		answers = brainContestService.getAnswers(addedContest);		
+		brainContestService.getAnswers(addedContest);		
 		assertEquals(2, addedContest.getTries().intValue());
 		//check case wrong answer + adding to top list		
 
@@ -340,7 +340,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, true));
 		flush();
 
-		answers = brainContestService.getAnswers(addedContest);		
+		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
 		assertNotNull(answers);
 		assertEquals(1, answers.size());		
 		answer = answers.iterator().next();

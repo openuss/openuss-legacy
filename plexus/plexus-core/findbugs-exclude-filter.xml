@@ -1,9 +1,10 @@
 <FindBugsFilter>
      <Match>
      	<Or>
-       	<Class name="~.*Base" />
-       	<Class name="~.*Enum" />
-       	<Package name="~org.andromda.*"/>
+	       	<Class name="~.*Base" />
+	       	<Class name="~.*Enum" />
+	       	<Package name="~org.andromda.*"/>
+       		<Bug code="UwF, RI"/>
        	</Or>
      </Match>
 </FindBugsFilter>
