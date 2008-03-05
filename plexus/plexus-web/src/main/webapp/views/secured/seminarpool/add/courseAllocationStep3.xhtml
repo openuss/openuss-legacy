@@ -51,13 +51,18 @@
 									<plexus:commandSortHeader columnName="start">
 										#{msg['seminarpool_add_course_schedule_edit_startdate']}
 									</plexus:commandSortHeader>
-									<h:outputText value="#{bean.startTime}"/>
+									<h:outputText value="#{bean.startTime}">
+										<f:converter converterId="seminarpoolDateConverter" />
+									</h:outputText>
+									
 								</t:column>
 								<t:column>
 									<plexus:commandSortHeader columnName="end">
 										#{msg['seminarpool_add_course_schedule_edit_enddate']}
 									</plexus:commandSortHeader>
-									<h:outputText value="#{bean.endTime}"/>
+									<h:outputText value="#{bean.endTime}">
+										<f:converter converterId="seminarpoolDateConverter" />
+									</h:outputText>
 								</t:column>
 								<plexus:column header="#{msg.commands_header}">				
 									<plexus:command 
@@ -76,7 +81,7 @@
 									entity="courseAllocationController"
 									property="startTime"
 									maxlength="16"
-									 />
+									/>
 								<o:input
 									label="#{msg.seminarpool_registration_end_time}"
 									entity="courseAllocationController"
