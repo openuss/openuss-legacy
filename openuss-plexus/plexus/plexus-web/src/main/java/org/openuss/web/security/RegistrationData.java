@@ -51,7 +51,9 @@ public class RegistrationData extends BaseBean {
 	public void validateAcception(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput)toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput)toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("error_useragreement_must_be_accepted"), null);
 		}
 	}

@@ -23,7 +23,9 @@ public class CoursePeriodSelectValidator extends BaseBean implements Validator {
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final Long periodId = (Long) value;
 			if ((periodId.longValue() == Constants.PERIODS_ACTIVE) || (periodId.longValue() == Constants.PERIODS_PASSIVE)) {
-				((UIInput) component).setValid(false);
+				if (component instanceof UIInput) {
+					((UIInput) component).setValid(false);
+				}
 				addError(i18n(COURSE_PERIOD_MESSAGE_ID), null);
 			}
 	}

@@ -5,21 +5,15 @@
  */
 package org.openuss.statistics;
 
-import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.openuss.discussion.TopicInfo;
-import org.openuss.security.UserImpl;
-import org.openuss.viewtracking.ViewState;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**

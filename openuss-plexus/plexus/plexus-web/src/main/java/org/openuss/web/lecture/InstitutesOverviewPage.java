@@ -1,10 +1,7 @@
 package org.openuss.web.lecture;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -26,7 +23,8 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Kai Stettner
- * @deprecated Needed? Page views/public/institute/institutesoverview not existing
+ * @deprecated Needed? Page views/public/institute/institutesoverview not
+ *             existing
  */
 @Bean(name = "views$public$institute$institutesoverview", scope = Scope.REQUEST)
 @View
@@ -153,46 +151,30 @@ public class InstitutesOverviewPage extends BasePage {
 		}
 	}
 
-	private DataPage<InstituteInfo> dataPage;
-
-	public DataPage<InstituteInfo> fetchDataPage(int startRow, int pageSize) {
-
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch institutes data page at " + startRow + ", " + pageSize + " sorted by "
-						+ institutesOverview.getSortColumn());
-			}
-
-			DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
-			// get all institutes. Does not depend whether it is enabled or
-			// disabled
-			List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(
-					departmentInfo.getId(), true);
-			sort(instituteList);
-			dataPage = new DataPage<InstituteInfo>(instituteList.size(), 0, instituteList);
-
-		}
-		return dataPage;
-	}
-
-	private void sort(List<InstituteInfo> instituteList) {
-		if (StringUtils.equals("shortcut", institutesOverview.getSortColumn())) {
-			Collections.sort(instituteList, new ShortcutComparator());
-		} else if (StringUtils.equals("owner", institutesOverview.getSortColumn())) {
-			Collections.sort(instituteList, new OwnerComparator());
-		} else {
-			Collections.sort(instituteList, new NameComparator());
-		}
-	}
 
 	private class InstituteTable extends AbstractPagedTable<InstituteInfo> {
 
 		private static final long serialVersionUID = -6072435481342714879L;
 
+		private DataPage<InstituteInfo> dataPage;
+
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			logger.debug("Starting method getDataPage");
-			return fetchDataPage(startRow, pageSize);
+			if (dataPage == null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("fetch institutes data page at " + startRow + ", " + pageSize + " sorted by "
+							+ institutesOverview.getSortColumn());
+				}
+
+				DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+				// get all institutes. Does not depend whether it is enabled or disabled
+				List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(departmentInfo.getId(), true);
+				 sort(instituteList);
+				dataPage = new DataPage<InstituteInfo>(instituteList.size(), 0, instituteList);
+
+			}
+			return dataPage;
 		}
 	}
 
@@ -213,36 +195,6 @@ public class InstitutesOverviewPage extends BasePage {
 	}
 
 	/* ----------- institute sorting comparators ------------- */
-
-	private class NameComparator implements Comparator<InstituteInfo> {
-		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutesOverview.isAscending()) {
-				return f1.getName().compareToIgnoreCase(f2.getName());
-			} else {
-				return f2.getName().compareToIgnoreCase(f1.getName());
-			}
-		}
-	}
-
-	private class OwnerComparator implements Comparator<InstituteInfo> {
-		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutesOverview.isAscending()) {
-				return f1.getOwnerName().compareToIgnoreCase(f2.getOwnerName());
-			} else {
-				return f2.getOwnerName().compareToIgnoreCase(f1.getOwnerName());
-			}
-		}
-	}
-
-	private class ShortcutComparator implements Comparator<InstituteInfo> {
-		public int compare(InstituteInfo f1, InstituteInfo f2) {
-			if (institutesOverview.isAscending()) {
-				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
-			} else {
-				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
-			}
-		}
-	}
 
 	public DepartmentService getDepartmentService() {
 		return departmentService;

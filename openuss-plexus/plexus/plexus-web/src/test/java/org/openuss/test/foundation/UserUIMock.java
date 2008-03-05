@@ -24,7 +24,7 @@ public class UserUIMock {
 	private String lastName;
 	private String title;
 	private String email;
-	private String userName;
+	private String username;
 	private String password;
 	private Locale locale;
 	private String address;
@@ -38,7 +38,7 @@ public class UserUIMock {
 		this.lastName = "lastNameTest";
 		this.title = "titleTest";
 		this.email = "firstNameTest.lastNameTest@test.org";
-		this.userName = "userNameTest";
+		this.username = "userNameTest";
 		this.password = "passwordTest";
 		this.locale = new Locale("en", "US");
 		this.address = "addressTest";
@@ -178,14 +178,14 @@ public class UserUIMock {
 	/**
 	 * @return Returns the userName.
 	 */
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 	/**
 	 * @param userName The userName to set.
 	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String userName) {
+		this.username = userName;
 	}
 
 }

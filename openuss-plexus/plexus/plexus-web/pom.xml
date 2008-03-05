@@ -279,6 +279,16 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<configuration>
+					<outputDirectory>target/site</outputDirectory>
+					<threshold>Low</threshold>
+					<excludeFilterFile>findbugs-exclude-filter.xml</excludeFilterFile>
+				</configuration>
+				
+			</plugin>
 		</plugins>
 	</reporting>
 </project>

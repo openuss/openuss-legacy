@@ -53,7 +53,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
 		if (!StringUtils.equalsIgnoreCase(password, courseInfo.getPassword())) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
 		}
 	}
