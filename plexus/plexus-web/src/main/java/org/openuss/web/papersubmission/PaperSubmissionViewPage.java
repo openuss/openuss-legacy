@@ -66,9 +66,20 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-				
+		if (!isPostBack()) {
+			if ( examInfo != null && examInfo.getId() != null) {
+				setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
+				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+			}
+			if (examInfo == null || examInfo.getId() == null) {
+				addError(i18n("braincontest_message_contest_not_found"));
+				redirect(Constants.BRAINCONTEST_MAIN);
+			}
+		} 
+		
+		
+		
 		paperSelection.processSwitch();
-	
 		addPageCrumbs();
 		paperSubmissionInfo = getCurrentPaperSubmission();
 	}

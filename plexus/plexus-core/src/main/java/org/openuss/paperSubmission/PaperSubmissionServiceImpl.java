@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.braincontest.BrainContestDao;
+import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -45,6 +47,18 @@ public class PaperSubmissionServiceImpl
 		// Update input parameter for aspects to get the right domain objects.    	
     	examInfo.setId(examEntity.getId());
     	this.getSecurityService().createObjectIdentity(examEntity, null);
+    	
+    	
+    	if (examInfo.getAttachments() != null && !examInfo.getAttachments().isEmpty()) {
+			logger.debug("found "+examInfo.getAttachments().size()+" attachments.");
+			FolderInfo folder = getDocumentService().getFolder(examEntity);
+
+			for (FileInfo attachment : examInfo.getAttachments()) {
+				getDocumentService().createFileEntry(attachment, folder);
+			}
+		}
+
+		getExamDao().toExamInfo(examEntity, examInfo);
 	}
 
 	@Override
@@ -127,8 +141,13 @@ public class PaperSubmissionServiceImpl
 	@Override
 	protected ExamInfo handleGetExam(Long examId) throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
+		
+		ExamInfo examInfo = (ExamInfo) getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
+		
+		List<FileInfo> attachments = getDocumentService().getFileEntries(examInfo);
+		examInfo.setAttachments(attachments);
     	
-    	return (ExamInfo)getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
+    	return examInfo;
 	}
 
 	@Override
@@ -184,6 +203,10 @@ public class PaperSubmissionServiceImpl
     	
     	//update the exam
     	getExamDao().update(examEntity);
+    	
+    	getDocumentService().diffSave(examEntity, examInfo.getAttachments());
+		
+		getExamDao().toExamInfo(examEntity, examInfo);
 	}
 
 	@Override

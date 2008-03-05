@@ -56,7 +56,15 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws Exception {
 		super.prerender();
+		
 		addPageCrumbs();
+		
+		if (!isPostBack()) {
+			if (examInfo != null && examInfo.getId() != null) {
+				setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
+				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+			} 
+		}
 		
 		if(examInfo!= null && examInfo.getDeadline()==null){
 			examInfo.setDeadline(new Date());
@@ -379,6 +387,14 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 
 	public void setAttachmentList(UIData attachmentList) {
 		this.attachmentList = attachmentList;
+	}
+
+	public UploadFileManager getUploadFileManager() {
+		return uploadFileManager;
+	}
+
+	public void setUploadFileManager(UploadFileManager uploadFileManager) {
+		this.uploadFileManager = uploadFileManager;
 	}
 	
 }

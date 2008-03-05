@@ -10,19 +10,19 @@
       xmlns:c="http://java.sun.com/jstl/core"    
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
-    <h:form id="paperForm">
+    <h:form id="paperForm" enctype="multipart/form-data">
         <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
             <o:input label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
             <o:input label="#{msg.papersubmission_exam_edit_description}" entity="examInfo" property="description" maxlength="250" type="textarea"/>
             <h:outputLabel value="#{msg.braincontest_attachment}" for="attachmentUpload" styleClass="field_label" />
-					<f:subview rendered="#{!(empty sessionScope.braincontest_contest.attachments)}">
+					<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
 						<div class="content_font_normal">
 							<t:dataList 
 								var="attachment" 
-								value="#{sessionScope.braincontest_contest.attachments}" 
-								binding="${views$secured$braincontest$braincontestnew.attachmentList}">
+								value="#{sessionScope.examInfo.attachments}" 
+								binding="${views$secured$papersubmission$examlist.attachmentList}">
 						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
-									action="#{views$secured$braincontest$braincontestnew.removeAttachment}"
+									action="#{views$secured$papersubmission$examlist.removeAttachment}"
 									immediate="true" styleClass="button_remove" />
 						  		&#160;
 								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
@@ -48,7 +48,7 @@
 					</t:inputFileUpload>
 					
 					<h:commandButton value="#{msg.braincontest_add_attachment}"
-						action="#{views$secured$braincontest$braincontestnew.addAttachment}"
+						action="#{views$secured$papersubmission$examlist.addAttachment}"
 						immediate="true"
 						styleClass="button_add"/> 
 					
