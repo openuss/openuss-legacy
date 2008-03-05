@@ -41,6 +41,7 @@ public class InternalMessageServiceImpl
         		sentMessages.add(imInfo);
         	}
         }
+        Collections.sort(sentMessages, new InternalMessageInfoComparator());
         return sentMessages;
     }
 
@@ -92,7 +93,25 @@ public class InternalMessageServiceImpl
         		recMessages.add(imInfo);
         	}
         }
+        //sort recMessages
+        Collections.sort(recMessages, new InternalMessageInfoComparator());
         return recMessages;
+    }
+    
+    /**
+     * Comparator for List of InternalMessageInfo objects.
+     * Sorts by message-date
+     */
+    private class InternalMessageInfoComparator implements java.util.Comparator<InternalMessageInfo>{
+
+		public int compare(InternalMessageInfo o1, InternalMessageInfo o2) {
+			if(o1.getMessageDate().before(o2.getMessageDate()))
+				return 1;
+			if(o1.getMessageDate().before(o2.getMessageDate()))
+				return -1;
+			return 0;
+		}
+    	
     }
 
     /**
