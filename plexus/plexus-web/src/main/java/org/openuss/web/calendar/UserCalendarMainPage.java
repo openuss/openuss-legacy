@@ -96,32 +96,28 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 
     public String changeToDayMode() {
     	if (model == null)
-    		// TODO - Properties
-           addError("Calendar Fehler");
+           addError(i18n("calendar_mode_change_error"));
     	model.setMode(0);
     	return Constants.OPENUSS4US_CALENDAR;
     }
     
     public String changeToWorkWeekMode() {
     	if (model == null)
-    		// TODO - Properties
-            addError("Calendar Fehler");
+            addError(i18n("calendar_mode_change_error"));
     	model.setMode(1);
     	return Constants.OPENUSS4US_CALENDAR;
     }
     
     public String changeToWeekMode() {
     	if (model == null)
-    		// TODO - Properties
-            addError("Calendar Fehler");
+            addError(i18n("calendar_mode_change_error"));
     	model.setMode(2);
     	return Constants.OPENUSS4US_CALENDAR;
     }
     
     public String changeToMonthMode() {
     	if (model == null)
-    		// TODO - Properties
-            addError("Calendar Fehler");
+            addError(i18n("calendar_mode_change_error"));
     	model.setMode(3);
     	return Constants.OPENUSS4US_CALENDAR;
     }

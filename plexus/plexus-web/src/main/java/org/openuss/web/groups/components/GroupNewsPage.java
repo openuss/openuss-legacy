@@ -109,7 +109,7 @@ public class GroupNewsPage extends AbstractGroupPage {
 		NewsItemInfo newsItem = data.getRowData();
 		newsService.deleteNewsItem(newsItem);
 		addMessage(i18n("message_newsitem_removed_succeed"));
-		return Constants.GROUP_NEWS_EDIT_PAGE;
+		return Constants.GROUP_NEWS_PAGE;
 	}
 
 	public List<NewsItem> getNewsItems() {

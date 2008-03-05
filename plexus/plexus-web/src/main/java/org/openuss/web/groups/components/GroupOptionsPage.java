@@ -65,7 +65,6 @@ public class GroupOptionsPage extends AbstractGroupPage {
 		// update group
 		groupService.updateUserGroup(groupInfo);
 
-		// TODO - Lutz: Properties anpassen
 		addMessage(i18n("message_group_options_saved"));
 		return Constants.GROUP_OPTIONS_PAGE;
 	}

@@ -42,14 +42,14 @@
 
 
 	<ui:define name="content">
+
 		<o:block label="#{msg['openuss4us_command_groups']}"
 			styleClass="form_box">
+
 			<p class="header_font_normal"><h:outputText
 				value="#{groupInfo.name} (#{groupInfo.shortcut})" /></p>
 			<div class="content_font_normal"><h:outputText
 				value="#{groupInfo.description}" escape="false" /></div>
-
-			<ui:include src="/views/secured/groups/components/calendarshortoverview.xhtml" />
 
 			<h:outputText
 				value="#{msg.openuss4us_group_command_options_moderators}"
@@ -73,9 +73,9 @@
 			<c:if test="#{groupInfo.accessType.value == 0}">
 				<c:if test="#{!views$secured$groups$components$main.member}">
 					<h:form id="join_group_form">
-						<o:block label="#{msg.group_main_access}"  styleClass="form_box">
-						<p class="content_font_normal">
-							<h:outputText value="#{msg['group_access_no_member']}"
+						<o:block label="#{msg.group_main_access}" styleClass="form_box">
+							<p class="content_font_normal"><h:outputText
+								value="#{msg['group_access_no_member']}"
 								styleClass="content_font_normal" /></p>
 						</o:block>
 						<o:block>
@@ -93,18 +93,17 @@
 				<!-- check if access type is AccessType.CLOSED -->
 				<c:if test="#{groupInfo.accessType.value == 1}">
 					<c:if test="#{views$secured$groups$components$main.aspirant}">
-						<o:block label="#{msg.group_main_access}"  styleClass="form_box">
-						<p class="content_font_normal">
-							<h:outputText
+						<o:block label="#{msg.group_main_access}" styleClass="form_box">
+							<p class="content_font_normal"><h:outputText
 								value="#{msg['group_access_aspirant_wait']}"
 								styleClass="content_font_normal" /></p>
 						</o:block>
 					</c:if>
 					<c:if test="#{!views$secured$groups$components$main.aspirant}">
 						<h:form id="group_main_apply_form">
-							<o:block label="#{msg.group_main_access}"  styleClass="form_box">
-							<p class="content_font_normal">
-								<h:outputText value="#{msg['group_access_no_aspirant']}"
+							<o:block label="#{msg.group_main_access}" styleClass="form_box">
+								<p class="content_font_normal"><h:outputText
+									value="#{msg['group_access_no_aspirant']}"
 									styleClass="content_font_normal" /></p>
 							</o:block>
 							<o:block>
@@ -148,25 +147,45 @@
 			</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
-			<c:if
-				test="#{not empty views$secured$groups$components$groupnews.currentNews}">
-				<o:block label="#{msg.news_header}" styleClass="news_box">
-					<h:form id="news_tables">
-						<t:dataList id="news"
-							value="#{views$secured$groups$components$groupnews.currentNews}"
-							var="item" styleClass="news">
-							<h:outputText value="#{item.publishDate}" styleClass="news_date">
-								<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"
-									dateStyle="medium" timeStyle="short" />
-							</h:outputText>
-							<h:outputText value="#{item.title}" styleClass="news_title" />
-							<div class="content_font_normal"><h:outputText
-								value="#{item.text}" escape="false" /></div>
-						</t:dataList>
-					</h:form>
-				</o:block>
-			</c:if>
+			<o:block label="#{msg.openuss4us_calendar_appointments}"
+				styleClass="teaser_blue_right">
+				<h:form id="news_tables">
+					<c:if
+						test="#{empty views$secured$calendar$calendar.serialAppointmentData}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.group_no_appointments}" styleClass="news_title" /></p>
+					</c:if>
+					<ui:include
+						src="/views/secured/groups/components/calendarshortoverview.xhtml" />
+				</h:form>
+			</o:block>
+			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
+				<h:form id="news_tables">
+					<c:if
+						test="#{empty views$secured$groups$components$groupnews.currentNews}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.group_no_news}" styleClass="news_title" /></p>
+					</c:if>
+					<t:dataList id="news"
+						value="#{views$secured$groups$components$groupnews.currentNews}"
+						var="item" styleClass="news">
+						<p class="content_font_normal"><h:outputText
+							value="#{item.publishDate}" styleClass="news_date">
+							<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"
+								dateStyle="medium" timeStyle="short" />
+
+						</h:outputText> <h:outputText value="#{item.title}" styleClass="news_title" />
+						<div class="content_font_normal"><h:outputText
+							value="#{item.text}" escape="false" /></div>
+						</p>
+					</t:dataList>
+				</h:form>
+			</o:block>
 		</s:acl>
+
+
+
+
 	</ui:define>
 </ui:composition>
 </body>

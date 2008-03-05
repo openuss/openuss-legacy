@@ -66,7 +66,6 @@ public class GroupsMainPage extends AbstractGroupsPage {
 		if(groupService.getAllMembers(group).size() == 0){
 			groupService.deleteUserGroup(group);
 		}
-		// TODO - Lutz: Properties anpassen
 		addMessage(i18n("message_group_left", group.getName()));
 		resetCachedData();
 		return Constants.SUCCESS;

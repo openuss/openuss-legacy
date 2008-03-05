@@ -16,6 +16,7 @@ import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * Backing bean for the group registration on the groupCreatePage
@@ -57,7 +58,6 @@ public class GroupsCreatePage extends AbstractGroupsPage {
 
 	public String register() {
 		if (groupService.isUniqueShortcut(shortcut)) {
-			logger.debug("START CREAT GROUP");
 
 			// create group info object
 			UserGroupInfo groupInfo = new UserGroupInfo();
@@ -94,12 +94,9 @@ public class GroupsCreatePage extends AbstractGroupsPage {
 			forum = true;
 			newsletter = true;
 			accessType = 0;
-
-			logger.debug("END CREAT GROUP");
-			return Constants.OPENUSS4US_GROUPS;
+			return (PageLinks.GROUP_PAGE + "?group=" + newGroupId);
 		} else {
-			// TODO - Lutz: Vernünftiges Propertie bitte
-			addError("Test");
+			addError(i18n("group_no_unique_shortcut_error"));
 			return Constants.OPENUSS4US_GROUPS_CREATE;
 		}
 	}
