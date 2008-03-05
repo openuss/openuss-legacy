@@ -139,6 +139,7 @@ public class Constants {
 	public static final String COURSE_TYPE_COURSE_SELECTION_PAGE = "coursetype_course_selection";
 	public static final String COURSE_TYPE_CONFIRM_REMOVE_PAGE = "course_type_remove_confirmation";
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
+	public static final String COURSE_CALENDAR = "course_calendar";
 	public static final Long   COURSES_ALL_PERIODS = -111L;
 	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
 	
