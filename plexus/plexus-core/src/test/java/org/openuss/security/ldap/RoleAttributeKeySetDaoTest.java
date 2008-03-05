@@ -22,7 +22,7 @@ public class RoleAttributeKeySetDaoTest extends RoleAttributeKeySetDaoTestBase {
 	public void testRoleAttributeKeySetDaoCreate() {
 		
 		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
-		roleAttributeKey.setRoleAttributeKey("CN");		
+		roleAttributeKey.setName("CN");		
 		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
 		roleAttributeKeys.add(roleAttributeKey);
 		

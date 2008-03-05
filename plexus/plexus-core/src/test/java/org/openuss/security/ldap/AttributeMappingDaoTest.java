@@ -53,7 +53,7 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 	
 //		create role attribute object
 		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
-		roleAttributeKey.setRoleAttributeKey("CN");		
+		roleAttributeKey.setName("CN");		
 		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
 		roleAttributeKeys.add(roleAttributeKey);
 		

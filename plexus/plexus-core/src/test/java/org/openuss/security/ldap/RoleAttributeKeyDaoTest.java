@@ -20,7 +20,7 @@ public class RoleAttributeKeyDaoTest extends RoleAttributeKeyDaoTestBase {
 	
 	public void testRoleAttributeKeyDaoCreate() {
 		RoleAttributeKey roleAttributeKey = RoleAttributeKey.Factory.newInstance();
-		roleAttributeKey.setRoleAttributeKey(testUtility.unique("roleattribute test"));
+		roleAttributeKey.setName(testUtility.unique("roleattribute test"));
 		assertNull(roleAttributeKey.getId());
 		roleAttributeKeyDao.create(roleAttributeKey);
 		assertNotNull(roleAttributeKey.getId());

@@ -108,7 +108,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	private RoleAttributeKeyInfo createRoleAttributeKeyInfoDummy() {
 		RoleAttributeKeyInfo key = new RoleAttributeKeyInfo();
-		key.setRoleAttributeKey(testUtility.unique("CN"));
+		key.setName(testUtility.unique("CN"));
 		
 		return key;
 	}
@@ -372,7 +372,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(key.getId());
 		
 		// set new value
-		key.setRoleAttributeKey(null);
+		key.setName(null);
 		try {
 			service.saveRoleAttributeKey(key);
 			fail("Should have raised an LdapConfigurationServiceException: new attribute key must not be empty!");
