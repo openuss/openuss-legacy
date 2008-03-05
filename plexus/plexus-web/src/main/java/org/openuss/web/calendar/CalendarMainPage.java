@@ -123,11 +123,15 @@ public class CalendarMainPage extends AbstractCalendarPage {
 			this.addError("Error");
 			return Constants.SUCCESS;
 		}
-		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
-			//group calendar
+		if (calendarInfo.getCalendarType().equals(CalendarType.course_calendar)) {
+			// course calendar
+			return Constants.COURSE_CALENDAR;
+		}
+		if (calendarInfo.getCalendarType().equals(CalendarType.group_calendar)) {
+			// group calendar
 			return Constants.GROUP_CALENDAR;
 		}
-		return "openuss4us_calendar_calendar";
+		return Constants.CALENDAR_HOME;
 	}
 	
 	public String deleteSerialAppointment(){

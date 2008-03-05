@@ -38,6 +38,14 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="view_details">
+			<o:block
+				label="#{msg.warning_attention}"
+				styleClass="warning_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_calendar_appointment_delete}" styleClass="warning" /> <br />
+				</p>
+				
+			</o:block>
 			<o:block label="#{appointmentInfo.subject}" styleClass="content_box">
 				<c:if test="#{not empty appointmentInfo.description}">
 					<p class="content_font_normal"><h:outputText
@@ -140,14 +148,6 @@
 				</c:if>
 			</o:block>
 			
-			<o:block
-				label="#{msg.warning_attention}"
-				styleClass="warning_box">
-				<p class="content_font_normal"><h:outputText
-					value="#{msg.openuss4us_calendar_appointment_delete}" styleClass="warning" /> <br />
-				</p>
-				
-			</o:block>
 			
 			
 			

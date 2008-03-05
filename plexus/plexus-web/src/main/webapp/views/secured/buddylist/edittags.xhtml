@@ -58,15 +58,18 @@
 					</t:column>
 					<t:column>
 						<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}"
-							action="#{views$secured$buddylist$edittags.deleteTag}" />
+							action="#{views$secured$buddylist$edittags.deleteTag}" immediate="true"/>
 					</t:column>
-				</plexus:dataTable>
+				</plexus:dataTable></div>
+				</o:block></h:form>
+				<h:form id="openuss4us_buddylist_addtag">
+				<o:block><div styleClass="content_normal">
 				<o:input entity="views$secured$buddylist$edittags" property="newTag"
 					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" required="true">
 					<f:validateLength minimum="3" />
 					<f:converter converterId="xssFilter"/>
 					</o:input>
-				<br /><div styleClass="content_font_normal">
+				<br /><span styleClass="content_font_normal">
 				<t:dataList 
 					id="usedTagsList"  
 					var="aUsedTag"
@@ -80,7 +83,7 @@
 							onClick="javascript:document.getElementById('_id6:openuss4us_buddylist_edittags:newTag').value='#{aUsedTag}'">#{aUsedTag}</a>
 					<h:outputText value="," rendered="#{index + 1 lt rowCount}"/>
 				
-				</t:dataList></div>
+				</t:dataList></span>
 				</div>
 			</o:block>
 			<o:block>
