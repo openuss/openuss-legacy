@@ -145,9 +145,10 @@ public class CalendarServiceImpl extends
 			throw new Exception("Appointment does not exist");
 		Appointment app = getAppointmentDao().load(
 				singleAppointmentInfo.getId());
-		if (app.getSourceCalendar().getId() != calendar.getId())
+		System.out.println(app.getSourceCalendar().getId() + " " + (calendar.getId()));
+		if (app.getSourceCalendar().getId().longValue() != calendar.getId().longValue()){
 			throw new Exception("Calendar is not source for the appointment");
-
+		}
 		// appointment can only be deleted if its not part of a serial
 		// appointment
 		if (app.isSerial())

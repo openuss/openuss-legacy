@@ -112,11 +112,11 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	public String changeSubscription(){
 		try{
 		if(getSubscribed()){
-			this.addMessage("TODO: Unsubscribed");
 			calendarService.endSubscription(calendarInfo);
+			this.addMessage("TODO: Unsubscribed");
 		} else {
-			this.addMessage("TODO: Subscribed");
 			calendarService.addSubscription(calendarInfo);
+			this.addMessage("TODO: Subscribed");
 		}
 		} catch (CalendarApplicationException e) {
 			this.addError("Error");

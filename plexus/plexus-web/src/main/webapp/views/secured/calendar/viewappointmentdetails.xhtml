@@ -142,8 +142,8 @@
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
-				<h:commandButton action="view:backword" value="TODO: delete termin"
-					styleClass="button_back" />
+				<h:commandButton action="#{views$secured$calendar$viewappointmentdetails.delete}" value="#{msg.openuss4us_calendar_button_delete}"
+					styleClass="button_back"  rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
 			</o:block>
 		</h:form>
 	</ui:define>

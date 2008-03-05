@@ -9,6 +9,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
+import org.openuss.calendar.CalendarType;
 import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -105,7 +106,34 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	
 	public boolean isSuperuser() {
 		//TODO 
-		return true;
+		if(calendarInfo.getCalendarType().equals(CalendarType.user_calendar)){
+			//User Calendar
+			return true;
+		}
+		if(calendarInfo.getCalendarType().equals(CalendarType.course_calendar)){
+			//Course calendar
+			return true;
+		}
+		if(calendarInfo.getCalendarType().equals(CalendarType.group_calendar)){
+			return true;
+		}
+		return false;
+	}
+	
+	public String delete(){
+		logger.debug("Deleting appointment " + appointmentInfo.getId());
+		try {
+			if(isSerial()){
+				calendarService.deleteSerialAppointment((SerialAppointmentInfo)appointmentInfo, calendarInfo);
+			} else {
+				calendarService.deleteAppointment(appointmentInfo, calendarInfo);
+			}
+			addMessage(i18n("openuss4us_calendar_message_appointment_deleted"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			addError(i18n("openuss4us_calendar_message_appointment_deleted_error"));
+		}
+		return Constants.CALENDAR_HOME;
 	}
 
 	public SingleAppointmentDataProvider getData() {
