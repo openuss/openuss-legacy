@@ -1,0 +1,59 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+	
+					<o:block label="#{msg.seminarpool_add_course_schedule_label}">
+					<div class="content_font_normal"> 
+						<h:outputText value="#{msg.seminarpool_add_course_schedule_text}" escape="false"/>
+			   		</div>
+			   	</o:block>
+					
+						<br />
+						
+								<plexus:dataTable 
+								id="coursegroups" 
+								label="#{msg.seminarpool_add_course_schedule_add_header}" 
+								value="views$commons$seminarpool$seminarpoolCourseScheduleTable.courseScheduleOverview" 
+								var="bean" 
+								columnClasses="col_max_left, col_max_left, col_commands"
+								rows="20">
+								<t:column>
+									<plexus:commandSortHeader columnName="start">
+										#{msg['seminarpool_add_course_schedule_edit_startdate']}
+									</plexus:commandSortHeader>
+									<h:outputText value="#{bean.startTime}">
+										<f:converter converterId="seminarpoolDateConverter" />
+									</h:outputText>
+									
+								</t:column>
+								<t:column>
+									<plexus:commandSortHeader columnName="end">
+										#{msg['seminarpool_add_course_schedule_edit_enddate']}
+									</plexus:commandSortHeader>
+									<h:outputText value="#{bean.endTime}">
+										<f:converter converterId="seminarpoolDateConverter" />
+									</h:outputText>
+								</t:column>
+								<plexus:column header="#{msg.commands_header}">				
+									<plexus:command 
+										bean="#{views$commons$seminarpool$seminarpoolCourseScheduleTable}"
+										action="removeCurrentCourseSchedule"
+										label="#{msg.seminarpool_add_course_allocation_remove_time}"
+										title="#{msg.seminarpool_add_course_allocation_remove_time}"
+										styleClass="icon_bookmark_remove"
+										>
+								</plexus:command>
+								</plexus:column>
+							</plexus:dataTable>
+							
+</ui:composition>
+	

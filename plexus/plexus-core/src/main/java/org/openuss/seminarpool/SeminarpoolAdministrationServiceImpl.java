@@ -561,6 +561,67 @@ public class SeminarpoolAdministrationServiceImpl
 	}
 
 	@Override
+	protected List handleFindCourseGroupsByCourseAllocationId(
+			Long courseAllocationId) throws Exception {
+    	Validate.notNull(courseAllocationId, "handleFindCourseGroupsByCourseAllocationId ==> courseAllocationId cannot be null");
+    	CourseSeminarpoolAllocation courseAllocation = getCourseSeminarpoolAllocationDao().load(courseAllocationId);
+    	Validate.notNull(courseAllocation, "handleFindCourseGroupsByCourseAllocationId ==> courseAllocation cannot be loaded");
+    	Collection<CourseGroup> courseGroupEntities = courseAllocation.getCourseGroup();
+    	List<CourseGroupInfo> courseGroupInfos = new ArrayList<CourseGroupInfo>();
+    	for (CourseGroup courseGroup : courseGroupEntities){
+    		courseGroupInfos.add(getCourseGroupDao().toCourseGroupInfo(courseGroup));
+    	}
+		return courseGroupInfos;
+	}
+
+	@Override
+	protected Long handleAddCourseGroup(CourseGroupInfo courseGroup)
+			throws Exception {
+    	Validate.notNull(courseGroup, "handleAddCourseGroup ==> courseGroup cannot be null");
+    	Validate.notNull(courseGroup.getCourseSeminarpoolAllocationId(), "handleAddCourseGroup ==> getCourseSeminarpoolAllocationId cannot be null");
+    	CourseGroup entity = getCourseGroupDao().courseGroupInfoToEntity(courseGroup);
+    	CourseSeminarpoolAllocation courseSeminarpoolAllocationEntity = getCourseSeminarpoolAllocationDao().load(courseGroup.getCourseSeminarpoolAllocationId());
+    	courseSeminarpoolAllocationEntity.addCourseGroup(entity);
+    	getCourseGroupDao().create(entity);
+    	getCourseSeminarpoolAllocationDao().update(courseSeminarpoolAllocationEntity);
+		return entity.getId();
+	}
+
+	@Override
+	protected Long handleAddCourseSchedule(CourseScheduleInfo courseSchedule)
+			throws Exception {
+    	Validate.notNull(courseSchedule, "handleAddCourseGroup ==> courseGroup cannot be null");
+    	Validate.notNull(courseSchedule.getCourseGroupId(), "handleAddCourseGroup ==> getCourseSeminarpoolAllocationId cannot be null");
+    	CourseGroup courseGroupEntity = getCourseGroupDao().load(courseSchedule.getCourseGroupId());
+    	CourseSchedule courseScheduleEntity = getCourseScheduleDao().courseScheduleInfoToEntity(courseSchedule);
+    	courseGroupEntity.addCourseSchedule(courseScheduleEntity);
+    	getCourseGroupDao().update(courseGroupEntity);
+		return courseScheduleEntity.getId();
+	}
+
+	@Override
+	protected void handleRemoveCourseGroup(CourseGroupInfo courseGroupInfo)
+			throws Exception {
+    	Validate.notNull(courseGroupInfo, "CourseGroupInfo ==> courseGroupInfo cannot be null");
+    	Validate.notNull(courseGroupInfo.getCourseSeminarpoolAllocationId(), "CourseGroupInfo ==> getCourseSeminarpoolAllocationId cannot be null");
+    	CourseGroup entity = getCourseGroupDao().load(courseGroupInfo.getId());
+    	CourseSeminarpoolAllocation courseSeminarpoolAllocationEntity = getCourseSeminarpoolAllocationDao().load(courseGroupInfo.getCourseSeminarpoolAllocationId());
+    	courseSeminarpoolAllocationEntity.removeCourseGroup(entity);
+		
+	}
+
+	@Override
+	protected void handleRemoveCourseSchedule(CourseScheduleInfo courseSchedule)
+			throws Exception {
+    	Validate.notNull(courseSchedule, "handleRemoveCourseSchedule ==> courseGroup cannot be null");
+    	Validate.notNull(courseSchedule.getCourseGroupId(), "handleRemoveCourseSchedule ==> getCourseSeminarpoolAllocationId cannot be null");
+    	CourseGroup courseGroupEntity = getCourseGroupDao().load(courseSchedule.getCourseGroupId());
+    	CourseSchedule courseScheduleEntity = getCourseScheduleDao().courseScheduleInfoToEntity(courseSchedule);
+    	courseGroupEntity.removeCourseGroup(courseScheduleEntity);
+	}
+
+
+	@Override
 	protected List handleGetRegistrationsAsUserInfo(Long seminarpoolId)
 			throws Exception {
 		Validate.notNull(seminarpoolId, "handleGetRegistrationsAsUserInfo ==> seminarpoolId cannot be null");

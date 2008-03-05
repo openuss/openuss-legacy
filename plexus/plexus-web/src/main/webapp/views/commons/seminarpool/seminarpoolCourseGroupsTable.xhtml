@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+					<o:block label="#{msg.seminarpool_add_course_groups}">
+					<div class="content_font_normal"> 
+						<h:outputText value="#{msg.seminarpool_add_course_groups_text}" escape="false"/>
+			   		</div>
+			   	</o:block>
+				<plexus:dataTable 
+					id="coursegroups" 
+					label="#{msg.seminarpool_add_course_groups_add_header}" 
+					value="views$commons$seminarpool$seminarpoolCourseGroupsTable.courseGroupOverview" 
+					var="bean" 
+					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
+					rows="20">
+					<t:column>
+						<plexus:commandSortHeader columnName="name">
+							#{msg['seminarpool_add_course_groups_add_name']}
+						</plexus:commandSortHeader>
+						<h:commandLink action="#{views$commons$seminarpool$seminarpoolCourseGroupsTable.selectCurrentCourseGroup}">
+								<h:outputText value="#{bean.name}"/>
+						</h:commandLink>
+					</t:column>
+					<t:column>
+						<plexus:commandSortHeader columnName="capacity">
+							#{msg['seminarpool_add_course_groups_add_capacity']}
+						</plexus:commandSortHeader>
+						<h:outputText value="#{bean.capacity}"/>
+					</t:column>
+					<t:column>
+						<plexus:commandSortHeader columnName="courseTimes">
+							#{msg['seminarpool_add_course_groups_add_coursetimes_set']}
+						</plexus:commandSortHeader>
+						<h:outputText value="#{bean.isTimeSet}"/>
+					</t:column>	
+				<plexus:column header="#{msg.commands_header}">				
+						<plexus:command 
+							bean="#{views$commons$seminarpool$seminarpoolCourseGroupsTable}"
+							action="removeCurrentCourseGroup"
+							label="#{msg.seminarpool_add_course_allocation_remove_group}"
+							title="#{msg.seminarpool_add_course_allocation_remove_group}"
+							styleClass="icon_bookmark_remove"
+							>
+						</plexus:command>
+				</plexus:column>		
+				</plexus:dataTable>
+	</ui:composition>

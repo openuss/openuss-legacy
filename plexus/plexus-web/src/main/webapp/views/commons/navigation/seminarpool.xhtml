@@ -28,10 +28,10 @@
 						
 						<t:commandNavigation2 
 							action="seminarpool_options_seminars" 
-							activeOnViewIds="/views/secured/seminarpool/seminarpoolseminars.xhtml">
+							activeOnViewIds="/views/secured/seminarpool/seminarpoolseminars.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseGroups.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseSchedules.xhtml"
+							>
 							<h:outputText value="#{msg['seminarpool_command_options_seminars']}" />
 						</t:commandNavigation2>
-
 						<s:authorize ifAllGranted="ROLE_USER">
 							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 								<t:commandNavigation2

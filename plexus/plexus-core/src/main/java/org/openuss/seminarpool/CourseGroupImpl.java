@@ -29,4 +29,21 @@ public class CourseGroupImpl
 		
 	}
 
+	@Override
+	public void addCourseSchedule(CourseSchedule courseSchedule) {
+    	if ( !getCourseSchedule().contains(courseSchedule) ) {
+    		getCourseSchedule().add(courseSchedule);
+    	}
+    	courseSchedule.setCourseGroup(this);	
+    }
+
+	@Override
+	public void removeCourseGroup(CourseSchedule courseSchedule) {
+		if (getCourseSchedule().remove(courseSchedule)) {
+			if (courseSchedule.getCourseGroup().equals(this)) {
+				courseSchedule.setCourseGroup(null);
+			}
+		}
+	}
+
 }

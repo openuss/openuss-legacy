@@ -58,17 +58,22 @@ public class CourseSeminarpoolAllocationImpl
      */
     public void addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
     {
-        // @todo implement public void addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.CourseSeminarpoolAllocation.addCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup) Not implemented!");
-    }
+    	if ( !getCourseGroup().contains(courseGroup) ) {
+    		getCourseGroup().add(courseGroup);
+    	}
+    	courseGroup.setCourseSeminarpoolAllocation(this);
+	}
 
     /**
      * @see org.openuss.seminarpool.CourseSeminarpoolAllocation#removeCourseGroup(org.openuss.seminarpool.CourseGroup)
      */
     public void removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
     {
-        // @todo implement public void removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.CourseSeminarpoolAllocation.removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup) Not implemented!");
+		if (getCourseGroup().remove(courseGroup)) {
+			if (courseGroup.getCourseSeminarpoolAllocation().equals(this)) {
+				courseGroup.setCourseSeminarpoolAllocation(null);
+			}
+		}
     }
 
 }

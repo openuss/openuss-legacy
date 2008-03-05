@@ -31,49 +31,9 @@
   		</ui:define>
   		<ui:define name="content">
 		<h:form id="registration">
-				<o:block label="#{msg.seminarpool_add_course_groups}">
-					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_add_course_groups_text}" escape="false"/>
-			   		</div>
-			   	</o:block>
-				<plexus:dataTable 
-					id="coursegroups" 
-					label="#{msg.seminarpool_add_course_groups_add_header}" 
-					value="views$secured$seminarpool$add$courseAllocationStep2.courseGroupOverview" 
-					var="bean" 
-					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
-					rows="20">
-					<t:column>
-						<plexus:commandSortHeader columnName="name">
-							#{msg['seminarpool_add_course_groups_add_name']}
-						</plexus:commandSortHeader>
-						<h:commandLink action="#{views$secured$seminarpool$add$courseAllocationStep2.selectCurrentCourseGroup}">
-								<h:outputText value="#{bean.name}"/>
-						</h:commandLink>
-					</t:column>
-					<t:column>
-						<plexus:commandSortHeader columnName="capacity">
-							#{msg['seminarpool_add_course_groups_add_capacity']}
-						</plexus:commandSortHeader>
-						<h:outputText value="#{bean.capacity}"/>
-					</t:column>
-					<t:column>
-						<plexus:commandSortHeader columnName="courseTimes">
-							#{msg['seminarpool_add_course_groups_add_coursetimes_set']}
-						</plexus:commandSortHeader>
-						<h:outputText value="#{bean.isTimeSet}"/>
-					</t:column>	
-				<plexus:column header="#{msg.commands_header}">				
-						<plexus:command 
-							bean="#{views$secured$seminarpool$add$courseAllocationStep2}"
-							action="removeCurrentCourseGroup"
-							label="#{msg.seminarpool_add_course_allocation_remove_group}"
-							title="#{msg.seminarpool_add_course_allocation_remove_group}"
-							styleClass="icon_bookmark_remove"
-							>
-						</plexus:command>
-				</plexus:column>		
-				</plexus:dataTable>
+
+				<ui:include src="/views/commons/seminarpool/seminarpoolCourseGroupsTable.xhtml"/>
+				
 				<o:block label="#{msg.seminarpool_course_groups_add_new}">
 					<o:input 
 						label="#{msg.seminarpool_add_course_groups_add_capacity}"

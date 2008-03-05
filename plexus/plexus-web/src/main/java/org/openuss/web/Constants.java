@@ -1,6 +1,5 @@
 package org.openuss.web;
 
-import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 
 /**
  * Contains any constant that is used in conjunction with scopes. 
@@ -304,6 +303,7 @@ public class Constants {
 	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";
 	public static final String SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO = "SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO";
 	public static final String COURSE_GROUP_INDEX = "COURSE_GROUP_INDEX";
+	public static final String SEMINARPOOL_COURSE_GROUPS_EDIT = "seminarpoolEditCourseGroups";
 	
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE = "seminarpooluserregistration_step1";
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP2_PAGE = "seminarpooluserregistration_step2";

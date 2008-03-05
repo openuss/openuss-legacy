@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool.add;
+package org.openuss.web.seminarpool.courseAllocation;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;

@@ -15,6 +15,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
@@ -88,6 +89,16 @@ public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
 		logger.debug(currentCourseType.getId());
 		this.seminarpoolAdministrationService.activateSeminar(currentCourseType);
 		return "";
+	}
+	
+	public String loadCourseGroups(){
+		logger.debug("Starting method loadCourseGroups");
+		CourseSeminarpoolAllocationInfo courseAllocationInfo = dataCourseTypes.getRowData();
+		List<CourseGroupInfo> courseGroupInfoList = getSeminarpoolAdministrationService().findCourseGroupsByCourseAllocationId(courseAllocationInfo.getId());
+		logger.debug("Returning to method loadCourseGroups");
+		setSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO, courseAllocationInfo);
+		setSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION, courseGroupInfoList);
+		return Constants.SEMINARPOOL_COURSE_GROUPS_EDIT;
 	}
 
 	

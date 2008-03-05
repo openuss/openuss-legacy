@@ -28,8 +28,7 @@ public class CourseGroupDaoImpl
         targetVO.setCourseSeminarpoolAllocationId(sourceEntity.getCourseSeminarpoolAllocation().getId());
         if (sourceEntity.getCourseSchedule() != null && sourceEntity.getCourseSchedule().size() > 0){
         	List<CourseScheduleInfo> courseScheduleInfoList = new ArrayList<CourseScheduleInfo>();
-        	for (CourseSchedule courseScheduleEntity : sourceEntity.getCourseSchedule()){
-        		getCourseScheduleDao().toCourseScheduleInfo(courseScheduleEntity);    		
+        	for (CourseSchedule courseScheduleEntity : sourceEntity.getCourseSchedule()){	
         		courseScheduleInfoList.add(getCourseScheduleDao().toCourseScheduleInfo(courseScheduleEntity));        		
         	}
         	targetVO.setCourseSchedule(courseScheduleInfoList);

@@ -1247,7 +1247,10 @@
 			<from-outcome>seminarpoolMain</from-outcome>
 			<to-view-id>/views/secured/seminarpool/main.xhtml</to-view-id>
 		</navigation-case>
-		
+		<navigation-case>
+			<from-outcome>seminarpoolEditCourseGroups</from-outcome>
+			<to-view-id>/views/secured/seminarpool/edit/courseAllocationCourseGroups.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
              SEMINARPOOL-Page add Seminar 
@@ -1275,7 +1278,25 @@
 			<to-view-id>/views/secured/seminarpool/add/courseAllocationFinish.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
+	<navigation-rule>
+		<from-view-id>/views/secured/seminarpool/edit/*</from-view-id>
+		<navigation-case>
+			<from-outcome>seminarpoolCourseAllocationStep2</from-outcome>
+			<to-view-id>/views/secured/seminarpool/edit/courseAllocationCourseGroups.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpoolCourseAllocationStep3</from-outcome>
+			<to-view-id>/views/secured/seminarpool/edit/courseAllocationCourseSchedules.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpoolCourseAllocationStart</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolseminars.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpoolCourseAllocationFinish</from-outcome>
+			<to-view-id>/views/secured/seminarpool/seminarpoolseminars.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
 
 </faces-config>

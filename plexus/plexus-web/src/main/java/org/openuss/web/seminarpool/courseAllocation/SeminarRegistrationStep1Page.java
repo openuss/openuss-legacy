@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool.add;
+package org.openuss.web.seminarpool.courseAllocation;
 
 import java.util.ArrayList;
 import java.util.Collections;

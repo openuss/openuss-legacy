@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool.add;
+package org.openuss.web.seminarpool.courseAllocation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
