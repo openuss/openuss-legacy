@@ -349,6 +349,11 @@
 			<from-outcome>group_discussion</from-outcome>
 			<to-view-id>/views/secured/discussion/groups/discussions.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>group_calendar</from-outcome>
+			<to-view-id>/views/secured/groups/components/calendar.xhtml</to-view-id>
+		</navigation-case>
 
     		<!-- documents -->
 
