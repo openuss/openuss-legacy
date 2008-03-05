@@ -64,15 +64,15 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	private AuthenticationDomainInfo createAuthenticationDomainInfoDummy() {
 		AuthenticationDomainInfo domain = new AuthenticationDomainInfo();
-		domain.setName("ZIV Uni Muenster");
-		domain.setDescription("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster.");
+		domain.setName(testUtility.unique("WWU Muenster"));
+		domain.setDescription("Test");
 		
 		return domain;
 	}
 	
 	private UserDnPatternInfo createUserDnPatternInfoDummy() {
 		UserDnPatternInfo userDnPattern = new UserDnPatternInfo();
-		userDnPattern.setName("memberOf");
+		userDnPattern.setName(testUtility.unique("memberOf"));
 		
 		return userDnPattern;
 	}
@@ -82,7 +82,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		userDnPatterns.add(userDnPattern.getId());		
 		
 		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
-		userDnPatternSet.setName("WWU user dn pattern");
+		userDnPatternSet.setName(testUtility.unique("WWU user dn pattern"));
 		userDnPatternSet.setUserDnPatternIds(userDnPatterns);
 		
 		return userDnPatternSet;
@@ -108,7 +108,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	private RoleAttributeKeyInfo createRoleAttributeKeyInfoDummy() {
 		RoleAttributeKeyInfo key = new RoleAttributeKeyInfo();
-		key.setRoleAttributeKey("CN");
+		key.setRoleAttributeKey(testUtility.unique("CN"));
 		
 		return key;
 	}
@@ -118,7 +118,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
 		roleAttributeKeyIds.add(key.getId());
 		
-		set.setName("some role attribute key set for testing");
+		set.setName(testUtility.unique("test key set"));
 		set.setRoleAttributeKeyIds(roleAttributeKeyIds);
 		
 		return set;
@@ -126,7 +126,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	private AttributeMappingInfo createAttributeMappingInfoDummy(RoleAttributeKeySetInfo set) {
 		AttributeMappingInfo mapping = new AttributeMappingInfo();
-		mapping.setMappingName("Mapping Test");
+		mapping.setMappingName(testUtility.unique("Mapping Test"));
 		mapping.setEmailKey("mail");
 		mapping.setFirstNameKey("givenName");
 		mapping.setGroupRoleAttributeKey("CN");
@@ -152,7 +152,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();
 		assertNotNull(patternInfo);
 		assertNull(patternInfo.getId());
-		assertTrue("memberOf" == patternInfo.getName());
 		
 		patternInfo = service.createUserDnPattern(patternInfo);		
 		assertNotNull(patternInfo.getId());
@@ -195,8 +194,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(domainInfo);
 		
 		// test values
-		assertTrue("ZIV Uni Muenster" == domainInfo.getName());
-		assertTrue("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster." == domainInfo.getDescription());
 		assertNull(domainInfo.getAttributeMappingId());
 		
 		// set new values
@@ -212,7 +209,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		    }
 		    
 		// set new values
-		domainInfo.setName("Test domain");
+		domainInfo.setName(testUtility.unique("Test domain"));
 		assertNotNull(domainInfo.getName());
 		
 		// try again
@@ -221,9 +218,17 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		    } catch (LdapConfigurationServiceException expected) {
 		    	fail("Should NOT have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
 		    }
+		
+		    
+		List<AuthenticationDomainInfo> all = service.getAllDomains(); 
+		int x = all.size();
+		service.deleteDomain(domainInfo);
+		all = service.getAllDomains();
+		assertTrue(x > all.size());
 		    
 		// TODO: create some ldap server object and test domain.setLdapServerIds
 	}
+	
 	
 	
 	
@@ -334,6 +339,16 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 			fail("Should NOT have raised any LdapConfigurationServiceException");
 		}
 		
+
+		
+		List<LdapServerInfo> all = service.getAllLdapServers();
+		assertTrue(1 == all.size());
+		
+		service.deleteLdapServer(server);
+		all = service.getAllLdapServers();
+		assertTrue(0 == all.size());
+		
+		
 			
 		// TODO: update userDnPatternSet and authDomain
 		
@@ -348,16 +363,13 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		// create value object
 		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
-		key.setRoleAttributeKey("CN");
 		assertNotNull(key);
 		assertNull(key.getId());
-		assertTrue("CN" == key.getRoleAttributeKey());
 		
 		// save value object to DB
 		key = service.createRoleAttributeKey(key);
 		assertNotNull(key);
 		assertNotNull(key.getId());
-		assertTrue("CN" == key.getRoleAttributeKey());
 		
 		// set new value
 		key.setRoleAttributeKey(null);
@@ -383,12 +395,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		RoleAttributeKeySetInfo set = createRoleAttributeKeySetInfoDummy(key);
 		assertNotNull(set);
 		assertNull(set.getId());
-		set.setName("test");
 		
 		// save value object to DB
 		set = service.createRoleAttributeKeySet(set);
 		assertNotNull(set.getId());
-		assertTrue("test" == set.getName());	
 		
 		// set new value
 		set.setName(null);

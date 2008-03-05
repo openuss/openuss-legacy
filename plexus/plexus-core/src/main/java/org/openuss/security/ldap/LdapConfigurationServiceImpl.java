@@ -319,7 +319,7 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected AttributeMappingInfo handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping){
+	protected AttributeMappingInfo handleCreateAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) throws Exception {
     	
     	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
@@ -350,7 +350,7 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
+	protected void handleSaveAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) throws Exception {
     	if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
