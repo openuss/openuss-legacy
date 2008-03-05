@@ -46,4 +46,11 @@
             <component-type>org.apache.myfaces.Schedule</component-type>
         </component>
     </tag>
+    <tag>
+      <tag-name>selectManyPicklist</tag-name>
+      <component>
+         <component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
+         <renderer-type>org.apache.myfaces.PicklistRenderer</renderer-type>
+      </component>
+   </tag>
 </facelet-taglib>

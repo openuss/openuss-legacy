@@ -52,4 +52,12 @@
 		<source>../facelets/news/newsItemDetail.xhtml</source>
 	</tag>	
 	
+	<tag>
+      <tag-name>selectManyPicklist</tag-name>
+      <component>
+         <component-type>org.openuss.components.HtmlSelectManyPicklist</component-type>
+         <renderer-type>org.openuss.framework.jsfcontrols.components.picklist.HtmlPicklistRenderer</renderer-type>
+      </component>
+   </tag>
+	
 </facelet-taglib>

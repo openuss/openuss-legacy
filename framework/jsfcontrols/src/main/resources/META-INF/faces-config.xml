@@ -33,6 +33,12 @@
 		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
 		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UITabs</component-class>
 	</component>
+	
+	
+	<component>
+        <component-type>org.openuss.components.HtmlSelectManyPicklist</component-type>
+        <component-class>org.openuss.framework.jsfcontrols.components.picklist.HtmlSelectManyPicklist</component-class>
+    </component>
    
     <converter>
     	<description>Converts a TimeZone object to a string representation and vice versa</description>

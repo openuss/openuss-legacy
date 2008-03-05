@@ -66,6 +66,11 @@
 			<groupId>org.apache.myfaces.tomahawk</groupId>
 			<artifactId>tomahawk</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk-sandbox</artifactId>
+            <version>1.1.6</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.fckfaces</groupId>

@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @author  Projektseminar WS 07/08, Team Collaboration
@@ -107,12 +108,19 @@ public class WorkspaceServiceImpl extends
 
 		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
+		// remove permissions
+		for (User user : workspace.getUser()) {
+			getSecurityService().removePermission(user, workspace);
+		}
+		
 		workspace.getUser().clear();
 		
 		for (Long id : (List<Long>)userId) {
 			User member = getUserDao().load(id); 
 			
 			workspace.getUser().add(member);
+			getSecurityService().setPermissions(member, workspace, 
+					LectureAclEntry.WORKSPACE_PARTICIPANT);
 		}
 		
 		getWorkspaceDao().update(workspace);

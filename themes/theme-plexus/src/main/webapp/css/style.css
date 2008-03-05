@@ -2165,3 +2165,26 @@ table.jscalendar-DB-dropdown-style {
 .wiki_content p {
     margin-bottom: 10pt;
 }
+
+
+/* picklist */
+table.picker {
+
+}
+td.pickerLeft {
+	width: 300px;
+}
+td.pickerCenter {
+    text-align: center;
+}
+td.pickerRight {
+    width: 300px;
+}
+table.picker td select {
+	width: 100%;
+	height: 200px;
+}
+table.picker td input {
+    width: 100%;
+    height: 200px;
+}
