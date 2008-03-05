@@ -220,7 +220,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 			this.getInstituteService().removeInstitute(instituteId2);
 			fail("Exception should have been thrown");
 		} catch (Exception e) {
-			;
+			logger.info("Got exceptions");
+			// success
 		}
 		this.getInstituteService().removeInstitute(instituteId);
 

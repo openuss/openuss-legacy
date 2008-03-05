@@ -105,11 +105,13 @@ public class UniversityImpl extends org.openuss.lecture.UniversityBase implement
 
 	@Override
 	public Period getDefaultPeriod() {
-		return (Period) CollectionUtils.find(getPeriods(), new Predicate() {
-			public boolean evaluate(Object object) {
-				return ((Period)object).isDefaultPeriod();
-			}
-		});
+		return (Period) CollectionUtils.find(getPeriods(), new DefaultPredicate());
+	}
+
+	private static final class DefaultPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return ((Period)object).isDefaultPeriod();
+		}
 	}
 
 }

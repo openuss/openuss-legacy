@@ -34,8 +34,9 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 			EntityObjectIdentity objIdentity = (EntityObjectIdentity) aclObjectIdentity;
 
 			ObjectIdentity identity = objectIdentityDao.load(objIdentity.getIdentifier());
-			if (identity == null)
+			if (identity == null) {
 				return null; // unknown identity
+			}
 
 			// get permission entries of object identity
 			List<BasicAclEntry> entries = getBasicAclPermissions(identity);
@@ -71,11 +72,7 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	 */
 	private List<BasicAclEntry> getBasicAclPermissions(ObjectIdentity objectIdentity) {
 		List entries = permissionDao.findPermissions(objectIdentity);
-		CollectionUtils.transform(entries, new Transformer() {
-			public Object transform(Object input) {
-				return new AclPermissionAdapter((Permission)input);
-			}
-		});
+		CollectionUtils.transform(entries, new AclPermissionAdapterTransformer());
 		return entries; 
 	}
 
@@ -93,5 +90,11 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 
 	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
 		this.objectIdentityDao = objectIdentityDao;
+	}
+
+	private static final class AclPermissionAdapterTransformer implements Transformer {
+		public Object transform(Object input) {
+			return new AclPermissionAdapter((Permission)input);
+		}
 	}
 }

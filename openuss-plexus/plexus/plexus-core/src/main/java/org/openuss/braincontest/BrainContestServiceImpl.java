@@ -51,17 +51,19 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	private void verifiyPermissionsOnEntries(DomainObject domainObject, List<BrainContest> contests) {
 		logger.debug("verify permissions on entries");
 		if (!AcegiUtils.hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
-			CollectionUtils.filter(contests, new Predicate() {
-				public boolean evaluate(Object object) {
-					if (object instanceof BrainContestInfo) {
-						return ((BrainContestInfo) object).isReleased();
-					} else if (object instanceof BrainContest) {
-						return ((BrainContest) object).isReleased();
-					} else {
-						return false;
-					}
-				}
-			});
+			CollectionUtils.filter(contests, new ReleasedPredicate());
+		}
+	}
+
+	private static final class ReleasedPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			if (object instanceof BrainContestInfo) {
+				return ((BrainContestInfo) object).isReleased();
+			} else if (object instanceof BrainContest) {
+				return ((BrainContest) object).isReleased();
+			} else {
+				return false;
+			}
 		}
 	}
 

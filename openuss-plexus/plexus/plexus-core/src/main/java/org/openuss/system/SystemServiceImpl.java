@@ -25,7 +25,7 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	 * This is the system instance identity, that must be unique within the
 	 * cluster
 	 */
-	private static Long instanceIdentity = null;
+	private static volatile Long instanceIdentity = null;
 
 	static {
 		String instanceId = System.getProperty(SystemProperties.OPENUSS_INSTANCE_ID);

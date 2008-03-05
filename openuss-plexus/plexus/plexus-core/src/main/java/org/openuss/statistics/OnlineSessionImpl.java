@@ -13,7 +13,7 @@ import org.apache.commons.lang.time.DateUtils;
  * @see org.openuss.statistics.OnlineSession
  * @author Ingo Dueppe
  */
-public class OnlineSessionImpl extends OnlineSessionBase implements OnlineSession {
+public class OnlineSessionImpl extends OnlineSessionBase {
 	
 	/**
 	 * The serial version UID of this class. Needed for serialization.

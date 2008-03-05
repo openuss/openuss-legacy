@@ -5,6 +5,7 @@
  */
 package org.openuss.security;
 
+import java.util.Locale;
 import java.util.Set;
 
 import org.acegisecurity.GrantedAuthority;
@@ -27,12 +28,12 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	
 	@Override
 	public void setUsername(String username) {
-		super.setUsername(username.toLowerCase().trim());
+		super.setUsername(username.toLowerCase(Locale.ENGLISH).trim());
 	}
 	
 	@Override
 	public void setEmail(String email) {
-		super.setEmail(email.toLowerCase().trim());
+		super.setEmail(email.toLowerCase(Locale.ENGLISH).trim());
 	}
 
 	/**
@@ -57,6 +58,11 @@ public class UserImpl extends UserBase implements User, UserDetails {
 			return this.getUsername().equals(object);
 		}
 		return super.equals(object);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	/**

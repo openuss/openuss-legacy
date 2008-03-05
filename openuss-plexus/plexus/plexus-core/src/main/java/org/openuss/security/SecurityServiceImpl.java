@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.acegisecurity.Authentication;
@@ -49,7 +50,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected UserInfo handleGetUserByName(String name) throws Exception {
-		return (UserInfo) getUserDao().findUserByUsername(UserDao.TRANSFORM_USERINFO, name.toLowerCase());
+		return (UserInfo) getUserDao().findUserByUsername(UserDao.TRANSFORM_USERINFO, name.toLowerCase(Locale.ENGLISH));
 	}
 
 	@Override
