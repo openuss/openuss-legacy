@@ -2,11 +2,15 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIData;
 
+import org.apache.commons.collections.comparators.ComparatorChain;
+import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -18,6 +22,7 @@ import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -27,6 +32,7 @@ import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.upload.UploadFileManager;
+import org.springframework.beans.support.PropertyComparator;
               
 @Bean(name = "views$secured$papersubmission$examlist", scope = Scope.REQUEST)
 @View
@@ -106,6 +112,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		examInfo = currentActiveExam();
 		if (examInfo == null) {
 			return Constants.FAILURE;
+		}else if (examInfo.getId()!=null){
+			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
@@ -130,6 +138,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		examInfo = currentInactiveExam();
 		if (examInfo == null) {
 			return Constants.FAILURE;
+		}else if (examInfo.getId()!=null){
+			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
@@ -323,15 +333,28 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 				
 				List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
 				activeExams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
-				
-				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
-				
-				setSortColumn("deadline");
+				//setSortColumn("deadline");
 				sort(activeExams);
 				page = new DataPage<ExamInfo>(activeExams.size(), 0, activeExams);
 			}
 			return page;
 		}
+		
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<ExamInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("deadline", true, isAscending()));
+			}
+			Collections.sort(list, chain);
+		}	
 	}
 
 	
@@ -347,14 +370,26 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 				
 				List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
 				inactiveExams = paperSubmissionService.findInactiveExamsByDomainId(courseInfo.getId());
-				
-				//exams.add(new ExamInfo(1l, 1l, "VOFI ohne Steuern", "Vofi ohne Steuern"));
-				
-				setSortColumn("deadline");
 				sort(inactiveExams);
 				page = new DataPage<ExamInfo>(inactiveExams.size(), 0, inactiveExams);
 			}
 			return page;
+		}
+		
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<ExamInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("deadline", true, isAscending()));
+			}
+			Collections.sort(list, chain);
 		}
 	}
 	public DocumentService getDocumentService() {
