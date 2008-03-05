@@ -27,7 +27,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	private AttributeMappingDao attributeMappingDao;
 	private LdapConfigurationService service;
 	
-
 	
 	public void testAuthenticationDomainDaoInjection() {
 		assertNotNull(authenticationDomainDao);
@@ -74,7 +73,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	private UserDnPatternInfo createUserDnPatternInfoDummy() {
 		UserDnPatternInfo userDnPattern = new UserDnPatternInfo();
 		userDnPattern.setName("memberOf");
-		userDnPattern.setUserDnPattern("memberOf");
 		
 		return userDnPattern;
 	}
@@ -85,7 +83,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
 		userDnPatternSet.setName("WWU user dn pattern");
-		userDnPatternSet.setUserDNPatternIds(userDnPatterns);
+		userDnPatternSet.setUserDnPatternIds(userDnPatterns);
 		
 		return userDnPatternSet;
 	}
@@ -117,61 +115,81 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	/*
 	 * Tests creation and manipulation of UserDnPattern/Info objects
 	 */
-	public void testLdapConfigurationService_createUserDnPattern() {
+	public void testCreateUserDnPattern() {
 		service = getLdapConfigurationService();
 		
-		UserDnPatternInfo pattern = createUserDnPatternInfoDummy();
-		assertNotNull(pattern);
-		assertNull(pattern.getId());
-		assertTrue("memberOf" == pattern.getName());
-		assertTrue("memberOf" == pattern.getUserDnPattern());
+		UserDnPatternInfo patternInfo1 = createUserDnPatternInfoDummy();
+		assertNotNull(patternInfo1);
+		assertNull(patternInfo1.getId());
+		assertTrue("memberOf" == patternInfo1.getName());
 		
-		UserDnPattern patternEntity = service.createUserDnPattern(pattern);
-		assertNotNull(patternEntity);
-		assertTrue("memberOf" == patternEntity.getUserDnPattern());
+		UserDnPatternInfo patternInfo2 = service.createUserDnPattern(patternInfo1);		
+		assertNotNull(patternInfo2.getId());
 		
+//		setComplete();
+//		endTransaction();
 	}
 	
 	
 	/*
-	 * Tests creation and manipulation of AuthenticationDomain/Info objects
+	 * Tests creation and manipulation of UserDnPatternSet/Info objects
 	 */
-	public void testLdapConfigurationService_createDomain() {
+	public void testCreateUserDnPatternSet() {
 		service = getLdapConfigurationService();
 		
-		AuthenticationDomainInfo domain = createAuthenticationDomainInfoDummy();
-		assertNull(domain.getId());
+		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();
+		UserDnPatternSetInfo patternInfo1 = createUserDnPatternSetInfoDummy(patternInfo);
+		assertNotNull(patternInfo1);
+		assertNull(patternInfo1.getId());
+//		assertTrue("memberOf" == patternInfo1.getName());
 		
-		AuthenticationDomain domainEntity = service.createDomain(domain);
-		assertNotNull(domainEntity);
-		assertTrue("ZIV Uni Muenster" == domainEntity.getName());
-		assertTrue("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster." == domainEntity.getDescription());
-		assertNull(domainEntity.getAttributeMapping());
+		UserDnPatternSetInfo patternInfo2 = service.createUserDnPatternSet(patternInfo1);		
+		assertNotNull(patternInfo2.getId());
 		
-		domain.setName(null);
-		domain.setDescription("Test description");
-		assertNull(domain.getName());
+//		setComplete();
+//		endTransaction();
+	}
+	
+	/*
+	 * Tests creation and manipulation of AuthenticationDomain/Info objects
+	 */
+	public void testCreateDomain() {
+		service = getLdapConfigurationService();
 		
-		try {
-		      service.saveDomain(domain);
-		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
-		    } catch (LdapConfigurationServiceException expected) {
-		    }
-		    
-		domain.setName("Test domain");
-		assertNotNull(domain.getName());
+		AuthenticationDomainInfo domainInfo1 = createAuthenticationDomainInfoDummy();
+		assertNull(domainInfo1.getId());
 		
-		try {
-		      service.saveDomain(domain);
-		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
-		    } catch (LdapConfigurationServiceException expected) {
-		    }
+		AuthenticationDomainInfo domainInfo2 = service.createDomain(domainInfo1);
+		assertNotNull(domainInfo2);
+		
+//		assertTrue("ZIV Uni Muenster" == domainEntity.getName());
+//		assertTrue("Zentrale Benutzerkennung von Mitarbeitern und Studierenden der Universitaet Muenster." == domainEntity.getDescription());
+//		assertNull(domainEntity.getAttributeMapping());
+		
+//		domain.setName(null);
+//		domain.setDescription("Test description");
+//		assertNull(domain.getName());
+//		
+//		try {
+//		      service.saveDomain(domain);
+//		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
+//		    } catch (LdapConfigurationServiceException expected) {
+//		    }
+//		    
+//		domain.setName("Test domain");
+//		assertNotNull(domain.getName());
+//		
+//		try {
+//		      service.saveDomain(domain);
+//		      fail("Should have raised an LdapConfigurationServiceException: Name of new authentication domain must not be empty!");
+//		    } catch (LdapConfigurationServiceException expected) {
+//		    }
 	}
 	
 	/*
 	 * Tests creation and manipulation of LdapServer/Info objects
 	 */
-	public void testLdapConfigurationService_createLdapServer() {
+	public void testCreateLdapServer() {
 //		service = getLdapConfigurationService();
 //		
 //		UserDnPatternInfo pattern = createUserDnPatternInfoDummy();
