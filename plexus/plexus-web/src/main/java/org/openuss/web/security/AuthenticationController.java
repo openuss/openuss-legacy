@@ -2,6 +2,7 @@ package org.openuss.web.security;
 
 import java.io.IOException;
 
+import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,10 +35,15 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
+import org.openuss.security.AttributeMappingKeys;
+import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
+import org.openuss.security.SecurityServiceException;
 import org.openuss.security.User;
+import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.migration.CentralUserData;
 import org.openuss.web.statistics.OnlineSessionTracker;
 
 
@@ -73,6 +79,12 @@ public class AuthenticationController extends BasePage {
 	@Property(value="#{sessionTracker}")
 	private OnlineSessionTracker sessionTracker;
 	
+	@Property(value="#{centralUserData}")
+	CentralUserData centralUserData;
+	
+	@Property(value="#{ldapConfigurationServiceDummy}")
+	LdapConfigurationService ldapConfigurationService;
+
 	public AuthenticationController() {
 		logger.debug(" created");
 	}
@@ -85,6 +97,9 @@ public class AuthenticationController extends BasePage {
 		final HttpServletRequest request = getRequest();
 		final HttpServletResponse response = getResponse();
 		final HttpSession session = getSession();
+		
+		// Important! Ensure that users cannot login using a username of a user profile of a centrally authenticated user. Therefore replace all delimiters.
+		username = username.replaceAll("\\"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"+","");
 
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
 
@@ -94,19 +109,39 @@ public class AuthenticationController extends BasePage {
 		try {
 			// Perform authentication
 			auth = getAuthenticationManager().authenticate(authRequest);
+			
+			// Handle LDAP user
 			if (auth.getPrincipal() instanceof LdapUserDetails) {
-				logger.info("==============LDAPUSER==========");
-				return LOGIN;
+				mapLdapUserAttributes((LdapUserDetails) auth.getPrincipal());
+//				try {
+//					securityService.getUserByName(centralUserData.getUsername());
+//					// OpenUSS profile of central user found. Generate authentication object. 
+//					throw new SecurityServiceException();
+////					auth = getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(centralUserData.getUsername(),SecurityConstants.CENTRAL_USER_STANDARD_PW));
+//					
+//				} catch (SecurityServiceException sse) {
+					// New central user must be redirected to migration page
+					final SecurityContext securityContext = SecurityContextHolder.getContext();
+					securityContext.setAuthentication(auth);
+					session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
+					rememberMeServices.loginSuccess(request, response, auth);
+					sessionTracker.logSessionCreated(getSession());
+//					setSessionBean(Constants.USER_SESSION_KEY, auth.getPrincipal());
+					return Constants.MIGRATION_PAGE;
+//				}
 			}
-
-			// Initialize the security context
-			final SecurityContext securityContext = SecurityContextHolder.getContext();
-			securityContext.setAuthentication(auth);
-			session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-			rememberMeServices.loginSuccess(request, response, auth);
-			// setup user and userPreferences
-			injectUserInformationIntoSession(auth);
-			sessionTracker.logSessionCreated(getSession());
+			
+			// Handle local user
+			if (auth.getPrincipal() instanceof User) {
+				// Initialize the security context
+				final SecurityContext securityContext = SecurityContextHolder.getContext();
+				securityContext.setAuthentication(auth);
+				session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
+				rememberMeServices.loginSuccess(request, response, auth);
+				// setup user and userPreferences
+				injectUserInformationIntoSession(auth);
+				sessionTracker.logSessionCreated(getSession());
+			}
 		
 			if (logger.isDebugEnabled())
 				logger.debug("User: " + username + " switched to active state.");
@@ -178,6 +213,7 @@ public class AuthenticationController extends BasePage {
 		return request != null && request.getFullRequestUrl().contains("/views/");
 	}
 
+	
 	private void injectUserInformationIntoSession(Authentication auth) {
 		if (auth.getPrincipal() instanceof User) {
 			logger.debug("Principal is: "+auth.getPrincipal());
@@ -238,6 +274,21 @@ public class AuthenticationController extends BasePage {
 	
 		}
 		return outcome;
+	}
+	
+	private void mapLdapUserAttributes(LdapUserDetails userDetails) {
+		try {
+			centralUserData.setAuthenticationDomainId((Long) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get());
+			centralUserData.setAuthenticationDomainName(getLdapConfigurationService().getDomainById(centralUserData.getAuthenticationDomainId()).getName());
+			centralUserData.setUsername((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
+			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsername());
+			centralUserData.setFirstName((String) userDetails.getAttributes().get(AttributeMappingKeys.FIRSTNAME_KEY).get());
+			centralUserData.setLastName((String) userDetails.getAttributes().get(AttributeMappingKeys.LASTNAME_KEY).get());
+			centralUserData.setEmail((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public AuthenticationManager getAuthenticationManager() {
@@ -302,6 +353,23 @@ public class AuthenticationController extends BasePage {
 
 	public void setSessionTracker(OnlineSessionTracker sessionTracker) {
 		this.sessionTracker = sessionTracker;
+	}
+
+	public CentralUserData getCentralUserData() {
+		return centralUserData;
+	}
+
+	public void setCentralUserData(CentralUserData centralUserData) {
+		this.centralUserData = centralUserData;
+	}
+
+	public LdapConfigurationService getLdapConfigurationService() {
+		return ldapConfigurationService;
+	}
+
+	public void setLdapConfigurationService(
+			LdapConfigurationService ldapConfigurationService) {
+		this.ldapConfigurationService = ldapConfigurationService;
 	}
 
 }

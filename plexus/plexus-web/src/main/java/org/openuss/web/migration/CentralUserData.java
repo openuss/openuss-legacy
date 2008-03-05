@@ -23,7 +23,8 @@ public class CentralUserData extends BaseBean {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private Long authenticationDomainId;
+	private String authenticationDomainName="";
+	private Long authenticationDomainId;	
 	private boolean userAgreementAccepted = false;
 
 	private static final Logger logger = Logger.getLogger(CentralUserData.class);
@@ -41,19 +42,7 @@ public class CentralUserData extends BaseBean {
 			addError(toValidate.getClientId(context), i18n("error_useragreement_must_be_accepted"), null);
 		}
 	}
-	
-	public boolean isUsernameSet() {
-		return (username !=null && !"".equals(username));
-	}
-	
-	public boolean getIsCentralUser() {
-		return (username.startsWith("$"));
-	}
 
-	
-	public boolean notIsUsernameSet() {
-		return !(username !=null && !"".equals(username));
-	}
 	public boolean isUserAgreementAccepted() {
 		return userAgreementAccepted;
 	}
@@ -91,6 +80,14 @@ public class CentralUserData extends BaseBean {
 	}
 	public void setAuthenticationDomainId(Long authenticationDomainId) {
 		this.authenticationDomainId = authenticationDomainId;
+	}
+
+	public String getAuthenticationDomainName() {
+		return authenticationDomainName;
+	}
+
+	public void setAuthenticationDomainName(String authenticationDomainName) {
+		this.authenticationDomainName = authenticationDomainName;
 	}
 	
 }

@@ -120,6 +120,49 @@ public class UserDaoTest extends UserDaoTestBase {
 		assertEquals(user.getPassword(), password);
 	}
 	
+	public void testUpdateUsernameOfCentrallyAuthenticatedUser() {
+		// Create a User
+		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
+		userPreferences.setLocale("de");
+		userPreferences.setTheme("plexus");
+		userPreferences.setTimezone(TimeZone.getDefault().getID());
+		
+		UserContact userContact = UserContact.Factory.newInstance();
+		userContact.setFirstName("Unique");
+		userContact.setLastName("User");
+		userContact.setAddress("Leonardo Campus 5");
+		userContact.setCity("Münster");
+		userContact.setCountry("Germany");
+		userContact.setPostcode("48149");
+		
+		String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exampledomain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
+		User user = User.Factory.newInstance();
+		user.setUsername(username);
+		user.setEmail(testUtility.unique("openuss")+"@e-learning.uni-muenster.de");
+		user.setEnabled(true);
+		user.setAccountExpired(false);
+		user.setCredentialsExpired(false);
+		user.setAccountLocked(false);
+		
+		user.setPreferences(userPreferences);
+		user.setContact(userContact);
+		user.setGroups(new ArrayList<Group>());
+		
+		user.setPassword("password");
+		
+		userDao.create(user);
+		
+		String password = userDao.getPassword(user.getId());
+		assertEquals(user.getPassword(), password);
+		assertEquals(user.getUsername(), username);
+		
+		// Username of centrally authenticated user must not be changed!
+		String username2 = "centraluser";
+		user.setUsername(username2);
+		
+		assertEquals(user.getUsername(),username);		
+	}
+	
 	public void testUniqueUsername() {
 		logger.info("---> BEGIN unique username test");
 		User user = testUtility.createUniqueUserInDB();

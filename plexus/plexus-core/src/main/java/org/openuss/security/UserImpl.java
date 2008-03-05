@@ -24,10 +24,13 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		setContact(UserContact.Factory.newInstance());
 		setProfile(UserProfile.Factory.newInstance());
 	}
+	
 
 	@Override
 	public void setUsername(String username) {
-		super.setUsername(username.toLowerCase().trim());
+		if (getUsername() == null || !isCentralUser()) { 
+			super.setUsername(username.toLowerCase().trim());
+		}
 	}
 	
 	@Override
@@ -222,6 +225,11 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 		return super.getContact();
 
+	}
+
+	@Override
+	public boolean isCentralUser() {
+		return getUsername().indexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)!=-1 ? true : false;
 	}
 
 }

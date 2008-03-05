@@ -5,6 +5,8 @@
  */
 package org.openuss.security;
 
+import java.util.TimeZone;
+
 import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -42,7 +44,74 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertTrue(securityService.isValidUserName(user, user.getUsername()));
 
 	}
-
+	
+	public void testCreateUserForCentrallyAuthenticatedUser() {
+		String username = "$exampledomain$tester";
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Centrally authenticated user must be enabled.
+		boolean enabled = true;
+		User user = User.Factory.newInstance(username, password, email, enabled, false, false, false);
+		user.setPreferences(UserPreferences.Factory.newInstance());
+		UserContact userContact = UserContact.Factory.newInstance(firstName, lastName);
+		user.setContact(userContact);		
+		user.setTimezone(TimeZone.getDefault().getID());
+		
+		securityService.createUser(user);
+		
+		User retrievedUser = securityService.getUserByName(username);
+		assertNotNull(retrievedUser);
+		assertEquals(retrievedUser.getUsername(),username);
+		assertTrue(retrievedUser.isCentralUser());
+		assertTrue(retrievedUser.isEnabled());
+	}
+	
+	public void testCreateUserForCentrallyAuthenticatedUserWithInvalidUsername() {
+		String username = "exampledomaintester";
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Centrally authenticated user must be enabled.
+		boolean enabled = true;
+		User user = User.Factory.newInstance(username, password, email, enabled, false, false, false);
+		user.setPreferences(UserPreferences.Factory.newInstance());
+		UserContact userContact = UserContact.Factory.newInstance(firstName, lastName);
+		user.setContact(userContact);
+		// set default user time zone
+		user.setTimezone(TimeZone.getDefault().getID());
+		try {
+			securityService.createUser(user);
+			fail();
+		} catch (SecurityServiceException sse) {
+			// Success
+		} 	
+	}
+	
+	public void testCreateUserForNonCentrallyAuthenticatedUserWithInvalidUsername() {
+		String username = "$exampledomain$tester";
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Non-centrally authenticated user must be disabled.
+		boolean enabled = false;
+		User user = User.Factory.newInstance(username, password, email, enabled, false, false, false);
+		user.setPreferences(UserPreferences.Factory.newInstance());
+		UserContact userContact = UserContact.Factory.newInstance(firstName, lastName);
+		user.setContact(userContact);
+		// set default user time zone
+		user.setTimezone(TimeZone.getDefault().getID());
+		try {
+			securityService.createUser(user);
+			fail();
+		} catch (SecurityServiceException sse) {
+			// Success
+		} 	
+	}
+	
 	public void testPermission() {
 		User user = testUtility.createUniqueUserInDB();
 		TestBean bean = new TestBean(TestUtility.unique(), "test get permission");

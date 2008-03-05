@@ -9,11 +9,13 @@
 	xmlns:fck="http://www.fck-faces.org/fck-faces"
 	xmlns:s="http://www.openuss.org/jsf-security">
 					<br />
-					<h:outputText value="#{msg['user_profile_login_header']}" styleClass="header_font_normal" />
-					<o:input entity="user" property="username" required="true">
-						<f:validator validatorId="usernameNotExistValidator" />
-					</o:input>
-					<o:input entity="user" property="email" required="true">
+					<h:outputText value="#{msg['user_profile_login_header']}" styleClass="header_font_normal" rendered="#{not user.centralUser}"/>
+					<c:if test="#{not user.centralUser}">
+						<o:input entity="user" property="username" required="true" >
+							<f:validator validatorId="usernameNotExistValidator" />
+						</o:input>
+					</c:if>
+					<o:input entity="user" property="email" required="true" disabled="#{user.centralUser}">
 						<t:validateEmail />
 						<f:validator validatorId="uniqueEmailValidator" />
 					</o:input>

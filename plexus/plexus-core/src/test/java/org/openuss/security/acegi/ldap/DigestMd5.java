@@ -1,6 +1,5 @@
 package org.openuss.security.acegi.ldap;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.AuthenticationException;
@@ -16,7 +15,7 @@ import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
-import org.openuss.security.Roles;
+import org.openuss.security.SecurityConstants;
 
 /**
  * Usage of DIGEST-MD5.
@@ -324,15 +323,22 @@ public class DigestMd5 {
 	
 	public static void main (String[] args) throws Exception {
 
-    	if (args.length < 1) {
-            System.err.println(
-                "Usage: java DigestMd5 <password>");
-            System.exit(1);
-        }
+//    	if (args.length < 1) {
+//            System.err.println(
+//                "Usage: java DigestMd5 <password>");
+//            System.exit(1);
+//        }
     	
-    	authenticate(args[0]);
+//    	authenticate(args[0]);
 //    	testSetUpProviderUrl(" LDAP:// wwusv1.uni-muenster. DE://.:://///////// ", new Integer(389), "//////dc=uni-muenster, dc=de");
 //    	testExtendedLdapUserDetailsMapper(args[0]);
+    	
+    	String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exampledomain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
+    	System.out.println(username);
+    	username = username.replaceAll("\\"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"+","");
+    	System.out.println(username);
 	}	
+	
+	
 }
 

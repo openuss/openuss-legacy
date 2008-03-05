@@ -211,8 +211,12 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 
 
 	public AuthenticationDomainInfo getDomainById(Long authDomainId) {
-		// TODO Auto-generated method stub
-		return null;
+		if (authDomainId==42L) {
+			AuthenticationDomainInfo authenticationDomainInfo = new AuthenticationDomainInfo();
+			authenticationDomainInfo.setName("uni-muenster");
+			return authenticationDomainInfo;
+		}
+		return null;	
 	}
 
 
@@ -326,7 +330,4 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-	
 }

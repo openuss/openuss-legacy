@@ -25,11 +25,11 @@ public class MigrationPage extends BasePage {
 	@Prerender
  	public void prerender() throws Exception {
 		 super.prerender();
-		 centralUserData.setUsername("j_debra01");
-		 centralUserData.setFirstName("Jürgen");
-		 centralUserData.setLastName("de Braaf");
-		 centralUserData.setEmail("j_debra01@uni-muenster.de");
-		 centralUserData.setAuthenticationDomainId(42L);
+//		 centralUserData.setUsername("j_debra01");
+//		 centralUserData.setFirstName("Jürgen");
+//		 centralUserData.setLastName("de Braaf");
+//		 centralUserData.setEmail("j_debra01@uni-muenster.de");
+//		 centralUserData.setAuthenticationDomainId(42L);
 		 super.prerender();
 		 addBreadCrumbs();
  	}

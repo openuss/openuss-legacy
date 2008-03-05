@@ -12,8 +12,8 @@
 					<br />
 					<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
 					<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
-					<o:input entity="user.contact" property="firstName" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="lastName" maxlength="100" required="true"/>
+					<o:input entity="user.contact" property="firstName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
+					<o:input entity="user.contact" property="lastName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
 					<o:input entity="user.contact" property="title" maxlength="100"/>
 					<o:input entity="user.contact" property="profession" maxlength="100"/>
 					

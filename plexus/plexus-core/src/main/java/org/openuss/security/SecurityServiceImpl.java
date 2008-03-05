@@ -61,7 +61,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected User handleCreateUser(User user) throws Exception {
 		Validate.isTrue(user.getId() == null, "User must not have an identifier!");
-		if (!isValidUserName(null, user.getUsername())) {
+		/* Check for valid username. 
+		   Ensure only centrally authenticated users (already enabled!) get usernames with special delimiter.
+		   Furthermore ensure that enabled users HAVE special delimiters in their username, i. e. are centrally authenticated users.
+		*/ 
+		if (!isValidUserName(null, user.getUsername()) || 
+		   (!user.isEnabled() && user.getUsername().indexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)!=-1) ||
+		   (user.isEnabled() && user.getUsername().indexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)==-1)) {
 			throw new SecurityServiceException("Invalid username.");
 		}
 		if (StringUtils.isBlank(user.getPassword())) {
@@ -76,7 +82,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (isNonExistingEmailAddress(user, user.getEmail()) != null) {
 			throw new SecurityServiceException("Email adress already in use (should not occur -> validator bypassed?) "+user.getEmail());
 		}
-		
 		
 		user = getUserDao().create(user);
 		encodePassword(user);
