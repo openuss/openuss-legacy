@@ -1,12 +1,12 @@
 package org.openuss.web.security.profile;
 
 import org.apache.log4j.Logger;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.buddylist.BuddyService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
@@ -24,6 +24,9 @@ public class ViewUserProfilePage extends BasePage{
 
 	@Property(value="#{securityService}")
 	private SecurityService securityService;
+	
+	@Property(value="#{buddyService}")
+	private BuddyService buddyService; 
 	
 	@Property(value="#{"+Constants.SHOW_USER_PROFILE+"}")
 	private User profile;
@@ -57,6 +60,18 @@ public class ViewUserProfilePage extends BasePage{
 
 	public void setProfile(User profile) {
 		this.profile = profile;
+	}
+
+	public BuddyService getBuddyService() {
+		return buddyService;
+	}
+
+	public void setBuddyService(BuddyService buddyService) {
+		this.buddyService = buddyService;
+	}
+	
+	public boolean isBuddy(){
+		return (buddyService.isUserBuddy(profile)) || (securityService.getCurrentUser().getId().equals(profile.getId()));
 	}
 
 }

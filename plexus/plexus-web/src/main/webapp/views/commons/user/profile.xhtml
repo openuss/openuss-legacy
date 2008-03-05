@@ -19,23 +19,22 @@
 					<h:outputFormat value="#{msg.user_profile_preview_heading}">
 						<f:param value="#{showuser.contact.firstName}" />	
 						<f:param value="#{showuser.contact.lastName}" />
-						<f:param value="#{showuser.username}" />
 						
 					</h:outputFormat>
 				</p>
 			</div>
 
 
-<address class="vcard" style="display: none">
+	<address class="vcard" style="display: none">
 	<span class="fn" style="display: none">
-		<c:if test="#{showuser.profile.profileContactPublic}">
+		<c:if test="#{showuser.profile.profileContactPublic or views$secured$user$userprofile.buddy}">
 			<span class="family-name">#{showuser.contact.lastName}</span>
 			<span class="given-name">#{showuser.contact.firstName}</span>
 			<span class="adr type=home" style="display: none"></span>
 		</c:if>
 		</span>
 		<span class="adr home" style="display: none">
-		<c:if test="#{showuser.profile.addressPublic}">
+		<c:if test="#{showuser.profile.addressPublic or views$secured$user$userprofile.buddy}">
 				<span class="street-address">#{showuser.contact.address}</span>
 				<span class="country-name">#{showuser.contact.country}</span>
 				<span class="postal-code">#{showuser.contact.postcode}</span>
@@ -43,7 +42,7 @@
 		</c:if>
 		
 		<div class="tel" style="display: none">
-		<c:if test="#{showuser.profile.telephonePublic}">
+		<c:if test="#{showuser.profile.telephonePublic or views$secured$user$userprofile.buddy}">
 			<span class="type">home</span>
 			<span class="value">#{showuser.contact.telephone}</span> 
 			
@@ -51,21 +50,24 @@
 		</div>
 		
 		<div class="tel" style="display: none">
-		<c:if test="#{showuser.profile.telephonePublic}">
+		<c:if test="#{showuser.profile.telephonePublic or views$secured$user$userprofile.buddy}">
 			<span class="type">cell</span>
 			<span class="value">#{showuser.contact.mobile}</span>
 		</c:if>
 		</div>
 		
-		<c:if test="#{showuser.profile.profilePersonalPublic}">
+		<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
 			<div class="bday">#{showuser.contact.birthday}</div>
 		</c:if>
 		
-		<c:if test="#{showuser.profile.emailPublic}">
+		<c:if test="#{showuser.profile.emailPublic or views$secured$user$userprofile.buddy}">
 			<div class="email">#{showuser.email}</div>
 		</c:if>
 		</span>
-</address>
+	</address>
+
+
+		
 			
 		<div class="content_normal">
 	
@@ -89,9 +91,9 @@
 				</h:panelGroup>
 				<h:outputText value="" />
 				<h:outputText value="" />
-				
-
-				<c:if test="#{showuser.profile.addressPublic and(
+		
+			
+				<c:if test="#{(showuser.profile.addressPublic or views$secured$user$userprofile.buddy) and(
 							not empty showuser.contact.country) or
 							showuser.profile.emailPublic or
 							showuser.profile.profileContactPublic and(
@@ -107,7 +109,7 @@
 					<h:outputText value="" />	
 				</c:if>
 
-				<c:if test="#{showuser.profile.addressPublic}">
+				<c:if test="#{showuser.profile.addressPublic or views$secured$user$userprofile.buddy}">
 					<c:if test="#{not empty showuser.contact.address}">
 						<h:outputText value="#{msg.user_contact_address}:" /> 
 						<h:outputText value="#{showuser.contact.address}" />
@@ -130,7 +132,7 @@
 					</c:if>
 				</c:if> 
 		
-				<c:if test="#{showuser.profile.emailPublic}">
+				<c:if test="#{showuser.profile.emailPublic or views$secured$user$userprofile.buddy}">
 					<h:outputText value="#{msg.user_email}: " />
 					<h:outputLink value="mailto://#{showuser.email}" styleClass="email">
 						<h:outputText value="#{showuser.email}" />
@@ -138,7 +140,7 @@
 					<h:outputText value="" />
 				</c:if> 
 				
-				<c:if test="#{showuser.profile.profileContactPublic and(
+				<c:if test="#{(showuser.profile.profileContactPublic or views$secured$user$userprofile.buddy) and(
 								not empty showuser.contact.skype or
 								not empty showuser.contact.icq or
 								not empty showuser.contact.msn)}">
@@ -163,7 +165,7 @@
 					</c:if> 
 				</c:if>
 				
-				<c:if test="#{showuser.profile.telephonePublic and(
+				<c:if test="#{(showuser.profile.telephonePublic or views$secured$user$userprofile.buddy) and(
 							not empty showuser.contact.telephone or 
 							not empty showuser.contact.mobile)}">
 					<c:if test="#{not empty showuser.contact.telephone}">
@@ -178,7 +180,7 @@
 					</c:if>
 				</c:if>
 				
-				<c:if test="#{showuser.profile.profilePersonalPublic and( 
+				<c:if test="#{(showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy) and( 
 							not empty showuser.contact.birthday or
 							not empty showuser.contact.searching or
 							not empty showuser.contact.providing or
@@ -210,8 +212,7 @@
 						<h:outputText value="" />
 					</c:if>
 				</c:if>
-		
-				<c:if test="#{showuser.profile.profileUniPublic and( 
+				<c:if test="#{(showuser.profile.profileUniPublic or views$secured$user$userprofile.buddy) and( 
 								not empty showuser.profile.studies or 
 								not empty showuser.profile.ageGroup)}">
 					<h:outputText styleClass="profile_header"
@@ -230,12 +231,11 @@
 					</c:if>
 				</c:if>
 
-				<c:if test="#{showuser.profile.profilePersonalPublic}">
+				<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
 					<h:outputText value="#{showuser.profile.portrait}" escape="false" />
 				</c:if>
-			
 			</h:panelGrid>
-
+				
 		</div>
 	
 			<div class="footer_normal_left_bg" />
