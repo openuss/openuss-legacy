@@ -78,6 +78,20 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
+	/** Open collaboration main page and remove folder/workspace info from session.
+	 * 
+	 * @return Constants.COLLABORATION_MAIN_PAGE
+	 */
+	public String open() {
+		this.workspaceInfo = null;
+		this.currentFolder = null;
+		
+		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
+		setSessionBean(Constants.COLLABORATION_CURRENT_FOLDER, null);
+		
+		return Constants.COLLABORATION_MAIN_PAGE;
+	}
+	
 	/**
 	 * Creates a new WorkspaceInfo object and sets it into session scope
 	 * 

@@ -1,10 +1,13 @@
 package org.openuss.web.documents;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +37,8 @@ import org.springframework.beans.support.PropertyComparator;
 public class DocumentsMainPage extends AbstractDocumentPage {
 	private static final Logger logger = Logger.getLogger(DocumentsMainPage.class);
 
+	private static Map<String, Boolean> avaliableExtensions;
+	
 	private DocumentDataProvider data = new DocumentDataProvider();
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
@@ -261,4 +266,17 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		this.moveMode = moveMode;
 	}
 
+	public Map<String, Boolean> getAvailableExtensions() {
+		if (avaliableExtensions == null) {
+			avaliableExtensions = new HashMap<String, Boolean>();
+			File extImgFolder = new File(getServletContext().getRealPath("/images/filetypes"));
+			File files[] = extImgFolder.listFiles();
+			for (File file : files) {
+				String name = file.getName();
+				name = name.substring(0, name.indexOf('.'));
+				avaliableExtensions.put(name, true);
+			}
+		}
+		return avaliableExtensions;
+	}
 }

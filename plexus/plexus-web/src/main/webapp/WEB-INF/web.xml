@@ -448,6 +448,10 @@
 <!-- 	<servlet-class>org.fckfaces.util.Servlet</servlet-class> -->
         <servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
 	</servlet>
+	<servlet>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <servlet-class>org.openuss.web.servlets.WikiSaveDraftServlet</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>Chat Servlet</servlet-name>
@@ -476,6 +480,10 @@
 	<servlet-mapping>
 	        <servlet-name>Connector</servlet-name>
 	        <url-pattern>/fckfaces/FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <url-pattern>/fckfaces/FCKeditor/editor/savedraft</url-pattern>
 	</servlet-mapping>
 	<!--  END OF ADDITION -->
 	

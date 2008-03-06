@@ -64,7 +64,7 @@ public class WikiMainPage extends AbstractWikiPage {
 
 		super.prerender();
 	}
-	
+		
 	private void createInfoIndexPage() {
 		String text = "<h1>Wiki</h1>";
 		
@@ -226,6 +226,8 @@ public class WikiMainPage extends AbstractWikiPage {
 		siteVersionInfo = null;
 		siteVersionId = null;
 		siteName = null;
+		
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}

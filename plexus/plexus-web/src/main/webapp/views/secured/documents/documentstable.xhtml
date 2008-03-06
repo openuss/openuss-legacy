@@ -31,7 +31,10 @@
 
 		<t:column> 
 			<plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-			<h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/>
+			<h:graphicImage value="/images/filetypes/#{entry.extension}.gif" 
+                            rendered="#{views$secured$documents$documents.availableExtensions[entry.extension]}"/>
+            <h:graphicImage value="/images/filetypes/default.gif" 
+                            rendered="#{not views$secured$documents$documents.availableExtensions[entry.extension]}"/>
 		</t:column>
 
 		<t:column>

@@ -217,7 +217,6 @@
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
     <page view-id="/views/secured/collaboration/*">
-        <securityConstraint domainObject="#{collaboration_current_folder}" permissions="#{ACL.READ}"/>
         <securityConstraint domainObject="#{workspaceInfo}" permissions="#{ACL.READ}"/>
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
         <parameter name="folder" value="#{collaboration_current_folder.id}" converterId="javax.faces.Long"/>

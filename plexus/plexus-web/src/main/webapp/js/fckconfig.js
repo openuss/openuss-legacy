@@ -37,6 +37,23 @@ if (window.document.location.href.match(/Wiki/)) {
     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
+    
+    //----------------------------------------------------
+	// ajaxAutoSave plugin 
+	FCKConfig.Plugins.Add( 'ajaxAutoSave','de,en') ;
+	
+	// --- config settings for the ajaxAutoSave plugin ---
+	// URL to post to
+	FCKConfig.ajaxAutoSaveTargetUrl = '/openuss-plexus/fckfaces/FCKeditor/editor/savedraft' ;
+	
+	// Enable / Disable Plugin onBeforeUpdate Action 
+	FCKConfig.ajaxAutoSaveBeforeUpdateEnabled = true ;
+	
+	// RefreshTime
+	FCKConfig.ajaxAutoSaveRefreshTime = 30 ;
+	
+	// Sensitivity to key strokes
+	FCKConfig.ajaxAutoSaveSensitivity = 2 ;
 }
 
 FCKConfig.ToolbarSets["OpenUSS"] = [
@@ -69,7 +86,7 @@ FCKConfig.ToolbarSets["News"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Wiki"] = [
-    ['FitWindow','Preview'],
+    ['ajaxAutoSave','FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
 	['Undo','Redo','-','SelectAll','RemoveFormat'],
     ['Image','-','OpenUSSWikiLink','Unlink','-', 'Smiley'],
