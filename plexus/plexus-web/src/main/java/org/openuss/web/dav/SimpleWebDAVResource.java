@@ -5,6 +5,7 @@ import java.util.AbstractCollection; // TODO
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.openuss.webdav.IOContext;
@@ -31,6 +32,7 @@ import org.w3c.dom.NodeList;
  * <li>Collision avoidance. This is achieved by adding an id specifier.</li>
  * <li>Ignoring third-party XML namespaces</li>
  * <li>Content type determination</li>
+ * <li>Add regularly used properties to the answer of a PROPFIND.</li>
  * </ul>
  */
 public abstract class SimpleWebDAVResource implements WebDAVResource {
@@ -146,16 +148,25 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		Map<String,String> values = simpleGetProperties(reqProps);
 		
 		// Create result document
-		PropertyResponse pr = new PropertyResponse(getHref());
+		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
 		// Found properties
 		for (String k : values.keySet()) {
-			pr.addProperty(WebDAVStatusCodes.SC_OK, k, reqValues ? values.get(k) : null);
+			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, k, reqValues ? values.get(k) : null);
+		}
+		
+		// Auto-add properties, if requested
+		Set<String> autoAdded = new TreeSet<String>();
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE)) && (!values.containsKey(WebDAVConstants.XML_GETCONTENTTYPE))) {
+			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
+			autoAdded.add(WebDAVConstants.XML_GETCONTENTTYPE);
 		}
 		
 		// Non-existant properties
 		Set<String> propsNotFound = disjunction(reqProps, values.keySet());
 		for (String prop : propsNotFound) {
-			pr.addProperty(WebDAVStatusCodes.SC_NOT_FOUND, prop, null);
+			if (! autoAdded.contains(prop)) {
+				pr.addSimpleProperty(WebDAVStatusCodes.SC_NOT_FOUND, prop, null);
+			}
 		}
 		
 		return pr;
@@ -193,7 +204,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Did not find " + WebDAVConstants.XML_PROPERTYUPDATE + " element.");
 		}
 		
-		PropertyResponse pr = new PropertyResponse(getHref());
+		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
 		NodeList setdelNodeList = updateNode.getChildNodes();
 		for (int i = 0;i < setdelNodeList.getLength();i++) {
 			Node n = rootNodeList.item(i);
@@ -203,7 +214,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 				for (int j = 0;j < tmpNodeList.getLength();j++) {
 					Node n2 = tmpNodeList.item(j);
 					
-					pr.addProperty(WebDAVStatusCodes.SC_FORBIDDEN, n2.getNamespaceURI(), n2.getNodeName());
+					pr.addSimpleProperty(WebDAVStatusCodes.SC_FORBIDDEN, n2.getNamespaceURI(), n2.getNodeName());
 				}
 			}
 		}

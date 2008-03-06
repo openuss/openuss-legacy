@@ -82,6 +82,7 @@ public class WebDAVConstants {
 	public final static String XML_DEPTH = "depth";
 	public final static String XML_DST = "dst";
 	public final static String XML_EXCLUSIVE = "exclusive";
+	public final static String XML_GETCONTENTTYPE = "getcontenttype";
 	public final static String XML_HREF = "href";
 	public final static String XML_KEEPALIVE = "keepalive";
 	public final static String XML_LINK = "link";

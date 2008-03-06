@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
 public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	/**
 	 * The list of individual responses in this object.
-	 * Each element corresponds to a &lt;propstat&gt; element in the final outputted document. 
+	 * Each element corresponds to a &lt;response&gt; element in the final outputted document. 
 	 */
 	protected List<MultiStatusResponse> responses;
 	/**

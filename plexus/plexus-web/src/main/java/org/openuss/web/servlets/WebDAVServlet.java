@@ -27,6 +27,7 @@ import org.openuss.webdav.WebDAVHrefException;
 import org.openuss.webdav.WebDAVMethods;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
+import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 
@@ -57,7 +58,7 @@ public class WebDAVServlet extends HttpServlet {
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  	 */
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		try	{
+ 		try	{
  			String destination;
 	 		WebDAVPath destinationPath;
 	 		WebDAVResource destinationResource;
@@ -162,10 +163,7 @@ public class WebDAVServlet extends HttpServlet {
 			printResponse(response, ex);
 		} catch(IOException ioe) {
 			logger.error(ioe);
-		}/* catch (Throwable t) {
-			// Another error
-			printResponse(response, new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, t));
-		}*/
+		}
  	}
  	
  	/**
@@ -229,8 +227,9 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param depth The value of the Depth header.
  	 */
  	protected static void propFind(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth) {
- 		try {
- 			MultiStatusResponse response = resource.getProperties(doc);
+ 		MultiStatusResponse response;
+		try {
+			response = resource.getProperties(doc);
 			answer.addResponse(response);
 			
 	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {

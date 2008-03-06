@@ -107,6 +107,14 @@ public class RootResource extends AbstractOrganisationResource {
 		
 		return allUniversities;
 	}
+
+	public UniversityService getUniversityService() {
+		return universityService;
+	}
+
+	public void setUniversityService(UniversityService universityService) {
+		this.universityService = universityService;
+	}
 }
 
 	
