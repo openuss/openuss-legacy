@@ -302,11 +302,17 @@ public class Constants {
 	public static final String SEMINARPOOL = "seminarpool";
 	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";
 	public static final String SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO = "SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO";
+
+	public static final String SEMINARPOOL_CONDITION_VIEW_PAGE = "seminarpool_condition_view";
+	public static final String SHOW_SEMINARPOOL_CONDITION = "showcondition";
+	public static final String SEMINARPOOL_CONDITIONS_LIST = "conditionslist";
+
 	public static final String COURSE_GROUP_INDEX = "COURSE_GROUP_INDEX";
 	public static final String SEMINARPOOL_COURSE_GROUPS_EDIT = "seminarpoolEditCourseGroups";
 	
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE = "seminarpooluserregistration_step1";
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP2_PAGE = "seminarpooluserregistration_step2";
 	public static final Long SEMINARLIST = -1L;
+
 
 }
