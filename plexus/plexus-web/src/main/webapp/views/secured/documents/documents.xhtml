@@ -50,16 +50,16 @@
 						styleClass="button_add"/>
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<h:commandButton 
-					    id="addZip"
-						action="documents_add_zip" 
-						value="#{msg.documents_main_button_zip}" 
-						title="#{msg.documents_main_button_zip}"
-						styleClass="button_add"/>
-					<h:commandButton 
 					    id="newFile"
 						action="#{views$secured$documents$documents.newFile}" 
 						value="#{msg.documents_main_button_newfile}" 
 						title="#{msg.documents_main_button_newfile}"
+						styleClass="button_add"/>
+					<h:commandButton 
+					    id="addZip"
+						action="documents_add_zip" 
+						value="#{msg.documents_main_button_zip}" 
+						title="#{msg.documents_main_button_zip}"
 						styleClass="button_add"/>
 					<h:commandButton 
 					    id="newFolder"
