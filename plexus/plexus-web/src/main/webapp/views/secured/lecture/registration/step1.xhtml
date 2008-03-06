@@ -7,7 +7,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:news="http://www.openuss.org/news/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:o="http://www.openuss.org/jsfcontrols">
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:j4j="http://javascript4jsf.dev.java.net/">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,8 +27,8 @@
 					<ui:include src="/views/commons/institute/instituteDataRegistration.xhtml" />
 				</o:block>
 				<o:block>
+					<h:commandButton value="${msg.back}" action="institute_registration_start" styleClass="button_back" immediate="true" />
 					<h:commandButton value="${msg.forward}" action="institute_registration_step1application" styleClass="button_continue" />
-					<h:commandButton value="${msg.back}" action="institute_registration_start" styleClass="button_back" immediate="true"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>
