@@ -73,9 +73,6 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	
 	// Additional permissions to departments
 	public static final int MANAGE_DEPARTMENT		= 1 << 14;
-	
-	// Additional permissions to departments
-	public static final int MANAGE_GROUPS		= 1 << 15;
 
 	// Default combinations of base permissions
 	public static final int INSTITUTE_TUTOR = PARTICIPATE | ASSIST | READ;
@@ -91,7 +88,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	
 	// Default combinations of base group permissions
 	public static final int GROUP_MEMBER = READ | PARTICIPATE | ASSIST;
-	public static final int GROUP_MODERATOR = CREATE | UPDATE | DELETE | MANAGE_NEWS | MANAGE_GROUPS | GROUP_MEMBER;
+	public static final int GROUP_MODERATOR = CREATE | UPDATE | DELETE | MANAGE_NEWS | GROUP_MEMBER;
 	
 	
 	// Combinations of base permissions we permit
@@ -251,5 +248,13 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 
 	public int getUPDATE() {
 		return UPDATE;
+	}
+
+	public static int getGROUP_MEMBER() {
+		return GROUP_MEMBER;
+	}
+
+	public static int getGROUP_MODERATOR() {
+		return GROUP_MODERATOR;
 	}
 }

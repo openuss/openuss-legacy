@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.security.Group;
 import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -230,6 +231,8 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		CourseMember assistant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), user);
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
 		getCourseMemberDao().create(assistant);
+		getSecurityService().setPermissions(assistant.getUser(), assistant.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
+
 	}
 
 	@Override

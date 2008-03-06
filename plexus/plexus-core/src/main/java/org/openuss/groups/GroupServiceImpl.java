@@ -667,7 +667,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 
 		if (group.getAccessType() == GroupAccessType.OPEN) {
 			getSecurityService().setPermissions(Roles.USER, group,
-					LectureAclEntry.GROUP_MEMBER);
+					LectureAclEntry.NOTHING);
 		} else {
 			getSecurityService().setPermissions(Roles.USER, group,
 					LectureAclEntry.NOTHING);
