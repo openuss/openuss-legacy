@@ -153,7 +153,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 		final WikiSiteVersion wikiSiteVersion = getWikiSiteVersionDao().wikiSiteContentInfoToEntity(wikiSiteContentInfo);
 
-		final User author = getUserDao().load(getSecurityService().getCurrentUser().getId()); //FIXME 
+		final User author = getUserDao().load(getSecurityService().getCurrentUser().getId());
 		wikiSiteVersion.setAuthor(author);
 
 		getWikiSiteVersionDao().create(wikiSiteVersion);

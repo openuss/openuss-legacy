@@ -52,9 +52,8 @@
 		                    	<h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" />
 		                    </div>
 		                </o:block>
-		            </s:acl>
-	  				
-	  				
+		            </s:acl>	
+
 	  				<o:block>
 	  					<h:commandButton
 							value="${msg.wiki_main_button_version}"
@@ -90,21 +89,17 @@
 		  			</c:if>
 		  			
 		  			<c:if test="${not empty wiki_current_site_version.text}">
-		  				<c:if test="${wiki_current_site_version.readOnly}">
-	            			<o:block label="#{msg.wiki_main_header_site_read_only}" styleClass="form_box">
-	  							<p class="content_font_normal">	  								
-	  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
-								</p>
-	  						</o:block>
-	  					</c:if>
+            			<o:block label="#{msg.wiki_main_header_site_read_only}" rendered="#{wiki_current_site_version.readOnly}" styleClass="form_box">
+  							<p class="content_font_normal">	  								
+  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+							</p>
+  						</o:block>
 	  					
-	  					<c:if test="${wiki_current_site_version.stable}">
-	            			<o:block label="#{msg.wiki_main_header_site_stable}" styleClass="form_box">
-	  							<p class="content_font_normal">	  								
-	  								<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
-								</p>
-	  						</o:block>
-	  					</c:if>
+            			<o:block label="#{msg.wiki_main_header_site_stable}" rendered="#{wiki_current_site_version.stable}" styleClass="form_box">
+  							<p class="content_font_normal">	  								
+  								<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
+							</p>
+  						</o:block>
 		  				
 		                <o:block label="#{views$secured$wiki$wikimain.siteTitle}">
 		                    <div class="wiki_content">
@@ -115,82 +110,77 @@
 		                <o:block>
 		                	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 		                		<h:commandButton 
-		                        	value="${msg.wiki_main_button_edit}" 
+		                        	value="#{msg.wiki_main_button_edit}" 
 		                        	action="wiki_edit" 
 		                        	immediate="true" 
 		                        	styleClass="button" />
 		                    </s:acl>
-		                    
-		                    <c:if test="${not wiki_current_site_version.readOnly}">
-		                    	<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
-		                    		<h:commandButton 
-		                        		value="${msg.wiki_main_button_edit}" 
-		                        		action="wiki_edit" 
-		                        		immediate="true" 
-		                        		styleClass="button" />
-		                       	</s:acl>
-		                    </c:if>
+
+	                    	<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
+	                    		<h:commandButton 
+	                        		value="#{msg.wiki_main_button_edit}" 
+	                        		action="wiki_edit" 
+	                        		immediate="true" 
+	                        		styleClass="button" 
+	                        		rendered="#{not wiki_current_site_version.readOnly}" />
+	                       	</s:acl>
 		                    
 		                    <h:commandButton
-								value="${msg.wiki_main_button_version}"
+								value="#{msg.wiki_main_button_version}"
 								action="wiki_version"
 								immediate="true" 
 								styleClass="button"/>
 								
 							<h:commandButton
-								value="${msg.wiki_main_button_showStable}"
+								value="#{msg.wiki_main_button_showStable}"
 								action="#{views$secured$wiki$wikimain.showStable}" 
 								immediate="true" 
 								styleClass="button"
 								rendered="#{views$secured$wiki$wikimain.hasStableVersion}" />
 								
-							<c:if test="${not wiki_current_site_version.readOnly}">
-		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-		                    		<h:commandButton 
-		                        		value="${msg.wiki_overview_lock_site}" 
-		                        		action="#{views$secured$wiki$wikimain.lockSite}"
-		                        		immediate="true" 
-		                        		styleClass="button" />
-		                       	</s:acl>
-		                    </c:if>
+	                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+	                    		<h:commandButton 
+	                    		    rendered="#{not wiki_current_site_version.readOnly}"
+	                        		value="${msg.wiki_overview_lock_site}" 
+	                        		action="#{views$secured$wiki$wikimain.lockSite}"
+	                        		immediate="true" 
+	                        		styleClass="button" />
+	                       	</s:acl>
 		                    
-		                    <c:if test="${wiki_current_site_version.readOnly}">
-		                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-		                    		<h:commandButton 
-		                        		value="${msg.wiki_overview_unlock_site}" 
-		                        		action="#{views$secured$wiki$wikimain.unlockSite}" 
-		                        		immediate="true" 
-		                        		styleClass="button" />
-		                       	</s:acl>
-		                    </c:if>
+	                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+	                    		<h:commandButton 
+	                    			rendered="#{wiki_current_site_version.readOnly}"
+	                        		value="#{msg.wiki_overview_unlock_site}" 
+	                        		action="#{views$secured$wiki$wikimain.unlockSite}" 
+	                        		immediate="true" 
+	                        		styleClass="button" />
+	                       	</s:acl>
 							
 							<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-								<c:if test="${not wiki_current_site_version.stable}">
-									<h:commandButton
-										value="${msg.wiki_main_button_markStable}"
-										action="#{views$secured$wiki$wikimain.markStable}" 
-										immediate="true" 
-										styleClass="button"/>
-								</c:if>
-								<c:if test="${wiki_current_site_version.stable}">		
-									<h:commandButton
-										value="${msg.wiki_main_button_unmarkStable}"
-										action="#{views$secured$wiki$wikimain.unmarkStable}" 
-										immediate="true" 
-										styleClass="button"/>
-								</c:if>
+								<h:commandButton
+									rendered="#{not wiki_current_site_version.stable}"
+									value="${msg.wiki_main_button_markStable}"
+									action="#{views$secured$wiki$wikimain.markStable}" 
+									immediate="true" 
+									styleClass="button"/>
+								<h:commandButton
+									rendered="#{wiki_current_site_version.stable}"
+									value="${msg.wiki_main_button_unmarkStable}"
+									action="#{views$secured$wiki$wikimain.unmarkStable}" 
+									immediate="true" 
+									styleClass="button"/>
 							</s:acl>
 							
 							<h:commandButton
 		                    	value="${msg.wiki_main_button_preview}" 
 	                            immediate="true" 
 	                            styleClass="button"
-	                            onclick="window.open('wikiprintpreview.faces');" 
-	                            />
+	                            onclick="window.open('wikiprintpreview.faces');" />
 								
 		                </o:block>
 		        	</c:if>
 	        	</c:if>
+	        	
             </h:form>
         </ui:define>
 	</ui:composition>
