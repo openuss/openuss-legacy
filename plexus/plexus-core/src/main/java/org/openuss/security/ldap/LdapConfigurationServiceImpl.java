@@ -36,7 +36,7 @@ public class LdapConfigurationServiceImpl
     	for (LdapServer ldapServer : ldapServerList) {
 			ldapServerInfoList.add(getLdapServerDao().toLdapServerInfo(ldapServer));						
 		}   	
-    	
+//    	TODO return LdapServerConfigurationInfo
     	return ldapServerInfoList;
     }
 
@@ -632,7 +632,7 @@ public class LdapConfigurationServiceImpl
 
 	@Override
 	protected void handleAddUserDnPatternToSet(
-			UserDnPatternSetInfo userDnPattern,
+			UserDnPatternInfo userDnPattern,
 			UserDnPatternSetInfo userDnPatternSet) throws Exception {
 		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
 		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());				
