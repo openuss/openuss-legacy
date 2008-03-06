@@ -118,15 +118,47 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
+	<page view-id="/views/secured/course/calendar*">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/course/chat*">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/course/fslinstall*">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			OPENUss4US Groups
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 	
-	<page view-id="/views/secured/groups/*">
+	
+	<page view-id="/views/secured/groups/components/*">
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/groups/components/*">
+	<page view-id="/views/secured/groups/components/group*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/groups/components/calendar*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/groups/components/chat*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
+		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
+	<page view-id="/views/secured/groups/components/fslinstall*">
+		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
@@ -146,14 +178,6 @@
 	<page view-id="/views/secured/newsletter/groups/*">
 		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	<page view-id="/views/secured/newsletter/groups/showmail.xhtml">
-		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
-	</page>
-
-	<page view-id="/views/secured/newsletter/groups/newmail.xhtml">
-		<parameter name="mail" value="#{newsletter_mail.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
