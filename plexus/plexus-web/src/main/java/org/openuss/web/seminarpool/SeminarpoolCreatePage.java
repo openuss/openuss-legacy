@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -19,14 +20,20 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
+import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
+import org.openuss.security.UserInfo;
+import org.openuss.seminarpool.ConditionType;
+import org.openuss.seminarpool.SeminarConditionInfo;
 import org.openuss.seminarpool.SeminarpoolAccessType;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
@@ -40,7 +47,7 @@ import org.openuss.seminarpool.SeminarpoolStatus;
  * @author PS-Seminarplatzvergabeteam
  * 
  */
-@Bean(name = Constants.SEMINARPOOL_CREATION_CONTROLLER, scope = Scope.SESSION)
+@Bean(name = Constants.SEMINARPOOL_CREATION_CONTROLLER, scope = Scope.REQUEST)
 @View
 public class SeminarpoolCreatePage extends BasePage {
 
@@ -48,12 +55,18 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
+	@Property(value = "#{seminarConditionInfo}")
+	protected SeminarConditionInfo seminarConditionInfo;
 	@Property(value = "#{seminarpoolAdministrationService}")
 	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 	@Property(value="#{universityService}")
 	protected UniversityService universityService;
 	@Property(value="#{desktopService2}")
 	protected DesktopService2 desktopService2;
+	@Property(value="#{"+ Constants.SEMINARPOOL_CONDITIONS_LIST + "}")
+	private List<SeminarConditionInfo> conditionsList;
+	
+	private ConditionsTable conditionsTable = new ConditionsTable();
 
 	
 	/* ----- business logic ----- */
@@ -66,7 +79,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing institute session object");
+		logger.debug("preprocess - refreshing seminarpool session object");
 		if (seminarpoolInfo != null) {
 			seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
 		} else {
@@ -83,6 +96,17 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			addError(i18n("message_error_no_seminarpool_selected"));
 			redirect(Constants.DESKTOP);
 		} 
+		addPageCrumb();
+	}
+	
+	private void addPageCrumb() {
+		breadcrumbs.init();
+		
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("seminarpool_create_block"));
+		crumb.setHint(i18n("seminarpool_create_block"));
+		breadcrumbs.addCrumb(crumb);
 	}
 	
 	
@@ -93,13 +117,19 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	public String start() {
 		logger.debug("Start seminarpool registration process");
 
-		// create new seminarpoolInfo object for session
+		// create new objects
 		seminarpoolInfo = new SeminarpoolInfo();
+		seminarConditionInfo = new SeminarConditionInfo();
+		conditionsList = new ArrayList<SeminarConditionInfo>();
+		setSessionBean(Constants.SEMINARPOOL_CONDITIONS_LIST, conditionsList);
 		
 		return Constants.SEMINARPOOL_REGISTRATION_STEP1_PAGE;
 	}
 	
-	
+	/**
+	 * Final creation method
+	 * @return Outcome
+	 */
 	public String create() {
 			logger.debug("START CREATE SEMINARPOOL");
 //FIXME	ACCESS-TYPE regulation
@@ -107,6 +137,11 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			// create seminarpool and set id
 			Long newSeminarpoolId = seminarpoolAdministrationService.createSeminarpool(seminarpoolInfo, user.getId());
 			seminarpoolInfo.setId(newSeminarpoolId);
+			// add the conditions
+			for(SeminarConditionInfo aktcondi : conditionsList) {
+				aktcondi.setSeminarpoolId(seminarpoolInfo.getId());
+				seminarpoolAdministrationService.addConditionToSeminarpool(aktcondi);
+			}
 			// create Bookmark
 			try{
 				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId()); 
@@ -114,13 +149,31 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			} catch (DesktopException ex){
 				return "seminarpool_create_failure";
 			}
-			
-//			setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
+			// clean session
+			removeSessionBean(Constants.SEMINARPOOL_INFO);
+			removeSessionBean(Constants.SEMINARPOOL_CONDITIONS_LIST);
 
 			logger.debug("END CREATE SEMINARPOOL");
 			return "desktop";
 	}
+	
+	/**
+	 * add the new condition temporarily into the list
+	 * 
+	 * @param event
+	 * @throws Exception
+	 */
+	public void addCondition(ActionEvent event) throws Exception {
+		conditionsList.add(seminarConditionInfo);
+		seminarConditionInfo = new SeminarConditionInfo();
+		setSessionBean(Constants.SEMINARPOOL_CONDITIONS_LIST, conditionsList);
+	}
+	
+	public void removeCondition(ActionEvent event) {
+		
+	}
 
+// ACCESS-TYPE-SELECTION
 	/**
 	 * get possible seminarpool accesstypes
 	 * @return List of selectable accesstypes
@@ -145,6 +198,31 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 			seminarpoolInfo.setPassword(null);
 		}
 	}
+
+// CONDITION-TYPE-SELECTION
+	/**
+	 * get possible seminarpool conditiontypes
+	 * @return List of selectable conditiontypes
+	 */
+	public List<SelectItem> getConditionTypes() {
+		List<SelectItem> conditionItems = new ArrayList<SelectItem>();
+		conditionItems.add(new SelectItem(ConditionType.TEXTFIELD, i18n("seminarpool_conditiontype_textfield")));
+		conditionItems.add(new SelectItem(ConditionType.TEXTAREA, i18n("seminarpool_conditiontype_textarea")));
+		conditionItems.add(new SelectItem(ConditionType.CHECKBOX, i18n("seminarpool_conditiontype_textfield")));
+		return conditionItems;
+	}
+	
+	/**
+	 * processing the selection of an entry in the conditiontype pulldown menu
+	 * @param event ValueChangeEvent
+	 */
+	public void processConditionTypeChanged(ValueChangeEvent event) {
+		Object conditionTypeGroup = event.getNewValue();
+		seminarConditionInfo.setFieldType((ConditionType) conditionTypeGroup);
+	}
+	
+	
+	
 	
 /**** University selection stuff  *****/
 	
@@ -187,6 +265,23 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		}
 	}
 	
+	
+	/**
+	 * Local DataModel of seminarpool conditions
+	 */
+	private class ConditionsTable extends AbstractPagedTable<SeminarConditionInfo> {
+
+		private static final long serialVersionUID = 449438749521068451L;
+
+		@Override
+		public DataPage<SeminarConditionInfo> getDataPage(int startRow, int pageSize) {
+			if(conditionsList == null)
+				conditionsList = new ArrayList<SeminarConditionInfo>();
+//FIXME 			sort(conditionsList);
+			return new DataPage<SeminarConditionInfo>(conditionsList.size(), 0, conditionsList);
+		}
+	}
+	
 	/* ----- getter and setter ----- */
 	
 	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
@@ -219,6 +314,30 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 
 	public void setDesktopService2(DesktopService2 desktopService2) {
 		this.desktopService2 = desktopService2;
+	}
+
+	public SeminarConditionInfo getSeminarConditionInfo() {
+		return seminarConditionInfo;
+	}
+
+	public void setSeminarConditionInfo(SeminarConditionInfo seminarConditionInfo) {
+		this.seminarConditionInfo = seminarConditionInfo;
+	}
+
+	public List<SeminarConditionInfo> getConditionsList() {
+		return conditionsList;
+	}
+
+	public void setConditionsList(List<SeminarConditionInfo> conditionsList) {
+		this.conditionsList = conditionsList;
+	}
+
+	public ConditionsTable getConditionsTable() {
+		return conditionsTable;
+	}
+
+	public void setConditionsTable(ConditionsTable conditionsTable) {
+		this.conditionsTable = conditionsTable;
 	}
 	
 }

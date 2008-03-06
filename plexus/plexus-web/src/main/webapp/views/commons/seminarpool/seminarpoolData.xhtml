@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition 
-	xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -12,16 +13,17 @@
 	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
-
+<o:block label="#{msg['seminarpool_properties_block']}" styleClass="form_box">
+	
 				<h:outputLabel value="#{msg.seminarpool_preferences_university}" 
- 				   for="universitySelect" 
+ 				   for="seminarpool_preferences_university" 
  				   styleClass="field_label" />
  				   
 				<h:selectOneListbox 
 					id="seminarpool_preferences_university" 
 					size="1" 
 					styleClass="pulldown" 
-					value="#{seminarpoolRegistration.universityId}"
+					value="#{seminarpoolRegistration.seminarpoolInfo.universityId}"
 					valueChangeListener="#{seminarpoolRegistration.processUniversitySelectChanged}"
 					
 					required="true">
@@ -35,27 +37,27 @@
 				
 				<o:input 
 					label="#{msg.seminarpool_name}"
-					entity="seminarpoolRegistration" 
+					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="name" 
 					maxlength="100" 
 					required="true"/>
 				<o:input 
 					label="#{msg.seminarpool_shortcut}"
-					entity="seminarpoolRegistration" 
+					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="shortcut" 
 					maxlength="30" 
 					required="true" />
 									
 				<o:input 
 					label="#{msg.seminarpool_max_seminar_allocations}"
-					entity="seminarpoolRegistration" 
+					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="maxSeminarAllocations" 
 					size="5"
 					maxlength="5"
 					required="true" />
 				<o:input 
 					label="#{msg.seminarpool_priorities}"
-					entity="seminarpoolRegistration" 
+					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="priorities"
 					size="5"
 					maxlength="5" 
@@ -63,13 +65,13 @@
 <!--					maxlength="100"  --> 
 				<o:input
 					label="#{msg.seminarpool_registration_start_time}"
-					entity="seminarpoolRegistration"
+					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationStartTime"
 					maxlength="16"
 					required="true" />
 				<o:input
 					label="#{msg.seminarpool_registration_end_time}"
-					entity="seminarpoolRegistration"
+					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationEndTime"
 					maxlength="16"
 					required="true" />
@@ -77,25 +79,27 @@
 				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
 					
 				<div id="descriptionTextField" class="content_iframe">
-					<fck:editor value="#{seminarpoolRegistration.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+					<fck:editor value="#{seminarpoolRegistration.seminarpoolInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
 				</div>
 					
 				<h:outputLabel for="accessType" value="#{msg.seminarpool_accesstype}" styleClass="field_label"/>
 				<h:selectOneMenu id="accessType" 
 					layout="pageDirection" 
-					value="#{seminarpoolRegistration.accessType}" 
+					value="#{seminarpoolRegistration.seminarpoolInfo.accessType}" 
 					valueChangeListener="#{seminarpoolRegistration.processAccessTypeChanged}"
 					onchange="this.form.submit();"
 					immediate="true"
 					styleClass="pulldown">
+					<f:converter converterId="seminarpoolAccessTypeConverter" />
 					<f:selectItems value="#{seminarpoolRegistration.accessTypes}"/>
 				</h:selectOneMenu>
 				<h:message for="accessType" styleClass="field_error"/>
-				<c:if test="#{seminarpoolRegistration.accessType == 1}">	
+				<c:if test="#{seminarpoolRegistration.seminarpoolInfo.accessType.value == 1}">	
 	 				<o:input 
 	 					label="#{msg.seminarpool_password}"
-	 					entity="seminarpoolRegistration" 
+	 					entity="seminarpoolRegistration.seminarpoolInfo" 
 	 					property="password" 
 	 					required="true"/>
  				</c:if> 	
-</ui:composition>
+			</o:block>
+		</ui:composition>

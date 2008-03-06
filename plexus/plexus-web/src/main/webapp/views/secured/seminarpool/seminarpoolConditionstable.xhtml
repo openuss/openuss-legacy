@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable 
+    	id="conditionsTable" 
+    	label="#{msg.seminarpool_conditions_subheading}" 
+    	value="seminarpoolRegistration.conditionsTable" 
+    	columnClasses="col_min_left, col_max_left, col_commands"
+    	var="bean" 
+    	rows="20">  
+      
+		<t:column>
+			<plexus:commandSortHeader columnName="fieldDescription">
+   				<h:outputText value="#{msg['seminarpool_field_description']}"/>
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.fieldDescription}"/>
+		</t:column>
+		
+		<t:column sortable="true">
+			<plexus:commandSortHeader columnName="fieldType">
+				<h:outputText value="#{msg['seminarpool_field_type']}"/>
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.fieldType}">
+				<f:converter converterId="seminarpoolConditionTypeConverter" />
+			</h:outputText>
+		</t:column>
+		
+	
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command 
+				bean="seminarpoolRegistration"
+				action="showCondition"
+				label="#{msg['user_profile_command_show_profile']}"
+				title="#{msg['user_profile_command_show_profile_hint']}"
+				styleClass="icon_profile" />
+			<plexus:command
+				bean="seminarpoolRegistration"
+				action="removeCondition"
+				onclick="if (!confirm('#{msg.lecture_remove_departmentmember_confirmation}')) return false"
+				label="#{msg.department_members_command_remove}"
+				title="#{msg.department_members_command_remove_hint}"
+				styleClass="icon_remove"/>
+		</plexus:column>
+	</plexus:dataTable>
+</ui:composition>

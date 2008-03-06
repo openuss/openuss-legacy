@@ -27,96 +27,9 @@
 
 	<ui:define name="content">
 		<h:form id="seminarpool_create_seminarpool">
-			<o:block label="#{msg['seminarpool_create_block']}" styleClass="form_box">
-	
-				<h:outputLabel value="#{msg.seminarpool_preferences_university}" 
- 				   for="seminarpool_preferences_university" 
- 				   styleClass="field_label" />
- 				   
-				<h:selectOneListbox 
-					id="seminarpool_preferences_university" 
-					size="1" 
-					styleClass="pulldown" 
-					value="#{seminarpoolRegistration.seminarpoolInfo.universityId}"
-					valueChangeListener="#{seminarpoolRegistration.processUniversitySelectChanged}"
-					
-					required="true">
- 					<f:selectItems value="#{seminarpoolRegistration.allUniversities}"/>
- 					<f:validator validatorId="universityDepartmentSelectValidator"/>
-				</h:selectOneListbox>
 
-<!-- LUECKE OBEN	 
-					onchange="this.form.submit();"
-					immediate="true"   -->
-				
-				<o:input 
-					label="#{msg.seminarpool_name}"
-					entity="seminarpoolRegistration.seminarpoolInfo" 
-					property="name" 
-					maxlength="100" 
-					required="true"/>
-				<o:input 
-					label="#{msg.seminarpool_shortcut}"
-					entity="seminarpoolRegistration.seminarpoolInfo" 
-					property="shortcut" 
-					maxlength="30" 
-					required="true" />
-									
-				<o:input 
-					label="#{msg.seminarpool_max_seminar_allocations}"
-					entity="seminarpoolRegistration.seminarpoolInfo" 
-					property="maxSeminarAllocations" 
-					size="5"
-					maxlength="5"
-					required="true" />
-				<o:input 
-					label="#{msg.seminarpool_priorities}"
-					entity="seminarpoolRegistration.seminarpoolInfo" 
-					property="priorities"
-					size="5"
-					maxlength="5" 
-					required="true" />
-<!--					maxlength="100"  --> 
-				<o:input
-					label="#{msg.seminarpool_registration_start_time}"
-					entity="seminarpoolRegistration.seminarpoolInfo"
-					property="registrationStartTime"
-					maxlength="16"
-					required="true" />
-				<o:input
-					label="#{msg.seminarpool_registration_end_time}"
-					entity="seminarpoolRegistration.seminarpoolInfo"
-					property="registrationEndTime"
-					maxlength="16"
-					required="true" />
-					
-				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
-					
-				<div id="descriptionTextField" class="content_iframe">
-					<fck:editor value="#{seminarpoolRegistration.seminarpoolInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
-				</div>
-					
-				<h:outputLabel for="accessType" value="#{msg.seminarpool_accesstype}" styleClass="field_label"/>
-				<h:selectOneMenu id="accessType" 
-					layout="pageDirection" 
-					value="#{seminarpoolRegistration.seminarpoolInfo.accessType}" 
-					valueChangeListener="#{seminarpoolRegistration.processAccessTypeChanged}"
-					onchange="this.form.submit();"
-					immediate="true"
-					styleClass="pulldown">
-					<f:converter converterId="seminarpoolAccessTypeConverter" />
-					<f:selectItems value="#{seminarpoolRegistration.accessTypes}"/>
-				</h:selectOneMenu>
-				<h:message for="accessType" styleClass="field_error"/>
-				<c:if test="#{seminarpoolRegistration.seminarpoolInfo.accessType.value == 1}">	
-	 				<o:input 
-	 					label="#{msg.seminarpool_password}"
-	 					entity="seminarpoolRegistration.seminarpoolInfo" 
-	 					property="password" 
-	 					required="true"/>
- 				</c:if> 	
-			</o:block>
-			
+			<ui:include src="/views/commons/seminarpool/seminarpoolData.xhtml" />  
+						
 			<o:block>
 				<h:commandButton value="#{msg.back}" action="seminarpool_create_start" styleClass="button_back" immediate="true" />
 				<h:commandButton value="#{msg.forward}" action="seminarpool_create_step2" styleClass="button_continue" />

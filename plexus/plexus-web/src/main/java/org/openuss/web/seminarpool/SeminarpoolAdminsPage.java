@@ -17,7 +17,6 @@ import org.openuss.desktop.DesktopInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.OrganisationServiceException;
@@ -101,13 +100,13 @@ public class SeminarpoolAdminsPage extends BasePage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("department_command_authorisations"));
-		crumb.setHint(i18n("department_command_authorisations"));
+		crumb.setName(i18n("seminarpool_command_options_seminarpooladmins"));
+		crumb.setHint(i18n("seminarpool_command_options_seminarpooladmins"));
 		
 		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-
+	
 	public List<GroupItem> getSeminarpoolGroups() {
 		if (seminarpoolGroups == null) {
 			logger.debug("fetching available university group information");
@@ -162,16 +161,11 @@ public class SeminarpoolAdminsPage extends BasePage {
 		if (logger.isDebugEnabled()) {
 			logger.debug("add a admin to seminarpool");
 		}
+		User newadmin = null;
 		try {
 			logger.debug(username);
-			user = securityService.getUserByName(username);
-			logger.debug(seminarpoolInfo.getId());
-			logger.debug(user.getId());
-			organisationService.addMember(seminarpoolInfo.getId(), user.getId());
-			logger.debug(seminarpoolGroups.size());
-			logger.debug(seminarpoolGroups.get(0).getId());
-			logger.debug(seminarpoolGroups.get(0).getName());
-			organisationService.addUserToGroup(user.getId(), seminarpoolGroups.get(0).getId());
+			newadmin = securityService.getUserByName(username);
+			seminarpoolAdministrationService.addSeminarpoolAdmin(newadmin.getId(), seminarpoolInfo.getId());
 			addMessage(i18n("department_add_member_to_department", username));		
 		} catch (OrganisationServiceException e) {
 			logger.debug(e.getMessage());
@@ -180,11 +174,13 @@ public class SeminarpoolAdminsPage extends BasePage {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_department"));
 		}
-		try {
-			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
-			desktopService2.linkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
-		} catch(Exception e) {
-			addError(i18n(e.getMessage()));
+		if(newadmin != null) {
+			try {
+				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(newadmin.getId());
+				desktopService2.linkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
+			} catch(Exception e) {
+				addError(i18n(e.getMessage()));
+			}
 		}
 	}
 
