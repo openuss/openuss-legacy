@@ -3,7 +3,7 @@ package org.openuss.webdav;
 /**
  * An error on a specific resource.
  */
-public class WebDAVResourceException extends WebDAVException {
+public class WebDAVResourceException extends WebDAVHrefException {
 	/**
 	 * Version ID for serialization.
 	 */
@@ -48,11 +48,12 @@ public class WebDAVResourceException extends WebDAVException {
 	public WebDAVResource getResource() {
 		return resource;
 	}
-	
-	/**
-	 * @return A string describing the path of the resource that can be presented to the client.
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVHrefException#getPath()
 	 */
-	public String getHref() {
-		return getResource().getPath().toClientString();
+	@Override
+	public WebDAVPath getPath() {
+		return getResource().getPath();
 	}
 }

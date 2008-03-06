@@ -30,7 +30,7 @@ public interface WebDAVResource {
 	 * 			This object may not point to an existing file.Use exists() to find out.
 	 * @throws WebDAVResourceException An error that can be handed directly to the client. 
 	 */
-	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVResourceException;
+	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVHrefException;
 	
 	/**
 	 * Obtain information about this object.

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
-import org.openuss.webdav.WebDAVResourceException;
+import org.openuss.webdav.WebDAVHrefException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -153,7 +153,7 @@ public class PropertyResponse implements MultiStatusResponse {
 	 * @param wre The exception, containing information about the source.
 	 * @return A new PropertyResponse object.
 	 */
-	public static PropertyResponse createFromResourceException(WebDAVResourceException wre) {
+	public static PropertyResponse createFromHrefException(WebDAVHrefException wre) {
 		return new PropertyResponse(wre.getHref(), wre.getMessage());
 	}
 	

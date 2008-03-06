@@ -22,8 +22,9 @@ import org.apache.commons.io.IOUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
-import org.openuss.webdav.WebDAVResourceException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -181,19 +182,6 @@ public class WebDAVUtils {
 		
 		return ioc;
 	}
-	
-	
-	/* Conversion */
-	
-	/**
-	 * Creates a new PropertyResponse out of a WebDAVResourceException.
-	 * 
-	 * @param wre The exception, containing information about the source.
-	 * @return A new PropertyResponse object.
-	 */
-	public static PropertyResponse createFromResourceException(WebDAVResourceException wre) {
-		return PropertyResponse.createFromResourceException(wre);
-	}
 
 
 	/* XML */	
@@ -203,14 +191,34 @@ public class WebDAVUtils {
 	 */
 	public static Document newDocument() {
 		// new Document(). dom4j can not be used because the interface in plexus-api requires us to fulfil org.w3c.dom. 
+		DocumentBuilder db = newDocumentBuilder();
+		
+		return db.newDocument();
+	}
+	
+	/**
+	 * @return A new DocumentBuilderFactory configured for use with WebDAV documents.
+	 */
+	public static DocumentBuilderFactory newDocumentBuilderFactory() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		
+		return dbf;
+	}
+	
+	/**
+	 * @return A new DocumentBuilder configured for use with WebDAV documents.
+	 */
+	public static DocumentBuilder newDocumentBuilder() {
+		DocumentBuilderFactory dbf = newDocumentBuilderFactory();
 		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw new RuntimeException(e);
 		}
-		return db.newDocument();
+		
+		return db;
 	}
 	
 	/**
@@ -242,15 +250,12 @@ public class WebDAVUtils {
 	 * @throws SAXException On a malformed document.
 	 */
 	public static Document stringToDocument(String s) throws SAXException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = newDocumentBuilder();
 		Document res;
 		
 		try {
-			DocumentBuilder db = dbf.newDocumentBuilder();
 			res = db.parse(new InputSource(new StringReader(s)));
 		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (ParserConfigurationException e) {
 			throw new RuntimeException(e);
 		}
 			
@@ -266,16 +271,25 @@ public class WebDAVUtils {
 	 * @throws IOException On reading errors.
 	 */
 	public static Document streamToDocument(InputStream is) throws SAXException, IOException {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = newDocumentBuilder();
 		Document res;
 		
-		try {
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			res = db.parse(new InputSource(is));
-		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		}
+		res = db.parse(new InputSource(is));
 			
 		return res;		
+	}
+	
+	/**
+	 * Checks whether an XML node is a DAV element with the specified local name. 
+	 * 
+	 * @param n The node to check.
+	 * @param localName The expected local name.
+	 * @return true Iff the node is an Element object in the DAV namespace with the local name localName.
+	 */
+	public static boolean isDavElement(Node n, String localName) {
+		return (n != null) && (n instanceof Element) &&
+			(n.getNamespaceURI().equals(WebDAVConstants.NAMESPACE_WEBDAV_URI) &&
+			(n.getLocalName().equals(localName)));
+			
 	}
 }

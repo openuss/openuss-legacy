@@ -115,4 +115,9 @@ public interface WebDAVPath {
 			this.newOther = newOther;
 		}
 	}
+	
+	/**
+	 * @return The number of elements yet to resolve.
+	 */
+	public int getNumberOfElemsToResolve();
 }

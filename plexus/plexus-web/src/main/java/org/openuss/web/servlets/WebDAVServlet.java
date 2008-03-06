@@ -1,7 +1,7 @@
 package org.openuss.web.servlets;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.Writer;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -16,20 +16,19 @@ import org.openuss.web.dav.NullIOContext;
 import org.openuss.web.dav.SimpleWebDAVAnswer;
 import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.web.dav.WebDAVUtils;
-import org.openuss.web.dav.backends.OrganisationResource;
+import org.openuss.web.dav.backends.RootResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusAnswer;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVAnswer;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
+import org.openuss.webdav.WebDAVHrefException;
 import org.openuss.webdav.WebDAVMethods;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
-import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
-
 
 
 /**
@@ -58,7 +57,7 @@ public class WebDAVServlet extends HttpServlet {
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  	 */
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
- 		try	{
+		try	{
  			String destination;
 	 		WebDAVPath destinationPath;
 	 		WebDAVResource destinationResource;
@@ -67,12 +66,15 @@ public class WebDAVServlet extends HttpServlet {
 			boolean overwrite;
 			boolean recursive;
 			int depth;
-			WebDAVResource root = new OrganisationResource(WebDAVPathImpl.getRoot(resourcePathPrefix));
 			WebDAVPath path;
 			WebDAVResource resource;
 			Document doc;
 			WebDAVAnswer answer;
-
+			
+			logger.debug("WebDAVServlet was called with " + method + " method");
+			
+			WebDAVResource root = RootResource.getRoot(resourcePathPrefix);
+			
 			switch(code) {
 			case WebDAVMethods.DAV_OPTIONS:
 				publishOptions(response); 
@@ -123,8 +125,7 @@ public class WebDAVServlet extends HttpServlet {
 				destinationResource = root.resolvePath(destinationPath);
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				depth = WebDAVUtils.readDepthHeader(request);
-				if (depth == WebDAVConstants.DEPTH_INFINITY) recursive = true;
-				else recursive = false;
+				recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
 				answer = copy(resource, destinationResource, recursive, overwrite);
 				resource.delete();
 				printResponse(response, answer);
@@ -156,11 +157,15 @@ public class WebDAVServlet extends HttpServlet {
 				answer = propPatch(resource, doc, depth);
 				printResponse(response, answer);
 				break;
-			
 			}
 		} catch(WebDAVException ex){
 			printResponse(response, ex);
-		}
+		} catch(IOException ioe) {
+			logger.error(ioe);
+		}/* catch (Throwable t) {
+			// Another error
+			printResponse(response, new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, t));
+		}*/
  	}
  	
  	/**
@@ -188,7 +193,6 @@ public class WebDAVServlet extends HttpServlet {
  			MultiStatusResponse response = resource.updateProperties(doc);
 			answer.addResponse(response);
 				
-				
 	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
 	 			Set<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
@@ -198,7 +202,7 @@ public class WebDAVServlet extends HttpServlet {
 	 				}
 	 			}
 	 		}
- 		} catch (WebDAVResourceException ex){
+ 		} catch (WebDAVHrefException ex){
  			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(ex.getHref(), ex.getStatusCode()); 
  			answer.addResponse(exceptionResponse);
  		}
@@ -213,21 +217,7 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	public static MultiStatusAnswer propFind(WebDAVResource resource, Document doc, int depth){
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		try {
-	 		if (depth == WebDAVConstants.DEPTH_INFINITY){
-	 			propFind(resource, doc, answer, true);
-	 		}
-	 		if (depth == WebDAVConstants.DEPTH_1){
-	 			propFind(resource, doc, answer, false);
-	 		}
-	 		if (depth == WebDAVConstants.DEPTH_0){
-	 			MultiStatusResponse response = resource.getProperties(doc);
-	 			answer.addResponse(response);
-	 		}
- 		} catch (WebDAVResourceException ex){
- 			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(ex.getHref(), ex.getStatusCode()); 
- 			answer.addResponse(exceptionResponse);
- 		}
+ 		propFind(resource, doc, answer, depth);
  		return answer;
  	}
  	
@@ -236,35 +226,42 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param resource the resource with the properties
  	 * @param doc the request document
  	 * @param answer the MultiStatusAnswer object
- 	 * @param recursive true iff depth is INFINITY
+ 	 * @param depth The value of the Depth header.
  	 */
- 	protected static void propFind(WebDAVResource resource, Document doc, MultiStatusAnswer answer, boolean recursive){
+ 	protected static void propFind(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth) {
  		try {
- 			Set<WebDAVResource> resources = resource.getChildren();
- 			for (WebDAVResource scr : resources){
- 				MultiStatusResponse response = scr.getProperties(doc);
- 				answer.addResponse(response);
- 			}
- 		} catch (WebDAVResourceException ex){
+ 			MultiStatusResponse response = resource.getProperties(doc);
+			answer.addResponse(response);
+			
+	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
+	 			Set<WebDAVResource> children = resource.getChildren();
+	 			if (children != null) {
+	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
+	 				for (WebDAVResource c : children) {
+	 					propFind(c, doc, answer, newDepth);	
+	 				}
+	 			}
+	 		}
+ 		} catch (WebDAVHrefException ex){
  			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(ex.getHref(), ex.getStatusCode()); 
  			answer.addResponse(exceptionResponse);
  		}
  	}
  	
  	/**
- 	 * updates the response object by the given answer object and prints it
+ 	 * Updates the response object by the given answer object and prints it
  	 * @param response the response object
  	 * @param answer the SimpleWebDAVAnswer object
  	 * @throws IOException
  	 */
  	public static void printResponse(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
- 		byte[] msgBuf = answer.getMessage().getBytes();
+ 		String msg = answer.getMessage();
  		response.setStatus(answer.getStatusCode());
- 		response.setContentLength(msgBuf.length);
- 		if (msgBuf.length > 0) {
- 			response.setContentType(answer.getContentType() + WebDAVConstants.MIMETYPE_ENCODING_SEP + Charset.defaultCharset().name());
- 			response.getOutputStream().write(msgBuf);
- 		}
+ 		response.setContentType(answer.getContentType());
+ 		
+ 		Writer w = response.getWriter();
+ 		w.write(msg);
+ 		w.close();
  	}
  	
  	/**
@@ -317,7 +314,7 @@ public class WebDAVServlet extends HttpServlet {
  	 			answer.addResponse(msr);
  			}		
  		}
- 		catch(WebDAVResourceException exDAV){
+ 		catch(WebDAVHrefException exDAV){
  			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(exDAV.getHref(), exDAV.getStatusCode()); 
  			answer.addResponse(exceptionResponse);
  		}
@@ -334,7 +331,7 @@ public class WebDAVServlet extends HttpServlet {
 		super.init();
 
 		// read resource path prefix from configuration and store it in the context
-		resourcePathPrefix = getInitParameter(INIT_PARAMETER_RESOURCE_PATH_PREFIX);
+		resourcePathPrefix = this.getServletContext().getContextPath() + getInitParameter(INIT_PARAMETER_RESOURCE_PATH_PREFIX);
 		if (resourcePathPrefix == null) {
 			throw new ServletException("resource path prefix not set");
 		}
@@ -346,7 +343,7 @@ public class WebDAVServlet extends HttpServlet {
 	 * Handles method OPTIONS as demanded in RFC2518.
 	 * @param response Reference to the response of the servlet.
 	 */
-	private void publishOptions(HttpServletResponse response) {
+	private static void publishOptions(HttpServletResponse response) {
 		// add required headers to response and send status code 200 (OK)
 		response.addHeader(WebDAVConstants.HEADER_DAV, DAV_COMPLIANCE_LEVEL);
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);

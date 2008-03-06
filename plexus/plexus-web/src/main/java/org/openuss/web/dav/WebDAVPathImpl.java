@@ -270,4 +270,18 @@ public class WebDAVPathImpl implements WebDAVPath {
 	public WebDAVPath asResolved() {
 		return new WebDAVPathImpl(path + toResolve, null);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#getNumberOfElemsToResolve()
+	 */
+	public int getNumberOfElemsToResolve() {
+		String toResolve = getToResolve();
+		int res = StringUtils.countMatches(toResolve, PATH_SEP);
+		
+		if (toResolve.endsWith(PATH_SEP)) {
+			res--;
+		}
+		
+		return res;
+	}
 }
