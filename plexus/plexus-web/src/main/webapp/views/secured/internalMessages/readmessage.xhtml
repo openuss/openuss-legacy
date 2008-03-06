@@ -62,15 +62,14 @@
 			</o:block>
 			
 			<o:block>
-				<h:commandButton action="openuss4us_messagecenter"
-					value="#{msg.back}" styleClass="button" />
+				
 				<h:commandButton action="#{views$secured$internalmessages$readmessage.answerMessage}"
 					value="#{msg.openuss4us_messagecenter_replymessage}" styleClass="button"
 					rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
-				
 				<h:commandButton id="requestdelete" action="openuss4us_delete_message"
 					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button" />
-
+				<h:commandButton action="openuss4us_messagecenter"
+					value="#{msg.back}" styleClass="button" />
 			</o:block>
 		</h:form>
 	</ui:define>

@@ -60,12 +60,13 @@
 			</o:block>
 
 			<o:block>
-				<h:commandButton action="view:backward" value="#{msg.back}"
-					styleClass="button" immediate="true" />
 				<h:commandButton
 					action="#{views$secured$internalmessages$newinternalmessage.sendmessage}"
 					value="#{msg.openuss4us_buddylist_command_message_send}"
 					styleClass="button" />
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button" immediate="true" />
+				
 
 			</o:block>
 		</h:form>

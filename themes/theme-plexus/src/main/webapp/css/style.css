@@ -1060,7 +1060,7 @@ p.header_font_normal,span.header_font_normal {
 	color: #505050;
 }
 
-#messagebox .messagecenter_header{
+#messagebox .messagecenter_header, #buddylist .buddylist_header{
 	padding: 8px 0 0 0px;
 	margin: 10px 0 0 0;
 	font-size: 9pt;

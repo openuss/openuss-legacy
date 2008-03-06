@@ -57,7 +57,49 @@ a.icon_remove span {
 a.icon_remove:focus span, a.icon_remove:hover span {
   background-position: top right;
 }
- 
+
+a.icon_sendmessage {
+	background-image: url(../img/buttons/send_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_sendmessage:focus, a.icon_sendmessage:hover{
+	background-position: top right;
+}
+
+a.icon_edittags {
+	background-image: url(../img/buttons/edit_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_edittags:focus, a.icon_edittags:hover{
+	background-position: top right;
+}
+
+a.icon_removebuddy {
+	background-image: url(../img/buttons/unjoin_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_removebuddy:focus, a.icon_removebuddy:hover{
+	background-position: top right;
+}	
+	
 a.icon_profile {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;

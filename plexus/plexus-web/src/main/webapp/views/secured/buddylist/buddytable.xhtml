@@ -8,7 +8,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core">
-
+	<div id="buddylist">
 	<plexus:dataTable id="buddyTable"
 		value="views$secured$buddylist$buddylist.data" var="currentbuddy"
 		rows="20" label="#{msg['openuss4us_command_buddylist']}">
@@ -27,7 +27,7 @@
 		</t:column>
 		<t:column styleClass="col_max_left">
 			<h:outputText value="#{currentbuddy.name}"
-				styleClass="header_font_normal" />
+				styleClass="buddylist_header" />
 			<br />
 			<t:dataList value="#{currentbuddy.tags}" var="currentTag"
 				styleClass="content_font_normal"
@@ -38,15 +38,21 @@
 			</t:dataList>
 		</t:column>
 		<t:column styleClass="col_commands">
-			<h:commandButton id="send_message" action="#{views$secured$buddylist$buddylist.sendMessage}"
-				value="#{msg.user_send_internalmessage}" title="#{msg.user_send_internalmessage}"
-				styleClass="button_remove" /><br />
-			<h:commandButton id="editTags" action="#{views$secured$buddylist$buddylist.linkEditTags}"
-				value="#{msg.openuss4us_buddylist_button_edit_tags}" title="#{msg.openuss4us_buddylist_button_edit_tags}"
-				styleClass="button_remove" /><br />
-				<h:commandButton id="removeBuddy" action="#{views$secured$buddylist$buddylist.linkDeleteBuddy}"
-				value="#{msg.openuss4us_buddylist_button_delete_buddy}" title="#{msg.openuss4us_buddylist_button_delete_buddy}"
-				styleClass="button_remove" />
+		
+			<h:commandLink
+				action="#{views$secured$buddylist$buddylist.sendMessage}"
+				title="#{msg.openuss4us_buddylist_command_message_send}"
+				class="icon_sendmessage" />
+			<h:commandLink
+				action="#{views$secured$buddylist$buddylist.linkEditTags}"
+				title="#{msg.openuss4us_buddylist_button_edit_tags}"
+				class="icon_edittags" />
+			<h:commandLink
+				action="#{views$secured$buddylist$buddylist.linkDeleteBuddy}"
+				title="#{msg.openuss4us_buddylist_button_delete_buddy}"
+				class="icon_removebuddy" />
+				
 		</t:column>
 	</plexus:dataTable>
+	</div>
 </ui:composition>
