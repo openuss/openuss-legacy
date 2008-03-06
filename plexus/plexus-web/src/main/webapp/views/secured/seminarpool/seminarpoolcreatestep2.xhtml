@@ -27,9 +27,8 @@
 
 	<ui:define name="content">
 		<h:form id="seminarpool_create_seminarpool">
-			<o:block label="#{msg['seminarpool_create_block']}" styleClass="form_box">
-				<ui:include src="seminarpoolConditionstable.xhtml" />
-			</o:block>
+			
+			<ui:include src="seminarpoolConditionstable.xhtml" />
 			
 			<o:block>
 				<h:commandButton value="#{msg.back}" action="seminarpool_create_step1" styleClass="button_back" immediate="true" />
