@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+  	  xmlns:o="http://www.openuss.org/jsfcontrols"
+  	  xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/admin.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="profileForm" enctype="multipart/form-data">
+				<o:block label="#{msg['user_profile_heading_config']}" styleClass="form_box">
+					<ui:include src="/views/commons/user/profileDataPersonal.xhtml" />
+   			 	</o:block>
+   			 	<o:block>
+	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
+	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button"/>
+					<h:commandButton action="#{views$secured$user$profile.profilePage}" value="#{msg.user_profile_preview}" styleClass="button" />
+		 		</o:block>
+	 		</h:form> 
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
