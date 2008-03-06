@@ -26,6 +26,8 @@ public class SerialAppointmentDaoImpl
         appTypeInfo.setId(sourceEntity.getAppointmentType().getId());
         appTypeInfo.setName(sourceEntity.getAppointmentType().getName());
         targetVO.setAppointmentTypeInfo(appTypeInfo);
+        targetVO.setCalendarId(sourceEntity.getSourceCalendar().getId());
+        targetVO.setCalendarType(CalendarType.fromString(sourceEntity.getSourceCalendarType()));
     }
 
 

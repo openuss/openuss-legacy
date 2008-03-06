@@ -9,6 +9,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:news="http://www.openuss.org/news/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
@@ -19,14 +20,16 @@
 			label="#{msg.openuss4us_calendar_serial_appointments}">
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
-				<h:commandLink value="" action= "#{views$secured$calendar$calendar.serialAppointmentDetails}">
-				<h:outputText value="#{serialAppointment.subject}"
-					styleClass="header_font_normal" />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
+					<h:outputText value="#{serialAppointment.subject}"
+						styleClass="header_font_normal" />
 				</h:commandLink>
 				<br />
-				<h:commandLink value="" action= "#{views$secured$calendar$calendar.serialAppointmentDetails}">
-				<h:outputText value="#{serialAppointment.description}"
-					styleClass="content_font_normal" />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
+					<h:outputText value="#{serialAppointment.description}"
+						styleClass="content_font_normal" />
 				</h:commandLink>
 			</t:column>
 			<t:column styleClass="col_max_left">
@@ -50,6 +53,7 @@
 				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
 				<h:outputText value="#{serialAppointment.location}" />
 			</t:column>
+
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="recurrenceType">#{msg.openuss4us_calendar_recurrence}</plexus:commandSortHeader>
 				<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
@@ -93,21 +97,22 @@
 					<f:param value="#{serialAppointment.recurrencePeriod}" />
 				</h:outputFormat>
 			</t:column>
-			<t:column styleClass="col_commands">
+			<plexus:column header="#{msg.commands_header}"
+				styleClass="col_commands">
 				<h:commandButton id="details_serial"
 					action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
 					value="#{msg.openuss4us_calendar_view_appointment_details}"
 					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
 					<br />
 					<h:commandButton id="delete_serialappointment"
-					action="#{views$secured$calendar$calendar.deleteSerialAppointment}"
-					value="#{msg.openuss4us_calendar_button_delete}"
-					title="#{msg.openuss4us_calendar_appointment_delete}"
-					styleClass="button_remove" 
-					rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
-				
-			</t:column>
+						action="#{views$secured$calendar$calendar.deleteSerialAppointment}"
+						value="#{msg.openuss4us_calendar_button_delete}"
+						title="#{msg.openuss4us_calendar_appointment_delete}"
+						styleClass="button_remove" />
+				</s:acl>
+				</plexus:column>
 		</plexus:dataTable>
 		<plexus:dataTable id="singleAppointmentTable"
 			value="views$secured$calendar$calendar.singleAppointmentData"
@@ -142,24 +147,26 @@
 				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.location}" />
 			</t:column>
-			<t:column styleClass="col_commands">
+
+			<plexus:column header="#{msg.commands_header}"
+				styleClass="col_commands">
 				<h:commandButton id="details_single"
 					action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
 					value="#{msg.openuss4us_calendar_view_appointment_details}"
 					title="#{msg.openuss4us_calendar_view_appointment_details}"
 					styleClass="button_remove" />
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
 					<br />
 					<h:commandButton id="delete_singleappointment"
-					action="#{views$secured$calendar$calendar.deleteSingleAppointment}"
-					value="#{msg.openuss4us_calendar_button_delete}"
-					title="#{msg.openuss4us_calendar_appointment_delete}"
-					styleClass="button_remove" 
-					rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
-			</t:column>
+						action="#{views$secured$calendar$calendar.deleteSingleAppointment}"
+						value="#{msg.openuss4us_calendar_button_delete}"
+						title="#{msg.openuss4us_calendar_appointment_delete}"
+						styleClass="button_remove" />
+				</s:acl>
+				</plexus:column>
 		</plexus:dataTable>
 		<o:block>
-			<c:if test="true">
-				<!-- TODO test wether user is moderator/dozent -->
+			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
 				<h:commandButton
 					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
 					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
@@ -168,18 +175,19 @@
 					value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
 					title="#{msg.openuss4us_calendar_button_create_serial_appointment}"
 					action="calendar_create_serial_appointment" styleClass="button" />
+			</s:acl>
+			<c:if test="#{user.id ne calendarInfo.domainIdentifier}">
+				<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
+					title="#{msg.openuss4us_calendar_subscribe_hint}"
+					rendered="#{not views$secured$calendar$calendar.subscribed}"
+					action="#{views$secured$calendar$calendar.changeSubscription}"
+					styleClass="button" />
+				<h:commandButton value="#{msg.openuss4us_calendar_subscribe_delete}"
+					title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
+					rendered="#{views$secured$calendar$calendar.subscribed}"
+					action="#{views$secured$calendar$calendar.changeSubscription}"
+					styleClass="button" />
 			</c:if>
-			<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
-				title="#{msg.openuss4us_calendar_subscribe_hint}"
-				rendered="#{not views$secured$calendar$calendar.subscribed}"
-				action="#{views$secured$calendar$calendar.changeSubscription}"
-				styleClass="button" />
-			<h:commandButton value="#{msg.openuss4us_calendar_subscribe_delete}"
-				title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
-				rendered="#{views$secured$calendar$calendar.subscribed}"
-				action="#{views$secured$calendar$calendar.changeSubscription}"
-				styleClass="button" />
-
 		</o:block>
 	</h:form>
 </ui:composition>

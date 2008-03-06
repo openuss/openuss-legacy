@@ -12,13 +12,13 @@ package org.openuss.internalMessage;
  */
 public class InternalMessageDaoTest extends InternalMessageDaoTestBase {
 	
-	public void testInternalMessageDaoCreate() {
-		InternalMessage internalMessage = InternalMessage.Factory.newInstance();
-		internalMessage.setContent(" ");
-		internalMessage.setSubject(" ");
-		internalMessage.setMessageDate(null);
-		assertNull(internalMessage.getId());
-		internalMessageDao.create(internalMessage);
-		assertNotNull(internalMessage.getId());
-	}
+//	public void testInternalMessageDaoCreate() {
+//		InternalMessage internalMessage = InternalMessage.Factory.newInstance();
+//		internalMessage.setContent(" ");
+//		internalMessage.setSubject(" ");
+//		internalMessage.setMessageDate(null);
+//		assertNull(internalMessage.getId());
+//		internalMessageDao.create(internalMessage);
+//		assertNotNull(internalMessage.getId());
+//	}
 }

@@ -130,49 +130,6 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 						.getEndtime().getDate());
 	}
 
-	public boolean isSuperuser() {
-		try {
-			if (calendarInfo.getCalendarType().equals(
-					CalendarType.user_calendar)) {
-				// User Calendar
-				return calendarInfo.getDomainIdentifier().equals(user.getId());
-			}
-			if (calendarInfo.getCalendarType().equals(
-					CalendarType.course_calendar)) {
-				// Course calendar
-				// TODO Besser: Über AppointmentInfo calender finden
-				CourseInfo course = courseService.findCourse(calendarInfo
-						.getDomainIdentifier());
-				// TODO Talk with Ingo, administrator is not assistant
-				Collection co = courseService
-						.getAssistants(course);
-				for (CourseMemberInfo cmi : (Collection<CourseMemberInfo>)co) {
-					if (cmi.getUserId().equals(user.getId())) {
-						return true;
-					}
-				}
-				return false;
-			}
-			if (calendarInfo.getCalendarType().equals(
-					CalendarType.group_calendar)) {
-				// Group calendar
-				UserGroupInfo group = groupService.getGroupInfo(calendarInfo
-						.getDomainIdentifier());
-				Collection gr = groupService
-						.getAllMembers(group);
-				for (UserGroupMemberInfo ugmi : (Collection<UserGroupMemberInfo>)gr) {
-					if (ugmi.getUserId().equals(user.getId())) {
-						return true;
-					}
-				}
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	public String delete() {
 		logger.debug("Deleting appointment " + appointmentInfo.getId());
 		try {

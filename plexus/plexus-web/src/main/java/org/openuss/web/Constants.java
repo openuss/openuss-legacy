@@ -294,6 +294,7 @@ public class Constants {
 	public static final String CALENDAR_CREATE_SINGLE_APPOINTMENT = "calendar_create_single_appointment";
 	public static final String CALENDAR_CREATE_SERIAL_APPOINTMENT = "calendar_create_serial_appointment";
 	public static final String CALENDAR_DELETE_APPOINTMENT = "delete_appointment";
+	public static final String CALENDAR_EDIT_SUBSCRIPTIONS = "openuss4us_calendar_edit_subscriptions";
 	public static final String APPOINTMENT_INFO = "appointmentInfo";
 	public static final String CALENDAR_INFO = "calendarInfo";
 	
@@ -315,6 +316,7 @@ public class Constants {
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 	public static final String OPENUSS4US_INTERNALMESSAGE_RECIPIENT = "internalMessageRecipientsInfo";
 	public static final String OPENUSS4US_INTERNALMESSAGE_MESSAGE = "internalMessageInfo";
+
 
 	
 }

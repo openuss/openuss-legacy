@@ -52,7 +52,7 @@
 				value="#{courseInfo.courseTypeDescription}" /></p>
 			<div class="content_font_normal"><h:outputText
 				value="#{courseInfo.description}" escape="false" /></div>
-			<ui:include src="/views/secured/course/calendarshortoverview.xhtml" />			
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}"><ui:include src="/views/secured/course/calendarshortoverview.xhtml" /></s:acl>			
 			<h:outputText value="#{msg.course_main_assistants}"
 				styleClass="field_label"
 				rendered="#{not empty views$secured$course$main.assistants}" />

@@ -12,10 +12,10 @@ package org.openuss.internalMessage;
  */
 public class InternalMessageCenterDaoTest extends InternalMessageCenterDaoTestBase {
 	
-	public void testInternalMessageCenterDaoCreate() {
-		InternalMessageCenter internalMessageCenter = InternalMessageCenter.Factory.newInstance();
-		assertNull(internalMessageCenter.getId());
-		internalMessageCenterDao.create(internalMessageCenter);
-		assertNotNull(internalMessageCenter.getId());
-	}
+//	public void testInternalMessageCenterDaoCreate() {
+//		InternalMessageCenter internalMessageCenter = InternalMessageCenter.Factory.newInstance();
+//		assertNull(internalMessageCenter.getId());
+//		internalMessageCenterDao.create(internalMessageCenter);
+//		assertNotNull(internalMessageCenter.getId());
+//	}
 }

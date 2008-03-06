@@ -13,19 +13,21 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import org.openuss.groups.UserGroup;
+import org.openuss.groups.UserGroupDao;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.calendar.CalendarService
  */
 public class CalendarServiceImpl extends
 		org.openuss.calendar.CalendarServiceBase {
-
-	SecurityService securityService;
 
 	/**
 	 * @see org.openuss.calendar.CalendarService#createCalendar(org.openuss.foundation.DomainObject)
@@ -57,7 +59,10 @@ public class CalendarServiceImpl extends
 			cal.setLastUpdate(new Timestamp(date.getTime()));
 			cal.setCalendarType(calType);
 			cal.setDomainIdentifier(domainObject.getId());
-			getCalendarDao().create(cal);
+			cal = getCalendarDao().create(cal);
+			getSecurityService().createObjectIdentity(cal, cal.getDomainIdentifier());
+			if(cal.getCalendarType().equals(CalendarType.user_calendar))
+					getSecurityService().setPermissions(getSecurityService().getCurrentUser(), cal, LectureAclEntry.OGCRUD);
 		}
 
 	}
@@ -570,7 +575,22 @@ public class CalendarServiceImpl extends
 		// subs.addAll(subscriptions);
 		// getCalendarDao().toCalendarInfoCollection(subs);
 		for (Calendar calIt : subscriptions) {
-			subs.add(getCalendarDao().toCalendarInfo(calIt));
+			CalendarInfo calInfo = getCalendarDao().toCalendarInfo(calIt);
+			if (calIt.getCalendarType().equals(CalendarType.course_calendar)){
+				CourseInfo course = getCourseService().findCourse(calIt.getDomainIdentifier());
+				calInfo.setCalendarOwnerName(course.getName() + " (" + course.getShortcut() +")");
+			}
+			if (calIt.getCalendarType().equals(CalendarType.group_calendar)){
+				UserGroupInfo group = getGroupService().getGroupInfo(calIt.getDomainIdentifier());
+				calInfo.setCalendarOwnerName(group.getName() +" (" + group.getShortcut()+")");
+			}
+			//this should never happen, a user should currently not be able to subscribe to another users calendar.
+			if (calIt.getCalendarType().equals(CalendarType.user_calendar)){
+				User userCalendar = getSecurityService().getUser(calIt.getDomainIdentifier());
+				calInfo.setCalendarOwnerName(user.getDisplayName());
+			}
+			subs.add(calInfo);
+			
 		}
 		return subs;
 	}

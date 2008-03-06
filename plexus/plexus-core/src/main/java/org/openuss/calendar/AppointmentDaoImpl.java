@@ -11,15 +11,6 @@ package org.openuss.calendar;
 public class AppointmentDaoImpl extends org.openuss.calendar.AppointmentDaoBase
 
 {
-	AppointmentTypeDao appointmentTypeDao;
-
-	public AppointmentTypeDao getAppointmentTypeDao() {
-		return appointmentTypeDao;
-	}
-
-	public void setAppointmentTypeDao(AppointmentTypeDao appointmentTypeDao) {
-		this.appointmentTypeDao = appointmentTypeDao;
-	}
 
 	/**
 	 * @see org.openuss.calendar.AppointmentDao#toAppointmentInfo(org.openuss.calendar.Appointment,
@@ -36,7 +27,8 @@ public class AppointmentDaoImpl extends org.openuss.calendar.AppointmentDaoBase
 	        appTypeInfo.setId(sourceEntity.getAppointmentType().getId());
 	        appTypeInfo.setName(sourceEntity.getAppointmentType().getName());
 	        targetVO.setAppointmentTypeInfo(appTypeInfo);
-	        
+	        targetVO.setCalendarId(sourceEntity.getSourceCalendar().getId());
+	        targetVO.setCalendarType(CalendarType.fromString(sourceEntity.getSourceCalendarType()));
 	}
 
 	/**

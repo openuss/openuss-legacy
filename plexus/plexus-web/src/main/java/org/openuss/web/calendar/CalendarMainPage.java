@@ -4,20 +4,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarInfo;
-import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
@@ -114,13 +110,13 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		try{
 		if(getSubscribed()){
 			calendarService.endSubscription(calendarInfo);
-			this.addMessage("TODO: Unsubscribed");
+			this.addMessage(i18n("openuss4us_calendar_message_unsubscribe"));
 		} else {
 			calendarService.addSubscription(calendarInfo);
-			this.addMessage("TODO: Subscribed");
+			this.addMessage(i18n("openuss4us_calendar_message_subscribe"));
 		}
 		} catch (CalendarApplicationException e) {
-			this.addError("Error");
+			this.addError(i18n("openuss4us_calendar_message_subscribe_error"));
 			return Constants.SUCCESS;
 		}
 		if (calendarInfo.getCalendarType().equals(CalendarType.course_calendar)) {

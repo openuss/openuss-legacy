@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg.openuss4us_calendar_subscribed_calendars}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="view_details">
+			<plexus:dataTable id="subscribedCalendarTable"
+				value="views$secured$calendar$subscribedcalendars.data" var="cal"
+				rows="20" label="#{msg.openuss4us_calendar_single_appointments}">
+				<t:column styleClass="col_max_left">
+					<plexus:commandSortHeader columnName="calendarOwnerName">#{msg.openuss4us_calendar_owner}</plexus:commandSortHeader>
+					<h:outputText value="#{cal.calendarOwnerName}" />
+				</t:column>
+				<t:column styleClass="col_max_left">
+					<plexus:commandSortHeader columnName="calendarType">#{msg.openuss4us_calendar_type}</plexus:commandSortHeader>
+					<h:outputText value="#{msg.openuss4us_calendar_type_user}" rendered="#{cal.calendarType eq 'USER'}"/>
+					<h:outputText value="#{msg.openuss4us_calendar_type_group}" rendered="#{cal.calendarType eq 'GROUP'}"/>
+					<h:outputText value="#{msg.openuss4us_calendar_type_course}" rendered="#{cal.calendarType eq 'COURSE'}"/>					
+				</t:column>
+				<t:column styleClass="col_max_left">
+					
+				</t:column>
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.CRU}">
+						<plexus:column header="#{msg.commands_header}" styleClass="col_commands">
+					<h:commandButton id="unsubscribe"
+						action="#{views$secured$calendar$subscribedcalendars.removeSubscription}"
+						value="#{msg.openuss4us_calendar_subscribe_delete}"
+						title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
+						styleClass="button_remove" />
+				</plexus:column> </s:acl>
+			</plexus:dataTable>
+
+			<o:block>
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button_back" immediate="true" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

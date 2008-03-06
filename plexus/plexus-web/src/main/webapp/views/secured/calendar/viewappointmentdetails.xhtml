@@ -9,6 +9,7 @@
 	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:news="http://www.openuss.org/news/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
@@ -38,7 +39,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="view_details">
-			<o:block label="#{appointmentInfo.subject}" styleClass="content_box">
+				<o:block label="#{appointmentInfo.subject}" styleClass="content_box">
 				<c:if test="#{not empty appointmentInfo.description}">
 					<p class="content_font_normal"><h:outputText
 						value="#{appointmentInfo.description}" /></p>
@@ -58,6 +59,13 @@
 					rendered="#{views$secured$calendar$viewappointmentdetails.sameDay}">
 					<f:convertDateTime pattern="H:mm" />
 				</h:outputText>
+				<p class="content_font_normal">
+				<h:outputText value="#{msg.openuss4us_calendar_type_user}"
+					rendered="#{appointmentInfo.calendarType eq 'USER'}" />
+				<h:outputText value="#{msg.openuss4us_calendar_type_group}"
+					rendered="#{appointmentInfo.calendarType eq 'GROUP'}" />
+				<h:outputText value="#{msg.openuss4us_calendar_type_course}"
+					rendered="#{appointmentInfo.calendarType eq 'COURSE'}" /></p>
 				<c:if
 					test="#{views$secured$calendar$viewappointmentdetails.serial}">
 					<br />
@@ -130,20 +138,25 @@
 				<plexus:commandSortHeader columnName="takingPlace">#{msg.openuss4us_calendar_taking_place}</plexus:commandSortHeader>
 				<h:selectBooleanCheckbox value="#{singleAppointment.takingPlace}" disabled="true"/>
 			</t:column>
-			<t:column styleClass="col_commands" rendered="#{views$secured$calendar$viewappointmentdetails.superuser}">
+			<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.UPDATE}">
+			
+			<t:column styleClass="col_commands">
 				<h:commandButton id="delete" action="#{views$secured$calendar$viewappointmentdetails.deactivate}"
 					value="#{msg.openuss4us_calendar_appointment_change_status}" title="#{msg.openuss4us_calendar_appointment_change_status_hint}"
 					styleClass="button_remove" />
 			</t:column>
+			</s:acl>
 		</plexus:dataTable>
-						
+					
 				</c:if>
 			</o:block>
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
+				<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.DELETE}">
 				<h:commandButton action="delete_appointment" value="#{msg.openuss4us_calendar_button_delete}"
-					styleClass="button_back"  rendered="#{views$secured$calendar$viewappointmentdetails.superuser}"/>
+					styleClass="button_back" />
+					</s:acl>
 			</o:block>
 		</h:form>
 	</ui:define>
