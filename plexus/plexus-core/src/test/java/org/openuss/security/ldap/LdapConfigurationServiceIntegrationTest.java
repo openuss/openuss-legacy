@@ -230,6 +230,22 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	}
 	
 	
+	/*
+	 * Tests creation and manipulation of LdapServer/Info objects
+	 */
+	public void testGetAllRoleAttributeKeys() {
+		service = getLdapConfigurationService();
+		
+		RoleAttributeKeyInfo key1 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		RoleAttributeKeyInfo key2 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		
+		List<RoleAttributeKeyInfo> all = service.getAllRoleAttributeKeys();
+		
+		assertTrue(2 == all.size());
+		
+		
+	}
+	
 	
 	
 	/*
