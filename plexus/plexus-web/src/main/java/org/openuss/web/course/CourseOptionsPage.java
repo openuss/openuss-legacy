@@ -77,6 +77,11 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		// XSS Filter Content
 		courseInfo.setDescription(new HtmlInputFilter().filter(courseInfo.getDescription()));
 		
+		if (courseInfo.getAccessType() != AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.PASSWORD){
+			courseInfo.setPapersubmission(false);
+			courseInfo.setCollaboration(false);
+		}
+		
 		courseService.updateCourse(courseInfo);
 		addMessage(i18n("message_course_options_saved"));
 		return Constants.COURSE_OPTIONS_PAGE;

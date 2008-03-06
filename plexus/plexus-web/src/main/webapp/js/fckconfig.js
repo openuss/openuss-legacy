@@ -33,10 +33,27 @@ if (window.document.location.href.match(/Wiki/)) {
     var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
     FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
-    FCKConfig.ImageBrowserURL = '/openuss-plexus/views/secured/wiki/wikichooseimage.faces' ;
+    FCKConfig.ImageBrowserURL = '/plexus-web/views/secured/wiki/wikichooseimage.faces' ;
     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
+    
+    //----------------------------------------------------
+	// ajaxAutoSave plugin 
+	FCKConfig.Plugins.Add( 'ajaxAutoSave','de,en') ;
+	
+	// --- config settings for the ajaxAutoSave plugin ---
+	// URL to post to
+	FCKConfig.ajaxAutoSaveTargetUrl = '/plexus-web/fckfaces/FCKeditor/editor/savedraft' ;
+	
+	// Enable / Disable Plugin onBeforeUpdate Action 
+	FCKConfig.ajaxAutoSaveBeforeUpdateEnabled = true ;
+	
+	// RefreshTime
+	FCKConfig.ajaxAutoSaveRefreshTime = 30 ;
+	
+	// Sensitivity to key strokes
+	FCKConfig.ajaxAutoSaveSensitivity = 2 ;
 }
 
 FCKConfig.ToolbarSets["OpenUSS"] = [
@@ -69,7 +86,7 @@ FCKConfig.ToolbarSets["News"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Wiki"] = [
-    ['FitWindow','Preview'],
+    ['ajaxAutoSave','FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
 	['Undo','Redo','-','SelectAll','RemoveFormat'],
     ['Image','-','OpenUSSWikiLink','Unlink','-', 'Smiley'],

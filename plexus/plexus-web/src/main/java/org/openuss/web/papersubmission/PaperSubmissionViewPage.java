@@ -32,6 +32,7 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
+import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.collaboration.WorkspaceMemberSelection;
@@ -188,7 +189,16 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	@SuppressWarnings("unchecked")
 	private void processDownloadSubmissions(List<PaperSubmissionInfo> submissions) throws IOException {
-		List<FolderEntryInfo> files = paperSubmissionService.getPaperSubmissions(submissions, examInfo.getId());
+		List<FileInfo> files = paperSubmissionService.getPaperSubmissions(submissions, examInfo.getId());
+		for(FileInfo file : files){
+			if(examInfo.getDeadline().before(file.getModified())){
+				String path = file.getPath();
+				path += i18n("papersubmission_zip_foldername_notintime");
+				file.setPath(path);
+				file.setAbsoluteName(path + "/" + file.getFileName());
+				
+			}
+		}
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
@@ -292,139 +302,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public LocalDataModelSubmissionFiles getDataSubmissionFiles() {
 		return this.dataSubmissionFiles;
 	}
-	
-
-	
-	/////// Inner classes ////////////////////////////////////////////////////
-	
-	private class LocalDataModelSubmissions extends AbstractPagedTable<PaperSubmissionInfo> {
-		private static final long serialVersionUID = -6289875618529435428L;
-
-		private DataPage<PaperSubmissionInfo> page;
-
-
-		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-				
-				List<PaperSubmissionInfo> submissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examInfo.getId());
-				
-				sort(submissions);
-				page = new DataPage<PaperSubmissionInfo>(submissions.size(), 0, submissions);
-			}
-			return page;
-		}
-		
-		@Override
-		protected void sort(List<PaperSubmissionInfo> submissions) {
-			if (StringUtils.equals("submittersname", dataSubmissions.getSortColumn())) {
-				Collections.sort(submissions, new SubmittersNameComparator());
-			} else if (StringUtils.equals("submissionstatus", dataSubmissions.getSortColumn())){
-				Collections.sort(submissions, new SubmissionTypeComparator());
-			}
-		}		
-	}
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
-		private static final long serialVersionUID = -6289875618529435428L;
-
-		private DataPage<FolderEntryInfo> page;
-
-		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
-			if (page == null) {
-							
-				if(paperSubmissionInfo == null){
-					page = new DataPage<FolderEntryInfo>(0,0,null);
-				}
-				else{
-					List<FolderEntryInfo> entries = loadFileEntries();
-					
-					sort(entries);
-					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
-				}
-			}
-			return page;
-		}
-		
-		
-		//FIXME not all Comparators are added
-		/**
-		 * Default property sort method
-		 * 
-		 * @param periods
-		 */
-		@Override
-		protected void sort(List<FolderEntryInfo> list) {
-			ComparatorChain chain = new ComparatorChain();
-			if (isAscending()) {
-				chain.addComparator(folderComparator);
-			} else {
-				chain.addComparator(new ReverseComparator(folderComparator));
-			}
-			
-			if (StringUtils.isNotBlank(getSortColumn())) {
-				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
-			} else {
-				chain.addComparator(new PropertyComparator("name", true, isAscending()));
-			}
-			Collections.sort(list, chain);
-		}
-
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
-			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
-				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
-					return 0;
-				} else {
-					return info1.isFolder()?-1:1;
-				}
-			}
-			
-		};	
-	}
-	
-	
-	
-
-/* ----------- institute sorting comparators -------------*/
-	
-	private class SubmittersNameComparator implements Comparator<PaperSubmissionInfo> {
-		public int compare(PaperSubmissionInfo f1, PaperSubmissionInfo f2) {
-			if (dataSubmissions.isAscending()) {
-				if(f1.getLastName().equals(f2.getLastName())){
-					return f1.getFirstName().compareToIgnoreCase(f2.getFirstName());
-				}else{
-					return f1.getLastName().compareToIgnoreCase(f2.getLastName());
-				}
-			} else {
-				if(f2.getLastName().equals(f1.getLastName())){
-					return f2.getFirstName().compareToIgnoreCase(f1.getFirstName());
-				}else{
-					return f2.getLastName().compareToIgnoreCase(f1.getLastName());
-				}
-			}
-		}
-	}
-
-	private class SubmissionTypeComparator implements Comparator<PaperSubmissionInfo> {
-		public int compare(PaperSubmissionInfo f1, PaperSubmissionInfo f2) {
-			if (dataSubmissions.isAscending()) {
-				return f1.getSubmissionStatus().compareTo(f2.getSubmissionStatus());
-			} else {
-				return f2.getSubmissionStatus().compareTo(f1.getSubmissionStatus());
-			}
-		}
-	}
-	
-//	private class PeriodComparator implements Comparator<CourseInfo> {
-//		public int compare(CourseInfo f1, CourseInfo f2) {
-//			if (allCoursesTable.isAscending()) {
-//				return f1.getPeriodName().compareToIgnoreCase(f2.getPeriodName());
-//			} else {
-//				return f2.getPeriodName().compareToIgnoreCase(f1.getPeriodName());
-//			}
-//		}
-//	}
-	
-	
-	
 	public PaperSubmissionSelection getPaperSelection() {
 		return paperSelection;
 	}
@@ -457,5 +334,117 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public void setSubmissions(List<PaperSubmissionInfo> submissions) {
 		this.submissions = submissions;
 	}
+	
+	
+
+	
+	/////// Inner classes ////////////////////////////////////////////////////
+	
+	private class LocalDataModelSubmissions extends AbstractPagedTable<PaperSubmissionInfo> {
+		private static final long serialVersionUID = -6289875618529435428L;
+
+		private DataPage<PaperSubmissionInfo> page;
+
+
+		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+				
+				List<PaperSubmissionInfo> submissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examInfo.getId());
+				
+				sort(submissions);
+				page = new DataPage<PaperSubmissionInfo>(submissions.size(), 0, submissions);
+			}
+			return page;
+		}
+		
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<PaperSubmissionInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			chain.addComparator(submissionComparator);
+						
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("displayName", true, isAscending()));
+			}
+			Collections.sort(list, chain);
+		}
+		private Comparator<PaperSubmissionInfo> submissionComparator = new Comparator<PaperSubmissionInfo>() {
+			public int compare(PaperSubmissionInfo info1, PaperSubmissionInfo info2) {
+				if(isAscending()){
+					return info1.getSubmissionStatus().compareTo(info2.getSubmissionStatus());
+				} else{
+					return info2.getSubmissionStatus().compareTo(info1.getSubmissionStatus());
+				}
+			}
+			
+		};	
+	}
+	
+	
+	
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
+		private static final long serialVersionUID = -6289875618529435428L;
+
+		private DataPage<FolderEntryInfo> page;
+
+		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
+			if (page == null) {
+							
+				if(paperSubmissionInfo == null){
+					page = new DataPage<FolderEntryInfo>(0,0,null);
+				}
+				else{
+					List<FolderEntryInfo> entries = loadFileEntries();
+					
+					sort(entries);
+					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
+				}
+			}
+			return page;
+		}
+		
+		
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<FolderEntryInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			if (isAscending()) {
+				chain.addComparator(folderComparator);
+			} else {
+				chain.addComparator(new ReverseComparator(folderComparator));
+			}
+			
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("name", true, isAscending()));
+			}
+			Collections.sort(list, chain);
+		}
+		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
+				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
+					return 0;
+				} else {
+					return info1.isFolder()?-1:1;
+				}
+			}
+			
+		};	
+	}
+	
+	
+	
+	
 	
 }

@@ -3,12 +3,15 @@ package org.openuss.web.papersubmission;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.comparators.ComparatorChain;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -20,12 +23,14 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.documents.FolderEntrySelection;
 import org.openuss.web.documents.Selection;
+import org.springframework.beans.support.PropertyComparator;
 
 @Bean(name = "views$secured$papersubmission$submissionviewlecturer", scope = Scope.REQUEST)
 @View
@@ -175,6 +180,22 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			}
 			return page;
 		}
+		
+		/**
+		 * Default property sort method
+		 * 
+		 * @param periods
+		 */
+		@Override
+		protected void sort(List<FolderEntryInfo> list) {
+			ComparatorChain chain = new ComparatorChain();
+			if (StringUtils.isNotBlank(getSortColumn())) {
+				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+			} else {
+				chain.addComparator(new PropertyComparator("name", true, isAscending()));
+			}
+			Collections.sort(list, chain);
+		}	
 	}
 	
 	

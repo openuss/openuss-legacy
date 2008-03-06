@@ -262,5 +262,10 @@
         <managed-bean-class>org.openuss.wiki.WikiSiteContentInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>wikiSiteInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.wiki.WikiSiteInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

@@ -12,9 +12,11 @@
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener
 		</phase-listener>
+		<!--
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.DebugPhaseListener
 		</phase-listener>
+		 -->
 		<phase-listener>
 			org.openuss.framework.web.jsf.pages.PagePhaseListener
 		</phase-listener>
@@ -101,7 +103,11 @@
       	<component-type>javax.faces.ViewRoot</component-type>
       	<component-class>org.openuss.web.application.DefaultViewRoot</component-class>
   	</component>
-	
+
+    <component>
+        <component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
+        <component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
+    </component>	
 
 </faces-config>
 

@@ -48,7 +48,8 @@
                 <plexus:commandSortHeader columnName="lastName"> #{msg['collaboration_member_lastname']} </plexus:commandSortHeader>
                 <h:outputText value="#{entry.lastName}"/>
             </t:column>
-   	    </plexus:dataTable>  
+   	    </plexus:dataTable>
+   	    
         <o:block>   
             <h:commandButton id="saveWorkspace"   action="#{views$secured$collaboration$main.saveWorkspace}" value="#{msg.save}" styleClass="button_save" />
             <h:commandButton id="cancelWorkspace" action="#{views$secured$collaboration$main.cancelWorkspace}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>

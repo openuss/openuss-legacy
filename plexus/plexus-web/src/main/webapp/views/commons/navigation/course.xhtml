@@ -69,7 +69,7 @@
                                 <h:outputText  value="#{msg['course_command_papersubmission']}"/>
                             </t:commandNavigation2>
                             <t:commandNavigation2 
-                                action="collaboration" 
+                                action="#{views$secured$collaboration$main.open}" 
                                 activeOnViewIds="/views/secured/collaboration/main.xhtml,/views/secured/collaboration/workspaceview.xhtml,/views/secured/collaboration/workspaceremoveconfirmation.xhtml,/views/secured/collaboration/addzip.xhtml,/views/secured/collaboration/fileedit.xhtml,/views/secured/collaboration/folderedit.xhtml"
                                 rendered="#{courseInfo.collaboration}">
                                 <h:outputText  value="#{msg['course_command_collaboration']}"/>

@@ -12,8 +12,12 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @author  Projektseminar WS 07/08, Team Collaboration
@@ -41,9 +45,12 @@ public class WorkspaceServiceImpl extends
 		// Update input parameter for aspects to get the right domain objects. 
 		workspaceInfo.setId(workspaceEntity.getId());
 		
-		getSecurityService().createObjectIdentity(workspaceEntity, null);
+		getSecurityService().createObjectIdentity(workspaceEntity, new DefaultDomainObject(workspaceInfo.getDomainId()));
+		// set OWN, GRANT, CRUD
+		getSecurityService().setPermissions(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), workspaceEntity, LectureAclEntry.OGCRUD);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspaceMembers(Long workspaceId)
 			throws Exception {
@@ -59,6 +66,7 @@ public class WorkspaceServiceImpl extends
 		return members;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspacesByDomain(Long domainId) throws Exception {
 		Validate.notNull(domainId, "domainId cannot be null.");
@@ -98,26 +106,36 @@ public class WorkspaceServiceImpl extends
 		getWorkspaceDao().update(workspaceEntity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleUpdateWorkspaceMembers(List userId, Long workspaceId)
+	protected void handleUpdateWorkspaceMembers(List userIds, Long workspaceId)
 			throws Exception {
 		logger.debug("Starting method handleUpdateWorkspaceMembers");
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null.");
-		Validate.notNull(userId, "Parameter userId must not be null.");
+		Validate.notNull(userIds, "Parameter userId must not be null.");
 
 		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
-		workspace.getUser().clear();
+		CourseInfo courseInfo = getCourseService().getCourseInfo(workspace.getDomainId());
+		List<CourseMemberInfo> courseMembers = getCourseService().getParticipants(courseInfo);
 		
-		for (Long id : (List<Long>)userId) {
-			User member = getUserDao().load(id); 
+		workspace.getUser().clear();
+
+		for (CourseMemberInfo cmi : courseMembers) {
+			User user = getSecurityService().getUserObject(cmi.getUserId());
 			
-			workspace.getUser().add(member);
-		}
+			if (userIds.contains(cmi.getUserId())) {
+				workspace.getUser().add(user);
+				getSecurityService().setPermissions(user, workspace, LectureAclEntry.WORKSPACE_PARTICIPANT);
+			} else {
+				getSecurityService().setPermissions(user, workspace, LectureAclEntry.NOTHING);
+			}
+		} 
 		
 		getWorkspaceDao().update(workspace);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindWorkspacesByDomainAndUser(Long domainId,
 			UserInfo user) throws Exception {

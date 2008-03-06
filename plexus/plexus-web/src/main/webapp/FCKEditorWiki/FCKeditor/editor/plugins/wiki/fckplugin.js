@@ -15,13 +15,13 @@ if (window.document.location.href.match(/Wiki/)) {
 	FCKCommands.RegisterCommand('OpenUSSWikiLink', 
 	    new FCKDialogCommand(FCKLang['OpenUSSWikiLinkTitle'], 
 	                         FCKLang['OpenUSSWikiLinkTitle'], 
-	                         FCKConfig.BaseHref + '/openuss-plexus/views/secured/wiki/wikieditlinks.faces', 400, 500));
+	                         FCKConfig.BaseHref + '/plexus-web/views/secured/wiki/wikieditlinks.faces', 400, 500));
 	                         
     // Register the related commands.
     FCKCommands.RegisterCommand('OpenUSSWikiImage', 
         new FCKDialogCommand(FCKLang['OpenUSSWikiImageTitle'], 
                              FCKLang['OpenUSSWikiImageTitle'], 
-                             FCKConfig.BaseHref + '/openuss-plexus/views/secured/wiki/wikieditimages.faces', 400, 500));
+                             FCKConfig.BaseHref + '/plexus-web/views/secured/wiki/wikieditimages.faces', 400, 500));
 	                         
 	// Create the "Link" toolbar button.
 	var oWikiLinkItem = new FCKToolbarButton('OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkTitle']);

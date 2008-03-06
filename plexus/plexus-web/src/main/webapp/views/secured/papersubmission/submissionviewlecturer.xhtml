@@ -71,19 +71,19 @@
 	                    
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="size">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="fileSize">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="creationdate">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="created">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="modificationdate">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="modified">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>

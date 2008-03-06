@@ -193,8 +193,8 @@
 		<param-value>false</param-value>
 	</context-param>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - -
-	   Debbug Filter
+	<!-- - - - - - - - - - - - - - - - - - - - - - - -->
+	   Debug Filter
 	<filter>
 		<filter-name>EarlyWarningFilter</filter-name>
 		<filter-class>org.openuss.web.servlets.EarlyWarningFilter</filter-class>
@@ -204,7 +204,7 @@
 		<filter-name>EarlyWarningFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	- - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Session In View Filter
@@ -464,6 +464,10 @@
 <!-- 	<servlet-class>org.fckfaces.util.Servlet</servlet-class> -->
         <servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
 	</servlet>
+	<servlet>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <servlet-class>org.openuss.web.servlets.WikiSaveDraftServlet</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>Chat Servlet</servlet-name>
@@ -485,13 +489,17 @@
         <servlet-class>org.openuss.web.servlets.ConnectorServlet</servlet-class>
         <init-param>
                 <param-name>debug</param-name>
-                <param-value>true</param-value>
+                <param-value>false</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 	        <servlet-name>Connector</servlet-name>
 	        <url-pattern>/fckfaces/FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <url-pattern>/fckfaces/FCKeditor/editor/savedraft</url-pattern>
 	</servlet-mapping>
 	<!--  END OF ADDITION -->
 

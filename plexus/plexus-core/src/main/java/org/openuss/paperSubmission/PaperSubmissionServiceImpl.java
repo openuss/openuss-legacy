@@ -337,13 +337,6 @@ public class PaperSubmissionServiceImpl
 			
 			for(FileInfo file : filesOfSubmission){
 				String path = submission.getFirstName()+"_"+submission.getLastName();
-				
-				if(submission.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME)){
-					//FIXME i18n should be done
-					path += "_NOT_IN_TIME";
-				}
-				
-				file.setAbsoluteName(path+"/"+file.getFileName());
 				file.setPath(path);
 			}
 			allFiles.addAll(filesOfSubmission);

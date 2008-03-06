@@ -72,15 +72,26 @@
 						<h:outputText value="#{entry.authorName}"/>
 					</t:column>					
 					
-					<plexus:column header="#{msg.wiki_version_column_actions}">	
-						<plexus:command 
-					    bean="#{views$secured$wiki$wikiversion}"
-						action="editWikiVersion" 
-						label="#{msg.wiki_version_button_edit}" 
-						title="#{msg.wiki_version_button_edit}"
-						styleClass="icon_edit"/>
+					<plexus:column header="#{msg.wiki_version_column_actions}">
+						<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
+						 <c:if test="#{sessionScope.wiki_current_site_version.readOnly == false}">
+							<plexus:command 
+					    	bean="#{views$secured$wiki$wikiversion}"
+							action="editWikiVersion" 
+							label="#{msg.wiki_version_button_edit}" 
+							title="#{msg.wiki_version_button_edit}"
+							styleClass="icon_edit" />
+						 </c:if>				
+						</s:acl>
 						
 						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+							<plexus:command 
+					    	bean="#{views$secured$wiki$wikiversion}"
+							action="editWikiVersion" 
+							label="#{msg.wiki_version_button_edit}" 
+							title="#{msg.wiki_version_button_edit}"
+							styleClass="icon_edit"/>
+						
 							<plexus:command 
 						    bean="#{views$secured$wiki$wikiversion}"
 							action="deleteWikiVersion" 

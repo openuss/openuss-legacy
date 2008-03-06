@@ -1,9 +1,14 @@
 package org.openuss.web.collaboration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -20,7 +25,6 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.documents.FolderEntrySelection;
 
 /**
  * Controller for the main.xhtml view.
@@ -74,6 +78,20 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
+	/** Open collaboration main page and remove folder/workspace info from session.
+	 * 
+	 * @return Constants.COLLABORATION_MAIN_PAGE
+	 */
+	public String open() {
+		this.workspaceInfo = null;
+		this.currentFolder = null;
+		
+		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
+		setSessionBean(Constants.COLLABORATION_CURRENT_FOLDER, null);
+		
+		return Constants.COLLABORATION_MAIN_PAGE;
+	}
+	
 	/**
 	 * Creates a new WorkspaceInfo object and sets it into session scope
 	 * 
@@ -113,11 +131,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 
 			if (this.workspaceInfo.getId() != null) {
 				
-				List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
-				List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
-				for (UserInfo ui : wsMembers) {
-					wsMemberIds.add(ui.getId());
-				}
+				List<Long> wsMemberIds = getWorkspaceMemberIds();
 				
 				Map<CourseMemberInfo, Boolean> map = new HashMap<CourseMemberInfo, Boolean>(members.size());
 				for (CourseMemberInfo member : members) {
@@ -275,6 +289,64 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 				.getParticipants(courseInfo));
 		
 		return members;
+	}
+	
+	public void setSelectedMembers(List<String> items) {
+		System.out.println(">>>> " + items);
+	}
+	public String getSelectedMembers() {
+		List<Long> wsMemberIds = getWorkspaceMemberIds();
+		StringBuilder sb = new StringBuilder();
+		for (Iterator it = wsMemberIds.iterator(); it.hasNext();) {
+			Long id = (Long)it.next();
+			sb.append(id.longValue());
+			if (it.hasNext()) {
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
+	
+	public List<SelectItem> getSelectedMembersList() {
+		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
+				.getParticipants(courseInfo));
+		
+		List<Long> wsMemberIds = getWorkspaceMemberIds();
+		
+		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
+		for (CourseMemberInfo cmi : members) {
+			if (wsMemberIds.contains(cmi.getUserId())) {
+				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
+			}
+		}
+		
+		return items;
+	}
+	
+	public List<SelectItem> getAvailableMembersList() {
+		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
+				.getParticipants(courseInfo));
+		
+		List<Long> wsMemberIds = getWorkspaceMemberIds();
+		
+		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
+		for (CourseMemberInfo cmi : members) {
+			if (!wsMemberIds.contains(cmi.getUserId())) {
+				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
+			}
+		}
+		
+		return items;
+	}
+	
+	private List<Long> getWorkspaceMemberIds() {
+		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
+		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
+		for (UserInfo ui : wsMembers) {
+			wsMemberIds.add(ui.getId());
+		}
+		
+		return wsMemberIds;
 	}
 
 	/////// Inner classes ////////////////////////////////////////////////////
