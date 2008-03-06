@@ -7,41 +7,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.shale.tiger.managed.Property;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
+import org.openuss.web.Constants;
 import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.AbstractCollection; // TODO MyUni
+import java.util.AbstractCollection; // TODO MyUni, TODOs
 
 public class RootResource extends AbstractOrganisationResource {
-	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
-
 	/**
 	 * Cache of all universities
 	 */
 	protected List<UniversityInfo> allUniversities;
 	
+
 	/**
+	 * @param wac The Spring context.
 	 * @param path The root path
 	 */
-	protected RootResource(WebDAVPath path) {
-		super(path, ID_ROOT);
+	protected RootResource(WebApplicationContext wac, WebDAVPath path) {
+		super(wac, path, ID_ROOT);
 		
 		allUniversities = null;
+		universityService = (UniversityService) getWAC().getBean(Constants.UNIVERSITY_SERVICE, UniversityService.class);
 	}
 	
 	/**
 	 * Get the root resource with the prefix of all paths.
 	 * 
+	 * @param wac The WebApplicationContext.
 	 * @param prefix The prefix of all WebDAV paths.
-	 * @return An OrganisationResource representing the root.
+	 * @return A WebDAVResource representing the root.
 	 */
-	public static AbstractOrganisationResource getRoot(String prefix) {
-		return new RootResource(WebDAVPathImpl.getRoot(prefix));
+	public static RootResource getRoot(WebApplicationContext wac, String prefix) {
+		return new RootResource(wac, WebDAVPathImpl.getRoot(prefix));
 	}
 	
 	/* (non-Javadoc)
@@ -52,13 +55,18 @@ public class RootResource extends AbstractOrganisationResource {
 		if (id == ID_NONE) {
 			for (UniversityInfo uni : getAllUniversities()) {
 				if (uni.getShortName().equals(name)) {
-					return new UniversityResource(path, uni);
+					return new UniversityResource(getWAC(), path, uni);
 				}
 			}
 		} else {
+			UniversityInfo ui = universityService.findUniversity(id);
 			
+			if (ui != null) {
+				return new UniversityResource(getWAC(), path, ui);
+			}
+			
+			// TODO implement
 		}
-		
 		
 		return null;
 	}
@@ -106,14 +114,6 @@ public class RootResource extends AbstractOrganisationResource {
 		}
 		
 		return allUniversities;
-	}
-
-	public UniversityService getUniversityService() {
-		return universityService;
-	}
-
-	public void setUniversityService(UniversityService universityService) {
-		this.universityService = universityService;
 	}
 }
 

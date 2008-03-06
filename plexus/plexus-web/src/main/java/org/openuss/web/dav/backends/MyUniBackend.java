@@ -25,11 +25,12 @@ import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
+import org.springframework.web.context.WebApplicationContext;
 
 public class MyUniBackend extends SimpleWebDAVResource{
 	
-	protected MyUniBackend(WebDAVPath path, long id) {
-		super(path, id);
+	protected MyUniBackend(WebApplicationContext wac, WebDAVPath path, long id) {
+		super(wac, path, id);
 	}
 
 	
@@ -76,11 +77,11 @@ public class MyUniBackend extends SimpleWebDAVResource{
 			for (UniversityInfo u : universities) {
 				long uniID = u.getId();
 				if (uniID == id) {
-					return new UniversityResource(path, u);
+					return new UniversityResource(getWAC(), path, u);
 				}
 				if (id == ID_NONE) {
 					if (u.getName().equals(name)) {
-						return new UniversityResource(path, u);
+						return new UniversityResource(getWAC(), path, u);
 					}
 				}
 			}
@@ -91,11 +92,11 @@ public class MyUniBackend extends SimpleWebDAVResource{
 			for (DepartmentInfo d : departments) {
 				long depID = d.getId();
 				if (depID == id){
-					return new DepartmentResource(path, d);
+					return new DepartmentResource(getWAC(), path, d);
 				}
 				if (id == ID_NONE) {
 					if (d.getName().equals(name)) {
-						return new DepartmentResource(path, d);
+						return new DepartmentResource(getWAC(), path, d);
 					}
 				}
 			}
@@ -106,11 +107,11 @@ public class MyUniBackend extends SimpleWebDAVResource{
 			for (InstituteInfo i : institutes) {
 				long instID = i.getId();
 				if (instID == id) {
-					return new InstituteResource(path, i);
+					return new InstituteResource(getWAC(), path, i);
 				}
 				if (id == ID_NONE) {
 					if (i.getName().equals(name)) {
-						return new InstituteResource(path, i);
+						return new InstituteResource(getWAC(), path, i);
 					}
 				}
 			}
@@ -121,11 +122,11 @@ public class MyUniBackend extends SimpleWebDAVResource{
 			for (CourseInfo c : courses) {
 				long courseID = c.getId();
 				if (courseID == id){
-					return new CourseResource(path, c);
+					return new CourseResource(getWAC(), path, c);
 				}
 				if (id == ID_NONE) {
 					if (c.getName().equals(name)) {
-						return new CourseResource(path, c);
+						return new CourseResource(getWAC(), path, c);
 					}
 				}
 			}
@@ -135,17 +136,37 @@ public class MyUniBackend extends SimpleWebDAVResource{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
+	 */
 	@Override
-	protected void createCollectionImpl() throws WebDAVResourceException {
-		// should never be called because mayCreateCollection() returns false.
+	protected void createCollectionImpl(String name) throws WebDAVResourceException {
+		// should never be called because isWritable() returns false.
+		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of organisations via WebDAV is not implemented");
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFileImpl(java.lang.String)
+	 */
+	@Override
+	protected WebDAVResource createFileImpl(String name)
+			throws WebDAVResourceException {
+		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of organisations via WebDAV is not implemented");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#deleteImpl()
+	 */
 	@Override
 	protected void deleteImpl() throws WebDAVResourceException {
+		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "MyUni can not be deleted");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#getRawChildNames()
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Map<Long, String> getRawChildNames() {
@@ -218,6 +239,9 @@ public class MyUniBackend extends SimpleWebDAVResource{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#writeContentImpl(org.openuss.webdav.IOContext)
+	 */
 	@Override
 	protected void writeContentImpl(IOContext ioc)
 			throws WebDAVResourceException {
@@ -225,6 +249,9 @@ public class MyUniBackend extends SimpleWebDAVResource{
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Writing to organisations via WebDAV is not implemented");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isCollection()
+	 */
 	public boolean isCollection() {
 		return true;
 	}

@@ -33,7 +33,19 @@ import org.xml.sax.SAXException;
  * 
  * This class resides in plexus-web instead of plexus-api because it uses {@link HttpServletRequest} and friends.
  */
-public class WebDAVUtils {
+public final class WebDAVUtils {
+	/* XML helper objects */
+	private final static DocumentBuilderFactory dbf;
+	private final static DocumentBuilder db;
+	static {
+		dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		try {
+			db = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 	/* HTTP */
 	
@@ -197,27 +209,16 @@ public class WebDAVUtils {
 	}
 	
 	/**
-	 * @return A new DocumentBuilderFactory configured for use with WebDAV documents.
+	 * @return A DocumentBuilderFactory configured for use with WebDAV documents.
 	 */
 	public static DocumentBuilderFactory newDocumentBuilderFactory() {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-		
 		return dbf;
 	}
 	
 	/**
-	 * @return A new DocumentBuilder configured for use with WebDAV documents.
+	 * @return A DocumentBuilder configured for use with WebDAV documents.
 	 */
 	public static DocumentBuilder newDocumentBuilder() {
-		DocumentBuilderFactory dbf = newDocumentBuilderFactory();
-		DocumentBuilder db;
-		try {
-			db = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		}
-		
 		return db;
 	}
 	

@@ -1,5 +1,6 @@
 package org.openuss.web.dav.backends;
 
+import java.util.AbstractCollection; // TODOs
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A backend resource that represents a UniversityResource.
@@ -14,8 +16,8 @@ import org.openuss.webdav.WebDAVResource;
 public class UniversityResource extends AbstractOrganisationResource {
 	protected final UniversityInfo ui;
 	
-	public UniversityResource(WebDAVPath path, UniversityInfo ui) {
-		super(path, ui.getId());
+	public UniversityResource(WebApplicationContext wac, WebDAVPath path, UniversityInfo ui) {
+		super(wac, path, ui.getId());
 		this.ui = ui;
 	}
 	

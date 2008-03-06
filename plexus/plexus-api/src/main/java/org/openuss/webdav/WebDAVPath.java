@@ -97,6 +97,17 @@ public interface WebDAVPath {
 	public WebDAVPath asResolved();
 	
 	/**
+	 * @return The current state of this WebDAVPath as an resolved WebDAVPath without resolving further elements.
+	 */
+	public WebDAVPath asFinalPath();
+	
+	/**
+	 * @return The path of the parent of the current resource, if it is not fully resolved.
+	 * 			Otherwise the current path.
+	 */
+	public WebDAVPath getParent();
+	
+	/**
 	 * Returns the common path of two yet unresolved WebDAV paths.
 	 * 
 	 * @param other The other path to compare this with.

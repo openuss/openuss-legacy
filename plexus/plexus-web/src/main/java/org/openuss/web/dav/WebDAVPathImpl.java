@@ -149,14 +149,28 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @see org.openuss.webdav.WebDAVPath#concat(java.lang.String)
 	 */
 	public WebDAVPath concat(String subResStr) {
-		String newPath = toResolve;
-		if (! newPath.endsWith(PATH_SEP)) {
-			newPath = newPath + PATH_SEP;
+		String newPath = path;
+		String newToResolve;
+		if (toResolve != null) {
+			newToResolve = toResolve;
+
+			if (! newToResolve.endsWith(PATH_SEP)) {
+				newToResolve = newToResolve + PATH_SEP;
+			}
+			
+			newToResolve += subResStr;
+		} else {
+			newToResolve = subResStr;
+			if (! newToResolve.endsWith(PATH_SEP)) {
+				newToResolve = newToResolve + PATH_SEP;
+			}
+			
+			if (! newPath.endsWith(PATH_SEP)) {
+				newPath += PATH_SEP;
+			}
 		}
 		
-		newPath += subResStr;
-		
-		return new WebDAVPathImpl(path, newPath);
+		return new WebDAVPathImpl(newPath, newToResolve);
 	}
 
 	/* (non-Javadoc)
@@ -270,6 +284,17 @@ public class WebDAVPathImpl implements WebDAVPath {
 	public WebDAVPath asResolved() {
 		return new WebDAVPathImpl(path + toResolve, null);
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#asFinalPath()
+	 */
+	public WebDAVPath asFinalPath() {
+		if (isResolved()) {
+			return this;
+		} else {
+			return new WebDAVPathImpl(path, null);
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getNumberOfElemsToResolve()
@@ -283,5 +308,28 @@ public class WebDAVPathImpl implements WebDAVPath {
 		}
 		
 		return res;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#getParent()
+	 */
+	public WebDAVPath getParent() {
+		if (isResolved()) {
+			return this;
+		}
+		
+		int p = toResolve.length() - 1;
+		
+		if (toResolve.endsWith(PATH_SEP)) {
+			p -= PATH_SEP.length();
+		}
+		
+		p = toResolve.lastIndexOf(PATH_SEP, p);
+		
+		if (p <= 0) {
+			return this;
+		}
+		
+		return new WebDAVPathImpl(path, toResolve.substring(0, p));
 	}
 }

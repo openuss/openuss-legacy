@@ -7,13 +7,14 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
+import org.springframework.web.context.WebApplicationContext;
 
 public class DepartmentResource extends AbstractOrganisationResource{
 	
 	protected final DepartmentInfo di;
 
-	public DepartmentResource(WebDAVPath path, DepartmentInfo di) {
-		super(path, di.getId());
+	public DepartmentResource(WebApplicationContext wac, WebDAVPath path, DepartmentInfo di) {
+		super(wac, path, di.getId());
 		this.di = di;
 	}
 

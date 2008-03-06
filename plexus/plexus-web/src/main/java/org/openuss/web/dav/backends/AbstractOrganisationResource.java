@@ -1,16 +1,17 @@
 package org.openuss.web.dav.backends;
 
 import java.io.IOException;
+import java.util.AbstractCollection; // TODOs
+import java.util.Map;
+import java.util.Set;
 
-
-import org.apache.shale.tiger.managed.Property;
-import org.openuss.lecture.OrganisationService;
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A resource representing any organisation, i.e. university.
@@ -21,38 +22,34 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 	 */
 	protected static long ID_ROOT = -1000;
 
-	@Property(value = "#{organisationService}")
-	protected OrganisationService organisationService;
-
-	
 	/**
+	 * @param wac The bean factory
 	 * @param path The path of this object.
 	 * @param id The id of this object.
 	 */
-	protected AbstractOrganisationResource(WebDAVPath path, long id) {
-		super(path, id);
-		
-		if (hasRealId()) {
-			// TODO implement
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#isRealId()
-	 */
-	protected boolean hasRealId() {
-		return super.hasRealId() && (id != ID_ROOT);
+	protected AbstractOrganisationResource(WebApplicationContext wac, WebDAVPath path, long id) {
+		super(wac, path, id);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl()
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
 	 */
 	@Override
-	protected void createCollectionImpl() throws WebDAVResourceException {
-		// should never be called because mayCreateCollection() returns false.
+	protected void createCollectionImpl(String name) throws WebDAVResourceException {
+		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of organisations via WebDAV is not implemented");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFileImpl(java.lang.String)
+	 */
+	@Override
+	protected WebDAVResource createFileImpl(String name)
+			throws WebDAVResourceException {
+		// should never be called because isWritable() returns false.
+		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of files in the organization tree via WebDAV is not implemented");
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#deleteImpl()
 	 */
@@ -98,6 +95,6 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 	 * @see org.openuss.webdav.WebDAVResource#isCollection()
 	 */
 	public boolean isCollection() {
-		return exists(); // All existing organisations are collections 
+		return true; // All organisations are collections 
 	}
 }

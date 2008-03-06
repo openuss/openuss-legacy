@@ -100,6 +100,7 @@ public class WebDAVConstants {
 	public final static String XML_MULTISTATUS = "multistatus";
 	public final static String XML_OWNER = "owner";
 	public final static String XML_PROPSTAT = "propstat";
+	public final static String XML_RESOURCETYPE = "resourcetype";
 	public final static String XML_REMOVE = "remove";
 	public final static String XML_RESPONSE = "response";
 	public final static String XML_RESPONSEDESCRIPTION = "responsedescription";

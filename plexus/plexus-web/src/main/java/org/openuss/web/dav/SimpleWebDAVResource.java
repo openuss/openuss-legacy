@@ -1,13 +1,12 @@
 package org.openuss.web.dav;
 
 import java.io.IOException;
-import java.util.AbstractCollection; // TODO
+import java.util.AbstractCollection; // TODO readCollection()
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
@@ -18,6 +17,7 @@ import org.openuss.webdav.WebDAVPathException;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
+import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -36,12 +36,10 @@ import org.w3c.dom.NodeList;
  * </ul>
  */
 public abstract class SimpleWebDAVResource implements WebDAVResource {
-	private static final Logger logger = Logger.getLogger(SimpleWebDAVResource.class);
 	/**
-	 * Unspecified object id.
+	 * Unspecified id (Wasn't contained in the original query).
 	 */
 	protected static final long ID_NONE = -1;
-	protected static final long ID_PRELIMINARY = -2;
 	/**
 	 * Separator for path specification including an id.
 	 */
@@ -52,6 +50,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	protected static final String INVALID_CHAR_REPLACEMENT = "_";
 	
 	/**
+	 * The Spring bean factory.
+	 */
+	private final WebApplicationContext wac;
+	/**
 	 * The path of this resource.
 	 */
 	protected final WebDAVPath path;
@@ -60,13 +62,17 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	protected final long id;
 	
+	
 	/**
 	 * Constructor. Subclasses typically set the corresponding backend object here.
 	 * 
+	 * @param wac The WebApplication
 	 * @param path The path of this resource.
+	 * @param id The internal Id of this resource
 	 */
-	protected SimpleWebDAVResource(WebDAVPath path, long id) {
-		this.path = path;
+	protected SimpleWebDAVResource(WebApplicationContext wac, WebDAVPath path, long id) {
+		this.wac = wac;
+		this.path = path.asFinalPath();
 		this.id = id;
 	}
 	
@@ -77,11 +83,18 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		return id;
 	}
 	
-	/**
-	 * @return true iff the id of this resource stands for a real (like "in-database") id.
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#getContentType()
 	 */
-	protected boolean hasRealId() {
-		return (id != ID_NONE) && (id != ID_PRELIMINARY);
+	public String getContentType() {
+		return isCollection() ? MimeType.DIRECTORY_MIMETYPE : MimeType.getMimeType(getPath().getFileExt());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#getPath()
+	 */
+	public WebDAVPath getPath() {
+		return path;
 	}
 	
 	/* (non-Javadoc)
@@ -123,10 +136,11 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 				reqProps = new HashSet<String>();
 				NodeList reqPropNodes = n.getChildNodes();
 				for (int j = 0;j < reqPropNodes.getLength();j++) {
-					Node reqPropNode = reqPropNodes.item(i);
+					Node reqPropNode = reqPropNodes.item(j);
 					
-					if (reqPropNode instanceof Element) {
-						reqProps.add(reqPropNode.getNodeName());
+					if ((reqPropNode instanceof Element) &&
+							(WebDAVConstants.NAMESPACE_WEBDAV_URI.equals(reqPropNode.getNamespaceURI()))) {
+						reqProps.add(reqPropNode.getLocalName());
 					}
 				}
 				
@@ -156,9 +170,26 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		// Auto-add properties, if requested
 		Set<String> autoAdded = new TreeSet<String>();
-		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE)) && (!values.containsKey(WebDAVConstants.XML_GETCONTENTTYPE))) {
+		
+		// getcontenttype
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE))
+				&& (!values.containsKey(WebDAVConstants.XML_GETCONTENTTYPE))) {
 			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
 			autoAdded.add(WebDAVConstants.XML_GETCONTENTTYPE);
+		}
+		// resourcetype
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_RESOURCETYPE))
+				&& (!values.containsKey(WebDAVConstants.XML_RESOURCETYPE))) {
+			Document tmpDoc = WebDAVUtils.newDocument();
+			
+			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESOURCETYPE);
+			if (isCollection()) {
+				Element collectioNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_COLLECTION);
+				propElem.appendChild(collectioNode);
+			}
+			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
+			pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
+			autoAdded.add(WebDAVConstants.XML_RESOURCETYPE);
 		}
 		
 		// Non-existant properties
@@ -188,7 +219,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		throws WebDAVResourceException {
 		// This implementation just returns a 403 forbidden message for all properties after rudimentary parsing.
 		
-		checkExists();
+		checkWritable();
 		
 		Node updateNode = null;
 		NodeList rootNodeList = req.getChildNodes();
@@ -226,16 +257,11 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#resolvePath(org.openuss.webdav.WebDAVPath)
 	 */
 	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVHrefException {
-		// TODO check whether this element exists
-		
-		if (path.isResolved()) {
-			return this;
-		}
-		
 		String nextName = path.getNextName();
 		
+		// Is resolved
 		if (nextName == null) {
-			throw new WebDAVPathException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, path, "resolvePath() called despite lack of further path elements");
+			return this;
 		}
 		
 		ParsedName pn = parseName(nextName);
@@ -243,15 +269,11 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		WebDAVResource nextRes = getChild(pn.id, pn.name, nextPath);
 		
 		if (nextRes == null) {
-			// Cannot find/create
-			if (nextPath.isResolved()) {
-				throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);
-			} else {
-				throw new WebDAVPathException(WebDAVStatusCodes.SC_CONFLICT, nextPath);
-			}
+			// Cannot find sub-element
+			throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);
 		}
 		
-		return nextRes.resolvePath(path);
+		return nextRes.resolvePath(nextPath);
 	}
 	
 	/**
@@ -293,15 +315,9 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			String fullName = genName(sanName, id, (sanName != rawName) || ambiguousNames.contains(sanName));
 			
 			WebDAVPath childPath = path.concat(fullName);
-			WebDAVResource childRes;
+			WebDAVResource childRes = getChild(id, sanName, childPath);
 			
-			childRes = getChild(id, sanName, childPath);
-			
-			if (childRes.exists()) {
-				res.add(childRes);
-			} else {
-				logger.error("Internal error: Resource " + id + " (\"" + sanName + "\") was listed as child, but could not be resolved.");
-			}
+			res.add(childRes);
 		}
 		
 		return res;
@@ -315,20 +331,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	protected abstract Map<Long,String> getRawChildNames();
 	
-	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#getContentType()
-	 */
-	public String getContentType() {
-		return isCollection() ? MimeType.DIRECTORY_MIMETYPE : MimeType.getMimeType(getPath().getFileExt());
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#getPath()
-	 */
-	public WebDAVPath getPath() {
-		return path;
-	}
-
 	/**
 	 * @return true if the current user is allowed to read the resource, otherwise false.
 	 * 				Implementations may return true even if the ressource does not exist.
@@ -336,46 +338,25 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	public abstract boolean isReadable();
 	
 	/**
-	 * @return true if the current user is allowed to create a collection, otherwise false.
-	 * 				Implementations may return true even if the ressource exists.
-	 */
-	public boolean mayCreateCollection() {
-		return isWritable();
-	}
-	
-	/**
-	 * @return true iff the current user is allowed to write the resource.
+	 * @return true iff the current user is allowed to write to the resource.
+	 * 		For collections, that means the creation of new objects is allowed.
 	 */
 	public abstract boolean isWritable();
 	
 	/**
 	 * @return true if the current user may delete this resource.
-	 * 			Implementations may return true even if the file does not exist.
 	 */
 	public boolean isDeletable() {
 		return isWritable();
 	}
 	
 	/**
-	 * Checks the precondition that the resource exists
-	 * 
-	 * @throws WebDAVException An exception if the resource does not exist.
-	 */
-	protected void checkExists() throws WebDAVResourceException {
-		if (! exists()) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_NOT_FOUND, this);
-		}
-	}
-	
-	/**
 	 * Checks the precondition that the resource may be read.
 	 *
 	 * @see #checkExists()
-	 * @throws WebDAVException An exception if the resource does not exist or is not readable. 
+	 * @throws WebDAVException An exception if the resource is not readable. 
 	 */
 	protected void checkReadable() throws WebDAVResourceException {
-		checkExists();
-		
 		if (! isReadable()) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, this);
 		}
@@ -404,28 +385,30 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	}
 	
 	/**
-	 * Checks the precondition that a resource with this name can be created.
-	 * 
 	 * @throws WebDAVResourceException
 	 */
-	protected void checkCanCreateCollection() throws WebDAVResourceException {
-		// See RFC 4918 9.3.1 for details
-		if (exists()) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, this);
-		}
-		
-		if (! mayCreateCollection()) {
+	protected void checkCreate() throws WebDAVResourceException {
+		if (!isWritable()) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, this);
 		}
+		
+		if (!isCollection()) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_CONFLICT, this, "Can not create a sub-resource of a file");
+		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#exists()
+	/**
+	 * Checks that there is no sub-resource with the name name.
+	 * 
+	 * @param name The name to check.
+	 * @throws WebDAVResourceExecption A Conflict exception.
 	 */
-	public boolean exists() {
-		return (id != ID_PRELIMINARY);
+	protected void checkFreeName(String name) throws WebDAVResourceException {
+		if (hasChild(name)) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_CONFLICT, this, "Name \"" + name + "\" already mapped!");
+		}
 	}
-	
+		
 	/**
 	 * @return The path of this resource, ready to be presented to the client
 	 */
@@ -437,18 +420,64 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * 
 	 * @see org.openuss.webdav.WebDAVResource#createCollection()
 	 */
-	public void createCollection() throws WebDAVResourceException {
-		checkCanCreateCollection();
+	public WebDAVResource createCollection(String name) throws WebDAVResourceException {
+		checkCreate();
 		
-		createCollectionImpl();
+		checkFreeName(name);
+		
+		name = sanitizeName(name);
+		
+		return createCollection(name);
 	}
 	
 	/**
 	 * Implementation of createCollection that does not check preconditions.
-	 * @return 
+	 * 
+	 * @param name The name of the collection to create.
+	 * @throws WebDAVResourceException On special errors. This shouldn't be thrown under normal circumstances.
 	 */
-	protected abstract void createCollectionImpl() throws WebDAVResourceException;
+	protected abstract void createCollectionImpl(String name) throws WebDAVResourceException;
 
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#createFile(java.lang.String)
+	 */
+	public WebDAVResource createFile(String name)
+			throws WebDAVResourceException {
+		checkCreate();
+		
+		name = sanitizeName(name);
+		
+		checkFreeName(name);
+		
+		return createFileImpl(name);
+	}
+	
+	/**
+	 * Creates a new file in this collection without having to check preconditions.
+	 * 
+	 * @param name The name of the file to create.
+	 * @return A WebDAVResource pointing to the created file.
+	 */
+	protected abstract WebDAVResource createFileImpl(String name) throws WebDAVResourceException;
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
+	 */
+	public boolean hasChild(String name) {
+		name = sanitizeName(name);
+		name = parseName(name).name; // Ensure no future conflicts
+		
+		for (String cn : getRawChildNames().values()) {
+			cn = sanitizeName(cn);
+			
+			if (name.equals(cn)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#delete()
 	 */
@@ -497,6 +526,13 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see #writeContent()
 	 */
 	protected abstract void writeContentImpl(IOContext ioc) throws WebDAVResourceException;
+	
+	/**
+	 * @return The WebApplicationContext that allows to retrieve beans.
+	 */
+	protected WebApplicationContext getWAC() {
+		return this.wac;
+	}
 	
 	/**
 	 * @param origSet

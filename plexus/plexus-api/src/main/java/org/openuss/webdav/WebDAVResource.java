@@ -26,9 +26,8 @@ public interface WebDAVResource {
 	 * Resolves a resource in this directory. 
 	 * 
 	 * @param path A representation of the complete path to resolve.
-	 * @return A new WebDAVResource. Its path consists of this one's and the path argument.
-	 * 			This object may not point to an existing file.Use exists() to find out.
-	 * @throws WebDAVResourceException An error that can be handed directly to the client. 
+	 * @return A WebDAVResource. Its path is the resolved path.
+	 * @throws WebDAVResourceException typically with a "404 Not Found" if the path can't be fully resolved. 
 	 */
 	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVHrefException;
 	
@@ -72,11 +71,30 @@ public interface WebDAVResource {
 	public void writeContent(IOContext ioc) throws WebDAVResourceException,IOException;
 	
 	/**
-	 * Creates a collection with the name of this resource.
-	 * 
+	 * Creates a collection with the the given name as a child of this resource.
+	 * @param name The name of the collection to create.
+	 * @return The new collection as a WebDAVResource object
 	 * @throws WebDAVResourceException An error that can be handed directly to the client.
+	 * 			For example, this might be thrown if the resource is already mapped.
+	 * 			If !isCollection() or the resource already exists, a Conflict exception is thrown.
 	 */
-	public void createCollection() throws WebDAVResourceException;
+	public WebDAVResource createCollection(String name) throws WebDAVResourceException;
+	
+	/**
+	 * Creates a file with the the given name as a child of this resource.
+	 * 
+	 * @param name The name of the new file
+	 * @return the new collection as a WebDAVResource object
+	 * @throws WebDAVResourceException An error that can be handed directly to the client.
+	 * 			If !isCollection() or the resource already exists, a Conflict exception is thrown.
+	 */
+	public WebDAVResource createFile(String name) throws WebDAVResourceException;
+	
+	/**
+	 * @param name The name of the child.
+	 * @return true iff resolvePath(name) would return a WebDAVResource.
+	 */
+	public boolean hasChild(String name);
 	
 	/**
 	 * Deletes this resource.
@@ -99,9 +117,4 @@ public interface WebDAVResource {
 	 * @return The MIME content type of this resource.
 	 */
 	public String getContentType();
-	
-	/**
-	 * @return true, iff this resource object points to an existant file.
-	 */
-	public boolean exists();
 }
