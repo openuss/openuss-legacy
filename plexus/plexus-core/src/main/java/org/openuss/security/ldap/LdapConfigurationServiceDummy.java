@@ -63,7 +63,7 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
-	public void addUserDnPatternToSet(UserDnPatternSetInfo userDnPattern,
+	public void addUserDnPatternToSet(UserDnPatternInfo userDnPattern,
 			UserDnPatternSetInfo userDnPatternSet) {
 		// TODO Auto-generated method stub
 		

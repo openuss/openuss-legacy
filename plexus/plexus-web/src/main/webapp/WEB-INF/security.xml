@@ -243,10 +243,8 @@
 
 	<!-- Ldap Authentication stuff -->
 	
-	<!-- 
 	<bean id="ldapConfigDomainCommand" class="org.openuss.security.acegi.ldap.LdapConfigDomainCommand">
 		 <property name="configurableLdapAuthenticationProvider"><ref bean="configurableLdapAuthenticationProvider"/></property>		
 	</bean>
-     -->
-
+    
 </beans>

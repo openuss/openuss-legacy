@@ -10,10 +10,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
+import org.openuss.security.acegi.ldap.LdapServerConfiguration;
 
 /**
  * @see org.openuss.security.ldap.LdapConfigurationService
@@ -29,15 +31,37 @@ public class LdapConfigurationServiceImpl
      * @see org.openuss.security.ldap.LdapConfigurationService#getEnabledLdapServerConfigurations()
      */
     @Override
-    protected java.util.List<LdapServerInfo> handleGetEnabledLdapServerConfigurations() {
+    protected java.util.List<LdapServerConfiguration> handleGetEnabledLdapServerConfigurations() {
     	    	
-    	List<LdapServerInfo> ldapServerInfoList = new ArrayList<LdapServerInfo>();
+    	List<LdapServerConfiguration> ldapServerConfigurationList = new ArrayList<LdapServerConfiguration>();
+    	
     	List<LdapServer> ldapServerList = getLdapServerDao().findAllEnabledServers();
     	for (LdapServer ldapServer : ldapServerList) {
-			ldapServerInfoList.add(getLdapServerDao().toLdapServerInfo(ldapServer));						
+    		
+//    		TODO has to be implemented
+    		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
+    		
+    		ldapServerConfiguration.setAuthenticationDomainId(42L);
+    		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
+    		ldapServerConfiguration.setEmailKey("mail");
+    		ldapServerConfiguration.setFirstNameKey("givenName");
+    		ldapServerConfiguration.setLastNameKey("sn");
+    		ldapServerConfiguration.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+    		ldapServerConfiguration.setPort(389);
+    		ldapServerConfiguration.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+    		ldapServerConfiguration.setRoleAttributeKeys(new String[]{"memberOf"});
+    		ldapServerConfiguration.setRootDn("dc=uni-muenster,dc=de");
+    		ldapServerConfiguration.setUseConnectionPool(false);
+    		ldapServerConfiguration.setUseLdapContext(true);
+    		ldapServerConfiguration.setUserDnPatterns(new String[]{"cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de"});
+    		ldapServerConfiguration.setUsernameKey("cn");
+    		
+    		ldapServerConfigurationList.add(ldapServerConfiguration);
+        	
 		}   	
-//    	TODO return LdapServerConfigurationInfo
-    	return ldapServerInfoList;
+    	
+
+    	return ldapServerConfigurationList;
     }
 
     /**
