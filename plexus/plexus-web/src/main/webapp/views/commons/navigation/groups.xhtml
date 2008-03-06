@@ -41,18 +41,17 @@
 						rendered="#{groupInfo.chat}">
 						<h:outputText value="#{msg['course_command_chat']}" />
 					</t:commandNavigation2>
-
-					<t:commandNavigation2 action="group_news"
-						activeOnViewIds="/views/secured/groups/components/groupnews.xhtml,/views/secured/groups/components/groupnewsedit.xhtml">
-						<h:outputText value="#{msg['course_command_options_news']}" />
-					</t:commandNavigation2>
-
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+						<t:commandNavigation2 action="group_news"
+							activeOnViewIds="/views/secured/groups/components/groupnews.xhtml,/views/secured/groups/components/groupnewsedit.xhtml">
+							<h:outputText value="#{msg['course_command_options_news']}" />
+						</t:commandNavigation2>
+					</s:acl>
 					<t:commandNavigation2 action="group_calendar"
 						activeOnViewIds="/views/secured/groups/components/calendar.xhtml"
 						rendered="#{groupInfo.calendar}">
 						<h:outputText value="#{msg['course_command_calendar']}" />
 					</t:commandNavigation2>
-
 					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
 						<t:commandNavigation2 action="group_options_moderators"
 							activeOnViewIds="/views/secured/groups/components/groupmoderators.xhtml">
@@ -60,13 +59,11 @@
 								value="#{msg['openuss4us_group_command_options_moderators']}" />
 						</t:commandNavigation2>
 					</s:acl>
-
 					<t:commandNavigation2 action="group_options_members"
 						activeOnViewIds="/views/secured/groups/components/groupmembers.xhtml">
 						<h:outputText
 							value="#{msg['openuss4us_group_command_options_participants']}" />
 					</t:commandNavigation2>
-
 					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
 						<t:commandNavigation2 action="group_options_config"
 							activeOnViewIds="/views/secured/groups/components/groupoptions.xhtml">

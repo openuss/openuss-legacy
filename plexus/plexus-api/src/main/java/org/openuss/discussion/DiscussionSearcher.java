@@ -15,8 +15,7 @@ import java.util.List;
 public interface DiscussionSearcher {
 	
 	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, boolean isFuzzy, String submitter);
-	
+
 	public List<DiscussionSearchDomainResult> groupSearch(String textToSearch, Long groupId, boolean onlyInTitle, boolean isFuzzy, String submitter);
-
-
+	
 }

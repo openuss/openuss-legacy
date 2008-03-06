@@ -54,6 +54,7 @@ public class AbstractGroupPage extends BasePage {
 			addGroupCrumb();
 			setSessionBean(Constants.GROUP_INFO, groupInfo);
 		}
+		setSessionBean(Constants.COURSE_INFO, null);
 	}
 
 	private void addGroupCrumb() {
