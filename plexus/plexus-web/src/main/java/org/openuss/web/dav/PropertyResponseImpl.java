@@ -1,84 +1,154 @@
 package org.openuss.web.dav;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.openuss.webdav.PropertyResponse;
 import org.openuss.webdav.PropertyResponseNode;
 import org.openuss.webdav.WebDAVConstants;
+import org.openuss.webdav.WebDAVHrefException;
+import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
- * A node in a property response that consists solely of a name and optionally a value.
- * @see PropertyResponseImpl
+ * An element of a MultiStatus object detailling the answer of a PROPFIND or PROPPATCH.
  */
-class SimplePropertyResponseNode implements PropertyResponseNode {
+public class PropertyResponseImpl implements PropertyResponse {
 	/**
-	 * URI of the namespace. null for no/default namespace.
+	 * The (absolute or relative) path to the resource that is respresented in this response. 
 	 */
-	protected String namespaceURI;
+	protected String href;
 	/**
-	 * The local name of the node.
+	 * Debugging / informational data.
 	 */
-	protected String name;
+	protected String description;
 	/**
-	 * The value of the property response.
+	 * Mapping of error codes to the collection of corresponding messages and their values
 	 */
-	protected String value;
-
-	public SimplePropertyResponseNode(String name, String value) {
-		this(null, name, value);
-	}
-
-	public SimplePropertyResponseNode(String namespaceURI, String name,
-			String value) {
-		super();
-		this.namespaceURI = namespaceURI;
-		this.name = name;
-		this.value = value;
-	}
-
-	public String getNamespaceURI() {
-		return namespaceURI == null ? WebDAVConstants.NAMESPACE_WEBDAV_URI : namespaceURI;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
+	protected final Map<Integer, Collection<PropertyResponseNode>> propstats = new HashMap<Integer, Collection<PropertyResponseNode>>();
+	
 	/**
-	 * @return true iff this node should have a value element.
+	 * @param href The href of the resource this response is associated with.
 	 */
-	public boolean hasValue() {
-		return value != null;
+	public PropertyResponseImpl(String href) {
+		this(href, null);
 	}
 	
 	/**
-	 * Create an XML node out of this object.  
-	 * 
-	 * @param doc The document that the node shall belong to.
-	 * @return The created node.
+	 * Constructor.
+	 * @param href The href of the resource this response is associated with.
+	 * @param responseDescription The description of the resource. 
 	 */
-	public void addToXml(Element el) {
+	public PropertyResponseImpl(String href, String responseDescription) {
+		this.href = href;
+		this.description = responseDescription;
+	}
+	
+	
+	/**
+	 * Creates a property with the given name in the DAV-Namespace, the given text
+	 * as the body and associates it with the given status code.
+	 * @param statusCode The status code to associate the property with.
+	 * @param name The name of the property.
+	 * @param value The text as content of the property.
+	 */
+	public void addSimpleProperty(int statusCode, String name, String value) {
+		addSimpleProperty(statusCode, null, name, value);
+	}
+	
+	/**
+	 * Creates a property with the given namespace:name, the given text as the body
+	 * and associates it with the given status code.
+	 * @param statusCode The status code to associate the property with.
+	 * @param namespaceURI The namespace of the property.
+	 * @param name The name of the property.
+	 * @param value The text as content of the property.
+	 */
+	public void addSimpleProperty(int statusCode, String namespaceURI, String name, String value) {
+		// check parameter
+		SimplePropertyResponseNode prn = new SimplePropertyResponseNode(namespaceURI, name, value);
+		
+		// add element to hash map
+		addProperty(statusCode, prn);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.MultiStatusResponse#getHref()
+	 */
+	public String getHref() {
+		return href;
+	}
+
+	/**
+	 * Adds the WebDAV XML representation of this property response to the specified parent node.
+	 * 
+	 * @param element The parent node
+	 */
+	public void addToXML(Element el) {
 		Document doc = el.getOwnerDocument();
 		
-		Element res = doc.createElementNS(getNamespaceURI(), getName());
+		// create response element
+		Element responseEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSE);
+		el.appendChild(responseEl);
 		
-		if (hasValue()) {
-			Node textNode = doc.createTextNode(getValue());
+		// append href
+		Element hrefElement = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_HREF);
+		hrefElement.setTextContent(getHref());
+		responseEl.appendChild(hrefElement);
+		
+		// iterate through propstat elements and append each
+		for (Integer statusInteger : propstats.keySet()) {
+			Collection<PropertyResponseNode> prns = propstats.get(statusInteger);
+			Element propstatEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_PROPSTAT);
+			responseEl.appendChild(propstatEl);
+		
+			// Status code
+			Element statusEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_STATUS);
+			statusEl.setTextContent(WebDAVStatusCodes.getStatusLine(statusInteger.intValue()));
+			propstatEl.appendChild(statusEl);
 			
-			res.appendChild(textNode);
+			// Properties
+			Element propEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_PROP);
+			propstatEl.appendChild(propEl);
+			
+			for (PropertyResponseNode prn : prns) {
+				prn.addToXml(propEl);
+			}
 		}
 		
-		el.appendChild(res);
+		// append description, if set
+		if (description != null) {
+			Element descEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSEDESCRIPTION);
+			descEl.setTextContent(description);
+			responseEl.appendChild(descEl);
+		}
+	}
+	
+	/**
+	 * Creates a new PropertyResponse out of a WebDAVResourceException.
+	 * 
+	 * @param wre The exception, containing information about the source.
+	 * @return A new PropertyResponse object.
+	 */
+	public static PropertyResponseImpl createFromHrefException(WebDAVHrefException wre) {
+		return new PropertyResponseImpl(wre.getHref(), wre.getMessage());
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.PropertyResponseNode#getPropName()
+	 * @see org.openuss.webdav.PropertyResponse#addProperty(int, org.openuss.webdav.PropertyResponseNode)
 	 */
-	public String getPropName() {
-		return getName();
+	public void addProperty(int statusCode, PropertyResponseNode prn) {
+		Collection<PropertyResponseNode> c;
+		
+		c = propstats.get(statusCode);
+		if (c == null) {
+			c = new ArrayList<PropertyResponseNode>(1);
+			propstats.put(statusCode, c);
+		}
+		
+		c.add(prn);
 	}
 }
