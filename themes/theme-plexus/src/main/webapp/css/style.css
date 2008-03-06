@@ -1484,7 +1484,7 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	{
 	width: 79px;
 	height: 17px;
-	margin: 2px 5px 2px 0;
+	margin: 2px 5px 2px 5px;
 	padding: 0;
 	background-position: left top;
 	background-image: url(../img/button_70_normal2.png);
@@ -2240,14 +2240,16 @@ div.schedule-detailed-default {
 }
 
 table.month {
-	margin-left: 0px;
-	margin-right: 1px;
+	margin-left: 1px;
+	margin-right: 0px;
 	margin-top: 1px;
-	margin-down: 1px;
-	border: 0px solid;
-	border-bottom: 1px;
-	border-bottom-style: none;
-	padding: 1px;
+	margin-down: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-collapse: collapse;
+
 }
 
 table.week {
@@ -2262,19 +2264,21 @@ table.week td {
 	border: 0px solid;
 	border-color: #FFFFFF;
 	border-collapse: colapse;
-	padding: 0px;
+
 	margin-left: 0px;
 	margin-right: 1px;
 	margin-top: 1px;
 	margin-down: 1px;
+	padding: 0px;
 }
 
 table.month td {
 	border: 0px none;
 	border-color: #FFFFFF;
-	border-collapse: colapse;
-	padding: 0px;
+	border-collapse: separate;
+	padding: 0px 1px 0px 0px;
 	margin: 0px;
+	overflow: hidden;
 }
 
 table.month td.inactive-day weekend {

@@ -58,15 +58,21 @@ public class AbstractGroupPage extends BasePage {
 	}
 
 	private void addGroupCrumb() {
+		breadcrumbs.loadOpenuss4usCrumbs();
+		// all groups crumb
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("openuss4us_command_groups"));
 		crumb.setHint(i18n("openuss4us_command_groups"));
 		crumb.setLink(PageLinks.GROUPS_MAIN);
 		crumb.addParameter("group",groupInfo.getId());
-		// TODO: Thomas: change from openuss4us to group
-		// -> breadcrumbs.loadGroupCrumbs(groupInfo);
-		breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(crumb);
+		// special group crumb
+		BreadCrumb crumb2 = new BreadCrumb();
+		crumb2.setName(groupInfo.getShortcut());
+		crumb2.setHint(groupInfo.getName());
+		crumb2.setLink(PageLinks.GROUP_PAGE);
+		crumb2.addParameter("group",groupInfo.getId());
+		breadcrumbs.addCrumb(crumb2);
 	}
 
 	public boolean isMember() {

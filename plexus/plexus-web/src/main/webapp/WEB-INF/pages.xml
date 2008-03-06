@@ -118,21 +118,6 @@
 		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/course/calendar*">
-		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	<page view-id="/views/secured/course/chatmain*">
-		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	<page view-id="/views/secured/course/fslinstall*">
-		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.ASSIST}"/>
-		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			OPENUss4US Groups
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->

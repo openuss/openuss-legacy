@@ -55,17 +55,14 @@
 							workingEndHour="#{scheduleSettings.workingEndHour}"
 							workingStartHour="#{scheduleSettings.workingStartHour}"
 							readonly="#{scheduleSettings.readonly}"
-							theme="default"
-							tooltip="false"
-							renderZeroLengthEntries="true"
-							expandToFitEntries="false"
-							headerDateFormat="dd-MM-yyyy"
+							theme="#{scheduleSettings.theme}"
+							tooltip="#{scheduleSettings.tooltip}"
+							renderZeroLengthEntries="#{scheduleSettings.renderZeroLength}"
+							expandToFitEntries="#{scheduleSettings.expandToFitEntries}"
+							headerDateFormat="#{scheduleSettings.headerDateFormat}"
 							compactWeekRowHeight="#{scheduleSettings.compactWeekRowHeight}"
 							compactMonthRowHeight="#{scheduleSettings.compactMonthRowHeight}"
 							detailedRowHeight="#{scheduleSettings.detailedRowHeight}"/> 
-		
-			<o:input entity="scheduleHandler.model" property="selectedDate" type="date" popupCalendar="false" />
-			<h:commandButton action="refresh" value="refresh"/>
 			
 		</div>
 	

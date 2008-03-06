@@ -38,6 +38,10 @@
   		</ui:define>
   		<ui:define name="content">
 			<h:form id="openuss4us_usercalendar" enctype="multipart/form-data">
+				<o:block label="#{msg['schedulehandler_model_selecteddate']}" styleClass="form_box">
+					<o:input entity="scheduleHandler.model" property="selectedDate" label=" " type="date" popupCalendar="false" />
+					<h:commandButton action="refresh" value="#{msg.select_date}" styleClass="button_edit"/>
+   			 	</o:block>
 				<o:block label="#{msg['openuss4us_usercalendar']}" styleClass="content_box">
 					<ui:include src="/views/commons/calendar/calendar.xhtml" />
    			 	</o:block>

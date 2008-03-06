@@ -44,7 +44,6 @@ public class ChatMainPage extends AbstractGroupPage {
 	
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("course_command_chat"));
 		crumb.setHint(i18n("course_command_chat"));
 		breadcrumbs.addCrumb(crumb);

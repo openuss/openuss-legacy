@@ -105,7 +105,8 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 								.getUserId());
 					}
 				} else {
-					addError("LAST MODERATOR CAN NOT REMOVED FROM MEMBER STATUS, ONLY BE DELETING GROUP");
+					// Moderator can not be removed
+					addError(i18n("group_remove_moderator_error"));
 				}
 			}
 		} else {
@@ -132,7 +133,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		UserGroupMemberInfo member = data.getRowData();
 		if (groupService.isModerator(groupInfo, member.getUserId())
 				&& groupService.getModerators(groupInfo).size() == 1) {
-			addError("LAST MODERATOR CAN NOT REMOVED FROM GROUP, ONLY BE DELETING GROUP");
+			addError(i18n("group_delete_moderator_error"));
 		} else {
 			groupService.removeMember(groupInfo, member.getUserId());
 			if (groupService.getAllMembers(groupInfo).size() == 0) {
