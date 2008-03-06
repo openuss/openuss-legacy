@@ -83,8 +83,8 @@ public class SeminarpoolOptionsPage extends BasePage {
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("test1"));
-		crumb.setHint(i18n("test test"));
+		crumb.setName(i18n("seminarpool_command_options_config"));
+		crumb.setHint(i18n("seminarpool_command_options_config"));
 
 		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 		breadcrumbs.addCrumb(crumb);
