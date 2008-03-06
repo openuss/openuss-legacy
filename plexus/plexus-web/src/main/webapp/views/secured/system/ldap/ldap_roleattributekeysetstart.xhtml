@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content">
+  			<h:form id="registration_form">
+  			
+  			<t:saveState value="#{departmentInfo}" id="departmentState"/>
+  			  	<o:block label="#{msg.ldap_roleattributekeyset_registration_start_headline}">
+					<div class="content_font_normal"> 
+						<h:outputText value="#{msg.ldap_roleattributekeyset_registration_start_text}" escape="false"/>
+			   		</div>
+			   	</o:block>
+  			
+			   	<o:block>
+			   		<h:commandButton action="view:backward" value="#{msg.cancel}" styleClass="button_cancel"/>
+					<h:commandButton action="#{ldapRoleAttributeKeySetRegistration.start}" value="#{msg.forward}" styleClass="button_continue"/>
+				</o:block>
+		  	</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+  	  xmlns:o="http://www.openuss.org/jsfcontrols"
+  	  xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/admin.xhtml" />
+		</ui:define>
+  		<ui:define name="content">
+  			<h:form id="universitiesForm">
+				
+				<plexus:dataTable 
+					id="department" 
+					label="#{msg.ldap_attributemappingconfiguration_header}" 
+					value="views$secured$system$departments.departments" 
+					var="bean" 
+					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
+					rows="15">
+					<t:column>
+						<plexus:commandSortHeader columnName="name">
+							#{msg['ldap_attributemapping_name']}
+						</plexus:commandSortHeader>
+				        <h:commandLink action="#{views$secured$system$departments.selectDepartment}" styleClass="command">
+							<h:outputText value="#{bean.name}"/>
+						</h:commandLink> 
+						<h:graphicImage 
+								value="/images/pool/icons/document_stop.png" 
+								title="#{msg.default_department_donot_delete}" 
+								rendered="#{bean.defaultDepartment}"/>
+					</t:column>
+					
+			
+					<plexus:column header="#{msg.commands_header}">
+						<s:authorize ifAllGranted="ROLE_USER">
+							<plexus:command 
+								bean="#{views$secured$system$departments}"
+								action="removeShortcut"
+								label="#{msg.university_command_shortcut_remove}"
+								title="#{msg.university_command_shortcut_hint_remove}"
+								styleClass="icon_bookmark_remove"
+								rendered="#{views$secured$system$departments.bookmarked}"/>
+							<plexus:command 
+								bean="#{views$secured$system$departments}"
+								action="shortcutDepartment"
+								label="#{msg.university_command_shortcut}"
+								title="#{msg.university_command_shortcut_hint}"
+								styleClass="icon_bookmark"
+								rendered="#{not views$secured$system$departments.bookmarked}"/>
+						</s:authorize>
+						<s:authorize ifAllGranted="ROLE_ADMIN">
+							<plexus:command 
+								bean = "#{views$secured$system$departments}"
+								action = "selectDepartmentAndConfirmDisable"
+								styleClass = "icon_hide"
+								label = "#{msg.department_command_disable}"
+								title = "#{msg.department_command_disable_hint}"
+								rendered="#{bean.enabled==true}"/>
+							<plexus:command
+								bean = "#{views$secured$system$departments}"
+								action = "enableDepartment"
+								styleClass="icon_public"
+								label="#{msg.department_command_enable}"
+								title="#{msg.department_command_enable_hint}"
+								rendered="#{not bean.enabled}"/>
+							<plexus:command
+								bean = "#{views$secured$system$departments}"
+								action = "selectDepartmentAndConfirmRemove"
+								styleClass="icon_remove"
+								label="#{msg.department_command_remove}"
+								title="#{msg.department_command_remove_hint}"
+								rendered="#{not bean.defaultDepartment}"/>
+						</s:authorize>
+					</plexus:column>
+					
+				</plexus:dataTable>
+				
+				<s:authorize ifAllGranted="ROLE_ADMIN">
+	  				<o:block>
+						<h:commandButton 
+					    id="addAttributemapping"
+						action="ldap_attributemapping_registration_start" 
+						value="#{msg.ldap_attributemapping_command_add_ldap_attributemapping}" 
+						title="#{msg.ldap_attributemapping_command_add_ldap_attributemapping_hint}"
+						styleClass="button"/>
+					</o:block>
+				</s:authorize>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
