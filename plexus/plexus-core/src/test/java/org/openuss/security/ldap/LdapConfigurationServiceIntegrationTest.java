@@ -342,16 +342,67 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 
 		
 		List<LdapServerInfo> all = service.getAllLdapServers();
-		assertTrue(1 == all.size());
+		int x = all.size();
 		
 		service.deleteLdapServer(server);
 		all = service.getAllLdapServers();
-		assertTrue(0 == all.size());
+		
+		assertTrue(x < all.size());
 		
 		
+		AuthenticationDomainInfo domain2 = createAuthenticationDomainInfoDummy();
+		domain2 = service.createDomain(domain2);
+		
+		all = service.getLdapServersByDomain(domain);
 			
 		// TODO: update userDnPatternSet and authDomain
 		
+	}
+	
+	
+	
+	/*
+	 * Tests getAll-methods of LdapServer objects
+	 */
+	public void testGetAllLdapServers() {
+		service = getLdapConfigurationService();
+		commit();
+		
+		AuthenticationDomainInfo domain1 = service.createDomain(createAuthenticationDomainInfoDummy());
+		AuthenticationDomainInfo domain2 = service.createDomain(createAuthenticationDomainInfoDummy());
+		
+		UserDnPatternInfo pattern = service.createUserDnPattern(createUserDnPatternInfoDummy());	
+		UserDnPatternSetInfo set = service.createUserDnPatternSet(createUserDnPatternSetInfoDummy(pattern));
+		
+		LdapServerInfo server1 = service.createLdapServer(createLdapServerInfoDummy(domain1, set));
+		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain1, set));
+		LdapServerInfo server3 = service.createLdapServer(createLdapServerInfoDummy(domain2, set));
+		
+		List<LdapServerInfo> servers = service.getAllLdapServers();
+		int s = servers.size();
+		assertTrue(3 == s);
+		
+		List<AuthenticationDomainInfo> domains = service.getAllDomains();
+		int d = domains.size();
+		assertTrue(2 == d);
+		
+//		assertTrue(server1.getAuthenticationDomainId() == domain1.getId());
+//		List<Long> ids = new ArrayList<Long>();
+//		ids.add(server1.getId());
+//		ids.add(server2.getId());
+//		List<Long> ids2 = domain1.getLdapServerIds();
+//		assertNotNull(ids2);
+//		//assertTrue(domain1.getLdapServerIds().equals(ids));
+		
+		List<LdapServerInfo> serversByDomain1 = service.getLdapServersByDomain(domain1);
+		int d1 = serversByDomain1.size();
+		System.out.println(d1);
+		assertTrue(2 == d1);
+		
+		List<LdapServerInfo> serversByDomain2 = service.getLdapServersByDomain(domain2);
+		int d2 = serversByDomain2.size();
+		System.out.println(d2);
+		assertTrue(1 == d2);
 	}
 	
 	

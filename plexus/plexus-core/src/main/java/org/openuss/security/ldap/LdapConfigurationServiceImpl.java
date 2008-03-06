@@ -71,8 +71,11 @@ public class LdapConfigurationServiceImpl
     protected LdapServerInfo handleCreateLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) throws Exception {
     	validateLdapServer(ldapServer);
     	
+    	AuthenticationDomain domain = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
+    	UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
+    	
     	LdapServer ldapServerEntity = getLdapServerDao().create(
-    			getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()), 
+    			domain,
     			ldapServer.getAuthenticationType(), 
     			ldapServer.getDescription(), 
     			ldapServer.isEnabled(), 
@@ -82,13 +85,20 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getRootDn(), 
     			ldapServer.getUseConnectionPool(),
     			ldapServer.getUseLdapContext(), 
-    			getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId())
+    			set
     		);
     	
     	ldapServerEntity.setManagerDn(ldapServer.getManagerDn());
     	ldapServerEntity.setManagerPassword(ldapServer.getManagerPassword());
     	
-    	getLdapServerDao().update(ldapServerEntity);
+		getLdapServerDao().update(ldapServerEntity);
+		
+		domain.getLdapServers().add(ldapServerEntity);
+		getAuthenticationDomainDao().update(domain);
+		
+		set.getLdapServers().add(ldapServerEntity);
+		getUserDnPatternSetDao().update(set);
+    	
     	ldapServer.setId(ldapServerEntity.getId());
     	
     	return ldapServer;
@@ -500,6 +510,24 @@ public class LdapConfigurationServiceImpl
     	getRoleAttributeKeySetDao().update(set);    	
     }
 
+	/**
+     * 
+     */
+	@Override
+	protected java.util.List<RoleAttributeKeyInfo> handleGetAllRoleAttributeKeys(){
+		List<RoleAttributeKeyInfo> keyInfoList = new ArrayList<RoleAttributeKeyInfo>();
+    	
+    	List<RoleAttributeKey> keyEntityList = (List<RoleAttributeKey>) getRoleAttributeKeyDao().loadAll();
+
+    	for (RoleAttributeKey roleAttributeKey : keyEntityList) {
+    		
+    		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKey);
+			keyInfoList.add(roleAttributeKeyInfo);			
+		}
+    	
+    	return keyInfoList;  
+    }
+	
     /**
      * 
      */
