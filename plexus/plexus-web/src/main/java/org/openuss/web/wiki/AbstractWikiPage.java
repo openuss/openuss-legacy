@@ -89,7 +89,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	 */
 	public String getSiteTitle() {
 		if (siteVersionInfo.getName() == null) {
-			return siteName;
+			return this.siteName;
 		}
 		
 		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));

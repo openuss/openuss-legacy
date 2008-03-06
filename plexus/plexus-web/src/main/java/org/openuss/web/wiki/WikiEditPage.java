@@ -28,6 +28,7 @@ public class WikiEditPage extends AbstractWikiPage {
 		super.prerender();
 		
 		siteVersionInfo.setNote(null);
+		siteVersionInfo.setName((String) getSessionBean(Constants.WIKI_NEW_SITE_NAME));
 	}
 	
 	/**
