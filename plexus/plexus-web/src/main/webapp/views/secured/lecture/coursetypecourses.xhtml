@@ -28,34 +28,14 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  		
-	        <o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
-	  			<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
-	  		</o:block>	
-	  			
+  			  			
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
-	  		
-	  		<t:saveState id="coursetype_editing" value="#{views$secured$lecture$institutecoursetypes.editing}" />
-	  		
-  			<h:form id="courseTypesForm">
-				<ui:include src="coursetypestable.xhtml"/>
-				<c:if test="#{!views$secured$lecture$institutecoursetypes.editing}">	
-					<o:block>
-						<h:commandButton 
-						    id="addCourseType"
-							action="#{views$secured$lecture$institutecoursetypes.addCourseType}" 
-							value="#{msg.coursetype_command_add}" 
-							title="#{msg.coursetype_command_add_hint}"
-							styleClass="button_big"/>
-					</o:block>
-				</c:if>
+  			
+  			<h:form id="periodsForm">
+				<ui:include src="coursetypecoursestable.xhtml"/>
 			</h:form>
-			<c:if test="#{views$secured$lecture$institutecoursetypes.editing}">
-				<ui:include src="coursetypeedit.xhtml"/>
-			</c:if>
-				
+
   		</ui:define>
 	</ui:composition>
-	<!-- text above will be ignored -->
 	</body>
 </html>

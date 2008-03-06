@@ -27,6 +27,10 @@
 		</ui:define>
   		<ui:define name="content">
 
+        <o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
+  			<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
+  		</o:block>
+  						
 	  	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
  
   			<h:form> 

@@ -89,16 +89,12 @@
 		  			</c:if>
 		  			
 		  			<c:if test="${not empty wiki_current_site_version.text}">
-            			<o:block label="#{msg.wiki_main_header_site_read_only}" rendered="#{wiki_current_site_version.readOnly}" styleClass="form_box">
-  							<p class="content_font_normal">	  								
-  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
-							</p>
-  						</o:block>
+            			<o:block rendered="#{wiki_current_site_version.readOnly}" styleClass="status_box">							
+  							<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+   						</o:block>
 	  					
-            			<o:block label="#{msg.wiki_main_header_site_stable}" rendered="#{wiki_current_site_version.stable}" styleClass="form_box">
-  							<p class="content_font_normal">	  								
-  								<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
-							</p>
+            			<o:block rendered="#{wiki_current_site_version.stable}" styleClass="status_box">								
+  							<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
   						</o:block>
 		  				
 		                <o:block label="#{views$secured$wiki$wikimain.siteTitle}">

@@ -66,9 +66,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 			universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
 			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
-			if (!instituteInfo.isEnabled()) {
-				addMessage(i18n("institute_not_activated"));
-			}
 		}
 
 		if (periodInfo != null && instituteInfo != null && !periodInfos.contains(periodInfo)) {

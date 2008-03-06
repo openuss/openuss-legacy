@@ -29,6 +29,10 @@
 		</ui:define>
   		<ui:define name="content">
   			
+	        <o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
+	  			<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
+	  		</o:block>  
+  			
   			<t:saveState id="course_moving" value="#{views$secured$lecture$institutecourses.moving}" />
   			
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
