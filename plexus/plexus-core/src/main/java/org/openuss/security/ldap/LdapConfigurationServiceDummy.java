@@ -330,4 +330,16 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	public List getAllRoleAttributeKeys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	
+	
 }

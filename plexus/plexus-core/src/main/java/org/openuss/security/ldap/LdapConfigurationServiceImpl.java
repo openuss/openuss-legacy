@@ -37,29 +37,27 @@ public class LdapConfigurationServiceImpl
     	
     	List<LdapServer> ldapServerList = getLdapServerDao().findAllEnabledServers();
     	for (LdapServer ldapServer : ldapServerList) {
-    		
-//    		TODO has to be implemented
+
     		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
     		
-    		ldapServerConfiguration.setAuthenticationDomainId(42L);
-    		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
-    		ldapServerConfiguration.setEmailKey("mail");
-    		ldapServerConfiguration.setFirstNameKey("givenName");
-    		ldapServerConfiguration.setLastNameKey("sn");
-    		ldapServerConfiguration.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
-    		ldapServerConfiguration.setPort(389);
-    		ldapServerConfiguration.setProviderUrl("ldap://wwusv1.uni-muenster.de");
-    		ldapServerConfiguration.setRoleAttributeKeys(new String[]{"memberOf"});
-    		ldapServerConfiguration.setRootDn("dc=uni-muenster,dc=de");
-    		ldapServerConfiguration.setUseConnectionPool(false);
-    		ldapServerConfiguration.setUseLdapContext(true);
-    		ldapServerConfiguration.setUserDnPatterns(new String[]{"cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de"});
-    		ldapServerConfiguration.setUsernameKey("cn");
-    		
-    		ldapServerConfigurationList.add(ldapServerConfiguration);
-        	
+    		ldapServerConfiguration.setAuthenticationDomainId(ldapServer.getAuthenticationDomain().getId());
+    		ldapServerConfiguration.setAuthenticationType(ldapServer.getAuthenticationType());
+    		ldapServerConfiguration.setEmailKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getEmailKey());
+    		ldapServerConfiguration.setFirstNameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getFirstNameKey());
+    		ldapServerConfiguration.setLastNameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getLastNameKey());
+    		ldapServerConfiguration.setLdapServerType(ldapServer.getLdapServerType());
+    		ldapServerConfiguration.setPort(ldapServer.getPort());
+    		ldapServerConfiguration.setProviderUrl(ldapServer.getProviderUrl());
+    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeySet().getAllRoleAttributeKeyIds().toArray());
+    		ldapServerConfiguration.setRootDn(ldapServer.getRootDn());
+    		ldapServerConfiguration.setUseConnectionPool(ldapServer.getUseConnectionPool());
+    		ldapServerConfiguration.setUseLdapContext(ldapServer.getUseLdapContext());
+    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatternSet().getAllUserDnPatternIds().toArray());
+    		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
+    		ldapServerConfigurationList.add(ldapServerConfiguration);        	
 		}   	
     	
+//    	TODO has to be tested
 
     	return ldapServerConfigurationList;
     }
