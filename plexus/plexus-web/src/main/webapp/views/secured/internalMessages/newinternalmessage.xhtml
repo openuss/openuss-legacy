@@ -40,19 +40,23 @@
 			<o:block
 				label="#{msg['openuss4us_command_messagecenter_newmessage']}"
 				styleClass="form_box">
-
-				<h:outputText value="#{showuser.firstName}"
+				<br />
+				<h:outputText value="#{msg.openuss4us_messagecenter_recipient}: "
+					styleClass="header_font_normal" />
+					<br />
+				<h:outputText value="#{showuser.contact.firstName} #{showuser.contact.lastName}"
 					styleClass="header_font_normal" />
 				<br />
-				<o:input entity="internalMessageInfo" property="subject"
+				<br />
+				<o:input entity="internalMessageInfo" property="subject" 
 					id="internalMessageSubject" styleClass="field" maxlength="50"
-					required="true" />
+					required="true" title="#{msg.openuss4us_messagecenter_message_subjectfield}" />
 				<br />
-				<h:outputText value="#{msg.openuss4us_messagecenter_message}"
-					styleClass="header_font_normal" />
+
 				<o:input entity="internalMessageInfo" property="content"
-					type="textarea" styleClass="field_message" maxlength="2000" minlength="1" required="true">
-					<f:validateLength maximum="2000" /> <f:converter converterId="xssFilter"/> </o:input>Own Filter, compare to Wikifilter!
+					type="textarea" styleClass="field_message" maxlength="2000" minlength="1" required="true"
+					title="#{msg.openuss4us_messagecenter_message_contentfield}">
+					<f:validateLength maximum="2000" /> <f:converter converterId="xssFilter"/> </o:input>
 			</o:block>
 
 			<o:block>
