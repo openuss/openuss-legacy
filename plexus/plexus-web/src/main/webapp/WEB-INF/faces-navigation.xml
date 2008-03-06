@@ -825,14 +825,16 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>admin_ldap_index</from-outcome>
+			<to-view-id>/views/secured/system/ldap_index.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>admin_ldap_servers</from-outcome>
 			<to-view-id>/views/secured/system/ldap_servers.xhtml</to-view-id>
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>admin_ldap_domains</from-outcome>
-			<to-view-id>/views/secured/system/ldap_domains.xhtml</to-view-id>
-		</navigation-case>
+
 		
 		<navigation-case>
 			<from-outcome>user_profile_view</from-outcome>
@@ -928,7 +930,7 @@
 				<to-view-id>/views/secured/lecture/registration/departmentstep2.xhtml</to-view-id>
 			</navigation-case>
 	</navigation-rule>
-
+	
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       L D A P D o m a i n - R e g i s t r a t i o n 
@@ -938,38 +940,195 @@
 		<from-view-id>/*</from-view-id>
 	
 			<navigation-case>
+					<from-outcome>ldap_domains</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_domains.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
 					<from-outcome>ldap_domain_registration_start</from-outcome>
-					<to-view-id>/views/secured/lecture/registration/ldap_domainstart.xhtml</to-view-id>
+					<to-view-id>/views/secured/system/ldap/ldap_domainstart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
 				<from-outcome>ldap_domain_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/ldap_domainstep1.xhtml</to-view-id>
+				<to-view-id>/views/secured/system/ldap/ldap_domainstep1.xhtml</to-view-id>
 			</navigation-case>
 		
 	</navigation-rule>
 	
 	<navigation-rule>
 		
-		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+
+			<navigation-case>
+					<from-outcome>ldap_domains</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_domains.xhtml</to-view-id>
+			</navigation-case>
 
 			<navigation-case>
 				<from-outcome>ldap_domain_registration_start</from-outcome>
-				<to-view-id>/views/secured/lecture/registration/ldap_domainstart.xhtml</to-view-id>
+				<to-view-id>/views/secured/system/ldap/ldap_domainstart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
 				<from-outcome>ldap_domain_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/ldap_domainstep1.xhtml</to-view-id>
+				<to-view-id>/views/secured/system/ldap/ldap_domainstep1.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
 				<from-outcome>ldap_domain_registration_step2</from-outcome>		
-				<to-view-id>/views/secured/lecture/registration/ldap_domainstep2.xhtml</to-view-id>
+				<to-view-id>/views/secured/system/ldap/ldap_domainstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P R o l e A t t r i b u t e K e y S e t - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>ldap_roleattributekeysets</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysets.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+					<from-outcome>ldap_roleattributekeyset_registration_start</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_roleattributekeyset_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+
+			<navigation-case>
+					<from-outcome>ldap_roleattributekeysets</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysets.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>ldap_roleattributekeyset_registration_start</from-outcome>
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_roleattributekeyset_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>ldap_roleattributekeyset_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep2.xhtml</to-view-id>
 			</navigation-case>
 	</navigation-rule>
 
 
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P A t t r i b u t e M a p p i n g - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>ldap_attributemappings</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_attributemappings.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+					<from-outcome>ldap_attributemapping_registration_start</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_attributemappingstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_attributemapping_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_attributemappingstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+
+			<navigation-case>
+					<from-outcome>ldap_attributemappings</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_attributemappings.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>ldap_attributemapping_registration_start</from-outcome>
+				<to-view-id>/views/secured/system/ldap/ldap_attributemappingstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_attributemapping_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_attributemappingstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>ldap_attributemapping_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_attributemappingstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P S e r v e r - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>ldap_servers</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_servers.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+					<from-outcome>ldap_server_registration_start</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_serverstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_server_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_serverstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+
+			<navigation-case>
+					<from-outcome>ldap_servers</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_servers.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>ldap_server_registration_start</from-outcome>
+				<to-view-id>/views/secured/system/ldap/ldap_serverstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_server_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_serverstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>ldap_server_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_serverstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
 
    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       U n i v e r s i t y  - P a g e 
