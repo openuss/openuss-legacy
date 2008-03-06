@@ -8,6 +8,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core">
+	<div id="messagebox">
 	<plexus:dataTable id="outboxTable"
 		value="views$secured$internalmessages$messagecenter.outboxData" var="outboxMessage"
 		 label="#{msg.openuss4us_messagecenter_outbox_header}" rows="10">
@@ -20,7 +21,7 @@
 				rowIndexVar="index"
 				layout="simple"
 				value="#{outboxMessage.internalMessageRecipientsInfos}" var="rec"
-				styleClass="content_font_normal"
+				styleClass="messagecenter_header"
 				>
 				<h:outputText value="#{rec.recipientDisplayName}"/><h:outputText value=" - " rendered="#{index + 1 lt rowCount}"/>
 			</t:dataList>
@@ -31,7 +32,7 @@
 			</f:facet>
 			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readSentMessage}">
 			<h:outputText value="#{outboxMessage.subject}"
-				styleClass="header_font_normal" /><br />
+				styleClass="messagecenter_header" /><br />
 			<h:outputText value="#{fn:substring(outboxMessage.content, 0, 100)}..."
 				syleClass="content_font_normal"
 				rendered="#{fn:length(outboxMessage.content) gt 100}" />
@@ -43,7 +44,7 @@
 		<t:column styleClass="col_post_date">
 			<plexus:commandSortHeader columnName="outboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
 			<h:outputText value="#{outboxMessage.messageDate}"
-				styleClass="content_font_normal">
+				styleClass="date">
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
 			</h:outputText>
 		</t:column>
@@ -59,4 +60,5 @@
 				styleClass="button_remove" />
 		</t:column>
 	</plexus:dataTable>
+	</div>
 </ui:composition>
