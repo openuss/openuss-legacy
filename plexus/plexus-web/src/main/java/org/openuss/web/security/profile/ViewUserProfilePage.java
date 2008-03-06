@@ -73,5 +73,4 @@ public class ViewUserProfilePage extends BasePage{
 	public boolean isBuddy(){
 		return (buddyService.isUserBuddy(profile)) || (securityService.getCurrentUser().getId().equals(profile.getId()));
 	}
-
 }
