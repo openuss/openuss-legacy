@@ -40,21 +40,25 @@
 
 			<ui:include src="buddytable.xhtml" />
 			<o:block label="#{msg.openuss4us_buddylist_assignedtags}" styleClass="form_box" rendered="#{not empty views$secured$buddylist$buddylist.usedTags}">
+				<p id="tags" class="content_font_normal">
 				<o:link value="/views/secured/buddylist/buddylist.faces"
 					title="#{msg.openuss4us_buddylist_showall}" rendered="#{not empty views$secured$buddylist$buddylist.filtertag}">
 					<f:param name="filtertag" value="" />
 					<h:outputText value="#{msg.openuss4us_buddylist_showall}" />
 				</o:link>
+				
 				<t:dataList id="usedTagsList" var="tag"
 					value="#{views$secured$buddylist$buddylist.usedTags}"
 					rendered="#{not empty views$secured$buddylist$buddylist.usedTags}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
 					<o:link value="/views/secured/buddylist/buddylist.faces"
-						title="#{tag}">
+						title="#{tag}" rendered="#{not (tag eq views$secured$buddylist$buddylist.filtertag)}">
 						<f:param name="filtertag" value="#{tag}" />
 						<h:outputText value="#{tag}" />
 					</o:link>
+				<h:outputText value="#{tag}" styleClass="activetag" rendered="#{tag eq views$secured$buddylist$buddylist.filtertag}" />
 				</t:dataList>
+				</p>
 			</o:block>
 			<o:block>
 				<h:commandButton action="openuss4us_buddylist_requests"
