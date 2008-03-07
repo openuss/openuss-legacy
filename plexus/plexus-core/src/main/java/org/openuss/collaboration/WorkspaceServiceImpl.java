@@ -13,8 +13,8 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DefaultDomainObject;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.security.Authority;
+import org.openuss.security.Group;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -116,15 +116,16 @@ public class WorkspaceServiceImpl extends
 
 		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
-		CourseInfo courseInfo = getCourseService().getCourseInfo(workspace.getDomainId());
-		List<CourseMemberInfo> courseMembers = getCourseService().getParticipants(courseInfo);
+		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + workspace.getDomainId() + "_PARTICIPANTS");
+		
+		List<Authority> members = group.getMembers();
 		
 		workspace.getUser().clear();
 
-		for (CourseMemberInfo cmi : courseMembers) {
-			User user = getSecurityService().getUserObject(cmi.getUserId());
+		for (Authority auth : members) {
+			User user = getSecurityService().getUserObject(auth.getId());
 			
-			if (userIds.contains(cmi.getUserId())) {
+			if (user != null && userIds.contains(user.getId())) {
 				workspace.getUser().add(user);
 				getSecurityService().setPermissions(user, workspace, LectureAclEntry.WORKSPACE_PARTICIPANT);
 			} else {

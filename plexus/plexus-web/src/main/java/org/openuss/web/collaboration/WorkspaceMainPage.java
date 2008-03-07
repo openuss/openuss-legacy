@@ -1,8 +1,6 @@
 package org.openuss.web.collaboration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,8 +19,9 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.security.Authority;
+import org.openuss.security.Group;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
@@ -126,16 +125,15 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			editing = true;
 			
 			// get mapped users
-			List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
-					.getParticipants(courseInfo));
+			List<UserInfo> members = loadCourseMembers();
 
 			if (this.workspaceInfo.getId() != null) {
 				
 				List<Long> wsMemberIds = getWorkspaceMemberIds();
 				
-				Map<CourseMemberInfo, Boolean> map = new HashMap<CourseMemberInfo, Boolean>(members.size());
-				for (CourseMemberInfo member : members) {
-					map.put(member, wsMemberIds.contains(member.getUserId()) ? Boolean.TRUE : Boolean.FALSE);
+				Map<UserInfo, Boolean> map = new HashMap<UserInfo, Boolean>(members.size());
+				for (UserInfo member : members) {
+					map.put(member, wsMemberIds.contains(member.getId()) ? Boolean.TRUE : Boolean.FALSE);
 				}
 				this.memberSelection.setMap(map);
 			}
@@ -165,11 +163,11 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		}
 		
 		// store mapping
-		List<CourseMemberInfo> courseMembers = courseService.getParticipants(courseInfo);
+		List<UserInfo> courseMembers = loadCourseMembers();
 		List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
-		for (CourseMemberInfo member : courseMembers) {
+		for (UserInfo member : courseMembers) {
 			if (this.memberSelection.isSelected(member)) {
-				memberIds.add(member.getUserId());
+				memberIds.add(member.getId());
 			}
 		}
 		workspaceService.updateWorkspaceMembers(memberIds, workspaceInfo.getId());
@@ -284,11 +282,16 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}	
 
 	@SuppressWarnings("unchecked")
-	private List<CourseMemberInfo> loadCourseMembers() {
-		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
-				.getParticipants(courseInfo));
+	private List<UserInfo> loadCourseMembers() {
+		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
 		
-		return members;
+		List<Authority> members = group.getMembers();
+		List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
+		for (Authority auth : members) {
+			courseMembers.add(getSecurityService().getUser(auth.getId()));
+		}
+		
+		return courseMembers;
 	}
 	
 	public void setSelectedMembers(List<String> items) {
@@ -308,14 +311,13 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	public List<SelectItem> getSelectedMembersList() {
-		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
-				.getParticipants(courseInfo));
+		List<UserInfo> members = loadCourseMembers();
 		
 		List<Long> wsMemberIds = getWorkspaceMemberIds();
 		
 		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
-		for (CourseMemberInfo cmi : members) {
-			if (wsMemberIds.contains(cmi.getUserId())) {
+		for (UserInfo cmi : members) {
+			if (wsMemberIds.contains(cmi.getId())) {
 				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
 			}
 		}
@@ -324,14 +326,13 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	public List<SelectItem> getAvailableMembersList() {
-		List<CourseMemberInfo> members = new ArrayList<CourseMemberInfo>(courseService
-				.getParticipants(courseInfo));
+		List<UserInfo> members = loadCourseMembers();
 		
 		List<Long> wsMemberIds = getWorkspaceMemberIds();
 		
 		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
-		for (CourseMemberInfo cmi : members) {
-			if (!wsMemberIds.contains(cmi.getUserId())) {
+		for (UserInfo cmi : members) {
+			if (!wsMemberIds.contains(cmi.getId())) {
 				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
 			}
 		}
@@ -348,7 +349,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		
 		return wsMemberIds;
 	}
-
+	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelMappedWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
@@ -360,7 +361,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				//CourseMemberInfo memberInfo = courseService.getMemberInfo(courseInfo, user);
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), 
 								user));
 				
@@ -390,19 +390,19 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		}
 	}
 	
-	private class LocalDataModelCourseMembers extends AbstractPagedTable<CourseMemberInfo> {
+	private class LocalDataModelCourseMembers extends AbstractPagedTable<UserInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<CourseMemberInfo> page;
+		private DataPage<UserInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<CourseMemberInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseMemberInfo> courseMembers = loadCourseMembers();
+				List<UserInfo> courseMembers = loadCourseMembers();
 				
 				sort(courseMembers);
-				page = new DataPage<CourseMemberInfo>(courseMembers.size(), 0, courseMembers);
+				page = new DataPage<UserInfo>(courseMembers.size(), 0, courseMembers);
 			}
 			return page;
 		}

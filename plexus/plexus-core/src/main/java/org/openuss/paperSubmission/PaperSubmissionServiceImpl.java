@@ -16,7 +16,8 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.security.Authority;
+import org.openuss.security.Group;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
@@ -296,15 +297,15 @@ public class PaperSubmissionServiceImpl
     	List<PaperSubmissionInfo> submissions = this.findPaperSubmissionsByExam(exam.getId());
     	//FIXME CourseMembers will be deprecated soon. Alternatives?
     	CourseInfo course = this.getCourseService().getCourseInfo(exam.getDomainId());
-    	List<CourseMemberInfo> members = this.getCourseService().getParticipants(course);
+    	List<UserInfo> members = loadCourseMembers(exam.getDomainId());
     	
-    	for(CourseMemberInfo member : members){
+    	for(UserInfo member : members){
     		boolean submitted = false;
     		
     		for(PaperSubmissionInfo submission : submissions){
-    			if(member.getUserId().equals(submission.getUserId())){
+    			if(member.getId().equals(submission.getUserId())){
     				PaperSubmissionInfo paper = new PaperSubmissionInfo();
-    				paper.setUserId(member.getUserId());
+    				paper.setUserId(member.getId());
     				paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
     	    		paper.setId(submission.getId());
     				paper.setSubmissionStatus(submission.getSubmissionStatus());
@@ -314,13 +315,26 @@ public class PaperSubmissionServiceImpl
     		}
     		if(submitted==false){
     			PaperSubmissionInfo paper = new PaperSubmissionInfo();
-    			paper.setUserId(member.getUserId());
+    			paper.setUserId(member.getId());
           		paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
     			paper.setSubmissionStatus(SubmissionStatus.NOT_SUBMITTED);
 				allSubmissions.add(paper);
     		}
     	}
     	return allSubmissions;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<UserInfo> loadCourseMembers(long domainId) {
+		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
+		
+		List<Authority> members = group.getMembers();
+		List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
+		for (Authority auth : members) {
+			courseMembers.add(getSecurityService().getUser(auth.getId()));
+		}
+		
+		return courseMembers;
 	}
 
 	@Override
