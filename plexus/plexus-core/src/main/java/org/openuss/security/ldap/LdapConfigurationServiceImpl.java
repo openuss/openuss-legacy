@@ -753,6 +753,8 @@ public class LdapConfigurationServiceImpl
 	protected void handleDeleteUserDnPatternSet(UserDnPatternSetInfo userDnPatternSet) throws Exception {
 		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
 		
+		userDnPatternSetEntity.setUserDnPatterns(null);
+		
 		// also delete ldap servers assigned to that pattern set
     	Set<LdapServer> alsoDeleteServersList = userDnPatternSetEntity.getLdapServers();
     	for(LdapServer delete : alsoDeleteServersList) {

@@ -233,9 +233,11 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	/*
 	 * Tests delete domain
 	 */
-	public void testDeleteAuthenticationDomain() {
+	public void testAllIntegration() {
 		service = getLdapConfigurationService();
-		commit();
+		//commit();
+		endTransaction();
+		startNewTransaction();
 		
 		AuthenticationDomainInfo domain = service.createDomain(createAuthenticationDomainInfoDummy());
 		AuthenticationDomainInfo domain2 = service.createDomain(createAuthenticationDomainInfoDummy());
@@ -260,6 +262,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		List<LdapServerInfo> allServers2 = service.getLdapServersByDomain(domain2);
 		List<LdapServerInfo> allServers3 = service.getLdapServersByDomain(domain3);
 		
+		
 		assertTrue(3 == allDomains.size());
 		assertTrue(3 == allServers.size());
 		assertTrue(2 == allServers1.size());
@@ -267,7 +270,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(0 == allServers3.size());
 		
 		
-		service.deleteDomain(domain);
+		service.deleteDomain(domain); 
 		
 		allDomains = service.getAllDomains();
 		allServers = service.getAllLdapServers(); 
@@ -308,20 +311,20 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(0 == allServers1.size());
 		assertTrue(1 == allServers2.size());
 		assertTrue(0 == allServers3.size());
-//		
-//		service.deleteUserDnPatternSet(set);
-//		
-//		allDomains = service.getAllDomains();
-//		allServers = service.getAllLdapServers(); 
-//		allServers1 = service.getLdapServersByDomain(domain);
-//		allServers2 = service.getLdapServersByDomain(domain2);
-//		allServers3 = service.getLdapServersByDomain(domain3);
-//		
-//		assertTrue(1 == allDomains.size());
-//		assertTrue(0 == allServers.size());
-//		assertTrue(0 == allServers1.size());
-//		assertTrue(0 == allServers2.size());
-//		assertTrue(0 == allServers3.size());
+		
+		service.deleteUserDnPatternSet(set);
+		
+		allDomains = service.getAllDomains();
+		allServers = service.getAllLdapServers(); 
+		allServers1 = service.getLdapServersByDomain(domain);
+		allServers2 = service.getLdapServersByDomain(domain2);
+		allServers3 = service.getLdapServersByDomain(domain3);
+		
+		assertTrue(1 == allDomains.size());
+		assertTrue(0 == allServers.size());
+		assertTrue(0 == allServers1.size());
+		assertTrue(0 == allServers2.size());
+		assertTrue(0 == allServers3.size());
 	}
 	
 	/*
