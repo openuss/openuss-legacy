@@ -135,7 +135,7 @@
 				styleClass="teaser_blue_right">
 				<h:form id="news_tables">
 					<c:if
-						test="#{not empty views$secured$course$main.appointments}">
+						test="#{empty views$secured$course$main.appointments}">
 						<p class="content_font_normal"><h:outputText
 							value="#{msg.course_no_appointments}" styleClass="news_title" /></p>
 					</c:if>
