@@ -93,8 +93,6 @@
 		
 		<aop:pointcut id="LdapConfigurationServiceCreateServerPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.createLdapServer(org.openuss.security.ldap.LdapServerInfo)))" />
-			
-			<!-- 
 		<aop:pointcut id="LdapConfigurationServiceDeleteServerPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.deleteLdapServer(org.openuss.security.ldap.LdapServerInfo)))" />
 		<aop:pointcut id="LdapConfigurationServiceSaveServerPointcut"
@@ -131,8 +129,15 @@
 			expression="(execution(* org..LdapConfigurationServiceBase.saveUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)))" />
 		<aop:pointcut id="LdapConfigurationServiceDeleteUserDnPatternPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.deleteUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)))" />
-		
-		 -->
+		<aop:pointcut id="LdapConfigurationServiceRemoveRoleAttributeKeyFromAttributeMappingPointcut"
+			expression="(execution(* org..LdapConfigurationServiceBase.removeRoleAttributeKeyFromAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo)))" />
+		<aop:pointcut id="LdapConfigurationServiceAddRoleAttributeKeyToAttributeMappingPointcut"
+			expression="(execution(* org..LdapConfigurationServiceBase.addRoleAttributeKeyToAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo)))" />
+		<aop:pointcut id="LdapConfigurationServiceAddUserDnPatternToLdapServerPointcut"
+			expression="(execution(* org..LdapConfigurationServiceBase.addUserDnPatternToLdapServer(org.openuss.security.ldap.UserDnPatternInfo, org.openuss.security.ldap.LdapServerInfo)))" />
+		<aop:pointcut id="LdapConfigurationServiceRemoveUserDnPatternFromLdapServerPointcut"
+			expression="(execution(* org..LdapConfigurationServiceBase.removeUserDnPatternFromLdapServer(org.openuss.security.ldap.UserDnPatternInfo, org.openuss.security.ldap.LdapServerInfo)))" />
+	
 				
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
@@ -354,12 +359,10 @@
 
 		<!-- Addititional aspect for LDAP Server Configuration -->
 		
-		<aop:aspect id="ldapConfigurationAspect" ref="ldapConfigurationAspectBean">
-			
+		<aop:aspect id="ldapConfigurationAspect" 
+			ref="ldapConfigurationAspectBean">					
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceCreateServerPointcut" />
-				
-				<!-- 
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceSaveServerPointcut" />
 			<aop:after-returning method="reconfigure"
@@ -396,9 +399,14 @@
 				pointcut-ref="LdapConfigurationServiceSaveUserDnPatternPointcut" />
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceDeleteUserDnPatternPointcut" />
-	
-	 -->
-	 
+			<aop:after-returning method="reconfigure"
+				pointcut-ref="LdapConfigurationServiceRemoveRoleAttributeKeyFromAttributeMappingPointcut" />
+			<aop:after-returning method="reconfigure"
+				pointcut-ref="LdapConfigurationServiceAddRoleAttributeKeyToAttributeMappingPointcut" />
+			<aop:after-returning method="reconfigure"
+				pointcut-ref="LdapConfigurationServiceAddUserDnPatternToLdapServerPointcut" />
+			<aop:after-returning method="reconfigure"
+				pointcut-ref="LdapConfigurationServiceRemoveUserDnPatternFromLdapServerPointcut" />
 		</aop:aspect>
 
 	</aop:config>
