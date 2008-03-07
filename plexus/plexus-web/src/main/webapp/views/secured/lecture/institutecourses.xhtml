@@ -36,6 +36,13 @@
   			<t:saveState id="course_moving" value="#{views$secured$lecture$institutecourses.moving}" />
   			
 	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
+	  		
+			<o:block label="#{msg.period_info_head}" styleClass="form_box">
+				<p class="content_font_normal">	  								
+					<h:outputFormat escape="false" value="#{msg.period_info}" styleClass="content_font_normal" />
+				</p>
+			</o:block>
+			 		
   			<h:form id="periodsForm">
 				<o:block>
 					<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>

@@ -37,6 +37,12 @@
 	  		
 	  		<t:saveState id="coursetype_editing" value="#{views$secured$lecture$institutecoursetypes.editing}" />
 	  		
+	  		<o:block label="#{msg.coursetype_info_head}" styleClass="form_box">
+				<p class="content_font_normal">	  								
+					<h:outputFormat escape="false" value="#{msg.coursetype_info}" styleClass="content_font_normal" />
+				</p>
+			</o:block>
+	  		
   			<h:form id="courseTypesForm">
 				<ui:include src="coursetypestable.xhtml"/>
 				<c:if test="#{!views$secured$lecture$institutecoursetypes.editing}">	

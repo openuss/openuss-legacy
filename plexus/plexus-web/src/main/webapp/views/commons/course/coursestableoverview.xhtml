@@ -8,7 +8,14 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
-      
+
+	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+		<o:block label="#{msg.course_info_head}" styleClass="form_box">
+			<p class="content_font_normal">	  								
+				<h:outputFormat escape="false" value="#{msg.course_info}" styleClass="content_font_normal" />
+			</p>
+		</o:block>
+	</s:acl>      
       
     <o:block>
 		<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
@@ -26,7 +33,7 @@
 	<plexus:dataTable 
 	    	id="courses" 
 	    	var="courseInfo" 
-	    	label="#{periodInfo.name}"
+	    	label="#{msg.period_table_head_of} #{periodInfo.name}"
 	    	value="views$public$institute$institute.courseData" 
 	    	columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 			styleClass="table"
