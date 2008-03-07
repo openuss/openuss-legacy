@@ -27,9 +27,23 @@
         <ui:insert name="header"/>
     </head>
     <body>
-        <div id="wrapper">
-            <div class="page" style="width:800px; margin: 10px;">
-                <ui:insert name="content"/>
+    	<style>
+    		.page a {
+				color: #505050;
+				font-size: 8pt;
+				text-decoration: none;
+				font-weight: none;
+			}
+			
+			.page a:hover {
+				text-decoration: underline;
+				font-weight: none;
+			}
+    	</style>
+    
+        <div id="wrapper" style="text-decoration:none">
+            <div class="page" style="width:810px; margin: 10px;">
+               	<ui:insert name="content"/>
             </div>
         </div>
     </body>
