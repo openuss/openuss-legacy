@@ -50,14 +50,14 @@
 				<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: "
 					rendered="#{views$secured$calendar$viewappointmentdetails.serial}" />
 				<h:outputText value="#{appointmentInfo.starttime}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" />
+					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" timeZone="#{user.timezone}"/>
 				</h:outputText> <h:outputText value=" - " /> <h:outputText
 					value="#{appointmentInfo.endtime}"
 					rendered="#{not views$secured$calendar$viewappointmentdetails.sameDay}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" />
+					<f:convertDateTime pattern="E, dd.MM.yyyy, H:mm" timeZone="#{user.timezone}" />
 				</h:outputText> <h:outputText value="#{appointmentInfo.endtime}"
 					rendered="#{views$secured$calendar$viewappointmentdetails.sameDay}">
-					<f:convertDateTime pattern="H:mm" />
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText></p>
 				<p class="content_font_normal">
 				<h:outputText value="#{msg.openuss4us_calendar_type_user}"

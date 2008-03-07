@@ -18,13 +18,13 @@
 		<br />
 		<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: " />
 		<h:outputText value="#{serialapp.starttime}">
-			<f:convertDateTime pattern="E, dd.MM.yyyy" />
+			<f:convertDateTime pattern="E, dd.MM.yyyy"  timeZone="#{user.timezone}" />
 		</h:outputText>
 		<br />
 		<h:outputText value="#{serialapp.starttime}">
-			<f:convertDateTime pattern="H:mm" />
+			<f:convertDateTime pattern="H:mm"  timeZone="#{user.timezone}" />
 		</h:outputText> <h:outputText value=" - " /><h:outputText value="#{serialapp.endtime}">
-			<f:convertDateTime pattern="H:mm" />
+			<f:convertDateTime pattern="H:mm"  timeZone="#{user.timezone}" />
 		</h:outputText><br/>
 		
 		<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"

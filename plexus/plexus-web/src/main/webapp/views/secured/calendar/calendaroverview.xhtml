@@ -35,17 +35,17 @@
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_first_occurence}</plexus:commandSortHeader>
 				<h:outputText value="#{serialAppointment.starttime}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy" />
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
 				</h:outputText>
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
 				<h:outputText value="#{serialAppointment.starttime}">
-					<f:convertDateTime pattern="H:mm" />
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText>
 				<h:outputText value=" - " />
 				<h:outputText value="#{serialAppointment.endtime}">
-					<f:convertDateTime pattern="H:mm" />
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText>
 
 			</t:column>
@@ -134,17 +134,17 @@
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.starttime}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy" />
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
 				</h:outputText>
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.starttime}">
-					<f:convertDateTime pattern="H:mm" />
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText>
 				<h:outputText value=" - " />
 				<h:outputText value="#{singleAppointment.endtime}">
-					<f:convertDateTime pattern="H:mm" />
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText>
 
 			</t:column>
