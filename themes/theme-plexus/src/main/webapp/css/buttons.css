@@ -804,11 +804,11 @@ ul.action_list li.department_remove_bookmark a span{
 }
 
 ul.action_list li.register_institute a span{
-  background-image:url(../img/buttons/public_icon.png);
+  background-image:url(../img/buttons/add_icon.png);
 }
 
 ul.action_list li.register_department a span{
-  background-image:url(../img/buttons/public_icon.png);
+  background-image:url(../img/buttons/add_icon.png);
 }
 
 ul.action_list li.wiki_overview a span{
@@ -816,7 +816,7 @@ ul.action_list li.wiki_overview a span{
 }
 
 ul.action_list li.wiki_import a span{
-  background-image:url(../img/buttons/stable_icon.png);
+  background-image:url(../img/buttons/import_wiki_icon.png);
 }
 
 
