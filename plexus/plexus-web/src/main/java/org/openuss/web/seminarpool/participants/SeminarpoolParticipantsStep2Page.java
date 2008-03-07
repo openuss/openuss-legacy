@@ -39,6 +39,12 @@ import org.openuss.web.seminarpool.SeminarpoolCourseTypesPage;
 			crumb.setHint(i18n("seminarpool_participants_breadcrump_step2"));
 			breadcrumbs.addCrumb(crumb);
 		}
+		
+		public String removeParticipant(){
+			SeminarPriorityDetailInfo detailInfo = dataCourseTypes.getRowData();
+			getSeminarpoolAdministrationService().removeSeminarPriorityById(detailInfo.getId());
+			return Constants.SEMINARPOOL_PARTICIPANTS_STEP2_PAGE;
+		}
 
 
 		private class SeminarCourseRegistrationsOverviewPage extends AbstractPagedTable<SeminarPriorityDetailInfo> {

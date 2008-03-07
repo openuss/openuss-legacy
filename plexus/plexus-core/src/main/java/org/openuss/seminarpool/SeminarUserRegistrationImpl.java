@@ -43,6 +43,9 @@ public class SeminarUserRegistrationImpl
 				priority.setSeminarUserRegistration(null);
 			}
 		}
+		if (priority.getCourseSeminarPoolAllocation().getSeminarPriority().remove(priority) ){
+			priority.setCourseSeminarPoolAllocation(null);
+		}
     }
 
 	@Override

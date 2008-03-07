@@ -660,4 +660,13 @@ public class SeminarpoolAdministrationServiceImpl
 		detailInfo.setPriority(entity.getPriority());
 		return detailInfo;
 	}
+
+	@Override
+	protected void handleRemoveSeminarPriorityById(Long priorityId)
+			throws Exception {
+		Validate.notNull(priorityId, "handleRemoveSeminarPriorityById ==> priorityId cannot be null");
+		SeminarPriority priorityEntity = getSeminarPriorityDao().load(priorityId);
+		SeminarUserRegistration userRegistrationEntity = priorityEntity.getSeminarUserRegistration();
+		userRegistrationEntity.removePriority(priorityEntity);
+	}
 }
