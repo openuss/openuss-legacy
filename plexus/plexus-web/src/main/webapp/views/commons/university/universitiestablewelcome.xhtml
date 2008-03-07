@@ -19,9 +19,8 @@
 		infoText="#{msg.table_info_text_universities}">
 		
 		<t:column>
-	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command">
-				<h:graphicImage renderer="${not empty bean.imageId}"
-								value="/files?fileid=#{bean.imageId}"
+	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
+				<h:graphicImage value="/files?fileid=#{bean.imageId}"
 								title="#{msg.logo} #{bean.name}"
 								style="height:40px; display:block;"/>
 			</h:commandLink>	
