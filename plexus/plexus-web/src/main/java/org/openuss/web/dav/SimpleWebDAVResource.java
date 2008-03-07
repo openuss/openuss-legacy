@@ -551,8 +551,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			list.appendChild(li);
 			
 			Element link = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_LINK);
-			li.setAttributeNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
-			li.setTextContent(c.getPath().getFileName());
+			link.setAttributeNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
+			link.setTextContent(c.getPath().getFileName());
 			li.appendChild(link);
 		}
 		
