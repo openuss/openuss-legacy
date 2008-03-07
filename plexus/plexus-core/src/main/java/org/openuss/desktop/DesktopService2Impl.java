@@ -19,6 +19,7 @@ import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
@@ -28,6 +29,7 @@ import org.openuss.lecture.Period;
 import org.openuss.lecture.University;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * @see org.openuss.desktop.DesktopService2
@@ -250,6 +252,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 	}
 
 	/**
+	 * Removes member of course if membership exists.
 	 * @see org.openuss.desktop.DesktopService2#unlinkCourse(java.lang.Long,
 	 *      java.lang.Long)
 	 */
@@ -262,6 +265,13 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Validate.notNull(course, "No Course found corresponding to the courseId " + courseId);
 
 		desktop.getCourses().remove(course);
+
+		UserInfo userInfo = this.getDesktopDao().toDesktopInfo(desktop).getUserInfo();
+		CourseInfo courseInfo = this.getCourseDao().toCourseInfo(course);
+		CourseMemberInfo memberInfo = this.getCourseService().getMemberInfo(courseInfo, userInfo);
+		
+		if(memberInfo != null)
+			this.getCourseService().removeMember(memberInfo.getId());
 	}
 
 	/**
