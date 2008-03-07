@@ -36,7 +36,7 @@
 					value="views$secured$system$institutes.provider" 
 					var="bean" 
 					rows="20"
-			   		columnClasses="col_min_center, col_min_left, col_max_left, col_max_left, col_min_left, col_min_left, col_min_left, col_commands"
+			   		columnClasses="col_min_center, col_min_left, col_max_left, col_max_left, col_min_left, col_max_left, col_min_left, col_commands"
 			   		infoText="#{msg.table_info_text_institutes}">
 
 					<t:column>
@@ -103,7 +103,7 @@
 				</plexus:dataTable>
 				<o:block>
 					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$system$institutes.save}" styleClass="button_save"/>
-					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="admin_institutes" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton value="#{msg.institute_command_add_institute}" title="#{msg.institute_command_add_institute}" action="institute_registration_start" styleClass="button" style="margin-left:10px" />
 				</o:block>
 			</h:form>
 		</ui:define>
