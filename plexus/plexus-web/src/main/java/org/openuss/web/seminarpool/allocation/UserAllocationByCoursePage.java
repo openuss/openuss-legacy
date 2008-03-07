@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool.participants;
+package org.openuss.web.seminarpool.allocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,39 +15,34 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
-import org.openuss.web.seminarpool.SeminarpoolCourseTypesPage;
 
-
-@Bean(name = "views$secured$seminarpool$participants$seminarpoolParticipantsStep1", scope = Scope.REQUEST)
+@Bean(name = "views$secured$seminarpool$allocation$userAllocationByCourse", scope = Scope.REQUEST)
 @View
-public class SeminarpoolParticipantsStep1Page extends AbstractSeminarpoolPage {
+public class UserAllocationByCoursePage extends AbstractSeminarpoolPage {
 
-	public static final Logger logger = Logger.getLogger(SeminarpoolParticipantsStep1Page.class);
-
+	public static final Logger logger = Logger.getLogger(UserAllocationByCoursePage.class);
+	
 	private SeminarOverviewPage dataCourseTypes = new SeminarOverviewPage();
 	
 	/** course type info */
 	@Property(value="#{"+Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO+"}")
 	private CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo;
+
 	
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("seminarpool_participants_breadcrump_step1"));
-		crumb.setHint(i18n("seminarpool_participants_breadcrump_step1"));
+		crumb.setName(i18n("seminarpool_allocation_breadcrumb_course_step1"));
+		crumb.setHint(i18n("seminarpool_allocation_breadcrumb_course_step1"));
 		breadcrumbs.addCrumb(crumb);
 	}
-
-
+	
 	public String selectCurrentSeminar(){
-		CourseSeminarpoolAllocationInfo allocationInfo = dataCourseTypes.getRowData();
-		setSessionBean(Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO, allocationInfo);
-		return Constants.SEMINARPOOL_PARTICIPANTS_STEP2_PAGE;
+		setSessionBean(Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO, dataCourseTypes.getRowData());
+		return Constants.SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP2;
 	}
-	
-	
 	
 	
 	private class SeminarOverviewPage extends AbstractPagedTable<CourseSeminarpoolAllocationInfo> {
@@ -72,19 +67,17 @@ public class SeminarpoolParticipantsStep1Page extends AbstractSeminarpoolPage {
 		return dataCourseTypes;
 	}
 
-
 	public void setDataCourseTypes(SeminarOverviewPage dataCourseTypes) {
 		this.dataCourseTypes = dataCourseTypes;
 	}
-
 
 	public CourseSeminarpoolAllocationInfo getCourseSeminarpoolAllocationInfo() {
 		return courseSeminarpoolAllocationInfo;
 	}
 
-
 	public void setCourseSeminarpoolAllocationInfo(
 			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo) {
 		this.courseSeminarpoolAllocationInfo = courseSeminarpoolAllocationInfo;
 	}
+
 }

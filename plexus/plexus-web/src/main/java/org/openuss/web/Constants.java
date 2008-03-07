@@ -317,6 +317,7 @@ public class Constants {
 	public static final String SEMINARPOOL_PARTICIPANTS_STEP1_PAGE = "seminarpoolParticipantsStep1";
 	public static final String SEMINARPOOL_PARTICIPANTS_STEP2_PAGE = "seminarpoolParticipantsStep2";
 	
-
-
+	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP1 = "seminarpool_options_allocations_course";
+	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP2 = "seminarpool_options_allocations_course_step2";
+	
 }

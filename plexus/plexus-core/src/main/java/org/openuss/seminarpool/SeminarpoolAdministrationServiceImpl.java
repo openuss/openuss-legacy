@@ -382,9 +382,11 @@ public class SeminarpoolAdministrationServiceImpl
     				placeAllocationInfo.setCourseId(course.getId());
     				placeAllocationInfo.setCourseName(course.getName());
     				placeAllocationInfo.setGroupId(courseGroup.getId());
+    				placeAllocationInfo.setGroupName(courseGroup.getName());
     				placeAllocationInfo.setSeminarpoolId(seminarpoolId);
     				placeAllocationInfo.setUserId(user.getId());
-    				placeAllocationInfo.setUserName(user.getDisplayName());
+    				placeAllocationInfo.setFirstName(user.getFirstName());
+    				placeAllocationInfo.setLastName(user.getLastName());
     				placeAllocationList.add(placeAllocationInfo);
     			}
     		}

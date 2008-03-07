@@ -1232,6 +1232,18 @@
 			<to-view-id>/views/secured/seminarpool/seminarpooloptions</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>seminarpool_options_allocations_overview</from-outcome>
+			<to-view-id>/views/secured/seminarpool/allocation/userAllocationOverview.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_allocations_course</from-outcome>
+			<to-view-id>/views/secured/seminarpool/allocation/userAllocationByCourse.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>seminarpool_options_allocations_user</from-outcome>
+			<to-view-id>/views/secured/seminarpool/allocation/userAllocationByUser.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>seminarpool_remove_confirmation</from-outcome>
 			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
 		</navigation-case>
@@ -1297,7 +1309,7 @@
 			<to-view-id>/views/secured/seminarpool/seminarpoolseminars.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-		<navigation-rule>
+	<navigation-rule>
 		<from-view-id>/views/secured/seminarpool/participants/*</from-view-id>
 		<navigation-case>
 			<from-outcome>seminarpoolParticipantsStep1</from-outcome>
@@ -1308,7 +1320,12 @@
 			<to-view-id>/views/secured/seminarpool/participants/seminarpoolParticipantsStep2.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
+	<navigation-rule>
+		<from-view-id>/views/secured/seminarpool/allocation/*</from-view-id>
+		<navigation-case>
+			<from-outcome>seminarpool_options_allocations_course_step2</from-outcome>
+			<to-view-id>/views/secured/seminarpool/allocation/userAllocationByCourseStep2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
 
 </faces-config>
-
