@@ -4,14 +4,19 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
+import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.groups.UserGroupInfo;
+import org.openuss.lecture.CourseInfo;
+import org.openuss.security.User;
 import org.openuss.web.Constants;
 
 /**
@@ -23,6 +28,9 @@ import org.openuss.web.Constants;
 @View
 public class SubscribedCalendarPage extends AbstractCalendarPage {
 
+	@Property(value="#{"+Constants.SHOW_USER_PROFILE+"}")
+	private User profile;
+	
 	private static final Logger logger = Logger
 			.getLogger(SubscribedCalendarPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
@@ -78,6 +86,30 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 		}
 		return Constants.CALENDAR_EDIT_SUBSCRIPTIONS;
 	}
+	
+	public String linkToOrigin() {
+		CalendarInfo calendar = this.data.getRowData();
+		if(calendar.getCalendarType().equals(CalendarType.course_calendar)){
+			CourseInfo course = new CourseInfo();
+			course.setId(calendar.getDomainIdentifier());
+			setSessionBean(Constants.COURSE_INFO, course);
+			return Constants.COURSE_PAGE;
+		}
+		if(calendar.getCalendarType().equals(CalendarType.group_calendar)){
+			UserGroupInfo groupInfo = new UserGroupInfo();
+			groupInfo.setId(calendar.getDomainIdentifier());
+			setSessionBean(Constants.GROUP_INFO, groupInfo);
+			return Constants.GROUP_PAGE;
+		}
+		if(calendar.getCalendarType().equals(CalendarType.user_calendar)){
+			//Should never happen
+			profile.setId(calendar.getDomainIdentifier());
+			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+			return Constants.USER_PROFILE_VIEW_PAGE;
+		}
+		addError(i18n("openuss4us_calendar_not_found"));
+		return Constants.HOME;
+	}
 
 	public SubscribedCalendarsDataProvider getData() {
 		return data;
@@ -85,5 +117,13 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 
 	public void setData(SubscribedCalendarsDataProvider data) {
 		this.data = data;
+	}
+
+	public User getProfile() {
+		return profile;
+	}
+
+	public void setProfile(User profile) {
+		this.profile = profile;
 	}
 }

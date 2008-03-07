@@ -31,7 +31,7 @@
 		<h:form id="appointmentTypesDeleteForm">
 			<plexus:dataTable id="appointmentTypeTable"
 				value="views$secured$system$appointmenttypes.data" var="appointmenttype"
-				rows="20" label="#{msg['openuss4us_buddylist_open_requests']}">
+				rows="20" label="#{msg['openuss4us_calendar_appointmenttypes']}">
 				<t:column styleClass="col_max_left">
 					<h:outputText value="#{appointmenttype.name}"
 						styleClass="content_font_normal" />
@@ -46,7 +46,7 @@
 			</plexus:dataTable>
 			</h:form>
 			<h:form id="appointmentTypesAddForm">
-			<o:block label="Create new appointment type" styleClass="form_box">
+			<o:block label="#{msg.openuss4us_calendar_appointmenttype_create}" styleClass="form_box">
 				<o:input entity="appointmentTypeInfo" property="name"
 					id="appointmentTypeName" styleClass="field" maxlength="75"
 					required="true" />

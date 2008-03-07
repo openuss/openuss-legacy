@@ -44,7 +44,7 @@
 				rows="20" label="#{msg.openuss4us_calendar_single_appointments}">
 				<t:column styleClass="col_max_left">
 					<plexus:commandSortHeader columnName="calendarOwnerName">#{msg.openuss4us_calendar_owner}</plexus:commandSortHeader>
-					<h:outputText value="#{cal.calendarOwnerName}" />
+					<t:commandLink action="#{views$secured$calendar$subscribedcalendars.linkToOrigin}" value="#{cal.calendarOwnerName}" />
 				</t:column>
 				<t:column styleClass="col_max_left">
 					<plexus:commandSortHeader columnName="calendarType">#{msg.openuss4us_calendar_type}</plexus:commandSortHeader>

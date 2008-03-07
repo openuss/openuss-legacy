@@ -58,7 +58,7 @@
 				</h:outputText> <h:outputText value="#{appointmentInfo.endtime}"
 					rendered="#{views$secured$calendar$viewappointmentdetails.sameDay}">
 					<f:convertDateTime pattern="H:mm" />
-				</h:outputText>
+				</h:outputText></p>
 				<p class="content_font_normal">
 				<h:outputText value="#{msg.openuss4us_calendar_type_user}"
 					rendered="#{appointmentInfo.calendarType eq 'USER'}" />
@@ -68,7 +68,7 @@
 					rendered="#{appointmentInfo.calendarType eq 'COURSE'}" /></p>
 				<c:if
 					test="#{views$secured$calendar$viewappointmentdetails.serial}">
-					<br />
+					<p class="content_font_normal">
 					<h:outputText value="#{msg.openuss4us_calendar_last_occurence}: "/><h:outputText value="#{appointmentInfo.recurrenceEndtime}" />
 					<br />
 					<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
@@ -110,19 +110,17 @@
 						escape="false"
 						rendered="#{(appointmentInfo.recurrenceType eq 'YEARLY') and (not (appointmentInfo.recurrencePeriod eq 1))}">
 						<f:param value="#{appointmentInfo.recurrencePeriod}" />
-					</h:outputFormat>
-				</c:if></p>
+					</h:outputFormat></p>
+				</c:if>
 				<c:if test="#{not empty appointmentInfo.location}">
 					<p class="content_font_normal"><h:outputText
 						value="#{msg.openuss4us_calendar_location}: #{appointmentInfo.location}" /></p>
-				</c:if>
-				<c:if
-					test="#{views$secured$calendar$viewappointmentdetails.serial}">
-					
+				</c:if></o:block>
+
 					<plexus:dataTable id="singleAppointmentTable"
 			value="views$secured$calendar$viewappointmentdetails.data"
-			var="singleAppointment" rows="20"
-			label="#{msg.openuss4us_calendar_single_appointments}">
+			var="singleAppointment" rows="20" rendered="#{views$secured$calendar$viewappointmentdetails.serial}"
+			label="#{msg.openuss4us_calendar_calculated_single_appointments}">
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 				<h:outputText value="#{singleAppointment.subject}"
@@ -148,8 +146,7 @@
 			</s:acl>
 		</plexus:dataTable>
 					
-				</c:if>
-			</o:block>
+
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
