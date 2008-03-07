@@ -102,12 +102,31 @@ public class Constants {
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
 	
 	// ldap_domain navigation outcomes and combobox long constants
-	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldap_domainRegistration";
+	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldapDomainRegistration";
 	public static final String LDAP_DOMAIN_REGISTRATION_STEP1_PAGE = "ldap_domain_registration_step1";
 	public static final String AUTHENTICATIONDOMAIN_INFO = "authenticationDomainInfo";
+	public static final String LDAP_DOMAIN_PAGE = "ldap_domains";
+	
+	// ldap_attributemapping navigation outcomes and combobox long constants
+	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_CONTROLLER = "ldapAttributeMappingRegistration";
+	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE = "ldap_attributemapping_registration_step1";
+	public static final String ATTRIBUTEMAPPING_INFO = "attributeMappingInfo";
+	public static final String LDAP_ATTRIBUTEMAPPING_PAGE = "ldap_attributemappings";
 	
 	// migration navigation outcomes constants
 	public static final String MIGRATION_PAGE = "migration";
+	// ldap_roleattributekeysets navigation outcomes and combobox long constants
+	public static final String LDAP_ROLEATTRIBUTEKEYSET_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeySetRegistration";
+	public static final String LDAP_ROLEATTRIBUTEKEYSET_REGISTRATION_STEP1_PAGE = "ldap_roleattributekeyset_registration_step1";
+	public static final String ROLEATTRIBUTEKEYSET_INFO = "roleAttributeKeySetInfo";
+	public static final String LDAP_ROLEATTRIBUTEKEYSET_PAGE = "ldap_roleattributekeysets";
+	
+	// ldap_roleattributekeysets navigation outcomes and combobox long constants
+	public static final String LDAP_SERVER_REGISTRATION_CONTROLLER = "ldapServerRegistration";
+	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
+	public static final String SERVER_INFO = "serverInfo";
+	public static final String LDAP_SERVER_PAGE = "ldap_server";
+	
 
 	// institute navigation outcomes and combobox long constants
 	public static final String INSTITUTE_PAGE = "institute";
