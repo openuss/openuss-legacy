@@ -22,106 +22,120 @@ import org.openuss.web.Constants;
  * Backing Bean for the user calendar -overview page (usercalendar.xhtml)
  * 
  * @author Thomas Jansing
- *
+ * 
  */
 
 @Bean(name = "views$secured$calendar$usercalendar", scope = Scope.REQUEST)
 @View
 public class UserCalendarMainPage extends AbstractCalendarPage {
 
-	private static final Logger logger = Logger	.getLogger(UserCalendarMainPage.class);
-	
+	private static final Logger logger = Logger
+			.getLogger(UserCalendarMainPage.class);
+
 	@Property(value = "#{scheduleHandler.model}")
 	private ScheduleModel model;
-	
+
 	private ScheduleModel emptyModel;
-	
+
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		logger.debug("Starting prerender of usercalendar");
 		breadcrumbs.loadOpenuss4usCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(contextPath()+"/views/secured/calendar/usercalendar.faces");
+		newCrumb.setLink(contextPath()
+				+ "/views/secured/calendar/usercalendar.faces");
 		newCrumb.setName(i18n("openuss4us_command_calendar"));
-		newCrumb.setHint(i18n("openuss4us_command_calendar"));	
+		newCrumb.setHint(i18n("openuss4us_command_calendar"));
 		breadcrumbs.addCrumb(newCrumb);
-		
+
 		CalendarInfo calInfo = calendarService.getCalendar(user);
 		setSessionBean(Constants.CALENDAR_INFO, calInfo);
 		if (calInfo.getId() != null) {
-			logger.debug("calendarInfo loaded with calendarInfo-ID:" + calInfo.getId());
+			logger.debug("calendarInfo loaded with calendarInfo-ID:"
+					+ calInfo.getId());
 		}
 		if (calInfo.getId() == null) {
 			calendarService.createCalendar(user);
-			logger.debug("new calendar & calendarInfo created for user with calendarInfo-ID:" + calInfo.getId());
+			logger
+					.debug("new calendar & calendarInfo created for user with calendarInfo-ID:"
+							+ calInfo.getId());
 		}
-		
+
 		// Load entries for the model
 		loadEntries(calInfo);
 		logger.debug("model entries loaded");
 		// Refresh the model for correct view
 		model.refresh();
 	}
-	    
-    public void loadEntries(CalendarInfo calInfo) {	  	
-    	if (model == null)
-            return;    
-        try {
-        	this.calendarInfo = calInfo;
-        	logger.debug("Loading entries for calendarInfo-ID:" + calendarInfo.getId());
-        	List<AppointmentInfo> apps = null;
-        	apps = calendarService.getSingleAppointments(calendarInfo);
-        	logger.debug("Appointments to add: " + apps.size());
-        	
-        	for(AppointmentInfo app:apps) {
-    			DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
-    			entry1.setId(app.getId().toString());
-    			entry1.setTitle(app.getSubject());
-    			entry1.setStartTime(app.getStarttime());
-    			entry1.setEndTime(app.getEndtime());
-    			entry1.setDescription(app.getDescription());
-    			entry1.setSubtitle(app.getDescription());
-    			model.addEntry(entry1);
-        		logger.debug("Appointment: - " +app.getSubject() +" - added!");
-        	}			
+
+	public void loadEntries(CalendarInfo calInfo) {
+		if (model == null)
+			return;
+		try {
+			this.calendarInfo = calInfo;
+			logger.debug("Loading entries for calendarInfo-ID:"
+					+ calendarInfo.getId());
+			List<AppointmentInfo> apps = null;
+			apps = calendarService.getSingleAppointments(calendarInfo);
+			logger.debug("Appointments to add: " + apps.size());
+
+			for (AppointmentInfo app : apps) {
+				// check if appointment takes place
+				if (app.isTakingPlace()) {
+					DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
+					entry1.setId(app.getId().toString());
+					entry1.setTitle(app.getSubject());
+					entry1.setStartTime(app.getStarttime());
+					entry1.setEndTime(app.getEndtime());
+					entry1.setDescription(app.getDescription());
+					entry1.setSubtitle(app.getDescription());
+					model.addEntry(entry1);
+					logger.debug("Appointment: - " + app.getSubject()
+							+ " - added!");
+				} else {
+					logger.debug("Appointment: " + app.getSubject()
+							+ " at Date " + app.getStarttime().toGMTString()
+							+ " is not taking place -> ignored");
+				}
+			}
 		} catch (CalendarApplicationException e) {
 			// TODO Auto-generated catch block
 			addError("TODO: Error getting calendar");
 			logger.debug("Error getting calendar");
 		}
-        logger.debug("Successfully loaded entries for calendar");
+		logger.debug("Successfully loaded entries for calendar");
 		model.refresh();
-    }
+	}
 
-    public String changeToDayMode() {
-    	if (model == null)
-           addError(i18n("calendar_mode_change_error"));
-    	model.setMode(0);
-    	return Constants.OPENUSS4US_CALENDAR;
-    }
-    
-    public String changeToWorkWeekMode() {
-    	if (model == null)
-            addError(i18n("calendar_mode_change_error"));
-    	model.setMode(1);
-    	return Constants.OPENUSS4US_CALENDAR;
-    }
-    
-    public String changeToWeekMode() {
-    	if (model == null)
-            addError(i18n("calendar_mode_change_error"));
-    	model.setMode(2);
-    	return Constants.OPENUSS4US_CALENDAR;
-    }
-    
-    public String changeToMonthMode() {
-    	if (model == null)
-            addError(i18n("calendar_mode_change_error"));
-    	model.setMode(3);
-    	return Constants.OPENUSS4US_CALENDAR;
-    }
-    
+	public String changeToDayMode() {
+		if (model == null)
+			addError(i18n("calendar_mode_change_error"));
+		model.setMode(0);
+		return Constants.OPENUSS4US_CALENDAR;
+	}
+
+	public String changeToWorkWeekMode() {
+		if (model == null)
+			addError(i18n("calendar_mode_change_error"));
+		model.setMode(1);
+		return Constants.OPENUSS4US_CALENDAR;
+	}
+
+	public String changeToWeekMode() {
+		if (model == null)
+			addError(i18n("calendar_mode_change_error"));
+		model.setMode(2);
+		return Constants.OPENUSS4US_CALENDAR;
+	}
+
+	public String changeToMonthMode() {
+		if (model == null)
+			addError(i18n("calendar_mode_change_error"));
+		model.setMode(3);
+		return Constants.OPENUSS4US_CALENDAR;
+	}
+
 	public ScheduleModel getModel() {
 		return model;
 	}
@@ -129,5 +143,5 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 	public void setModel(ScheduleModel model) {
 		this.model = model;
 	}
-    
+
 }
