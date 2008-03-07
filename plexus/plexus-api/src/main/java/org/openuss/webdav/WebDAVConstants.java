@@ -73,8 +73,9 @@ public class WebDAVConstants {
 	public final static String PROPERTY_VALUE_FALSE = "0";
 	public final static String PROPERTY_VALUE_TRUE = "1";
 	
-	// namespace used in multi-status
-	public final static String NAMESPACE_WEBDAV_URI = "DAV:";
+	// XML namespaces
+	public final static String NAMESPACE_WEBDAV = "DAV:";
+	public final static String NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
 	
 	// XML-elements
 	public final static String XML_ACTIVELOCK = "activelock";
@@ -111,4 +112,15 @@ public class WebDAVConstants {
 	public final static String XML_STATUS = "status";
 	public final static String XML_TIMEOUT = "timeout";
 	public final static String XML_WRITE = "write";
+	
+	// (X)HTML elements
+	public final static String XHTML_HTML = "html";
+	public final static String XHTML_HEAD = "head";
+	public final static String XHTML_TITLE = "title";
+	public final static String XHTML_BODY = "body";
+	public final static String XHTML_HEADER = "h1";
+	public final static String XHTML_UNORDERED_LIST = "ul";
+	public final static String XHTML_LIST_ELEM = "li";
+	public final static String XHTML_LINK = "a";
+	public final static String XHTML_HREF = "href";
 }

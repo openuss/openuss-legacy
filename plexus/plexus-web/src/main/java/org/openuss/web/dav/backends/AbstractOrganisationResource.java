@@ -2,8 +2,6 @@ package org.openuss.web.dav.backends;
 
 import java.io.IOException;
 import java.util.AbstractCollection; // TODOs
-import java.util.Map;
-import java.util.Set;
 
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
@@ -35,7 +33,7 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
 	 */
 	@Override
-	protected void createCollectionImpl(String name) throws WebDAVResourceException {
+	protected WebDAVResource createCollectionImpl(String name) throws WebDAVResourceException {
 		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of organisations via WebDAV is not implemented");
 	}
@@ -59,16 +57,9 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Deletion of organisations via WebDAV is not implemented");
 	}
 
-	@Override
-	public boolean isReadable() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#isWritable()
+	 * @see org.openuss.webdav.WebDAVResource#isWritable()
 	 */
-	@Override
 	public boolean isWritable() {
 		// Creation of organisations is not implemented, creation of files makes no sense
 		return false;

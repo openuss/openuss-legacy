@@ -1,12 +1,12 @@
 package org.openuss.web.dav.backends;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.Constants;
@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.AbstractCollection; // TODO MyUni, TODOs
 
 public class RootResource extends AbstractOrganisationResource {
+	private Logger logger = Logger.getLogger(RootResource.class);
 	protected UniversityService universityService;
 	/**
 	 * Cache of all universities
@@ -82,9 +83,11 @@ public class RootResource extends AbstractOrganisationResource {
 		for (Object el : getAllUniversities()) {
 			UniversityInfo ui = (UniversityInfo) el;
 			
+			
+			logger.error("ADDING uni " + ui.getShortName());
 			resMap.put(ui.getId(), ui.getShortName());
 		}
-		
+		 
 		return resMap;
 	}
 
@@ -114,6 +117,14 @@ public class RootResource extends AbstractOrganisationResource {
 		}
 		
 		return allUniversities;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
+	public boolean isReadable() {
+		// Root is always allowed
+		return true;
 	}
 }
 

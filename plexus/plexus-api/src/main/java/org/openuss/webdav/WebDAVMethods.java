@@ -44,19 +44,19 @@ public class WebDAVMethods {
 	
 	static {
 		// add methods to map with adequate Integer object
-		methodMap.put(METHOD_OPTIONS, new Integer(DAV_OPTIONS));
-		methodMap.put(METHOD_GET, new Integer(DAV_GET));
-		methodMap.put(METHOD_HEAD, new Integer(DAV_HEAD));
-		methodMap.put(METHOD_POST, new Integer(DAV_POST));
-		methodMap.put(METHOD_DELETE, new Integer(DAV_DELETE));
-		methodMap.put(METHOD_PUT, new Integer(DAV_PUT));
-		methodMap.put(METHOD_PROPFIND, new Integer(DAV_PROPFIND));
-		methodMap.put(METHOD_PROPPATCH, new Integer(DAV_PROPPATCH));
-		methodMap.put(METHOD_MKCOL, new Integer(DAV_MKCOL));
-		methodMap.put(METHOD_COPY, new Integer(DAV_COPY));
-		methodMap.put(METHOD_MOVE, new Integer(DAV_MOVE));
-		methodMap.put(METHOD_LOCK, new Integer(DAV_LOCK));
-		methodMap.put(METHOD_UNLOCK, new Integer(DAV_UNLOCK));
+		methodMap.put(METHOD_OPTIONS, Integer.valueOf(DAV_OPTIONS));
+		methodMap.put(METHOD_GET, Integer.valueOf(DAV_GET));
+		methodMap.put(METHOD_HEAD, Integer.valueOf(DAV_HEAD));
+		methodMap.put(METHOD_POST, Integer.valueOf(DAV_POST));
+		methodMap.put(METHOD_DELETE, Integer.valueOf(DAV_DELETE));
+		methodMap.put(METHOD_PUT, Integer.valueOf(DAV_PUT));
+		methodMap.put(METHOD_PROPFIND, Integer.valueOf(DAV_PROPFIND));
+		methodMap.put(METHOD_PROPPATCH, Integer.valueOf(DAV_PROPPATCH));
+		methodMap.put(METHOD_MKCOL, Integer.valueOf(DAV_MKCOL));
+		methodMap.put(METHOD_COPY, Integer.valueOf(DAV_COPY));
+		methodMap.put(METHOD_MOVE, Integer.valueOf(DAV_MOVE));
+		methodMap.put(METHOD_LOCK, Integer.valueOf(DAV_LOCK));
+		methodMap.put(METHOD_UNLOCK, Integer.valueOf(DAV_UNLOCK));
 	}
 	
 	/**

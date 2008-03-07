@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -52,16 +53,17 @@ public final class WebDAVUtils {
 	/**
 	 * Parses the request body as a XML document.
 	 * @param request Reference to the request of the servlet.
-	 * @return The request body parsed as a XML document.
+	 * @return The request body parsed as a XML document. null if no document was sent
 	 * @throws WebDAVException A message for the client because the document could not be parsed.
+	 * @throws IOException On reading problems.
 	 */
-	public static Document getRequestDocument(HttpServletRequest request) throws WebDAVException {
-		Document document = null;
-		
-		// return null, if request body is empty
+	public static Document getRequestDocument(HttpServletRequest request) throws WebDAVException, IOException {
+		// return null if request body is empty
 		if (request.getContentLength() == 0) {
-			return document;
+			return null;
 		}
+		
+		Document document = null;
 		
 		try {
 			// retrieve the input stream from request
@@ -79,9 +81,6 @@ public final class WebDAVUtils {
 					document = streamToDocument(bufferedInputStream);
 				}
 			}
-		} catch (IOException ex) {
-			// error while operating with streams
-			throw new WebDAVException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex);
 		} catch (SAXException ex) {
 			// parsing failed, send 400 (Bad Request) to client
 			throw new WebDAVException(HttpServletResponse.SC_BAD_REQUEST, ex);
@@ -235,6 +234,7 @@ public final class WebDAVUtils {
 		Transformer t;
 		try {
 			t = tf.newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes"); // TODO necessary?
 			t.transform(new DOMSource(doc), new StreamResult(sw));
 		} catch (TransformerException e) {
 			throw new RuntimeException(e);
@@ -289,7 +289,7 @@ public final class WebDAVUtils {
 	 */
 	public static boolean isDavElement(Node n, String localName) {
 		return (n != null) && (n instanceof Element) &&
-			(n.getNamespaceURI().equals(WebDAVConstants.NAMESPACE_WEBDAV_URI) &&
+			(n.getNamespaceURI().equals(WebDAVConstants.NAMESPACE_WEBDAV) &&
 			(n.getLocalName().equals(localName)));
 			
 	}

@@ -1,10 +1,12 @@
 package org.openuss.webdav;
 
+import java.io.Serializable;
+
 /**
  * A WebDAV path specification, optionally including yet unresolved path elements.
  * Implementationns should be immutable. 
  */
-public interface WebDAVPath {
+public interface WebDAVPath extends Serializable {
 	/**
 	 * HTTP path separator.
 	 */

@@ -10,6 +10,10 @@ import org.openuss.webdav.WebDAVURLUTF8Encoder;
  */
 public class WebDAVPathImpl implements WebDAVPath {
 	/**
+	 * Serialization version id.
+	 */
+	private static final long serialVersionUID = -1217812515953264658L;
+	/**
 	 * A prefix to the already resolved path.
 	 */
 	protected final String path;
@@ -58,7 +62,11 @@ public class WebDAVPathImpl implements WebDAVPath {
 		clientInput = WebDAVURLUTF8Encoder.decode(clientInput);
 		
 		if (!clientInput.startsWith(prefix)) {
-			throw new IllegalArgumentException("Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
+			if (prefix.equals(clientInput + PATH_SEP)) {
+				clientInput += PATH_SEP;
+			} else {
+				throw new IllegalArgumentException("Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
+			}
 		}
 		
 		clientInput = clientInput.substring(prefix.length());
@@ -128,16 +136,18 @@ public class WebDAVPathImpl implements WebDAVPath {
 	}
 	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see java.lang.Object#hashCode()
 	 */
-	public boolean equals(Object o) {
-		if (o instanceof WebDAVPath) {
-			return equals((WebDAVPath)o);
-		} else {
-			return false;
-		}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		result = prime * result
+				+ ((toResolve == null) ? 0 : toResolve.hashCode());
+		return result;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#equals(org.openuss.webdav.WebDAVPath)
 	 */

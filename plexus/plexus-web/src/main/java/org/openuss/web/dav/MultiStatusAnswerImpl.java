@@ -71,7 +71,7 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	public String getMessage() {
 		Document doc = WebDAVUtils.newDocument();
 		
-		Element rootNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_MULTISTATUS);
+		Element rootNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_MULTISTATUS);
 		doc.appendChild(rootNode);
 		
 		for (MultiStatusResponse response : getResponses()) {
@@ -80,7 +80,7 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 		
 		// append description, if set
 		if (description != null) {
-			Node descNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSEDESCRIPTION);
+			Node descNode = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESPONSEDESCRIPTION);
 			Node descNodeText = doc.createTextNode(description);
 			descNode.appendChild(descNodeText);
 			rootNode.appendChild(descNode);

@@ -91,27 +91,27 @@ public class PropertyResponseImpl implements PropertyResponse {
 		Document doc = el.getOwnerDocument();
 		
 		// create response element
-		Element responseEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSE);
+		Element responseEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESPONSE);
 		el.appendChild(responseEl);
 		
 		// append href
-		Element hrefElement = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_HREF);
+		Element hrefElement = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_HREF);
 		hrefElement.setTextContent(getHref());
 		responseEl.appendChild(hrefElement);
 		
 		// iterate through propstat elements and append each
 		for (Integer statusInteger : propstats.keySet()) {
 			Collection<PropertyResponseNode> prns = propstats.get(statusInteger);
-			Element propstatEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_PROPSTAT);
+			Element propstatEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_PROPSTAT);
 			responseEl.appendChild(propstatEl);
 		
 			// Status code
-			Element statusEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_STATUS);
+			Element statusEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_STATUS);
 			statusEl.setTextContent(WebDAVStatusCodes.getStatusLine(statusInteger.intValue()));
 			propstatEl.appendChild(statusEl);
 			
 			// Properties
-			Element propEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_PROP);
+			Element propEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_PROP);
 			propstatEl.appendChild(propEl);
 			
 			for (PropertyResponseNode prn : prns) {
@@ -121,7 +121,7 @@ public class PropertyResponseImpl implements PropertyResponse {
 		
 		// append description, if set
 		if (description != null) {
-			Element descEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSEDESCRIPTION);
+			Element descEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESPONSEDESCRIPTION);
 			descEl.setTextContent(description);
 			responseEl.appendChild(descEl);
 		}

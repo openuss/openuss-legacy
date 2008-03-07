@@ -37,7 +37,7 @@ class SimplePropertyResponseNode implements PropertyResponseNode {
 	}
 
 	public String getNamespaceURI() {
-		return namespaceURI == null ? WebDAVConstants.NAMESPACE_WEBDAV_URI : namespaceURI;
+		return namespaceURI == null ? WebDAVConstants.NAMESPACE_WEBDAV : namespaceURI;
 	}
 
 	public String getName() {

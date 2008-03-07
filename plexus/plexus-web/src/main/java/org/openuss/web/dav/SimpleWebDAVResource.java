@@ -1,11 +1,12 @@
 package org.openuss.web.dav;
 
 import java.io.IOException;
-import java.util.AbstractCollection; // TODO readCollection()
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.openuss.webdav.IOContext;
@@ -105,59 +106,66 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			throws WebDAVResourceException {
 		checkReadable();
 		
-		// Acquire root node
-		Node rootNode = null;
-		
-		NodeList rootNodeList = req.getChildNodes();
-		for (int i = 0;i < rootNodeList.getLength();i++) {
-			Node n = rootNodeList.item(i);
-			
-			if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROPFIND)) {
-				rootNode = n;
-				break;
-			}
-		}
-		if (rootNode == null) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Expected root node " + WebDAVConstants.XML_PROPFIND); 
-		}
-		
-		// Acquire the real request node
-		NodeList reqNodeList = rootNode.getChildNodes();
-		Set<String> reqProps = null;
+		Set<String> reqProps = null; // The set of the requested properties
 		boolean reqValues = true; // Request demands the values of the properties
 		
-		boolean foundNode = false;
-		for (int i = 0;i < reqNodeList.getLength();i++) {
-			Node n = reqNodeList.item(i);
+		if (req == null) {
+			// RFC 4918, 9.1 forth paragraph: null = allprop
+			reqProps = null;
+			reqValues = true;
+		} else {
+			// Acquire root node
+			Node rootNode = null;
 			
-			if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROP)) {
-				// Normal request
-				foundNode = true;
+			NodeList rootNodeList = req.getChildNodes();
+			for (int i = 0;i < rootNodeList.getLength();i++) {
+				Node n = rootNodeList.item(i);
 				
-				reqProps = new HashSet<String>();
-				NodeList reqPropNodes = n.getChildNodes();
-				for (int j = 0;j < reqPropNodes.getLength();j++) {
-					Node reqPropNode = reqPropNodes.item(j);
-					
-					if ((reqPropNode instanceof Element) &&
-							(WebDAVConstants.NAMESPACE_WEBDAV_URI.equals(reqPropNode.getNamespaceURI()))) {
-						reqProps.add(reqPropNode.getLocalName());
-					}
+				if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROPFIND)) {
+					rootNode = n;
+					break;
 				}
-				
-				break;
-			} else if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROPNAME)) {
-				reqValues = false;
-				
-				foundNode = true;
-				break;
-			} else if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_ALLPROP)) {
-				foundNode = true;				
-				break;
 			}
-		}
-		if (!foundNode) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Did not find a valid request node."); 
+			if (rootNode == null) {
+				throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Expected root node " + WebDAVConstants.XML_PROPFIND); 
+			}
+			
+			// Acquire the real request node
+			NodeList reqNodeList = rootNode.getChildNodes();
+
+			boolean foundNode = false;
+			for (int i = 0;i < reqNodeList.getLength();i++) {
+				Node n = reqNodeList.item(i);
+				
+				if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROP)) {
+					// Normal request
+					foundNode = true;
+					
+					reqProps = new HashSet<String>();
+					NodeList reqPropNodes = n.getChildNodes();
+					for (int j = 0;j < reqPropNodes.getLength();j++) {
+						Node reqPropNode = reqPropNodes.item(j);
+						
+						if ((reqPropNode instanceof Element) &&
+								(WebDAVConstants.NAMESPACE_WEBDAV.equals(reqPropNode.getNamespaceURI()))) {
+							reqProps.add(reqPropNode.getLocalName());
+						}
+					}
+					
+					break;
+				} else if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROPNAME)) {
+					reqValues = false;
+					
+					foundNode = true;
+					break;
+				} else if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_ALLPROP)) {
+					foundNode = true;				
+					break;
+				}
+			}
+			if (!foundNode) {
+				throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Did not find a valid request node."); 
+			}
 		}
 		
 		Map<String,String> values = simpleGetProperties(reqProps);
@@ -165,8 +173,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		// Create result document
 		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
 		// Found properties
-		for (String k : values.keySet()) {
-			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, k, reqValues ? values.get(k) : null);
+		for (Entry<String,String> e : values.entrySet()) {
+			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, e.getKey(), reqValues ? e.getValue() : null);
 		}
 		
 		// Auto-add properties, if requested
@@ -175,7 +183,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		// getcontenttype
 		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE))
 				&& (!values.containsKey(WebDAVConstants.XML_GETCONTENTTYPE))) {
-			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
+			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
 			autoAdded.add(WebDAVConstants.XML_GETCONTENTTYPE);
 		}
 		// resourcetype
@@ -183,9 +191,9 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 				&& (!values.containsKey(WebDAVConstants.XML_RESOURCETYPE))) {
 			Document tmpDoc = WebDAVUtils.newDocument();
 			
-			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESOURCETYPE);
+			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESOURCETYPE);
 			if (isCollection()) {
-				Element collectioNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_COLLECTION);
+				Element collectioNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
 				propElem.appendChild(collectioNode);
 			}
 			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
@@ -302,7 +310,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		for (String name : rawChildNames.values()) {
 			String sname = sanitizeName(name);
 			
-			if (!allNames.add(sname)) {
+			allNames.add(sname);
+			if (allNames.contains(sname)) {
 				ambiguousNames.add(sname);
 			}
 		}
@@ -311,12 +320,14 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		for (long id : rawChildNames.keySet()) {
 			String rawName = rawChildNames.get(id);
 			String sanName = sanitizeName(rawName);
-			String fullName = genName(sanName, id, (sanName != rawName) || ambiguousNames.contains(sanName));
+			String fullName = genName(sanName, id, (sanName.equals(rawName)) || ambiguousNames.contains(sanName));
 			
-			WebDAVPath childPath = path.concat(fullName);
+			WebDAVPath childPath = path.concat(fullName).asResolved();
 			WebDAVResource childRes = getChild(id, sanName, childPath);
 			
-			res.add(childRes);
+			if (childRes.isReadable()) {
+				res.add(childRes);
+			}
 		}
 		
 		return res;
@@ -330,20 +341,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	protected abstract Map<Long,String> getRawChildNames();
 	
-	/**
-	 * @return true if the current user is allowed to read the resource, otherwise false.
-	 * 				Implementations may return true even if the ressource does not exist.
-	 */
-	public abstract boolean isReadable();
-	
-	/**
-	 * @return true iff the current user is allowed to write to the resource.
-	 * 		For collections, that means the creation of new objects is allowed.
-	 */
-	public abstract boolean isWritable();
-	
-	/**
-	 * @return true if the current user may delete this resource.
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isDeletable()
 	 */
 	public boolean isDeletable() {
 		return isWritable();
@@ -426,7 +425,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		name = sanitizeName(name);
 		
-		return createCollection(name);
+		return createCollectionImpl(name);
 	}
 	
 	/**
@@ -435,7 +434,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @param name The name of the collection to create.
 	 * @throws WebDAVResourceException On special errors. This shouldn't be thrown under normal circumstances.
 	 */
-	protected abstract void createCollectionImpl(String name) throws WebDAVResourceException;
+	protected abstract WebDAVResource createCollectionImpl(String name) throws WebDAVResourceException;
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#createFile(java.lang.String)
@@ -508,23 +507,56 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see #readContent()
 	 */
 	protected abstract IOContext readContentImpl() throws WebDAVResourceException, IOException;
-	
+
 	/**
 	 * @return A virtual IOContext representing this element's children.
 	 */
 	protected IOContext readCollectionContent() {
-		StringBuffer sb = new StringBuffer();
+		assert(isCollection());
 		
+		Document doc = WebDAVUtils.newDocument();
 		
+		Element html = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HTML);
+		doc.appendChild(html);
 		
-		StringInputStream sis = new StringInputStream(sb.toString());
+		// Header
+		Element head = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HEAD);
+		html.appendChild(head);
+		
+		Element title = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_TITLE);
+		title.setTextContent("OpenUSS - " + getPath().getFileName());
+		head.appendChild(title);
+		
+		// Body
+		Element body = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_BODY);
+		html.appendChild(body);
+		
+		Element header = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HEADER);
+		header.setTextContent(getPath().getPrefix());
+		body.appendChild(header);
+		
+		Element list = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_UNORDERED_LIST);
+		body.appendChild(list);
+		
+		Collection<WebDAVResource> children = getChildren();
+		for (WebDAVResource c : children) {
+			Element li = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_LIST_ELEM);
+			list.appendChild(li);
+			
+			Element link = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_LINK);
+			li.setAttributeNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
+			li.setTextContent(c.getPath().getFileName());
+			li.appendChild(link);
+		}
+		
+		StringInputStream sis = new StringInputStream(WebDAVUtils.documentToString(doc));
 		IOContextImpl ioc = new IOContextImpl();
 		ioc.setContentType(WebDAVConstants.MIMETYPE_HTML);
 		ioc.setInputStream(sis);
 		
 		return ioc;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#writeContent(org.openuss.webdav.IOContext)
 	 */

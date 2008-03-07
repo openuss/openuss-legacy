@@ -36,4 +36,9 @@ public class InstituteResource extends AbstractOrganisationResource{
 		return null;
 	}
 
+	public boolean isReadable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

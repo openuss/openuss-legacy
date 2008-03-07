@@ -140,7 +140,7 @@ public class MyUniBackend extends SimpleWebDAVResource{
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
 	 */
 	@Override
-	protected void createCollectionImpl(String name) throws WebDAVResourceException {
+	protected WebDAVResource createCollectionImpl(String name) throws WebDAVResourceException {
 		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of organisations via WebDAV is not implemented");
 	}
@@ -216,12 +216,16 @@ public class MyUniBackend extends SimpleWebDAVResource{
 		}
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
 	public boolean isReadable() {
 		return true;
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isWritable()
+	 */
 	public boolean isWritable() {
 		return false;
 	}

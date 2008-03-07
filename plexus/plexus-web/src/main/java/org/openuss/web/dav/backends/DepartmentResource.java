@@ -36,4 +36,12 @@ public class DepartmentResource extends AbstractOrganisationResource{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
+	public boolean isReadable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

@@ -45,4 +45,12 @@ public class UniversityResource extends AbstractOrganisationResource {
 		return res;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
+	public boolean isReadable() {
+		// TODO Check it
+		return true;
+	}
+
 }

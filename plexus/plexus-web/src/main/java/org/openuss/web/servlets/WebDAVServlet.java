@@ -27,6 +27,7 @@ import org.openuss.webdav.WebDAVHrefException;
 import org.openuss.webdav.WebDAVMethods;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
+import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -180,6 +181,7 @@ public class WebDAVServlet extends HttpServlet {
 				break;
 			}
 		} catch(WebDAVException ex){
+			logger.error("Outputting WebDAVException", ex);
 			printResponse(response, ex);
 		} catch(IOException ioe) {
 			logger.error(ioe);
@@ -192,8 +194,9 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param doc the request document
  	 * @param depth the depth of the request
  	 * @return an MultiStatusAnswer object
+ 	 * @throws WebDAVResourceException On errors when changing the top resource.
  	 */
- 	public static MultiStatusAnswer propPatch(WebDAVResource resource, Document doc, int depth){
+ 	public static MultiStatusAnswer propPatch(WebDAVResource resource, Document doc, int depth) throws WebDAVResourceException{
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
  		propPatch(resource, doc, answer, depth);
  		return answer;
@@ -205,12 +208,13 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param doc the request document
  	 * @param answer the MultiStatusAnswer object
  	 * @param recursive true iff depth is INFINITY
+ 	 * @throws WebDAVResourceException On errors when changing the top resource.
  	 */
- 	protected static void propPatch(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth){
+ 	protected static void propPatch(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth) throws WebDAVResourceException{
+ 		MultiStatusResponse response = resource.updateProperties(doc);
+		answer.addResponse(response);
+		
  		try {
- 			MultiStatusResponse response = resource.updateProperties(doc);
-			answer.addResponse(response);
-				
 	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
 	 			Set<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
@@ -221,49 +225,50 @@ public class WebDAVServlet extends HttpServlet {
 	 			}
 	 		}
  		} catch (WebDAVHrefException ex){
- 			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(ex.getHref(), ex.getStatusCode()); 
- 			answer.addResponse(exceptionResponse);
+ 			// Log, but ignore otherwise
+ 			logger.error("Error in PROPPATCH", ex);
  		}
  	}
 
 	/**
  	 * Handles method PROPFIND as demanded in RFC2518.
  	 * @param resource the resource with the properties
- 	 * @param doc the request document
+ 	 * @param reqDoc the request document
  	 * @param depth the depth of the request
  	 * @return an MultiStatusAnswer object
+	 * @throws WebDAVResourceException On errors when listing the top resource.
  	 */
- 	public static MultiStatusAnswer propFind(WebDAVResource resource, Document doc, int depth){
+ 	public static MultiStatusAnswer propFind(WebDAVResource resource, Document reqDoc, int depth) throws WebDAVResourceException{
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		propFind(resource, doc, answer, depth);
+ 		propFind(resource, reqDoc, answer, depth);
  		return answer;
  	}
  	
  	/**
  	 * help method for {@link #propFind(WebDAVResource, Document, int)} for recursive PROPFIND
  	 * @param resource the resource with the properties
- 	 * @param doc the request document
+ 	 * @param reqDoc the request document
  	 * @param answer the MultiStatusAnswer object
  	 * @param depth The value of the Depth header.
+ 	 * @throws WebDAVResourceException On errors when getting the information of this resource
  	 */
- 	protected static void propFind(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth) {
- 		MultiStatusResponse response;
-		try {
-			response = resource.getProperties(doc);
-			answer.addResponse(response);
-			
+ 	protected static void propFind(WebDAVResource resource, Document reqDoc, MultiStatusAnswer answer, int depth) throws WebDAVResourceException {
+ 		MultiStatusResponse response = resource.getProperties(reqDoc);
+		answer.addResponse(response);
+		
+ 		try {
 	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
 	 			Set<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
 	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
 	 				for (WebDAVResource c : children) {
-	 					propFind(c, doc, answer, newDepth);	
+	 					propFind(c, reqDoc, answer, newDepth);	
 	 				}
 	 			}
 	 		}
  		} catch (WebDAVHrefException ex){
- 			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(ex.getHref(), ex.getStatusCode()); 
- 			answer.addResponse(exceptionResponse);
+ 			// Log, but ignore otherwise
+ 			logger.error("Error in PROPFIND", ex);
  		}
  	}
  	

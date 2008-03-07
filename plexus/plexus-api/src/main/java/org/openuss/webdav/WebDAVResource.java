@@ -105,8 +105,9 @@ public interface WebDAVResource {
 	
 	/**
 	 * @return All children of this collection, if this element is a collection, otherwise null.
+	 * @throws WebDAVResourceException If the current user may not list the contents of the collection.
 	 */
-	public Set<WebDAVResource> getChildren();
+	public Set<WebDAVResource> getChildren() throws WebDAVResourceException;
 	
 	/**
 	 * @return true iff getChildren does not return null.
@@ -117,4 +118,21 @@ public interface WebDAVResource {
 	 * @return The MIME content type of this resource.
 	 */
 	public String getContentType();
+	
+	/**
+	 * @return true if the current user is allowed to read the resource, otherwise false.
+	 * 				If isCollection(), this means the user can list this collection's contents.
+	 */
+	public abstract boolean isReadable();
+	
+	/**
+	 * @return true iff the current user is allowed to write to the resource.
+	 * 		For collections, that means the creation of new objects is allowed.
+	 */
+	public abstract boolean isWritable();
+	
+	/**
+	 * @return true if the current user may delete this resource.
+	 */
+	public boolean isDeletable();
 }

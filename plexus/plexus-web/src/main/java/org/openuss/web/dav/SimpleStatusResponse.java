@@ -35,16 +35,16 @@ public class SimpleStatusResponse implements MultiStatusResponse{
 		Document doc = el.getOwnerDocument();
 		
 		// create response element
-		Element responseEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_RESPONSE);
+		Element responseEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESPONSE);
 		el.appendChild(responseEl);
 		
 		// append href
-		Element hrefElement = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_HREF);
+		Element hrefElement = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_HREF);
 		hrefElement.setTextContent(getHref());
 		responseEl.appendChild(hrefElement);
 		
 		// Status code
-		Element statusEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV_URI, WebDAVConstants.XML_STATUS);
+		Element statusEl = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_STATUS);
 		statusEl.setTextContent(WebDAVStatusCodes.getStatusLine(statusCode));
 		responseEl.appendChild(statusEl);
 	}

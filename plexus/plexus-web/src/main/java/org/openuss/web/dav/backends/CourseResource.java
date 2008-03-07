@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,6 +33,14 @@ public class CourseResource extends AbstractOrganisationResource{
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
+	public boolean isReadable() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

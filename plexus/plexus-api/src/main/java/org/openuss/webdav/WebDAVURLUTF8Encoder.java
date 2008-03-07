@@ -101,15 +101,15 @@ public class WebDAVURLUTF8Encoder
 	       sbuf.append((char)ch);
       } else if ('0' <= ch && ch <= '9') {	// '0'..'9'
 	       sbuf.append((char)ch);
-      } else if (ch == ' ') {			// space
-	       sbuf.append('+');
       } else if (ch == '-' || ch == '_'		// unreserved
           || ch == '.' || ch == '!'
           || ch == '~' || ch == '*'
           || ch == '\'' || ch == '('
           || ch == ')'
           /* reserved */
-          || ch == '/') {
+          || ch == '/'
+          /* space */
+          /*|| ch == ' '*/) {
         sbuf.append((char)ch);
       } else if (ch <= 0x007f) {		// other ASCII
 	       sbuf.append(hex[ch]);
