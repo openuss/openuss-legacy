@@ -52,7 +52,6 @@
 				value="#{courseInfo.courseTypeDescription}" /></p>
 			<div class="content_font_normal"><h:outputText
 				value="#{courseInfo.description}" escape="false" /></div>
-			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}"><ui:include src="/views/secured/course/calendarshortoverview.xhtml" /></s:acl>			
 			<h:outputText value="#{msg.course_main_assistants}"
 				styleClass="field_label"
 				rendered="#{not empty views$secured$course$main.assistants}" />
@@ -132,26 +131,39 @@
 			</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
-			<c:if test="#{not empty views$secured$course$coursenews.currentNews}">
-				<o:block label="#{msg.news_header}" styleClass="news_box">
-					<h:form id="appointments">
+			<o:block label="#{msg.openuss4us_calendar_appointments}"
+				styleClass="teaser_blue_right">
+				<h:form id="news_tables">
+					<c:if
+						test="#{not empty views$secured$course$main.appointments}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.course_no_appointments}" styleClass="news_title" /></p>
+					</c:if>
+					<ui:include
+						src="/views/secured/course/calendarshortoverview.xhtml" />
+				</h:form>
+			</o:block>
+			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
+				<h:form id="news_tables">
+					<c:if test="#{empty views$secured$course$coursenews.currentNews}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.course_no_news}" styleClass="news_title" /></p>
+					</c:if>
+					<t:dataList id="news"
+						value="#{views$secured$course$groupnews.currentNews}" var="item"
+						styleClass="news">
+						<p class="content_font_normal"><h:outputText
+							value="#{item.publishDate}" styleClass="news_date">
+							<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"
+								dateStyle="medium" timeStyle="short" />
 
-					</h:form>
-					<h:form id="news_tables">
-						<t:dataList id="news"
-							value="#{views$secured$course$coursenews.currentNews}" var="item"
-							styleClass="news">
-							<p class="header_font_normal"><h:outputText
-								value="#{item.publishDate}" styleClass="news_date">
-								<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"
-									dateStyle="medium" timeStyle="short" />
-							</h:outputText> <h:outputText value="#{item.title}" styleClass="news_title" /></p>
-							<div class="content_font_normal"><h:outputText
-								value="#{item.text}" escape="false" /></div>
-						</t:dataList>
-					</h:form>
-				</o:block>
-			</c:if>
+						</h:outputText> <h:outputText value="#{item.title}" styleClass="news_title" />
+						<div class="content_font_normal"><h:outputText
+							value="#{item.text}" escape="false" /></div>
+						</p>
+					</t:dataList>
+				</h:form>
+			</o:block>
 		</s:acl>
 	</ui:define>
 </ui:composition>
