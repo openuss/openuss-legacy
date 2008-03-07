@@ -1198,6 +1198,11 @@ span.content_font_normal {
 	margin-left: 10px;
 }
 
+#center .content_normal p.content_font_normal span.content_font_normal {
+	margin-left: 0px;
+}
+
+
 #right span.content_font_normal {
 	padding: 20px 0 10px 0;
 	font-size: 8pt;
