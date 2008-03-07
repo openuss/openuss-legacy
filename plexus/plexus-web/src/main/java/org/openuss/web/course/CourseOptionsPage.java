@@ -105,6 +105,11 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessType = event.getNewValue();
 		courseInfo.setAccessType((AccessType) accessType);
+		if (!AccessType.PASSWORD.equals(accessType) && 
+				!AccessType.APPLICATION.equals(accessType)) {
+			courseInfo.setCollaboration(false);
+			courseInfo.setPapersubmission(false);
+		}
 	}
 
 	public List<SelectItem> getAccessTypes() {
