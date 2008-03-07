@@ -189,7 +189,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	@SuppressWarnings("unchecked")
 	private void processDownloadSubmissions(List<PaperSubmissionInfo> submissions) throws IOException {
-		List<FileInfo> files = paperSubmissionService.getPaperSubmissions(submissions, examInfo.getId());
+		List<FileInfo> files = paperSubmissionService.getPaperSubmissionFiles(submissions);
 		for(FileInfo file : files){
 			if(examInfo.getDeadline().before(file.getModified())){
 				String path = file.getPath();
