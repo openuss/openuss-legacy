@@ -469,6 +469,40 @@ public class LdapConfigurationServiceImpl
 		RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
     	getRoleAttributeKeyDao().update(key);
     }
+	
+	/**
+     * @TODO: impelement
+     */ 
+	@Override
+	protected void handleAddRoleAttributeKeyToAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
+    	
+//		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
+//		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
+//    	
+//    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
+//    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
+//			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
+//			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
+//		}
+    }
+	
+	
+	/**
+     * @TODO: impelement
+     */ 
+	@Override
+	protected void handleRemoveRoleAttributeKeyFromAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
+    	
+//		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
+//		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
+//    	
+//    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
+//    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
+//			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
+//			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
+//		}
+    }
+	
 
     /**
      * 
@@ -562,7 +596,40 @@ public class LdapConfigurationServiceImpl
 		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
 		getUserDnPatternDao().remove(userDnPatternEntity);		
 	}
+	
+	/**
+	 * @TODO: implement
+	 */
+	@Override
+	protected void handleAddUserDnPatternToLdapServer(UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) throws Exception {
+		//
+	}
+	
+	/**
+	 * @TODO: implement
+	 */
+	@Override
+	protected void handleRemoveUserDnPatternFromLdapServer(UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) throws Exception {
+		//
+	}
 
+	/**
+	 * @TODO: implement
+	 */
+	@Override
+	protected List<UserDnPatternInfo> handleGetAllUserDnPatterns() throws Exception {
+		//
+		return null;
+	}
+	
+	/**
+	 * @TODO: implement
+	 */
+	@Override
+	protected List<UserDnPatternInfo> handleGetAllUserDnPatternsByLdapServer(LdapServerInfo ldapServerInfo) throws Exception {
+		//
+		return null;
+	}
 
 	/**
 	 * 
@@ -585,8 +652,9 @@ public class LdapConfigurationServiceImpl
 	@Override
 	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
 			throws Exception {
-		
 	}
+	
+	
 
 	
 
