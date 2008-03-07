@@ -14,13 +14,14 @@
 		label="#{msg.universityList_header}"
 		value="views$public$university$universitieswelcome.universitiesWelcome" 
 		var="bean" 
-		columnClasses="col_min_left, col_max_left, col_max_left, col_min_left, col_commands"
+		columnClasses="col_min_center, col_max_left, col_max_left, col_min_left, col_commands"
 		rows="15"
 		infoText="#{msg.table_info_text_universities}">
 		
 		<t:column>
 	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
-				<h:graphicImage value="/files?fileid=#{bean.imageId}"
+				<h:graphicImage rendered="${not empty bean.imageId}"
+								value="/files?fileid=#{bean.imageId}"
 								title="#{msg.logo} #{bean.name}"
 								style="height:40px; display:block;"/>
 			</h:commandLink>	

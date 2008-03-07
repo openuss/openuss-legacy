@@ -26,7 +26,7 @@
 				<div class="userimage">
 					<c:if test="#{not empty showuser.imageId}">
 						<h:graphicImage styleClass="userphoto"
-							renderer="${not empty showuser.imageId}"
+							rendered="${not empty showuser.imageId}"
 							value="/files?fileid=#{showuser.imageId}"
 							alt="#{showuser.firstName} #{showuser.lastName}"
 							title="#{showuser.firstName} #{showuser.lastName}"/> 

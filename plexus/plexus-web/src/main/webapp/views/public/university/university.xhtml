@@ -40,7 +40,7 @@
   			<c:if test="#{(!empty universityInfo.imageId) or (!empty universityInfo.description)}">
 				<c:if test="#{not empty universityInfo.imageId}">
 					<h:graphicImage styleClass="organisation_logo"
-						renderer="${not empty universityInfo.imageId}"
+						rendered="${not empty universityInfo.imageId}"
 						value="/files?fileid=#{universityInfo.imageId}"
 						alt="#{msg.logo} #{universityInfo.name}"
 						title="#{msg.logo} #{universityInfo.name}"

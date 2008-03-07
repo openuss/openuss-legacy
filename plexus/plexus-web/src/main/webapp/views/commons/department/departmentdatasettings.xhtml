@@ -47,7 +47,7 @@
 	<h:panelGroup styleClass="field_label">
 		<c:if test="#{not empty departmentInfo.imageId}">
 			<h:graphicImage styleClass="logo_preview"
-				renderer="${not empty departmentInfo.imageId}"
+				rendered="${not empty departmentInfo.imageId}"
 				value="/files?fileid=#{departmentInfo.imageId}"
 				alt="#{msg.logo} #{departmentInfo.name}"
 				title="#{msg.logo} #{departmentInfo.name}"/> 

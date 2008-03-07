@@ -91,7 +91,7 @@
 								
 								<c:if test="#{not empty user.imageId}">
 									<h:graphicImage styleClass="userphoto"
-										renderer="${not empty user.imageId}"
+										rendered="${not empty user.imageId}"
 										value="/files?fileid=#{user.imageId}"
 										alt="#{user.firstName} #{user.lastName}"
 										title="#{user.firstName} #{user.lastName}"/> 
