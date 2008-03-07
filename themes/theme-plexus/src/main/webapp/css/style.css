@@ -718,11 +718,14 @@ ul.navigation li ul li ul li.active_item a:hover {
 
 #right .feed .content_box ul.int {
 	list-style-type: none;
+	margin-left:0px;
 }
 
 #right .feed .content_box ul.int li {
-	margin-top: 3px;
-	list-style-image: url(../img/rss.png);
+	background:url(../img/rss.png) no-repeat left center;
+	list-style-image:none;
+	margin:2px 0px;
+	padding-left:16px;
 }
 
 #right .content_box ul.int a {
@@ -2310,6 +2313,7 @@ div .space_20above {
 	background-image: url(../img/footer_red_right_bg.jpg);
 	background-repeat: no-repeat;
 }
+
 .status_box .content_box .header_normal {
 	padding: 0;
 	margin: 0;
@@ -2417,27 +2421,4 @@ div#center th.table_header a {
 
 .wiki_content p {
     margin-bottom: 10pt;
-}
-
-
-/* picklist */
-table.picker {
-
-}
-td.pickerLeft {
-	width: 300px;
-}
-td.pickerCenter {
-    text-align: center;
-}
-td.pickerRight {
-    width: 300px;
-}
-table.picker td select {
-	width: 100%;
-	height: 200px;
-}
-table.picker td input {
-    width: 100%;
-    height: 200px;
 }
