@@ -66,14 +66,15 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		addPageCrumbs();
 		
 		if (!isPostBack()) {
-			if (examInfo != null && examInfo.getId() != null) {
-				setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
-				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-			} 
-		}
-		
-		if(examInfo!= null && examInfo.getDeadline()==null){
-			examInfo.setDeadline(new Date());
+			if(examInfo != null){
+				if (examInfo.getId() != null) {
+					setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
+					setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+				} 
+				if (examInfo.getDeadline()==null){
+					examInfo.setDeadline(new Date());
+				}
+			}
 		}
 	}
 
@@ -118,7 +119,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
 			//TODO change message name
-			addWarning(i18n("error_paper_not_found"));
+			addWarning(i18n("papersubmission_error_exam_not_found"));
 			return Constants.FAILURE;
 
 		} else {
@@ -144,7 +145,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
 			//TODO change message name
-			addWarning(i18n("error_paper_not_found"));
+			addWarning(i18n("papersubmission_error_exam_not_found"));
 			return Constants.FAILURE;
 
 		} else {
@@ -176,7 +177,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 
 			addMessage(i18n("papersubmission_message_add_paper_succeed"));
 		} else {
-			// courseTypeService.update(courseTypeInfo);
 			paperSubmissionService.updateExam(examInfo);
 
 			addMessage(i18n("papersubmission_message_persist_paper_succeed"));
@@ -275,9 +275,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 				addError(i18n("braincontest_filename_already_exists"));
 				return Constants.FAILURE;
 			}
-			
 		}
-		
 		return Constants.SUCCESS;
 	}
 	
@@ -307,8 +305,49 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public Boolean getEditing() {
 		return editing;
 	}
+	
 	public void setEditing(Boolean editing) {
 		this.editing = editing;
+	}
+	
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public ExamInfo getExamInfo() {
+		return examInfo;
+	}
+
+	public void setExamInfo(ExamInfo examInfo) {
+		this.examInfo = examInfo;
+	}
+
+	public LocalDataModelInactiveExams getDataInactiveExams() {
+		return dataInactiveExams;
+	}
+
+	public void setDataInactiveExams(LocalDataModelInactiveExams dataInactiveExams) {
+		this.dataInactiveExams = dataInactiveExams;
+	}
+
+	public UIData getAttachmentList() {
+		return attachmentList;
+	}
+
+	public void setAttachmentList(UIData attachmentList) {
+		this.attachmentList = attachmentList;
+	}
+
+	public UploadFileManager getUploadFileManager() {
+		return uploadFileManager;
+	}
+
+	public void setUploadFileManager(UploadFileManager uploadFileManager) {
+		this.uploadFileManager = uploadFileManager;
 	}
 	
 
@@ -392,44 +431,4 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			Collections.sort(list, chain);
 		}
 	}
-	public DocumentService getDocumentService() {
-		return documentService;
-	}
-
-	public void setDocumentService(DocumentService documentService) {
-		this.documentService = documentService;
-	}
-
-	public ExamInfo getExamInfo() {
-		return examInfo;
-	}
-
-	public void setExamInfo(ExamInfo examInfo) {
-		this.examInfo = examInfo;
-	}
-
-	public LocalDataModelInactiveExams getDataInactiveExams() {
-		return dataInactiveExams;
-	}
-
-	public void setDataInactiveExams(LocalDataModelInactiveExams dataInactiveExams) {
-		this.dataInactiveExams = dataInactiveExams;
-	}
-
-	public UIData getAttachmentList() {
-		return attachmentList;
-	}
-
-	public void setAttachmentList(UIData attachmentList) {
-		this.attachmentList = attachmentList;
-	}
-
-	public UploadFileManager getUploadFileManager() {
-		return uploadFileManager;
-	}
-
-	public void setUploadFileManager(UploadFileManager uploadFileManager) {
-		this.uploadFileManager = uploadFileManager;
-	}
-	
 }
