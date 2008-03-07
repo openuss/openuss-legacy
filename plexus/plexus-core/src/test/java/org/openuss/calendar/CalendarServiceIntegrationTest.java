@@ -978,6 +978,21 @@ public class CalendarServiceIntegrationTest extends
 			fail();
 		}
 	}
+	
+	public void testAppointmentsAfterDate() {
+		// create upcoming appointments
+		
+		// create former appointments 
+		
+		// test count appointments
+		
+		// get appointmentsAfterDate
+		
+		// test the appointments after date
+		
+		// test getUpcomingAppointments
+		
+	}
 
 	public SecurityService getSecurityService() {
 		return securityService;

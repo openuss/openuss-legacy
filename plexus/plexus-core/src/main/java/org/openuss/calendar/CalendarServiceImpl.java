@@ -707,4 +707,24 @@ public class CalendarServiceImpl extends
 
 	}
 
+	@Override
+	protected List handleGetSingleAppointmentsAfterDate(Timestamp date,
+			CalendarInfo calendarInfo) throws Exception {
+		
+		Calendar cal = getCalendarDao().load(calendarInfo.getId());
+		List<Appointment> apps = cal.getSingleAppointments();
+		List<AppointmentInfo> appsAfterDate = new ArrayList<AppointmentInfo>();
+		for (Appointment appIt : apps) {
+			if (appIt.getEndtime().after(date)) appsAfterDate.add(getAppointmentDao().toAppointmentInfo(appIt));
+		}
+		return appsAfterDate;
+	}
+
+	@Override
+	protected List handleGetUpcomingSingleAppointments(CalendarInfo calendarInfo)
+			throws Exception {
+		// use given method with time now
+		return this.getSingleAppointmentsAfterDate(new Timestamp(System.currentTimeMillis()), calendarInfo);
+	}
+
 }
