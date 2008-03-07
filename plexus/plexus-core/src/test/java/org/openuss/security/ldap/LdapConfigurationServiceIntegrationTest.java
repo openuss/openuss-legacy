@@ -52,10 +52,11 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	 * *************************************************************************
 	 */
 	
-	private AuthenticationDomainInfo createAuthenticationDomainInfoDummy() {
+	private AuthenticationDomainInfo createAuthenticationDomainInfoDummy(AttributeMappingInfo mapping) {
 		AuthenticationDomainInfo domain = new AuthenticationDomainInfo();
 		domain.setName(testUtility.unique("WWU Muenster"));
 		domain.setDescription("Test");
+		domain.setAttributeMappingId(mapping.getId());
 		
 		return domain;
 	}
@@ -67,18 +68,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		return userDnPattern;
 	}
 	
-	private UserDnPatternSetInfo createUserDnPatternSetInfoDummy(UserDnPatternInfo userDnPattern) {
-		List<Long> userDnPatterns = new ArrayList<Long>();
-		userDnPatterns.add(userDnPattern.getId());		
-		
-		UserDnPatternSetInfo userDnPatternSet = new UserDnPatternSetInfo();
-		userDnPatternSet.setName(testUtility.unique("WWU user dn pattern"));
-		userDnPatternSet.setUserDnPatternIds(userDnPatterns);
-		
-		return userDnPatternSet;
-	}
 	
-	private LdapServerInfo createLdapServerInfoDummy(AuthenticationDomainInfo domain) {
+	private LdapServerInfo createLdapServerInfoDummy(AuthenticationDomainInfo domain, UserDnPatternInfo userDnPattern) {
 		LdapServerInfo ldapServer = new LdapServerInfo();
 		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
 		ldapServer.setPort(389);
@@ -92,6 +83,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		ldapServer.setUseLdapContext(true);
 		ldapServer.setAuthenticationDomainId(domain.getId());
 		
+		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
+		userDnPatterns.add(userDnPattern);
+		ldapServer.setUserDnPatterns(userDnPatterns);
+		
 		return ldapServer;
 	}
 	
@@ -102,7 +97,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		return key;
 	}
 	
-	private AttributeMappingInfo createAttributeMappingInfoDummy() {
+	private AttributeMappingInfo createAttributeMappingInfoDummy(RoleAttributeKeyInfo roleAttributeKey) {
 		AttributeMappingInfo mapping = new AttributeMappingInfo();
 		mapping.setMappingName(testUtility.unique("Mapping Test"));
 		mapping.setEmailKey("mail");
@@ -110,6 +105,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		mapping.setGroupRoleAttributeKey("CN");
 		mapping.setLastNameKey("SN");
 		mapping.setUsernameKey("CN");
+		
+		List<RoleAttributeKeyInfo> roleAttributeKeys = new ArrayList<RoleAttributeKeyInfo>();
+		roleAttributeKeys.add(roleAttributeKey);
+		mapping.setRoleAttributeKeys(roleAttributeKeys);
 		
 		return mapping;
 	}
