@@ -32,6 +32,7 @@ import org.w3c.dom.NodeList;
  * 
  * <ul>
  * <li>Collision avoidance. This is achieved by adding an id specifier.</li>
+ * <li>Special character handling.</li>
  * <li>Ignoring third-party XML namespaces</li>
  * <li>Content type determination</li>
  * <li>Add regularly used properties to the answer of a PROPFIND.</li>
@@ -46,6 +47,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * Separator for path specification including an id.
 	 */
 	protected static final String ID_SEP = "-";
+	/**
+	 * Regex for invalid characters.
+	 */
+	protected static final String INVALID_CHAR_REGEX = "( |/)";
 	/**
 	 * Replacement for invalid characters.
 	 */
@@ -287,12 +292,11 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	
 	/**
 	 * @param id The Id of the child to resolve or ID_NONE if the name has to be resolved.
-	 * @param name The name of the resource. This should only be used if id == ID_NONE || id == ID_PRELIMARY.
-	 * @param name The name of the resource. This should only be used if id == ID_NONE.
+	 * @param sname The sanitized name of the resource. This should only be used if id == ID_NONE.
 	 * @param path The WebDAVPath representing the full address of the resource to resolve.
 	 * @return A WebDAVResource representing the child. If it can not be found, null.
 	 */
-	protected abstract WebDAVResource getChild(long id, String name, WebDAVPath path);
+	protected abstract WebDAVResource getChild(long id, String sname, WebDAVPath path);
 	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#getChildren()
@@ -310,17 +314,20 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		for (String name : rawChildNames.values()) {
 			String sname = sanitizeName(name);
 			
-			allNames.add(sname);
 			if (allNames.contains(sname)) {
 				ambiguousNames.add(sname);
+			} else {
+				allNames.add(sname);
 			}
 		}
 		
 		Set<WebDAVResource> res = new HashSet<WebDAVResource>();
-		for (long id : rawChildNames.keySet()) {
-			String rawName = rawChildNames.get(id);
+		for (Entry<Long,String> e : rawChildNames.entrySet()) {
+			long id = e.getKey();
+			String rawName = e.getValue();
+			
 			String sanName = sanitizeName(rawName);
-			String fullName = genName(sanName, id, (sanName.equals(rawName)) || ambiguousNames.contains(sanName));
+			String fullName = genName(sanName, id, ambiguousNames.contains(sanName));
 			
 			WebDAVPath childPath = path.concat(fullName).asResolved();
 			WebDAVResource childRes = getChild(id, sanName, childPath);
@@ -657,15 +664,15 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * Sanitize invalid path specifications.
 	 * 
 	 * @param origName The original name, possibly containing special characters.
-	 * @return The sanitized name or origName, iff no sanitization was necessary.
+	 * @return The sanitized name or a string equal to origName if no sanitization was necessary.
 	 */
-	private static String sanitizeName(String origName) { 
-		if (origName.indexOf(WebDAVPath.PATH_SEP) != -1) {
-			return origName.replace(WebDAVPath.PATH_SEP, INVALID_CHAR_REPLACEMENT);
-		} else if (origName.equals("")) {
+	protected static String sanitizeName(String origName) { 
+		if (origName.equals("")) {
 			return INVALID_CHAR_REPLACEMENT;
 		}
 		
+		origName = origName.replaceAll(INVALID_CHAR_REGEX, INVALID_CHAR_REPLACEMENT);
+			
 		return origName;
 	}
 

@@ -1,12 +1,12 @@
 package org.openuss.web.dav.backends;
 
+import java.util.AbstractCollection; // various TODOs
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.Constants;
@@ -15,17 +15,20 @@ import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.AbstractCollection; // TODO MyUni, TODOs
-
+/**
+ * The resource representing the WebDAV root.
+ */
 public class RootResource extends AbstractOrganisationResource {
-	private Logger logger = Logger.getLogger(RootResource.class);
 	protected UniversityService universityService;
+	/**
+	 * The Id of the MyUniBackend.
+	 */
+	protected static final long MYUNI_ID = 0;
 	/**
 	 * Cache of all universities
 	 */
 	protected List<UniversityInfo> allUniversities;
 	
-
 	/**
 	 * @param wac The Spring context.
 	 * @param path The root path
@@ -52,10 +55,16 @@ public class RootResource extends AbstractOrganisationResource {
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
 	 */
 	@Override
-	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
+	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
 		if (id == ID_NONE) {
+			// TODO add myUni
+			/* 
+			if (sname.equals(sanitizeName(getMyUniName()))) {
+				return new MyUniResource(getWAC(), path, MYUNI_ID);
+			}
+			*/
 			for (UniversityInfo uni : getAllUniversities()) {
-				if (uni.getShortName().equals(name)) {
+				if (sname.equals(sanitizeName(uni.getShortName()))) {
 					return new UniversityResource(getWAC(), path, uni);
 				}
 			}
@@ -65,8 +74,6 @@ public class RootResource extends AbstractOrganisationResource {
 			if (ui != null) {
 				return new UniversityResource(getWAC(), path, ui);
 			}
-			
-			// TODO implement
 		}
 		
 		return null;
@@ -80,15 +87,24 @@ public class RootResource extends AbstractOrganisationResource {
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long,String> resMap = new HashMap<Long, String>();
 		
+		// TODO MyUni
+		// resMap.put(MYUNI_ID, getMyUniName());
+		
 		for (Object el : getAllUniversities()) {
 			UniversityInfo ui = (UniversityInfo) el;
 			
-			
-			logger.error("ADDING uni " + ui.getShortName());
 			resMap.put(ui.getId(), ui.getShortName());
 		}
 		 
 		return resMap;
+	}
+
+	/**
+	 * @return The translated name of MyUni.
+	 */
+	protected String getMyUniName() {
+		// TODO localize
+		return "MyUni";
 	}
 
 	/* (non-Javadoc)

@@ -107,9 +107,7 @@ public class WebDAVURLUTF8Encoder
           || ch == '\'' || ch == '('
           || ch == ')'
           /* reserved */
-          || ch == '/'
-          /* space */
-          /*|| ch == ' '*/) {
+          || ch == '/') {
         sbuf.append((char)ch);
       } else if (ch <= 0x007f) {		// other ASCII
 	       sbuf.append(hex[ch]);

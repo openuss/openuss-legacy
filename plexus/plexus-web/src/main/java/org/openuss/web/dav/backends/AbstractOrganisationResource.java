@@ -1,7 +1,6 @@
 package org.openuss.web.dav.backends;
 
 import java.io.IOException;
-import java.util.AbstractCollection; // TODOs
 
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
@@ -65,11 +64,13 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#readContentImpl()
+	 */
 	@Override
 	protected IOContext readContentImpl() throws WebDAVResourceException,
 			IOException {
-		// TODO auto-implement
-		return null;
+		return readCollectionContent();
 	}
 
 	/* (non-Javadoc)

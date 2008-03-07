@@ -27,9 +27,9 @@ import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.springframework.web.context.WebApplicationContext;
 
-public class MyUniBackend extends SimpleWebDAVResource{
+public class MyUniResource extends SimpleWebDAVResource{
 	
-	protected MyUniBackend(WebApplicationContext wac, WebDAVPath path, long id) {
+	protected MyUniResource(WebApplicationContext wac, WebDAVPath path, long id) {
 		super(wac, path, id);
 	}
 

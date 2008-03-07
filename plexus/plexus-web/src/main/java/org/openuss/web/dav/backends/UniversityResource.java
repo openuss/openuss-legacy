@@ -33,10 +33,11 @@ public class UniversityResource extends AbstractOrganisationResource {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#simpleGetProperties(java.util.Set)
+	 */
 	@Override
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
-		// TODO Auto-generated method stub
-		
 		Map<String,String> res = new HashMap<String, String>();
 		if ((propNames == null) || (propNames.contains("displayname"))) {
 			res.put("displayname", ui.getName());
