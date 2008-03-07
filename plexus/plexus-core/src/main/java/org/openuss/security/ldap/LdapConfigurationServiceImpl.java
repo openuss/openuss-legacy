@@ -139,8 +139,26 @@ public class LdapConfigurationServiceImpl
      * 
      */
     @Override
-    protected void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {    	
+    protected void handleDeleteLdapServer(org.openuss.security.ldap.LdapServerInfo ldapServer) {  
+    	LdapServer server = getLdapServerDao().ldapServerInfoToEntity(ldapServer);
+    	
+    	// remove ldap server from domain
+    	AuthenticationDomain domain = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
+    	if (domain != null) {
+    		domain.getLdapServers().remove(server);
+        	getAuthenticationDomainDao().update(domain);
+    	}
+    	
+    	// remove ldap server from user dn pattern set
+    	UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
+    	if (set != null) {
+    		set.getLdapServers().remove(server);
+        	getUserDnPatternSetDao().update(set);
+    	}
+    	
+
     	getLdapServerDao().remove(ldapServer.getId());
+    	ldapServer.setId(null);
     }
 
     /**
@@ -179,12 +197,15 @@ public class LdapConfigurationServiceImpl
     	List<LdapServerInfo> ldapList = new ArrayList<LdapServerInfo>();
     	AuthenticationDomain authDomain = getAuthenticationDomainDao().load(domain.getId());
     	
-    	Set<LdapServer> ldapServerSet = authDomain.getLdapServers();
-    	for (Iterator<LdapServer> iterator = ldapServerSet.iterator(); iterator.hasNext();) {    		
-			LdapServer ldapServer = iterator.next();
-			ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));
-		}
-    	return ldapList;
+    	// if domain does not exist simply return empty list 
+    	if(authDomain != null) {
+    		Set<LdapServer> ldapServerSet = authDomain.getLdapServers();
+    		for (Iterator<LdapServer> iterator = ldapServerSet.iterator(); iterator.hasNext();) {    		
+    			LdapServer ldapServer = iterator.next();
+    			ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));
+    		}
+    	}
+		return ldapList;
     }
 
     /**
@@ -210,6 +231,12 @@ public class LdapConfigurationServiceImpl
      */
     @Override
     protected void handleDeleteDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain){
+    	// also delete ldap servers assigned to that domain
+    	List<LdapServerInfo> alsoDeleteServersList = handleGetLdapServersByDomain(domain);
+    	for(LdapServerInfo delete : alsoDeleteServersList) {
+    		handleDeleteLdapServer(delete);
+    	}
+    	
     	getAuthenticationDomainDao().remove(domain.getId());
     }
 
@@ -717,16 +744,22 @@ public class LdapConfigurationServiceImpl
 	}
 
 	@Override
-	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern)
-			throws Exception {
+	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {
 		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
 		getUserDnPatternDao().remove(userDnPatternEntity);		
 	}
 
 	@Override
-	protected void handleDeleteUserDnPatternSet(
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
+	protected void handleDeleteUserDnPatternSet(UserDnPatternSetInfo userDnPatternSet) throws Exception {
 		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
+		
+		// also delete ldap servers assigned to that pattern set
+    	Set<LdapServer> alsoDeleteServersList = userDnPatternSetEntity.getLdapServers();
+    	for(LdapServer delete : alsoDeleteServersList) {
+    		LdapServerInfo deleteInfo = getLdapServerDao().toLdapServerInfo(delete);
+    		handleDeleteLdapServer(deleteInfo);
+    	}
+		
 		getUserDnPatternSetDao().remove(userDnPatternSetEntity);
 		
 	}
