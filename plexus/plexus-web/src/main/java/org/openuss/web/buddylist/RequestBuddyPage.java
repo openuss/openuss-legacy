@@ -86,6 +86,11 @@ public class RequestBuddyPage extends BasePage {
 	
 	public String addBuddy(){
 		setBuddyInfo(this.data.getRowData());
+		if(buddyService.isUserBuddy(buddyInfo.getRequesterId())){
+			buddyService.authorizeBuddyRequest(buddyInfo, true);
+			addMessage(i18n("openuss4us_message_authorizebuddy_mutual"));
+			return Constants.OPENUSS4US_BUDDYLIST;
+		}
 		buddyService.authorizeBuddyRequest(buddyInfo, true);
 		addMessage(i18n("openuss4us_message_authorizebuddy"));
 		profile.setId(this.data.getRowData().getRequesterId());

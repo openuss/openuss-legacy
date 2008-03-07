@@ -120,11 +120,16 @@
 			label="#{msg.openuss4us_calendar_single_appointments}">
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
-				<h:outputText value="#{singleAppointment.subject}"
-					styleClass="header_font_normal" />
-				<br />
-				<h:outputText value="#{singleAppointment.description}"
-					styleClass="content_font_normal" />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
+					<h:outputText value="#{singleAppointment.subject}"
+						styleClass="header_font_normal" />
+				</h:commandLink><br />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
+					<h:outputText value="#{singleAppointment.description}"
+						styleClass="content_font_normal" />
+				</h:commandLink>
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
