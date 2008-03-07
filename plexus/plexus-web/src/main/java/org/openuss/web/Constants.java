@@ -39,6 +39,8 @@ public class Constants {
 
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
 	
+	public static final String SCHEDULE_MODEL = "scheduleModel";
+	
 	// service beans
 	public static final String ORGANISATION_SERVICE = "organisationService";
 	public static final String UNIVERSITY_SERVICE = "universityService";

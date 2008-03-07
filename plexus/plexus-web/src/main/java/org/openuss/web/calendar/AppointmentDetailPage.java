@@ -1,9 +1,9 @@
 package org.openuss.web.calendar;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -17,10 +17,6 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.GroupService;
-import org.openuss.groups.UserGroupInfo;
-import org.openuss.groups.UserGroupMemberInfo;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.security.SecurityService;
 import org.openuss.web.Constants;
@@ -45,7 +41,7 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 
 	@Property(value = "#{groupService}")
 	protected GroupService groupService;
-
+	
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
@@ -134,9 +130,14 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		logger.debug("Deleting appointment " + appointmentInfo.getId());
 		try {
 			if (isSerial()) {
+				List<AppointmentInfo> apps = calendarService.getCalculatedAppointments((SerialAppointmentInfo) appointmentInfo);
+				for (AppointmentInfo app : apps) {
+					removeModelEntry(app);
+				}
 				calendarService.deleteSerialAppointment(
-						(SerialAppointmentInfo) appointmentInfo, calendarInfo);
+						(SerialAppointmentInfo) appointmentInfo, calendarInfo);			
 			} else {
+				removeModelEntry(appointmentInfo);
 				calendarService
 						.deleteAppointment(appointmentInfo, calendarInfo);
 			}
@@ -163,6 +164,18 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			return Constants.CALENDAR_UPDATE_SINGLE;
 	}
 
+	public void removeModelEntry(AppointmentInfo appInfo) {
+		DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
+		entry1.setId(appInfo.getId().toString());
+		entry1.setTitle(appInfo.getSubject());
+		entry1.setStartTime(appInfo.getStarttime());
+		entry1.setEndTime(appInfo.getEndtime());
+		entry1.setDescription(appInfo.getDescription());
+		entry1.setSubtitle(appInfo.getDescription());
+		logger.debug("Removing entry: " + entry1.getId() + " from the schedule model");
+		model.removeEntry(entry1);
+	}
+	
 	public SingleAppointmentDataProvider getData() {
 		return data;
 	}

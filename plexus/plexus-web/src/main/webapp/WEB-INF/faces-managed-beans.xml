@@ -306,7 +306,7 @@
     	<managed-bean-class>
     		org.apache.myfaces.custom.schedule.model.SimpleScheduleModel
     	</managed-bean-class>
-    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-bean-scope>request</managed-bean-scope>
     	<managed-property>
     		<property-name>mode</property-name>
     		<value>3</value>

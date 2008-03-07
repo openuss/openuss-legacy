@@ -2257,19 +2257,24 @@ table.week {
 	margin-right: 1px;
 	margin-top: 1px;
 	margin-down: 1px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 	border: 0px solid;
+	border-collapse: collapse;
 }
 
 table.week td {
 	border: 0px solid;
 	border-color: #FFFFFF;
 	border-collapse: colapse;
-
+	padding: 0px 1px 0px 0px;
 	margin-left: 0px;
-	margin-right: 1px;
-	margin-top: 1px;
-	margin-down: 1px;
-	padding: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	margin-down: 0px;
+
 }
 
 table.month td {
@@ -2278,7 +2283,7 @@ table.month td {
 	border-collapse: separate;
 	padding: 0px 1px 0px 0px;
 	margin: 0px;
-	overflow: hidden;
+
 }
 
 table.month td.inactive-day weekend {

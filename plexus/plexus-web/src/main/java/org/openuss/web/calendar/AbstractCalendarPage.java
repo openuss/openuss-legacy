@@ -1,5 +1,6 @@
 package org.openuss.web.calendar;
 
+import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.calendar.AppointmentInfo;
@@ -25,6 +26,17 @@ public class AbstractCalendarPage extends BasePage {
 	@Property(value = "#{calendarService}")
 	protected CalendarService calendarService;	
 	
+	@Property(value = "#{scheduleHandler.model}")
+	protected ScheduleModel model;
+	
+	public ScheduleModel getModel() {
+		return model;
+	}
+
+	public void setModel(ScheduleModel model) {
+		this.model = model;
+	}
+
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();

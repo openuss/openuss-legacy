@@ -17,6 +17,7 @@ import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
+import org.springframework.web.context.request.SessionScope;
 
 /**
  * Backing Bean for the user calendar -overview page (usercalendar.xhtml)
@@ -31,11 +32,6 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 
 	private static final Logger logger = Logger
 			.getLogger(UserCalendarMainPage.class);
-
-	@Property(value = "#{scheduleHandler.model}")
-	private ScheduleModel model;
-
-	private ScheduleModel emptyModel;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -75,6 +71,45 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 		try {
 			this.calendarInfo = calInfo;
 			logger.debug("Loading entries for calendarInfo-ID:"
+					+ calendarInfo.getId());
+			List<AppointmentInfo> apps = null;
+			apps = calendarService.getSingleAppointments(calendarInfo);
+			logger.debug("Appointments to add: " + apps.size());
+	
+			for (AppointmentInfo app : apps) {
+				// check if appointment takes place
+				if (app.isTakingPlace()) {
+					DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
+					entry1.setId(app.getId().toString());
+					entry1.setTitle(app.getSubject());
+					entry1.setStartTime(app.getStarttime());
+					entry1.setEndTime(app.getEndtime());
+					entry1.setDescription(app.getDescription());
+					entry1.setSubtitle(app.getDescription());
+					model.addEntry(entry1);
+					logger.debug("Appointment: - " + app.getSubject()
+							+ " - added!");
+				} else {
+					logger.debug("Appointment: " + app.getSubject()
+							+ " at Date " + app.getStarttime().toGMTString()
+							+ " is not taking place -> ignored");
+				}
+			}
+		} catch (CalendarApplicationException e) {
+			// TODO Auto-generated catch block
+			addError("TODO: Error getting calendar");
+			logger.debug("Error getting calendar");
+		}
+		logger.debug("Successfully loaded entries for calendar");
+		model.refresh();
+	}
+
+	public void deleteEntries(CalendarInfo calInfo) {
+		if (model == null)
+			return;
+		try {
+			this.calendarInfo = calInfo;
+			logger.debug("deleting entries for calendarInfo-ID:"
 					+ calendarInfo.getId());
 			List<AppointmentInfo> apps = null;
 			apps = calendarService.getSingleAppointments(calendarInfo);
