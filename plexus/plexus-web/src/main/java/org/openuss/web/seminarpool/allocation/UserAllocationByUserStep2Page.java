@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -12,15 +13,19 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.UserInfo;
+import org.openuss.seminarpool.SeminarPlaceAllocationInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
-
-@Bean(name = "views$secured$seminarpool$allocation$userAllocationByUser", scope = Scope.REQUEST)
+@Bean(name = "views$secured$seminarpool$allocation$userAllocationByUserStep2", scope = Scope.REQUEST)
 @View
-public class UserAllocationByUserPage extends AbstractSeminarpoolPage {
+public class UserAllocationByUserStep2Page extends AbstractSeminarpoolPage {
 
+	
 	public static final Logger logger = Logger.getLogger(UserAllocationByUserPage.class);
+	
+	@Property(value = "#{" + Constants.SEMINARPOOL_ALLOCATIONS_SELECTED_USER_INFO + "}")
+	private UserInfo userInfo;
 	
 	private SeminarpoolUserRegistrationsTable dataCourseTypes = new SeminarpoolUserRegistrationsTable();
 	
@@ -34,22 +39,22 @@ public class UserAllocationByUserPage extends AbstractSeminarpoolPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-	public String selectUser(){
-		setSessionBean(Constants.SEMINARPOOL_ALLOCATIONS_SELECTED_USER_INFO, dataCourseTypes.getRowData());
+	public String removeAllocation(){
+		
 		return Constants.SEMINARPOOL_ALLOCATIONS_BY_USER_STEP2;
 	}
 	
-	private class SeminarpoolUserRegistrationsTable extends AbstractPagedTable<UserInfo> {
+	private class SeminarpoolUserRegistrationsTable extends AbstractPagedTable<SeminarPlaceAllocationInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
-		private DataPage<UserInfo> page;
+		private DataPage<SeminarPlaceAllocationInfo> page;
 
 		@Override
 		@SuppressWarnings( { "unchecked" })
-		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
+		public DataPage<SeminarPlaceAllocationInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<UserInfo> courseTypes = new ArrayList<UserInfo>(seminarpoolAdministrationService.getRegistrationsAsUserInfo(seminarpoolInfo.getId()));
-				page = new DataPage<UserInfo>(courseTypes.size(), 0, courseTypes);
+				List<SeminarPlaceAllocationInfo> courseTypes = new ArrayList<SeminarPlaceAllocationInfo>(seminarpoolAdministrationService.getAllocationsByUserAndSeminarpool(userInfo.getId(), seminarpoolInfo.getId()));
+				page = new DataPage<SeminarPlaceAllocationInfo>(courseTypes.size(), 0, courseTypes);
 			}
 			return page;
 		}
@@ -62,5 +67,13 @@ public class UserAllocationByUserPage extends AbstractSeminarpoolPage {
 
 	public void setDataCourseTypes(SeminarpoolUserRegistrationsTable dataCourseTypes) {
 		this.dataCourseTypes = dataCourseTypes;
+	}
+
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
 	}
 }

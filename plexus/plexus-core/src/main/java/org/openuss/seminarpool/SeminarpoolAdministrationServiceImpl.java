@@ -670,5 +670,35 @@ public class SeminarpoolAdministrationServiceImpl
 		SeminarPriority priorityEntity = getSeminarPriorityDao().load(priorityId);
 		SeminarUserRegistration userRegistrationEntity = priorityEntity.getSeminarUserRegistration();
 		userRegistrationEntity.removePriority(priorityEntity);
+		if (userRegistrationEntity.getSeminarPriority().size() == 0){
+			userRegistrationEntity.getSeminarpool().removeRegistration(userRegistrationEntity);
+			for (SeminarUserConditionValue conditionValue : userRegistrationEntity.getSeminarUserConditionValue()){
+				userRegistrationEntity.removeUserCondition(conditionValue);
+			}
+		}
+	}
+
+	@Override
+	protected List handleGetAllocationsByUserAndSeminarpool(Long userId,
+			Long seminarpoolId) throws Exception {
+		Validate.notNull(userId, "handleGetAllocationsByUserAndSeminarpool ==> userId cannot be null");
+		Validate.notNull(seminarpoolId, "handleGetAllocationsByUserAndSeminarpool ==> seminarpoolId cannot be null");
+		User user = getUserDao().load(userId);
+		Validate.notNull(user, "handleGetAllocationsByUserAndSeminarpool ==> user cannot be loaded");
+		List<SeminarPlaceAllocationInfo> allocationList = new ArrayList<SeminarPlaceAllocationInfo>();
+		for ( CourseGroup courseGroup : user.getCourseGroup()) {
+			if ( courseGroup.getCourseSeminarpoolAllocation().getSeminarpool().getId().equals(seminarpoolId) ) {
+				SeminarPlaceAllocationInfo info = new SeminarPlaceAllocationInfo();
+				info.setCourseId(courseGroup.getCourseSeminarpoolAllocation().getCourse().getId());
+				info.setCourseName(courseGroup.getCourseSeminarpoolAllocation().getCourse().getName());
+				info.setFirstName(user.getFirstName());
+				info.setLastName(user.getLastName());
+				info.setSeminarpoolId(courseGroup.getCourseSeminarpoolAllocation().getSeminarpool().getId());
+				info.setUserId(user.getId());
+				info.setGroupName(courseGroup.getName());
+				allocationList.add(info);
+			}
+		}
+		return allocationList;
 	}
 }

@@ -31,27 +31,23 @@
 	<ui:define name="content" styleClass="footer_normal">
 	<o:block label="#{msg.seminarpool_participants_header}">
 		<div class="content_font_normal"> 
-			<h:outputText value="#{msg.seminarpool_participants_step1_text}" escape="false"/>
+			<h:outputText value="#{msg.seminarpool_allocation_by_user_step1_text}" escape="false"/>
 		</div>
 	</o:block>
 	<h:form id="participantsformStep1">
 		<plexus:dataTable   
-	     	id="courseTypes" 
-	     	label="#{msg['seminarpool_participants_seminars']}" 
-	     	value="views$secured$seminarpool$participants$seminarpoolParticipantsStep1.dataCourseTypes" 
-	     	columnClasses="col_max_left, col_commands"
+	     	id="userAllocations" 
+	     	label="#{msg['seminarpool_allocation_by_user_groups_table_header']}" 
+	     	value="views$secured$seminarpool$allocation$userAllocationByUser.dataCourseTypes" 
+	     	columnClasses="col_max_left"
 	     	var="bean" 
 	     	rows="20">    
 			<t:column>
-				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_participants_coursename}</plexus:commandSortHeader> 
-				<h:commandLink action="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep1.selectCurrentSeminar}">
-					<b><h:outputText value="#{bean.courseName} (#{bean.courseShortcut})"/></b>
+				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_user_step1_username}</plexus:commandSortHeader> 
+				<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByUser.selectUser}">
+					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
 				</h:commandLink>
 			</t:column>
-			<t:column>
-				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_participants_numbers}</plexus:commandSortHeader> 
-					<b><h:outputText value="#{bean.numberOfRegistrations}"/></b>
-				</t:column>
 		</plexus:dataTable>
 	</h:form>
 			
