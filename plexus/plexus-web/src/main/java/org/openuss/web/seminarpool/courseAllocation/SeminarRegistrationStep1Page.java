@@ -119,7 +119,7 @@ public class SeminarRegistrationStep1Page extends BasePage{
 		return dataPage;
 	}
 
-	private void sort(List<SeminarpoolInfo> seminarpoolList) {
+	public void sort(List<SeminarpoolInfo> seminarpoolList) {
 		if (StringUtils.equals("shortcut", seminarpoolOverview.getSortColumn())) {
 			Collections.sort(seminarpoolList, new SeminarpoolInfoShortcutComperator(seminarpoolOverview.isAscending()));
 		} 

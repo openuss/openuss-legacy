@@ -1,8 +1,10 @@
 package org.openuss.web.seminarpool.allocation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -13,6 +15,10 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
+import org.openuss.seminarpool.SeminarpoolInfo;
+import org.openuss.seminarpool.util.CourseSeminarpoolAllocationCourseNameComparator;
+import org.openuss.seminarpool.util.SeminarpoolInfoNameComparator;
+import org.openuss.seminarpool.util.SeminarpoolInfoShortcutComperator;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
@@ -59,6 +65,10 @@ public class UserAllocationByCoursePage extends AbstractSeminarpoolPage {
 				page = new DataPage<CourseSeminarpoolAllocationInfo>(courseTypes.size(), 0, courseTypes);
 			}
 			return page;
+		}
+		
+		public void sort(List<CourseSeminarpoolAllocationInfo> courseSeminarpoolAllocation) {
+				Collections.sort(courseSeminarpoolAllocation, new CourseSeminarpoolAllocationCourseNameComparator(dataCourseTypes.isAscending()));
 		}
 
 	}

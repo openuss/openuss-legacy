@@ -37,11 +37,11 @@
 		     	var="bean" 
 		     	rows="20">    
 				<t:column>
-					<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_course_step2_username}</plexus:commandSortHeader> 
+					<plexus:commandSortHeader columnName="lastName">#{msg.seminarpool_allocation_by_course_step2_username}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
 				</t:column>
 				<t:column>
-					<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_course_step2_groupname}</plexus:commandSortHeader> 
+					<plexus:commandSortHeader columnName="groupName">#{msg.seminarpool_allocation_by_course_step2_groupname}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.groupName}"/></b>
 				</t:column>	
 				<plexus:column header="#{msg.commands_header}">

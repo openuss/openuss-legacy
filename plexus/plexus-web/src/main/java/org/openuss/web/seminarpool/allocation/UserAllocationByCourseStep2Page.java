@@ -1,8 +1,10 @@
 package org.openuss.web.seminarpool.allocation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -14,6 +16,12 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPlaceAllocationInfo;
+import org.openuss.seminarpool.SeminarpoolInfo;
+import org.openuss.seminarpool.util.CourseSeminarpoolAllocationCourseNameComparator;
+import org.openuss.seminarpool.util.SeminarplaceAllocationInfoGroupNameComparator;
+import org.openuss.seminarpool.util.SeminarpoolInfoNameComparator;
+import org.openuss.seminarpool.util.SeminarpoolInfoShortcutComperator;
+import org.openuss.seminarpool.util.SeminarplaceAllocationInfoLastNameComparator;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
@@ -59,6 +67,14 @@ public class UserAllocationByCourseStep2Page extends AbstractSeminarpoolPage {
 				page = new DataPage<SeminarPlaceAllocationInfo>(courseTypes.size(), 0, courseTypes);
 			}
 			return page;
+		}
+		
+		public void sort(List<SeminarPlaceAllocationInfo> courseSeminarpoolAllocation) {
+			if (StringUtils.equals("courseName", dataCourseTypes.getSortColumn())){
+				Collections.sort(courseSeminarpoolAllocation, new SeminarplaceAllocationInfoLastNameComparator(dataCourseTypes.isAscending()));
+			} else {
+				Collections.sort(courseSeminarpoolAllocation, new SeminarplaceAllocationInfoGroupNameComparator(dataCourseTypes.isAscending()));
+			}
 		}
 
 	}
