@@ -48,11 +48,11 @@ public class LdapConfigurationServiceImpl
     		ldapServerConfiguration.setLdapServerType(ldapServer.getLdapServerType());
     		ldapServerConfiguration.setPort(ldapServer.getPort());
     		ldapServerConfiguration.setProviderUrl(ldapServer.getProviderUrl());
-//    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeySet().getAllRoleAttributeKeyIds().toArray());
+    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeys().toArray());
     		ldapServerConfiguration.setRootDn(ldapServer.getRootDn());
     		ldapServerConfiguration.setUseConnectionPool(ldapServer.getUseConnectionPool());
     		ldapServerConfiguration.setUseLdapContext(ldapServer.getUseLdapContext());
-//    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatternSet().getAllUserDnPatternIds().toArray());
+    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatterns().toArray());
     		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
     		ldapServerConfigurationList.add(ldapServerConfiguration);        	
 		}   	
@@ -70,6 +70,7 @@ public class LdapConfigurationServiceImpl
     	validateLdapServer(ldapServer);
     	
     	AuthenticationDomain domain = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
+    	
     	//UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
     	
     	LdapServer ldapServerEntity = getLdapServerDao().create(

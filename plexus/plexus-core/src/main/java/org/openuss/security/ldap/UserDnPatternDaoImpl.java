@@ -26,7 +26,8 @@ public class UserDnPatternDaoImpl
      */
     public org.openuss.security.ldap.UserDnPatternInfo toUserDnPatternInfo(final org.openuss.security.ldap.UserDnPattern entity)
     {
-        return super.toUserDnPatternInfo(entity);
+        UserDnPatternInfo userDnPatternInfo = super.toUserDnPatternInfo(entity);       
+    	return userDnPatternInfo;
     }
 
 
