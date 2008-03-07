@@ -93,6 +93,8 @@
 		
 		<aop:pointcut id="LdapConfigurationServiceCreateServerPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.createLdapServer(org.openuss.security.ldap.LdapServerInfo)))" />
+			
+			<!-- 
 		<aop:pointcut id="LdapConfigurationServiceDeleteServerPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.deleteLdapServer(org.openuss.security.ldap.LdapServerInfo)))" />
 		<aop:pointcut id="LdapConfigurationServiceSaveServerPointcut"
@@ -130,6 +132,7 @@
 		<aop:pointcut id="LdapConfigurationServiceDeleteUserDnPatternPointcut"
 			expression="(execution(* org..LdapConfigurationServiceBase.deleteUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)))" />
 		
+		 -->
 				
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
@@ -355,6 +358,8 @@
 			
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceCreateServerPointcut" />
+				
+				<!-- 
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceSaveServerPointcut" />
 			<aop:after-returning method="reconfigure"
@@ -392,9 +397,12 @@
 			<aop:after-returning method="reconfigure"
 				pointcut-ref="LdapConfigurationServiceDeleteUserDnPatternPointcut" />
 	
+	 -->
+	 
 		</aop:aspect>
 
 	</aop:config>
+	
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Aspect Bean Definitions

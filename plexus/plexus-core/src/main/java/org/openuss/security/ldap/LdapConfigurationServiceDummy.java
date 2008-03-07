@@ -32,22 +32,15 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		return ldapServerConfigurations;
 	}
 
-	
-	
-	public void addAttributeMappingToRoleAttributeKeySet(
-			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addDomainToAttributeMapping(AuthenticationDomainInfo domain,
 			AttributeMappingInfo mapping) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void addRoleAttributeKeyToSet(RoleAttributeKeyInfo key,
-			RoleAttributeKeySetInfo keySet) {
+	public void addRoleAttributeKeyToAttributeMapping(
+			RoleAttributeKeyInfo roleAttributeKeyinfo,
+			AttributeMappingInfo attributeMappingInfo) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -58,19 +51,11 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
-	public void addServerToUserDnPatternSet(LdapServerInfo server,
-			UserDnPatternSetInfo userDnPatternSet) {
+	public void addUserDnPatternToLdapServer(
+			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void addUserDnPatternToSet(UserDnPatternInfo userDnPattern,
-			UserDnPatternSetInfo userDnPatternSet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	public AttributeMappingInfo createAttributeMapping(
 			AttributeMappingInfo attributeMapping) {
@@ -78,21 +63,15 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		return null;
 	}
 
-
-
 	public AuthenticationDomainInfo createDomain(AuthenticationDomainInfo domain) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
 	public LdapServerInfo createLdapServer(LdapServerInfo ldapServer) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 	public RoleAttributeKeyInfo createRoleAttributeKey(
 			RoleAttributeKeyInfo roleAttributeKey) {
@@ -100,149 +79,86 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		return null;
 	}
 
-
-
-	public RoleAttributeKeySetInfo createRoleAttributeKeySet(
-			RoleAttributeKeySetInfo roleAttributeKeySet) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	public UserDnPatternInfo createUserDnPattern(UserDnPatternInfo userDnPattern) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-	public UserDnPatternSetInfo createUserDnPatternSet(
-			UserDnPatternSetInfo userDnPatternSet) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 	public void deleteAttributeMapping(AttributeMappingInfo attributeMapping) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
 	public void deleteDomain(AuthenticationDomainInfo domain) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	public void deleteLdapServer(LdapServerInfo ldapServer) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
 	public void deleteRoleAttributeKey(RoleAttributeKeyInfo roleAttributeKey) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-	public void deleteRoleAttributeKeySet(
-			RoleAttributeKeySetInfo roleAttributeKeySet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	public void deleteUserDnPattern(UserDnPatternInfo userDnPattern) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
-	public void deleteUserDnPatternSet(UserDnPatternSetInfo userDnPatternSet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public List getAllAttributeKeysBySet(
-			RoleAttributeKeySetInfo roleAttributeKeySet) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	public List getAllAttributeMappings() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 	public List getAllDomains() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
 	public List getAllLdapServers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
-	public List getAllRoleAttributeKeySets() {
+	public List getAllRoleAttributeKeys() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
-	public AuthenticationDomainInfo getDomainById(Long authDomainId) {
-		if (authDomainId==42L) {
-			AuthenticationDomainInfo authenticationDomainInfo = new AuthenticationDomainInfo();
-			authenticationDomainInfo.setName("uni-muenster");
-			return authenticationDomainInfo;
-		}
-		return null;	
+	public List getAllRoleAttributeKeysByMapping(
+			AttributeMappingInfo attributeMappingInfo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	public List getAllUserDnPatterns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	public List getAllUserDnPatternsByLdapServer(LdapServerInfo ldapServerInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public AuthenticationDomainInfo getDomainById(Long authDomainId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public List getLdapServersByDomain(AuthenticationDomainInfo domain) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
 	public boolean isValidURL(String url) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
-
-	public void removeAttributeMappingFromRoleAttributeKeySet(
-			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	public void removeDomainFromAttributeMapping(
 			AuthenticationDomainInfo domain, AttributeMappingInfo mapping) {
@@ -250,15 +166,12 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
-
-
-	public void removeRoleAttributeKeyFromSet(RoleAttributeKeyInfo key,
-			RoleAttributeKeySetInfo keySet) {
+	public void removeRoleAttributeKeyFromAttributeMapping(
+			RoleAttributeKeyInfo roleAttributeKeyInfo,
+			AttributeMappingInfo attributeMappingInfo) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	public void removeServerFromDomain(LdapServerInfo server,
 			AuthenticationDomainInfo domian) {
@@ -266,80 +179,40 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
-
-
-	public void removeServerFromUserDnPatternSet(LdapServerInfo server,
-			UserDnPatternSetInfo userDnPatternSet) {
+	public void removeUserDnPatternFromLdapServer(
+			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-	public void removeUserDnPatternFromSet(UserDnPatternInfo userDnPattern,
-			UserDnPatternSetInfo userDnPatternSet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	public void saveAttributeMapping(AttributeMappingInfo attributeMapping) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
 	public void saveDomain(AuthenticationDomainInfo domain) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 	public void saveLdapServer(LdapServerInfo ldapServer) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
 	public void saveRoleAttributeKey(RoleAttributeKeyInfo roleAttributeKey) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-	public void saveRoleAttributeKeySet(
-			RoleAttributeKeySetInfo roleAttributeKeySet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	public void saveUserDnPattern(UserDnPatternInfo userDnPattern) {
 		// TODO Auto-generated method stub
 		
 	}
 
-
-
-	public void saveUserDnPatternSet(UserDnPatternSetInfo userDnPatternSet) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public List getAllRoleAttributeKeys() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
+
 	
 	
 	
