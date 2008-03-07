@@ -12,6 +12,9 @@
 					<br />
 					<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
 					<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
+					<c:if test="#{user.centralUser}"><br/>
+						<h:outputText value="#{msg.profile_readonly_field_explain}" styleClass="content_font_normal"/>
+					</c:if>
 					<o:input entity="user.contact" property="firstName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
 					<o:input entity="user.contact" property="lastName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
 					<o:input entity="user.contact" property="title" maxlength="100"/>

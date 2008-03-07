@@ -91,13 +91,14 @@
     	<converter-for-class>org.openuss.documents.FolderInfo</converter-for-class>
     	<converter-class>org.openuss.web.documents.FolderInfoConverter</converter-class>
     </converter>
-	
+    	
 	<converter>
     	<description>Deletes domainname and username-domainname-delimiter from usernames</description>
     	<display-name>DeleteDomainNameFromUsernameConverter</display-name>
     	<converter-id>deleteDomainNameFromUsernameConverter</converter-id>
     	<converter-class>org.openuss.web.security.converter.DeleteDomainNameFromUsernameConverter</converter-class>
     </converter>
+    
     
 	<!-- - - - - - - - - - - - - - - - - - - - - - 
 	    S H A L E  -  C O N F I G U R A T I O N 

@@ -20,7 +20,6 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 public class CentralUserData extends BaseBean {
 
 	private String username;
-	private String usernameToDisplay;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -89,14 +88,5 @@ public class CentralUserData extends BaseBean {
 
 	public void setAuthenticationDomainName(String authenticationDomainName) {
 		this.authenticationDomainName = authenticationDomainName;
-	}
-
-	public String getUsernameToDisplay() {
-		return usernameToDisplay;
-	}
-
-	public void setUsernameToDisplay(String usernameToDisplay) {
-		this.usernameToDisplay = usernameToDisplay;
-	}
-	
+	}	
 }

@@ -15,11 +15,11 @@ public class DeleteDomainNameFromUsernameConverter implements Converter {
     }
  
     public Object getAsObject(FacesContext context, UIComponent component, String str) {
-        return str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
+        return str!= null ? str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1) : str;
     }
  
     public String getAsString(FacesContext context, UIComponent component, Object obj) {
     	String str = (String)obj; 
-        return str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
+        return str!=null ? str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1): str;
     }
 }

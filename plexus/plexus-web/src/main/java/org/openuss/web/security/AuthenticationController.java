@@ -169,8 +169,7 @@ public class AuthenticationController extends BasePage {
 						final SecurityContext securityContext = SecurityContextHolder.getContext();
 						securityContext.setAuthentication(auth);
 						session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-						sessionTracker.logSessionCreated(getSession());
-						addError(i18n("migration_migrate_hint", centralUserData.getAuthenticationDomainName()));
+						sessionTracker.logSessionCreated(getSession());						
 						return Constants.MIGRATION_PAGE;			
 					}
 				}
@@ -325,8 +324,8 @@ public class AuthenticationController extends BasePage {
 		try {
 			centralUserData.setAuthenticationDomainId((Long) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get());
 			centralUserData.setAuthenticationDomainName((String) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY).get());
-			centralUserData.setUsernameToDisplay((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
-			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsernameToDisplay());
+			centralUserData.setUsername((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
+			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsername());
 			centralUserData.setFirstName((String) userDetails.getAttributes().get(AttributeMappingKeys.FIRSTNAME_KEY).get());
 			centralUserData.setLastName((String) userDetails.getAttributes().get(AttributeMappingKeys.LASTNAME_KEY).get());
 			centralUserData.setEmail((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());
