@@ -23,4 +23,5 @@ public class AttributeMappingKeys {
 	public static final String LASTNAME_KEY = "OPENUSS_LASTNAME_KEY";
 	public static final String EMAIL_KEY = "OPENUSS_EMAIL_KEY";
 	public static final String AUTHENTICATIONDOMAINID_KEY = "OPENUSS_AUTHENTICATIONDOMAINID_KEY";
+	public static final String AUTHENTICATIONDOMAINNAME_KEY = "OPENUSS_AUTHENTICATIONDOMAINNAME_KEY";
 }

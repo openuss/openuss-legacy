@@ -333,10 +333,11 @@ public class DigestMd5 {
 //    	testSetUpProviderUrl(" LDAP:// wwusv1.uni-muenster. DE://.:://///////// ", new Integer(389), "//////dc=uni-muenster, dc=de");
 //    	testExtendedLdapUserDetailsMapper(args[0]);
     	
-    	String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exampledomain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
+    	String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exam345p l e5 domain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
     	System.out.println(username);
-    	username = username.replaceAll("\\"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"+","");
+    	username = username.replaceAll("\\$+\\s+\\$+","");
     	System.out.println(username);
+    	System.out.println(username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1));
 	}	
 	
 	

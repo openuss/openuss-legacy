@@ -53,7 +53,7 @@
 	 		</h:form> 
 			<h:form id="migration_register" enctype="multipart/form-data">
 	   			<o:block label="#{msg.migration_register_headline}">
-		   			<o:input entity="centralUserData" property="username" label="${msg['user_username']}" disabled="true"/>
+		   			<o:input entity="centralUserData" property="usernameToDisplay" label="${msg['user_username']}" disabled="true"/>
 		   			<o:input entity="centralUserData" property="firstName" label="${msg['user_contact_firstname']}" disabled="#{centralUserData.authenticationDomainId gt 0}"/>
 					<o:input entity="centralUserData" property="lastName" label="${msg['user_contact_lastname']}" disabled="true"/>		   			
 		   			<o:input entity="centralUserData" property="email" label="${msg['user_email']}" disabled="true"/>		   					   					

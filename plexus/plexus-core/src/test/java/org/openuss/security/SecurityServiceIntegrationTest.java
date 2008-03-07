@@ -112,6 +112,11 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		} 	
 	}
 	
+	public void testGetNonExistingUserByName() {		
+			User user = securityService.getUserByName(String.valueOf(System.currentTimeMillis()));
+			assertNull(user);
+	}
+	
 	public void testPermission() {
 		User user = testUtility.createUniqueUserInDB();
 		TestBean bean = new TestBean(TestUtility.unique(), "test get permission");

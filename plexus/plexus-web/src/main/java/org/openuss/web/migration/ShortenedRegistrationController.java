@@ -1,20 +1,15 @@
 package org.openuss.web.migration;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.AccountExpiredException;
 import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.BadCredentialsException;
-import org.acegisecurity.CredentialsExpiredException;
-import org.acegisecurity.DisabledException;
-import org.acegisecurity.LockedException;
 import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -24,8 +19,7 @@ import org.acegisecurity.ui.WebAuthenticationDetails;
 import org.acegisecurity.ui.rememberme.RememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
-import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.acegisecurity.userdetails.UserDetails;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -33,20 +27,15 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
-import org.openuss.messaging.MessageService;
 import org.openuss.registration.RegistrationException;
-import org.openuss.registration.RegistrationService;
 import org.openuss.security.Roles;
-import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserContact;
+import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
-import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.security.AuthenticationController;
-import org.openuss.web.security.RegistrationData;
 import org.openuss.web.statistics.OnlineSessionTracker;
 
 /**
@@ -105,14 +94,17 @@ public class ShortenedRegistrationController extends BasePage {
 		String firstName = centralUserData.getFirstName();
 		String lastName = centralUserData.getLastName();
 		String email = centralUserData.getEmail();
+		// Generate random password, so that account is likely not to be used for login.
+		Random random = new Random();		
+		String password = String.valueOf(System.currentTimeMillis())+String.valueOf(random.nextLong());
 		
 		// Central user is already authenticated! Therefore an enabled user profile is created.
 		boolean enabled = true;
 		
 		boolean accountExpired = false;
 		boolean accountLocked = false;
-		boolean credentialsExpired = false;
-		User user = User.Factory.newInstance(username,SecurityConstants.CENTRAL_USER_STANDARD_PW,email,enabled,accountExpired,accountLocked,credentialsExpired);
+		boolean credentialsExpired = false;		
+		User user = User.Factory.newInstance(username,password,email,enabled,accountExpired,accountLocked,credentialsExpired);
 		String locale = getFacesContext().getViewRoot().getLocale().toString();
 		String timezone = TimeZone.getDefault().getID();
 		UserPreferences userPreferences = UserPreferences.Factory.newInstance();
@@ -131,71 +123,37 @@ public class ShortenedRegistrationController extends BasePage {
 	//~ Logon methods =================================================================================
 	
 	public String login(User user) {
-		final String LOGIN = "login";
 		final HttpServletRequest request = getRequest();
 		final HttpServletResponse response = getResponse();
 		final HttpSession session = getSession();
 		String username = user.getUsername();
-		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, SecurityConstants.CENTRAL_USER_STANDARD_PW);
+		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,"protected");
 
 		authRequest.setDetails(new WebAuthenticationDetails(request));
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
-		try {
-			// Perform authentication
-			auth = getAuthenticationManager().authenticate(authRequest);
-			if (auth.getPrincipal() instanceof LdapUserDetails) {
-				logger.info("==============LDAPUSER==========");
-				return LOGIN;
-			}
-
-			// Initialize the security context
-			final SecurityContext securityContext = SecurityContextHolder.getContext();
-			securityContext.setAuthentication(auth);
-			session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-			rememberMeServices.loginSuccess(request, response, auth);
-			// setup user and userPreferences
-			injectUserInformationIntoSession(auth);
-			sessionTracker.logSessionCreated(getSession());
 		
-			if (logger.isDebugEnabled())
-				logger.debug("User: " + username + " switched to active state.");
-		} catch (DisabledException ex) {
-			if (logger.isDebugEnabled())
-				logger.debug("User " + username + " is not active");
-			addError(i18n("authentication_error_account_disabled"));
-			return "/views/public/user/activate/request.xhtml";
-		} catch (AuthenticationException ex) {
-			// Authentication failed
-			String exceptionMessage = null;
+		/*  
+		 * 1. Load OpenUSS profile.
+		 * 2. Generate authentication object, as if user had used a local login.
+		 * 3. Handle "local user".
+		 */  
+		UserImpl principal = (UserImpl) user;
+		UserDetails userDetails = principal;
+		auth = createSuccessAuthentication(principal, authRequest, userDetails);
 
-			if (ex instanceof UsernameNotFoundException) {
-				exceptionMessage = i18n("authentication_error_account_notfound");
-			} else if (ex instanceof CredentialsExpiredException) {
-				exceptionMessage = i18n("authentication_error_password_expired");
-			} else if (ex instanceof DisabledException) {
-				exceptionMessage = i18n("authentication_error_account_disabled");
-			} else if (ex instanceof LockedException) {
-				exceptionMessage = i18n("authentication_error_account_locked");
-			} else if (ex instanceof AccountExpiredException) {
-				exceptionMessage = i18n("authentication_error_account_expired");
-			} else if (ex instanceof BadCredentialsException) { 
-				exceptionMessage = i18n("authentication_error_password_mismatch");
-			} else {
-				exceptionMessage = ex.getMessage();
-			}
-			addError(exceptionMessage);
-			// Set ACEGI variables
-			setSessionBean(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY, ex);
-			logger.trace("authentication fail ", ex);
-
-			return LOGIN;
-		}
-		if (auth != null) {
-			return forwardToNextView(session);
-		} else {
-			return LOGIN;
-		}
+		// Initialize the security context
+		final SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(auth);
+		session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
+		rememberMeServices.loginSuccess(request, response, auth);
+		// setup user and userPreferences
+		injectUserInformationIntoSession(auth);
+		sessionTracker.logSessionCreated(getSession());
+	
+		if (logger.isDebugEnabled())
+			logger.debug("User: " + username + " switched to active state.");
+		return forwardToNextView(session);		
 	}	
 	
 	/**
@@ -244,7 +202,33 @@ public class ShortenedRegistrationController extends BasePage {
 			}
 		}
 	}
+	
+	/**
+     * From Acegi-Framework:  
+     * Creates a successful <code>Authentication</code> object.<p>Protected so subclasses can override.</p>
+     *  <p>Subclasses will usually store the original credentials the user supplied (not salted or encoded
+     * passwords) in the returned <code>Authentication</code> object.</p>
+     *
+     * @param principal that should be the principal in the returned object (defined by the {@link
+     *        #isForcePrincipalAsString()} method)
+     * @param authentication that was presented to the provider for validation
+     * @param user that was loaded by the implementation
+     *
+     * @return the successful authentication token
+     *  
+     */
+    protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
+        UserDetails user) {
+        // Ensure we return the original credentials the user supplied,
+        // so subsequent attempts are successful even with encoded passwords.
+        // Also ensure we return the original getDetails(), so that future
+        // authentication events after cache expiry contain the details
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
+                authentication.getCredentials(), user.getAuthorities());
+        result.setDetails(authentication.getDetails());
 
+        return result;
+    }
 
 	//~ Getters and Setters =============================================================
 

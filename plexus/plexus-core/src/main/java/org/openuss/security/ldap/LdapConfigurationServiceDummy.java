@@ -12,6 +12,7 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -24,7 +25,7 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		ldapServerConfiguration.setUseConnectionPool(false);
 		ldapServerConfiguration.setUseLdapContext(true);
 		ldapServerConfiguration.setUserDnPatterns(new String[]{"cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de"});
-		ldapServerConfiguration.setUsernameKey("cn");
+		ldapServerConfiguration.setUsernameKey("cn");		
 		
 		ldapServerConfigurations.add(ldapServerConfiguration);
 

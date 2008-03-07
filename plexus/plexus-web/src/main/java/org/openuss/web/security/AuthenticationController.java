@@ -1,6 +1,7 @@
 package org.openuss.web.security;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
@@ -26,6 +27,7 @@ import org.acegisecurity.ui.rememberme.RememberMeServices;
 import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
+import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.apache.log4j.Logger;
@@ -38,9 +40,9 @@ import org.openuss.desktop.DesktopInfo;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
-import org.openuss.security.SecurityServiceException;
 import org.openuss.security.User;
-import org.openuss.security.ldap.LdapConfigurationService;
+import org.openuss.security.UserContact;
+import org.openuss.security.UserImpl;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.migration.CentralUserData;
@@ -82,9 +84,6 @@ public class AuthenticationController extends BasePage {
 	@Property(value="#{centralUserData}")
 	CentralUserData centralUserData;
 	
-	@Property(value="#{ldapConfigurationServiceDummy}")
-	LdapConfigurationService ldapConfigurationService;
-
 	public AuthenticationController() {
 		logger.debug(" created");
 	}
@@ -113,22 +112,68 @@ public class AuthenticationController extends BasePage {
 			// Handle LDAP user
 			if (auth.getPrincipal() instanceof LdapUserDetails) {
 				mapLdapUserAttributes((LdapUserDetails) auth.getPrincipal());
-//				try {
-//					securityService.getUserByName(centralUserData.getUsername());
-//					// OpenUSS profile of central user found. Generate authentication object. 
-//					throw new SecurityServiceException();
-////					auth = getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(centralUserData.getUsername(),SecurityConstants.CENTRAL_USER_STANDARD_PW));
-//					
-//				} catch (SecurityServiceException sse) {
-					// New central user must be redirected to migration page
-					final SecurityContext securityContext = SecurityContextHolder.getContext();
-					securityContext.setAuthentication(auth);
-					session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-					rememberMeServices.loginSuccess(request, response, auth);
-					sessionTracker.logSessionCreated(getSession());
-//					setSessionBean(Constants.USER_SESSION_KEY, auth.getPrincipal());
-					return Constants.MIGRATION_PAGE;
-//				}
+				
+				User user = securityService.getUserByName(centralUserData.getUsername());
+				
+				if (user!=null) {
+					/* OpenUSS profile of central user found. 
+					 * 1. Load profile.
+					 * 2. Generate authentication object, as if user had used a local login.
+					 * 3. Handle "local user".
+					 */  
+					UserImpl principal = (UserImpl) user;
+					UserDetails userDetails = principal;
+					auth = createSuccessAuthentication(principal, authRequest, userDetails);
+				}
+				else {
+					/* New central user must be redirected to migration page
+					 * 1. Try to find by email address
+					 * 2. If found, migrate user and redirect her.
+					 * 3. If not found, redirect to migration page.
+					 */
+					
+					user = securityService.getUserByEmail(centralUserData.getEmail());
+					
+					if (user!=null) {
+						/* OpenUSS profile of central user found.
+						 * 1. Generate authentication object, as if user had used a local login. 
+						 * 2. Put authentication into SecurityContext, so that SecurityService can find it.
+						 * 3. Migrate user, i. e. change username, password, firstname and lastname.
+						 * 4. Add message to inform user about migration.
+						 * 4. Handle "local user".
+						 */
+						UserImpl principal = (UserImpl) user;
+						UserDetails userDetails = principal;
+						auth = createSuccessAuthentication(principal, authRequest, userDetails);
+						
+						SecurityContext sc = SecurityContextHolder.getContext();
+						sc.setAuthentication(auth);
+						// Generate random password, so that account is likely not to be used for login.
+						Random random = new Random();		
+						String password = String.valueOf(System.currentTimeMillis())+String.valueOf(random.nextLong());
+						securityService.changePassword(password);
+						user.setUsername(centralUserData.getUsername());
+						UserContact userContact = user.getContact();
+						userContact.setFirstName(centralUserData.getFirstName());
+						userContact.setLastName(centralUserData.getLastName());
+						securityService.saveUserContact(userContact);
+						securityService.saveUser(user);
+						addMessage(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));
+					}
+					else {
+						/* OpenUSS profile not found. Central user has to migrate manually or do an abbreviated registration.
+						 * 1. Add message to ask user to migrate or register.
+						 * 2. Redirect user to migration page.
+						 */
+						// Initialize the security context
+						final SecurityContext securityContext = SecurityContextHolder.getContext();
+						securityContext.setAuthentication(auth);
+						session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
+						sessionTracker.logSessionCreated(getSession());
+						addError(i18n("migration_migrate_hint", centralUserData.getAuthenticationDomainName()));
+						return Constants.MIGRATION_PAGE;			
+					}
+				}
 			}
 			
 			// Handle local user
@@ -279,9 +324,9 @@ public class AuthenticationController extends BasePage {
 	private void mapLdapUserAttributes(LdapUserDetails userDetails) {
 		try {
 			centralUserData.setAuthenticationDomainId((Long) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get());
-			centralUserData.setAuthenticationDomainName(getLdapConfigurationService().getDomainById(centralUserData.getAuthenticationDomainId()).getName());
-			centralUserData.setUsername((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
-			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsername());
+			centralUserData.setAuthenticationDomainName((String) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY).get());
+			centralUserData.setUsernameToDisplay((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
+			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsernameToDisplay());
 			centralUserData.setFirstName((String) userDetails.getAttributes().get(AttributeMappingKeys.FIRSTNAME_KEY).get());
 			centralUserData.setLastName((String) userDetails.getAttributes().get(AttributeMappingKeys.LASTNAME_KEY).get());
 			centralUserData.setEmail((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());
@@ -290,6 +335,33 @@ public class AuthenticationController extends BasePage {
 		}
 		
 	}
+	
+	/**
+     * From Acegi-Framework:  
+     * Creates a successful <code>Authentication</code> object.<p>Protected so subclasses can override.</p>
+     *  <p>Subclasses will usually store the original credentials the user supplied (not salted or encoded
+     * passwords) in the returned <code>Authentication</code> object.</p>
+     *
+     * @param principal that should be the principal in the returned object (defined by the {@link
+     *        #isForcePrincipalAsString()} method)
+     * @param authentication that was presented to the provider for validation
+     * @param user that was loaded by the implementation
+     *
+     * @return the successful authentication token
+     *  
+     */
+    protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
+        UserDetails user) {
+        // Ensure we return the original credentials the user supplied,
+        // so subsequent attempts are successful even with encoded passwords.
+        // Also ensure we return the original getDetails(), so that future
+        // authentication events after cache expiry contain the details
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
+                authentication.getCredentials(), user.getAuthorities());
+        result.setDetails(authentication.getDetails());
+
+        return result;
+    }
 	
 	public AuthenticationManager getAuthenticationManager() {
 		return authenticationManager;
@@ -361,15 +433,6 @@ public class AuthenticationController extends BasePage {
 
 	public void setCentralUserData(CentralUserData centralUserData) {
 		this.centralUserData = centralUserData;
-	}
-
-	public LdapConfigurationService getLdapConfigurationService() {
-		return ldapConfigurationService;
-	}
-
-	public void setLdapConfigurationService(
-			LdapConfigurationService ldapConfigurationService) {
-		this.ldapConfigurationService = ldapConfigurationService;
 	}
 
 }

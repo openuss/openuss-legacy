@@ -44,7 +44,7 @@
    			 	</o:block>
    			 	<o:block>
 	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
-	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button"/>
+	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button" rendered="#{not user.centralUser}"/>
 					<h:commandButton action="#{views$secured$user$profile.profilePage}" value="#{msg.user_profile_preview}" styleClass="button" />
 		 		</o:block>
 	 		</h:form> 

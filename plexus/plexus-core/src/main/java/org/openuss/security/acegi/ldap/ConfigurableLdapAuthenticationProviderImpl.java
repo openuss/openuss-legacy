@@ -58,6 +58,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected ProviderManager authenticationManager = new ProviderManager();
 	protected LdapConfigurationService ldapConfigurationService;
 	protected String defaultRole = null;
+	protected String defaultRolePrefix = "ROLE_";
 	protected MessageSourceAccessor messages = AcegiMessageSource.getAccessor();
 	protected MessageSource messageSource;
 	protected UserCache userCache;
@@ -152,6 +153,10 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		// Assign authentication domain ID
 		destKey = AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY;
 		ldapUserDetails.getAttributes().put(destKey, ldapServerConfiguration.getAuthenticationDomainId());
+
+		// Assign authentication domain name
+		destKey = AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY;
+		ldapUserDetails.getAttributes().put(destKey, ldapServerConfiguration.getAuthenticationDomainName());
 		
 		// Assign username
 		destKey = AttributeMappingKeys.USERNAME_KEY;
@@ -200,7 +205,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	
 	protected LdapUserDetails assignDefaultRole(LdapUserDetails ldapUserDetails) {
 		LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
-		essence.addAuthority(new GrantedAuthorityImpl(Roles.LDAPUSER.getName()));
+		essence.addAuthority(new GrantedAuthorityImpl(defaultRolePrefix+Roles.LDAPUSER.getName()));
 		if (defaultRole!=null && !"".equals(defaultRole))
 			essence.addAuthority(new GrantedAuthorityImpl(defaultRole));
 		return essence.createUserDetails();
@@ -336,6 +341,16 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 
 	public void setDefaultRole(String defaultRole) {
 		this.defaultRole = defaultRole;
+	}
+
+
+	public String getDefaultRolePrefix() {
+		return defaultRolePrefix;
+	}
+
+
+	public void setDefaultRolePrefix(String defaultRolePrefix) {
+		this.defaultRolePrefix = defaultRolePrefix;
 	}
 
 }

@@ -39,7 +39,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 
 	public void testAuthenticationWithNullValueAsEnabledLdapServer() {
 
-		// Provide username and password!
+		// Provide arbitrary username and password!
 		String username="tester";
 		String password="protected";
 
@@ -79,7 +79,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 	
 	public void testAuthenticationWithNoEnabledLdapServer() {
 
-		// Provide username and password!
+		// Provide arbitrary username and password!
 		String username="tester";
 		String password="protected";
 
@@ -122,6 +122,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -166,6 +167,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -210,6 +212,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -254,6 +257,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -303,9 +307,12 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		if ("".equals(username) || "".equals(password))
 			return;
 		
+		String defaultRolePrefix="ROLE_";
+		
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -351,7 +358,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		// Check defaultRole assignment
 		boolean defaultRoleContained = false;
 		for (GrantedAuthority grantedAuthority : ldapUserDetails.getAuthorities()) {
-			if (grantedAuthority.getAuthority().equals(Roles.LDAPUSER_NAME))
+			if (grantedAuthority.getAuthority().equals(defaultRolePrefix+Roles.LDAPUSER_NAME))
 				defaultRoleContained = true;
 		}
 		
@@ -383,6 +390,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -441,6 +449,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
 		ldapServerConfiguration.setPort(389);
@@ -497,9 +506,11 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		if ("".equals(username) || "".equals(password))
 			return;
 		
+		String defaultRolePrefix="ROLE_";
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("SIMPLE");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -535,7 +546,8 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 			fail();
 		}
 		
-		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);		
+		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);
+		ldapAuthenticationProvider.setDefaultRolePrefix(defaultRolePrefix);	
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
@@ -545,7 +557,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		// Check defaultRole assignment
 		boolean defaultRoleContained = false;
 		for (GrantedAuthority grantedAuthority : ldapUserDetails.getAuthorities()) {
-			if (grantedAuthority.getAuthority().equals(Roles.LDAPUSER_NAME))
+			if (grantedAuthority.getAuthority().equals(defaultRolePrefix+Roles.LDAPUSER_NAME))
 				defaultRoleContained = true;
 		}
 		
@@ -567,15 +579,17 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 	}
 
 	public void testAuthenticationViaNonActiveDirectoryServerWithBadCredentials() {
-		// Provide valid username and password!
+		// Provide invalid username or password!
 		String username="tester";
 		String password="protected";
 		if ("".equals(username) || "".equals(password))
 			return;
 		
+		String defaultRolePrefix="ROLE_";
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("SIMPLE");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -611,7 +625,8 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 			fail();
 		}
 		
-		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);		
+		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);
+		ldapAuthenticationProvider.setDefaultRolePrefix(defaultRolePrefix);
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
@@ -630,10 +645,11 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		String password="masterkey";
 		if ("".equals(username) || "".equals(password))
 			return;
-		
+		String defaultRolePrefix="ROLE_";
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
 		ldapServerConfiguration.setAuthenticationType("SIMPLE");
 		ldapServerConfiguration.setLdapServerType(LdapServerType.OTHER);
 		ldapServerConfiguration.setPort(10389);
@@ -665,7 +681,8 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 			fail();
 		}
 		
-		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);		
+		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);
+		ldapAuthenticationProvider.setDefaultRolePrefix(defaultRolePrefix);
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {

@@ -34,4 +34,11 @@ public interface ConfigurableLdapAuthenticationProvider extends AuthenticationPr
 	public String getDefaultRole();
 	
 	public void setDefaultRole(String defaultRole);
+	
+	/**
+	 * Optional default role prefix to be assigned to an LDAP user.
+	 */
+	public String getDefaultRolePrefix();
+	
+	public void setDefaultRolePrefix(String defaultRole);
 }
