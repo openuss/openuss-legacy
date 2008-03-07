@@ -28,6 +28,8 @@ import org.openuss.webdav.WebDAVMethods;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVStatusCodes;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 
 
@@ -52,6 +54,7 @@ public class WebDAVServlet extends HttpServlet {
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 	
  	private String resourcePathPrefix;
+ 	private WebApplicationContext wac;
 	
  	/* (non-Javadoc)
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -74,7 +77,7 @@ public class WebDAVServlet extends HttpServlet {
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
 			
-			WebDAVResource root = RootResource.getRoot(resourcePathPrefix);
+			WebDAVResource root = getRoot();
 			
 			switch(code) {
 			case WebDAVMethods.DAV_OPTIONS:
@@ -290,7 +293,7 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	public MultiStatusAnswer copy(WebDAVResource src, WebDAVPath dst, boolean recursive, boolean overwrite){
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		WebDAVResource parentResource = RootResource.getRoot(resourcePathPrefix);
+ 		WebDAVResource parentResource = getRoot();
  		copy(src, parentResource, recursive, overwrite, answer);
  		return answer;
  	}
@@ -357,15 +360,24 @@ public class WebDAVServlet extends HttpServlet {
 		if (resourcePathPrefix == null) {
 			throw new ServletException("resource path prefix not set");
 		}
+		wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		
 		logger.info("ResourcePathPrefix: " + resourcePathPrefix);   
         logger.info(" init() done.");
+	}
+	
+	/**
+	 * @return The root resource
+	 */
+	protected WebDAVResource getRoot() {
+		return RootResource.getRoot(wac, resourcePathPrefix);
 	}
 	
 	/**
 	 * Handles method OPTIONS as demanded in RFC2518.
 	 * @param response Reference to the response of the servlet.
 	 */
-	private static void publishOptions(HttpServletResponse response) {
+	protected static void publishOptions(HttpServletResponse response) {
 		// add required headers to response and send status code 200 (OK)
 		response.addHeader(WebDAVConstants.HEADER_DAV, DAV_COMPLIANCE_LEVEL);
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);

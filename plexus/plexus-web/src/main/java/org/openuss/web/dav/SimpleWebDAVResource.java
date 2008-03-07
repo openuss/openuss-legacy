@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.tools.ant.filters.StringInputStream;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
@@ -281,9 +282,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @param name The name of the resource. This should only be used if id == ID_NONE || id == ID_PRELIMARY.
 	 * @param name The name of the resource. This should only be used if id == ID_NONE.
 	 * @param path The WebDAVPath representing the full address of the resource to resolve.
-	 * @return A WebDAVResource representing the child.
-	 * 		If the id is ID_NONE and the name cannot be found, an implementation should return a new WebDAVResource object whose id is ID_PRELIMINARY.
-	 * 		If this is not possible, return null.
+	 * @return A WebDAVResource representing the child. If it can not be found, null.
 	 */
 	protected abstract WebDAVResource getChild(long id, String name, WebDAVPath path);
 	
@@ -509,7 +508,23 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see #readContent()
 	 */
 	protected abstract IOContext readContentImpl() throws WebDAVResourceException, IOException;
-
+	
+	/**
+	 * @return A virtual IOContext representing this element's children.
+	 */
+	protected IOContext readCollectionContent() {
+		StringBuffer sb = new StringBuffer();
+		
+		
+		
+		StringInputStream sis = new StringInputStream(sb.toString());
+		IOContextImpl ioc = new IOContextImpl();
+		ioc.setContentType(WebDAVConstants.MIMETYPE_HTML);
+		ioc.setInputStream(sis);
+		
+		return ioc;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#writeContent(org.openuss.webdav.IOContext)
 	 */

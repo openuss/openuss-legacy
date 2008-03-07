@@ -19,6 +19,7 @@ public class WebDAVConstants {
 	public final static String TIMEOUT_INFINITE = "Infinite";
 	public final static String MIMETYPE_XML = "text/xml";
 	public final static String MIMETYPE_TEXT = "text/plain";
+	public final static String MIMETYPE_HTML = "text/html";
 	public final static String MIMETYPE_ENCODING_SEP = "; charset="; 
 	
 	// header names
