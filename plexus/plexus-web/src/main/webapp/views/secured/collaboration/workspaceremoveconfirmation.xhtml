@@ -38,7 +38,7 @@
 				<o:block label="#{msg.warning_attention_dataloss}- #{msg.workspace_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
-							<h:outputText value="#{msg.workspace_remove_text}" styleClass="warning"/>
+							<h:outputText value="#{msg.collaboration_workspace_remove_text}" styleClass="warning"/>
 						</span><br/>
 						<strong>#{workspaceInfo.name}	</strong><br/> 
 						<br/>
@@ -48,7 +48,7 @@
 	   						validator="#{views$secured$collaboration$removeconfirmation.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
-	   					<h:outputLabel value="#{msg.workspace_remove_confirmation_flag}" for="checkConfirmation"/>
+	   					<h:outputLabel value="#{msg.collaboration_workspace_remove_confirmation_flag}" for="checkConfirmation"/>
 	   				</p>
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>
 					

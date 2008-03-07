@@ -33,8 +33,8 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
 			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("workspace_remove_header"));
-			newCrumb.setHint(i18n("workspace_remove_header"));
+			newCrumb.setName(i18n("collaboration_workspace_remove_header"));
+			newCrumb.setHint(i18n("collaboration_workspace_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
 			logger.error(e);
@@ -50,11 +50,11 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 		try {
 			workspaceService.removeWorkspace(workspaceInfo.getId());
 			setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
-			addMessage(i18n("workspace_removed_succeed"));
+			addMessage(i18n("collaboration_workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("workspace_cannot_be_removed"));
+			addMessage(i18n("collaboration_error_cannot_be_removed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		}
 	}

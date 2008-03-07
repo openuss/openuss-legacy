@@ -38,7 +38,7 @@
 				<o:block label="#{msg.warning_attention_dataloss}- #{msg.paper_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
-							<h:outputText value="#{msg.paper_remove_text}" styleClass="warning"/>
+							<h:outputText value="#{msg.papersubmission_remove_text}" styleClass="warning"/>
 						</span><br/>
 						<strong>#{paperInfo.name}	</strong><br/> 
 						<br/>
@@ -48,7 +48,7 @@
 	   						validator="#{views$secured$papersubmission$examremove.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
-	   					<h:outputLabel value="#{msg.paper_remove_confirmation_flag}" for="checkConfirmation"/>
+	   					<h:outputLabel value="#{msg.papersubmission_remove_confirmation_flag}" for="checkConfirmation"/>
 	   				</p>
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>
 				</o:block>

@@ -118,7 +118,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspaceInfo);
 		if (workspaceInfo == null) {
-			addWarning(i18n("error_workspace_not_found"));
+			addWarning(i18n("collaboration_error_workspace_not_found"));
 			return Constants.FAILURE;
 		} else {
 			logger.debug("selected workspaceInfo " + workspaceInfo.getName());

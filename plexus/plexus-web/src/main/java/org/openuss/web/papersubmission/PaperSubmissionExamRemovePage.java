@@ -35,8 +35,8 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
 			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("paper_remove_header"));
-			newCrumb.setHint(i18n("paper_remove_header"));
+			newCrumb.setName(i18n("papersubmission_remove_header"));
+			newCrumb.setHint(i18n("papersubmission_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
 			logger.error(e);
@@ -52,11 +52,11 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 		try {
 			paperSubmissionService.removeExam(examInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
-			addMessage(i18n("paper_removed_succeed"));
+			addMessage(i18n("papersubmission_removed_succeed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("paper_cannot_be_removed"));
+			addMessage(i18n("papersubmission_paper_cannot_be_removed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		}
 	}
