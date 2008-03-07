@@ -116,6 +116,7 @@ public class WorkspaceServiceImpl extends
 
 		Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
+		// FIXME: extremely dirty!!! There must be an easier way
 		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + workspace.getDomainId() + "_PARTICIPANTS");
 		
 		List<Authority> members = group.getMembers();

@@ -283,6 +283,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 
 	@SuppressWarnings("unchecked")
 	private List<UserInfo> loadCourseMembers() {
+		// FIXME: extremely dirty!!! There must be an easier way
 		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
 		
 		List<Authority> members = group.getMembers();

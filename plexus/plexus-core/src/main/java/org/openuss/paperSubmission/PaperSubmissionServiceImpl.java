@@ -326,6 +326,7 @@ public class PaperSubmissionServiceImpl
 	
 	@SuppressWarnings("unchecked")
 	private List<UserInfo> loadCourseMembers(long domainId) {
+		// FIXME: extremely dirty!!! There must be an easier way
 		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
 		
 		List<Authority> members = group.getMembers();
