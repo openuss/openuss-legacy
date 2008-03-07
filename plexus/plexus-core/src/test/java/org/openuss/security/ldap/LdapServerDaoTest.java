@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class LdapServerDaoTest extends LdapServerDaoTestBase {
 	
-	private UserDnPatternSetDao userDnPatternSetDao;
-	
 	public void testLdapServerDaoCreate() {
 		LdapServer ldapServer = LdapServer.Factory.newInstance();
 		ldapServer.setProviderUrl(" ");
@@ -35,16 +33,7 @@ public class LdapServerDaoTest extends LdapServerDaoTestBase {
 		userDnPattern.setName("CN");
 		List<UserDnPattern> userDnPatterns = new ArrayList<UserDnPattern>();
 		userDnPatterns.add(userDnPattern);
-		
-		UserDnPatternSet userDnPatternSet = UserDnPatternSet.Factory.newInstance();
-		userDnPatternSet.setName("user dn pattern test ");	
-		userDnPatternSet.setUserDnPatterns(userDnPatterns);
-		ldapServer.setUserDnPatternSet(userDnPatternSet);
-		
-		assertNull(userDnPatternSet.getId());
-		userDnPatternSetDao.create(userDnPatternSet);
-		assertNotNull(userDnPatternSet.getId());
-		
+	
 		/*
 		assertNull(ldapServer.getId());
 		ldapServerDao.create(ldapServer);
@@ -52,7 +41,5 @@ public class LdapServerDaoTest extends LdapServerDaoTestBase {
 		*/
 	}
 	
-	public void setUserDPatternSetDao(UserDnPatternSetDao userDnPatternSetDao) {
-		this.userDnPatternSetDao = userDnPatternSetDao;
-	}
+
 }

@@ -48,11 +48,11 @@ public class LdapConfigurationServiceImpl
     		ldapServerConfiguration.setLdapServerType(ldapServer.getLdapServerType());
     		ldapServerConfiguration.setPort(ldapServer.getPort());
     		ldapServerConfiguration.setProviderUrl(ldapServer.getProviderUrl());
-    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeySet().getAllRoleAttributeKeyIds().toArray());
+//    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeySet().getAllRoleAttributeKeyIds().toArray());
     		ldapServerConfiguration.setRootDn(ldapServer.getRootDn());
     		ldapServerConfiguration.setUseConnectionPool(ldapServer.getUseConnectionPool());
     		ldapServerConfiguration.setUseLdapContext(ldapServer.getUseLdapContext());
-    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatternSet().getAllUserDnPatternIds().toArray());
+//    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatternSet().getAllUserDnPatternIds().toArray());
     		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
     		ldapServerConfigurationList.add(ldapServerConfiguration);        	
 		}   	
@@ -70,7 +70,7 @@ public class LdapConfigurationServiceImpl
     	validateLdapServer(ldapServer);
     	
     	AuthenticationDomain domain = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
-    	UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
+    	//UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
     	
     	LdapServer ldapServerEntity = getLdapServerDao().create(
     			domain,
@@ -82,8 +82,8 @@ public class LdapConfigurationServiceImpl
     			ldapServer.getProviderUrl(),
     			ldapServer.getRootDn(), 
     			ldapServer.getUseConnectionPool(),
-    			ldapServer.getUseLdapContext(), 
-    			set
+    			ldapServer.getUseLdapContext(),
+    			ldapServer.getUserDnPatterns()
     		);
     	
     	ldapServerEntity.setManagerDn(ldapServer.getManagerDn());
@@ -94,8 +94,8 @@ public class LdapConfigurationServiceImpl
 		domain.getLdapServers().add(ldapServerEntity);
 		getAuthenticationDomainDao().update(domain);
 		
-		set.getLdapServers().add(ldapServerEntity);
-		getUserDnPatternSetDao().update(set);
+//		set.getLdapServers().add(ldapServerEntity);
+//		getUserDnPatternSetDao().update(set);
     	
     	ldapServer.setId(ldapServerEntity.getId());
     	
@@ -149,12 +149,12 @@ public class LdapConfigurationServiceImpl
         	getAuthenticationDomainDao().update(domain);
     	}
     	
-    	// remove ldap server from user dn pattern set
-    	UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
-    	if (set != null) {
-    		set.getLdapServers().remove(server);
-        	getUserDnPatternSetDao().update(set);
-    	}
+//    	// remove ldap server from user dn pattern set
+//    	UserDnPatternSet set = getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId());
+//    	if (set != null) {
+//    		set.getLdapServers().remove(server);
+//        	getUserDnPatternSetDao().update(set);
+//    	}
     	
 
     	getLdapServerDao().remove(ldapServer.getId());
@@ -170,7 +170,7 @@ public class LdapConfigurationServiceImpl
     	validateLdapServer(ldapServer);
     	LdapServer ldapServerEntity = getLdapServerDao().ldapServerInfoToEntity(ldapServer);
     	ldapServerEntity.setAuthenticationDomain(getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId()));    	
-    	ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));    	
+    	//ldapServerEntity.setUserDnPatternSet(getUserDnPatternSetDao().load(ldapServer.getUserDnPatternSetId()));    	
     	getLdapServerDao().update(ldapServerEntity);
     }
 
@@ -390,7 +390,7 @@ public class LdapConfigurationServiceImpl
     			attributeMapping.getGroupRoleAttributeKey(), 
     			attributeMapping.getLastNameKey(), 
     			attributeMapping.getMappingName(), 
-    			getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()),
+    			//getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()),
     			attributeMapping.getUsernameKey()
     		);
        	attributeMapping.setId(attributeMappingEntity.getId());
@@ -415,7 +415,7 @@ public class LdapConfigurationServiceImpl
     	}
 //    	TODO check method attributeMappingInfoToEntity
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().attributeMappingInfoToEntity(attributeMapping);
-    	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
+//    	attributeMappingEntity.setRoleAttributeKeySet(getRoleAttributeKeySetDao().load(attributeMapping.getRoleAttributeKeySetId()));
     	getAttributeMappingDao().update(attributeMappingEntity);    	
     }
      
@@ -474,66 +474,23 @@ public class LdapConfigurationServiceImpl
      * 
      */
 	@Override
-	protected java.util.List<RoleAttributeKeyInfo> handleGetAllAttributeKeysBySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
+	protected java.util.List<RoleAttributeKeyInfo> handleGetAllRoleAttributeKeysByMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
     	
-		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
-		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
+//		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
+//		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
+//    	
+//    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
+//    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
+//			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
+//			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
+//		}
     	
-    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
-    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
-			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
-			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
-		}
-    	
-    	return roleAttributeKeyInfoList;
+    	return null;
     }
 
-    /**
-     * 
-     */
-	@Override
-	protected RoleAttributeKeySetInfo handleCreateRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) throws Exception {    	
-		if (StringUtils.isBlank(roleAttributeKeySet.getName())){
-    		throw new LdapConfigurationServiceException("Name of new attribute key set must not be empty!");
-    	} 
-		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().create(roleAttributeKeySet.getName());
-		roleAttributeKeySet.setId(roleAttributeKeySetEntity.getId());
-		
-    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();
-    	for (Iterator<Long> iterator = keyIds.iterator(); iterator.hasNext();) {
-			Long keyId = iterator.next();
-			roleAttributeKeySetEntity.addRoleAttributeKey(getRoleAttributeKeyDao().load(keyId));  
-		}    	
-    	getRoleAttributeKeySetDao().update(roleAttributeKeySetEntity);    	
-    	
-    	return roleAttributeKeySet;
-    }
+ 
 
-    /**
-     * 
-     */
-	@Override
-	protected void handleDeleteRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet){
-    	getRoleAttributeKeySetDao().remove(roleAttributeKeySet.getId());
-    }
-
-    /**
-     * 
-     */
-	@Override
-	protected void handleSaveRoleAttributeKeySet(org.openuss.security.ldap.RoleAttributeKeySetInfo roleAttributeKeySet) throws Exception{
-		if (StringUtils.isBlank(roleAttributeKeySet.getName())){
-    		throw new LdapConfigurationServiceException("Name of new attribute key set must not be empty!");
-    	} 
-		
-		RoleAttributeKeySet set = getRoleAttributeKeySetDao().roleAttributeKeySetInfoToEntity(roleAttributeKeySet);
-    	
-    	List<Long> keyIds = roleAttributeKeySet.getRoleAttributeKeyIds();    	
-    	for (Long key : keyIds) {
-    		set.addRoleAttributeKey(getRoleAttributeKeyDao().load(key));    			
-		}
-    	getRoleAttributeKeySetDao().update(set);    	
-    }
+    
 
 	/**
      * 
@@ -553,57 +510,9 @@ public class LdapConfigurationServiceImpl
     	return keyInfoList;  
     }
 	
-    /**
-     * 
-     */
-	@Override
-	protected java.util.List<RoleAttributeKeySetInfo> handleGetAllRoleAttributeKeySets(){
-		List<RoleAttributeKeySetInfo> roleAttributeKeySetInfoList = new ArrayList<RoleAttributeKeySetInfo>();
-		Collection<RoleAttributeKeySet> roleAttributeKeySetEntityList = getRoleAttributeKeySetDao().loadAll();
-		
-		for (Iterator<RoleAttributeKeySet> iterator = roleAttributeKeySetEntityList.iterator(); iterator.hasNext();) {
-			RoleAttributeKeySet roleAttributeKeySetEntity = iterator.next();
-			RoleAttributeKeySetInfo roleAttributeKeySetInfo = getRoleAttributeKeySetDao().toRoleAttributeKeySetInfo(roleAttributeKeySetEntity);
-			roleAttributeKeySetInfo.setRoleAttributeKeyIds(roleAttributeKeySetEntity.getAllRoleAttributeKeyIds());			
-		}
-		
-    	return roleAttributeKeySetInfoList;
-    }
+  
 
-    /**
-     * 
-     */
-	@Override
-	protected void handleAddRoleAttributeKeyToSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
-    	RoleAttributeKeySetDao 	keySetDao 	= getRoleAttributeKeySetDao();
-    	RoleAttributeKeyDao		keyDao 		= getRoleAttributeKeyDao();
-    	
-//    	TODO check method roleAttributeKeyInfoToEntity
-//    	TODO check method roleAttributeKeySetInfoToEntity
-    	RoleAttributeKey keyEntity = keyDao.roleAttributeKeyInfoToEntity(key);
-    	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
-    	
-    	Validate.notNull(keyEntity, "RoleAttributeKey must not be null");
-		Validate.notNull(keyEntity.getId(), "RoleAttributeKey must provide a valid id.");
-		Validate.notNull(setEntity, "RoleAttributeKeySet must not be null");
-		Validate.notNull(setEntity.getId(), "RoleAttributeKeySet must provide a valid id.");
-
-		keyEntity = forceRoleAttributeKeyLoad(keyEntity);
-		setEntity = forceRoleAttributeKeySetLoad(setEntity);
-
-		if (checkRoleAttributeKeySetContainsKey(keyEntity, setEntity)) throw new LdapConfigurationServiceException("RoleAttributeKey already contains key!");
-	
-		setEntity.getRoleAttributeKeys().add(keyEntity);
-		keySetDao.update(setEntity);
-    }    
-	
-	private RoleAttributeKeySet forceRoleAttributeKeySetLoad(RoleAttributeKeySet set) {
-		set = getRoleAttributeKeySetDao().load(set.getId());
-		if (set == null) {
-			throw new LdapConfigurationServiceException("RoleAttributeKeySet not found");
-		}
-		return set;
-	}	
+    
 	
 	private RoleAttributeKey forceRoleAttributeKeyLoad(RoleAttributeKey key) {
 		key = getRoleAttributeKeyDao().load(key.getId());
@@ -621,72 +530,11 @@ public class LdapConfigurationServiceImpl
 		return mapping;
 	}
 
-	private boolean checkRoleAttributeKeySetContainsKey(RoleAttributeKey key, RoleAttributeKeySet set) {
-		List<RoleAttributeKey> keys = set.getRoleAttributeKeys();
-		if (keys.contains(key)) {
-			return true;
-		} else return false;
-	}
+
 	
-	
-	private boolean checkRoleAttributeKeySetContainsAttributeMapping(AttributeMapping mapping, RoleAttributeKeySet set) {
-		List<AttributeMapping> keys = set.getAttributeMappings();
-		if (keys.contains(mapping)) {
-			return true;
-		} else return false;
-	}
 
-    /**
-     * 
-     */
-	@Override
-	protected void handleRemoveRoleAttributeKeyFromSet(org.openuss.security.ldap.RoleAttributeKeyInfo key, org.openuss.security.ldap.RoleAttributeKeySetInfo keySet){
-    	RoleAttributeKeySetDao 	setDao = getRoleAttributeKeySetDao();
-    	RoleAttributeKeyDao		keyDao = getRoleAttributeKeyDao();
-    	
-    	RoleAttributeKey 	keyEntity	= keyDao.roleAttributeKeyInfoToEntity(key);
-    	RoleAttributeKeySet setEntity 	= setDao.roleAttributeKeySetInfoToEntity(keySet);
-    	
-    	Validate.notNull(keyEntity, "RoleAttributeKey must not be null");
-		Validate.notNull(keyEntity.getId(), "RoleAttributeKey must provide a valid id.");
-		Validate.notNull(setEntity, "RoleAttributeKeySet must not be null");
-		Validate.notNull(setEntity.getId(), "RoleAttributeKeySet must provide a valid id.");
 
-		keyEntity = forceRoleAttributeKeyLoad(keyEntity);
-		setEntity = forceRoleAttributeKeySetLoad(setEntity);
-
-		if (!checkRoleAttributeKeySetContainsKey(keyEntity, setEntity)) throw new LdapConfigurationServiceException("RoleAttributeKey not contained in KeySet!");
-	
-		setEntity.getRoleAttributeKeys().remove(keyEntity);
-		setDao.update(setEntity);
-    }
-
-	@Override
-	protected void handleAddAttributeMappingToRoleAttributeKeySet(
-			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
-			throws Exception {
-		
-		RoleAttributeKeySetDao 	keySetDao = getRoleAttributeKeySetDao();
-    	AttributeMappingDao		mappingDao = getAttributeMappingDao();
-    	
-    	RoleAttributeKeySet setEntity = keySetDao.roleAttributeKeySetInfoToEntity(keySet);
-//    	TODO check method attributeMappingInfoToEntity
-    	AttributeMapping mappingEntity = mappingDao.attributeMappingInfoToEntity(mapping);
-    	
-    	Validate.notNull(mappingEntity, "AttributeMapping must not be null");
-		Validate.notNull(mappingEntity.getId(), "AttributeMapping must provide a valid id.");
-		Validate.notNull(setEntity, "RoleAttributeKeySet must not be null");
-		Validate.notNull(setEntity.getId(), "RoleAttributeKeySet must provide a valid id.");
-
-		mappingEntity = forceAttributeMappingLoad(mappingEntity);
-		setEntity = forceRoleAttributeKeySetLoad(setEntity);
-
-		if (checkRoleAttributeKeySetContainsAttributeMapping(mappingEntity, setEntity)) throw new LdapConfigurationServiceException("RoleAttributeKeySet already contains AttributeMapping!");
-	
-		setEntity.getAttributeMappings().add(mappingEntity);
-		keySetDao.update(setEntity);
-		
-	}
+    
 
 	@Override
 	protected void handleAddDomainToAttributeMapping(
@@ -698,24 +546,6 @@ public class LdapConfigurationServiceImpl
 		getAuthenticationDomainDao().update(authenticationDomain);		
 	}
 
-	@Override
-	protected void handleAddServerToUserDnPatternSet(LdapServerInfo server,
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		LdapServer ldapServer = getLdapServerDao().load(server.getId());
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
-		ldapServer.setUserDnPatternSet(userDnPatternSetEntity);
-		getLdapServerDao().update(ldapServer);
-	}
-
-	@Override
-	protected void handleAddUserDnPatternToSet(
-			UserDnPatternInfo userDnPattern,
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());				
-		userDnPatternSetEntity.addUserDnPattern(userDnPatternEntity);
-		getUserDnPatternSetDao().update(userDnPatternSetEntity);		
-	}
 
 	@Override
 	protected UserDnPatternInfo handleCreateUserDnPattern(
@@ -726,22 +556,6 @@ public class LdapConfigurationServiceImpl
 		return userDnPattern;
 	}
 
-	@Override
-	protected UserDnPatternSetInfo handleCreateUserDnPatternSet(
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().create(userDnPatternSet.getName());
-		userDnPatternSet.setId(userDnPatternSetEntity.getId());
-		
-		List<UserDnPattern> userDnPatternEntityList = new ArrayList<UserDnPattern>();
-		
-		List<Long> idList = userDnPatternSet.getUserDnPatternIds();
-		for (Iterator<Long> iterator = idList.iterator(); iterator.hasNext();) {
-			userDnPatternEntityList.add(getUserDnPatternDao().load(iterator.next()));			
-		}
-		userDnPatternSetEntity.setUserDnPatterns(userDnPatternEntityList);	
-		
-		return userDnPatternSet;
-	}
 
 	@Override
 	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {
@@ -749,34 +563,6 @@ public class LdapConfigurationServiceImpl
 		getUserDnPatternDao().remove(userDnPatternEntity);		
 	}
 
-	@Override
-	protected void handleDeleteUserDnPatternSet(UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
-		
-		userDnPatternSetEntity.setUserDnPatterns(null);
-		
-		// also delete ldap servers assigned to that pattern set
-    	Set<LdapServer> alsoDeleteServersList = userDnPatternSetEntity.getLdapServers();
-    	for(LdapServer delete : alsoDeleteServersList) {
-    		LdapServerInfo deleteInfo = getLdapServerDao().toLdapServerInfo(delete);
-    		handleDeleteLdapServer(deleteInfo);
-    	}
-		
-		getUserDnPatternSetDao().remove(userDnPatternSetEntity);
-		
-	}
-
-	/**
-	 * 
-	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveAttributeMappingFromRoleAttributeKeySet(org.openuss.security.ldap.AttributeMappingInfo, org.openuss.security.ldap.RoleAttributeKeySetInfo)
-	 * @deprecated no use for it?!
-	 */
-	@Override
-	protected void handleRemoveAttributeMappingFromRoleAttributeKeySet(
-			AttributeMappingInfo mapping, RoleAttributeKeySetInfo keySet)
-			throws Exception {
-		// TODO Auto-generated method stub
-	}
 
 	/**
 	 * 
@@ -793,29 +579,6 @@ public class LdapConfigurationServiceImpl
 
 	/**
 	 * 
-	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveServerFromUserDnPatternSet(org.openuss.security.ldap.LdapServerInfo, org.openuss.security.ldap.UserDnPatternSetInfo)
-	 * @deprecated no use for it?!
-	 */
-	@Override
-	protected void handleRemoveServerFromUserDnPatternSet(
-			LdapServerInfo server, UserDnPatternSetInfo userDnPatternSet)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void handleRemoveUserDnPatternFromSet(
-			UserDnPatternInfo userDnPattern,
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {
-		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().load(userDnPatternSet.getId());
-		userDnPatternSetEntity.removeUserDnPattern(userDnPatternEntity);
-		getUserDnPatternSetDao().update(userDnPatternSetEntity);		
-	}
-
-	/**
-	 * 
 	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleSaveUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)
 	 * @deprecated no use for it?!
 	 */
@@ -825,18 +588,7 @@ public class LdapConfigurationServiceImpl
 		
 	}
 
-	@Override
-	protected void handleSaveUserDnPatternSet(
-			UserDnPatternSetInfo userDnPatternSet) throws Exception {	
-		UserDnPatternSet userDnPatternSetEntity = getUserDnPatternSetDao().create(userDnPatternSet.getName());
-		List<UserDnPattern> userDnPatternList = new ArrayList<UserDnPattern>();
-		List<Long> idList = userDnPatternSet.getUserDnPatternIds();
-		for (Iterator<Long> iterator = idList.iterator(); iterator.hasNext();) {
-			userDnPatternList.add(getUserDnPatternDao().load(iterator.next()));
-		}
-		userDnPatternSetEntity.setUserDnPatterns(userDnPatternList);
-		getUserDnPatternSetDao().update(userDnPatternSetEntity);
-	}
+	
 
 
 }

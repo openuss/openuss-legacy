@@ -20,9 +20,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	private AuthenticationDomainDao authenticationDomainDao;
 	private RoleAttributeKeyDao roleAttributeKeyDao;
-	private RoleAttributeKeySetDao roleAttributeKeySetDao;
 	private UserDnPatternDao userDnPatternDao;
-	private UserDnPatternSetDao userDnPatternSetDao;
 	private LdapServerDao ldapServerDao;
 	private AttributeMappingDao attributeMappingDao;
 	private LdapConfigurationService service;
@@ -36,16 +34,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(roleAttributeKeyDao);
 	}
 	
-	public void testRoleAttributeKeySetDaoInjection() {
-		assertNotNull(roleAttributeKeySetDao);
-	}
-	
 	public void testUserDnPatternDaoInjection() {
 		assertNotNull(userDnPatternDao);
-	}
-	
-	public void testUserDnPatternSetDaoInjection() {
-		assertNotNull(userDnPatternSetDao);
 	}
 	
 	public void testLdapServerDaoInjection() {
@@ -88,7 +78,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		return userDnPatternSet;
 	}
 	
-	private LdapServerInfo createLdapServerInfoDummy(AuthenticationDomainInfo domain, UserDnPatternSetInfo patternSet) {
+	private LdapServerInfo createLdapServerInfoDummy(AuthenticationDomainInfo domain) {
 		LdapServerInfo ldapServer = new LdapServerInfo();
 		ldapServer.setProviderUrl("ldap://wwusv1.uni-muenster.de");
 		ldapServer.setPort(389);
@@ -101,7 +91,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		ldapServer.setManagerPassword("hidden");
 		ldapServer.setUseLdapContext(true);
 		ldapServer.setAuthenticationDomainId(domain.getId());
-		ldapServer.setUserDnPatternSetId(patternSet.getId());
 		
 		return ldapServer;
 	}
@@ -113,18 +102,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		return key;
 	}
 	
-	private RoleAttributeKeySetInfo createRoleAttributeKeySetInfoDummy(RoleAttributeKeyInfo key) {
-		RoleAttributeKeySetInfo set = new RoleAttributeKeySetInfo();
-		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
-		roleAttributeKeyIds.add(key.getId());
-		
-		set.setName(testUtility.unique("test key set"));
-		set.setRoleAttributeKeyIds(roleAttributeKeyIds);
-		
-		return set;
-	}
-	
-	private AttributeMappingInfo createAttributeMappingInfoDummy(RoleAttributeKeySetInfo set) {
+	private AttributeMappingInfo createAttributeMappingInfoDummy() {
 		AttributeMappingInfo mapping = new AttributeMappingInfo();
 		mapping.setMappingName(testUtility.unique("Mapping Test"));
 		mapping.setEmailKey("mail");
@@ -132,7 +110,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		mapping.setGroupRoleAttributeKey("CN");
 		mapping.setLastNameKey("SN");
 		mapping.setUsernameKey("CN");
-		mapping.setRoleAttributeKeySetId(set.getId());
 		
 		return mapping;
 	}
@@ -155,26 +132,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		patternInfo = service.createUserDnPattern(patternInfo);		
 		assertNotNull(patternInfo.getId());
-	}
-	
-	
-	/*
-	 * Tests creation and manipulation of UserDnPatternSet/Info objects
-	 */
-	public void testCreateUserDnPatternSet() {
-		service = getLdapConfigurationService();
-		
-		UserDnPatternInfo patternInfo = createUserDnPatternInfoDummy();		
-		patternInfo = service.createUserDnPattern(patternInfo);
-		
-		UserDnPatternSetInfo patternSet = createUserDnPatternSetInfoDummy(patternInfo);
-		assertNotNull(patternInfo.getId());
-		
-		assertNotNull(patternSet);
-		assertNull(patternSet.getId());
-		
-		patternSet = service.createUserDnPatternSet(patternSet);		
-		assertNotNull(patternSet.getId());
 	}
 	
 	
@@ -245,16 +202,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		UserDnPatternInfo pattern = service.createUserDnPattern(createUserDnPatternInfoDummy());
 		UserDnPatternInfo pattern2 = service.createUserDnPattern(createUserDnPatternInfoDummy());
-		UserDnPatternSetInfo set = service.createUserDnPatternSet(createUserDnPatternSetInfoDummy(pattern));
-		UserDnPatternSetInfo set2 = service.createUserDnPatternSet(createUserDnPatternSetInfoDummy(pattern));
-		UserDnPatternSetInfo set3 = service.createUserDnPatternSet(createUserDnPatternSetInfoDummy(pattern2));
 		
-		LdapServerInfo server = service.createLdapServer(createLdapServerInfoDummy(domain, set));
-		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain2, set));
-		LdapServerInfo server3 = service.createLdapServer(createLdapServerInfoDummy(domain, set2));
-		
-
-		assertNotNull(server.getUserDnPatternSetId());
+		LdapServerInfo server = service.createLdapServer(createLdapServerInfoDummy(domain));
+		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain2));
+		LdapServerInfo server3 = service.createLdapServer(createLdapServerInfoDummy(domain));
 		
 		List<AuthenticationDomainInfo> allDomains = service.getAllDomains();
 		List<LdapServerInfo> allServers = service.getAllLdapServers(); 
@@ -298,8 +249,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(1 == allServers2.size());
 		assertTrue(0 == allServers3.size());
 		
-		service.deleteUserDnPatternSet(set2);
-		
 		allDomains = service.getAllDomains();
 		allServers = service.getAllLdapServers(); 
 		allServers1 = service.getLdapServersByDomain(domain);
@@ -312,7 +261,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(1 == allServers2.size());
 		assertTrue(0 == allServers3.size());
 		
-		service.deleteUserDnPatternSet(set);
 		
 		allDomains = service.getAllDomains();
 		allServers = service.getAllLdapServers(); 
@@ -356,7 +304,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		pattern = service.createUserDnPattern(pattern);
 		
 		UserDnPatternSetInfo patternSet = createUserDnPatternSetInfoDummy(pattern);
-		patternSet = service.createUserDnPatternSet(patternSet);
 		
 		AuthenticationDomainInfo domain = createAuthenticationDomainInfoDummy();
 		domain = service.createDomain(domain);
@@ -365,7 +312,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		
 		// create info object
-		LdapServerInfo server = createLdapServerInfoDummy(domain, patternSet);
+		LdapServerInfo server = createLdapServerInfoDummy(domain);
 		assertNotNull(server);
 		assertNull(server.getId());
 		
@@ -381,7 +328,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		server.setManagerPassword("hidden");
 		server.setUseLdapContext(true);
 		server.setAuthenticationDomainId(domain.getId());
-		server.setUserDnPatternSetId(patternSet.getId());
 		
 		// test values
 		assertTrue("ldap://wwusv1.uni-muenster.de" == server.getProviderUrl());
@@ -394,7 +340,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue("hidden" == server.getManagerPassword());
 		assertTrue(true == server.getUseLdapContext());
 		assertNotNull(server.getAuthenticationDomainId());
-		assertNotNull(server.getUserDnPatternSetId());
 		
 		// save info object to DB
 		server = service.createLdapServer(server);
@@ -485,11 +430,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		AuthenticationDomainInfo domain2 = service.createDomain(createAuthenticationDomainInfoDummy());
 		
 		UserDnPatternInfo pattern = service.createUserDnPattern(createUserDnPatternInfoDummy());	
-		UserDnPatternSetInfo set = service.createUserDnPatternSet(createUserDnPatternSetInfoDummy(pattern));
 		
-		LdapServerInfo server1 = service.createLdapServer(createLdapServerInfoDummy(domain1, set));
-		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain1, set));
-		LdapServerInfo server3 = service.createLdapServer(createLdapServerInfoDummy(domain2, set));
+		LdapServerInfo server1 = service.createLdapServer(createLdapServerInfoDummy(domain1));
+		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain1));
+		LdapServerInfo server3 = service.createLdapServer(createLdapServerInfoDummy(domain2));
 		
 		List<LdapServerInfo> servers = service.getAllLdapServers();
 		int s = servers.size();
@@ -547,33 +491,6 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	
 	
 	
-	/*
-	 * Tests creation and manipulation of RoleAttributeKeySet/Info objects
-	 */
-	public void testCreateRoleAttributeKeySet() {
-		service = getLdapConfigurationService();
-		
-		// create value object
-		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
-		key = service.createRoleAttributeKey(key);
-		RoleAttributeKeySetInfo set = createRoleAttributeKeySetInfoDummy(key);
-		assertNotNull(set);
-		assertNull(set.getId());
-		
-		// save value object to DB
-		set = service.createRoleAttributeKeySet(set);
-		assertNotNull(set.getId());
-		
-		// set new value
-		set.setName(null);
-		try {
-			service.saveRoleAttributeKeySet(set);
-			fail("Should have raised an LdapConfigurationServiceException: name new attribute key set must not be empty!");
-		} catch (LdapConfigurationServiceException expected) {
-		}
-	}
-	
-	
 	
 	/*
 	 * Tests creation and manipulation of AttributeMapping/Info objects
@@ -584,10 +501,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		RoleAttributeKeyInfo key = createRoleAttributeKeyInfoDummy();
 		key = service.createRoleAttributeKey(key);
 		
-		RoleAttributeKeySetInfo set = createRoleAttributeKeySetInfoDummy(key);
-		set = service.createRoleAttributeKeySet(set);
-		
-		AttributeMappingInfo mapping = createAttributeMappingInfoDummy(set);
+		AttributeMappingInfo mapping = createAttributeMappingInfoDummy();
 		assertNotNull(mapping);
 		assertNull(mapping.getId());
 		
@@ -865,19 +779,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	}
 
 
-	public void setRoleAttributeKeySetDao(
-			RoleAttributeKeySetDao roleAttributeKeySetDao) {
-		this.roleAttributeKeySetDao = roleAttributeKeySetDao;
-	}
-
-
 	public void setUserDnPatternDao(UserDnPatternDao userDnPatternDao) {
 		this.userDnPatternDao = userDnPatternDao;
-	}
-
-
-	public void setUserDPatternSetDao(UserDnPatternSetDao userDnPatternSetDao) {
-		this.userDnPatternSetDao = userDnPatternSetDao;
 	}
 
 	public void setLdapServerDao(LdapServerDao ldapServerDao) {

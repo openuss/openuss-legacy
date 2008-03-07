@@ -27,7 +27,7 @@ public class AttributeMappingDaoImpl
     public org.openuss.security.ldap.AttributeMappingInfo toAttributeMappingInfo(final org.openuss.security.ldap.AttributeMapping entity) {
     	
     	AttributeMappingInfo attributeMappingInfo = super.toAttributeMappingInfo(entity);
-    	attributeMappingInfo.setRoleAttributeKeySetId(entity.getRoleAttributeKeySet().getId());
+//    	attributeMappingInfo.setRoleAttributeKeySetId(entity.getRoleAttributeKeySet().getId());
     	return attributeMappingInfo;
     }
 

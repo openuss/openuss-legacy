@@ -17,9 +17,7 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 	
 	private AuthenticationDomainDao authenticationDomainDao;
 	private RoleAttributeKeyDao roleAttributeKeyDao;
-	private RoleAttributeKeySetDao roleAttributeKeySetDao;
 	private UserDnPatternDao userDnPatternDao;
-	private UserDnPatternSetDao userDnPatternSetDao;
 	private LdapServerDao ldapServerDao;
 	
 	
@@ -32,16 +30,8 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 		assertNotNull(roleAttributeKeyDao);
 	}
 	
-	public void testRoleAttributeKeySetDaoInjection() {
-		assertNotNull(roleAttributeKeySetDao);
-	}
-	
 	public void testUserDnPatternDaoInjection() {
 		assertNotNull(userDnPatternDao);
-	}
-	
-	public void testUserDnPatternSetDaoInjection() {
-		assertNotNull(userDnPatternSetDao);
 	}
 	
 	public void testLdapServerDaoInjection() {
@@ -57,13 +47,6 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 		List<RoleAttributeKey> roleAttributeKeys = new ArrayList<RoleAttributeKey>();
 		roleAttributeKeys.add(roleAttributeKey);
 		
-		RoleAttributeKeySet roleAttributeKeySet = RoleAttributeKeySet.Factory.newInstance();
-		roleAttributeKeySet.setName("role attribute key set test");
-		roleAttributeKeySet.setRoleAttributeKeys(roleAttributeKeys);
-		
-		assertNull(roleAttributeKeySet.getId());
-		roleAttributeKeySetDao.create(roleAttributeKeySet);
-		assertNotNull(roleAttributeKeySet.getId());
 	
 		
 //		create attribute mapping object
@@ -75,7 +58,6 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 		attributeMapping.setEmailKey("mail");
 		attributeMapping.setGroupRoleAttributeKey("CN");		
 //		attributeMapping.setAuthenticationDomains(authenticationDomains);
-		attributeMapping.setRoleAttributeKeySet(roleAttributeKeySet);
 		
 		assertNull(attributeMapping.getId());
 		attributeMappingDao.create(attributeMapping);
@@ -95,19 +77,8 @@ public class AttributeMappingDaoTest extends AttributeMappingDaoTestBase {
 	}
 
 
-	public void setRoleAttributeKeySetDao(
-			RoleAttributeKeySetDao roleAttributeKeySetDao) {
-		this.roleAttributeKeySetDao = roleAttributeKeySetDao;
-	}
-
-
 	public void setUserDnPatternDao(UserDnPatternDao userDnPatternDao) {
 		this.userDnPatternDao = userDnPatternDao;
-	}
-
-
-	public void setUserDPatternSetDao(UserDnPatternSetDao userDnPatternSetDao) {
-		this.userDnPatternSetDao = userDnPatternSetDao;
 	}
 
 
