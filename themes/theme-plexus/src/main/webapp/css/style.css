@@ -585,6 +585,11 @@ ul.navigation li ul li ul li.active_item a:hover {
 	width: 170px;
 }
 
+p.search_type {
+	font-size: 7pt;
+	color: #aaaaaa;	
+}
+
 #right .header_normal_left_bg {
 	float: left;
 	width: 9px;

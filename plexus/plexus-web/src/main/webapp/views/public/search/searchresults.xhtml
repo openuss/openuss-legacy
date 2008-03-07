@@ -19,15 +19,20 @@
 			infoText="#{msg.table_info_text_results}">
 			<t:column rendered="#{result.domainType == 'university'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/university.png" alt="#{result.name}" title="#{result.name}" />
+				<p class="search_type">#{msg['university']}</p>
 			</t:column>
 			<t:column rendered="#{result.domainType == 'department'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/department.png" alt="#{result.name}" title="#{result.name}" />
+				<p class="search_type">#{msg['department']}</p>
 			</t:column>
 			<t:column rendered="#{result.domainType == 'institute'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/institute.png" alt="#{result.name}" title="#{result.name}" />
+				<p class="search_type">#{msg['institute']}</p>
 			</t:column>
 			<t:column rendered="#{result.domainType == 'course'}" styleClass="col_min_center">
 				<img src="#{theme.imagesPath}/course.png" alt="#{result.name}" title="#{result.name}" />
+				<p class="search_type">#{msg['course_coursetype_name']}</p>
+				
 			</t:column>
 			<t:column  styleClass="col_max_left">
 				<div class="institute_info">
