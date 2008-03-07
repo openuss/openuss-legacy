@@ -15,6 +15,7 @@
 		rendered="#{not empty views$secured$groups$components$main.appointments}"
 		layout="unorderedList" rowCountVar="saRowCount" rowIndexVar="saIndex">
 		<p class="content_font_normal">
+		<o:microformatCalendar appointmentInfo="#{serialapp}"/>
 		<h:outputText value="#{serialapp.subject}" styleClass="header_font_appointment"/>
 		<br />
 		<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: " />

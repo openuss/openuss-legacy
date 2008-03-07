@@ -79,5 +79,10 @@
 		<tag-name>breadCrumb</tag-name>
 		<source>../facelets/breadCrumb.xhtml</source>
 	</tag>
+	
+	<tag>
+		<tag-name>microformatCalendar</tag-name>
+		<source>../facelets/microformatCalendar.xhtml</source>
+	</tag>
 
 </facelet-taglib>

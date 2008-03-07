@@ -31,6 +31,7 @@
 					<h:outputText value="#{serialAppointment.description}"
 						styleClass="content_font_normal" />
 				</h:commandLink>
+					<o:microformatCalendar appointmentInfo="#{serialAppointment}"/>
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_first_occurence}</plexus:commandSortHeader>
@@ -130,6 +131,7 @@
 					<h:outputText value="#{singleAppointment.description}"
 						styleClass="content_font_normal" />
 				</h:commandLink>
+					<o:microformatCalendar appointmentInfo="#{singleAppointment}"/>
 			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>

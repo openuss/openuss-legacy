@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core">
+<ui:composition>
+	<f:loadBundle basename="lang/jsfControls" var="lang_jsfControls" />
+	<div id="hcalendar" class="vevent" style="display: none">
+	<abbr title="${appointmentInfo.starttime}" class="dtstart"><ui:insert /></abbr> 
+	<abbr title="${appointmentInfo.endtime}" class="dtend"><ui:insert /></abbr>
+	<span class="summary"><h:outputText value="${appointmentInfo.subject}"><ui:insert /></h:outputText></span> 
+	<span class="location"><h:outputText value="${appointmentInfo.location}"><ui:insert /></h:outputText></span> 
+	<c:if test="${not empty appointmentInfo.description}"><ui:insert />
+		<div class="description"><h:outputText value="${appointmentInfo.description}"><ui:insert /></h:outputText></div>
+	</c:if>
+	</div>
+</ui:composition>
+</html>

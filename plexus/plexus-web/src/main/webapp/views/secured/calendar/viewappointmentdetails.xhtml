@@ -39,22 +39,10 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="view_details">
-			<!-- start of hcalendar -->
-			
-			
 			<c:if
 				test="#{not views$secured$calendar$viewappointmentdetails.serial}">
-			<div id="hcalendar" class="vevent" style="display: none">
-			<abbr title="#{appointmentInfo.starttime}" class="dtstart"/>
-			<abbr title="#{appointmentInfo.endtime}" class="dtend"/>
-			<span class="summary">#{appointmentInfo.subject}</span>
-			<span class="location">#{appointmentInfo.location}</span>
-			<c:if test="#{not empty appointmentInfo.description}"><div class="description">#{appointmentInfo.description}</div></c:if>
-			</div>
+			<o:microformatCalendar appointmentInfo="#{appointmentInfo}"/>
 			</c:if>
-			
-			
-			<!-- end of hcalendar -->
 			<o:block label="#{appointmentInfo.subject}" styleClass="content_box">
 				<c:if test="#{not empty appointmentInfo.description}">
 					<p class="content_font_normal"><h:outputText
@@ -137,6 +125,7 @@
 					<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 					<h:outputText value="#{singleAppointment.subject}"
 						styleClass="header_font_normal" />
+					<o:microformatCalendar appointmentInfo="#{singleAppointment}"/>
 				</t:column>
 				<t:column styleClass="col_max_left">
 					<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>

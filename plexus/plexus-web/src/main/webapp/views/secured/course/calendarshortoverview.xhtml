@@ -14,6 +14,8 @@
 		value="#{views$secured$course$main.appointments}"
 		rendered="#{not empty views$secured$course$main.appointments}"
 		layout="unorderedList" rowCountVar="saRowCount" rowIndexVar="saIndex">
+		
+		<o:microformatCalendar appointmentInfo="#{serialapp}"/>
 		<h:outputText value="#{serialapp.subject}" />
 		<br />
 		<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: " />
