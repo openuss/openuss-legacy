@@ -67,9 +67,9 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		BreadCrumb newCrumb;
 		
 		newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("course_command_options_news"));
-		newCrumb.setHint(i18n("course_command_options_news"));
-		newCrumb.setLink(PageLinks.COURSE_NEWS);
+		newCrumb.setName(i18n("group_command_news"));
+		newCrumb.setHint(i18n("group_command_news"));
+		newCrumb.setLink(PageLinks.GROUP_NEWS);
 		breadcrumbs.addCrumb(newCrumb);
 		
 		newCrumb = new BreadCrumb();

@@ -113,7 +113,7 @@ public class GroupNewsPage extends AbstractGroupPage {
 	}
 
 	public List<NewsItem> getNewsItems() {
-		logger.debug("getting newsitems for course " + groupInfo);
+		logger.debug("getting newsitems for group " + groupInfo);
 		return newsService.getNewsItems(groupInfo);
 	}
 

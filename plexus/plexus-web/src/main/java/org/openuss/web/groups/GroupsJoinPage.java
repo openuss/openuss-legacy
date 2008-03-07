@@ -79,12 +79,8 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 	private List<UserGroupInfo> getGroups() {
 		if (groups == null) {
 			groups = groupService.getAllGroups();
-			logger.debug("ALL GROUPS: " + groups.size() + ", " + groups);
 			List<UserGroupInfo> userGroups = groupService.getGroupsByUser(user
 					.getId());
-			logger.debug("USER GROUPS: "
-					+ groupService.getGroupsByUser(user.getId()).size() + ", "
-					+ groupService.getGroupsByUser(user.getId()));
 			groups.removeAll(userGroups);
 			for (UserGroupInfo group : groups) {
 				logger.debug("Gruppe Creator: " + group.getCreator() + " - "

@@ -47,7 +47,7 @@ public class AbstractGroupPage extends BasePage {
 			setSessionAttribute(Constants.CALENDAR_INFO, calendarInfo);
 		}
 		if (groupInfo == null) {
-			addError(i18n("group_page not found!"));
+			addError(i18n("group_page_not_found"));
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
