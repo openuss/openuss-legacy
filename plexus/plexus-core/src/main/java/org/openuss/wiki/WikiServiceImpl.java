@@ -353,6 +353,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		final List<CourseInfo> assistantCourses = new LinkedList<CourseInfo>();
 
 		for (CourseInfo availableCourse : availableCourses) {
+			// FIXME: replace by group. don't know how...
 			final List<CourseMemberInfo> assistants = getCourseService().getAssistants(availableCourse);
 			for (CourseMemberInfo assistant : assistants) {
 				if (assistant.getUserId().equals(user.getId())) {
