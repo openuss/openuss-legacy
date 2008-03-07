@@ -8,9 +8,7 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopInfo;
@@ -18,15 +16,10 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
-import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.User;
-import org.openuss.seminarpool.SeminarpoolAdministrationService;
-import org.openuss.seminarpool.SeminarpoolInfo;
-import org.openuss.web.BasePage;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -36,21 +29,9 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$seminarpool$seminarpooladmins", scope = Scope.REQUEST)
 @View
-public class SeminarpoolAdminsPage extends BasePage {
+public class SeminarpoolAdminsPage extends AbstractSeminarpoolPage {
 
 	private static final Logger logger = Logger.getLogger(SeminarpoolAdminsPage.class);
-
-	@Property(value = "#{securityService}")
-	private SecurityService securityService;
-
-	@Property(value = "#{organisationService}")
-	private OrganisationService organisationService;
-	
-	@Property(value = "#{seminarpoolInfo}")
-	protected SeminarpoolInfo seminarpoolInfo;
-	
-	@Property(value = "#{seminarpoolAdministrationService}")
-	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 
 	private MembersTable members = new MembersTable();
 
@@ -59,52 +40,15 @@ public class SeminarpoolAdminsPage extends BasePage {
 	private List<GroupItem> seminarpoolGroups;
 	
 
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
-		if (seminarpoolInfo != null) {
-			if (seminarpoolInfo.getId() != null) {
-				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
-			} else {
-				seminarpoolInfo = (SeminarpoolInfo) getSessionBean(Constants.SEMINARPOOL_INFO);
-			}
-		}
-
-		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-//FIXME		getdepartmentGroups();
-		
-	}
 	@Prerender
-	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing seminarpool session object");
-		refreshSeminarpool();
-		if (seminarpoolInfo == null || seminarpoolInfo.getId() == null) {
-			addError(i18n("message_error_no_department_selected"));
-			redirect(Constants.DESKTOP);
-		}
-		addPageCrumb();
+	public void prerender() throws Exception {
+		super.prerender();
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setLink("");
+		newCrumb.setName(i18n("seminarpool_command_options_seminarpooladmins"));
+		newCrumb.setHint(i18n("seminarpool_command_options_seminarpooladmins"));		
+		breadcrumbs.addCrumb(newCrumb);
 		username= null;
-	}
-
-	private void refreshSeminarpool() {
-		logger.debug("Starting method refresh seminarpool");
-		if (seminarpoolInfo != null) {
-			if (seminarpoolInfo.getId() != null) {
-				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
-				setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-			}
-		}
-	}
-	
-	private void addPageCrumb() {
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
-		crumb.setName(i18n("seminarpool_command_options_seminarpooladmins"));
-		crumb.setHint(i18n("seminarpool_command_options_seminarpooladmins"));
-		
-		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
-		breadcrumbs.addCrumb(crumb);
 	}
 	
 	public List<GroupItem> getSeminarpoolGroups() {
@@ -213,7 +157,14 @@ public class SeminarpoolAdminsPage extends BasePage {
 		}
 	}
 
-	/* --------------------- properties -------------------------- */
+
+	public MembersTable getMembers() {
+		return members;
+	}
+
+	public void setMembers(MembersTable members) {
+		this.members = members;
+	}
 
 	public String getUsername() {
 		return username;
@@ -223,42 +174,7 @@ public class SeminarpoolAdminsPage extends BasePage {
 		this.username = username;
 	}
 
-	public SecurityService getSecurityService() {
-		return securityService;
+	public void setSeminarpoolGroups(List<GroupItem> seminarpoolGroups) {
+		this.seminarpoolGroups = seminarpoolGroups;
 	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
-	public OrganisationService getOrganisationService() {
-		return organisationService;
-	}
-
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
-	}
-
-	public MembersTable getMembers() {
-		return members;
-	}
-
-	public void setMembers(MembersTable members) {
-		this.members = members;
-	}
-	public SeminarpoolInfo getSeminarpoolInfo() {
-		return seminarpoolInfo;
-	}
-	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
-		this.seminarpoolInfo = seminarpoolInfo;
-	}
-	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
-		return seminarpoolAdministrationService;
-	}
-	public void setSeminarpoolAdministrationService(
-			SeminarpoolAdministrationService seminarpoolAdministrationService) {
-		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
-	}
-
-
 }

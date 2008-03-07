@@ -277,7 +277,7 @@ public class Constants {
 	// openuss4us constants
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
 	
-	// seminarpool constants and outcomes
+	// seminarpool constants and outcome
 	public static final String SEMINARPOOL_CREATION_CONTROLLER = "seminarpoolRegistration";
 	public static final String SEMINARPOOL_REGISTRATION_STEP1_PAGE = "seminarpool_create_step1";
 	public static final String SEMINARPOOL_REGISTRATION_STEP2_PAGE = "seminarpool_create_step2";
@@ -298,7 +298,7 @@ public class Constants {
 	public static final String SEMINARPOOL_CONFIRM_REMOVE_PAGE = "seminarpool_remove_confirmation";
 
 	public static final String SEMINARPOOL_INFO = "seminarpoolInfo";
-	public static final String COURSESEMINARPOOLALLOCATION_INFO = "courseSeminarpoolAllocationInfo";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_INFO = "courseSeminarpoolAllocationInfo";
 	public static final String SEMINARPOOL = "seminarpool";
 	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";
 	public static final String SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO = "SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO";
@@ -313,6 +313,10 @@ public class Constants {
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE = "seminarpooluserregistration_step1";
 	public static final String SEMINARPOOL_USER_REGISTRATION_STEP2_PAGE = "seminarpooluserregistration_step2";
 	public static final Long SEMINARLIST = -1L;
+	
+	public static final String SEMINARPOOL_PARTICIPANTS_STEP1_PAGE = "seminarpoolParticipantsStep1";
+	public static final String SEMINARPOOL_PARTICIPANTS_STEP2_PAGE = "seminarpoolParticipantsStep2";
+	
 
 
 }

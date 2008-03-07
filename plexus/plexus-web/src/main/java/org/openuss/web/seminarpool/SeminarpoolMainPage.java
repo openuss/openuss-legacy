@@ -1,8 +1,5 @@
 package org.openuss.web.seminarpool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -10,20 +7,10 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
-import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.CourseApplicationException;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.lecture.CourseMemberType;
-import org.openuss.lecture.InstituteService;
-import org.openuss.seminarpool.SeminarpoolAdministrationService;
-import org.openuss.seminarpool.SeminarpoolInfo;
-import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
@@ -34,46 +21,17 @@ import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$seminarpool$main", scope = Scope.REQUEST)
 @View 
-public class SeminarpoolMainPage extends BasePage {
+public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 
-	@Property(value = "#{seminarpoolInfo}")
-	protected SeminarpoolInfo seminarpoolInfo;
-	
-	@Property(value = "#{seminarpoolAdministrationService}")
-	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
-	
 	private static final Logger logger = Logger.getLogger(SeminarpoolMainPage.class);
 
 	private String password;
 
-	private List<CourseMemberInfo> assistants = new ArrayList<CourseMemberInfo>();
-	
-	@Override
 	@Prerender
 	public void prerender() throws Exception {
-//		if (seminarpoolInfo != null) {
-//			assistants = seminarpoolService.getAdmins(seminarpoolInfo);
-//		}
-		
-		if (seminarpoolInfo != null && seminarpoolInfo.getId() != null) {
-			seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
-		}
-		if (seminarpoolInfo == null) {
-			addError(i18n("message_error_seminarpool_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
-			return;
-		} else {
-//remove?			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
-//remove?			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
-			setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-			addBreadCrumbs();
-		}
+		super.prerender();
 	}
 	
-	private void addBreadCrumbs()
-	{	
-		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
-	}
 
 	
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
@@ -83,22 +41,6 @@ public class SeminarpoolMainPage extends BasePage {
 			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
 		}
 	}
-
-/*	public String applyWithPassword() throws CourseApplicationException {
-		logger.debug("course entry with password applied");
-		seminarpoolService.applyUserByPassword(password, seminarpoolInfo, user);
-		addMessage(i18n("message_course_password_accepted"));
-		return Constants.SUCCESS;
-	}
-*/
-	
-/*	public String apply() throws CourseApplicationException {
-		logger.debug("course entry applied");
-		courseService.applyUser(courseInfo, user);
-		addMessage(i18n("message_course_send_application"));
-		return Constants.SUCCESS;
-	}
-*/
 
 	/**
 	 * Returns true, if seminarpool is boookmarked, otherwise false
@@ -145,33 +87,16 @@ public class SeminarpoolMainPage extends BasePage {
 		}
 	}
 
+
+
 	public String getPassword() {
 		return password;
 	}
 
+
+
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<CourseMemberInfo> getAssistants() {
-		return assistants;
-	}
-
-	public SeminarpoolInfo getSeminarpoolInfo() {
-		return seminarpoolInfo;
-	}
-
-	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
-		this.seminarpoolInfo = seminarpoolInfo;
-	}
-
-	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
-		return seminarpoolAdministrationService;
-	}
-
-	public void setSeminarpoolAdministrationService(
-			SeminarpoolAdministrationService seminarpoolAdministrationService) {
-		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
 	}
 
 }

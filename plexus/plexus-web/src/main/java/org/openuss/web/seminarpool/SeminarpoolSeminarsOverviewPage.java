@@ -6,19 +6,18 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.web.BasePage;
 
 
 @Bean(name = "views$secured$seminarpool$seminarpoolseminars", scope = Scope.REQUEST)
 @View
-public class SeminarpoolSeminarsOverviewPage extends BasePage {
+public class SeminarpoolSeminarsOverviewPage extends AbstractSeminarpoolPage {
 	private static final long serialVersionUID = 5069930000478432045L;
 	
 	private static final Logger logger = Logger.getLogger(SeminarpoolSeminarsOverviewPage.class);
 
 	@Prerender
 	public void prerender() throws Exception {
-		breadcrumbs.init();	
+		super.prerender();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("seminarpool_seminars_overview_breadcrumb"));
 		newCrumb.setHint(i18n("seminarpool_seminars_overview_breadcrumb"));

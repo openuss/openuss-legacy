@@ -90,4 +90,10 @@ public class SeminarPriorityDaoImpl
         }
     }
 
+
+	public SeminarPriority seminarPriorityDetailInfoToEntity(
+			SeminarPriorityDetailInfo seminarPriorityDetailInfo) {
+		throw new UnsupportedOperationException();
+	}
+
 }

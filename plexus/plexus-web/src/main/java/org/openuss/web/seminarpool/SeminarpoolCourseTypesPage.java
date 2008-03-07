@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.seminarpool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,60 +9,39 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
-import org.openuss.seminarpool.SeminarpoolAdministrationService;
-import org.openuss.seminarpool.SeminarpoolInfo;
 import org.openuss.web.Constants;
 
-/**
- * CourseType Administration Page
- * @author Ingo Düppe
- * @author Kai Stettner
- */
-@Bean(name = "views$secured$lecture$seminarpoolcoursetypes", scope = Scope.REQUEST)
+
+@Bean(name = "views$secured$seminarpool$seminarpoolcoursetypes", scope = Scope.REQUEST)
 @View
-public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
+public class SeminarpoolCourseTypesPage extends AbstractSeminarpoolPage {
 
 	public static final Logger logger = Logger.getLogger(SeminarpoolCourseTypesPage.class);
 
 	private LocalDataModelCourseTypes dataCourseTypes = new LocalDataModelCourseTypes();
 	
-	@Property(value = "#{seminarpoolAdministrationService}")
-	private SeminarpoolAdministrationService seminarpoolAdministrationService;
-
-	/** currently editing course type */
-	private Boolean editing = false;
-
+	private boolean editing = false;
+	
 	/** course type info */
-	@Property(value="#{"+Constants.COURSESEMINARPOOLALLOCATION_INFO+"}")
+	@Property(value="#{"+Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO+"}")
 	private CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo;
 	
-	@Property(value="#{"+Constants.SEMINARPOOL_INFO+"}")
-	private SeminarpoolInfo seminarpoolInfo;
-
 	@Prerender
-	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
-		addPageCrumbs();
-	}
-
-	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
 		crumb.setName(i18n("coursetype_coursetypestable_header"));
 		crumb.setHint(i18n("coursetype_coursetypestable_header"));
-
-		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
+
 
 	/**
 	 * Creates a new CourseSeminarpoolAllocationInfo object and sets it into session scope
@@ -72,7 +51,7 @@ public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
 	public String addCourseType() {
 		editing = true;
 		courseSeminarpoolAllocationInfo = new CourseSeminarpoolAllocationInfo();
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseSeminarpoolAllocationInfo);
+		setSessionBean(Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO, courseSeminarpoolAllocationInfo);
 		return Constants.SUCCESS;
 	}
 
@@ -101,8 +80,6 @@ public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
 		return Constants.SEMINARPOOL_COURSE_GROUPS_EDIT;
 	}
 
-	
-
 	/**
 	 * Cancels editing or adding of current courseType
 	 * 
@@ -120,21 +97,12 @@ public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
 		return courseType;
 	}
 
-	/**
-	 * Store the selected course type into session scope and go to course type
-	 * remove confirmation page. remove view
-	 * 
-	 * @return outcome
-	 */
 	public String selectSeminarAndConfirmRemove() {
 		logger.debug("Starting method selectSeminarAndConfirmRemove");
 		CourseSeminarpoolAllocationInfo currentCourseType = currentCourseType();
 		logger.debug("Returning to method selectSeminarAndConfirmRemove");
 		logger.debug(currentCourseType.getId());
 		this.seminarpoolAdministrationService.removeSeminar(currentCourseType);
-		//setSessionBean(Constants.COURSE_TYPE_INFO, currentCourseType);
-		
-		//return Constants.COURSE_TYPE_CONFIRM_REMOVE_PAGE;
 		return "";
 
 	}
@@ -165,38 +133,23 @@ public class SeminarpoolCourseTypesPage extends AbstractLecturePage {
 
 	}
 
-	public Boolean getEditing() {
+	public boolean isEditing() {
 		return editing;
 	}
 
-	public void setEditing(Boolean editing) {
+
+	public void setEditing(boolean editing) {
 		this.editing = editing;
 	}
+
 
 	public CourseSeminarpoolAllocationInfo getCourseSeminarpoolAllocationInfo() {
 		return courseSeminarpoolAllocationInfo;
 	}
 
-	public void setCourseSeminarpoolAllocationInfo(CourseSeminarpoolAllocationInfo courseTypeInfo) {
-		this.courseSeminarpoolAllocationInfo = courseTypeInfo;
+
+	public void setCourseSeminarpoolAllocationInfo(
+			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo) {
+		this.courseSeminarpoolAllocationInfo = courseSeminarpoolAllocationInfo;
 	}
-
-	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
-		return seminarpoolAdministrationService;
-	}
-
-	public void setSeminarpoolAdministrationService(
-			SeminarpoolAdministrationService seminarpoolAdministrationService) {
-		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
-	}
-
-	public SeminarpoolInfo getSeminarpoolInfo() {
-		return seminarpoolInfo;
-	}
-
-	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
-		this.seminarpoolInfo = seminarpoolInfo;
-	}
-
-
 }

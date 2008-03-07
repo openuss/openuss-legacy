@@ -12,7 +12,7 @@
      <plexus:dataTable   
      	id="courseTypes" 
      	label="#{msg['coursetype_coursetypestable_header']}" 
-     	value="views$secured$lecture$seminarpoolcoursetypes.dataCourseTypes" 
+     	value="views$secured$seminarpool$seminarpoolcoursetypes.dataCourseTypes" 
      	columnClasses="col_max_left, col_commands"
      	var="bean" 
      	rows="20">  
@@ -23,9 +23,10 @@
 				<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
 				<b><h:outputText value="#{bean.courseName} (#{bean.courseShortcut})"/></b>
 			</o:link>
-			<s:authorize ifAllGranted="ROLE_USER">
+			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<s:acl domainObject="#{bean}" hasPermission="#{ACL.GCRUD}">
-					<h:commandLink action="#{views$secured$lecture$seminarpoolcoursetypes.loadCourseGroups}">
+					<h:commandLink action="#{views$secured$seminarpool$seminarpoolcoursetypes.loadCourseGroups}">
 						<h:outputText value="#{msg.seminarpool_edit_course_allocation_edit}"/>
 					</h:commandLink>
 				</s:acl>
@@ -44,7 +45,7 @@
 		<plexus:column header="#{msg.commands_header}">
 			 
 			<plexus:command 
-				bean="#{views$secured$lecture$seminarpoolcoursetypes}"
+				bean="#{views$secured$seminarpool$seminarpoolcoursetypes}"
 				action="activateSeminar"
 				label="#{msg.seminarpoolseminar_command_activate}"
 				hint="#{msg.seminarpoolseminar_command_activate_hint}"
@@ -52,7 +53,7 @@
 			</plexus:command>
 				
 			<plexus:command   
-				bean="#{views$secured$lecture$seminarpoolcoursetypes}"
+				bean="#{views$secured$seminarpool$seminarpoolcoursetypes}"
 				action="selectSeminarAndConfirmRemove"
 				onclick="if (!confirm('#{msg.seminarpoolseminar_remove_confirmation}')) return false"
 				label="#{msg.seminarpoolseminar_command_remove}"

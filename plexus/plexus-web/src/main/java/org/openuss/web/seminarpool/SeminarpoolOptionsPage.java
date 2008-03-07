@@ -1,10 +1,8 @@
 package org.openuss.web.seminarpool;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -14,23 +12,11 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.documents.DocumentApplicationException;
-import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.ApplicationInfo;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.security.Roles;
-import org.openuss.security.SecurityService;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.seminarpool.SeminarpoolAccessType;
-import org.openuss.seminarpool.SeminarpoolInfo;
-import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.web.Constants;
-import org.openuss.web.BasePage;
 
 
 /**
@@ -40,56 +26,25 @@ import org.openuss.web.BasePage;
 
 @Bean(name = "views$secured$seminarpool$seminarpooloptions", scope = Scope.REQUEST)
 @View 
-public class SeminarpoolOptionsPage extends BasePage {
+public class SeminarpoolOptionsPage extends AbstractSeminarpoolPage {
 	
 	private static final long serialVersionUID = -202776319652385870L;
 	private static final Logger logger = Logger.getLogger(SeminarpoolOptionsPage.class);
 	
-	@Property(value = "#{securityService}")
-	private SecurityService securityService;
-
-	private Long universityId;
-//	private Integer accessType; 
-	
-	@Property(value = "#{seminarpoolInfo}")
-	protected SeminarpoolInfo seminarpoolInfo;
-	
-	@Property(value = "#{seminarpoolAdministrationService}")
-	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
-	
 	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
 
+	private Long universityId;
+
 	@Prerender
 	public void prerender() throws Exception {
-		if (seminarpoolInfo == null) {
-			seminarpoolInfo = (SeminarpoolInfo) getSessionBean(Constants.SEMINARPOOL);
-		}
-		if (seminarpoolInfo == null) {
-			addMessage(i18n("message_error_seminarpool_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
-		} else {
-			if (!isPostBack()) {
-				logger.debug("---------- is not postback ---------- refreshing seminarpool");
-// ??				super.prerender();
-			} else {
-				breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
-			}
-		}
-		setSessionBean(Constants.SEMINARPOOL, seminarpoolInfo);
-		addPageCrumb();
-	}
-
-	private void addPageCrumb() {
+		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
 		crumb.setName(i18n("seminarpool_command_options_config"));
 		crumb.setHint(i18n("seminarpool_command_options_config"));
-
-		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-
 
 	/**
 	 * Save seminarpool options.
@@ -157,54 +112,6 @@ public class SeminarpoolOptionsPage extends BasePage {
 		}
 	}
 
-	/**
-	 * Store the selected seminarpool into session scope and go to seminarpool
-	 * disable confirmation page.
-	 * 
-	 * @return Outcome
-	 *
-	public String selectInstituteAndConfirmDisable() {
-		logger.debug("Starting method selectSeminarpoolAndConfirmDisable");
-		logger.debug(seminarpoolInfo.getId());
-		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-
-		return Constants.SEMINARPOOL_CONFIRM_DISABLE_PAGE;
-	}
-*/
-
-	public SecurityService getSecurityService() {
-		return securityService;
-	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
-	public void setUniversityId(Long universityId) {
-		this.universityId = universityId;
-	}
-	
-	public Long getUniversityId() {
-		return universityId;
-	}
-
-	public SeminarpoolInfo getSeminarpoolInfo() {
-		return seminarpoolInfo;
-	}
-
-	public void setSeminarpoolInfo(SeminarpoolInfo seminarpoolInfo) {
-		this.seminarpoolInfo = seminarpoolInfo;
-	}
-
-	public SeminarpoolAdministrationService getSeminarpoolAdministrationService() {
-		return seminarpoolAdministrationService;
-	}
-
-	public void setSeminarpoolAdministrationService(
-			SeminarpoolAdministrationService seminarpoolAdministrationService) {
-		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
-	}
-
 	public UniversityService getUniversityService() {
 		return universityService;
 	}
@@ -212,15 +119,12 @@ public class SeminarpoolOptionsPage extends BasePage {
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
 	}
-	
 
-/*	public Integer getAccessType() {
-		return accessType;
+	public Long getUniversityId() {
+		return universityId;
 	}
-	
 
-	public void setAccessType(Integer accessType) {
-		this.accessType = accessType;
+	public void setUniversityId(Long universityId) {
+		this.universityId = universityId;
 	}
-*/
 }
