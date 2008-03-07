@@ -1,6 +1,7 @@
 package org.openuss.web.dav.backends;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class MyUniResource extends SimpleWebDAVResource{
 	
 	protected MyUniResource(WebApplicationContext wac, WebDAVPath path, long id) {
 		super(wac, path, id);
+		
+		desktopService = (DesktopService2)getWAC().getResource("desktopService2");
 	}
 
 	protected DesktopService2 desktopService;
@@ -43,9 +46,6 @@ public class MyUniResource extends SimpleWebDAVResource{
 	@Override
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
 		WebApplicationContext context = getWAC();
-		if (desktopService == null) {
-			desktopService = (DesktopService2)context.getResource("desktopService2");
-		}
 		if (desktopInfo == null) {
 			try {
 				desktopInfo = desktopService.findDesktopByUser(((User)(context.getResource(Constants.USER))).getId());
@@ -151,9 +151,6 @@ public class MyUniResource extends SimpleWebDAVResource{
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long, String> childNames = new HashMap<Long, String>();
 		WebApplicationContext context = getWAC();
-		if (desktopService == null) {
-			desktopService = (DesktopService2)context.getResource("desktopService2");
-		}
 		if (desktopInfo == null){
 			try {
 				desktopInfo = desktopService.findDesktopByUser(((User)(context.getResource(Constants.USER))).getId());
@@ -213,17 +210,21 @@ public class MyUniResource extends SimpleWebDAVResource{
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#readContentImpl()
+	 */
 	@Override
 	protected IOContext readContentImpl() throws WebDAVResourceException,
 			IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return readCollectionContent();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#simpleGetProperties(java.util.Set)
+	 */
 	@Override
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyMap();
 	}
 
 	/* (non-Javadoc)
