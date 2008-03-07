@@ -32,12 +32,11 @@
 		</t:column>
 		
 		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="#{views$secured$groups$groups}"
-				action="leaveGroup"
-				label="#{msg['openuss4us_group_leave']}"
+			<h:commandLink
+				action="#{views$secured$groups$groups.leaveGroup}"
 				title="#{msg['openuss4us_group_leave_hint']}"
-				styleClass="icon_remove" />
+				class="icon_leavegroup" />
+			
 		</plexus:column>
 		
 	</plexus:dataTable>      

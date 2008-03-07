@@ -33,18 +33,18 @@
 		</t:column>
 
 		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="#{views$secured$groups$components$groupaspirants}"
-				action="accept"
-				label="#{msg['group_aspirants_accept']}"
+			
+			<h:commandLink
+				action="#{views$secured$groups$components$groupaspirants.accept}"
 				title="#{msg['group_aspirants_accept_hint']}"
-				styleClass="button" />
-			<plexus:command 
-				bean="#{views$secured$groups$components$groupaspirants}"
-				action="reject"
-				label="#{msg['group_aspirants_reject']}"
+				hint="#{msg['group_aspirants_accept_hint']}"
+				class="icon_acceptaspirant" />
+			<h:commandLink
+				action="#{views$secured$groups$components$groupaspirants.reject}"
 				title="#{msg['group_aspirants_reject_hint']}"
-				styleClass="button" />
+				hint="#{msg['group_aspirants_reject_hint']}"
+				class="icon_rejectaspirant" />	
+			
 		</plexus:column>
 
 	</plexus:dataTable>

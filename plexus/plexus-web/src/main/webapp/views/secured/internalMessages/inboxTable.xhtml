@@ -64,17 +64,20 @@
 			<f:facet name="header">  
 				#{msg.commands_header}
 			</f:facet>
-			<h:commandButton id="read_received_message" action="#{views$secured$internalmessages$messagecenter.readReceivedMessage}"
-				value="#{msg.openuss4us_messagecenter_read}" title="#{msg.openuss4us_messagecenter_read}" styleClass="button_remove" />
-			<br />
-			<h:commandButton id="send_message"
+			
+			<h:commandLink
+				action="#{views$secured$internalmessages$messagecenter.readReceivedMessage}"
+				title="#{msg.openuss4us_messagecenter_read}"
+				class="icon_edittags" />
+			<h:commandLink
 				action="#{views$secured$internalmessages$messagecenter.answerMessage}"
-				value="#{msg.user_send_internalmessage}"
-				title="#{msg.user_send_internalmessage}" styleClass="button_remove" />
-			<br />
-			<h:commandButton id="remove_message"
+				title="#{msg.user_send_internalmessage}"
+				class="icon_sendmessage" />
+			<h:commandLink
 				action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
-				value="delete" title="delete" styleClass="button_remove" />
+				title="#{msg.openuss4us_messagecenter_command_message_delete}"
+				class="icon_deletemessage" />
+
 		</t:column>
 	</plexus:dataTable>
 	</div>

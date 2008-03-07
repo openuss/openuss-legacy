@@ -99,7 +99,64 @@ a.icon_removebuddy {
 a.icon_removebuddy:focus, a.icon_removebuddy:hover{
 	background-position: top right;
 }	
-	
+
+a.icon_deletemessage {
+	background-image: url(../img/buttons/delete_icon_blue.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_deletemessage:focus, a.icon_deletemessage:hover{
+	background-position: top right;
+}
+
+a.icon_leavegroup {
+	background-image: url(../img/buttons/unjoin_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_leavegroup:focus, a.icon_leavegroup:hover{
+	background-position: top right;
+}
+
+a.icon_acceptaspirant {
+	background-image: url(../img/buttons/ok_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_acceptaspirant:focus, a.icon_acceptaspirant:hover{
+	background-position: top right;
+}
+
+a.icon_rejectaspirant {
+	background-image: url(../img/buttons/missing_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_rejectaspirant:focus, a.icon_rejectaspirant:hover{
+	background-position: top right;
+}
+
+
 a.icon_profile {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
