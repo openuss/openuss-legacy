@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<o:block>
+				<o:input id="appointment"
+					label="#{msg.openuss4us_calendar_appointment_subject}"
+					entity="appointmentInfo" property="subject" maxlength="100"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_subject_hint}" />
+				<o:input label="#{msg.openuss4us_calendar_appointment_starttime}"
+					entity="appointmentInfo" property="starttime" maxlength="16"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_starttime_hint}" />
+				<o:input label="#{msg.openuss4us_calendar_appointment_endtime}"
+					entity="appointmentInfo" property="endtime" maxlength="16"
+					required="true"
+					title="#{msg.openuss4us_calendar_appointment_endtime_hint}" />
+				<o:input entity="appointmentInfo" property="recurrencePeriod"
+					maxlength="10" required="true"
+					label="#{msg.openuss4us_calendar_appointment_recurrence_period}"
+					title="#{msg.openuss4us_calendar_appointment_recurrence_period_hint}" />
+				<h:selectOneMenu id="recurrenceType" layout="pageDirection"
+					value="#{views$secured$calendar$updateserialappointment.recurrenceType}"
+					styleClass="pulldown">
+					<f:selectItems
+						value="#{views$secured$calendar$updateserialappointment.recTypes}" />
+				</h:selectOneMenu>
+				<o:input entity="appointmentInfo" property="recurrenceEndtime"
+					label="#{msg.openuss4us_calendar_appointment_recurrence_endtime}"
+					title="#{msg.openuss4us_calendar_appointment_recurrence_endtime_hint}"
+					required="true" maxlength="16" />
+				<o:input id="location"
+					label="#{msg.openuss4us_calendar_appointment_location}"
+					entity="appointmentInfo" property="location" maxlength="100"
+					title="#{msg.openuss4us_calendar_appointment_location_hint}" />
+				<h:outputLabel for="accessType"
+					value="#{msg.appointmenttypeinfo_name}" styleClass="field_label" />
+				<h:selectOneMenu id="appointmentType" layout="pageDirection"
+					value="#{views$secured$calendar$updateserialappointment.appointmentType}"
+					styleClass="pulldown">
+					<f:selectItems
+						value="#{views$secured$calendar$updateserialappointment.appointTypes}" />
+				</h:selectOneMenu>
+				<h:message for="appointmentType" styleClass="field_error" />
+				<o:input entity="appointmentInfo" property="description"
+					id="description" type="textarea" styleClass="field_message"
+					maxlength="300" label="#{msg.openuss4us_calendar_description}"
+					title="#{msg.openuss4us_calendar_description_hint}" minlength="0"
+					required="false">
+					<f:validateLength maximum="300" />
+					<f:converter converterId="xssFilter" />
+				</o:input>
+
+			</o:block>
+			<o:block>
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button_back" immediate="true" />
+				<h:commandButton
+					action="#{views$secured$calendar$updateserialappointment.save}"
+					value="#{msg.openuss4us_calendar_button_update_appointment}" styleClass="button" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

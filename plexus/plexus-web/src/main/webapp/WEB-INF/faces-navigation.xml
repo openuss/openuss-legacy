@@ -270,6 +270,16 @@
 		</navigation-case>
 		
 		<navigation-case>
+			<from-outcome>update_single_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/updatesingleappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>update_serial_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/updateserialappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
 			<from-outcome>openuss4us_calendar_edit_subscriptions</from-outcome>
 			<to-view-id>/views/secured/calendar/subscribedcalendars.xhtml</to-view-id>
 		</navigation-case>

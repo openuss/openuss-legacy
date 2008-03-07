@@ -150,10 +150,14 @@
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
-				<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.DELETE}">
+				<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.UPDATE}">
 				<h:commandButton action="delete_appointment" value="#{msg.openuss4us_calendar_button_delete}"
-					styleClass="button_back" />
+					styleClass="button_back" rendered="#{calendarInfo.id eq appointmentInfo.calendarId}" />
 					</s:acl>
+				<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.UPDATE}">
+					<h:commandButton action="#{views$secured$calendar$viewappointmentdetails.update}" value="#{msg.openuss4us_calendar_button_update_appointment}"
+					styleClass="button_back" rendered="#{calendarInfo.id eq appointmentInfo.calendarId}"/>
+				</s:acl>
 			</o:block>
 		</h:form>
 	</ui:define>

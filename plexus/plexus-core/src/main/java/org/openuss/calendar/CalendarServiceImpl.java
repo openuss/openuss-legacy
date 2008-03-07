@@ -114,7 +114,7 @@ public class CalendarServiceImpl extends
 
 		Appointment app = getAppointmentDao().load(newApp.getId());
 
-		if (app.getSourceCalendar().getId() != calendar.getId())
+		if (!app.getSourceCalendar().getId().equals(calendar.getId()))
 			throw new Exception(
 					"Given Calendar is not the source calendar for this appointment");
 
@@ -336,25 +336,20 @@ public class CalendarServiceImpl extends
 			org.openuss.calendar.CalendarInfo calendarInfo)
 			throws java.lang.Exception {
 
+		if (serialAppointmentInfo.getId() == null)
+			throw new Exception("Please add Appointment first");
+
+		SerialAppointment app = getSerialAppointmentDao().load(serialAppointmentInfo.getId());
+		
+		if (!app.getSourceCalendar().getId().equals(calendarInfo.getId()))
+			throw new Exception(
+					"Given Calendar is not the source calendar for this appointment");
+
+		
 		// get entities
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 
 		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
-
-		// set new data
-
-		AppointmentType appType = getAppointmentTypeDao().load(
-				serialAppointmentInfo.getAppointmentTypeInfo().getId());
-
-		SerialAppointment newSerialApp = getSerialAppointmentDao().create(
-				appType, serialAppointmentInfo.getDescription(),
-				serialAppointmentInfo.getEndtime(),
-				serialAppointmentInfo.getLocation(),
-				serialAppointmentInfo.getRecurrenceEndtime(),
-				serialAppointmentInfo.getRecurrencePeriod(),
-				serialAppointmentInfo.getRecurrenceType(), true, cal,
-				serialAppointmentInfo.getStarttime(),
-				serialAppointmentInfo.getSubject(), true);
 
 		// add the serial appointment again with updated data
 		this.createSerialAppointment(serialAppointmentInfo, calendarInfo);

@@ -155,6 +155,13 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		}
 		return Constants.CALENDAR_HOME;
 	}
+	
+	public String update(){
+		if(isSerial())
+			return Constants.CALENDAR_UPDATE_SERIAL;
+		else
+			return Constants.CALENDAR_UPDATE_SINGLE;
+	}
 
 	public SingleAppointmentDataProvider getData() {
 		return data;
