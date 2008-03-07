@@ -12,31 +12,42 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
-			<o:block styleClass="option_box" label="#{msg.discussion_watch_state_header}">
+			<o:block styleClass="option_box" label="#{msg.user_options_sidebar_header}">
 				<h:outputText value="#{msg.discussion_forum_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumWatchState}" escape="false"/>
 				<h:outputText value="#{msg.discussion_forum_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumWatchState}" escape="false"/>
-					<ul class="int">
-						<li>
-							<h:commandLink action="#{views$secured$discussion$discussions.changeWatchState}"
-								value="#{msg['discussion_forum_watch']}"
-								title="#{msg['discussion_forum_watch']}"/>				
-						</li>
+					<ul class="action_list">
+						<c:if test="#{not views$secured$discussion$discussions.forumWatchState}">
+							<li class="forum_subscribe">
+								<h:commandLink value="" action="#{views$secured$discussion$discussions.changeWatchState}" ><span />#{msg['flexlist_title_forum_subscribe']}</h:commandLink>
+							</li>
+						</c:if>
+						<c:if test="#{views$secured$discussion$discussions.forumWatchState}">
+							<li class="forum_unsubscribe">
+								<h:commandLink value="" action="#{views$secured$discussion$discussions.changeWatchState}" ><span />#{msg['flexlist_title_forum_unsubscribe']}</h:commandLink>
+							</li>
+						</c:if>
 					</ul>
+					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+						
+						<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
+						<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
+						<ul class="action_list">
+							<c:if test="#{views$secured$discussion$discussions.forumReadOnly}">
+								<li class="forum_unlock">
+									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_unlock']}</h:commandLink>
+								</li>
+							</c:if>
+							<c:if test="#{not views$secured$discussion$discussions.forumReadOnly}">
+								<li class="forum_lock">
+									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_lock']}</h:commandLink>
+								</li>
+							</c:if>
+						</ul>
+					</s:acl>
+					
 			</o:block>
 
-			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-				<o:block styleClass="option_box" label="#{msg.discussion_config_state_header}">
-					<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
-					<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
-					<ul class="int">
-						<li>
-							<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}"
-								value="#{msg['discussion_forum_readonly']}"
-								title="#{msg['discussion_forum_readonly']}"/>
-						</li>
-					</ul>
-				</o:block>
-			</s:acl>
+			
 		</h:form>
 	
 </f:subview>

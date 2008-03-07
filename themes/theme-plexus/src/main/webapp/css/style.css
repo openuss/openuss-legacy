@@ -1198,6 +1198,10 @@ span.content_font_normal {
 	margin-left: 10px;
 }
 
+.content_font_normal.infotext {
+	margin-left: 0px;	
+}
+
 #center .content_normal p.content_font_normal span.content_font_normal {
 	margin-left: 0px;
 }
@@ -2306,74 +2310,6 @@ div .space_20above {
 	background-image: url(../img/footer_red_right_bg.jpg);
 	background-repeat: no-repeat;
 }
-
-.status_box .content_box .header_normal {
-	padding: 0;
-	margin: 0;
-	height: 7px;
-	background-image: url(../img/headline_blue_bg.jpg);
-	background-repeat: repeat-x;
-}
-
-.status_box .content_box .header_normal .header_normal_left_bg {
-	float: left;
-	width: 8px;
-	height: 7px;
-	background-image: url(../img/headline_blue_left_bg.jpg);
-	background-repeat: no-repeat;
-}
-
-.status_box .content_box .header_normal .header_normal_right_bg {
-	float: right;
-	width: 8px;
-	height: 7px;
-	background-image: url(../img/headline_blue_right_bg.jpg);
-	background-repeat: no-repeat;
-}
-
-.status_box .content_box .content_normal {
-	margin: 0;
-	padding: 5px 5px 5px 45px;
-	background: url(../img/status_box.png) no-repeat 10px center;
-	border-width: 0 1px 0 1px;
-	border-right-color: #9bb2c9;
-	border-left-color: #9bb2c9;
-	background-color: #d1dbe6;
-	min-height: 23px;
-	vertical-align: bottom;
-}
-
-.status_box .content_box .content_normal .content_font_normal {
-	color:#000000;
-	font-weight:bold;	
-}
-
-.status_box .content_box .footer_normal {
-	margin-top: 0;
-	padding: 0;
-	height: 7px;
-	background-image: url(../img/footer_blue_bg.jpg);
-	background-repeat: repeat-x;
-}
-
-.status_box .content_box .footer_normal .footer_normal_left_bg {
-	margin-top: 0;
-	float: left;
-	width: 8px;
-	height: 7px;
-	background-image: url(../img/footer_blue_left_bg.jpg);
-	background-repeat: no-repeat;
-}
-
-.status_box .content_box .footer_normal .footer_normal_right_bg {
-	margin-top: 0;
-	float: right;
-	width: 8px;
-	height: 7px;
-	background-image: url(../img/footer_blue_right_bg.jpg);
-	background-repeat: no-repeat;
-}
-
 /*###################################*/
 a:hover {
 	text-decoration: underline !important;	
@@ -2414,27 +2350,4 @@ div#center th.table_header a {
 
 .wiki_content p {
     margin-bottom: 10pt;
-}
-
-
-/* picklist */
-table.picker {
-
-}
-td.pickerLeft {
-	width: 300px;
-}
-td.pickerCenter {
-    text-align: center;
-}
-td.pickerRight {
-    width: 300px;
-}
-table.picker td select {
-	width: 100%;
-	height: 200px;
-}
-table.picker td input {
-    width: 100%;
-    height: 200px;
 }

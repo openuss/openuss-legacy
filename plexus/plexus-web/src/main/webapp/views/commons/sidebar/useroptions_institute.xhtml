@@ -14,25 +14,21 @@
 	<s:authorize ifAllGranted="ROLE_USER">
 		<h:form id="actionsForm">
 		<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
-			<ul class="int">
+			<ul class="action_list">
 				<c:if test="#{not views$public$institute$institute.bookmarked}">
-					<li class="int">
-						<h:commandLink action="#{views$public$institute$institute.addShortcut}">
-						  	<h:outputText value="#{msg.institute_command_shortcut}" />
-						</h:commandLink>
+					<li class="institute_add_bookmark">
+						<h:commandLink value="" action="#{views$public$institute$institute.addShortcut}" ><span />#{msg.institute_command_shortcut}</h:commandLink>
 					</li>
 				</c:if>
-			  	<c:if test="#{views$public$institute$institute.bookmarked}">	
-					<li class="int">
-					  	<h:commandLink	action="#{views$public$institute$institute.removeShortcut}">
-					  		<h:outputText value="#{msg.institute_command_remove_shortcut}" />
-					  	</h:commandLink>
+				<c:if test="#{views$public$institute$institute.bookmarked}">
+					<li class="institute_remove_bookmark">
+						<h:commandLink value="" action="#{views$public$institute$institute.removeShortcut}" ><span />#{msg.institute_command_remove_shortcut}</h:commandLink>
 					</li>
 				</c:if>
 				<s:authorize ifAllGranted="ROLE_USER">
 					<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
-						<li class="int">
-							<h:commandLink value="#{msg['institute_command_assistant_application']}" action="#{views$public$institute$institute.applyForMembership}"/>
+						<li class="institute_apply_for_membership">
+							<h:commandLink action="#{views$public$institute$institute.applyForMembership}" ><span />#{msg['institute_command_assistant_application']}</h:commandLink>
 						</li>
 					</s:acl>
 				</s:authorize>

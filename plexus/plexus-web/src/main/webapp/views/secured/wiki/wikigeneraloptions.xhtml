@@ -12,20 +12,15 @@
 
 	<h:form>
 		<o:block styleClass="option_box" label="#{msg.options}">
-			<ul class="int">
-				<li>
-					<h:commandLink action="wiki_overview"
-						value="#{msg.wiki_main_button_overview}"
-						title="#{msg.wiki_main_button_overview}" />
+			<ul class="action_list">
+				<li class="wiki_overview">
+					<h:commandLink value="" action="wiki_overview" ><span />#{msg.wiki_main_button_overview}</h:commandLink>
 				</li>
 				
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-					<li>
-						<h:commandLink
-							action="#{views$secured$wiki$wikimain.showImportPage}"
-							value="#{msg.wiki_main_import_wiki}"
-							title="#{msg.wiki_main_import_wiki}" />
-						</li>
+					<li class="wiki_import">
+						<h:commandLink value="" action="#{views$secured$wiki$wikimain.showImportPage}" ><span />#{msg.wiki_main_import_wiki}</h:commandLink>
+					</li>
 				</s:acl>
 			</ul>
 		</o:block>

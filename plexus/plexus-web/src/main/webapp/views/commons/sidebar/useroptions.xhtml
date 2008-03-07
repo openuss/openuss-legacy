@@ -11,22 +11,16 @@
 	xmlns:p="http://www.openuss.org/plexus/jsf"
     xmlns:x="http://myfaces.apache.org/extensions">
     
-	<s:authorize ifAllGranted="ROLE_USER">
+	<s:authorize ifAllGranted="ROLE_ADMIN">
 		<h:form id="actionsForm">
 			<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
-				<ul class="int">
-	  			<s:authorize ifAllGranted="ROLE_ADMIN">
-			  		<li class="sidebar_listPoint">
-				  		<h:commandLink action="university_registration_start">
-							<h:outputText value="#{msg.university_command_add_university}"/>
-						</h:commandLink>
+				<ul class="action_list">
+					<li class="register_department">
+						<h:commandLink value="" action="department_registration_start" ><span />#{msg.department_command_add_department}</h:commandLink>
 					</li>
-				</s:authorize>
-		  			<li>
-			  			<h:commandLink action="institute_registration_start">
-							<h:outputText value="#{msg.institute_command_add_institute}"/>
-						</h:commandLink>
-					</li>
+					<li class="register_institute">
+						<h:commandLink value="" action="institute_registration_start" ><span />#{msg.institute_command_add_institute}</h:commandLink>
+					</li>			  		
 				</ul>
 			</o:block>
 		</h:form>
