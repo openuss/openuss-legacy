@@ -279,13 +279,11 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	background-image: url(../img/button_80_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
 }
 
@@ -307,7 +305,6 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 #left .content_box ul.int a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
 }
 
 #right .content_box ul.ext {
@@ -324,12 +321,10 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 #right .content_box ul.ext a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
 }
 
 #left .content_box a:hover {
 	text-decoration: underline;
-	font-weight: none;
 }
 
 .send_form {
@@ -731,7 +726,6 @@ ul.navigation li ul li ul li.active_item a:hover {
 #right .content_box ul.int a {
 	color: #505050;
 	text-decoration: none;
-	font-weight: none;
 }
 
 #right .content_box a.button_search {
@@ -739,8 +733,7 @@ ul.navigation li ul li ul li.active_item a:hover {
 	padding-left: 0;
 	color: #505050;
 	background: none;
-	text-decoration: none;
-	font-weight: none;
+	text-decoration: none
 }
 
 #right .content_box a.button_search:hover {
@@ -749,7 +742,6 @@ ul.navigation li ul li ul li.active_item a:hover {
 
 #right .content_box a:hover {
 	text-decoration: underline;
-	font-weight: none;
 }
 
 #center .content_box ul {
@@ -766,25 +758,21 @@ ul.navigation li ul li ul li.active_item a:hover {
 	color: #505050;
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
 }
 
 #center a:hover {
 	text-decoration: underline;
-	font-weight: none;
 }
 
 #center span {
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
 }
 
 #center span.warning {
 	display: block;
 	font-size: 8pt;
 	text-decoration: none;
-	font-weight: none;
 	padding-bottom: 3px;
 }
 
@@ -1420,7 +1408,7 @@ span.table_data_info {
 	font-size: 9pt;
 	color: #797979;
 	font-weight: bold;
-	font-decoration: none;
+	text-decoration: none;
 	padding: 2px;
 	background: #FFFFFF none repeat scroll 0%;
 }
@@ -1429,7 +1417,7 @@ span.table_data_info {
 	font-size: 9pt;
 	color: #797979;
 	font-weight: bold;
-	font-decoration: none;
+	text-decoration: none;
 }
 
 #center .tablenavigator table.paginator td.active {
@@ -1460,15 +1448,13 @@ td input.button,.button_unlink,.button_link,.button_remove,.button_move,.button_
 	background-image: url(../img/button_70_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 7pt;
 	text-decoration: none;
 	font-weight: normal;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
 }
 
 td input.button:hover,.button_unlink:hover,.button_link:hover,.button_remove:hover,.button_edit:hover,.button_remove:hover,.button_profile:hover
@@ -1485,15 +1471,13 @@ td .remove_shortcut_button {
 	background-image: url(../img/button_120_normal_remove2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 7pt;
 	text-decoration: none;
 	font-weight: normal;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
-	filter: DropShadow(color =   #FFF, offx =   1, offy =   1)
 }
 
 td .remove_shortcut_button:hover {
@@ -1509,13 +1493,12 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_120_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
 }
 
@@ -1532,13 +1515,12 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_120_red2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
 }
 
@@ -1556,13 +1538,12 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_140_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
 }
 
@@ -1580,13 +1561,12 @@ td .remove_shortcut_button:hover {
 	background-image: url(../img/button_180_normal2.png);
 	background-repeat: no-repeat;
 	border: 0;
-	font-color: #313131;
+	color: #313131;
 	font-size: 8pt;
 	text-decoration: none;
 	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand;
 	outline-style: none;
 }
 
@@ -1646,7 +1626,6 @@ td {
 	padding: 5px 5px 5px 10px;
 	text-align: left;
 	font-size: 8pt;
-	font-weight: none;
 	background: none;
 }
 
@@ -1876,6 +1855,9 @@ span.news_text {
 	margin-bottom: 8px;
 }
 
+
+/* ========== JSCALENDAR ========== */
+
 .jscalendar-WH-table-style {
 	font-family: arial;
 	font-size: 11px;
@@ -2007,7 +1989,7 @@ span.news_text {
 }
 
 .jscalendar-DB-div-style {
-	z-index: +999;
+	z-index: 999;
 	position: absolute;
 	visibility: hidden;
 }
@@ -2151,7 +2133,9 @@ div .space_20above {
 	margin-top: 20px;	
 }
 
-/*###################################*/
+
+
+/* ========== OPTION / ACTION BOX ========== */
 
 .option_box .header_font_normal {
 		
@@ -2175,230 +2159,188 @@ div .space_20above {
 	background-repeat: no-repeat;
 }
 
-#messages .messagesInfo .content_box .header_normal {
+
+
+/* ========== MESSAGES ========== */
+	
+	/* STYLE RULES FOR ALL KINDS OF MESSAGES */
+#messages .content_box ul {
+	margin:5px 0px;	
+}
+.status_box .content_box .content_normal .content_font_normal {
+	display:block;
+	margin:5px 0px;
+}
+#messages .content_box .header_normal, .status_box .content_box .header_normal {
 	padding: 0;
 	margin: 0;
 	height: 7px;
-	background-image: url(../img/headline_green_bg.jpg);
 	background-repeat: repeat-x;
 }
-
-#messages .messagesInfo .content_box .header_normal .header_normal_left_bg {
+#messages .content_box .header_normal .header_normal_left_bg, .status_box .content_box .header_normal .header_normal_left_bg {
 	float: left;
 	width: 8px;
 	height: 7px;
-	background-image: url(../img/headline_green_left_bg.jpg);
 	background-repeat: no-repeat;
 }
-
-#messages .messagesInfo .content_box .header_normal .header_normal_right_bg {
+#messages .content_box .header_normal .header_normal_right_bg, .status_box .content_box .header_normal .header_normal_right_bg {
 	float: right;
 	width: 8px;
 	height: 7px;
-	background-image: url(../img/headline_green_right_bg.jpg);
+	background-repeat: no-repeat;
+}
+#messages .content_box .content_normal, .status_box .content_box .content_normal {
+	margin: 0;
+	padding: 5px 5px 5px 40px;
+	border-width: 0 1px 0 1px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	min-height: 23px;
+	vertical-align: bottom;
+	font-weight:bold;
+}
+#messages .content_box .footer_normal, .status_box .content_box .footer_normal {
+	margin-top: 0;
+	padding: 0;
+	height: 7px;
+	background-repeat: repeat-x;
+}
+#messages .content_box .footer_normal .footer_normal_left_bg, .status_box .content_box .footer_normal .footer_normal_left_bg {
+	margin-top: 0;
+	float: left;
+	width: 8px;
+	height: 7px;
+	background-repeat: no-repeat;
+}
+#messages .content_box .footer_normal .footer_normal_right_bg, .status_box .content_box .footer_normal .footer_normal_right_bg {
+	margin-top: 0;
+	float: right;
+	width: 8px;
+	height: 7px;
 	background-repeat: no-repeat;
 }
 
+	/* STYLE RULES FOR EACH MESSAGE TYPE */
+
+	/* messageInfo = green success boxes */
+#messages .messagesInfo .content_box .header_normal {
+	background-image: url(../img/headline_green_bg.jpg);
+}
+#messages .content_box .header_normal .header_normal_left_bg {
+	background-image: url(../img/headline_green_left_bg.jpg);
+}
+#messages .messagesInfo .content_box .header_normal .header_normal_right_bg {
+	background-image: url(../img/headline_green_right_bg.jpg);
+}
 #messages .messagesInfo .content_box .content_normal {
-	margin: 0;
-	padding: 5px 5px 5px 45px;
-	background: url(../img/messages_ok.png) no-repeat 10px center;
-	border-width: 0 1px 0 1px;
+	background-image: url(../img/messages_ok.png);
 	border-right-color: #b3b3b3;
 	border-left-color: #b3b3b3;
 	background-color: #dfeec3;
-	min-height: 23px;
-	vertical-align: bottom;
 }
-
 #messages .messagesInfo .content_box .content_normal .info {
-	margin: 0 0 0 5px;
-	padding: 0;
 	background-color: #dfeec3;
-	color: #000;	
+	color: #000000;
 }
-
 #messages .messagesInfo .content_box .footer_normal {
-	margin-top: 0;
-	padding: 0;
-	height: 7px;
 	background-image: url(../img/footer_green_bg.jpg);
-	background-repeat: repeat-x;
 }
-
 #messages .messagesInfo .content_box .footer_normal .footer_normal_left_bg {
-	margin-top: 0;
-	float: left;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/footer_green_left_bg.jpg);
-	background-repeat: no-repeat;
 }
-
 #messages .messagesInfo .content_box .footer_normal .footer_normal_right_bg {
-	margin-top: 0;
-	float: right;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/footer_green_right_bg.jpg);
-	background-repeat: no-repeat;
 }
 
 
+	/* messagesError = red error boxes */
 #messages .messagesError .content_box .header_normal {
-	padding: 0;
-	margin: 0;
-	height: 7px;
 	background-image: url(../img/headline_red_bg.jpg);
-	background-repeat: repeat-x;
 }
-
 #messages .messagesError .content_box .header_normal .header_normal_left_bg {
-	float: left;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/headline_red_left_bg.jpg);
-	background-repeat: no-repeat;
 }
-
 #messages .messagesError .content_box .header_normal .header_normal_right_bg {
-	float: right;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/headline_red_right_bg.jpg);
-	background-repeat: no-repeat;
 }
-
 #messages .messagesError .content_box .content_normal {
-	margin: 0;
-	padding: 5px 5px 5px 45px;
-	background: url(../img/messages_error.png) no-repeat 10px center;
-	border-width: 0 1px 0 1px;
+	background-image: url(../img/messages_error.png);
 	border-right-color: #a61f1f;
 	border-left-color: #a61f1f;
 	background-color: #ff7272;
-	min-height: 23px;
-	vertical-align: bottom;
 }
-
 #messages .messagesError .content_box .content_normal .error {
-	margin: 0;
-	padding: 0;
 	background-color: #ff7272;
-	color: #000;	
+	color: #000000;	
 }
-
 #messages .messagesError .content_box .footer_normal {
-	margin-top: 0;
-	padding: 0;
-	height: 7px;
 	background-image: url(../img/footer_red_bg.jpg);
-	background-repeat: repeat-x;
 }
-
 #messages .messagesError .content_box .footer_normal .footer_normal_left_bg {
-	margin-top: 0;
-	float: left;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/footer_red_left_bg.jpg);
-	background-repeat: no-repeat;
 }
-
 #messages .messagesError .content_box .footer_normal .footer_normal_right_bg {
-	margin-top: 0;
-	float: right;
-	width: 8px;
-	height: 7px;
 	background-image: url(../img/footer_red_right_bg.jpg);
-	background-repeat: no-repeat;
 }
 
-.status_box .content_box .header_normal {
-	padding: 0;
-	margin: 0;
-	height: 7px;
+
+	/* messagesWarn = blue info/status boxes */
+#messages .messagesWarn .content_box .header_normal, .status_box .content_box .header_normal {
 	background-image: url(../img/headline_blue_bg.jpg);
-	background-repeat: repeat-x;
 }
-
-.status_box .content_box .header_normal .header_normal_left_bg {
-	float: left;
-	width: 8px;
-	height: 7px;
+#messages .messagesWarn .content_box .header_normal .header_normal_left_bg, .status_box .content_box .header_normal .header_normal_left_bg {
 	background-image: url(../img/headline_blue_left_bg.jpg);
-	background-repeat: no-repeat;
 }
-
-.status_box .content_box .header_normal .header_normal_right_bg {
-	float: right;
-	width: 8px;
-	height: 7px;
+#messages .messagesWarn .content_box .header_normal .header_normal_right_bg, .status_box .content_box .header_normal .header_normal_right_bg {
 	background-image: url(../img/headline_blue_right_bg.jpg);
-	background-repeat: no-repeat;
 }
-
-.status_box .content_box .content_normal {
-	margin: 0;
-	padding: 5px 5px 5px 45px;
-	background: url(../img/status_box.png) no-repeat 10px center;
-	border-width: 0 1px 0 1px;
+#messages .messagesWarn .content_box .content_normal, .status_box .content_box .content_normal {
+	background-image: url(../img/status_box.png);
 	border-right-color: #9bb2c9;
 	border-left-color: #9bb2c9;
 	background-color: #d1dbe6;
-	min-height: 23px;
-	vertical-align: bottom;
 }
-
-.status_box .content_box .content_normal .content_font_normal {
+#messages .messagesWarn .content_box .content_normal .warn, .status_box .content_box .content_normal .content_font_normal {
+	background-color: #d1dbe6;
 	color:#000000;
-	font-weight:bold;	
 }
-
-.status_box .content_box .footer_normal {
-	margin-top: 0;
-	padding: 0;
-	height: 7px;
+#messages .messagesWarn .content_box .footer_normal, .status_box .content_box .footer_normal {
 	background-image: url(../img/footer_blue_bg.jpg);
-	background-repeat: repeat-x;
 }
-
-.status_box .content_box .footer_normal .footer_normal_left_bg {
-	margin-top: 0;
-	float: left;
-	width: 8px;
-	height: 7px;
+#messages .messagesWarn .content_box .footer_normal .footer_normal_left_bg, .status_box .content_box .footer_normal .footer_normal_left_bg {
 	background-image: url(../img/footer_blue_left_bg.jpg);
-	background-repeat: no-repeat;
 }
-
-.status_box .content_box .footer_normal .footer_normal_right_bg {
-	margin-top: 0;
-	float: right;
-	width: 8px;
-	height: 7px;
+#messages .messagesWarn .content_box .footer_normal .footer_normal_right_bg, .status_box .content_box .footer_normal .footer_normal_right_bg {
 	background-image: url(../img/footer_blue_right_bg.jpg);
-	background-repeat: no-repeat;
 }
 
-/*###################################*/
+
+
+/* ========== LINK COLORS ========== */
+
 a:hover {
 	text-decoration: underline !important;	
 }
-div#center a {
+#center a {
 	color:#2C5885 !important;
 }
-div#center div#header_center a, div#center div.flexList li.header a {
+#center div#header_center a, div#center div.flexList li.header a {
 	color:#FFFFFF !important;
 }
-div#center div.empty_box a {
+#center div.empty_box a {
 	color:#505050 !important;
 }
-div#center th.table_header a {
+#center th.table_header a {
 	color:#505050 !important;
+}
+#right .content_box a {
+	color:#2C5885 !important;	
 }
 
-/* WIKI STYLES */
+
+
+
+/* ========== WIKI ========== */
 
 .wiki_content {
 	color:#505050;

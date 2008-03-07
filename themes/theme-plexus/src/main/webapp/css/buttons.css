@@ -499,7 +499,7 @@ a.newsletter_subscribed {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: hand;
+  cursor: pointer;
 }
 
 a.newsletter_subscribed span {
@@ -529,7 +529,7 @@ a.newsletter_notSubscribed {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: hand;
+  cursor: pointer;
 }
 
 a.newsletter_notSubscribed span {
@@ -584,7 +584,7 @@ a.forum_subscribed {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: hand;
+  cursor: pointer;
 }
 
 a.forum_subscribed span {
@@ -614,7 +614,7 @@ a.forum_notSubscribed {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: hand;
+  cursor: pointer;
 }
 
 a.forum_notSubscribed span {
@@ -669,7 +669,7 @@ a.remove_bookmark {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: hand;
+  cursor: pointer;
 }
 
 a.remove_bookmark span {
@@ -708,7 +708,7 @@ ul.action_list li a {
   height:16px;
   padding:0;
   position: relative;
-  cursor: hand;
+  cursor: pointer;
 }
 
 ul.action_list li a:focus, ul.action_list li a:hover {
