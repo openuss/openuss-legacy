@@ -1,5 +1,6 @@
 package org.openuss.web.lecture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -9,6 +10,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.security.ldap.AttributeMappingInfo;
+import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -66,13 +68,22 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 	
 	
 */	
-	@SuppressWarnings( { "unchecked" })
-	public List<SelectItem> getAllAttributeMappings() {
-		logger.debug("TEST ALL ATTRIBUTES MAPPINGS: " + ldapConfigurationService.getAllAttributeMappings());
-		return ldapConfigurationService.getAllAttributeMappings();
-	}
-/*		
 	
+	public List<SelectItem> getAllRoleAttributeKeys() {
+
+		List<SelectItem> roleAttributeKeyItems = new ArrayList<SelectItem>();
+
+		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();
+		
+		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
+				roleAttributeKeyItems.add(new SelectItem(roleAttributeKey.getId(), roleAttributeKey.getName()));
+			}
+	
+		return roleAttributeKeyItems;
+	}
+
+/*		
+	List<RoleAttributeKeyInfo> roleAttributeKeyList = ldapConfigurationService.getAllRoleAttributeKeys();
 	
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUniversities() {
