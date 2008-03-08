@@ -40,13 +40,13 @@
 						</li>
 					
 						<c:if test="${wiki_current_site_version.deleted}">
-							<li class="wiki_overview">
+							<li class="wiki_versions">
 								<h:commandLink
 									value=""
 									action="wiki_version"
 									immediate="true" ><span />#{msg.wiki_main_button_version}</h:commandLink>
 							</li>
-							<li class="wiki_overview">
+							<li class="wiki_recover">
 								<h:commandLink 
 									value="" 
 									action="#{views$secured$wiki$wikimain.recoverSite}"><span />#{msg.wiki_overview_recover_site}</h:commandLink>
@@ -54,7 +54,7 @@
 						</c:if>
 						
 						<c:if test="${(not wiki_current_site_version.deleted) and (not empty wiki_current_site_version.text)}">
-							<li class="wiki_overview">
+							<li class="wiki_versions">
 			                    <h:commandLink
 									value=""
 									action="wiki_version"
@@ -62,7 +62,7 @@
 							</li>
 							
 							<c:if test="${views$secured$wiki$wikimain.hasStableVersion}">
-								<li class="wiki_overview">
+								<li class="wiki_last_stable">
 									<h:commandLink
 										value=""
 										action="#{views$secured$wiki$wikimain.showStable}" 
@@ -70,7 +70,7 @@
 								</li>
 							</c:if>
 							
-							<li class="wiki_overview">
+							<li class="wiki_print_preview">
 								<h:commandLink
 			                    	value="" 
 		                            immediate="true"
@@ -79,7 +79,7 @@
 	                       	
 	                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 	                    		<c:if test="${not wiki_current_site_version.readOnly}">
-	                    			<li class="wiki_overview">
+	                    			<li class="wiki_lock">
 		                    			<h:commandLink 
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.lockSite}"
@@ -87,7 +87,7 @@
 	                        		</li>
 	                        	</c:if>
 	                    		<c:if test="${wiki_current_site_version.readOnly}">
-	                    			<li class="wiki_overview">
+	                    			<li class="wiki_unlock">
 	                    				<h:commandLink 
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.unlockSite}" 
@@ -95,7 +95,7 @@
 	                        		</li>
 	                        	</c:if>
 	                        	<c:if test="${not wiki_current_site_version.stable}">
-									<li class="wiki_overview">
+									<li class="wiki_mark_stable">
 										<h:commandLink
 											value=""
 											action="#{views$secured$wiki$wikimain.markStable}" 
@@ -103,7 +103,7 @@
 									</li>
 								</c:if>
 								<c:if test="${wiki_current_site_version.stable}">
-									<li class="wiki_overview">
+									<li class="wiki_unmark_stable">
 										<h:commandLink
 											value=""
 											action="#{views$secured$wiki$wikimain.unmarkStable}" 

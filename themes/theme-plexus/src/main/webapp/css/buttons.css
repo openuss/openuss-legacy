@@ -811,15 +811,49 @@ ul.action_list li.register_department a span{
   background-image:url(../img/buttons/add_icon.png);
 }
 
-ul.action_list li.wiki_overview a span{
+ul.action_list li.wiki_create_new a span {
+  background-image:url(../img/buttons/edit_icon.png);
+}
+
+ul.action_list li.wiki_overview a span {
   background-image:url(../img/buttons/list_icon.png);
 }
 
-ul.action_list li.wiki_import a span{
+ul.action_list li.wiki_versions a span {
+  background-image:url(../img/buttons/versions_icon.png);
+}
+
+ul.action_list li.wiki_last_stable a span {
+  background-image:url(../img/buttons/go_stable_icon.png);
+}
+
+ul.action_list li.wiki_print_preview a span {
+  background-image:url(../img/buttons/print_preview_icon.png);
+}
+
+ul.action_list li.wiki_lock a span {
+  background-image:url(../img/buttons/lock_icon.png);
+}
+
+ul.action_list li.wiki_unlock a span {
+  background-image:url(../img/buttons/unlock_icon.png);
+}
+
+ul.action_list li.wiki_mark_stable a span {
+  background-image:url(../img/buttons/mark_stable_icon.png);
+}
+
+ul.action_list li.wiki_unmark_stable a span {
+  background-image:url(../img/buttons/markstable_icon.png);
+}
+
+ul.action_list li.wiki_import a span {
   background-image:url(../img/buttons/import_wiki_icon.png);
 }
 
-
+ul.action_list li.wiki_recover a span {
+  background-image:url(../img/buttons/unmark_delete_icon.png);
+}
 
 /*Legendbox*/
 
