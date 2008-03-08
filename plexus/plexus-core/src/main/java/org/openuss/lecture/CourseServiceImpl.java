@@ -597,4 +597,34 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 			return self.equals(found);
 		}
 	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartment(Long departmentId,
+			Boolean onlyActive, Boolean onlyEnabled) throws Exception {
+		//TODO Integration of Warm-Up things
+		Validate.notNull(departmentId, "departmentId cannot be null.");
+		Validate.notNull(onlyActive, "onlyActive cannot be null");
+		Validate.notNull(onlyEnabled, "onlyEnabled cannot be null.");
+		final Department department = getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		List<InstituteInfo> instituteInfos = new ArrayList();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(int i=0; i<instituteInfos.size();i++) {		
+			courseList.addAll(this.findCoursesByActivePeriodsAndEnabled(instituteInfos.get(i).getId(), onlyEnabled));
+		}
+		
+		return courseList;
+	}
+
+	@Override
+	protected List handleFindAllCoursesByDepartmentAndPeriod(Long departmentId,
+			Long periodId, Boolean onlyEnabled) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

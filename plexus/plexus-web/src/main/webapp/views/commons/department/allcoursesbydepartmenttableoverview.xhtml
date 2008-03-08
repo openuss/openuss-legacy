@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+    
+ 	<o:block>
+		<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
+		<h:selectOneMenu id="periodSelection" 
+			layout="pageDirection"  
+			value="#{periodInfo.id}" 
+			onchange="this.form.submit();"
+			valueChangeListener="#{views$public$department$allcoursesbydepartment.processPeriodSelectChanged}" 
+			immediate="true" 
+			styleClass="pulldown_inline">  
+			<f:selectItems value="#{views$public$department$allcoursesbydepartment.belongingUniversityPeriods}"/>
+		</h:selectOneMenu>
+	</o:block>
+    	
+    	
+  	<plexus:dataTable 
+		id="allcourses" 
+		label="#{msg.course_main_overview_allcourses_department} '#{departmentInfo.name}' #{msg.course_main_overview_allcourses_period} #{periodInfo.name}" 
+		value="views$public$department$allcoursesbydepartment.allCoursesTable" 
+		var="course"
+		columnClasses="col_max_left, col_max_left, col_max_left, col_min_left, col_commands" 
+		rows="20">
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="courseName">
+				#{msg['course_colheader_name']}
+			</plexus:commandSortHeader>
+			<o:link value="/views/secured/course/main.faces" title="#{course.description}">
+				<f:param value="#{course.id}" name="course" />
+				<h:outputText value="#{course.name} (#{course.shortcut})"/>
+			</o:link>
+		</t:column>
+		
+	 <t:column>
+			<plexus:commandSortHeader columnName="instituteName">
+				#{msg['institute_name']}
+			</plexus:commandSortHeader>
+			 <o:link value="/views/public/institute/institute.faces" title="course.instituteDescription">
+				<f:param value="#{course.instituteId}" name="institute" />
+				<h:outputText value="#{course.instituteName}"/>
+			</o:link>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="periodName">
+				#{msg['course_colheader_period']}
+			</plexus:commandSortHeader>		
+			<h:outputText value="#{course.periodName}"/>			
+		</t:column>
+		
+		<plexus:column header="#{msg.course_options_access_headline}">
+			<h:outputText value="#{course.accessType}">
+					<f:converter converterId="accessTypeLabelConverter" />
+			</h:outputText>
+		</plexus:column>
+	 	  
+		<s:authorize ifAllGranted="ROLE_USER">
+			<plexus:column header="#{msg.commands_header}">		
+				<plexus:command 
+					bean="#{views$public$department$allcoursesbydepartment}"
+					action="removeCourseShortcut"
+					label="#{msg.course_command_shortcut_remove}"
+					title="#{msg.course_command_shortcut_hint_remove}"
+					styleClass="icon_bookmark_remove"
+					rendered="#{views$public$department$allcoursesbydepartment.bookmarked2}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$public$department$allcoursesbydepartment}"
+					action="shortcutCourse"
+					label="#{msg.course_command_shortcut}"
+					title="#{msg.course_command_shortcut_hint}"
+					styleClass="icon_bookmark"
+					rendered="#{not views$public$department$allcoursesbydepartment.bookmarked2}">
+				</plexus:command>	
+			</plexus:column>
+		</s:authorize>
+		  	
+	</plexus:dataTable>	
+	
+</ui:composition>
