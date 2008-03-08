@@ -40,7 +40,10 @@
 						</li>
 					
 						<li class="wiki_overview">
-							<h:commandLink value="" action="wiki_overview" ><span />#{msg.wiki_main_button_overview}</h:commandLink>
+							<h:commandLink 
+								value=""
+								action="wiki_overview"
+								title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</h:commandLink>
 						</li>
 					
 						<c:if test="${wiki_current_site_version.deleted}">
@@ -48,12 +51,14 @@
 								<h:commandLink
 									value=""
 									action="wiki_version"
-									immediate="true" ><span />#{msg.wiki_main_button_version}</h:commandLink>
+									immediate="true" 
+									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</h:commandLink>
 							</li>
 							<li class="wiki_recover">
 								<h:commandLink 
 									value="" 
-									action="#{views$secured$wiki$wikimain.recoverSite}"><span />#{msg.wiki_overview_recover_site}</h:commandLink>
+									action="#{views$secured$wiki$wikimain.recoverSite}"
+									title="#{msg.wiki_overview_recover_site_title}"><span />#{msg.wiki_overview_recover_site}</h:commandLink>
 							</li>
 						</c:if>
 						
@@ -62,7 +67,8 @@
 			                    <h:commandLink
 									value=""
 									action="wiki_version"
-									immediate="true"><span />#{msg.wiki_main_button_version}</h:commandLink>
+									immediate="true"
+									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</h:commandLink>
 							</li>
 							
 							<c:if test="${views$secured$wiki$wikimain.hasStableVersion}">
@@ -70,7 +76,8 @@
 									<h:commandLink
 										value=""
 										action="#{views$secured$wiki$wikimain.showStable}" 
-										immediate="true"><span />#{msg.wiki_main_button_showStable}</h:commandLink>
+										immediate="true" 
+										title="#{msg.wiki_main_button_showStable_title}"><span />#{msg.wiki_main_button_showStable}</h:commandLink>
 								</li>
 							</c:if>
 							
@@ -78,7 +85,8 @@
 								<h:commandLink
 			                    	value="" 
 		                            immediate="true"
-		                            onclick="window.open('wikiprintpreview.faces');"><span />#{msg.wiki_main_button_preview}</h:commandLink>
+		                            onclick="window.open('wikiprintpreview.faces');"
+		                            title="#{msg.wiki_main_button_preview_title}"><span />#{msg.wiki_main_button_preview}</h:commandLink>
 	                       	</li>
 	                       	
 	                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
@@ -87,7 +95,8 @@
 		                    			<h:commandLink 
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.lockSite}"
-		                        			immediate="true"><span />${msg.wiki_overview_lock_site}</h:commandLink>
+		                        			immediate="true"
+		                        			title="#{msg.wiki_overview_lock_site_title}"><span />${msg.wiki_overview_lock_site}</h:commandLink>
 	                        		</li>
 	                        	</c:if>
 	                    		<c:if test="${wiki_current_site_version.readOnly}">
@@ -95,7 +104,8 @@
 	                    				<h:commandLink 
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.unlockSite}" 
-		                        			immediate="true"><span />#{msg.wiki_overview_unlock_site}</h:commandLink>
+		                        			immediate="true"
+		                        			title="#{msg.wiki_overview_unlock_site_title}"><span />#{msg.wiki_overview_unlock_site}</h:commandLink>
 	                        		</li>
 	                        	</c:if>
 	                        	<c:if test="${not wiki_current_site_version.stable}">
@@ -103,7 +113,8 @@
 										<h:commandLink
 											value=""
 											action="#{views$secured$wiki$wikimain.markStable}" 
-											immediate="true"><span />#{msg.wiki_main_button_markStable}</h:commandLink>
+											immediate="true"
+											title="#{msg.wiki_main_button_markStable_title}"><span />#{msg.wiki_main_button_markStable}</h:commandLink>
 									</li>
 								</c:if>
 								<c:if test="${wiki_current_site_version.stable}">
@@ -111,7 +122,8 @@
 										<h:commandLink
 											value=""
 											action="#{views$secured$wiki$wikimain.unmarkStable}" 
-											immediate="true"><span />#{msg.wiki_main_button_unmarkStable}</h:commandLink>
+											immediate="true"
+											title="#{msg.wiki_main_button_unmarkStable_title}"><span />#{msg.wiki_main_button_unmarkStable}</h:commandLink>
 									</li>
 								</c:if>
 							</s:acl>
@@ -119,7 +131,10 @@
 				
 						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 							<li class="wiki_import">
-								<h:commandLink value="" action="#{views$secured$wiki$wikimain.showImportPage}" ><span />#{msg.wiki_main_import_wiki}</h:commandLink>
+								<h:commandLink 
+									value="" 
+									action="#{views$secured$wiki$wikimain.showImportPage}" 
+									title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</h:commandLink>
 							</li>
 						</s:acl>
 					</ul>
