@@ -987,25 +987,25 @@
 	</navigation-rule>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
-      L D A P R o l e A t t r i b u t e K e y S e t - R e g i s t r a t i o n 
+      L D A P R o l e A t t r i b u t e K e y - R e g i s t r a t i o n 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->	
 	<navigation-rule>
 	
 		<from-view-id>/*</from-view-id>
 	
 			<navigation-case>
-					<from-outcome>ldap_roleattributekeysets</from-outcome>
-					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysets.xhtml</to-view-id>
+					<from-outcome>ldap_roleattributekeys</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeys.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-					<from-outcome>ldap_roleattributekeyset_registration_start</from-outcome>
-					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstart.xhtml</to-view-id>
+					<from-outcome>ldap_roleattributekey_registration_start</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeystart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
-				<from-outcome>ldap_roleattributekeyset_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep1.xhtml</to-view-id>
+				<from-outcome>ldap_roleattributekey_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeystep1.xhtml</to-view-id>
 			</navigation-case>
 		
 	</navigation-rule>
@@ -1015,23 +1015,23 @@
 		<from-view-id>/views/secured/system/ldap/*</from-view-id>
 
 			<navigation-case>
-					<from-outcome>ldap_roleattributekeysets</from-outcome>
-					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysets.xhtml</to-view-id>
+					<from-outcome>ldap_roleattributekey</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_roleattributekeys.xhtml</to-view-id>
 			</navigation-case>
 
 			<navigation-case>
-				<from-outcome>ldap_roleattributekeyset_registration_start</from-outcome>
-				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstart.xhtml</to-view-id>
+				<from-outcome>ldap_roleattributekey_registration_start</from-outcome>
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeystart.xhtml</to-view-id>
 			</navigation-case>
 			
 			<navigation-case>
-				<from-outcome>ldap_roleattributekeyset_registration_step1</from-outcome>		
-				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep1.xhtml</to-view-id>
+				<from-outcome>ldap_roleattributekey_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeystep1.xhtml</to-view-id>
 			</navigation-case>
 	
 			<navigation-case>
-				<from-outcome>ldap_roleattributekeyset_registration_step2</from-outcome>		
-				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeysetstep2.xhtml</to-view-id>
+				<from-outcome>ldap_roleattributekey_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_roleattributekeystep2.xhtml</to-view-id>
 			</navigation-case>
 	</navigation-rule>
 
@@ -1135,6 +1135,20 @@
 			</navigation-case>
 	</navigation-rule>
 
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P R o l e A t t r i b u t e K e y  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+ <navigation-rule>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>ldap_roleattributekey_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_roleattributekeyremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+</navigation-rule>
    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       U n i v e r s i t y  - P a g e 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->		
