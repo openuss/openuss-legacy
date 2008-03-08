@@ -61,15 +61,13 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		addPageCrumbs();
 		
 		if (!isPostBack()) {
-			if(examInfo != null){
-				if (examInfo.getId() != null) {
-					setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
-					setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-				} 
-				if (examInfo.getDeadline()==null){
-					examInfo.setDeadline(new Date());
-				}
-			}
+			if(examInfo != null && examInfo.getId() != null){
+				setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
+				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+			} 
+		}
+		if (examInfo != null && examInfo.getDeadline()==null){
+			examInfo.setDeadline(new Date());
 		}
 	}
 
