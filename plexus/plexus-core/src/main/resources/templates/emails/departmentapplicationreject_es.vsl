@@ -1,0 +1,14 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Notificador de Emails</font></h3>
+			Estimado <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,
+			su solicitud para pertenecer a este departamento <i>${departmentname}</i> ha sido rechazada!
+		<p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

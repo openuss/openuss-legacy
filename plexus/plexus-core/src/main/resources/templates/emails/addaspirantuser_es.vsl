@@ -1,0 +1,18 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Administración de Usuarios</font></h3>
+			Estimado <i>${username} (${userfirstname} ${userlastname})</i>,<br>
+			ha realizado la petición satisfactoriamente para <i>${organisationname}</i>.
+		</p>
+		<p>
+			Los administradores de la organización no van a revisar su solicitud.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

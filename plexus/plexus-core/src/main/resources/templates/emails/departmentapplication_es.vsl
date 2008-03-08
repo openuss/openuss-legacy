@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<p>
+		<h3><font color="#003366">OpenUSS Notificador de Emails</font></h3>
+			Estimado <i>${departmentname}</i> - administradores, 
+			el instituto, <i>${institutename}</i> ha solicitado las solicitudes para 
+			<i>${departmentname}</i>.
+			Por favor, pinche en el siguiente enlace para responder a esta solicitud:<br/>
+			<a href="${departmentapplicantlink}">${departmentapplicantlink}</a>
+		</p>
+		<p>
+			Si el enlace de arriba no funciona, copie y pegue la URL en una nueva ventana de su navegador.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>
