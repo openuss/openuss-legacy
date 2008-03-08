@@ -214,7 +214,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	 */
 	public void testRoleAttributeKey() {
 		service = getLdapConfigurationService();
-		commit();
+//		commit();
 		
 		// create a role attribute key
 		RoleAttributeKeyInfo key1 = createRoleAttributeKeyInfoDummy();
@@ -239,6 +239,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(map1.getId());
 		
 		List<AttributeMappingInfo> allAttributeMappings = service.getAllAttributeMappings();
+		
 		int allAttributeMappingsCount = allAttributeMappings.size();
 		assertTrue(1 == allAttributeMappingsCount);
 		
@@ -258,45 +259,52 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(2 == allRoleAttributeKeysMap1Count);
 		
 		// remove role attribute key from mapping
-			service.removeRoleAttributeKeyFromAttributeMapping(key2, map1);
-			allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
-			allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
-			assertTrue(1 == allRoleAttributeKeysMap1Count);
-			allRoleAttributeKeys = service.getAllRoleAttributeKeys();
-			allRoleAttributeKeysCount = allRoleAttributeKeys.size();
-			assertTrue(2 == allRoleAttributeKeysCount);			
+		service.removeRoleAttributeKeyFromAttributeMapping(key2, map1);
+		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
+		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();		
+		assertTrue(1 == allRoleAttributeKeysMap1Count);
+		allRoleAttributeKeys = service.getAllRoleAttributeKeys();
+		allRoleAttributeKeysCount = allRoleAttributeKeys.size();
+		assertTrue(2 == allRoleAttributeKeysCount);			
 			
-			logger.debug("RoleAttributeKeys:");
-			logger.debug(allRoleAttributeKeys);
-			logger.debug("RoleAttributeKeys (Mapping1):");
-			logger.debug(allRoleAttributeKeysMap1);
-			
-			
-		// remove another role attribute key from mapping
-			service.removeRoleAttributeKeyFromAttributeMapping(key1, map1);
-			allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
-			allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
-			assertTrue(0 == allRoleAttributeKeysMap1Count);
-			allRoleAttributeKeys = service.getAllRoleAttributeKeys();
-			allRoleAttributeKeysCount = allRoleAttributeKeys.size();
-			
-			logger.debug("RoleAttributeKeys:");
-			logger.debug(allRoleAttributeKeys);
-			logger.debug("RoleAttributeKeys (Mapping1):");
-			logger.debug(allRoleAttributeKeysMap1);
-			
-			assertTrue(2 == allRoleAttributeKeysCount);
-			allAttributeMappings = service.getAllAttributeMappings();
-			allAttributeMappingsCount = allAttributeMappings.size();
-			
-			logger.debug("RoleAttributeKeys:");
-			logger.debug(allRoleAttributeKeys);
-			logger.debug("RoleAttributeKeys (Mapping1):");
-			logger.debug(allRoleAttributeKeysMap1);
-			
-			
-			assertTrue(0 == allAttributeMappingsCount);
+		logger.debug("********1 RoleAttributeKeys:");
+		logger.debug(allRoleAttributeKeys);
+		logger.debug("RoleAttributeKeys (Mapping1):");
+		logger.debug(allRoleAttributeKeysMap1);	
 		
+		
+		assertTrue(1 == service.getAllAttributeMappings().size());
+		
+		
+		// remove another role attribute key from mapping
+		service.removeRoleAttributeKeyFromAttributeMapping(key1, map1);
+		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
+		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
+		assertTrue(0 == allRoleAttributeKeysMap1Count);
+		allRoleAttributeKeys = service.getAllRoleAttributeKeys();
+		allRoleAttributeKeysCount = allRoleAttributeKeys.size();
+			
+		logger.debug("********2 RoleAttributeKeys:");
+		logger.debug(allRoleAttributeKeys);
+		logger.debug("RoleAttributeKeys (Mapping1):");
+		logger.debug(allRoleAttributeKeysMap1);
+			
+		assertTrue(2 == allRoleAttributeKeysCount);
+		assertTrue(0 == service.getAllAttributeMappings().size());
+		
+		logger.debug("********3 RoleAttributeKeys:");
+		logger.debug(allRoleAttributeKeys);
+		logger.debug("RoleAttributeKeys (Mapping1):");
+		logger.debug(allRoleAttributeKeysMap1);
+		
+		logger.debug("********4 allAttributeMappings:");
+		logger.debug(service.getAllAttributeMappings().size());
+		
+		
+		assertTrue(0 == service.getAllAttributeMappings().size());
+		
+//		service.deleteAttributeMapping(map1);		
+//		assertTrue(0 == service.getAllAttributeMappings().size());
 		
 	}
 

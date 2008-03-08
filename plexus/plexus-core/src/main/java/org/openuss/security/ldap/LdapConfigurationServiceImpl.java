@@ -545,6 +545,7 @@ public class LdapConfigurationServiceImpl
 	protected void handleDeleteAttributeMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMapping) {
 		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMapping.getId());
 		
+		
 		// also delete related domains
     	Set<AuthenticationDomain> toDeleteList = attributeMappingEntity.getAuthenticationDomains();
     	for(AuthenticationDomain delete : toDeleteList) {
@@ -552,15 +553,17 @@ public class LdapConfigurationServiceImpl
     	}
 		
 		// also remove mapping from role attribute keys
-    	List<RoleAttributeKeyInfo> roleAttributeKeyInfos = attributeMapping.getRoleAttributeKeys();
-    	for (Iterator<RoleAttributeKeyInfo> iterator = roleAttributeKeyInfos.iterator(); iterator.hasNext();) {
+    	List<RoleAttributeKey> roleAttributeKeyEntities =  attributeMappingEntity.getRoleAttributeKeys();
+    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntities.iterator(); iterator.hasNext();) {
     		RoleAttributeKey roleAttributeKey = getRoleAttributeKeyDao().load(iterator.next().getId());
     		roleAttributeKey.getAttributeMappings().remove(attributeMappingEntity);
     		getRoleAttributeKeyDao().update(roleAttributeKey);
     	}
 		
 		// save to DB
-		getAttributeMappingDao().remove(attributeMapping.getId());
+		getAttributeMappingDao().remove(attributeMappingEntity);
+		
+		logger.debug("REMOVE ATTRIBUTE MAPPING: " + attributeMapping.getId());
     }
 
     /**
@@ -657,8 +660,9 @@ public class LdapConfigurationServiceImpl
 	protected void handleSaveRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKey) throws Exception {
 		validateRoleAttributeKey(roleAttributeKey);
 		
-		RoleAttributeKey	key = getRoleAttributeKeyDao().roleAttributeKeyInfoToEntity(roleAttributeKey);
-    	getRoleAttributeKeyDao().update(key);
+		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKey.getId());
+    	roleAttributeKeyEntity.setName(roleAttributeKey.getName());
+		getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
     }
 	
 	/**
@@ -679,8 +683,8 @@ public class LdapConfigurationServiceImpl
 			
 			getAttributeMappingDao().update(attributeMappingEntity);
 			getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
-		}
-    	
+			attributeMappingInfo.getRoleAttributeKeys().add(roleAttributeKeyEntity.getId());
+		}    	
     }
 	
 	
@@ -693,10 +697,12 @@ public class LdapConfigurationServiceImpl
 		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
 		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKeyInfo.getId());
 		
+		if(attributeMappingEntity == null || roleAttributeKeyEntity == null) return;
+		
 		// check if attribute mapping contains role attribute key
 		if (( attributeMappingEntity.getRoleAttributeKeys().contains(roleAttributeKeyEntity)) &&
 			( roleAttributeKeyEntity.getAttributeMappings().contains(attributeMappingEntity)) ) {
-			System.out.println("REMOVE IT!!!");
+			logger.debug("handleRemoveRoleAttributeKeyFromAttributeMapping: REMOVE IT!!!");
 			// then remove it
 			// check if attribute has mapping to be removed
 //			if (attributeMappingEntity.getRoleAttributeKeys().size() == 1) {
@@ -712,6 +718,7 @@ public class LdapConfigurationServiceImpl
 		
 		attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
 		if (attributeMappingEntity.getRoleAttributeKeys().size() == 0) {
+			logger.debug("handleRemoveRoleAttributeKeyFromAttributeMapping: if (attributeMappingEntity.getRoleAttributeKeys().size() == 0");
 			handleDeleteAttributeMapping(attributeMappingInfo);
 		}
 		
@@ -758,19 +765,20 @@ public class LdapConfigurationServiceImpl
     
 
 	/**
-	 * @TODO: anpassen an neues model
+	 * 
 	 */
 	@Override
 	protected void handleAddDomainToAttributeMapping(AuthenticationDomainInfo domain, AttributeMappingInfo mapping) throws Exception {
 		AuthenticationDomain authenticationDomain = getAuthenticationDomainDao().load(domain.getId());		
 		AttributeMapping attributeMapping = getAttributeMappingDao().load(mapping.getId());
 		authenticationDomain.setAttributeMapping(attributeMapping);
-		getAuthenticationDomainDao().update(authenticationDomain);		
+		getAuthenticationDomainDao().update(authenticationDomain);	
+		mapping.getAuthenticationDomainIds().add(authenticationDomain.getId());
 	}
 
 
 	/**
-	 * @TODO: anpassen an neues model
+	 *
 	 */
 	@Override
 	protected UserDnPatternInfo handleCreateUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {		
@@ -782,7 +790,7 @@ public class LdapConfigurationServiceImpl
 
 
 	/**
-	 * @TODO: anpassen an neues model
+	 * 
 	 */
 	@Override
 	protected void handleDeleteUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {
@@ -791,20 +799,71 @@ public class LdapConfigurationServiceImpl
 	}
 	
 	/**
-	 * @TODO: implement
+	 * 
 	 */
 	@Override
 	protected void handleAddUserDnPatternToLdapServer(UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) throws Exception {
-		//
+		
+		LdapServer ldapServer = getLdapServerDao().load(ldapServerInfo.getId());		
+		UserDnPattern userDnPattern = getUserDnPatternDao().load(userDnPatternInfo.getId());		
+		ldapServer.getUserDnPatterns().add(userDnPattern);
+		
+		Set<LdapServer> ldapServers = userDnPattern.getLdapServers();
+		ldapServers.add(ldapServer);
+		userDnPattern.setLdapServers(ldapServers);
+		
+		getLdapServerDao().update(ldapServer);
+		getUserDnPatternDao().update(userDnPattern);
+		
+		ldapServerInfo.getUserDnPatterns().add(userDnPattern.getId());
 	}
 	
 	/**
-	 * @TODO: implement
+	 * 
 	 */
 	@Override
 	protected void handleRemoveUserDnPatternFromLdapServer(UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) throws Exception {
-		//
+		// Load entities
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPatternInfo.getId());
+		LdapServer ldapServerEntity = getLdapServerDao().load(ldapServerInfo.getId());
+		
+//		return if null
+		if(userDnPatternEntity == null || ldapServerEntity == null) return;
+		
+		userDnPatternEntity.getLdapServers().remove(ldapServerEntity);
+		ldapServerEntity.getUserDnPatterns().remove(userDnPatternEntity);
+		
+		getLdapServerDao().update(ldapServerEntity);
+		getUserDnPatternDao().update(userDnPatternEntity);
+		
 	}
+	
+	
+
+	@Override
+	protected void handleRemoveDomainFromAttributeMapping(
+			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
+			throws Exception {		
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
+		userDnPatternEntity.setName(userDnPattern.getName());
+		getUserDnPatternDao().update(userDnPatternEntity);
+	}
+	
+	 /**
+     * validates a role attribute key to create or save
+     */
+    private void UserDnPattern(UserDnPatternInfo userDnPatternInfo) throws Exception {
+    	if (StringUtils.isBlank(userDnPatternInfo.getName())){
+    		throw new LdapConfigurationServiceException("Name of new user dn pattern musst not be empty!");
+    	} 
+    }
 
 	/**
 	 * 
@@ -837,31 +896,6 @@ public class LdapConfigurationServiceImpl
     	
     	return userDnPatternInfos;
 	}
-
-	/**
-	 * 
-	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleRemoveDomainFromAttributeMapping(org.openuss.security.ldap.AuthenticationDomainInfo, org.openuss.security.ldap.AttributeMappingInfo)
-	 * @deprecated no use for it?!
-	 */
-	@Override
-	protected void handleRemoveDomainFromAttributeMapping(
-			AuthenticationDomainInfo domain, AttributeMappingInfo mapping)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	 * 
-	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleSaveUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)
-	 * @deprecated no use for it?!
-	 */
-	@Override
-	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
-			throws Exception {
-	}
-	
-	
 
 	
 
