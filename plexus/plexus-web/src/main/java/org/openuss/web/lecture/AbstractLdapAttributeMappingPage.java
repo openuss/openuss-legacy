@@ -15,9 +15,6 @@ import org.openuss.web.Constants;
 /**
  * Abstract Department Page
  * 
- * @author Kai Stettner
- * @author Tianyu Wang
- * @author Weijun Chen
  */
 public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 
