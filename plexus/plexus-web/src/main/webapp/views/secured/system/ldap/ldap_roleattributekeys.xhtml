@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"	  
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+  	  xmlns:o="http://www.openuss.org/jsfcontrols"
+  	  xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/admin.xhtml" />
+		</ui:define>
+  		<ui:define name="content">
+  			<h:form id="universitiesForm">
+				
+				<plexus:dataTable 
+					id="roleattributekey" 
+					label="#{msg.ldap_roleattributekeyconfiguration_header}" 
+					value="views$secured$system$ldap$ldap_roleattributekey.roleAttributeKeys" 
+					var="bean" 
+					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
+					rows="15">
+					<t:column>
+						<plexus:commandSortHeader columnName="name">
+							#{msg['ldap_roleattributekey_name']}
+						</plexus:commandSortHeader>
+							<h:outputText value="#{bean.name}"/>
+					</t:column>
+					
+			
+					<plexus:column header="#{msg.commands_header}">
+						<s:authorize ifAllGranted="ROLE_ADMIN">
+							<plexus:command
+								bean = "#{views$secured$system$ldap$ldap_roleattributekey}"
+								action = "selectRoleAttributeKeyAndRemove"
+								styleClass="icon_remove"
+								label="#{msg.department_command_remove}"
+								title="#{msg.department_command_remove_hint}"/>
+						</s:authorize>
+					</plexus:column>
+					
+				</plexus:dataTable>
+				
+				<s:authorize ifAllGranted="ROLE_ADMIN">
+	  				<o:block>
+						<h:commandButton 
+					    id="addRoleAttributeKey"
+						action="ldap_roleattributekey_registration_start" 
+						value="#{msg.ldap_roleattributekey_command_add_ldap_roleattributekey}" 
+						title="#{msg.ldap_roleattributekey_command_add_ldap_roleattributekey_hint}"
+						styleClass="button"/>
+					</o:block>
+				</s:authorize>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>
