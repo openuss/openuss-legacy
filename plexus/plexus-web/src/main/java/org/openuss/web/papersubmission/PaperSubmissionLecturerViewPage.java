@@ -32,7 +32,7 @@ import org.springframework.beans.support.PropertyComparator;
 @View
 public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage {
 	
-	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionViewPage.class);
 	
 	/** The data model for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
@@ -104,7 +104,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 				return paperFileSelection.isSelected(object);
 			}
 		});
-		logger.debug("selected " + selected.size() + " files");
+		LOGGER.debug("selected " + selected.size() + " files");
 		
 		return selected;
 	}
@@ -120,7 +120,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	
 	@SuppressWarnings("unchecked")
 	public String download() throws IOException{
-		logger.debug("downloading documents");
+		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = selectedEntries();
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -191,6 +191,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

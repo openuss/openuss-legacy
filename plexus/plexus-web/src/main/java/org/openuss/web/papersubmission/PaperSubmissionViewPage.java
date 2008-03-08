@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -23,29 +22,20 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.documents.FileEntryDao;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.paperSubmission.ExamInfo;
-import org.openuss.paperSubmission.PaperSubmission;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
-import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.collaboration.WorkspaceMemberSelection;
-import org.openuss.web.course.AbstractCoursePage;
-import org.openuss.web.documents.FolderEntrySelection;
 import org.springframework.beans.support.PropertyComparator;
 
 @Bean(name = "views$secured$papersubmission$submissionview", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
-	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionViewPage.class);
 	
 	/** The datamodel for all submissions. */
 	private LocalDataModelSubmissions dataSubmissions = new LocalDataModelSubmissions();
@@ -78,6 +68,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
 		final List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
@@ -130,7 +121,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 				return paperSelection.isSelected(object);
 			}
 		});
-		logger.debug("selected " + selected.size() + " files");
+		LOGGER.debug("selected " + selected.size() + " files");
 		return selected;
 	}
 	
@@ -145,7 +136,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	@SuppressWarnings("unchecked")
 	public String download () throws IOException{
-		logger.debug("downloading documents");
+		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = selectedEntries();
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -160,7 +151,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	public String downloadSubmission () throws IOException{
-		logger.debug("Downloading selected Submissions.");
+		LOGGER.debug("Downloading selected Submissions.");
 		
 		List<PaperSubmissionInfo> submissions = selectedSubmissions();
 		processDownloadSubmissions(submissions);
@@ -170,7 +161,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	@SuppressWarnings("unchecked")
 	public String downloadAllSubmissions () throws IOException{
-		logger.debug("Downloading all Submissions.");
+		LOGGER.debug("Downloading all Submissions.");
 		
 		List<PaperSubmissionInfo> submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
 		processDownloadSubmissions(submissions);
@@ -180,7 +171,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	@SuppressWarnings("unchecked")
 	public String downloadInTimeSubmissions () throws IOException{
-		logger.debug("Downloading all in time Submissions.");
+		LOGGER.debug("Downloading all in time Submissions.");
 		
 		List<PaperSubmissionInfo> submissions = paperSubmissionService.findInTimePaperSubmissionsByExam(examInfo.getId());
 		processDownloadSubmissions(submissions);
@@ -218,10 +209,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 				return paperSelection.isSelected(object);
 			}
 		});
-		logger.debug("selected " + selected.size() + " files");
+		LOGGER.debug("selected " + selected.size() + " files");
 		return selected;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<PaperSubmissionInfo> loadSubmissions(){
 		if(submissions == null && examInfo != null && examInfo.getId() != null){
 			submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
@@ -230,7 +222,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	public String editFolderEntry() {
-		logger.debug("editing folder entry");
+		LOGGER.debug("editing folder entry");
 		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
 		FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
 		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, selectedFile);
@@ -245,7 +237,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
-			logger.debug("deleting documents:");
+			LOGGER.debug("deleting documents:");
 			setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, entries);
 			paperSelection.getMap().clear();
 			return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
@@ -256,17 +248,17 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	public String addFile() {
-		logger.debug("create new file");
+		LOGGER.debug("create new file");
 		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 	
 	public String selectSubmission(){
-		logger.debug("Starting method selectSubmission");
+		LOGGER.debug("Starting method selectSubmission");
 		PaperSubmissionInfo currentSubmission = currentSubmission();
-		logger.debug("Returning to method selectSubmission");
-		logger.debug(currentSubmission.getId());
+		LOGGER.debug("Returning to method selectSubmission");
+		LOGGER.debug(currentSubmission.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
 		
 		if(currentSubmission.getId()==null){
@@ -332,6 +324,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		private DataPage<PaperSubmissionInfo> page;
 
 
+		@SuppressWarnings("unchecked")
 		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
@@ -348,6 +341,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<PaperSubmissionInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
@@ -401,6 +395,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

@@ -2,7 +2,6 @@ package org.openuss.web.papersubmission;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -25,7 +24,7 @@ import org.openuss.web.upload.UploadedDocument;
 @View
 public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		
-	private static final Logger logger = Logger.getLogger(PaperSubmissionAddZipPage.class);
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionAddZipPage.class);
 	
 	@Property (value="#{"+Constants.PAPERSUBMISSION_SELECTED_FILEENTRY+"}")
 	private FileInfo file;
@@ -70,7 +69,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	}	
 	
 	public String unzip() throws DocumentApplicationException{
-		logger.debug("new document saved");
+		LOGGER.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		paperSubmissionInfo = loadPaperSubmission();
 
@@ -96,7 +95,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {
-			logger.error(e);
+			LOGGER.error(e);
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}
@@ -105,7 +104,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 
 	private void injectReleaseDate(List<FileInfo> infos) {
 		if (file != null && file.getCreated() != null) {
-			logger.debug("injecting release date "+file.getCreated());
+			LOGGER.debug("injecting release date "+file.getCreated());
 			for(FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
 				fileInfo.setModified(file.getModified());

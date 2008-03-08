@@ -25,7 +25,8 @@ import org.openuss.web.upload.UploadedDocument;
 @Bean(name = "views$secured$papersubmission$submissionfileedit", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
-	private static final Logger logger = Logger.getLogger(PaperSubmissionFileEditPage.class);
+	
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionFileEditPage.class);
 	
 	@Property(value = "#{"+Constants.PAPERSUBMISSION_SELECTED_FILEENTRY+"}")
 	private FileInfo selectedFile;
@@ -81,7 +82,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	}
 
 	public String save() throws DocumentApplicationException, IOException{
-		logger.debug("saving file");
+		LOGGER.debug("saving file");
 		paperSubmissionInfo = loadPaperSubmission();
 		if (isNewFile()) {
 			if (!saveNewFile()) {
@@ -125,7 +126,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	}
 
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
-		logger.debug("source is "+document.getSource());
+		LOGGER.debug("source is "+document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
 			selectedFile.setFileName(document.getFileName());
 		} else {

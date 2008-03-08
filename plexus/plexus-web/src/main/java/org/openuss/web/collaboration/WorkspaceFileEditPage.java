@@ -15,9 +15,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.security.Roles;
-import org.openuss.security.SecurityService;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
@@ -31,7 +28,8 @@ import org.openuss.web.upload.UploadedDocument;
 @Bean(name = "views$secured$collaboration$workspacefileedit", scope = Scope.REQUEST)
 @View
 public class WorkspaceFileEditPage extends AbstractCollaborationPage {
-	private static final Logger logger = Logger.getLogger(WorkspaceFileEditPage.class);
+	
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceFileEditPage.class);
 	
 	@Property(value = "#{"+Constants.COLLABORATION_SELECTED_FILEENTRY+"}")
 	private FileInfo selectedFile;
@@ -72,7 +70,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	 * @throws IOException
 	 */
 	public String save() throws DocumentApplicationException, IOException{
-		logger.debug("saving file");
+		LOGGER.debug("saving file");
 		if (isNewFile()) {
 			if (!saveNewFile()) {
 				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
@@ -119,7 +117,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	}
 	
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
-		logger.debug("source is "+document.getSource());
+		LOGGER.debug("source is "+document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
 			selectedFile.setFileName(document.getFileName());
 		} else {

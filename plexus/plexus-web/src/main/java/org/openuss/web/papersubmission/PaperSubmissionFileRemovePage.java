@@ -22,7 +22,7 @@ import org.openuss.web.PageLinks;
 @View
 public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		
-	private static final Logger logger = Logger.getLogger(PaperSubmissionFileRemovePage.class);
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionFileRemovePage.class);
 
 	@Property(value="#{sessionScope.papersubmission_selected_fileentries}")
 	private List<FolderEntryInfo> entries;
@@ -68,7 +68,7 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 	 * @throws DocumentApplicationException 
 	 */
 	public String removeEntries() throws DocumentApplicationException {
-		logger.trace("removing entries");
+		LOGGER.trace("removing entries");
 		if (entries != null) {
 			documentService.removeFolderEntries(entries);
 			removeSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION);

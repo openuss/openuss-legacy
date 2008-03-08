@@ -2,8 +2,9 @@ package org.openuss.web.papersubmission;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
@@ -11,15 +12,10 @@ import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
-import org.openuss.documents.DocumentService;
-import org.openuss.documents.FileInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
-
 public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
-
-	public static final Logger logger = Logger.getLogger(AbstractPaperSubmissionPage.class);
 	
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
@@ -53,6 +49,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected PaperSubmissionInfo loadPaperSubmission(){
 		
 		final List<PaperSubmissionInfo> paperInfos;

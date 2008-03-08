@@ -22,9 +22,7 @@ import org.openuss.web.Constants;
 public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	
 	/** Logger for this class */
-	private static final Logger logger = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
-
-	private static final long serialVersionUID = -202000019652888870L;
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
 
 	@Prerender
 	public void prerender() throws LectureException {
@@ -37,7 +35,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 			newCrumb.setHint(i18n("collaboration_workspace_remove_header"));
 			breadcrumbs.addCrumb(newCrumb);
 		} catch (Exception e) {
-			logger.error(e);
+			LOGGER.error(e);
 		}
 	}
 	

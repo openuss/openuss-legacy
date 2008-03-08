@@ -27,7 +27,7 @@ import org.openuss.web.Constants;
 @View
 public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {
 		
-	private static final Logger logger = Logger.getLogger(WorkspaceDocumentRemovePage.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceDocumentRemovePage.class);
 
 	@Property(value="#{sessionScope.collaboration_selected_folderentries}")
 	private List<FolderEntryInfo> entries;
@@ -51,7 +51,7 @@ public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {
 	 * @throws DocumentApplicationException 
 	 */
 	public String removeEntries() throws DocumentApplicationException {
-		logger.trace("removing entries");
+		LOGGER.trace("removing entries");
 		if (entries != null) {
 			documentService.removeFolderEntries(entries);
 			removeSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES);

@@ -23,7 +23,7 @@ import org.openuss.web.course.AbstractCoursePage;
  */
 public class AbstractCollaborationPage extends AbstractCoursePage {
 	
-	public static final Logger logger = Logger.getLogger(AbstractCollaborationPage.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractCollaborationPage.class);
 			
 	@Property(value = "#{workspaceService}")
 	protected WorkspaceService workspaceService;
@@ -95,7 +95,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<FolderInfo> getCurrentPath() {
-		logger.debug("getting current path");
+		LOGGER.debug("getting current path");
 		if (currentFolder != null && currentFolder.getId() != null) {
 			return documentService.getFolderPath(retrieveActualFolder());
 		} else {

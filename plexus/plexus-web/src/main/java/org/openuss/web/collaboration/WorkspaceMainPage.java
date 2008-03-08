@@ -35,7 +35,7 @@ import org.openuss.web.Constants;
 @View
 public class WorkspaceMainPage extends AbstractCollaborationPage {
 	
-	public static final Logger logger = Logger.getLogger(WorkspaceMainPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceMainPage.class);
 	
 	/** The datamodel for all mapped workspaces for this user. */
 	private LocalDataModelMappedWorkspaces dataMappedWorkspaces;
@@ -121,7 +121,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			addWarning(i18n("collaboration_error_workspace_not_found"));
 			return Constants.FAILURE;
 		} else {
-			logger.debug("selected workspaceInfo " + workspaceInfo.getName());
+			LOGGER.debug("selected workspaceInfo " + workspaceInfo.getName());
 			editing = true;
 			
 			// get mapped users
@@ -150,7 +150,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 */
 	@SuppressWarnings("unchecked")
 	public String saveWorkspace() throws DesktopException, LectureException {
-		logger.debug("Starting method saveWorkspace()");
+		LOGGER.debug("Starting method saveWorkspace()");
 		boolean create = false;
 		if (workspaceInfo.getId() == null) {
 
@@ -191,7 +191,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 */
 	public String cancelWorkspace() {
-		logger.debug("cancelWorkspace()");
+		LOGGER.debug("cancelWorkspace()");
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_INFO);
 		removeSessionBean(Constants.COLLABORATION_WORKSPACE_MEMBER_SELECTION);
 		this.editing = false;
@@ -205,10 +205,10 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 */
 	public String selectWorkspaceAndConfirmRemove() {
-		logger.debug("Starting method selectWorkspaceAndConfirmRemove");
+		LOGGER.debug("Starting method selectWorkspaceAndConfirmRemove");
 		WorkspaceInfo currentWorkspace = currentWorkspace();
-		logger.debug("Returning to method selectWorkspaceAndConfirmRemove");
-		logger.debug(currentWorkspace.getId());
+		LOGGER.debug("Returning to method selectWorkspaceAndConfirmRemove");
+		LOGGER.debug(currentWorkspace.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, currentWorkspace);
 
 		return Constants.COLLABORATION_CONFIRM_REMOVE_PAGE;
@@ -220,10 +220,10 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return Outcome
 	 */
 	public String selectWorkspace() {
-		logger.debug("Starting method selectWorkspace");
+		LOGGER.debug("Starting method selectWorkspace");
 		WorkspaceInfo workspace = currentWorkspace();
-		logger.debug("Returning to method selectWorkspace");
-		logger.debug(workspace.getId());
+		LOGGER.debug("Returning to method selectWorkspace");
+		LOGGER.debug(workspace.getId());
 		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspace);
 
 		return Constants.COLLABORATION_WORKSPACE_PAGE;
@@ -298,9 +298,12 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	public void setSelectedMembers(List<String> items) {
 		System.out.println(">>>> " + items);
 	}
+	
+	@SuppressWarnings("unchecked")
 	public String getSelectedMembers() {
 		List<Long> wsMemberIds = getWorkspaceMemberIds();
 		StringBuilder sb = new StringBuilder();
+		
 		for (Iterator it = wsMemberIds.iterator(); it.hasNext();) {
 			Long id = (Long)it.next();
 			sb.append(id.longValue());
@@ -341,6 +344,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		return items;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Long> getWorkspaceMemberIds() {
 		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
 		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());

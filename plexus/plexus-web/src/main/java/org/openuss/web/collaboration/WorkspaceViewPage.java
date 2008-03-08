@@ -21,7 +21,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.collaboration.WorkspaceInfo;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
@@ -44,7 +43,7 @@ import org.springframework.beans.support.PropertyComparator;
 @View
 public class WorkspaceViewPage extends AbstractCollaborationPage {
 	
-	public static final Logger logger = Logger.getLogger(WorkspaceViewPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceViewPage.class);
 		
 	private DocumentDataProvider data = new DocumentDataProvider();
 
@@ -128,7 +127,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 */
 	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
-		logger.debug("downloading documents");
+		LOGGER.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -150,7 +149,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
 		if (entries.size() > 0) {
-			logger.debug("deleting documents:");
+			LOGGER.debug("deleting documents:");
 			setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
 			return Constants.COLLABORATION_REMOVE_FOLDERENTRY_PAGE;
@@ -178,7 +177,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return COLLABORATION_EDIT_FOLDER_PAGE
 	 */
 	public String newFolder() {
-		logger.debug("create new folder");
+		LOGGER.debug("create new folder");
 		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDER, new FolderInfo());
 		return Constants.COLLABORATION_EDIT_FOLDER_PAGE;
 	}
@@ -188,7 +187,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return COLLABORATION_EDIT_FILEENTRY_PAGE
 	 */
 	public String newFile() {
-		logger.debug("create new file");
+		LOGGER.debug("create new file");
 		setSessionBean(Constants.COLLABORATION_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.COLLABORATION_EDIT_FILEENTRY_PAGE;
@@ -199,7 +198,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return COLLABORATION_EDIT_FOLDER_PAGE if a folder, COLLABORATION_EDIT_FILEENTRY_PAGE if file
 	 */
 	public String editFolderEntry() {
-		logger.debug("editing folder entry");
+		LOGGER.debug("editing folder entry");
 		FolderEntryInfo entry = data.getRowData();
 		if (entry.isFolder()) {
 			FolderInfo selectedFolder = documentService.getFolder(entry);
@@ -224,7 +223,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 				return entrySelection.isSelected(object);
 			}
 		});
-		logger.debug("selected " + selected.size() + " files");
+		LOGGER.debug("selected " + selected.size() + " files");
 		return selected;
 	}
 	
@@ -235,10 +234,10 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 */
 	public String selectFileAndConfirmRemove() {
-		logger.debug("Starting method selectFileAndConfirmRemove");
+		LOGGER.debug("Starting method selectFileAndConfirmRemove");
 		FolderEntryInfo entry = data.getRowData();
-		logger.debug("Returning to method selectFileAndConfirmRemove");
-		logger.debug(entry.getId());
+		LOGGER.debug("Returning to method selectFileAndConfirmRemove");
+		LOGGER.debug(entry.getId());
 		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, Arrays.asList(new FolderEntryInfo[] {entry}));
 
 		return Constants.COLLABORATION_REMOVE_FOLDERENTRY_PAGE;

@@ -4,15 +4,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
-import org.openuss.web.PageLinks;
 
 
 /** Controller for the examremove.xhtml view.
@@ -22,11 +19,6 @@ import org.openuss.web.PageLinks;
 @Bean(name = "views$secured$papersubmission$examremove", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
-	
-	/** Logger for this class */
-	private static final Logger logger = Logger.getLogger(PaperSubmissionExamRemovePage.class);
-
-	private static final long serialVersionUID = -202000019652888870L;
 
 	@Prerender
 	public void prerender() throws Exception{

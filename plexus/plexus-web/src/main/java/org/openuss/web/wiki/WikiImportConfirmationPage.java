@@ -27,6 +27,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiImportConfirmationPage.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
 	public void prerender() throws Exception {

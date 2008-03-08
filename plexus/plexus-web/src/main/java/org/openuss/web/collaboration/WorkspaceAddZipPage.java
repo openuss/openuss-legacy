@@ -29,7 +29,7 @@ import org.openuss.web.upload.UploadedDocument;
 @View
 public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 		
-	private static final Logger logger = Logger.getLogger(WorkspaceAddZipPage.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceAddZipPage.class);
 	
 	@Property (value="#{"+Constants.COLLABORATION_SELECTED_FILEENTRY+"}")
 	private FileInfo file;
@@ -41,7 +41,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	public void prerender() throws Exception {
 		super.prerender();
 		if (file != null && file.getCreated() == null) {
-			logger.debug("reseting date");
+			LOGGER.debug("reseting date");
 			file.setCreated(new Date());
 		}
 		addPageCrumb();
@@ -61,7 +61,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	 * @throws DocumentApplicationException
 	 */
 	public String unzip() throws DocumentApplicationException{
-		logger.debug("new document saved");
+		LOGGER.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 
 		File zipFile = document.getFile(); 
@@ -85,7 +85,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {
-			logger.error(e);
+			LOGGER.error(e);
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}
@@ -94,7 +94,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 
 	private void injectReleaseDate(List<FileInfo> infos) {
 		if (file != null && file.getCreated() != null) {
-			logger.debug("injecting release date "+file.getCreated());
+			LOGGER.debug("injecting release date "+file.getCreated());
 			for(FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
 				fileInfo.setModified(file.getCreated());

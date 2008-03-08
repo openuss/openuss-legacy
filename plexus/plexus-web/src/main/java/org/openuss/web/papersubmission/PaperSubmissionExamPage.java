@@ -3,14 +3,12 @@ package org.openuss.web.papersubmission;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIData;
 
 import org.apache.commons.collections.comparators.ComparatorChain;
-import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -22,15 +20,12 @@ import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.paperSubmission.ExamInfo;
-import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.upload.UploadFileManager;
 import org.springframework.beans.support.PropertyComparator;
               
@@ -38,7 +33,7 @@ import org.springframework.beans.support.PropertyComparator;
 @View
 public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	
-	public static final Logger logger = Logger.getLogger(PaperSubmissionExamPage.class);
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionExamPage.class);
 	
 	@Property(value = "#{documentService}")
 	protected DocumentService documentService;
@@ -123,7 +118,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			return Constants.FAILURE;
 
 		} else {
-			logger.debug("selected examInfo " + examInfo.getName());
+			LOGGER.debug("selected examInfo " + examInfo.getName());
 			editing = true;
 			return Constants.SUCCESS;
 		}
@@ -149,7 +144,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			return Constants.FAILURE;
 
 		} else {
-			logger.debug("selected examInfo " + examInfo.getName());
+			LOGGER.debug("selected examInfo " + examInfo.getName());
 			editing = true;
 			return Constants.SUCCESS;
 		}
@@ -162,7 +157,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @return outcome
 	 */
 	public String saveExam() throws DesktopException, LectureException {
-		logger.debug("Starting method savePaper()");
+		LOGGER.debug("Starting method savePaper()");
 		// TODO implement save/update
 
 		Date currentDate = new Date();
@@ -195,7 +190,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @return outcome
 	 */
 	public String cancelExam() {
-		logger.debug("cancelPaper()");
+		LOGGER.debug("cancelPaper()");
 		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		this.editing = false;
 		return Constants.SUCCESS;
@@ -208,10 +203,10 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @return outcome
 	 */
 	public String selectActiveExamAndConfirmRemove() {
-		logger.debug("Starting method selectPaperAndConfirmRemove");
+		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
 		ExamInfo currentExam = currentActiveExam();
-		logger.debug("Returning to method selectExamAndConfirmRemove");
-		logger.debug(currentExam.getId());
+		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
+		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
@@ -224,37 +219,37 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @return outcome
 	 */
 	public String selectInactiveExamAndConfirmRemove() {
-		logger.debug("Starting method selectPaperAndConfirmRemove");
+		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
 		ExamInfo currentExam = currentInactiveExam();
-		logger.debug("Returning to method selectExamAndConfirmRemove");
-		logger.debug(currentExam.getId());
+		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
+		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
 	}
 	
 	public String selectActiveExam(){
-		logger.debug("Starting method selectExam");
+		LOGGER.debug("Starting method selectExam");
 		ExamInfo currentExam = currentActiveExam();
-		logger.debug("Returning to method selectExam");
-		logger.debug(currentExam.getId());
+		LOGGER.debug("Returning to method selectExam");
+		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
 	public String selectInactiveExam(){
-		logger.debug("Starting method selectExam");
+		LOGGER.debug("Starting method selectExam");
 		ExamInfo currentExam = currentInactiveExam();
-		logger.debug("Returning to method selectExam");
-		logger.debug(currentExam.getId());
+		LOGGER.debug("Returning to method selectExam");
+		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
 	public String removeAttachment() {
-		logger.debug("exam attachment removed");
+		LOGGER.debug("exam attachment removed");
 		FileInfo attachment = (FileInfo) attachmentList.getRowData();
 		if (examInfo.getAttachments() != null) {
 			examInfo.getAttachments().remove(attachment);
@@ -263,7 +258,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	}
 
 	public String addAttachment() throws IOException, BrainContestApplicationException {
-		logger.debug("braincontest attachment add");
+		LOGGER.debug("braincontest attachment add");
 		if (examInfo.getAttachments() == null) {
 			examInfo.setAttachments(new ArrayList<FileInfo>());
 		}
@@ -384,6 +379,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<ExamInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
@@ -420,6 +416,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<ExamInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

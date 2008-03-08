@@ -20,7 +20,8 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$collaboration$workspacefolderedit", scope = Scope.REQUEST)
 @View
 public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
-	private static final Logger logger = Logger.getLogger(WorkspaceFolderEditPage.class);
+	
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceFolderEditPage.class);
 	
 	@Property(value = "#{"+Constants.COLLABORATION_SELECTED_FOLDER+"}")
 	private FolderInfo selectedFolder;
@@ -45,7 +46,7 @@ public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
 	 * @throws DocumentApplicationException
 	 */
 	public String save() throws DocumentApplicationException{
-		logger.debug("saving folder");
+		LOGGER.debug("saving folder");
 		if (selectedFolder != null && selectedFolder.getId() == null) {
 			documentService.createFolder(selectedFolder, retrieveActualFolder());
 			addMessage(i18n("message_documents_new_folder_created"));
