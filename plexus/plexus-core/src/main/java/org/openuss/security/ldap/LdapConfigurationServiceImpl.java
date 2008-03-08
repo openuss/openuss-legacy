@@ -529,6 +529,11 @@ public class LdapConfigurationServiceImpl
     			attributeMapping.getUsernameKey()
     		);
     	
+    	for (RoleAttributeKey entity : roleAttributeKeyEntities) {
+    		entity.getAttributeMappings().add(attributeMappingEntity);
+    	}
+    	getRoleAttributeKeyDao().update(roleAttributeKeyEntities);
+    	
        	attributeMapping.setId(attributeMappingEntity.getId());
     	return attributeMapping;    	
     }
@@ -657,36 +662,60 @@ public class LdapConfigurationServiceImpl
     }
 	
 	/**
-     * @TODO: impelement
+     * 
      */ 
 	@Override
 	protected void handleAddRoleAttributeKeyToAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
+		// Load entities
+		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
+		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKeyInfo.getId());
+		
+		// check if attribute mapping already contains role attribute key
+		if ((! attributeMappingEntity.getRoleAttributeKeys().contains(roleAttributeKeyEntity)) &&
+			(! roleAttributeKeyEntity.getAttributeMappings().contains(attributeMappingEntity)) ) {
+			// otherwise add it
+			attributeMappingEntity.getRoleAttributeKeys().add(roleAttributeKeyEntity);
+			roleAttributeKeyEntity.getAttributeMappings().add(attributeMappingEntity);
+			
+			getAttributeMappingDao().update(attributeMappingEntity);
+			getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
+		}
     	
-//		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
-//		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
-//    	
-//    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
-//    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
-//			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
-//			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
-//		}
     }
 	
 	
 	/**
-     * @TODO: impelement
+     * 
      */ 
 	@Override
-	protected void handleRemoveRoleAttributeKeyFromAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
-    	
-//		List<RoleAttributeKeyInfo> roleAttributeKeyInfoList = new ArrayList<RoleAttributeKeyInfo>();
-//		RoleAttributeKeySet roleAttributeKeySetEntity = getRoleAttributeKeySetDao().load(roleAttributeKeySet.getId());
-//    	
-//    	List<RoleAttributeKey> roleAttributeKeyEntityList = roleAttributeKeySetEntity.getRoleAttributeKeys();
-//    	for (Iterator<RoleAttributeKey> iterator = roleAttributeKeyEntityList.iterator(); iterator.hasNext();) {
-//			RoleAttributeKey roleAttributeKeyEntity = iterator.next();    		
-//			roleAttributeKeyInfoList.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity));
-//		}
+	protected void handleRemoveRoleAttributeKeyFromAttributeMapping(org.openuss.security.ldap.RoleAttributeKeyInfo roleAttributeKeyInfo, org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo)  {
+		// Load entities
+		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
+		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKeyInfo.getId());
+		
+		// check if attribute mapping contains role attribute key
+		if (( attributeMappingEntity.getRoleAttributeKeys().contains(roleAttributeKeyEntity)) &&
+			( roleAttributeKeyEntity.getAttributeMappings().contains(attributeMappingEntity)) ) {
+			System.out.println("REMOVE IT!!!");
+			// then remove it
+			// check if attribute has mapping to be removed
+//			if (attributeMappingEntity.getRoleAttributeKeys().size() == 1) {
+//				handleDeleteAttributeMapping(attributeMappingInfo);
+//			} else {
+				attributeMappingEntity.getRoleAttributeKeys().remove(roleAttributeKeyEntity);
+				roleAttributeKeyEntity.getAttributeMappings().remove(attributeMappingEntity);
+				
+				getAttributeMappingDao().update(attributeMappingEntity);
+				getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
+//			}
+		}
+		
+		attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
+		if (attributeMappingEntity.getRoleAttributeKeys().size() == 0) {
+			handleDeleteAttributeMapping(attributeMappingInfo);
+		}
+		
+		
     }
 	
 
@@ -695,15 +724,17 @@ public class LdapConfigurationServiceImpl
      */
 	@Override
 	protected java.util.List<RoleAttributeKeyInfo> handleGetAllRoleAttributeKeysByMapping(org.openuss.security.ldap.AttributeMappingInfo attributeMappingInfo){
-		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
-		List<RoleAttributeKey> roleAttributeKeyEntities = attributeMappingEntity.getRoleAttributeKeys();
-		
-		List<RoleAttributeKeyInfo> roleAttributeKeyInfos = new ArrayList<RoleAttributeKeyInfo>();
-		for (RoleAttributeKey key : roleAttributeKeyEntities) {
-			roleAttributeKeyInfos.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(key));
-		}
-    	
-    	return roleAttributeKeyInfos;
+			AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
+			
+			if(attributeMappingEntity != null) {
+				List<RoleAttributeKey> roleAttributeKeyEntities = attributeMappingEntity.getRoleAttributeKeys();
+				
+				List<RoleAttributeKeyInfo> roleAttributeKeyInfos = new ArrayList<RoleAttributeKeyInfo>();
+				for (RoleAttributeKey key : roleAttributeKeyEntities) {
+					roleAttributeKeyInfos.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(key));
+				}
+		    	return roleAttributeKeyInfos;
+			} else return new ArrayList<RoleAttributeKeyInfo>();
     }
 
 
@@ -716,9 +747,7 @@ public class LdapConfigurationServiceImpl
 		List<RoleAttributeKeyInfo> keyInfoList = new ArrayList<RoleAttributeKeyInfo>();
     	
     	List<RoleAttributeKey> keyEntityList = (List<RoleAttributeKey>) getRoleAttributeKeyDao().loadAll();
-
     	for (RoleAttributeKey roleAttributeKey : keyEntityList) {
-    		
     		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKey);
 			keyInfoList.add(roleAttributeKeyInfo);			
 		}
