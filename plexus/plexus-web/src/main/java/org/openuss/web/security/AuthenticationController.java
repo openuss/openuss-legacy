@@ -20,6 +20,7 @@ import org.acegisecurity.LockedException;
 import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.ProviderNotFoundException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.WebAuthenticationDetails;
@@ -46,6 +47,7 @@ import org.openuss.security.UserImpl;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.migration.CentralUserData;
+import org.openuss.web.migration.MigrationUtility;
 import org.openuss.web.statistics.OnlineSessionTracker;
 
 
@@ -84,6 +86,9 @@ public class AuthenticationController extends BasePage {
 	@Property(value="#{centralUserData}")
 	CentralUserData centralUserData;
 	
+	@Property(value="#{migrationUtility}")
+	MigrationUtility migrationUtility;
+	
 	public AuthenticationController() {
 		logger.debug(" created");
 	}
@@ -109,7 +114,7 @@ public class AuthenticationController extends BasePage {
 			// Perform authentication
 			auth = getAuthenticationManager().authenticate(authRequest);
 			
-			// Handle LDAP user
+			// Handle LDAP user -> LDAP user has been successfully authenticated.
 			if (auth.getPrincipal() instanceof LdapUserDetails) {
 				mapLdapUserAttributes((LdapUserDetails) auth.getPrincipal());
 				
@@ -117,48 +122,41 @@ public class AuthenticationController extends BasePage {
 				
 				if (user!=null) {
 					/* OpenUSS profile of central user found. 
-					 * 1. Load profile.
-					 * 2. Generate authentication object, as if user had used a local login.
+					 * 1. Check profile, whether user is locally enabled and not locked or credentials or account is expired.
+					 * 2. Either throw corresponding exceptions or generate authentication object, as if user had used a local login.
 					 * 3. Handle "local user".
-					 */  
+					 */
+					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
 					UserImpl principal = (UserImpl) user;
 					UserDetails userDetails = principal;
-					auth = createSuccessAuthentication(principal, authRequest, userDetails);
+					auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);					
 				}
 				else {
-					/* New central user must be redirected to migration page
-					 * 1. Try to find by email address
-					 * 2. If found, migrate user and redirect her.
-					 * 3. If not found, redirect to migration page.
+					/* New central user
+					 * 1. Try to find OpenUSS profile by email address
+					 * 2. If found, check profile, whether user is not locked or credentials or account is expired. Disabled users will be enabled.
+					 * 3. If no exception occurs, migrate user and redirect her.
+					 * 3. If not found, redirect user to migration page.
 					 */
 					
 					user = securityService.getUserByEmail(centralUserData.getEmail());
 					
 					if (user!=null) {
-						/* OpenUSS profile of central user found.
-						 * 1. Generate authentication object, as if user had used a local login. 
-						 * 2. Put authentication into SecurityContext, so that SecurityService can find it.
-						 * 3. Migrate user, i. e. change username, password, firstname and lastname.
-						 * 4. Add message to inform user about migration.
-						 * 4. Handle "local user".
+						/* OpenUSS profile of central user found by email.
+						 * 1. Enable user profile. (Seldom: User registered without activating her account. As LDAP user, she should be enabled anyway. Refers to: Shortened Registration)
+						 * 2. Check for exceptions (see above).
+						 * 3. If no exception is thrown, put authentication into SecurityContext, so that SecurityService can find it.
+						 * 4. Migrate user, i. e. change username, password, firstname and lastname.
+						 * 5. Add message to inform user about migration.
+						 * 6. Handle "local user".
 						 */
+						user.setEnabled(true);
+						AuthenticationUtils.checkLocallyAllowanceToLogin(user);
 						UserImpl principal = (UserImpl) user;
 						UserDetails userDetails = principal;
-						auth = createSuccessAuthentication(principal, authRequest, userDetails);
-						
-						SecurityContext sc = SecurityContextHolder.getContext();
-						sc.setAuthentication(auth);
-						// Generate random password, so that account is likely not to be used for login.
-						Random random = new Random();		
-						String password = String.valueOf(System.currentTimeMillis())+String.valueOf(random.nextLong());
-						securityService.changePassword(password);
-						user.setUsername(centralUserData.getUsername());
-						UserContact userContact = user.getContact();
-						userContact.setFirstName(centralUserData.getFirstName());
-						userContact.setLastName(centralUserData.getLastName());
-						securityService.saveUserContact(userContact);
-						securityService.saveUser(user);
-						addMessage(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));
+						auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
+						user = migrationUtility.migrate(user, auth);
+						addError(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
 					}
 					else {
 						/* OpenUSS profile not found. Central user has to migrate manually or do an abbreviated registration.
@@ -189,27 +187,29 @@ public class AuthenticationController extends BasePage {
 		
 			if (logger.isDebugEnabled())
 				logger.debug("User: " + username + " switched to active state.");
-		} catch (DisabledException ex) {
-			if (logger.isDebugEnabled())
-				logger.debug("User " + username + " is not active");
-			addError(i18n("authentication_error_account_disabled"));
-			return "/views/public/user/activate/request.xhtml";
-		} catch (AuthenticationException ex) {
+		} catch (Exception ex) {
 			// Authentication failed
 			String exceptionMessage = null;
-
+			
 			if (ex instanceof UsernameNotFoundException) {
 				exceptionMessage = i18n("authentication_error_account_notfound");
 			} else if (ex instanceof CredentialsExpiredException) {
 				exceptionMessage = i18n("authentication_error_password_expired");
 			} else if (ex instanceof DisabledException) {
 				exceptionMessage = i18n("authentication_error_account_disabled");
+				addError(exceptionMessage);
+				return Constants.USER_ACTIVATION_REQUEST_PAGE;
 			} else if (ex instanceof LockedException) {
 				exceptionMessage = i18n("authentication_error_account_locked");
 			} else if (ex instanceof AccountExpiredException) {
 				exceptionMessage = i18n("authentication_error_account_expired");
-			} else if (ex instanceof BadCredentialsException) { 
+			} else if (ex instanceof BadCredentialsException || ex instanceof ProviderNotFoundException) { 
+				/* If no LDAP server is configured a ProviderNotFound exception is thrown.
+				 * To users it should look like as if they have entered bad credentials.
+				 */				
 				exceptionMessage = i18n("authentication_error_password_mismatch");
+			} else if (ex instanceof AuthenticationException) {
+				exceptionMessage = i18n("authentication_error_communication");
 			} else {
 				exceptionMessage = ex.getMessage();
 			}
@@ -333,34 +333,8 @@ public class AuthenticationController extends BasePage {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	/**
-     * From Acegi-Framework:  
-     * Creates a successful <code>Authentication</code> object.<p>Protected so subclasses can override.</p>
-     *  <p>Subclasses will usually store the original credentials the user supplied (not salted or encoded
-     * passwords) in the returned <code>Authentication</code> object.</p>
-     *
-     * @param principal that should be the principal in the returned object (defined by the {@link
-     *        #isForcePrincipalAsString()} method)
-     * @param authentication that was presented to the provider for validation
-     * @param user that was loaded by the implementation
-     *
-     * @return the successful authentication token
-     *  
-     */
-    protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
-        UserDetails user) {
-        // Ensure we return the original credentials the user supplied,
-        // so subsequent attempts are successful even with encoded passwords.
-        // Also ensure we return the original getDetails(), so that future
-        // authentication events after cache expiry contain the details
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
-                authentication.getCredentials(), user.getAuthorities());
-        result.setDetails(authentication.getDetails());
+	}	
 
-        return result;
-    }
 	
 	public AuthenticationManager getAuthenticationManager() {
 		return authenticationManager;
@@ -432,6 +406,14 @@ public class AuthenticationController extends BasePage {
 
 	public void setCentralUserData(CentralUserData centralUserData) {
 		this.centralUserData = centralUserData;
+	}
+
+	public MigrationUtility getMigrationUtility() {
+		return migrationUtility;
+	}
+
+	public void setMigrationUtility(MigrationUtility migrationUtility) {
+		this.migrationUtility = migrationUtility;
 	}
 
 }

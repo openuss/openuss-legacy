@@ -36,6 +36,7 @@ import org.openuss.security.UserImpl;
 import org.openuss.security.UserPreferences;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.security.AuthenticationUtils;
 import org.openuss.web.statistics.OnlineSessionTracker;
 
 /**
@@ -70,7 +71,7 @@ public class ShortenedRegistrationController extends BasePage {
 	
 	public String register() throws RegistrationException{
 		final HttpSession session = getSession();
-		User user = newUser();
+		User user = generateEnabledUserProfile();
 		
 		//create user
 		securityService.createUser(user);
@@ -87,7 +88,7 @@ public class ShortenedRegistrationController extends BasePage {
 	/**
 	 * Create a new user structure for the registration process.
 	 */	
-	private User newUser() {
+	private User generateEnabledUserProfile() {
 		logger.trace("init registration data");
 		// Generate registration information
 		String username = centralUserData.getUsername();
@@ -96,7 +97,7 @@ public class ShortenedRegistrationController extends BasePage {
 		String email = centralUserData.getEmail();
 		// Generate random password, so that account is likely not to be used for login.
 		Random random = new Random();		
-		String password = String.valueOf(System.currentTimeMillis())+String.valueOf(random.nextLong());
+		String password = String.valueOf(random.nextLong())+String.valueOf(random.nextLong());
 		
 		// Central user is already authenticated! Therefore an enabled user profile is created.
 		boolean enabled = true;
@@ -140,7 +141,7 @@ public class ShortenedRegistrationController extends BasePage {
 		 */  
 		UserImpl principal = (UserImpl) user;
 		UserDetails userDetails = principal;
-		auth = createSuccessAuthentication(principal, authRequest, userDetails);
+		auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
 
 		// Initialize the security context
 		final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -201,34 +202,7 @@ public class ShortenedRegistrationController extends BasePage {
 				logger.error(e);
 			}
 		}
-	}
-	
-	/**
-     * From Acegi-Framework:  
-     * Creates a successful <code>Authentication</code> object.<p>Protected so subclasses can override.</p>
-     *  <p>Subclasses will usually store the original credentials the user supplied (not salted or encoded
-     * passwords) in the returned <code>Authentication</code> object.</p>
-     *
-     * @param principal that should be the principal in the returned object (defined by the {@link
-     *        #isForcePrincipalAsString()} method)
-     * @param authentication that was presented to the provider for validation
-     * @param user that was loaded by the implementation
-     *
-     * @return the successful authentication token
-     *  
-     */
-    protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
-        UserDetails user) {
-        // Ensure we return the original credentials the user supplied,
-        // so subsequent attempts are successful even with encoded passwords.
-        // Also ensure we return the original getDetails(), so that future
-        // authentication events after cache expiry contain the details
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
-                authentication.getCredentials(), user.getAuthorities());
-        result.setDetails(authentication.getDetails());
-
-        return result;
-    }
+	}	
 
 	//~ Getters and Setters =============================================================
 

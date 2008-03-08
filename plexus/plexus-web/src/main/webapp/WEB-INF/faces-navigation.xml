@@ -225,6 +225,10 @@
 			<to-view-id>/views/secured/migration/userAgreement.xhtml</to-view-id>
 		</navigation-case>	
 		
+		<navigation-case>
+			<from-outcome>user_activation_request</from-outcome>
+			<to-view-id>/views/public/user/activate/request.xhtml</to-view-id>
+		</navigation-case>
 
 		
 	</navigation-rule>

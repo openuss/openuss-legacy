@@ -28,7 +28,26 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		ldapServerConfiguration.setUsernameKey("cn");		
 		
 		ldapServerConfigurations.add(ldapServerConfiguration);
+		
+		ldapServerConfiguration = new LdapServerConfiguration();
+		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("defaultdomain");
+		ldapServerConfiguration.setAuthenticationType("SIMPLE");
+		ldapServerConfiguration.setEmailKey("mail");
+		ldapServerConfiguration.setFirstNameKey("givenName");
+		ldapServerConfiguration.setLastNameKey("sn");
+		ldapServerConfiguration.setLdapServerType(LdapServerType.OTHER);
+		ldapServerConfiguration.setPort(10389);
+		ldapServerConfiguration.setProviderUrl("ldap://localhost");
+		ldapServerConfiguration.setRoleAttributeKeys(new String[]{"memberOf"});
+		ldapServerConfiguration.setRootDn("dc=example,dc=com");
+		ldapServerConfiguration.setUseConnectionPool(false);
+		ldapServerConfiguration.setUseLdapContext(true);
+		ldapServerConfiguration.setUserDnPatterns(new String[]{"uid={0},ou=myunit"});
+		ldapServerConfiguration.setUsernameKey("uid");
 
+		ldapServerConfigurations.add(ldapServerConfiguration);
+		
 		return ldapServerConfigurations;
 	}
 
@@ -210,6 +229,63 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
+
+
+
+	public void addRoleAttributeKeyToAttributeMapping(
+			RoleAttributeKeyInfo roleAttributeKeyinfo,
+			AttributeMappingInfo attributeMappingInfo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void addUserDnPatternToLdapServer(
+			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public List getAllRoleAttributeKeysByMapping(
+			AttributeMappingInfo attributeMappingInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public List getAllUserDnPatterns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public List getAllUserDnPatternsByLdapServer(
+			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public void removeRoleAttributeKeyFromAttributeMapping(
+			RoleAttributeKeyInfo roleAttributeKeyInfo,
+			AttributeMappingInfo attributeMappingInfo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void removeUserDnPatternFromLdapServer(
+			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

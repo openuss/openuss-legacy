@@ -61,7 +61,7 @@
 		   			<o:input entity="migrationController" property="password" label="#{msg['login_password']}" required="true" type="password"/>		   					
 		   		</o:block>
    			 	<o:block>
-				    <h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login"/>
+				    <h:commandButton id="loginButton" action="#{migrationController.performMigration}" value="${msg.login_button}" styleClass="button_login"/>
 		 		</o:block>
 	 		</h:form> 
 			<h:form id="migration_register" enctype="multipart/form-data">

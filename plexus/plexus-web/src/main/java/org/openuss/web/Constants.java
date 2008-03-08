@@ -63,7 +63,8 @@ public class Constants {
 	public static final String DESKTOP = "desktop";
 	public static final String ERROR = "error";
 	public static final String MYUNI_INSTITUTE_COURSECOUNT_STRING = "MYUNI_INSITUTE_COURSECOUNT_STRING";
-
+	public static final String USER_ACTIVATION_REQUEST_PAGE="user_activation_request";
+	
 	// university and periods navigation outcomes and combobox long constants
 	public static final String UNIVERSITIES_PAGE = "universities";
 	public static final String UNIVERSITIES_ADMIN_PAGE = "admin_universities";
