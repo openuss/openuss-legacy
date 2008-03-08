@@ -1,5 +1,8 @@
 package org.openuss.web.seminarpool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -11,6 +14,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -26,10 +30,15 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 	private static final Logger logger = Logger.getLogger(SeminarpoolMainPage.class);
 
 	private String password;
+	
+	private List<UserInfo> userInfoList = new ArrayList<UserInfo>();
 
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if ( seminarpoolInfo != null && seminarpoolInfo.getId() != null ) {
+			userInfoList = getSeminarpoolAdministrationService().getAllSeminarpoolAdmins(seminarpoolInfo.getId());
+		}
 	}
 	
 
@@ -97,6 +106,18 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+
+
+	public List<UserInfo> getUserInfoList() {
+		return userInfoList;
+	}
+
+
+
+	public void setUserInfoList(List<UserInfo> userInfoList) {
+		this.userInfoList = userInfoList;
 	}
 
 }

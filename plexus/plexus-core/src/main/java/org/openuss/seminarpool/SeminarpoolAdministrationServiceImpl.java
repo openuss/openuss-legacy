@@ -701,4 +701,17 @@ public class SeminarpoolAdministrationServiceImpl
 		}
 		return allocationList;
 	}
+
+	@Override
+	protected List handleGetAllSeminarpoolAdmins(Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(seminarpoolId, "handleGetAllocationsByUserAndSeminarpool ==> seminarpoolId cannot be null");
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpoolId, "handleGetAllocationsByUserAndSeminarpool ==> seminarpool cannot be loaded");
+		List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+		for ( User user : seminarpool.getMembership().getMembers()){
+			userInfoList.add(getUserDao().toUserInfo(user));
+		}
+		return userInfoList;
+	}
 }

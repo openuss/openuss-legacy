@@ -39,9 +39,30 @@
 				<div class="content_font_normal">
 					<h:outputText value="#{seminarpoolInfo.description}" escape="false"/>
 				</div>
-					<h:outputText value="#{msg.seminarpool_main_admins}" styleClass="field_label" />
+				<p class="header_font_normal">
+					<h:outputText value="#{msg.seminarpool_overview_registrationphase}"/>
+				</p>
+				<div class="content_font_normal">
+					<h:outputText value="#{seminarpoolInfo.registrationStartTime}">
+						<f:converter converterId="seminarpoolDateConverter" />
+					</h:outputText>
+					<h:outputText value=" - "/>
+					<h:outputText value="#{seminarpoolInfo.registrationStartTime}">
+						<f:converter converterId="seminarpoolDateConverter" />
+					</h:outputText>	
+				</div>
+				<p class="header_font_normal">
+					<h:outputText value="#{msg.seminarpool_main_admins}" />
+				</p>			
 				<span class="content_font_normal">
-<!-- FIXME Admin-Ausgabe -->
+					<t:dataList 
+						id="admins"  
+						var="admins"
+						value="#{views$secured$seminarpool$main.userInfoList}"
+						rendered="#{not empty views$secured$seminarpool$main.userInfoList}"
+						layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+						<h:outputText value="#{admins.firstName} #{admins.lastName}"/>
+				</t:dataList>
 				</span>
 			</o:block>
 
