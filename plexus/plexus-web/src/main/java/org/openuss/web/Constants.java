@@ -1,15 +1,15 @@
 package org.openuss.web;
 
 /**
- * Contains any constant that is used in conjunction with scopes. 
+ * Contains any constant that is used in conjunction with scopes.
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
 public class Constants {
-	// request parameters 
+	// request parameters
 	public static final String REPOSITORY_FILE_ID = "fileid";
-	
+
 	// Session Entity Beans
 	public static final String UNIVERSITY = "university";
 	public static final String UNIVERSITY_INFO = "universityInfo";
@@ -28,15 +28,15 @@ public class Constants {
 	public static final String PERIOD = "period";
 	public static final String PERIOD_INFO = "periodInfo";
 	public static final String PERIODS = "periods";
-	
+
 	public static final String USER = "user";
-	
+
 	public static final String NEWS_PUBLISHER = "news_publisher";
 	public static final String NEWS_SELECTED_NEWSITEM = "news_selected_newsitem";
 	public static final String NEWS_NEWSDETAIL_PAGE = "news_newsdetail_page";
 
 	public static final String UPLOADED_FILE = "LAST_UPLOADED_FILE";
-	
+
 	// service beans
 	public static final String ORGANISATION_SERVICE = "organisationService";
 	public static final String UNIVERSITY_SERVICE = "universityService";
@@ -45,25 +45,25 @@ public class Constants {
 	public static final String COURSE_TYPE_SERVICE = "courseTypeService";
 	public static final String COURSE_SERVICE = "courseService";
 	public static final String LECTURE_SERVICE = "lectureService";
-	public static final String SECURITY_SERVICE ="securityService";
+	public static final String SECURITY_SERVICE = "securityService";
 	public static final String ONLINE_STATISTIC_SERVICE = "onlineStatisticService";
-	
+
 	// Session View Controller
 	public static final String INSTITUTE_REGISTRATION_CONTROLLER = "instituteRegistration";
-	
+
 	// session constants of the last view - used for back buttons
 	public static final String LAST_VIEW = "last_view";
 	public static final String OUTCOME_BACKWARD = "view:backward";
 	public static final String SECURE_PASSWORD_CHANGE = "secure_password_change";
 
-	// outcomes 
+	// outcomes
 	public static final String HOME = "home";
 	public static final String FAILURE = "failure";
 	public static final String SUCCESS = "success";
 	public static final String DESKTOP = "desktop";
 	public static final String ERROR = "error";
 	public static final String MYUNI_INSTITUTE_COURSECOUNT_STRING = "MYUNI_INSITUTE_COURSECOUNT_STRING";
-	
+
 	// university and periods navigation outcomes and combobox long constants
 	public static final String UNIVERSITIES_PAGE = "universities";
 	public static final String UNIVERSITIES_ADMIN_PAGE = "admin_universities";
@@ -74,18 +74,18 @@ public class Constants {
 	public static final String UNIVERSITY_PRIVILEGES_PAGE = "university_privileges";
 	public static final String UNIVERSITY_CONFIRM_REMOVE_PAGE = "university_remove_confirmation";
 	public static final String UNIVERSITY_CONFIRM_DISABLE_PAGE = "university_disable_confirmation";
-	public static final Long   UNIVERSITIES_ENABLED = -113L;
-	public static final Long   UNIVERSITIES_DISABLED = -114L;
+	public static final Long UNIVERSITIES_ENABLED = -113L;
+	public static final Long UNIVERSITIES_DISABLED = -114L;
 	public static final String UNIVERSITY_REGISTRATION_CONTROLLER = "universityRegistration";
-	public static final String UNIVERSITY_REGISTRATION_START_PAGE= "university_registration_start";
+	public static final String UNIVERSITY_REGISTRATION_START_PAGE = "university_registration_start";
 	public static final String UNIVERSITY_REGISTRATION_STEP1_PAGE = "university_registration_step1";
 	public static final String UNIVERSITY_REGISTRATION_STEP2_PAGE = "university_registration_step";
 	public static final String UNIVERSITY_PERIOD_EDIT_PAGE = "university_period_edit";
 	public static final String UNIVERSITY_PERIOD_ADD_PAGE = "university_period_add";
 	public static final String UNIVERSITY_PERIOD_REMOVE_PAGE = "university_period_remove";
-	public static final Long   PERIODS_ACTIVE = -117L;
-	public static final Long   PERIODS_PASSIVE = -118L;
-	
+	public static final Long PERIODS_ACTIVE = -117L;
+	public static final Long PERIODS_PASSIVE = -118L;
+
 	// department navigation outcomes and combobox long constants
 	public static final String DEPARTMENTS_PAGE = "departments";
 	public static final String DEPARTMENT_PAGE = "department";
@@ -93,40 +93,43 @@ public class Constants {
 	public static final String DEPARTMENTS_ADMIN_PAGE = "admin_departments";
 	public static final String DEPARTMENT_CONFIRM_REMOVE_PAGE = "department_remove_confirmation";
 	public static final String DEPARTMENT_CONFIRM_DISABLE_PAGE = "department_disable_confirmation";
-	public static final Long   DEPARTMENTS_ENABLED = -115L;
-	public static final Long   DEPARTMENTS_DISABLED = -116L;
-	public static final Long   DEPARTMENTS_NO_UNIVERSITY_SELECTED = -119L;
+	public static final Long DEPARTMENTS_ENABLED = -115L;
+	public static final Long DEPARTMENTS_DISABLED = -116L;
+	public static final Long DEPARTMENTS_NO_UNIVERSITY_SELECTED = -119L;
 	public static final String DEPARTMENT_REGISTRATION_CONTROLLER = "departmentRegistration";
-	public static final String DEPARTMENT_REGISTRATION_START_PAGE= "department_registration_start";
+	public static final String DEPARTMENT_REGISTRATION_START_PAGE = "department_registration_start";
 	public static final String DEPARTMENT_REGISTRATION_STEP1_PAGE = "department_registration_step1";
 	public static final String DEPARTMENT_REGISTRATION_STEP2_PAGE = "department_registration_step1";
-	
+
 	// ldap_domain navigation outcomes and combobox long constants
 	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldapDomainRegistration";
 	public static final String LDAP_DOMAIN_REGISTRATION_STEP1_PAGE = "ldap_domain_registration_step1";
 	public static final String AUTHENTICATIONDOMAIN_INFO = "authenticationDomainInfo";
 	public static final String LDAP_DOMAIN_PAGE = "ldap_domains";
-	
+
 	// ldap_attributemapping navigation outcomes and combobox long constants
 	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_CONTROLLER = "ldapAttributeMappingRegistration";
 	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE = "ldap_attributemapping_registration_step1";
 	public static final String ATTRIBUTEMAPPING_INFO = "attributeMappingInfo";
 	public static final String LDAP_ATTRIBUTEMAPPING_PAGE = "ldap_attributemappings";
-	
+
 	// migration navigation outcomes constants
 	public static final String MIGRATION_PAGE = "migration";
-	// ldap_roleattributekeysets navigation outcomes and combobox long constants
-	public static final String LDAP_ROLEATTRIBUTEKEYSET_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeySetRegistration";
-	public static final String LDAP_ROLEATTRIBUTEKEYSET_REGISTRATION_STEP1_PAGE = "ldap_roleattributekeyset_registration_step1";
-	public static final String ROLEATTRIBUTEKEYSET_INFO = "roleAttributeKeySetInfo";
-	public static final String LDAP_ROLEATTRIBUTEKEYSET_PAGE = "ldap_roleattributekeysets";
-	
-	// ldap_roleattributekeysets navigation outcomes and combobox long constants
+
+	// ldap_roleattributekeys navigation outcomes and combobox long constants
+	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeyRegistration";
+	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE = "ldap_roleattributekey_registration_step1";
+	public static final String ROLEATTRIBUTEKEY_INFO = "roleAttributeKeyInfo";
+	public static final String LDAP_ROLEATTRIBUTEKEY_PAGE = "ldap_roleattributekeys";
+	public static final String ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE = "ldap_roleattributekey_remove_confirmation";
+	// session Entity bean
+	public static final String ROLEATTRIBUTEKEY = "roleAttributeKey";
+
+	// ldap_servers navigation outcomes and combobox long constants
 	public static final String LDAP_SERVER_REGISTRATION_CONTROLLER = "ldapServerRegistration";
 	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
 	public static final String SERVER_INFO = "serverInfo";
 	public static final String LDAP_SERVER_PAGE = "ldap_server";
-	
 
 	// institute navigation outcomes and combobox long constants
 	public static final String INSTITUTE_PAGE = "institute";
@@ -155,7 +158,7 @@ public class Constants {
 	public static final String SHOW_USER_PROFILE = "showuser";
 	public static final String USER_IMAGE_NAME = "useravartar";
 	public static final String USER_SESSION_KEY = "user";
-	public static final Long   USER_SUPER_ADMIN = -10L;
+	public static final Long USER_SUPER_ADMIN = -10L;
 
 	// course and course type navigation outcomes and combobox long constants
 	public static final String COURSE_PAGE = "course_main";
@@ -164,14 +167,13 @@ public class Constants {
 	public static final String COURSE_TYPE_COURSE_SELECTION_PAGE = "coursetype_course_selection";
 	public static final String COURSE_TYPE_CONFIRM_REMOVE_PAGE = "course_type_remove_confirmation";
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
-	public static final Long   COURSES_ALL_PERIODS = -111L;
-	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
-	
+	public static final Long COURSES_ALL_PERIODS = -111L;
+	public static final Long COURSES_ALL_ACTIVE_PERIODS = -112L;
+
 	// group and group type navigation outcomes and combobox long constants
 	// TODO - Lutz: Properties anpassen
 	public static final String GROUP_PAGE = "group_main";
 	public static final String GROUP_OPTIONS_PAGE = "group_options";
-	
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";
@@ -207,16 +209,16 @@ public class Constants {
 	public static final String DISCUSSION_THREADLENGTH = "discussion_threadlength";
 	public static final String DISCUSSION_REMOVETHREAD = "discussion_removethread";
 	public static final String DISCUSSION_FORUM = "discussion_forum";
-	public static final String DISCUSSION_SEARCH = "discussion_search";	
+	public static final String DISCUSSION_SEARCH = "discussion_search";
 	public static final String DISCUSSION_SEARCH_RESULT = "discussion_search_result";
-	
+
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
 	public static final String COURSE_NEWS_PAGE = "course_news";
 	// TODO - Lutz: Properties anpassen
 	public static final String GROUP_NEWS_EDIT_PAGE = "course_news_edit";
 	public static final String GROUP_NEWS_PAGE = "course_news";
-	
+
 	// newsletter navigation outcomes and combobox long constants
 	public static final String NEWSLETTER_NEWSLETTER = "newsletter_newsletter";
 	public static final String NEWSLETTER_MAIL = "newsletter_mail";
@@ -225,8 +227,9 @@ public class Constants {
 	public static final String NEWSLETTER_MAIN = "course_newsletter";
 	public static final String NEWSLETTER_SHOWMAIL = "newsletter_showmail";
 	public static final String NEWSLETTER_EXPORT = "newsletter_export";
-	
-	// search and extended search navigation outcomes and combobox long constants
+
+	// search and extended search navigation outcomes and combobox long
+	// constants
 	public static final String SEARCH_RESULT = "search_result";
 	public static final String EXTENDED_SEARCH = "extended_search";
 	public static final String EXTENDED_SEARCH_VIEW = "extendedSearch";
@@ -242,9 +245,9 @@ public class Constants {
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION = 3;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE = 4;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE = 5;
-	
+
 	public static final String SYSTEM_PROPERTIES = "SYSTEM_PROPERTIES";
-	
+
 	// miscellaneous navigation outcomes and combobox long constants
 	public static final String ORGANISATION_IMAGE_NAME = "organisationlogo";
 	public static final String UPLOAD_FILE_MANAGER = "uploadFileManager";
@@ -253,14 +256,14 @@ public class Constants {
 	public static final String ONLINE_SESSION_ID = "org.openuss.statistics.onlinesession.id";
 	public static final String SYSTEM_STATISTIC = "systemStatistic";
 	public static final String VISIT = "visit";
-	public static final String STEP3 = "step3";	
-	
+	public static final String STEP3 = "step3";
+
 	// strings used by string builder
 	public static final String SPACE = " ";
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
 
-	// papersubmission 
+	// papersubmission
 	public static final String PAPERSUBMISSION_PAPER_INFO = "paperInfo";
 	public static final String PAPERSUBMISSION_LIST_PAGE = "papersubmission";
 	public static final String PAPER_CONFIRM_REMOVE_PAGE = "paper_confirm_remove";
@@ -268,8 +271,8 @@ public class Constants {
 
 	// collaboration
 	public static final String COLLABORATION_WORKSPACE_INFO = "workspaceInfo";
-	public static final String COLLABORATION_MAIN_PAGE      = "collaboration";
-	public static final String COLLABORATION_WORKSPACE_PAGE   = "workspaceview";
+	public static final String COLLABORATION_MAIN_PAGE = "collaboration";
+	public static final String COLLABORATION_WORKSPACE_PAGE = "workspaceview";
 	public static final String COLLABORATION_CONFIRM_REMOVE_PAGE = "collaboration_confirm_remove";
 	public static final String COLLABORATION_REMOVE_FOLDERENTRY_PAGE = "collaboration_remove_folderentries";
 	public static final String COLLABORATION_EDIT_FOLDER_PAGE = "collaboration_edit_folder";
@@ -292,7 +295,7 @@ public class Constants {
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
-	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
+	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";
 	public static final String USER_PROFILE_VORLAGE = "user_profile_vorlage";
-	
+
 }
