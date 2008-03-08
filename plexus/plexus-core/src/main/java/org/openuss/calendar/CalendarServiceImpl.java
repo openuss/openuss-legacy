@@ -16,6 +16,7 @@ import java.util.Set;
 import org.openuss.groups.UserGroup;
 import org.openuss.groups.UserGroupDao;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.internationalisation.TranslationTextInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
@@ -669,8 +670,12 @@ public class CalendarServiceImpl extends
 	@Override
 	protected void handleCreateAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
-		getAppointmentTypeDao().create(appointmentTypeInfo.getName());
-
+		AppointmentType appType = getAppointmentTypeDao().create(appointmentTypeInfo.getName());
+		TranslationTextInfo translation = new TranslationTextInfo();
+		translation.setDomainIdentifier(appType.getId());
+		translation.setSubKey(appType.getName());
+		translation.setText(appType.getName());
+		getTranslationService().addTranslationText(translation, "en");
 	}
 
 	@Override
