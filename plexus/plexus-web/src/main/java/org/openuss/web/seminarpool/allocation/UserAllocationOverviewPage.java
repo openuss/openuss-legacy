@@ -1,5 +1,7 @@
 package org.openuss.web.seminarpool.allocation;
 
+import javax.faces.event.ActionEvent;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -22,6 +24,11 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		crumb.setName(i18n("seminarpool_allocation_breadcrumb_overview"));
 		crumb.setHint(i18n("seminarpool_allocation_breadcrumb_overview"));
 		breadcrumbs.addCrumb(crumb);
+	}
+	
+	public String generateAllocation(ActionEvent event){
+		this.seminarpoolAdministrationService.generateAllocation(seminarpoolInfo.getId());
+		return "";
 	}
 
 }

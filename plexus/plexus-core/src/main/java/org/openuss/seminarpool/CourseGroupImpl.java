@@ -5,6 +5,8 @@
 //
 package org.openuss.seminarpool;
 
+import org.openuss.security.User;
+
 /**
  * @see org.openuss.seminarpool.CourseGroup
  */
@@ -18,14 +20,17 @@ public class CourseGroupImpl
     private static final long serialVersionUID = -5256797015565690286L;
 
 	@Override
-	public void addUser(Long userId) {
-		// TODO Auto-generated method stub
-		
+	public void addUser(User user) {
+		if(user != null && !getUser().contains(user)){
+			getUser().add(user);
+		}
 	}
 
 	@Override
-	public void removeUser(Long userId) {
-		// TODO Auto-generated method stub
+	public void removeUser(User user) {
+		if(user != null){
+			getUser().remove(user);
+		}
 		
 	}
 

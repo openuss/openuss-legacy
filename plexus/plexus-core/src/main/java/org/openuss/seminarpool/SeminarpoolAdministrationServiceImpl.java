@@ -420,8 +420,134 @@ public class SeminarpoolAdministrationServiceImpl
     protected void handleGenerateAllocation(java.lang.Long seminarpoolId)
         throws java.lang.Exception
     {
-        // @todo implement protected void handleGenerateAllocation(java.lang.Long seminarpoolId)
-        throw new java.lang.UnsupportedOperationException("org.openuss.seminarpool.SeminarpoolAdministrationService.handleGenerateAllocation(java.lang.Long seminarpoolId) Not implemented!");
+		Seminarpool sp = this.getSeminarpoolDao().load(seminarpoolId);
+		int maxprio = sp.getPriorities();
+		int maxallo = sp.getMaxSeminarAllocations();
+		int a, b, c;
+		List<SeminarUserRegistrationInfo> registrations = getRegistrations(seminarpoolId);
+		Collection<CourseSeminarpoolAllocation> seminars = sp
+				.getCourseSeminarpoolAllocation();
+
+		// Identity number of groups
+		int subgroups = 0;
+		for (CourseSeminarpoolAllocation cspa : seminars) {
+			subgroups += cspa.getCourseGroup().size();
+		}
+
+		double[] capacity = new double[subgroups];
+		double[] neededSeminars = new double[registrations.size()];
+
+		// Save needed seminars for each user in array
+		c = 0;
+		for (SeminarUserRegistrationInfo suri : registrations) {
+			neededSeminars[c] = suri.getNeededSeminars();
+			c++;
+		}
+
+		int variables = subgroups * registrations.size();
+		int sideconditions = subgroups + registrations.size() + 2 * variables;
+		Simplex simplex = new Simplex(variables, sideconditions, false);
+
+		long[][] table = new long[variables][3];
+
+		double[] endfunction = new double[variables];
+		c = 0;
+		a = 0;
+
+		// Build table and save capacity for each user in array
+		
+
+		for (SeminarUserRegistration sur : sp.getSeminarUserRegistration()) {
+			a = 0;
+			for (SeminarPriority sprio : sur.getSeminarPriority()) {
+				for (CourseGroup cg : sprio.getCourseSeminarPoolAllocation()
+						.getCourseGroup()) {
+					table[c][0] = sprio.getSeminarUserRegistration().getUser()
+							.getId();
+					table[c][1] = cg.getId();
+					table[c][2] = maxprio - sprio.getPriority();
+					c++;
+					capacity[a] = cg.getCapacity();
+					a++;
+				}
+			}
+		}
+
+		for (int k = 0; k < registrations.size(); k++) {
+			for (int i = k * subgroups; i < k * subgroups + subgroups - 1; i++) {
+				int minPos = i;
+				for (int j = i + 1; j < k * subgroups + subgroups; j++) {
+					if (table[j][1] < table[minPos][1])
+						minPos = j;
+				}
+				long temp[] = table[minPos];
+				table[minPos] = table[i];
+				table[i] = temp;
+			}
+		}
+
+		for (c = 0; c < variables; c++) {
+			endfunction[c] = (double) table[c][2];
+		}
+
+		simplex.newEF(endfunction);
+
+		// Participants restrictions for subgroups
+		double[] sc = new double[variables + 1];
+		for (c = 0; c < subgroups; c++) {
+			for (int i = 0; i < variables; i += subgroups) {
+				for (int j = 0; j < subgroups; j++) {
+					double value = 0.0;
+					if (j == c) {
+						value = 1.0;
+					}
+					sc[i + j] = value;
+				}
+			}
+			sc[variables] = capacity[c];
+			simplex.newSC(sc, "<=");
+		}
+
+		// Participants
+		for (a = 0; a < registrations.size(); a++) {
+			for (b = 0; b < variables; b += subgroups) {
+				double wert = 0.0;
+				if (b == a * subgroups) {
+					wert = 1.0;
+				}
+				for (c = 0; c < subgroups; c++) {
+					sc[b + c] = wert;
+				}
+			}
+			sc[variables] = neededSeminars[a];
+			simplex.newSC(sc, "<=");
+		}
+		// The variables must be between zero and one
+		for (int i = 0; i < variables; i++) {
+			java.util.Arrays.fill(sc, 0);
+			sc[i] = 1;
+			sc[variables] = 0;
+			simplex.newSC(sc, ">=");
+			sc[variables] = 1;
+			simplex.newSC(sc, "<=");
+		}
+
+		// Calculate
+		double [][] result = simplex.getResult();
+		
+		//Identify allocated courses
+		List<Integer> allocation = new ArrayList<Integer>();
+		for(int i=0;i<result.length;i++){
+			if(result[i][0]<=variables && result[i][1]==1.0){
+				allocation.add((int)result[i][0]);
+				CourseGroup cg = this.getCourseGroupDao().load(table[(int)result[i][0]-1][1]);
+				Long userId=table[(int)result[i][0]-1][0];
+				User user = this.getUserDao().load(userId);
+				//User user=getUserDao().load(table[(int)result[i][0]-1][0]);
+				cg.addUser(user);
+				this.getCourseGroupDao().update(cg);
+			}
+		}
     }
 
     /**
