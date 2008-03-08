@@ -5,6 +5,8 @@
  */
 package org.openuss.security.ldap;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,7 +27,11 @@ import org.openuss.security.acegi.ldap.LdapServerConfiguration;
 public class LdapConfigurationServiceImpl
     extends org.openuss.security.ldap.LdapConfigurationServiceBase
 {
-
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(LdapConfigurationServiceImpl.class);
+	
     
     /**
      * @see org.openuss.security.ldap.LdapConfigurationService#getEnabledLdapServerConfigurations()
@@ -36,6 +42,10 @@ public class LdapConfigurationServiceImpl
     	List<LdapServerConfiguration> ldapServerConfigurationList = new ArrayList<LdapServerConfiguration>();
     	
     	List<LdapServer> ldapServerList = getLdapServerDao().findAllEnabledServers();
+    	
+//    	logger.debug("ldapServerList.size():"+ldapServerList.size());
+    	
+    	
     	for (LdapServer ldapServer : ldapServerList) {
 
     		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
@@ -48,11 +58,26 @@ public class LdapConfigurationServiceImpl
     		ldapServerConfiguration.setLdapServerType(ldapServer.getLdapServerType());
     		ldapServerConfiguration.setPort(ldapServer.getPort());
     		ldapServerConfiguration.setProviderUrl(ldapServer.getProviderUrl());
-    		ldapServerConfiguration.setRoleAttributeKeys((String[]) ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeys().toArray());
+    		 
+    		List<RoleAttributeKey> roleAttributeKeys =  ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeys();
+    		String[] roleAttributeKeysStringArray = new String[roleAttributeKeys.size()];
+    		Iterator<RoleAttributeKey> iterRoleAttributeKey = roleAttributeKeys.iterator();    		
+    	    for (int i = 0; iterRoleAttributeKey.hasNext(); i++) {
+    	    	roleAttributeKeysStringArray[i] = String.valueOf(iterRoleAttributeKey.next());
+    	    }
+    		ldapServerConfiguration.setRoleAttributeKeys(roleAttributeKeysStringArray);
+    		
     		ldapServerConfiguration.setRootDn(ldapServer.getRootDn());
     		ldapServerConfiguration.setUseConnectionPool(ldapServer.getUseConnectionPool());
     		ldapServerConfiguration.setUseLdapContext(ldapServer.getUseLdapContext());
-    		ldapServerConfiguration.setUserDnPatterns((String[]) ldapServer.getUserDnPatterns().toArray());
+    		
+    		List<UserDnPattern> userDnPatterns =  ldapServer.getUserDnPatterns();
+    		String[] userDnPatternStringArray = new String[userDnPatterns.size()];
+    		Iterator<UserDnPattern> iterUserDnPattern = userDnPatterns.iterator();    		
+    	    for (int i = 0; iterUserDnPattern.hasNext(); i++) {
+    	    	userDnPatternStringArray[i] = String.valueOf(iterUserDnPattern.next());
+    	    }    	    
+    		ldapServerConfiguration.setUserDnPatterns(userDnPatternStringArray);    		
     		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
     		ldapServerConfigurationList.add(ldapServerConfiguration);        	
 		}   	
@@ -276,20 +301,25 @@ public class LdapConfigurationServiceImpl
     }
 
     /**
-     * 
+     * create a new domain entity by domain info object
      */
     @Override
     protected AuthenticationDomainInfo handleCreateDomain(org.openuss.security.ldap.AuthenticationDomainInfo domain) throws Exception {
     	validateAuthenticationDomain(domain);
     	
-    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(domain.getName(), domain.getDescription());
+//    	first load AttributeMapping
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(domain.getAttributeMappingId());
-    	attributeMappingEntity.getAuthenticationDomains().add(authDomainEntity);
-    	authDomainEntity.setAttributeMapping(attributeMappingEntity);
     	
-    	getAuthenticationDomainDao().update(authDomainEntity);
+//    	create AuthenticationDomain
+    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(attributeMappingEntity, domain.getName(), domain.getDescription());
+    	
+//    	save association AuthenticationDomain to AttributeMapping
+    	attributeMappingEntity.getAuthenticationDomains().add(authDomainEntity);
+
+//    	update AttributeMapping entity
     	getAttributeMappingDao().update(attributeMappingEntity);
     	
+//    	save new created id from DB to AuthenticationDomainInfo object
     	domain.setId(authDomainEntity.getId());
     	return domain;
     }
