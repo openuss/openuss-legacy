@@ -1,6 +1,5 @@
 package org.openuss.web.papersubmission;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,13 +11,9 @@ import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.acl.LectureAclEntry;
-import org.openuss.collaboration.WorkspaceInfo;
-import org.openuss.collaboration.WorkspaceService;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
-import org.openuss.documents.FolderInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.collaboration.AbstractCollaborationPage;
 import org.openuss.web.course.AbstractCoursePage;
 
 
@@ -43,18 +38,8 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	@Property(value="#{"+Constants.PAPERSUBMISSION_EXAM_INFO+"}")
 	protected ExamInfo examInfo = null;
 	
-//	@Property(value = "#{papersubmission_current_folder}")
-//	protected FolderInfo currentFolder;
-	
-	
 	@Override
 	public void prerender() throws Exception {
-		if (courseInfo == null || courseInfo.getId() == null) {
-			addError(i18n("message_error_course_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
-			return;
-		}
-		
 		super.prerender();
 		
 		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
@@ -69,18 +54,21 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	}
 	
 	protected PaperSubmissionInfo loadPaperSubmission(){
-		//paperSubmissionInfo = new PaperSubmissionInfo();
-		List<PaperSubmissionInfo> paperInfos;
+		
+		final List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 				
 		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
+		
 		if(paperInfos.isEmpty()){
+			//Create a submission, if the user doesn't have any
 			PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
 			SubmissionInfo.setExamId(examInfo.getId());
 			SubmissionInfo.setUserId(user.getId());
 			paperSubmissionService.createPaperSubmission(SubmissionInfo);
-			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
 			
+			//load the submission which has just been created into the session
+			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 			
 			if(SubmissionStatus.IN_TIME.equals(paperSubmissionInfo.getSubmissionStatus())){
@@ -92,6 +80,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			return paperSubmissionInfo;
 		}
 		else{
+			//either update or creating a new submission
 			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1));
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 			
@@ -113,7 +102,6 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		this.documentService = documentService;
 	}
 	
-
 	public PaperSubmissionService getPaperSubmissionService() {
 		return paperSubmissionService;
 	}

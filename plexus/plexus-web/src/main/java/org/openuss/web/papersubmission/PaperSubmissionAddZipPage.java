@@ -78,10 +78,10 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		ZipFileUnpacker unpacker;
 		try {
 			unpacker = new ZipFileUnpacker(zipFile);
-			List<FileInfo> infos = unpacker.extractZipFile();
+			final List<FileInfo> infos = unpacker.extractZipFile();
 			injectReleaseDate(infos);
 			try {
-				FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+				final FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 				documentService.createFileEntries(infos, folder);
 				
 				for (FileInfo fileInfo : infos) {
@@ -108,7 +108,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 			logger.debug("injecting release date "+file.getCreated());
 			for(FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
-				fileInfo.setModified(file.getCreated());
+				fileInfo.setModified(file.getModified());
 			}
 		}
 	}

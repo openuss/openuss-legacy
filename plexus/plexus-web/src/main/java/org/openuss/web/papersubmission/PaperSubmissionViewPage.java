@@ -46,8 +46,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
 	
-//	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
-//	private FolderEntrySelection entrySelection;
 	
 	/** The datamodel for all submissions. */
 	private LocalDataModelSubmissions dataSubmissions = new LocalDataModelSubmissions();
@@ -72,21 +70,16 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 				setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
 				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 			}
-			if (examInfo == null || examInfo.getId() == null) {
-				addError(i18n("braincontest_message_contest_not_found"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
 		} 
-		
-		
-		
 		paperSelection.processSwitch();
 		addPageCrumbs();
-		paperSubmissionInfo = getCurrentPaperSubmission();
+		if (paperSubmissionInfo ==null){
+			paperSubmissionInfo = getCurrentPaperSubmission();
+		}
 	}
 
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
-		List<PaperSubmissionInfo> paperInfos;
+		final List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		paperInfos = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
@@ -142,9 +135,18 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	@SuppressWarnings("unchecked")
+	private List<FolderEntryInfo> loadFileEntries() {
+		if (entries == null) {
+			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
+			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
+		}
+		return entries;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public String download () throws IOException{
 		logger.debug("downloading documents");
-		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		List<FolderEntryInfo> files = selectedEntries();
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
@@ -157,7 +159,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
-
 	public String downloadSubmission () throws IOException{
 		logger.debug("Downloading selected Submissions.");
 		
@@ -221,6 +222,13 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return selected;
 	}
 	
+	private List<PaperSubmissionInfo> loadSubmissions(){
+		if(submissions == null && examInfo != null && examInfo.getId() != null){
+			submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
+		}
+		return submissions;
+	}
+	
 	public String editFolderEntry() {
 		logger.debug("editing folder entry");
 		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
@@ -254,22 +262,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<FolderEntryInfo> loadFileEntries() {
-		if (entries == null) {
-			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
-			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
-		}
-		return entries;
-	}
-	
-	private List<PaperSubmissionInfo> loadSubmissions(){
-		if(submissions == null && examInfo != null && examInfo.getId() != null){
-			submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
-		}
-		return submissions;
-	}
-	
 	public String selectSubmission(){
 		logger.debug("Starting method selectSubmission");
 		PaperSubmissionInfo currentSubmission = currentSubmission();
@@ -293,9 +285,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	
 	//// getter/setter methods ////////////////////////////////////////////////
-	
-	
-
 	public LocalDataModelSubmissions getDataSubmissions() {
 		return this.dataSubmissions;
 	}
@@ -334,9 +323,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public void setSubmissions(List<PaperSubmissionInfo> submissions) {
 		this.submissions = submissions;
 	}
-	
-	
-
 	
 	/////// Inner classes ////////////////////////////////////////////////////
 	
@@ -441,10 +427,5 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			}
 			
 		};	
-	}
-	
-	
-	
-	
-	
+	}	
 }

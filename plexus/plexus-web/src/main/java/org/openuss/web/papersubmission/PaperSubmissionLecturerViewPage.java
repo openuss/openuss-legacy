@@ -23,13 +23,9 @@ import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
-import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.documents.FolderEntrySelection;
-import org.openuss.web.documents.Selection;
 import org.springframework.beans.support.PropertyComparator;
 
 @Bean(name = "views$secured$papersubmission$submissionviewlecturer", scope = Scope.REQUEST)
@@ -38,47 +34,38 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	
 	public static final Logger logger = Logger.getLogger(PaperSubmissionViewPage.class);
 	
-//	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
-//	private FolderEntrySelection entrySelection;
-	
-	/** The datamodel for all submission files. */
+	/** The data model for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
-	
-	private List<FolderEntryInfo> entries;
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
 	private PaperSubmissionFileSelection paperFileSelection;
 	
-//	@Property(value = "#{" + Constants.PAPERSUBMISSION_EXTENDEDFOLDERENTRY_SELECTION + "}")
-//	private PaperSubmissionFileSelection entrySelection;
-	
+	private List<FolderEntryInfo> entries;
+
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
-		
-		//paperFileSelection.setEntries(loadFileEntries());
 		paperFileSelection.processSwitch();
 	
 		addPageCrumbs();
 	}
 	
-
-
-	/** Adds an additional breadcrumb to the course-crumbs.
+	/** Adds additional breadcrumbs to the course-crumbs.
 	 * 
 	 */
 	private void addPageCrumbs() {
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
 		crumb.setName(i18n("papersubmission_paperlist_header"));
-		crumb.setHint(i18n("papersubmission_paperlist_header"));
-
-		breadcrumbs.loadCourseCrumbs(courseInfo);
+		crumb.setHint(i18n("papersubmission_paperlist_header"));		
 		breadcrumbs.addCrumb(crumb);
 		
+		//specific exam crumb
 		crumb = new BreadCrumb();
 		crumb.setName(examInfo.getName());
 		crumb.setHint(examInfo.getName());
@@ -89,10 +76,10 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 			crumb.addParameter("course",courseInfo.getId());
 			crumb.addParameter("exam",examInfo.getId());
-			//crumb.addParameter("paper",paperSubmissionInfo.getId());
 		}
 		breadcrumbs.addCrumb(crumb);
 		
+		//crumb of a specific submission
 		crumb = new BreadCrumb();
 		crumb.setName(paperSubmissionInfo.getDisplayName());
 		crumb.setHint(paperSubmissionInfo.getDisplayName());
@@ -123,9 +110,18 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	}
 	
 	@SuppressWarnings("unchecked")
+	private List<FolderEntryInfo> loadFileEntries() {
+		if (entries == null) {
+			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
+			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
+		}
+		return entries;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException{
 		logger.debug("downloading documents");
-		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
+		List<FolderEntryInfo> files = selectedEntries();
 		if (files.size() > 0) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
@@ -138,24 +134,33 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		return Constants.SUCCESS;
 	}
 	
+	//// getter/setter methods ////////////////////////////////////////////////
+	public void setDataSubmissionFiles(
+			LocalDataModelSubmissionFiles dataSubmissionFiles) {
+		this.dataSubmissionFiles = dataSubmissionFiles;
+	}
 
-	@SuppressWarnings("unchecked")
-	private List<FolderEntryInfo> loadFileEntries() {
-		if (entries == null) {
-			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
-			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
-		}
+	public LocalDataModelSubmissionFiles getDataSubmissionFiles() {
+		return dataSubmissionFiles;
+	}
+
+	public List<FolderEntryInfo> getEntries() {
 		return entries;
 	}
-	
-	
-	
-	
-	//// getter/setter methods ////////////////////////////////////////////////
-	
-	
 
-	
+	public void setEntries(List<FolderEntryInfo> entries) {
+		this.entries = entries;
+	}
+
+	public PaperSubmissionFileSelection getPaperFileSelection() {
+		return paperFileSelection;
+	}
+
+	public void setPaperFileSelection(
+			PaperSubmissionFileSelection paperFileSelection) {
+		this.paperFileSelection = paperFileSelection;
+	}
+
 	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
@@ -197,62 +202,4 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			Collections.sort(list, chain);
 		}	
 	}
-	
-	
-
-
-
-	public void setDataSubmissionFiles(
-			LocalDataModelSubmissionFiles dataSubmissionFiles) {
-		this.dataSubmissionFiles = dataSubmissionFiles;
-	}
-
-
-
-	public LocalDataModelSubmissionFiles getDataSubmissionFiles() {
-		return dataSubmissionFiles;
-	}
-
-
-	public List<FolderEntryInfo> getEntries() {
-		return entries;
-	}
-
-
-
-	public void setEntries(List<FolderEntryInfo> entries) {
-		this.entries = entries;
-	}
-
-
-
-	public PaperSubmissionFileSelection getPaperFileSelection() {
-		return paperFileSelection;
-	}
-
-
-
-	public void setPaperFileSelection(
-			PaperSubmissionFileSelection paperFileSelection) {
-		this.paperFileSelection = paperFileSelection;
-	}
-
-
-
-
-
-
-
-//	public PaperSubmissionSelection getPaperSelection() {
-//		return paperSelection;
-//	}
-//
-//
-//
-//	public void setPaperSelection(PaperSubmissionSelection paperSelection) {
-//		this.paperSelection = paperSelection;
-//	}
-
-
-
 }

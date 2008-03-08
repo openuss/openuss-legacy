@@ -14,7 +14,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderEntryInfo;
-import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -87,10 +86,8 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		return Constants.OUTCOME_BACKWARD;
 	}
 	
-	
-	
 	/**
-	 * Validator to check wether or not the removement is accepted
+	 * Validator to check whether or not the removement is accepted
 	 * @param context
 	 * @param toValidate
 	 * @param value
@@ -103,11 +100,9 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		}
 	}
 
-
 	public List<FolderEntryInfo> getEntries() {
 		return entries;
 	}
-
 
 	public void setEntries(List<FolderEntryInfo> entries) {
 		this.entries = entries;

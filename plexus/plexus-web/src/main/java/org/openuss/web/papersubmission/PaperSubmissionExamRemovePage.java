@@ -11,9 +11,9 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
-import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.web.Constants;
-import org.openuss.web.course.AbstractCoursePage;
+import org.openuss.web.PageLinks;
+
 
 /** Controller for the examremove.xhtml view.
  * 
@@ -29,26 +29,25 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	private static final long serialVersionUID = -202000019652888870L;
 
 	@Prerender
-	public void prerender() throws LectureException {
-		try {
-			super.prerender();
-			breadcrumbs.loadCourseCrumbs(courseInfo);
-			
-			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("papersubmission_remove_header"));
-			newCrumb.setHint(i18n("papersubmission_remove_header"));
-			breadcrumbs.addCrumb(newCrumb);
-		} catch (Exception e) {
-			logger.error(e);
-		}
+	public void prerender() throws Exception{
+		super.prerender();
+		addPageCrumb();		
 	}
 	
+	private void addPageCrumb() {
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("papersubmission_remove_header"));
+		crumb.setHint(i18n("papersubmission_remove_header"));
+		breadcrumbs.addCrumb(crumb);
+	}	
+	
 	/**
-	 * Delete course including all data
+	 * Delete exam including all data
 	 * @return outcome
-	 * @throws LectureException
-	 */
-	public String removeExam() throws LectureException {
+	 **/
+	public String removeExam() throws Exception {
 		try {
 			paperSubmissionService.removeExam(examInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
@@ -62,7 +61,7 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	}
 	
 	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
+	 * Validator to check whether the user has accepted the user agreement or not.
 	 * 
 	 * @param context
 	 * @param toValidate

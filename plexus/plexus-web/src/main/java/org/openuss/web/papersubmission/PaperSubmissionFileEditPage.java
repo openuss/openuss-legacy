@@ -3,7 +3,6 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.component.UIInput;
 
@@ -18,11 +17,6 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.paperSubmission.ExamInfo;
-import org.openuss.paperSubmission.PaperSubmissionInfo;
-import org.openuss.security.Roles;
-import org.openuss.security.SecurityService;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
@@ -124,7 +118,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			permitRolesImageReadPermission(selectedFile);
 			
 			uploadFileManager.removeDocument(document);
-//			paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
 			return true;
 		} else {
 			return false;
@@ -164,7 +157,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			return "";
 		}
 	}
-
 
 	public FileInfo getSelectedFile() {
 		return selectedFile;
