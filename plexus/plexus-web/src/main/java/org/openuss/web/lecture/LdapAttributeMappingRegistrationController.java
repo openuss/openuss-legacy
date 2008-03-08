@@ -27,7 +27,6 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 
 	
 	private static final Logger logger = Logger.getLogger(LdapAttributeMappingRegistrationController.class);
-
 	/*
 	protected UniversityInfo universityInfo = (UniversityInfo) this.getSessionBean(Constants.UNIVERSITY_INFO);
 
@@ -82,6 +81,15 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		return roleAttributeKeyItems;
 	}
 
+	public Integer roleAttributeKeyId;
+	
+	public Integer getRoleAttributeKeyId(){
+		return roleAttributeKeyId;
+	}
+	public void setRoleAttributeKeyId(){
+		this.roleAttributeKeyId = roleAttributeKeyId;
+	}
+	
 /*		
 	List<RoleAttributeKeyInfo> roleAttributeKeyList = ldapConfigurationService.getAllRoleAttributeKeys();
 	
