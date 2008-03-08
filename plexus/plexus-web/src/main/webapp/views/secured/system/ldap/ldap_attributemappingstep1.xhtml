@@ -23,20 +23,19 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
 			<h:form id="reg1Form">
-				<c:if test="#{not empty ldapDomainRegistration.allAttributeMappings}">
+				<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 					<o:block label="#{msg.ldap_attributemapping_registration_step1_headline}" styleClass="form_box">
-						<o:input entity="attributeMappingInfo" property="name" maxlength="250" required="true"/>
-						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label"/>
-						<h:selectOneListbox id="attribute_mapping" value="#{authenticationDomainInfo.attributeMappingId}" styleClass="pulldown" >
-  							<f:selectItems value="#{ldapDomainRegistration.allAttributeMappings}"/>
-						</h:selectOneListbox>
-						<h:outputLabel value="#{msg.ldap_attributemappinginfo_description}" for="descriptionEditor" styleClass="field_label" />
-						<h:inputTextarea styleClass="pulldown" value="#{attributeMappingInfo.description}" id="descriptionTextField" />
+						<o:input entity="attributeMappingInfo" property="mappingName" maxlength="250" required="true"/>
+							<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
+								<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{attributeMapping.roleAttributeKeys}">
+	  						 		<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
+								</h:selectOneListbox>
+						<o:input entity="attributeMappingInfo" property="userNameKey" maxlength="250" required="true"/>
 					</o:block>
 				</c:if>
-				<c:if test="#{empty ldapDomainRegistration.allAttributeMappings}">
+				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 					<o:block>
-						<h:outputLabel value="#{msg.error_ldap_roleattributekeyset_empty}" for="descriptionEditor" styleClass="field_error" />
+						<h:outputLabel value="#{msg.error_ldap_roleattributekey_empty}" for="descriptionEditor" styleClass="field_error" />
 					</o:block>
 				</c:if>
 					<o:block>
@@ -45,7 +44,7 @@
 							<h:commandButton value="${msg.forward}" action="ldap_attributemapping_registration_step2" styleClass="button_continue" />
 		  				</c:if>
 		  				<c:if test="#{empty ldapDomainRegistration.allAttributeMappings}">
-		  					<h:commandButton value="${msg.ldap_roleattributekeyset}" action="ldap_roleattributekeysets" styleClass="button_continue" />
+		  					<h:commandButton value="${msg.ldap_roleattributekey}" action="ldap_roleattributekeys" styleClass="button_continue" />
 		  				</c:if>
 		  			</o:block>
 	  		</h:form>
