@@ -27,7 +27,7 @@
 					<o:block label="#{msg.ldap_attributemapping_registration_step1_headline}" styleClass="form_box">
 						<o:input entity="attributeMappingInfo" property="mappingName" maxlength="250" required="true"/>
 							<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-								<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{attributeMapping.roleAttributeKeys}">
+								<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{ldapAttributeMappingRegistration.roleAttributeKeyId}">
 	  						 		<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
 								</h:selectOneListbox>
 						<o:input entity="attributeMappingInfo" property="userNameKey" maxlength="250" required="true"/>
