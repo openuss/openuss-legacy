@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool;
+package org.openuss.web.seminarpool.userRegistration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,10 +94,12 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	public String step2(){
 		seminarUserRegistrationInfo = (SeminarUserRegistrationInfo) this.getSessionBean("seminarUserRegistrationInfo");
-		List<SeminarPrioritiesInfo> seminarPriorityList2 = new ArrayList<SeminarPrioritiesInfo>();
-		seminarPriorityList2 = seminarUserRegistrationInfo.getSeminarPriorityList();
 		if(seminarPriorityList == null){
-			seminarPriorityList = seminarPriorityList2;
+			seminarPriorityList = seminarUserRegistrationInfo.getSeminarPriorityList();
+		}
+		if (!checkDoubleElements(seminarPriorityList)){
+			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED));
+			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
 		}
 		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
 		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());
@@ -105,6 +107,18 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		this.setSessionBean("seminarPriorityList", seminarPriorityList);
 		this.setSessionBean("seminarUserRegistrationInfo", seminarUserRegistrationInfo);
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP2_PAGE;
+	}
+	
+	private boolean checkDoubleElements(List<SeminarPrioritiesInfo> list){
+		int size = list.size();
+		for ( int outerIndex = 0; outerIndex < size; outerIndex++ ) {
+			for ( int innerIndex = outerIndex + 1; innerIndex < size; innerIndex++ ) {
+				if (list.get(outerIndex).getCourseId().equals(list.get(innerIndex).getCourseId())){
+					return false;
+				}
+			}
+		}		
+		return true;
 	}
 	
 	public String create(){
@@ -142,13 +156,14 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	public void processSeminarSelectChanged(ValueChangeEvent event) {
 		if (event.getNewValue() instanceof Long) {
+			Long courseId = (Long) event.getNewValue();
+			if (seminarPriorityList == null){
+				seminarPriorityList = new ArrayList<SeminarPrioritiesInfo>();
+			}
 			SeminarPrioritiesInfo spi = new SeminarPrioritiesInfo();
-			spi.setCourseId((Long) event.getNewValue());
+			spi.setCourseId(courseId);
 			String identifier = event.getComponent().getId().toString();
 			spi.setPriority(Integer.parseInt(identifier.substring(12)));
-			if(seminarPriorityList == null){
-			seminarPriorityList = new ArrayList<SeminarPrioritiesInfo>();
-			}
 			seminarPriorityList.add(spi);
 			logger.info("ValueChangeEvent: Changing course id for new SeminarPriority to " + spi.getCourseId());
 		}

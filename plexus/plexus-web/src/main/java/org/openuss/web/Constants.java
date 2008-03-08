@@ -326,4 +326,5 @@ public class Constants {
 	public static final String SEMINARPOOL_ALLOCATIONS_SELECTED_USER_INFO = "seminarpoolSelectedUserInfo";
 
 
+	public static final String SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED = "seminarpool_user_registration_error_double_courses_selected";
 }

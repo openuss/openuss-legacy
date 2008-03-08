@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.foundation.DomainObject;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Organisation;
 import org.openuss.lecture.University;
@@ -262,11 +263,15 @@ public class SeminarpoolAdministrationServiceImpl
     {
     	Validate.notNull(seminarpoolId, "handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
     	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
+    	SeminarpoolInfo seminarpoolInfo = getSeminarpoolDao().toSeminarpoolInfo(seminarpoolEntity);    	  	
     	Validate.notNull(seminarpoolEntity, "handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
     	Collection<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity.getCourseSeminarpoolAllocation();
     	List<CourseSeminarpoolAllocationInfo> courseAllocationList = new ArrayList<CourseSeminarpoolAllocationInfo>();
     	for (CourseSeminarpoolAllocation courseAllocation : courseAllocations){
-    		courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+    		CourseSeminarpoolAllocationInfo info = getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation);
+    		if (courseAllocation.isAccepted() || (getSecurityService().hasPermission((DomainObject)info, new Integer[] {LectureAclEntry.GCRUD}) || getSecurityService().hasPermission((DomainObject)seminarpoolInfo, new Integer[] {LectureAclEntry.GCRUD})) ){
+    			courseAllocationList.add(info);
+    		}
     	}    	
         return courseAllocationList;
     }
