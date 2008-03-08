@@ -170,11 +170,11 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			examInfo.setDomainId(courseInfo.getId());
 			paperSubmissionService.createExam(examInfo);
 
-			addMessage(i18n("papersubmission_message_add_paper_succeed"));
+			addMessage(i18n("papersubmission_message_add_exam_succeed"));
 		} else {
 			paperSubmissionService.updateExam(examInfo);
 
-			addMessage(i18n("papersubmission_message_persist_paper_succeed"));
+			addMessage(i18n("papersubmission_message_save_exam_succeed"));
 		}
 
 		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);

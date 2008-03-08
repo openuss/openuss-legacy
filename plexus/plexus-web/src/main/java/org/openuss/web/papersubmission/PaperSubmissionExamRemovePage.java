@@ -47,7 +47,7 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("papersubmission_paper_cannot_be_removed"));
+			addMessage(i18n("papersubmission_exam_cannot_be_removed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		}
 	}
