@@ -655,6 +655,10 @@
 				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
 			</navigation-case>
 			<navigation-case>
+				<from-outcome>wiki_create_new_site</from-outcome>
+				<to-view-id>/views/secured/wiki/wikicreatenewsite.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
 				<from-outcome>wiki_overview</from-outcome>
 				<to-view-id>/views/secured/wiki/wikioverview.xhtml</to-view-id>
 			</navigation-case>
