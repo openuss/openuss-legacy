@@ -147,6 +147,7 @@ public class Constants {
 	public static final String DOCUMENTS_SELECTED_FILEENTRY = "documents_selected_file";
 	public static final String DOCUMENTS_SELECTED_FILEENTRIES = "documents_selected_files";
 	public static final String DOCUMENTS_SELECTED_FOLDERENTRIES = "documents_selected_folderentries";
+	public static final String ZIP_FILE_NAME = "zip_file_name";
 
 	public static final String DOCUMENTS_MAIN_PAGE = "documents_main";
 	public static final String DOCUMENTS_ADD_ZIP_PAGE = "documents_add_zip";
@@ -155,6 +156,8 @@ public class Constants {
 	public static final String DOCUMENTS_REMOVE_FOLDERENTRY_PAGE = "documents_remove_folderentries";
 	public static final String DOCUMENTS_FOLDERENTRY_SELECTION = "documents_entry_selection";
 	public static final String ZIP_DOWNLOAD_URL = "/zips/documents.zip";
+
+	
 
 	// braincontest navigation outcomes and combobox long constants
 	public static final String BRAINCONTEST_NEWCONTEST = "braincontest_new";

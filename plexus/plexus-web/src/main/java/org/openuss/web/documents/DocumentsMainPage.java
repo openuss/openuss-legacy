@@ -2,9 +2,11 @@ package org.openuss.web.documents;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,10 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
+			//Storing the zip file name into the session 
+			String fileName = courseInfo.getName() + "_documents_" + new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
+			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);

@@ -2,8 +2,10 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -121,8 +123,12 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	@SuppressWarnings("unchecked")
 	public String download() throws IOException{
 		LOGGER.debug("downloading documents");
-		List<FolderEntryInfo> files = selectedEntries();
+		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
+			//Storing the zip file name into the session 
+			String fileName = examInfo.getName() + "_" + paperSubmissionInfo.getFirstName() + "_" + new SimpleDateFormat("dd.MM.yyyy_HH.mm").format(new Date());
+			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
+			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);

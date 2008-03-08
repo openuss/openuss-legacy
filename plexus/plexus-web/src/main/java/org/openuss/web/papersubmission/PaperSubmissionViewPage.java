@@ -1,9 +1,11 @@
 package org.openuss.web.papersubmission;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -63,9 +65,8 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		} 
 		paperSelection.processSwitch();
 		addPageCrumbs();
-		if (paperSubmissionInfo ==null){
-			paperSubmissionInfo = getCurrentPaperSubmission();
-		}
+		paperSubmissionInfo = getCurrentPaperSubmission();
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -137,11 +138,15 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@SuppressWarnings("unchecked")
 	public String download () throws IOException{
 		LOGGER.debug("downloading documents");
-		List<FolderEntryInfo> files = selectedEntries();
+		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
 		if (files.size() > 0) {
+			//Storing the zip file name into the session 
+			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy").format(paperSubmissionInfo.getDeliverDate());
+			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
+				
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
-			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
+			response.sendRedirect(getExternalContext().getRequestContextPath() +  Constants.ZIP_DOWNLOAD_URL );
 			getFacesContext().responseComplete();
 			paperSelection.getMap().clear();
 		} else {
@@ -188,10 +193,13 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 				path += i18n("papersubmission_zip_foldername_notintime");
 				file.setPath(path);
 				file.setAbsoluteName(path + "/" + file.getFileName());
-				
 			}
 		}
 		if (files.size() > 0) {
+			//Storing the zip file name into the session 
+			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy_HH.mm").format(new Date());
+			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
+			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);

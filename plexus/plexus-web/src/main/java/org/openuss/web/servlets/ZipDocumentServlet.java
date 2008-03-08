@@ -50,7 +50,12 @@ public class ZipDocumentServlet extends HttpServlet {
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		List<FileInfo> files = (List<FileInfo>) request.getSession().getAttribute(Constants.DOCUMENTS_SELECTED_FILEENTRIES);
+		String fileName = (String) request.getSession().getAttribute(Constants.ZIP_FILE_NAME);
+		if(fileName == null){
+			fileName = "documents";
+		}
 		request.getSession().removeAttribute(Constants.DOCUMENTS_SELECTED_FILEENTRIES);
+		
 		if (files == null) {
 			sendFileNotFound(response);
 		} else {
@@ -62,7 +67,7 @@ public class ZipDocumentServlet extends HttpServlet {
 			
 			ZipFilePacker packer = new ZipFilePacker(files, repositoryService);
 			response.setContentType("application/octet-stream");
-			response.setHeader("Content-Disposition", "attachment;filename=\"documents.zip\"");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + ".zip\"");
 			packer.writeZip(response.getOutputStream());
 		}
 	}
