@@ -198,12 +198,6 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		
 	}
 
-	public void removeUserDnPatternFromLdapServer(
-			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void saveAttributeMapping(AttributeMappingInfo attributeMapping) {
 		// TODO Auto-generated method stub
 		
@@ -232,51 +226,10 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 
 
 
-	public void addRoleAttributeKeyToAttributeMapping(
-			RoleAttributeKeyInfo roleAttributeKeyinfo,
-			AttributeMappingInfo attributeMappingInfo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public void addUserDnPatternToLdapServer(
-			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public List getAllRoleAttributeKeysByMapping(
-			AttributeMappingInfo attributeMappingInfo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public List getAllUserDnPatterns() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	public List getAllUserDnPatternsByLdapServer(
 			UserDnPatternInfo userDnPatternInfo, LdapServerInfo ldapServerInfo) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-
-
-	public void removeRoleAttributeKeyFromAttributeMapping(
-			RoleAttributeKeyInfo roleAttributeKeyInfo,
-			AttributeMappingInfo attributeMappingInfo) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
