@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.acl.AclManager;
 import org.apache.log4j.Logger;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.web.dav.MultiStatusAnswerImpl;
 import org.openuss.web.dav.SimpleStatusResponse;
 import org.openuss.web.dav.NullIOContext;
@@ -55,6 +57,7 @@ public class WebDAVServlet extends HttpServlet {
 	
  	private String resourcePathPrefix;
  	private WebApplicationContext wac;
+ 	private AclManager aclManager;
 	
  	/* (non-Javadoc)
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -180,10 +183,10 @@ public class WebDAVServlet extends HttpServlet {
 				break;
 			}
 		} catch(WebDAVException ex){
-			logger.error("Outputting WebDAVException", ex);
+			logger.debug("Outputting WebDAVException", ex);
 			printResponse(response, ex);
 		} catch(IOException ioe) {
-			logger.error(ioe);
+			logger.debug(ioe);
 		}
  	}
  	
@@ -365,7 +368,8 @@ public class WebDAVServlet extends HttpServlet {
 			throw new ServletException("resource path prefix not set");
 		}
 		wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		
+		aclManager = (AclManager) wac.getBean("aclManager", AclManager.class);
+		AcegiUtils.setAclManager(aclManager);
 		logger.info("ResourcePathPrefix: " + resourcePathPrefix);   
         logger.info(" init() done.");
 	}

@@ -1,8 +1,6 @@
 package org.openuss.web.dav.backends;
 
-import java.util.AbstractCollection; // TODO security
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -87,11 +85,11 @@ public class UniversityResource extends AbstractOrganisationResource {
 	}
 
 	/* (non-Javadoc)
+	 * @return Every user is allowed to see each university, iff it is enabled.
 	 * @see org.openuss.webdav.WebDAVResource#isReadable()
 	 */
 	public boolean isReadable() {
-		// TODO Security
-		return true;
+		return info.isEnabled();
 	}
 	
 	/**
@@ -111,6 +109,6 @@ public class UniversityResource extends AbstractOrganisationResource {
 	 * @return The (raw) name to use in the WebDAV context. 
 	 */
 	public static String getNameByData(UniversityInfo info) {
-		return info.getShortName() + " дцья"; // TODO removeme
+		return info.getShortName();
 	}
 }

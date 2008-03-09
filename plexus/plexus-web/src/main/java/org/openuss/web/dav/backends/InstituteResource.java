@@ -1,18 +1,13 @@
 package org.openuss.web.dav.backends;
 
-import java.util.AbstractCollection; // TODO security
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
-import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.InstituteService;
 import org.openuss.web.Constants;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
@@ -89,9 +84,12 @@ public class InstituteResource extends AbstractOrganisationResource{
 		return res;
 	}
 
+	/* (non-Javadoc)
+	 * @return Every user is allowed to see each institute, iff it is enabled.
+	 * @see org.openuss.webdav.WebDAVResource#isReadable()
+	 */
 	public boolean isReadable() {
-		// TODO security
-		return true;
+		return info.isEnabled();
 	}
 	
 	/**

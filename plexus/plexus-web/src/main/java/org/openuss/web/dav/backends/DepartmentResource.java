@@ -1,6 +1,5 @@
 package org.openuss.web.dav.backends;
 
-import java.util.AbstractCollection; // FIXME security
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,11 +86,11 @@ public class DepartmentResource extends AbstractOrganisationResource{
 	}
 
 	/* (non-Javadoc)
+	 * @return Every user is allowed to see each department, iff it is enabled.
 	 * @see org.openuss.webdav.WebDAVResource#isReadable()
 	 */
 	public boolean isReadable() {
-		// TODO security
-		return true;
+		return info.isEnabled();
 	}
 	
 	/**

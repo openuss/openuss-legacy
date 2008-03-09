@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
@@ -49,8 +51,7 @@ public class CourseResource extends AbstractOrganisationResource{
 	 * @see org.openuss.webdav.WebDAVResource#isReadable()
 	 */
 	public boolean isReadable() {
-		// TODO Auto-generated method stub
-		return true;
+		return AcegiUtils.hasPermission(info, new Integer[] {LectureAclEntry.READ});
 	}
 
 	/**
