@@ -1019,6 +1019,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 		detailInfo.setUserLastName(entity.getSeminarUserRegistration()
 				.getUser().getLastName());
 		detailInfo.setPriority(entity.getPriority());
+		detailInfo.setCourseName(entity.getCourseSeminarPoolAllocation().getCourse().getName());
 		return detailInfo;
 	}
 

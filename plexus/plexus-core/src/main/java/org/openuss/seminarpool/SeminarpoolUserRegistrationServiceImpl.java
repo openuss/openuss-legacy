@@ -140,4 +140,30 @@ public class SeminarpoolUserRegistrationServiceImpl
 		return sem;
 	}
 
+	@Override
+	protected List handleGetDetailUserRegistrationById(
+			Long seminarUserRegistrationId) throws Exception {
+		Validate.notNull(seminarUserRegistrationId, "handleFindSeminarUserRegistrationById ==> seminarUserRegistrationId cannot be null");
+		SeminarUserRegistration userRegistration = getSeminarUserRegistrationDao().load(seminarUserRegistrationId);
+		List<SeminarPriorityDetailInfo> infoList = new ArrayList<SeminarPriorityDetailInfo>();
+		for( SeminarPriority entity : userRegistration.getSeminarPriority()){
+			infoList.add(mapSeminarPriorityEntityToDetailInfo(entity));
+		}		
+		return infoList;
+	}
+	
+	private SeminarPriorityDetailInfo mapSeminarPriorityEntityToDetailInfo(
+			SeminarPriority entity) {
+		SeminarPriorityDetailInfo detailInfo = new SeminarPriorityDetailInfo();
+		detailInfo.setCourseAllocationId(entity.getCourseSeminarPoolAllocation().getId());
+		detailInfo.setId(entity.getId());
+		detailInfo.setSeminarUserRegistrationId(entity.getSeminarUserRegistration().getId());
+		detailInfo.setUserId(entity.getSeminarUserRegistration().getUser().getId());
+		detailInfo.setUserFirstName(entity.getSeminarUserRegistration().getUser().getFirstName());
+		detailInfo.setUserLastName(entity.getSeminarUserRegistration().getUser().getLastName());
+		detailInfo.setPriority(entity.getPriority());
+		detailInfo.setCourseName(entity.getCourseSeminarPoolAllocation().getCourse().getName());
+		return detailInfo;
+	}
+
 }

@@ -33,6 +33,8 @@ import org.openuss.seminarpool.SeminarpoolUserRegistrationService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
+import com.sun.corba.se.internal.Interceptors.PIORB;
+
 
 @Bean(name = "seminarpoolUserRegistration", scope = Scope.REQUEST)
 @View
@@ -46,7 +48,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
-	@Property(value = "#{seminarUserRegistrationInfo}")
+	@Property(value = "#{" + Constants.SEMINARPOOL_USER_REGISTRATION_INFO + "}")
 	protected SeminarUserRegistrationInfo seminarUserRegistrationInfo;
 	@Property(value = "#{seminarpoolAdministrationService}")
 	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
@@ -63,7 +65,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 	private List<SeminarPrioritiesInfo> seminarPriorityList;
 	
-	
+	private List<String> priorities;
 
 	public SeminarpoolUserRegistrationService getSeminarpoolUserRegistrationService() {
 		return seminarpoolUserRegistrationService;
@@ -88,8 +90,20 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 		// create new seminarpoolInfo object for session
 		seminarUserRegistrationInfo = this.getSeminarpoolUserRegistrationService().findSeminarUserRegistrationByUserAndSeminarpool(user.getId(), seminarpoolInfo.getId());
-		this.setSessionBean("seminarUserRegistrationInfo", seminarUserRegistrationInfo);
+		setSessionBean(Constants.SEMINARPOOL_USER_REGISTRATION_INFO, seminarUserRegistrationInfo);
+		if ( seminarUserRegistrationInfo != null ) {
+			createPrioritieList();
+			return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP1_PAGE;
+		}
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
+	}
+	
+	private void createPrioritieList(){
+		priorities = new ArrayList<String>();
+		int size = seminarpoolInfo.getMaxSeminarAllocations();
+		for ( long i = 0; i < size; i++ ) {
+			priorities.add(""+i);
+		}
 	}
 	
 	public String step2(){
@@ -206,6 +220,23 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 	public void setPriority(long priority) {
 		this.priority = priority;
+	}
+
+	public List<SeminarPrioritiesInfo> getSeminarPriorityList() {
+		return seminarPriorityList;
+	}
+
+	public void setSeminarPriorityList(
+			List<SeminarPrioritiesInfo> seminarPriorityList) {
+		this.seminarPriorityList = seminarPriorityList;
+	}
+
+	public List<String> getPriorities() {
+		return priorities;
+	}
+
+	public void setPriorities(List<String> priorities) {
+		this.priorities = priorities;
 	}
 	
 }

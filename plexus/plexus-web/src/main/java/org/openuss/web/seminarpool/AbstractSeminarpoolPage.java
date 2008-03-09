@@ -8,6 +8,7 @@ import org.openuss.lecture.OrganisationService;
 import org.openuss.security.SecurityService;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
+import org.openuss.seminarpool.SeminarpoolUserRegistrationService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -27,6 +28,9 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 	@Property(value = "#{seminarpoolAdministrationService}")
 	protected SeminarpoolAdministrationService seminarpoolAdministrationService;
 
+	@Property(value = "#{seminarpoolUserRegistrationService}")
+	protected SeminarpoolUserRegistrationService seminarpoolUserRegistrationService;
+	
 	
 	@Preprocess
 	public void preprocess() throws Exception {
@@ -87,6 +91,13 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 	public void setSeminarpoolAdministrationService(
 			SeminarpoolAdministrationService seminarpoolAdministrationService) {
 		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
+	}
+	public SeminarpoolUserRegistrationService getSeminarpoolUserRegistrationService() {
+		return seminarpoolUserRegistrationService;
+	}
+	public void setSeminarpoolUserRegistrationService(
+			SeminarpoolUserRegistrationService seminarpoolUserRegistrationService) {
+		this.seminarpoolUserRegistrationService = seminarpoolUserRegistrationService;
 	}
 
 	
