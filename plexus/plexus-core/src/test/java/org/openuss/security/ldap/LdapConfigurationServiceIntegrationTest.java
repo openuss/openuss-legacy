@@ -222,11 +222,15 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		key1 = service.createRoleAttributeKey(key1);
 		assertNotNull(key1.getId());
 		
+		flush();
+		
 		// create another role attribute key
 		RoleAttributeKeyInfo key2 = createRoleAttributeKeyInfoDummy();
 		assertNull(key2.getId());
 		key2 = service.createRoleAttributeKey(key2);
 		assertNotNull(key2.getId());
+		
+		flush();
 		
 		// test
 		List<RoleAttributeKeyInfo> allRoleAttributeKeys = service.getAllRoleAttributeKeys();
@@ -238,6 +242,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		map1 = service.createAttributeMapping(map1);
 		assertNotNull(map1.getId());
 		
+		flush();
+		
 		List<AttributeMappingInfo> allAttributeMappings = service.getAllAttributeMappings();
 		
 		int allAttributeMappingsCount = allAttributeMappings.size();
@@ -248,18 +254,28 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertTrue(1 == allRoleAttributeKeysMap1Count);
 		
 		service.addRoleAttributeKeyToAttributeMapping(key2, map1);
+		
+		flush();
+		
 		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
 		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
 		assertTrue(2 == allRoleAttributeKeysMap1Count);
 		
+		
 		// this should do NOTHING
 		service.addRoleAttributeKeyToAttributeMapping(key2, map1);
+		
+		flush();
+		
 		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
 		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
 		assertTrue(2 == allRoleAttributeKeysMap1Count);
 		
 		// remove role attribute key from mapping
 		service.removeRoleAttributeKeyFromAttributeMapping(key2, map1);
+		
+		flush();
+		
 		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
 		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();		
 		assertTrue(1 == allRoleAttributeKeysMap1Count);
@@ -278,6 +294,9 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 		// remove another role attribute key from mapping
 		service.removeRoleAttributeKeyFromAttributeMapping(key1, map1);
+		
+		flush();
+		
 		allRoleAttributeKeysMap1 = service.getAllRoleAttributeKeysByMapping(map1);
 		allRoleAttributeKeysMap1Count = allRoleAttributeKeysMap1.size();
 		assertTrue(0 == allRoleAttributeKeysMap1Count);
@@ -300,11 +319,10 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		logger.debug("********4 allAttributeMappings:");
 		logger.debug(service.getAllAttributeMappings().size());
 		
-		
+//		zero attribute mappings, because deleted when role attribute key relationship has been killed
 		assertTrue(0 == service.getAllAttributeMappings().size());
 		
-//		service.deleteAttributeMapping(map1);		
-//		assertTrue(0 == service.getAllAttributeMappings().size());
+
 		
 	}
 
