@@ -1,7 +1,12 @@
 package org.openuss.web.system;
 
 import java.util.List;
+import java.util.Locale;
 
+import javax.faces.application.Application;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -13,6 +18,8 @@ import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.internationalisation.TranslationService;
+import org.openuss.internationalisation.TranslationTextInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -28,7 +35,7 @@ import org.openuss.web.PageLinks;
 @View
 
 public class AppointmentTypesPage extends BasePage{
-	
+		
 	@Property(value = "#{appointmentTypeInfo}")
 	AppointmentTypeInfo appointmentTypeInfo;
 	
@@ -65,6 +72,11 @@ public class AppointmentTypesPage extends BasePage{
 		}
 		this.addMessage(i18n("openuss4us_calendar_appointmenttype_deleted"));
 		return "admin_calendar";
+	}
+	
+	public String translate(){
+		setSessionAttribute(Constants.APPOINTMENTTYPE_INFO, data.getRowData());
+		return Constants.OPENUSS4US_CALENDAR_TRANSLATE;
 	}
 	
 	@Prerender

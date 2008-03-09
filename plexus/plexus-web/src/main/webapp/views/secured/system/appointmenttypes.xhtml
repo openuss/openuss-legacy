@@ -42,11 +42,17 @@
 						value="#{msg.remove}"
 						title="#{msg.remove}"
 						styleClass="button_remove" />
+					<h:commandButton id="translate"
+						action="#{views$secured$system$appointmenttypes.translate}"
+						value="#{msg.internationalisation_translate}"
+						title="#{msg.internationalisation_translate}"
+						styleClass="button_remove" />
 				</t:column>
 			</plexus:dataTable>
 			</h:form>
 			<h:form id="appointmentTypesAddForm">
 			<o:block label="#{msg.openuss4us_calendar_appointmenttype_create}" styleClass="form_box">
+				<h:outputText value="#{msg.openuss4us_calendar_appointmenttype_translation_information}" styleClass="content_font_normal" />
 				<o:input entity="appointmentTypeInfo" property="name"
 					id="appointmentTypeName" styleClass="field" maxlength="75"
 					required="true" />

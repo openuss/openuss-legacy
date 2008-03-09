@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -19,6 +20,8 @@ import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.internationalisation.TranslationApplicationException;
+import org.openuss.internationalisation.TranslationService;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$calendar$createsingleappointment", scope = Scope.REQUEST)
@@ -28,6 +31,9 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 	private static final Logger logger = Logger.getLogger(SingleAppointmentCreatePage.class);
 	
 	private Integer appointmentType;
+	
+	@Property(value = "#{translationService}")
+	TranslationService translationService;
 	
 	private List<AppointmentTypeInfo> appointmentTypes;
 	
@@ -77,9 +83,11 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 		
 		try {
 			for(AppointmentTypeInfo appType : (Collection<AppointmentTypeInfo>)calendarService.getAllAppointmentTypes()){
-				items.add(new SelectItem(appType.getId().intValue(), appType.getName()));
+				String name = translationService.getTranslation(appType.getId(), appType.getName(), user.getLocale());
+				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
-		} catch (CalendarApplicationException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			this.addError("Error");
 			return null;
 		}
@@ -118,6 +126,14 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 
 	public void setAppointmentType(Integer appointmentType) {
 		this.appointmentType = appointmentType;
+	}
+
+	public TranslationService getTranslationService() {
+		return translationService;
+	}
+
+	public void setTranslationService(TranslationService translationService) {
+		this.translationService = translationService;
 	}
 
 }

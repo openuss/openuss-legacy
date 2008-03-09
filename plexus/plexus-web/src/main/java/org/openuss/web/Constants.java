@@ -300,6 +300,7 @@ public class Constants {
 	public static final String CALENDAR_UPDATE_SINGLE = "update_single_appointment";
 	public static final String CALENDAR_UPDATE_SERIAL = "update_serial_appointment";
 	public static final String APPOINTMENT_INFO = "appointmentInfo";
+	public static final String APPOINTMENTTYPE_INFO = "appointmentTypeInfo";
 	public static final String CALENDAR_INFO = "calendarInfo";
 	
 	// openuss4us navigation outcomes
@@ -309,6 +310,7 @@ public class Constants {
 	public static final String OPENUSS4US_MESSAGECENTER_READMSG = "openuss4us_read_message";
 	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
 	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
+	public static final String OPENUSS4US_CALENDAR_TRANSLATE= "admin_calendar_translate";
 	public static final String OPENUSS4US_APPOINTMENT_DETAILS = "view_appointment_details";
 	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
 	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";

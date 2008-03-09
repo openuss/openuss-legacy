@@ -1071,6 +1071,11 @@
 			<from-outcome>admin_calendar</from-outcome>
 			<to-view-id>/views/secured/system/appointmenttypes.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_calendar_translate</from-outcome>
+			<to-view-id>/views/secured/system/translateappointmenttypes.xhtml</to-view-id>
+		</navigation-case>
 
 	</navigation-rule>
 	
