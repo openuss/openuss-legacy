@@ -1,18 +1,17 @@
 package org.openuss.framework.jsfcontrols.converter;
 
-import org.apache.log4j.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
+import org.apache.log4j.Logger;
 
 /**
  * Workaround for shale issue https://issues.apache.org/struts/browse/SHALE-406 
  * @author Ingo Dueppe
  */
-public class ShaleLongConverter extends javax.faces.convert.LongConverter implements Converter {
+public class ShaleLongConverter extends javax.faces.convert.LongConverter {
 
 	private static final Logger logger = Logger.getLogger(ShaleLongConverter.class);
 

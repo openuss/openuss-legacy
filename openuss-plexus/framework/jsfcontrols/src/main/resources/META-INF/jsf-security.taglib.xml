@@ -5,5 +5,7 @@
   "facelet-taglib_1_0.dtd">
 
 <facelet-taglib>
-	<library-class>org.openuss.framework.jsfcontrols.tags.security.JsfSecurityLibrary</library-class>
+	<library-class>
+		org.openuss.framework.jsfcontrols.tags.security.JsfSecurityLibrary
+	</library-class>
 </facelet-taglib>

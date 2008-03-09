@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 
 public class UITabs extends UIOutput {
@@ -47,7 +50,7 @@ public class UITabs extends UIOutput {
 									writer.write(title);
 								
 								String url = listItem.getUrl();
-								if(url != null && url != "")
+								if(StringUtils.isNotBlank(url))
 								{
 									
 									writer.startElement("a", this);
@@ -62,10 +65,11 @@ public class UITabs extends UIOutput {
 										} catch (Exception e) {
 											linkTitle = null;
 										}
-										if(linkTitle != null && linkTitle != "")
+										if(StringUtils.isNotBlank(linkTitle)) {
 											writer.write(linkTitle);
-										else
+										} else {
 											writer.write("Details");
+										}
 										writer.write(")");
 										
 									writer.endElement("a");

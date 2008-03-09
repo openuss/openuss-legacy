@@ -113,7 +113,7 @@ public class ConversationUtil {
 						if (value != null) {
 							builder.append(converterHelper.asString(context, value.getClass(), value));
 						}
-					} catch (Exception e) {
+					} catch (RuntimeException e) {
 						logger.warn("exception interpolating string: " + string, e);
 					}
 					tokens.nextToken();

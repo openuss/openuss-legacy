@@ -16,11 +16,9 @@ import javax.faces.context.ResponseWriter;
 public class UIIDProxy extends UIOutput {
 
 	public void encodeBegin(FacesContext context) throws IOException {
-		return;
 	}
 
 	public void decode(FacesContext context) {
-		return;
 	}
 	public void encodeEnd(FacesContext context) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();

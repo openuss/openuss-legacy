@@ -1,5 +1,7 @@
 package org.openuss.framework.web.jsf.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.InputStream;
 
 import javax.faces.context.FacesContext;
@@ -10,6 +12,8 @@ import javax.faces.context.FacesContext;
  */
 public class Resources {
 
+	private static final Logger logger = Logger.getLogger(Resources.class);
+
 	public static InputStream getResourceAsStream(String resource) {
 		String stripped = resource.startsWith("/") ? resource.substring(1) : resource;
 		InputStream stream = null;
@@ -17,7 +21,7 @@ public class Resources {
 		try {
 			stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(resource);
 		} catch (Exception e) {
-			// nothing found - do nothing
+			logger.debug("Could not resolve resouce "+resource, e);
 		}
 
 		if (stream == null) {

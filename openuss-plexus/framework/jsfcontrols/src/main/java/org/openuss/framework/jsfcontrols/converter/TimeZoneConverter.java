@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 /**
- * JavaServer Faces TimeZone Converter
+ * JavaServer Faces TimeZone Converter.
  * 
  * @author Ingo Dueppe
  */

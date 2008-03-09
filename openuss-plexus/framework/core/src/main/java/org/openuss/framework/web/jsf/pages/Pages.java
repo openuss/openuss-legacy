@@ -1,6 +1,7 @@
 package org.openuss.framework.web.jsf.pages;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,20 +37,26 @@ public class Pages {
 	private static final Logger logger = Logger.getLogger(Pages.class);
 
 	private static final String PAGE_XML_SUFFIX = ".page.xml";
-	private static Pages instance;
+	private volatile static Pages instance;
 
 	private Map<String, Page> pagesByViewId = Collections.synchronizedMap(new HashMap<String, Page>());
 	private Map<String, List<Page>> pageStacksByViewId = Collections.synchronizedMap(new HashMap<String, List<Page>>());
+	
+	private static final class WildcardComparator implements Comparator<String>, Serializable {
+		private static final long serialVersionUID = -4054989573023840704L;
 
-	private SortedSet<String> wildcardViewIds = new TreeSet<String>(new Comparator<String>() {
 		public int compare(String x, String y) {
-			if (x.length() < y.length())
+			if (x.length() < y.length()) {
 				return -1;
-			if (x.length() > y.length())
+			}
+			if (x.length() > y.length()) {
 				return 1;
+			}
 			return x.compareTo(y);
 		}
-	});
+	}
+
+	private SortedSet<String> wildcardViewIds = new TreeSet<String>(new WildcardComparator());
 
 	/**
 	 * Singleton constructor
@@ -60,7 +67,9 @@ public class Pages {
 
 	public static Pages instance() {
 		if (instance == null) {
-			instance = new Pages();
+			synchronized (Pages.class) {
+				instance = new Pages();
+			}
 		}
 		return instance;
 	}
