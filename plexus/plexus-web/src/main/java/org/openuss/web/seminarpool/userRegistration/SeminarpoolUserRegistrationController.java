@@ -97,9 +97,13 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		if(seminarPriorityList == null){
 			seminarPriorityList = seminarUserRegistrationInfo.getSeminarPriorityList();
 		}
-		if (!checkDoubleElements(seminarPriorityList)){
+		if (seminarPriorityList != null && !checkDoubleElements(seminarPriorityList)){
 			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED));
 			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
+		}
+		if ( seminarPriorityList == null || seminarPriorityList.size() == 0 ) {
+			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_NO_COURSE_SELECTED));
+			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;			
 		}
 		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
 		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());

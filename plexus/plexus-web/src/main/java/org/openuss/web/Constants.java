@@ -292,7 +292,11 @@ public class Constants {
 	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NUMBER = "seminarpool_add_course_allocation_message_error_number";
 	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_END_BEFORE_START = "seminarpool_add_course_allocation_message_error_end_before_start";
 	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NO_START_OR_END_TIME = "seminarpool_add_course_allocation_message_error_no_start_or_end_time";
-
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP="seminarpool_add_course_allocation_message_add_group";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP_SCHEDULE="seminarpool_add_course_allocation_message_add_group_schedule";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_REMOVE_GROUP="seminarpool_add_course_allocation_message_remove_group";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_REMOVE_GROUP_SCHEDULE="seminarpool_add_course_allocation_message_remove_group_schedule";
+	public static final String SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_SEMINAR = "seminarpool_add_course_allocation_message_add_seminar";
 	
 	public static final String SEMINARPOOL_COURSEGROUP_INFO = "SEMINARPOOL_COURSEGROUP_INFO"; 
 	public static final String SEMINARPOOL_CONFIRM_REMOVE_PAGE = "seminarpool_remove_confirmation";
@@ -327,4 +331,6 @@ public class Constants {
 
 
 	public static final String SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED = "seminarpool_user_registration_error_double_courses_selected";
+	public static final String SEMINARPOOL_USER_REGISTRATION_ERROR_NO_COURSE_SELECTED = "seminarpool_user_registration_error_no_course_selected";
+
 }

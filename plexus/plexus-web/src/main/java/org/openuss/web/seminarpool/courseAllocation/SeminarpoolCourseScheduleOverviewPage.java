@@ -48,6 +48,7 @@ public class SeminarpoolCourseScheduleOverviewPage extends BasePage {
 			courseGroupInfoList.get(groupIndex).setIsTimeSet(false);
 		}
 		setSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION, courseGroupInfoList);
+		addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_REMOVE_GROUP_SCHEDULE));
 		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3; 
 	}
 	

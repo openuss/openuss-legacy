@@ -32,12 +32,14 @@
 				</s:acl>
 			</s:authorize>		
 		</t:column>
-		
-		<t:column>
-		
-		<plexus:commandSortHeader columnName="activated">#{msg.seminarpoolseminar_colheader_accepted}</plexus:commandSortHeader> 
+		<s:authorize ifAllGranted="ROLE_ADMIN">
+			<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
+			<t:column>
+				<plexus:commandSortHeader columnName="activated">#{msg.seminarpoolseminar_colheader_accepted}</plexus:commandSortHeader> 
 				<b><h:outputText value="#{bean.accepted}"/></b>
-		</t:column>
+			</t:column>
+			</s:acl>
+		</s:authorize>
 		
 		<s:authorize ifAllGranted="ROLE_USER">
 		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">

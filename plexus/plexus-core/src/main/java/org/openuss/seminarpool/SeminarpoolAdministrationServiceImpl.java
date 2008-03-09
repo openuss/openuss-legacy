@@ -263,14 +263,14 @@ public class SeminarpoolAdministrationServiceImpl
     {
     	Validate.notNull(seminarpoolId, "handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
     	Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
-    	SeminarpoolInfo seminarpoolInfo = getSeminarpoolDao().toSeminarpoolInfo(seminarpoolEntity);    	  	
+//    	SeminarpoolInfo seminarpoolInfo = getSeminarpoolDao().toSeminarpoolInfo(seminarpoolEntity);    	  	
     	Validate.notNull(seminarpoolEntity, "handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
     	Collection<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity.getCourseSeminarpoolAllocation();
     	List<CourseSeminarpoolAllocationInfo> courseAllocationList = new ArrayList<CourseSeminarpoolAllocationInfo>();
     	for (CourseSeminarpoolAllocation courseAllocation : courseAllocations){
-    		CourseSeminarpoolAllocationInfo info = getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation);
-    		if (courseAllocation.isAccepted() || (getSecurityService().hasPermission((DomainObject)info, new Integer[] {LectureAclEntry.GCRUD}) || getSecurityService().hasPermission((DomainObject)seminarpoolInfo, new Integer[] {LectureAclEntry.GCRUD})) ){
-    			courseAllocationList.add(info);
+    		// only if the course is accepted or if the user is the owner the course or is seminarpool admin 
+    		if (courseAllocation.isAccepted() || (getSecurityService().hasPermission(courseAllocation, new Integer[] {LectureAclEntry.GCRUD}) || getSecurityService().hasPermission(seminarpoolEntity, new Integer[] {LectureAclEntry.GCRUD})) ){
+    			courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
     		}
     	}    	
         return courseAllocationList;

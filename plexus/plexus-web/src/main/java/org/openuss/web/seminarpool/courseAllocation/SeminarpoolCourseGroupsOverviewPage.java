@@ -45,6 +45,7 @@ public class SeminarpoolCourseGroupsOverviewPage extends BasePage {
 			seminarpoolAdministrationService.removeCourseGroup(courseGroupInfo);
 		}
 		setSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION, courseGroupInfoList);
+		addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_REMOVE_GROUP));
 		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP2;
 	}
 
