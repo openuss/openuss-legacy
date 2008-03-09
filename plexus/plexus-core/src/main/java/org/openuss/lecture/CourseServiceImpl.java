@@ -23,6 +23,7 @@ import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.system.SystemProperties;
+import org.openuss.lecture.InstituteService;
 
 /**
  * @see org.openuss.lecture.CourseService
@@ -598,33 +599,54 @@ public class CourseServiceImpl extends org.openuss.lecture.CourseServiceBase {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindAllCoursesByDepartment(Long departmentId,
 			Boolean onlyActive, Boolean onlyEnabled) throws Exception {
-		//TODO Integration of Warm-Up things
 		Validate.notNull(departmentId, "departmentId cannot be null.");
 		Validate.notNull(onlyActive, "onlyActive cannot be null");
 		Validate.notNull(onlyEnabled, "onlyEnabled cannot be null.");
 		final Department department = getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
 
-		List<CourseInfo> courseList = new ArrayList<CourseInfo>();
-		List<InstituteInfo> instituteInfos = new ArrayList();
+		final List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		final List<InstituteInfo> instituteInfos = new ArrayList<InstituteInfo>();
 		for (Institute institute : department.getInstitutes()) {
 			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
 		}
 		
-		for(int i=0; i<instituteInfos.size();i++) {		
-			courseList.addAll(this.findCoursesByActivePeriodsAndEnabled(instituteInfos.get(i).getId(), onlyEnabled));
+		if(onlyActive){
+			for(InstituteInfo institute : instituteInfos) {
+				courseList.addAll(this.findCoursesByActivePeriodsAndEnabled(institute.getId(), onlyEnabled));
+			}
+		}else{
+			for(InstituteInfo institute : instituteInfos) {
+				courseList.addAll(this.findCoursesByInstituteAndEnabled(institute.getId(), onlyEnabled));
+			}
 		}
-		
 		return courseList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindAllCoursesByDepartmentAndPeriod(Long departmentId,
 			Long periodId, Boolean onlyEnabled) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Validate.notNull(onlyEnabled, "enabled cannot be null.");
+		Validate.notNull(periodId, "periodId cannot be null.");
+		Validate.notNull(departmentId, "departmentId cannot be null.");
+		final Department department = this.getDepartmentDao().load(departmentId);
+		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
+
+		final List<CourseInfo> courseList = new ArrayList<CourseInfo>();
+		final List<InstituteInfo> instituteInfos = new ArrayList<InstituteInfo>();
+		for (Institute institute : department.getInstitutes()) {
+			instituteInfos.add(this.getInstituteDao().toInstituteInfo(institute));
+		}
+		
+		for(InstituteInfo institute : instituteInfos){	
+			courseList.addAll(this.findCoursesByPeriodAndInstituteAndEnabled(periodId, institute.getId(), onlyEnabled));
+		}
+		
+		return courseList;
 	}
 }

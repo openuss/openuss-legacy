@@ -41,6 +41,10 @@
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/> 
 	</page>
 	
+	<page view-id="/views/public/department/allcoursesbydepartment.xhtml">
+		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+	
 	<page view-id="/views/secured/lecture/departmentmembers.xhtml">
 		<securityConstraint domainObject="#{departmentInfo}" permissions="#{ACL.DEPARTMENT_ADMINISTRATION}"/> 
 		<parameter name="department" value="#{departmentInfo.id}" converterId="javax.faces.Long"/>

@@ -19,7 +19,7 @@
 				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
 					<t:commandNavigation2 value="#{msg['department_navigation_header']}">
 						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
-							<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml">
+							<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml,/views/public/department/allcoursesbydepartment.xhtml">
 									<h:outputText value="#{msg['department_profile']}" ></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>

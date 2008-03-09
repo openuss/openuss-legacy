@@ -799,6 +799,10 @@ ul.action_list li.department_bookmark a span{
   background-image:url(../img/buttons/bookmark_icon.png);
 }
 
+ul.action_list li.department_overview_of_all_courses a span{
+	background-image:url(../img/buttons/list_icon.png)
+}
+	
 ul.action_list li.department_remove_bookmark a span{
   background-image:url(../img/buttons/bookmark_remove_icon.png);
 }
