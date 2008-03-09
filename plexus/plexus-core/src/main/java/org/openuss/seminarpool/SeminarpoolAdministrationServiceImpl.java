@@ -521,9 +521,10 @@ public class SeminarpoolAdministrationServiceImpl extends
 		for (CourseSeminarpoolAllocation cspa : seminars) {
 			subgroups += cspa.getCourseGroup().size();
 		}
-		
-		//Generate table, where can be seen, which groups belong to one course
+
+		// Generate table, where can be seen, which groups belong to one course
 		double[][] coursegroups = new double[subgroups][2];
+		double[] coursegroups2 = new double[subgroups];
 		b = 1;
 		c = 0;
 		for (CourseSeminarpoolAllocation cspa : seminars) {
@@ -536,7 +537,9 @@ public class SeminarpoolAdministrationServiceImpl extends
 			b++;
 		}
 		
-		//Sort table by groupId
+		
+
+		// Sort table by groupId
 		for (int i = 0; i < coursegroups.length - 1; i++) {
 			int minPos = i;
 			for (int j = i + 1; j < coursegroups.length; j++) {
@@ -546,6 +549,11 @@ public class SeminarpoolAdministrationServiceImpl extends
 			double temp[] = coursegroups[minPos];
 			coursegroups[minPos] = coursegroups[i];
 			coursegroups[i] = temp;
+		}
+		
+		//Copy 2-dim array to 1-dim array for later binary search
+		for(int i=0; i<subgroups;i++){
+			coursegroups2[i]=coursegroups[i][0];
 		}
 
 		double[] capacity = new double[subgroups];
@@ -557,20 +565,24 @@ public class SeminarpoolAdministrationServiceImpl extends
 			neededSeminars[c] = suri.getNeededSeminars();
 			c++;
 		}
-		
+
 		int conflicts = 0;
-		double[][] timeconflict = new double[subgroups][2];
-		//Time restrictions
-		for(CourseGroup cg1 : courseGroupList){
-			for(CourseGroup cg2 : courseGroupList){
-				if(timeconflict(cg1,cg2)){
+		long[][] timeconflict = new long[subgroups*subgroups][2];
+		// Time overlaps
+	
+		for (int i = 0; i < courseGroupList.size() - 1; i++) {
+			for (int j = i + 1; j < courseGroupList.size(); j++) {
+				if(courseGroupList.get(i).getCourseSchedule().size()>0 && courseGroupList.get(j).getCourseSchedule().size()>0 && timeconflict(courseGroupList.get(i),courseGroupList.get(j))){
+					timeconflict[conflicts][0]=courseGroupList.get(i).getId();
+					timeconflict[conflicts][1]=courseGroupList.get(j).getId();
 					conflicts++;
 				}
 			}
 		}
 
 		int variables = subgroups * registrations.size();
-		int sideconditions = subgroups + registrations.size() + 2 * variables + registrations.size()*seminars.size();
+		int sideconditions = subgroups + registrations.size() + 2 * variables
+				+ registrations.size() * seminars.size() + conflicts * registrations.size();
 		Simplex simplex = new Simplex(variables, sideconditions, false);
 
 		long[][] table = new long[variables][3];
@@ -596,8 +608,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 				}
 			}
 		}
-		
-		//Sort table by groupId for each user
+
+		// Sort table by groupId for each user
 		for (int k = 0; k < registrations.size(); k++) {
 			for (int i = k * subgroups; i < k * subgroups + subgroups - 1; i++) {
 				int minPos = i;
@@ -649,21 +661,37 @@ public class SeminarpoolAdministrationServiceImpl extends
 			sc1[variables] = neededSeminars[a];
 			simplex.newSC(sc1, "<=");
 		}
-		
-		
 
 		// Each participant may only have one group of one course
 		for (a = 0; a < registrations.size(); a++) {
 			for (b = 1; b <= seminars.size(); b++) {
 				java.util.Arrays.fill(sc1, 0);
-				for(c=0;c<subgroups;c++){
+				for (c = 0; c < subgroups; c++) {
 					double value = 0.0;
-					if(coursegroups[c][1]==b){
+					if (coursegroups[c][1] == b) {
 						value = 1.0;
 					}
-					sc1[subgroups*a+c]=value;
+					sc1[subgroups * a + c] = value;
 				}
-				sc1[variables]=1.0;
+				sc1[variables] = 1.0;
+				simplex.newSC(sc1, "<=");
+			}
+		}
+		
+		//Time restrictions
+		for(a = 0; a < registrations.size(); a++){
+			for(b = 0; b < conflicts; b++){
+				java.util.Arrays.fill(sc1, 0);
+				int index1 = java.util.Arrays.binarySearch(coursegroups2, timeconflict[b][0]);
+				int index2 = java.util.Arrays.binarySearch(coursegroups2, timeconflict[b][1]);
+				for(c = 0; c < subgroups; c++){
+					double value = 0.0;
+					if(c == index1 || c == index2){
+						value = 1.0;
+					}
+					sc1[subgroups * a + c] = value;
+				}
+				sc1[variables] = 1.0;
 				simplex.newSC(sc1, "<=");
 			}
 		}
@@ -686,21 +714,38 @@ public class SeminarpoolAdministrationServiceImpl extends
 			if (result[i][0] <= variables && result[i][1] == 1.0) {
 				CourseGroup cg = this.getCourseGroupDao().load(
 						table[(int) result[i][0] - 1][1]);
-				User user=getUserDao().load(table[(int)result[i][0]-1][0]);
+				User user = getUserDao().load(table[(int) result[i][0] - 1][0]);
 				cg.addUser(user);
 			}
 		}
 		sp.setSeminarpoolStatus(SeminarpoolStatus.REVIEWPHASE);
 	}
-	
-	private boolean timeconflict(CourseGroup cg1, CourseGroup cg2){
-		boolean conflict=false;
-		for(CourseSchedule cs1 : cg1.getCourseSchedule()){
-			for(CourseSchedule cs2 : cg1.getCourseSchedule()){
-//				if(cs1.getDayOfWeek()==cs2.getDayOfWeek() && cs1.getStartTime().getHours()<0){
-//					conflict=true;
-//					break;
-//				}
+
+	@SuppressWarnings("deprecation")
+	private boolean timeconflict(CourseGroup cg1, CourseGroup cg2) {
+		boolean conflict = false;
+		for (CourseSchedule cs1 : cg1.getCourseSchedule()) {
+			for (CourseSchedule cs2 : cg2.getCourseSchedule()) {
+				if (cs1.getDayOfWeek() == cs2.getDayOfWeek()
+						&& ((cs1.getStartTime().getHours() >= cs2
+								.getStartTime().getHours()
+								&& cs1.getStartTime().getMinutes() >= cs2
+										.getStartTime().getMinutes()
+								&& cs1.getStartTime().getHours() <= cs2
+										.getEndTime().getHours() && cs1
+								.getStartTime().getMinutes() <= cs2
+								.getEndTime().getMinutes()) || (cs2
+								.getStartTime().getHours() >= cs1
+								.getStartTime().getHours()
+								&& cs2.getStartTime().getMinutes() >= cs1
+										.getStartTime().getMinutes()
+								&& cs2.getStartTime().getHours() <= cs1
+										.getEndTime().getHours() && cs2
+								.getStartTime().getMinutes() <= cs1
+								.getEndTime().getMinutes()))) {
+					conflict = true;
+					break;
+				}
 			}
 		}
 		return conflict;
@@ -1048,7 +1093,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 		detailInfo.setUserLastName(entity.getSeminarUserRegistration()
 				.getUser().getLastName());
 		detailInfo.setPriority(entity.getPriority());
-		detailInfo.setCourseName(entity.getCourseSeminarPoolAllocation().getCourse().getName());
+		detailInfo.setCourseName(entity.getCourseSeminarPoolAllocation()
+				.getCourse().getName());
 		return detailInfo;
 	}
 
