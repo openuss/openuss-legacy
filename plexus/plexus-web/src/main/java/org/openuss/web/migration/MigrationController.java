@@ -127,8 +127,7 @@ public class MigrationController extends BasePage {
 			// Successful authentication -> Migrate user profile
 			migrationUtility.migrate((User)auth.getPrincipal(), auth);
 			
-			addError(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));
-			
+			addError(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
 			// Handle local user
 			if (auth.getPrincipal() instanceof User) {
 				// Initialize the security context
@@ -152,8 +151,13 @@ public class MigrationController extends BasePage {
 			} else if (ex instanceof CredentialsExpiredException) {
 				exceptionMessage = i18n("authentication_error_password_expired");
 			} else if (ex instanceof DisabledException) {
-					   // Centrally authenticated users automatically switch to enabled state -> Migrate user profile
+					   /* Although centrally authenticated users automatically switch to enabled state (and their profile can be migrated),
+					    * we cannot do this here, due to the Acegi framework checks enabled status BEFORE checking for valid password.
+					    * Without checking the password ANY disabled profile could be hijacked by ANY authenticated central user, who has no profile yet.
+					    * So we commented the following lines out, although they will work. Instead we revoke central authentication and redirect to activation request page.
+					    */
 					   
+					   /*
 					   User user = securityService.getUserByName(username);
 					   user.setEnabled(true);
 					   UserImpl principal = (UserImpl) user;
@@ -161,7 +165,6 @@ public class MigrationController extends BasePage {
 					   auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
 					   user = migrationUtility.migrate(user, auth);
 					   exceptionMessage = i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName());					   
-					   
 					   // Handle local user
 					   if (auth.getPrincipal() instanceof User) {
 						   // Initialize the security context
@@ -172,7 +175,14 @@ public class MigrationController extends BasePage {
 						   // setup user and userPreferences
 						   injectUserInformationIntoSession(auth);
 						   sessionTracker.logSessionCreated(getSession());
-						}				
+						}
+						*/
+						final SecurityContext securityContext = SecurityContextHolder.getContext();
+						securityContext.setAuthentication(null);
+						exceptionMessage = i18n("authentication_error_account_disabled");
+						addError(exceptionMessage);
+						return Constants.USER_ACTIVATION_REQUEST_PAGE;
+
 			} else if (ex instanceof LockedException) {
 				exceptionMessage = i18n("authentication_error_account_locked");
 			} else if (ex instanceof AccountExpiredException) {

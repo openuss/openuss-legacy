@@ -1,6 +1,7 @@
 package org.openuss.web.security;
 
 import java.io.IOException;
+import java.security.ProviderException;
 import java.util.Random;
 
 import javax.naming.NamingException;
@@ -203,13 +204,16 @@ public class AuthenticationController extends BasePage {
 				exceptionMessage = i18n("authentication_error_account_locked");
 			} else if (ex instanceof AccountExpiredException) {
 				exceptionMessage = i18n("authentication_error_account_expired");
-			} else if (ex instanceof BadCredentialsException || ex instanceof ProviderNotFoundException) { 
+			} else if (ex instanceof BadCredentialsException) { 
 				/* If no LDAP server is configured a ProviderNotFound exception is thrown.
-				 * To users it should look like as if they have entered bad credentials.
+				 * If all LDAP servers or the last one are/is unreachable, an AuthenticationException is thrown.
+				 * !!! But Acegi only throws the last catched exception!!!
+				 * So if the LDAP provider is called BEFORE DAO provider, only DAO provider exceptions are thrown.
+				 * If we catch a BadCredentialsException from DAO provider, the user could have entered a valid
+				 * central login, but all servers are unreachable. Thus we have to inform the user about it, so she
+				 * does not try to enter valid credentials "until forever".
 				 */				
 				exceptionMessage = i18n("authentication_error_password_mismatch");
-			} else if (ex instanceof AuthenticationException) {
-				exceptionMessage = i18n("authentication_error_communication");
 			} else {
 				exceptionMessage = ex.getMessage();
 			}

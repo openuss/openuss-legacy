@@ -89,7 +89,7 @@
 				/views/commons/**=ROLE_USER
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
 				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
-				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
+				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
 				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
@@ -111,8 +111,8 @@
 		class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
-				<ref local="daoAuthenticationProvider" />
 				<ref local="configurableLdapAuthenticationProvider"/>
+				<ref local="daoAuthenticationProvider" />
 				<ref local="anonymousAuthenticationProvider" />
 				<ref local="rememberMeAuthenticationProvider"/>
 			</list>
