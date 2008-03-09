@@ -55,7 +55,8 @@ public class PlexusBasicProcessingFilter extends ExtendedBasicProcessingFilter {
 					logger.debug("Replacing LDAP-Principal +"+authResult.getPrincipal()+" with "+user.getUsername());
 					UserImpl principal = (UserImpl) user;
 					UserDetails userDetails = principal;
-					Authentication authentication = new PrincipalAcegiUserToken(null,user.getUsername(),"[protected]",userDetails.getAuthorities(),principal);
+					Authentication authentication = new PrincipalAcegiUserToken("key",user.getUsername(),"[protected]",userDetails.getAuthorities(),principal);
+					authentication.setAuthenticated(true);
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 				}
 			}

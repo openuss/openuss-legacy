@@ -27,7 +27,7 @@
 		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
 	</bean>
 
-<!--	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">-->
+	<!-- <bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter"> -->
 	<bean id="authenticationProcessingFilter" class="org.openuss.web.security.PlexusAuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="defaultTargetUrl" value="/views/public/login/login.faces"/>
@@ -36,11 +36,12 @@
 		<property name="onlineStatisticService" ref="onlineStatisticService"/>
 	</bean>
 
-	<!-- <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter"> -->
-	<bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter">
+	<bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter"> 
+	<!-- <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter"> --> 
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
 		<property name="ignoreFailure" value="false"/>
+		<property name="securityService" ref="securityService"/>
 	</bean>
 	
 	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
