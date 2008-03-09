@@ -2,6 +2,7 @@ package org.openuss.web.dav.backends;
 
 import java.io.IOException;
 
+import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
@@ -13,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  * A resource representing any organisation, i.e. university.
  */
-public abstract class AbstractOrganisationResource extends SimpleWebDAVResource {
+public abstract class AbstractOrganisationResource extends CollisionAvoidingSimpleWebDAVResource {
 	/**
 	 * The virtual ID of the root organisation.
 	 */
