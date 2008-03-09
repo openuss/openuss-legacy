@@ -35,8 +35,9 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 
 	private void addContestToSession() {
 		BrainContestInfo bci = this.data.getRowData();
-		if (bci.getTries() == null)
+		if (bci.getTries() == null) {
 			bci.setTries(0);
+		}
 		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
 	}
 
@@ -72,9 +73,11 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 
 		@Override
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {
-			List<BrainContestInfo> al = getBrainContestService().getContests(courseInfo);
-			page = new DataPage<BrainContestInfo>(al.size(), 0, al);
-			sort(al);
+			if (page != null) {
+				List<BrainContestInfo> contests = getBrainContestService().getContests(courseInfo);
+				page = new DataPage<BrainContestInfo>(contests.size(), 0, contests);
+				sort(contests);
+			}
 			return page;
 		}
 	}

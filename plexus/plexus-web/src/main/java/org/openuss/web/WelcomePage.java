@@ -31,7 +31,7 @@ public class WelcomePage extends BasePage {
 	private OnlineStatisticService onlineStatisticService;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD idueppe
 		super.prerender();
 		logger.debug("starting method prerender");
 

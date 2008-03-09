@@ -29,6 +29,7 @@ import org.openuss.web.upload.UploadFileManager;
 
 /**
  * News Page Controller
+ * 
  * @author Ingo Dueppe
  */
 @Bean(name = "views$secured$course$coursenewsedit", scope = Scope.REQUEST)
@@ -39,36 +40,34 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 
 	private static final long serialVersionUID = 792199034646593736L;
 
-	@Property(value = "#{"+Constants.NEWS_SELECTED_NEWSITEM+"}")
+	@Property(value = "#{" + Constants.NEWS_SELECTED_NEWSITEM + "}")
 	private NewsItemInfo newsItem;
 
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 
-	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
+	@Property(value = "#{" + Constants.UPLOAD_FILE_MANAGER + "}")
 	private UploadFileManager uploadFileManager;
-	
+
 	private UIData attachmentList;
-	
+
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (!isPostBack()) {
-			if (newsItem != null && newsItem.getId() != null) {
-				newsItem = newsService.getNewsItem(newsItem);
-				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-			} 
+		if (!isPostBack() && newsItem != null && newsItem.getId() != null) {
+			newsItem = newsService.getNewsItem(newsItem);
+			setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 		}
 
 		BreadCrumb newCrumb;
-		
+
 		newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("course_command_options_news"));
 		newCrumb.setHint(i18n("course_command_options_news"));
 		newCrumb.setLink(PageLinks.COURSE_NEWS);
 		breadcrumbs.addCrumb(newCrumb);
-		
+
 		newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("mews_selected_newsitem_header"));
 		newCrumb.setHint(i18n("mews_selected_newsitem_header"));
@@ -79,12 +78,12 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 	 * Save the current newsbean into the database.
 	 * 
 	 * @return outcome
-	 * @throws DocumentApplicationException 
-	 * @throws IOException 
+	 * @throws DocumentApplicationException
+	 * @throws IOException
 	 */
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
-		
+
 		newsItem.setCategory(NewsCategory.COURSE);
 		newsItem.setExpireDate(null);
 		newsItem.setPublisherIdentifier(courseInfo.getId());
@@ -99,12 +98,11 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 		return user.getDisplayName();
 	}
-	
-	
+
 	public String removeAttachment() {
 		logger.debug("news attachment removed");
-		FileInfo attachment = (FileInfo) attachmentList.getRowData();
 		if (newsItem.getAttachments() != null) {
+			FileInfo attachment = (FileInfo) attachmentList.getRowData();
 			newsItem.getAttachments().remove(attachment);
 		}
 		return Constants.SUCCESS;
@@ -123,21 +121,24 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 				addError(i18n("news_filename_already_exists"));
 				return Constants.FAILURE;
 			}
-			
+
 		}
-		
+
 		return Constants.SUCCESS;
 	}
-	
+
 	public List<SelectItem> getNewsCategories() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
-//		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
-//		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
-//		items.add(new SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
-		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
+		// items.add(new
+		// SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
+		// items.add(new
+		// SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
+		// items.add(new
+		// SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
+		items.add(new SelectItem(NewsCategory.COURSE, i18n("news_category_course")));
 		return items;
 	}
-	
+
 	private boolean validFileName(String fileName) {
 		for (FileInfo attachment : newsItem.getAttachments()) {
 			if (StringUtils.equalsIgnoreCase(fileName, attachment.getFileName())) {
@@ -149,6 +150,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 
 	/**
 	 * Cancel editing the current newsItem
+	 * 
 	 * @return
 	 */
 	public String cancel() {
@@ -158,7 +160,7 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		return Constants.COURSE_NEWS_PAGE;
 	}
 
-	/* ----------------- properties ------------------*/
+	/* ----------------- properties ------------------ */
 
 	public NewsItemInfo getNewsItem() {
 		return newsItem;

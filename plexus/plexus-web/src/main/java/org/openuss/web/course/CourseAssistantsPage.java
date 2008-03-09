@@ -41,9 +41,9 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	private Long userId;
 
-	List<CourseMemberInfo> assistants;
-	Set<Long> assistantsUserIds;
-	List<SelectItem> instituteMembers;
+	private List<CourseMemberInfo> assistants;
+	private Set<Long> assistantsUserIds;
+	private List<SelectItem> instituteMembers;
 	
 	private DataPage<CourseMemberInfo> page;
 
@@ -65,7 +65,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	private static final class FilterByUserIdsPredicte implements Predicate {
 		private final Set<Long> userIds;
 
-		private FilterByUserIdsPredicte(Set<Long> userIds) {
+		public FilterByUserIdsPredicte(Set<Long> userIds) {
 			this.userIds = userIds;
 		}
 
@@ -161,7 +161,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			instituteMembers = new ArrayList<SelectItem>();
 			instituteMembers.add(new SelectItem(Constants.COURSE_CHOOSE_ASSISTANT, i18n(Constants.COURSE_CHOSSE_ASSISTANT_TEXT)));
 			for(UserInfo member : membersUser) {
-				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName()));
+				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName())); //NOPMD idueppe
 			}
 		}
 		return instituteMembers;

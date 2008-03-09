@@ -46,8 +46,8 @@ public class Selection<T> implements Serializable{
 	}
 	
 	public boolean isSelected(Object key) {
-		Boolean b = map.get(key);
-		return b == null? false : b;
+		Boolean bool = map.get(key);
+		return bool == null? false : bool;
 	}
 	
 	public Map<T, Boolean> getMap() {

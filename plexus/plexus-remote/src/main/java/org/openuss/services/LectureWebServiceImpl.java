@@ -51,7 +51,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	private DepartmentService departmentService;
 
 	@Override
-	public Long createUser(UserBean user) throws LectureLogicException {
+	public Long createUser(final UserBean user) throws LectureLogicException {
 		Validate.notNull(user, "User must not be null");
 		UserInfo userInfo = new UserInfo();
 		copyPropertiesFromUserBeanToUserInfo(user, userInfo);
@@ -61,7 +61,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public boolean updateUser(UserBean user) throws LectureLogicException {
+	public boolean updateUser(final UserBean user) throws LectureLogicException {
 		Validate.notNull(user, "Parameter user must not be null!");
 		UserInfo userInfo = securityService.getUser(user.getId());
 		copyPropertiesFromUserBeanToUserInfo(user, userInfo, false);
@@ -70,22 +70,18 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public boolean deleteUser(long userId) throws LectureLogicException {
+	public boolean deleteUser(final long userId) throws LectureLogicException {
 		return false;
 	}
 
 	@Override
-	public Long findUser(String username) throws LectureLogicException {
+	public Long findUser(final String username) throws LectureLogicException {
 		UserInfo user = securityService.getUserByName(username);
-		if (user != null) {
-			return user.getId();
-		} else {
-			return null;
-		}
+		return (user == null) ? null : user.getId();
 	}
 
 	@Override
-	public Long createCourse(CourseBean course) throws LectureLogicException {
+	public Long createCourse(final CourseBean course) throws LectureLogicException {
 		Validate.notNull(course, "Parameter course must not be null!");
 
 		PeriodInfo period = findBestFittingPeriod(course);
@@ -105,27 +101,24 @@ public class LectureWebServiceImpl implements LectureWebService {
 		courseInfo.setShortcut(course.getShortcut());
 		courseInfo.setDescription(course.getDescription());
 
-		Long courseId = courseService.create(courseInfo);
-
-		return courseId;
+		return courseService.create(courseInfo);
 	}
 
 	@Override
-	public boolean deleteCourse(long courseId) throws LectureLogicException {
+	public boolean deleteCourse(final long courseId) throws LectureLogicException {
 		try {
 			courseService.removeCourse(courseId);
 			return true;
 		} catch (DesktopService2Exception ex) {
 			logger.debug(ex);
-			return false;
 		} catch (CourseServiceException ex) {
 			logger.debug(ex);
-			return false;
 		}
+		return false;
 	}
 
 	@Override
-	public boolean updateCourse(CourseBean course) throws LectureLogicException {
+	public boolean updateCourse(final CourseBean course) throws LectureLogicException {
 		Validate.notNull(course, "Parameter course must not be null.");
 		Validate.notNull(course.getId(), "Parameter course.id must not be null");
 
@@ -159,7 +152,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public CourseBean getCourse(long courseId) throws LectureLogicException {
+	public CourseBean getCourse(final long courseId) throws LectureLogicException {
 		Validate.notNull(courseId, "Parameter courseId must not be null.");
 
 		CourseInfo courseInfo = courseService.getCourseInfo(courseId);
@@ -177,13 +170,14 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public boolean assignCourseMember(long courseId, long userId, Role role) throws LectureLogicException {
+	public boolean assignCourseMember(final long courseId, final long userId, final Role role)
+			throws LectureLogicException {
 		Validate.notNull(role, "Parameter role must not be null.");
 		UserInfo user = securityService.getUser(userId);
 		Validate.notNull(user, "User not found.");
 		CourseInfo course = courseService.getCourseInfo(courseId);
 		Validate.notNull(course, "Course not found.");
-		
+
 		if (role == Role.ASSISTANT) {
 			courseService.addAssistant(course, user);
 		} else {
@@ -194,7 +188,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public boolean removeCourseMember(long courseId, long userId) throws LectureLogicException {
+	public boolean removeCourseMember(final long courseId, final long userId) throws LectureLogicException {
 		UserInfo user = securityService.getUser(userId);
 		Validate.notNull(user, "User not found.");
 		CourseInfo course = courseService.getCourseInfo(courseId);
@@ -203,46 +197,46 @@ public class LectureWebServiceImpl implements LectureWebService {
 		CourseMemberInfo member = courseService.getMemberInfo(course, user);
 		if (member != null) {
 			courseService.removeMember(member.getId());
-		} else {
-			return false;
 		}
-		return true;
+		return member != null;
 	}
 
 	@Override
-	public Role isCourseMember(long courseId, long userId) throws LectureLogicException {
+	public Role isCourseMember(final long courseId, final long userId) throws LectureLogicException {
 		UserInfo user = securityService.getUser(userId);
 		CourseInfo course = courseService.getCourseInfo(courseId);
 
 		CourseMemberInfo member = courseService.getMemberInfo(course, user);
 
+		Role result;
+
 		if (member == null) {
-			return Role.NONE;
+			result = Role.NONE;
 		} else if (member.getMemberType() == CourseMemberType.ASSISTANT) {
-			return Role.ASSISTANT;
+			result = Role.ASSISTANT;
 		} else {
-			return Role.PARTICIPANT;
+			result = Role.PARTICIPANT;
 		}
+		return result;
 	}
 
 	@Override
-	public boolean updateInstitute(InstituteBean institute) throws LectureLogicException {
+	public boolean updateInstitute(final InstituteBean institute) throws LectureLogicException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Long createInstitute(InstituteBean institute) throws LectureLogicException {
+	public Long createInstitute(final InstituteBean institute) throws LectureLogicException {
 
 		InstituteInfo info = new InstituteInfo();
 		copyProperties(institute, info);
 
-		Long id = instituteService.create(info, institute.getOwnerId());
-		return id;
+		return instituteService.create(info, institute.getOwnerId());
 	}
 
 	@Override
-	public InstituteBean getInstitute(long instituteId) throws LectureLogicException {
+	public InstituteBean getInstitute(final long instituteId) throws LectureLogicException {
 		InstituteInfo source = instituteService.findInstitute(instituteId);
 		if (source == null) {
 			throw new LectureLogicException("Institute (" + instituteId + ") does not exists.");
@@ -253,7 +247,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	@Override
-	public List<InstituteBean> listInstitute(long departmentId) throws LectureLogicException {
+	public List<InstituteBean> listInstitute(final long departmentId) throws LectureLogicException {
 		List<InstituteInfo> institutes = instituteService.findInstitutesByDepartment(departmentId);
 		List<InstituteBean> beans = new ArrayList(institutes.size());
 		for (InstituteInfo institute : institutes) {
@@ -272,7 +266,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		return securityService;
 	}
 
-	public void setSecurityService(SecurityService securityService) {
+	public void setSecurityService(final SecurityService securityService) {
 		this.securityService = securityService;
 	}
 
@@ -280,7 +274,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		return courseTypeService;
 	}
 
-	public void setCourseTypeService(CourseTypeService courseTypeService) {
+	public void setCourseTypeService(final CourseTypeService courseTypeService) {
 		this.courseTypeService = courseTypeService;
 	}
 
@@ -288,7 +282,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		return courseService;
 	}
 
-	public void setCourseService(CourseService courseService) {
+	public void setCourseService(final CourseService courseService) {
 		this.courseService = courseService;
 	}
 
@@ -296,7 +290,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		return instituteService;
 	}
 
-	public void setInstituteService(InstituteService instituteService) {
+	public void setInstituteService(final InstituteService instituteService) {
 		this.instituteService = instituteService;
 	}
 
@@ -304,7 +298,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		return universityService;
 	}
 
-	public void setUniversityService(UniversityService universityService) {
+	public void setUniversityService(final UniversityService universityService) {
 		this.universityService = universityService;
 	}
 
@@ -317,11 +311,11 @@ public class LectureWebServiceImpl implements LectureWebService {
 	}
 
 	// --------------------- Private Methods ------------- //
-	private boolean containPeriodCourseTimeFrame(CourseBean course, PeriodInfo period) {
+	private boolean containPeriodCourseTimeFrame(final CourseBean course, final PeriodInfo period) {
 		return (!period.getStartdate().after(course.getStartDate()) && !period.getEnddate().before(course.getEndDate()));
 	}
 
-	private void copyProperties(Object source, Object target) throws LectureLogicException {
+	private void copyProperties(final Object source, final Object target) throws LectureLogicException {
 		try {
 			BeanUtils.copyProperties(target, source);
 		} catch (IllegalAccessException e) {
@@ -333,50 +327,56 @@ public class LectureWebServiceImpl implements LectureWebService {
 		}
 	}
 
-	private void copyPropertiesFromUserBeanToUserInfo(UserBean user, UserInfo userInfo) {
+	private void copyPropertiesFromUserBeanToUserInfo(final UserBean user, final UserInfo userInfo) {
 		copyPropertiesFromUserBeanToUserInfo(user, userInfo, false);
 	}
 
-	private void copyPropertiesFromUserBeanToUserInfo(UserBean user, UserInfo userInfo, boolean copyIfNull) {
-		if (copyIfNull || user.getUsername() != null)
+	private void copyPropertiesFromUserBeanToUserInfo(final UserBean user, final UserInfo userInfo,
+			final boolean copyIfNull) { // NOPMD by idueppe on 09.03.08 00:09
+		if (copyIfNull || user.getUsername() != null) {
 			userInfo.setUsername(user.getUsername());
-		if (copyIfNull || user.getEmail() != null)
+		}
+		if (copyIfNull || user.getEmail() != null) {
 			userInfo.setEmail(user.getEmail());
-		if (copyIfNull || user.getPassword() != null)
+		}
+		if (copyIfNull || user.getPassword() != null) {
 			userInfo.setPassword(user.getPassword());
-		if (copyIfNull || user.getFirstName() != null)
+		}
+		if (copyIfNull || user.getFirstName() != null) {
 			userInfo.setFirstName(user.getFirstName());
-		if (copyIfNull || user.getLastName() != null)
+		}
+		if (copyIfNull || user.getLastName() != null) {
 			userInfo.setLastName(user.getLastName());
-		if (copyIfNull || user.getAddress() != null)
+		}
+		if (copyIfNull || user.getAddress() != null) {
 			userInfo.setAddress(user.getAddress());
-		if (copyIfNull || user.getPostCode() != null)
+		}
+		if (copyIfNull || user.getPostCode() != null) {
 			userInfo.setPostcode(user.getPostCode());
-		if (copyIfNull || user.getCity() != null)
+		}
+		if (copyIfNull || user.getCity() != null) {
 			userInfo.setCity(user.getCity());
-		if (copyIfNull || user.getMatriculation() != null)
+		}
+		if (copyIfNull || user.getMatriculation() != null) {
 			userInfo.setMatriculation(user.getMatriculation());
-		if (copyIfNull || user.getLocale() != null)
+		}
+		if (copyIfNull || user.getLocale() != null) {
 			userInfo.setLocale(user.getLocale());
-		if (copyIfNull || user.getTitle() != null)
+		}
+		if (copyIfNull || user.getTitle() != null) {
 			userInfo.setTitle(user.getTitle());
+		}
 	}
 
-	private boolean isFoundBiggerThenPeriod(PeriodInfo found, PeriodInfo period) {
+	private boolean isFoundBiggerThenPeriod(final PeriodInfo found, final PeriodInfo period) {
 		return found == null
 				|| (found.getStartdate().before(period.getStartdate()) && found.getEnddate().after(period.getEnddate()));
 	}
 
-	private PeriodInfo findBestFittingPeriod(CourseBean course) throws LectureLogicException {
-		InstituteInfo institute = instituteService.findInstitute(course.getInstituteId());
-		Validate.notNull(institute, "Couldn't find an institute with the id " + course.getInstituteId());
-		DepartmentInfo department = departmentService.findDepartment(institute.getDepartmentId());
-		List<PeriodInfo> periods = universityService.findPeriodsByUniversity(department.getUniversityId());
-		Validate.notEmpty(periods, "Couldn't find any periods for the course, check institute id's.");
+	private PeriodInfo findBestFittingPeriod(final CourseBean course) throws LectureLogicException {
+		List<PeriodInfo> periods = findPeriodsByCourse(course);
 
-		if (course.getEndDate() == null) {
-			course.setEndDate(course.getStartDate());
-		}
+		checkCourseEndDate(course);
 
 		// Select first entry
 		PeriodInfo found = null;
@@ -385,12 +385,40 @@ public class LectureWebServiceImpl implements LectureWebService {
 				found = period;
 			}
 		}
-
 		if (found == null) {
 			throw new LectureLogicException("Now fitting period found, check the start and end date values.");
 		}
 
 		return found;
+	}
+
+	/**
+	 * Check if the course enddate is not null and after startdate
+	 * 
+	 * @param course
+	 */
+	private void checkCourseEndDate(final CourseBean course) {
+		Validate.notNull(course.getStartDate(), "Parameter course must contain a valid start date.");
+
+		if (course.getEndDate() == null || course.getStartDate().before(course.getEndDate())) {
+			course.setEndDate(course.getStartDate());
+		}
+	}
+
+	/**
+	 * Lookups the periods of the university to that the given course belongs
+	 * too.
+	 * 
+	 * @param course
+	 * @return List<PeriodInfo>
+	 */
+	private List<PeriodInfo> findPeriodsByCourse(final CourseBean course) {
+		InstituteInfo institute = instituteService.findInstitute(course.getInstituteId());
+		Validate.notNull(institute, "Couldn't find an institute with the id " + course.getInstituteId());
+		DepartmentInfo department = departmentService.findDepartment(institute.getDepartmentId());
+		List<PeriodInfo> periods = universityService.findPeriodsByUniversity(department.getUniversityId());
+		Validate.notEmpty(periods, "Couldn't find any periods for the course, check institute id's.");
+		return periods;
 	}
 
 }

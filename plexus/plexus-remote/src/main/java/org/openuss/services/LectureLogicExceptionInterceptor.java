@@ -17,10 +17,10 @@ public class LectureLogicExceptionInterceptor implements MethodInterceptor{
 	private static final Logger logger = Logger.getLogger(LectureLogicExceptionInterceptor.class);
 
 	@Override
-	public Object invoke(MethodInvocation invocation) throws Throwable {
+	public Object invoke(final MethodInvocation invocation) throws LectureLogicException {
 		try {
 			return invocation.proceed();
-		} catch (Throwable ex) {
+		} catch (Throwable ex) { // NOPMD by idueppe on 08.03.08 23:59
 			logger.error(ex);
 			throw new LectureLogicException(ex.getMessage(), ex);
 		}

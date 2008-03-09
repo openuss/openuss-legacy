@@ -24,7 +24,7 @@ public class InstituteBean {
 
 	private String address;
 	
-	private String postcode;
+	private String postCode;
 	
 	private String city;
 	
@@ -94,12 +94,12 @@ public class InstituteBean {
 		this.address = address;
 	}
 
-	public String getPostcode() {
-		return postcode;
+	public String getPostCode() {
+		return postCode;
 	}
 
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
+	public void setPostCode(String postcode) {
+		this.postCode = postcode;
 	}
 
 	public String getCity() {

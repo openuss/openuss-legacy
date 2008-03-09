@@ -13,12 +13,14 @@ public class ForumDaoImpl extends ForumDaoBase {
 	 * @see org.openuss.discussion.ForumDao#toForumInfo(org.openuss.discussion.Forum,
 	 *      org.openuss.discussion.ForumInfo)
 	 */
-	public void toForumInfo(Forum sourceEntity, ForumInfo targetVO) {
+	public void toForumInfo(final Forum sourceEntity, final ForumInfo targetVO) {
 		if (sourceEntity != null) {
-			if (sourceEntity.getDomainIdentifier() != null)
+			if (sourceEntity.getDomainIdentifier() != null) {
 				targetVO.setDomainIdentifier(sourceEntity.getDomainIdentifier());
-			if (sourceEntity.getId() != null)
+			}
+			if (sourceEntity.getId() != null) {
 				targetVO.setId(sourceEntity.getId());
+			}
 			targetVO.setReadOnly(sourceEntity.isReadOnly());
 		}
 	}
@@ -37,7 +39,7 @@ public class ForumDaoImpl extends ForumDaoBase {
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private Forum loadForumFromForumInfo(ForumInfo forumInfo) {
+	private Forum loadForumFromForumInfo(final ForumInfo forumInfo) {
 		Forum forum = null;
 		if (forumInfo.getId() != null)
 			forum = this.load(forumInfo.getId());
@@ -50,7 +52,7 @@ public class ForumDaoImpl extends ForumDaoBase {
 	/**
 	 * @see org.openuss.discussion.ForumDao#forumInfoToEntity(org.openuss.discussion.ForumInfo)
 	 */
-	public Forum forumInfoToEntity(ForumInfo forumInfo) {
+	public Forum forumInfoToEntity(final ForumInfo forumInfo) {
 		Forum entity = this.loadForumFromForumInfo(forumInfo);
 		if (entity == null) {
 			entity = Forum.Factory.newInstance();
@@ -63,7 +65,7 @@ public class ForumDaoImpl extends ForumDaoBase {
 	 * @see org.openuss.discussion.ForumDao#forumInfoToEntity(org.openuss.discussion.ForumInfo,
 	 *      org.openuss.discussion.Forum)
 	 */
-	public void forumInfoToEntity(ForumInfo sourceVO, Forum targetEntity, boolean copyIfNull) {
+	public void forumInfoToEntity(final ForumInfo sourceVO, final Forum targetEntity, final boolean copyIfNull) {
 		super.forumInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 

@@ -33,13 +33,11 @@ public class BrainContestNewPage extends AbstractBrainContestPage {
 
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD idueppe
 		super.prerender();
-		if (!isPostBack()) {
-			if (getBrainContest() != null && getBrainContest().getId() != null) {
-				setBrainContest(getBrainContestService().getContest(getBrainContest()));
-				setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
-			} 
+		if (!isPostBack() && getBrainContest() != null && getBrainContest().getId() != null) {
+			setBrainContest(getBrainContestService().getContest(getBrainContest()));
+			setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
 		}
 		addPageCrumb();
 	}
@@ -66,8 +64,8 @@ public class BrainContestNewPage extends AbstractBrainContestPage {
 
 	public String removeAttachment() {
 		logger.debug("braincontest attachment removed");
-		FileInfo attachment = (FileInfo) attachmentList.getRowData();
 		if (getBrainContest().getAttachments() != null) {
+			FileInfo attachment = (FileInfo) attachmentList.getRowData();
 			getBrainContest().getAttachments().remove(attachment);
 		}
 		return Constants.SUCCESS;

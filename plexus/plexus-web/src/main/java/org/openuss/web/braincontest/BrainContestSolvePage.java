@@ -20,27 +20,25 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$braincontest$braincontestsolve", scope = Scope.REQUEST)
 @View
 public class BrainContestSolvePage extends AbstractBrainContestPage {
-	private static final Logger logger = Logger
-			.getLogger(BrainContestSolvePage.class);
+	private static final Logger logger = Logger.getLogger(BrainContestSolvePage.class);
 
 	@Property(value = "#{user}")
 	private UserInfo user;
 
 	@Property(value = "#{braincontest_answer}")
 	private AnswerWebInfo answer;
-	
+
 	@Property(value = "#{braincontest_attachment}")
 	private FileInfo attachment;
-	
-	
+
 	public boolean result;
 
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {
 		super.prerender();
 		if (!isPostBack()) {
-			if ( getBrainContest() != null && getBrainContest().getId() != null) {
+			if (getBrainContest() != null && getBrainContest().getId() != null) {
 				setBrainContest(getBrainContestService().getContest(getBrainContest()));
 				setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
 			}
@@ -48,20 +46,20 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 				addError(i18n("braincontest_message_contest_not_found"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
-		} 
-		if (getBrainContest()!=null){
-			if (!getBrainContest().isReleased()&&!isAssistant()) {
+		}
+		if (getBrainContest() != null) {
+			if (!getBrainContest().isReleased() && !isAssistant()) {
 				addError(i18n("braincontest_message_contest_not_released"));
 				redirect(Constants.BRAINCONTEST_MAIN);
 			}
 			List<FileInfo> attachments = getBrainContestService().getAttachments(getBrainContest());
-			if (attachments!= null&&attachments.size()>0) {
+			if (attachments != null && !attachments.isEmpty()) {
 				setAttachment(attachments.get(0));
 			}
 		}
 		addPageCrumb();
 	}
-	
+
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
@@ -71,9 +69,11 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 	}
 
 	public String save() throws BrainContestApplicationException {
-		this.result = getBrainContestService().answer(answer.getAnswer(), user, getBrainContest(), answer.isTopList());		
-		logger.debug("answer triggered");		
-		if (this.result) return Constants.BRAINCONTEST_SOLVED;
+		this.result = getBrainContestService().answer(answer.getAnswer(), user, getBrainContest(), answer.isTopList());
+		logger.debug("answer triggered");
+		if (this.result) {
+			return Constants.BRAINCONTEST_SOLVED;
+		}
 		return Constants.BRAINCONTEST_WRONG;
 	}
 

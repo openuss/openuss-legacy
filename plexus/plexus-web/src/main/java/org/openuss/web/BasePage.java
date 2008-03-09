@@ -45,7 +45,7 @@ public abstract class BasePage extends BaseBean {
 	 * @throws DesktopException
 	 */
 	@Preprocess
-	public void preprocess() throws Exception {
+	public void preprocess() throws Exception { 
 		logger.debug("Starting method preprocess");
 
 		if (desktopInfo == null) {

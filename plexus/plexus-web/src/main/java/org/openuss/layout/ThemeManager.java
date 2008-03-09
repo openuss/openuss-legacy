@@ -22,25 +22,25 @@ public class ThemeManager {
 	public String getLayout() {
 		return layout;
 	}
-	public void setLayout(String layout) {
+	public void setLayout(final String layout) {
 		this.layout = layout;
 	}
 	public String getLayoutStyleSheet() {
 		return layoutStyleSheet;
 	}
-	public void setLayoutStyleSheet(String layoutStyleSheet) {
+	public void setLayoutStyleSheet(final String layoutStyleSheet) {
 		this.layoutStyleSheet = layoutStyleSheet;
 	}
 	public String getTypoStyleSheet() {
 		return typoStyleSheet;
 	}
-	public void setTypoStyleSheet(String typoStyleSheet) {
+	public void setTypoStyleSheet(final String typoStyleSheet) {
 		this.typoStyleSheet = typoStyleSheet;
 	}
 	public String getDesignStyleSheet() {
 		return designStyleSheet;
 	}
-	public void setDesignStyleSheet(String designStyleSheet) {
+	public void setDesignStyleSheet(final String designStyleSheet) {
 		this.designStyleSheet = designStyleSheet;
 	}
 
