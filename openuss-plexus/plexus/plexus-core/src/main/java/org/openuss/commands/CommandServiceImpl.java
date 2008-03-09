@@ -11,6 +11,7 @@ import org.apache.commons.lang.Validate;
 import org.openuss.foundation.DomainObject;
 import org.quartz.JobDataMap;
 import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 
@@ -24,15 +25,16 @@ public class CommandServiceImpl extends CommandServiceBase {
 	 * @see org.openuss.commands.CommandService#doClusterEachCommand(org.openuss.foundation.DomainObject,
 	 *      java.lang.String, java.lang.String)
 	 */
-	protected void handleCreateEachCommand(DomainObject domainObject, String commandName, String commandType) throws Exception {
+	protected void handleCreateEachCommand(final DomainObject domainObject, final String commandName, final String commandType) {
 		createCommand(domainObject, commandName, commandType, CommandState.EACH, new Date());
 	}
 
 	/**
+	 * @throws SchedulerException 
 	 * @see org.openuss.commands.CommandService#doClusterOnceCommand(org.openuss.foundation.DomainObject,
 	 *      java.lang.String, java.lang.String)
 	 */
-	protected Long handleCreateOnceCommand(DomainObject domainObject, String commandName, Date startTime, String commandType) throws java.lang.Exception {
+	protected Long handleCreateOnceCommand(final DomainObject domainObject, final String commandName, final Date startTime, final String commandType) throws SchedulerException {
 		Long commandId = createCommand(domainObject, commandName, commandType, CommandState.ONCE, startTime);
 
 		Trigger trigger = new SimpleTrigger("Command-"+commandId, Scheduler.DEFAULT_GROUP, startTime);
@@ -45,19 +47,20 @@ public class CommandServiceImpl extends CommandServiceBase {
 		return commandId;
 	}
 
-	private Long createCommand(DomainObject domainObject, String commandName, String commandType, CommandState state, Date startTime) {
+	private Long createCommand(final DomainObject domainObject, final String commandName, final String commandType, final CommandState state, final Date startTime) {
 		Validate.notNull(domainObject,"DomainObject must not be null.");
 		Validate.notNull(domainObject.getId(), "DomainObject must provide an id");
 		Validate.notEmpty(commandName, "CommandName must not be null.");
 		Validate.notNull(state, "State must not be null");
-		if (startTime == null) {
-			startTime = new Date();
-		}
-		
+
 		Command command = Command.Factory.newInstance();
 		command.setDomainIdentifier(domainObject.getId());
 		command.setCommand(commandName);
-		command.setStartTime(startTime);
+		if (startTime == null) {
+			command.setStartTime(null);
+		} else {
+			command.setStartTime(startTime);
+		}
 		command.setCommandType(commandType);
 		command.setState(state);
 		getCommandDao().create(command);
@@ -65,12 +68,12 @@ public class CommandServiceImpl extends CommandServiceBase {
 	}
 
 	@Override
-	protected void handleDeleteCommand(Long commandId) throws Exception {
+	protected void handleDeleteCommand(final Long commandId) {
 		getCommandDao().remove(commandId);
 	}
 
 	@Override
-	protected void handleSetStartTime(Long commandId, Date startTime) throws Exception {
+	protected void handleSetStartTime(final Long commandId, final Date startTime) {
 		Command command = getCommandDao().load(commandId);
 		command.setStartTime(startTime);
 		getCommandDao().update(command);

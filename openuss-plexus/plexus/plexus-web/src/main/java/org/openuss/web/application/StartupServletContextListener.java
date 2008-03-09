@@ -37,10 +37,10 @@ public class StartupServletContextListener implements ServletContextListener {
 
 	private void configureThemeManager(ServletContext servletContext) {
 		logger.info("configuring themes");
-		String defaultThemeId = servletContext.getInitParameter(ThemeManager.DEFAULT_THEME_ID_PARAMETER);
 		
 		ThemeManager themeManager = (ThemeManager) servletContext.getAttribute(ThemeManager.THEMEMANAGER_APPLICATIONKEY);
 		if (themeManager == null) {
+			String defaultThemeId = servletContext.getInitParameter(ThemeManager.DEFAULT_THEME_ID_PARAMETER);
 			logger.debug("Create ThemeManager");
 			themeManager = new ThemeManagerBean();
 			themeManager.setServletContext(servletContext);

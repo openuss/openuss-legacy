@@ -10,6 +10,7 @@ import java.util.List;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
+import org.openuss.newsletter.NewsletterApplicationException;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.newsletter.SubscriberInfo;
 import org.openuss.security.UserInfo;
@@ -19,7 +20,7 @@ import org.openuss.security.UserInfo;
  */
 public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 
-	protected NewsletterInfo handleGetNewsletter(CourseInfo course) {
+	protected NewsletterInfo handleGetNewsletter(final CourseInfo course) {
 		NewsletterInfo newsletter = getNewsletterService().getNewsletter(course);
 		if (newsletter == null) {
 			addNewsletter(course);
@@ -36,23 +37,21 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#sendPreview(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendPreview(CourseInfo course, MailDetail mail) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().sendPreview(newsletter, mail);
+	protected void handleSendPreview(final CourseInfo course, final MailDetail mail) {
+		getNewsletterService().sendPreview(getNewsletter(course), mail);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#getMails(org.openuss.lecture.CourseInfo)
 	 */
-	protected List<MailInfo> handleGetMails(CourseInfo course) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		return getNewsletterService().getMails(newsletter, false);
+	protected List<MailInfo> handleGetMails(final CourseInfo course) {
+		return getNewsletterService().getMails(getNewsletter(course), false);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#getMail(org.openuss.newsletter.MailInfo)
 	 */
-	protected org.openuss.newsletter.MailDetail handleGetMail(MailInfo mail) throws Exception {
+	protected MailDetail handleGetMail(final MailInfo mail) {
 		return getNewsletterService().getMail(mail);
 	}
 
@@ -60,91 +59,86 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#sendMail(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSendMail(CourseInfo course, MailDetail mail) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().sendMail(newsletter, mail);
+	protected void handleSendMail(final CourseInfo course, final MailDetail mail) {
+		getNewsletterService().sendMail(getNewsletter(course), mail);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#subscribe(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleSubscribe(CourseInfo course, UserInfo user) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().subscribe(newsletter, user);
+	protected void handleSubscribe(final CourseInfo course, final UserInfo user) {
+		getNewsletterService().subscribe(getNewsletter(course), user);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#unsubscribe1(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.security.User)
 	 */
-	protected void handleUnsubscribe(CourseInfo course, UserInfo user) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().unsubscribe(newsletter, user);
+	protected void handleUnsubscribe(final CourseInfo course, final UserInfo user) {
+		getNewsletterService().unsubscribe(getNewsletter(course), user);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#unsubscribe(org.openuss.newsletter.SubscriberInfo)
 	 */
-	protected void handleUnsubscribe(SubscriberInfo subscriber) throws Exception {
+	protected void handleUnsubscribe(final SubscriberInfo subscriber) {
 		getNewsletterService().unsubscribe(subscriber);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#setBlockingState(org.openuss.newsletter.SubscriberInfo)
 	 */
-	protected void handleSetBlockingState(SubscriberInfo subscriber) throws Exception {
+	protected void handleSetBlockingState(final SubscriberInfo subscriber) {
 		getNewsletterService().setBlockingState(subscriber);
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#getSubscribers(org.openuss.lecture.CourseInfo)
 	 */
-	protected List<SubscriberInfo> handleGetSubscribers(CourseInfo course) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		return getNewsletterService().getSubscribers(newsletter);
+	protected List<SubscriberInfo> handleGetSubscribers(final CourseInfo course) {
+		return getNewsletterService().getSubscribers(getNewsletter(course));
 	}
 
 	/**
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#saveMail(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleSaveMail(CourseInfo course, MailDetail mail) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().saveMail(newsletter, mail);
+	protected void handleSaveMail(final CourseInfo course, final MailDetail mail) {
+		getNewsletterService().saveMail(getNewsletter(course), mail);
 	}
 
 	/**
+	 * @throws NewsletterApplicationException 
 	 * @see org.openuss.course.newsletter.CourseNewsletterService#deleteMail(org.openuss.lecture.CourseInfo,
 	 *      org.openuss.newsletter.MailDetail)
 	 */
-	protected void handleDeleteMail(CourseInfo course, MailDetail mail) throws Exception {
-		NewsletterInfo newsletter = getNewsletter(course);
-		getNewsletterService().deleteMail(newsletter, mail);
+	protected void handleDeleteMail(final CourseInfo course, final MailDetail mail) throws NewsletterApplicationException {
+		getNewsletterService().deleteMail(getNewsletter(course), mail);
 	}
 
 	@Override
-	protected void handleAddNewsletter(CourseInfo course) throws Exception {
+	protected void handleAddNewsletter(final CourseInfo course) {
 		getNewsletterService().addNewsletter(course, course.getName());
 	}
 
 	@Override
-	protected void handleUpdateNewsletter(NewsletterInfo newsletter) throws Exception {
+	protected void handleUpdateNewsletter(final NewsletterInfo newsletter) {
 		getNewsletterService().updateNewsletter(newsletter);
 	}
 
 	@Override
-	protected void handleUpdateMail(CourseInfo course, MailDetail mail) throws Exception {
+	protected void handleUpdateMail(final CourseInfo course, final MailDetail mail) {
 		getNewsletterService().updateMail(course, mail);
 	}
 
 	@Override
-	protected String handleExportSubscribers(CourseInfo course) throws Exception {
+	protected String handleExportSubscribers(final CourseInfo course) {
 		return getNewsletterService().exportSubscribers(getNewsletter(course));
 	}
 
 	@Override
-	protected void handleCancelSending(MailInfo mailInfo) throws Exception {
+	protected void handleCancelSending(final MailInfo mailInfo) {
 		getNewsletterService().cancelSending(mailInfo);
 	}
 

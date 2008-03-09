@@ -57,6 +57,8 @@
 			${project.basedir}/src/main/uml
 		</sourceDirectory>
 		<plugins>
+		<!-- 
+		 -->
 			<plugin>
 				<groupId>org.andromda.maven.plugins</groupId>
 				<artifactId>andromda-maven-plugin</artifactId>
@@ -77,7 +79,11 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<reporting>
+		<excludeDefaults>true</excludeDefaults>
+	</reporting>
+	
+	
 	<properties>
 		<andromda.config>andromda.xml</andromda.config>
 		<model.uri>

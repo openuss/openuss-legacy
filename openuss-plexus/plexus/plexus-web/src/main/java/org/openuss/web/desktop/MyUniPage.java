@@ -39,6 +39,8 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$myuni$myuni", scope = Scope.REQUEST)
 @View
 public class MyUniPage extends BasePage {
+	private static final String UNIVERSITY_PARAMTER = "?university=";
+
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
@@ -66,9 +68,9 @@ public class MyUniPage extends BasePage {
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 
-	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	String locale = (String) binding.getValue(getFacesContext());
-	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+	private final ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	private final String locale = (String) binding.getValue(getFacesContext());
+	private final ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 
 	@Prerender
 	public void prerender() {
@@ -195,11 +197,7 @@ public class MyUniPage extends BasePage {
 
 	public boolean getData() {
 		logger.debug("Checcking, if data available");
-		if (myUniData == null || myUniData.isEmpty()) {
-			return true;
-		} else {
-			return false;
-		}
+		return (myUniData == null || myUniData.isEmpty());
 	}
 
 	/*
@@ -222,21 +220,25 @@ public class MyUniPage extends BasePage {
 	 * bookmarks only disappear upon the next request.
 	 */
 	private void loadValuesForComponents() {
-		if (tabs != null)
+		if (tabs != null) {
 			loadValuesForTabs(tabs);
+		}
 
-		if (departmentsList != null)
+		if (departmentsList != null) {
 			loadValuesForDepartmentList(departmentsList);
+		}
 
-		if (institutesList != null)
+		if (institutesList != null) {
 			loadValuesForInstituteList(institutesList);
+		}
 
-		if (coursesList != null)
+		if (coursesList != null) {
 			loadValuesForCourseList(coursesList);
+		}
 	}
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
-		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
+		if (!departmentListDataLoaded && prerenderCalled && departmentsList != null) {
 			logger.debug("Loading data for departments flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -255,7 +257,7 @@ public class MyUniPage extends BasePage {
 	}
 
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
-		if (instituteListDataLoaded == false && prerenderCalled == true && institutesList != null) {
+		if (!instituteListDataLoaded && prerenderCalled && institutesList != null) {
 			logger.debug("Loading data for institutes flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -275,7 +277,7 @@ public class MyUniPage extends BasePage {
 	}
 
 	private void loadValuesForCourseList(UIFlexList coursesList) {
-		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
+		if (!courseListDataLoaded && prerenderCalled && coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -295,7 +297,7 @@ public class MyUniPage extends BasePage {
 	}
 
 	private void loadValuesForTabs(UITabs tabs) {
-		if (tabDataLoaded == false && prerenderCalled == true && tabs != null) {
+		if (!tabDataLoaded && prerenderCalled && tabs != null) {
 			logger.debug("Loading data for MyUni-Tabs");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -316,13 +318,14 @@ public class MyUniPage extends BasePage {
 					if (universityInfo != null) {
 						newItem = new ListItemDAO();
 						newItem.setTitle(universityInfo.getName());
-						newItem.setUrl(contextPath()+myUniBasePath + "?university=" + universityInfo.getId().toString());
+						newItem.setUrl(contextPath()+myUniBasePath + UNIVERSITY_PARAMTER + universityInfo.getId().toString());
 
 						if (universityId.longValue() == universityInfo.getId().longValue()) {
 							currentItem = newItem;
 							currentItem.setUrl(contextPath() + universityBasePath + universityId);
-						} else
+						} else {
 							items.add(newItem);
+						}
 					}
 				}
 
@@ -353,9 +356,10 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(departmentInfo.getName());
 					newItem.setUrl(contextPath()+departmentsBasePath + "?department=" + departmentInfo.getId());
-					if (departmentInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
+					if (departmentInfo.isBookmarked()) {
+						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + UNIVERSITY_PARAMTER + universityId
 								+ "&remove_department=" + departmentInfo.getId());
+					}
 
 					listItems.add(newItem);
 				}
@@ -383,17 +387,19 @@ public class MyUniPage extends BasePage {
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
 					Integer numberOfCurrentCourses = instituteInfo.getNumberOfCurrentCourses();
-					if (numberOfCurrentCourses != null && numberOfCurrentCourses > 0)
-						if (numberOfCurrentCourses.equals(1))
+					if (numberOfCurrentCourses != null && numberOfCurrentCourses > 0) {
+						if (numberOfCurrentCourses == 1) {
 							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " "
 									+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING_SINGULAR"));
-						else
+						} else {
 							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " "
 									+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
-					if (instituteInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
+						}
+					}
+					if (instituteInfo.isBookmarked()) {
+						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + UNIVERSITY_PARAMTER + universityId
 								+ "&remove_institute=" + instituteInfo.getId());
-
+					}
 					listItems.add(newItem);
 				}
 			}
@@ -420,7 +426,7 @@ public class MyUniPage extends BasePage {
 					newItem.setTitle(instituteInfo.getName());
 					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
 					if (instituteInfo.isBookmarked()) {
-						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId	+ "&remove_institute=" + instituteInfo.getId());
+						newItem.setRemoveBookmarkUrl(myUniBasePath + UNIVERSITY_PARAMTER + universityId	+ "&remove_institute=" + instituteInfo.getId());
 					}
 					listItems.add(newItem);
 				}
@@ -447,7 +453,7 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
-					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
+					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + UNIVERSITY_PARAMTER + universityId + "&remove_course="
 							+ courseInfo.getId());
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
@@ -475,7 +481,7 @@ public class MyUniPage extends BasePage {
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
 					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
-					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
+					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + UNIVERSITY_PARAMTER + universityId + "&remove_course="
 							+ courseInfo.getId());
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
@@ -494,9 +500,9 @@ public class MyUniPage extends BasePage {
 		if (myUniData != null) {
 			// Return the university parameter if it is contained in out data
 			// set
-			if (paramUniversity != null)
-				if (myUniData.containsKey(paramUniversity))
-					return paramUniversity;
+			if (paramUniversity != null && myUniData.containsKey(paramUniversity)) {
+				return paramUniversity;
+			}
 
 			// Return the university id in our data set
 			Iterator<MyUniInfo> iterator = myUniData.values().iterator();
@@ -506,8 +512,9 @@ public class MyUniPage extends BasePage {
 
 				if (firstUni != null) {
 					MyUniUniversityInfo uniInfo = firstUni.getMyUniUniversityInfo();
-					if (uniInfo != null)
+					if (uniInfo != null) {
 						return uniInfo.getId();
+					}
 				}
 			}
 		}

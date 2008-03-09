@@ -15,7 +15,7 @@ public class ClusterCommand {
 		clusterCommandProcessor.processNodeCommands();
 	}
 
-	public void processCommand(Long commandId) {
+	public void processCommand(final Long commandId) {
 		clusterCommandProcessor.processCommand(commandId);
 	}
 	
@@ -23,7 +23,7 @@ public class ClusterCommand {
 		return clusterCommandProcessor;
 	}
 
-	public void setClusterCommandProcessor(ClusterCommandProcessor clusterCommandProcessor) {
+	public void setClusterCommandProcessor(final ClusterCommandProcessor clusterCommandProcessor) {
 		this.clusterCommandProcessor = clusterCommandProcessor;
 	}
 	

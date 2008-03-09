@@ -86,37 +86,6 @@
 		</plugins>
 	</build>
 	
-		<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>dependencies</report>
-							<report>dependency-convergence</report>
-							<report>index</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<configuration>
-					<outputDirectory>target/site</outputDirectory>
-					<threshold>Low</threshold>
-					<excludeFilterFile>findbugs-exclude-filter.xml</excludeFilterFile>
-				</configuration>
-				
-			</plugin>
-		</plugins>
-	</reporting>
-	
-
 	<dependencies>
 	    <dependency>
     	  <groupId>org.openuss.framework</groupId>
@@ -264,4 +233,5 @@
 			<artifactId>backport-concurrency</artifactId>
 		</dependency>
 	</dependencies>
+	
 </project>

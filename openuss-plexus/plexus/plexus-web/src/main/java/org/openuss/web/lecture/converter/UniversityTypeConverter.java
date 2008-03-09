@@ -21,9 +21,8 @@ public class UniversityTypeConverter implements Converter {
 	 * @param value to be converterd
 	 * @return strong typed value
 	 */
-	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-		final UniversityType universityType = UniversityType.fromInteger(Integer.valueOf(value));
-		return universityType;
+	public Object getAsObject(final FacesContext context, final UIComponent component, final String value) throws ConverterException {
+		return UniversityType.fromInteger(Integer.valueOf(value));
 	}
 
 	/**
@@ -34,9 +33,8 @@ public class UniversityTypeConverter implements Converter {
 	 * @return string represention of the value
 	 */
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-		final UniversityType universityType = (UniversityType) value;
-		if (universityType != null) {
-			return universityType.toString();
+		if (value != null) {
+			return ((UniversityType) value).toString();
 		}
 		return null;
 	}
