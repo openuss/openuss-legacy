@@ -96,6 +96,8 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		try {
 			AppointmentInfo app = data.getRowData();
 			if (app.isTakingPlace()) {
+				// Removes the entry from the user calendar model
+				removeSingleModelEntry(app);
 				calendarService.addException(
 						(SerialAppointmentInfo) appointmentInfo, app);
 				addMessage(i18n("openuss4us_calendar_message_exception_added"));
@@ -130,16 +132,11 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		logger.debug("Deleting appointment " + appointmentInfo.getId());
 		try {
 			if (isSerial()) {
-				List<AppointmentInfo> apps = calendarService.getCalculatedAppointments((SerialAppointmentInfo) appointmentInfo);
-				for (AppointmentInfo app : apps) {
-					removeModelEntry(app);
-				}
-				calendarService.deleteSerialAppointment(
-						(SerialAppointmentInfo) appointmentInfo, calendarInfo);			
+				removeSerialModelEntries(appointmentInfo);
+				calendarService.deleteSerialAppointment((SerialAppointmentInfo) appointmentInfo, calendarInfo);			
 			} else {
-				removeModelEntry(appointmentInfo);
-				calendarService
-						.deleteAppointment(appointmentInfo, calendarInfo);
+				removeSingleModelEntry(appointmentInfo);
+				calendarService.deleteAppointment(appointmentInfo, calendarInfo);
 			}
 			addMessage(i18n("openuss4us_calendar_message_appointment_deleted"));
 		} catch (Exception e) {
@@ -162,18 +159,6 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			return Constants.CALENDAR_UPDATE_SERIAL;
 		else
 			return Constants.CALENDAR_UPDATE_SINGLE;
-	}
-
-	public void removeModelEntry(AppointmentInfo appInfo) {
-		DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
-		entry1.setId(appInfo.getId().toString());
-		entry1.setTitle(appInfo.getSubject());
-		entry1.setStartTime(appInfo.getStarttime());
-		entry1.setEndTime(appInfo.getEndtime());
-		entry1.setDescription(appInfo.getDescription());
-		entry1.setSubtitle(appInfo.getDescription());
-		logger.debug("Removing entry: " + entry1.getId() + " from the schedule model");
-		model.removeEntry(entry1);
 	}
 	
 	public SingleAppointmentDataProvider getData() {

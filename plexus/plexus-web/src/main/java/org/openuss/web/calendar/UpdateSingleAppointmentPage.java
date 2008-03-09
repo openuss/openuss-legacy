@@ -47,19 +47,23 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 		newCrumb.setName(i18n("calender_create_single_appointment_page"));
 		newCrumb.setHint(i18n("calender_create_single_appointment_page"));
 		breadcrumbs.addCrumb(newCrumb);	
+		
+		// remove the old entry from the user calendar schedule model
+		logger.debug("Removing old appointmentInfo entry:" + appointmentInfo.getId());
+		removeSingleModelEntry(appointmentInfo);
+		
 		//initialize
 		setAppointmentType(appointmentInfo.getAppointmentTypeInfo().getId().intValue());
 	}
 	
 	public String save(){
-		try {	
+		try {
 		AppointmentTypeInfo appTI = new AppointmentTypeInfo();
 		appTI.setId(appointmentType.longValue());
 		appointmentInfo.setAppointmentTypeInfo(appTI);
 		appointmentInfo.setSerial(false);
-		
-
-			calendarService.updateAppointment(appointmentInfo, calendarInfo);
+		calendarService.updateAppointment(appointmentInfo, calendarInfo);
+		logger.debug("Updating appointmentInfo:" + appointmentInfo.getId());		
 		} catch (CalendarApplicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

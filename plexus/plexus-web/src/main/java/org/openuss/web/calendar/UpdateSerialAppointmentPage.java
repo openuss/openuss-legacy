@@ -52,12 +52,18 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 		newCrumb.setName(i18n("calender_create_serial_appointment_page"));
 		newCrumb.setHint(i18n("calender_create_serial_appointment_page"));
 		breadcrumbs.addCrumb(newCrumb);
+		
+		// remove the old entries from the user calendar schedule model
+		logger.debug("Removing old appointmentInfo entry:" + appointmentInfo.getId());
+		removeSerialModelEntries(appointmentInfo);
+		
 		//initialize
 		setAppointmentType(appointmentInfo.getAppointmentTypeInfo().getId().intValue());
 	}
 
 	public String save() {
 		try {
+
 			AppointmentTypeInfo appTI = new AppointmentTypeInfo();
 			appTI.setId(appointmentType.longValue());
 			appointmentInfo.setAppointmentTypeInfo(appTI);

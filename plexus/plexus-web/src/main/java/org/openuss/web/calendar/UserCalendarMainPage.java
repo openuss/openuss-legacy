@@ -20,7 +20,7 @@ import org.openuss.web.Constants;
 import org.springframework.web.context.request.SessionScope;
 
 /**
- * Backing Bean for the user calendar -overview page (usercalendar.xhtml)
+ * Backing Bean for the user calendar-overview page (usercalendar.xhtml)
  * 
  * @author Thomas Jansing
  * 
@@ -58,7 +58,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 							+ calInfo.getId());
 		}
 
-		// Load entries for the model
+		// Load entries for the user calendar schedule model
 		loadEntries(calInfo);
 		logger.debug("model entries loaded");
 		// Refresh the model for correct view
@@ -79,6 +79,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 			for (AppointmentInfo app : apps) {
 				// check if appointment takes place
 				if (app.isTakingPlace()) {
+					// adds the appointment entry to the user calendar schedule model
 					DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
 					entry1.setId(app.getId().toString());
 					entry1.setTitle(app.getSubject());
@@ -96,50 +97,9 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 				}
 			}
 		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
-			addError("TODO: Error getting calendar");
-			logger.debug("Error getting calendar");
+			addError("TODO: Error loading model entries");
+			logger.debug("Error loading model entries");
 		}
-		logger.debug("Successfully loaded entries for calendar");
-		model.refresh();
-	}
-
-	public void deleteEntries(CalendarInfo calInfo) {
-		if (model == null)
-			return;
-		try {
-			this.calendarInfo = calInfo;
-			logger.debug("deleting entries for calendarInfo-ID:"
-					+ calendarInfo.getId());
-			List<AppointmentInfo> apps = null;
-			apps = calendarService.getSingleAppointments(calendarInfo);
-			logger.debug("Appointments to add: " + apps.size());
-
-			for (AppointmentInfo app : apps) {
-				// check if appointment takes place
-				if (app.isTakingPlace()) {
-					DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
-					entry1.setId(app.getId().toString());
-					entry1.setTitle(app.getSubject());
-					entry1.setStartTime(app.getStarttime());
-					entry1.setEndTime(app.getEndtime());
-					entry1.setDescription(app.getDescription());
-					entry1.setSubtitle(app.getDescription());
-					model.addEntry(entry1);
-					logger.debug("Appointment: - " + app.getSubject()
-							+ " - added!");
-				} else {
-					logger.debug("Appointment: " + app.getSubject()
-							+ " at Date " + app.getStarttime().toGMTString()
-							+ " is not taking place -> ignored");
-				}
-			}
-		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
-			addError("TODO: Error getting calendar");
-			logger.debug("Error getting calendar");
-		}
-		logger.debug("Successfully loaded entries for calendar");
 		model.refresh();
 	}
 

@@ -109,6 +109,8 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	public String changeSubscription(){
 		try{
 		if(getSubscribed()){
+			// remove the subscribed entries from the user calendar schedule model
+			removeSubscribedModelEntries(calendarInfo);
 			calendarService.endSubscription(calendarInfo);
 			this.addMessage(i18n("openuss4us_calendar_message_unsubscribe"));
 		} else {
