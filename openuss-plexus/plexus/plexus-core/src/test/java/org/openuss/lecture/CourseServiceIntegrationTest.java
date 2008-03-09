@@ -41,7 +41,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 
 		//Course course = lectureBuilder.getCourse();
 		Course course = testUtility.createUniqueCourseInDB();
-		courseInfo = courseService.getCourseInfo(course.getId());
+		courseInfo = courseService.findCourse(course.getId());
 	}
 
 	public void testCreate () {

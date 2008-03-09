@@ -67,7 +67,7 @@ public class DocumentsFeed extends AbstractFeed {
 		if (courseId == null || courseId == 0) {
 			return null;
 		}
-		CourseInfo course = getCourseService().getCourseInfo(courseId);
+		CourseInfo course = getCourseService().findCourse(courseId);
 		if (course == null) {
 			return null;
 		}

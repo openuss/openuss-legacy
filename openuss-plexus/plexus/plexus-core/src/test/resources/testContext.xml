@@ -99,5 +99,7 @@
 	
 	<bean id="scheduler" class="org.openuss.framework.tests.SchedulerMock"/>
 	<bean id="nodeScheduler" class="org.openuss.framework.tests.SchedulerMock"/>
+	
+	<bean id="domainEventPublisher" class="org.openuss.events.DomainEventPublisher"/>
 
 </beans>

@@ -70,7 +70,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		logger.trace("saving course options");
 		
 		// TODO should be done within the business layer
-		CourseInfo courseOld = getCourseService().getCourseInfo(courseInfo.getId());
+		CourseInfo courseOld = getCourseService().findCourse(courseInfo.getId());
 		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
 			getCourseService().removeAspirants(courseOld);
 		}

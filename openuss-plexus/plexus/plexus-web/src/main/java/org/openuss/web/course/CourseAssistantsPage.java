@@ -49,7 +49,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { //NOPMD
 		super.prerender();
 		addPageCrumb();
 	}
@@ -148,7 +148,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	
 	public Collection<SelectItem> getInstituteMemberList() {
 		if (instituteMembers == null) {
-			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(courseInfo.getInstituteId());
+			InstituteSecurity instituteSecurity = instituteService.getInstituteSecurity(courseInfo.getInstituteId());
 			List<InstituteMember> members = instituteSecurity.getMembers();
 			final Set<Long> userIds = getAssistantsUserIdMap();
 			CollectionUtils.filter(members, new FilterByUserIdsPredicte(userIds));

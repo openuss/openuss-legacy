@@ -6,7 +6,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.lecture.LectureService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.statistics.OnlineStatisticService;
@@ -17,9 +16,6 @@ import org.openuss.statistics.SystemStatisticInfo;
 public class WelcomePage extends BasePage {
 
 	private static final Logger logger = Logger.getLogger(WelcomePage.class);
-
-	@Property(value = "#{" + Constants.LECTURE_SERVICE + "}")
-	private LectureService lectureService;
 
 	@Property(value = "#{" + Constants.SECURITY_SERVICE + "}")
 	private SecurityService securityService;
@@ -44,14 +40,6 @@ public class WelcomePage extends BasePage {
 		setRequestBean(Constants.BREADCRUMBS, null);
 		setSystemStatistic(getOnlineStatisticService().getSystemStatistics());
 		setSessionBean(Constants.SYSTEM_STATISTIC, getSystemStatistic());
-	}
-
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
 	}
 
 	public SecurityService getSecurityService() {

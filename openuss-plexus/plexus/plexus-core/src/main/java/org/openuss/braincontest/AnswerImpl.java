@@ -20,8 +20,9 @@ public class AnswerImpl extends org.openuss.braincontest.AnswerBase implements o
 	 * @see org.openuss.braincontest.Answer#getDisplayName()
 	 */
 	public java.lang.String getDisplayName() {
-		if (getSolver() == null)
+		if (getSolver() == null) {
 			return null;
+		}
 		User solver = getSolver();
 		return solver.getDisplayName()+" ("+solver.getUsername()+")";
 	}

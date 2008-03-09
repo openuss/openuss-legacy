@@ -163,7 +163,8 @@
         <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property>
         <property name="objectDefinitionSource">
             <value>
-
+            	org.openuss.lecture.InstituteService.findInstitute=ACL_INSTITUTE_READ, ROLE_ADMIN
+            
                 org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
                 org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ADMIN
@@ -178,7 +179,6 @@
                 org.openuss.lecture.OrganisationService.setOrganisationEnabled=ROLE_ADMIN
                 org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
                 org.openuss.lecture.InstituteService.removeCompleteInstituteTree=ROLE_ADMIN
-                org.openuss.lecture.InstituteService.findInstitute=ROLE_USER, ROLE_ADMIN
             </value>
         </property>
     </bean>

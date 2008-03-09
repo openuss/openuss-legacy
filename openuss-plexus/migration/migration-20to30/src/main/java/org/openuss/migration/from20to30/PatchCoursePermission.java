@@ -27,7 +27,7 @@ public class PatchCoursePermission {
 	public void patch() {
 		Collection<Course> courses = courseDao.loadAll();
 		for (Course course: courses) {
-			CourseInfo courseInfo = courseService.getCourseInfo(course.getId());
+			CourseInfo courseInfo = courseService.findCourse(course.getId());
 			logger.debug("updating "+courseInfo.getName());
 //			courseInfo.setShortcut(courseInfo.getShortcut().replace("/", "-"));
 			courseService.updateCourse(courseInfo);

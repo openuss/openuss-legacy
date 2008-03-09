@@ -10,9 +10,9 @@ public class LectureTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(UniversityIndexingAspectTest.class);
 		suite.addTestSuite(DepartmentIndexingAspectTest.class);
-		suite.addTestSuite(InstituteIndexingAspectTest.class);
+		suite.addTestSuite(InstituteIndexingEventListenerTest.class);
 		suite.addTestSuite(InstituteIndexerTest.class);
-		suite.addTestSuite(CourseIndexingAspectTest.class);
+		suite.addTestSuite(CourseIndexingEventListenerTest.class);
 		suite.addTestSuite(UniversityDaoTest.class);
 		suite.addTestSuite(PeriodDaoTest.class);
 		suite.addTestSuite(DepartmentDaoTest.class);
@@ -26,7 +26,6 @@ public class LectureTests {
 		suite.addTestSuite(CourseTypeServiceIntegrationTest.class);
 		suite.addTestSuite(CourseServiceIntegrationTest.class);
 		suite.addTestSuite(PeriodMappingTest.class);
-		suite.addTestSuite(LectureServiceIntegrationTest.class);
 		//$JUnit-END$
 		return suite;
 	}

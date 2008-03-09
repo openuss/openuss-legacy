@@ -819,5 +819,20 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		logger.info("----> END access to findPeriodsByInstituteWithCoursesOrActive test");
 	}
+	
+	protected String[] getConfigLocations() {
+		return new String[] { 
+			"classpath*:applicationContext.xml", 
+			"classpath*:applicationContext-beans.xml",
+			"classpath*:applicationContext-lucene.xml",
+			"classpath*:applicationContext-cache.xml", 
+			"classpath*:applicationContext-messaging.xml",
+			"classpath*:applicationContext-resources.xml",
+			"classpath*:applicationContext-aop.xml",
+			"classpath*:applicationContext-events.xml",
+			"classpath*:testContext.xml", 
+			"classpath*:testSecurity.xml", 
+			"classpath*:testDataSource.xml"};
+	}
 
 }

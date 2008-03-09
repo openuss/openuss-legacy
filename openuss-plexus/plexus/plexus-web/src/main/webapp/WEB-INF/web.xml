@@ -26,6 +26,7 @@
 			classpath*:applicationContext-lucene.xml,
 			classpath*:applicationContext-resources.xml,
 			classpath*:applicationContext-aop.xml,
+			classpath*:applicationContext-events.xml,
 			classpath*:applicationContext-remote.xml,
 			/WEB-INF/applicationContext-webservice.xml,
 			/WEB-INF/applicationContext-i18n.xml,
