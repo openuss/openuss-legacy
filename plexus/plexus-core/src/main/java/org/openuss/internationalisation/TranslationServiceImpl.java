@@ -86,8 +86,7 @@ public class TranslationServiceImpl extends
 		TranslationTextSearchCriteria criteria = new TranslationTextSearchCriteria();
 		criteria.setDomainIdentifier(domainIdentifier);
 		criteria.setSubKey(subKey);
-		List<TranslationText> transTexts = getTranslationTextDao()
-				.findByCriteria(criteria);
+		List<TranslationText> transTexts = getTranslationTextDao().findByCriteria(criteria);
 		List<TranslationTextInfo> returnList = new ArrayList<TranslationTextInfo>();
 		for (TranslationText textIt : transTexts) {
 			if (textIt.getLanguage() == lang) returnList.add(getTranslationTextDao().toTranslationTextInfo(textIt));
@@ -147,4 +146,18 @@ public class TranslationServiceImpl extends
 		}
 		return returnList;
 	}
+	
+	@Override
+    protected void handleRemoveTranslationTexts(java.lang.Long domainIdentifier)
+    throws java.lang.Exception {
+    	TranslationTextSearchCriteria criteria = new TranslationTextSearchCriteria(domainIdentifier, null);
+    	List<TranslationText> transTexts = getTranslationTextDao().findByCriteria(criteria);
+    	if (transTexts.size() == 0) throw new TranslationApplicationException("Could not remove translations");
+    	for (TranslationText textIt : transTexts) {
+    		// remove association between 
+    		textIt.getLanguage().getTranslationTexts().remove(textIt);
+    	}
+    	// delete the translations with the given domain identifier
+    	getTranslationTextDao().remove(transTexts);
+    }
 }

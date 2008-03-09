@@ -56,13 +56,20 @@ public class TranslationServiceIntegrationTest extends
 			assertEquals("Straﬂe", result);
 			String result2 = translationService.getTranslation(1L, "description", "deDE");
 			assertEquals("Bezeichnung", result2);
+			// remove all translations for a domain identifiert
+			translationService.removeTranslationTexts(1L);
+			List<TranslationTextInfo> textInfoList = translationService.getTranslationTexts("deDE", 1L);
+			assertNotNull(textInfoList);
+			assertEquals(0, textInfoList.size());
+			// add the translations again for further tests
+			translationService.addTranslationText(transInfo, "deDE");
+			translationService.addTranslationText(transInfo2, "deDE");
 			try {
 				translationService.getTranslation(2L, "notFound", "deDE");
 				fail();
 			} catch (NoTranslationFoundException e) {
 				e.printStackTrace();
 			}
-			// TODO Implement Update of Translation
 			List<TranslationTextInfo> newTranslationInfos = translationService.getTranslationTexts("deDE", 1L);
 			TranslationTextInfo newTranslationInfo = newTranslationInfos.get(1);
 			newTranslationInfo.setText("Beschreibung");
