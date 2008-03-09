@@ -1140,6 +1140,57 @@
 	</navigation-rule>
 
 
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P U s e r D n P a t t e r n - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>ldap_userdnpatterns</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_userdnpatterns.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+					<from-outcome>ldap_userdnpattern_registration_start</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_userdnpatternstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_userdnpattern_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_userdnpatternstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+
+			<navigation-case>
+					<from-outcome>ldap_userdnpatterns</from-outcome>
+					<to-view-id>/views/secured/system/ldap/ldap_userdnpatterns.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>ldap_userdnpattern_registration_start</from-outcome>
+				<to-view-id>/views/secured/system/ldap/ldap_userdnpatternstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>ldap_userdnpattern_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_userdnpatternstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>ldap_userdnpattern_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/system/ldap/ldap_userdnpatternstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+
+
+
    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       L D A P R o l e A t t r i b u t e K e y  - P a g e 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->
