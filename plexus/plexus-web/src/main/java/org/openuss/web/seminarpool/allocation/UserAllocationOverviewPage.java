@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
 @Bean(name = "views$secured$seminarpool$allocation$userAllocationOverview", scope = Scope.REQUEST)
@@ -15,6 +16,9 @@ import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	
 	public static final Logger logger = Logger.getLogger(UserAllocationOverviewPage.class);
+	
+	private boolean status;
+	private boolean status2;
 	
 	@Prerender
 	public void prerender() throws Exception {
@@ -28,7 +32,24 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	
 	public String generateAllocation(ActionEvent event){
 		this.seminarpoolAdministrationService.generateAllocation(seminarpoolInfo.getId());
+		addMessage(i18n("seminarpool_allocation_sucessfull"));
 		return "";
+	}
+	
+	public boolean getStatus(){
+		return (seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
+	}
+	
+	public void setStatus(boolean status){
+		this.status=status;
+	}
+
+	public boolean getStatus2() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue() > 2);
+	}
+
+	public void setStatus2(boolean status2) {
+		this.status2 = status2;
 	}
 
 }

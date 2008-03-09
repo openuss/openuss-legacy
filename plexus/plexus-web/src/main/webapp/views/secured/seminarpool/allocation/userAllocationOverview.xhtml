@@ -35,13 +35,15 @@
 		</div>
 	</o:block>
 	<h:form id="genereteAllocation">
+		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status}">
 			<o:block>
 				<h:commandButton value="#{msg['seminarpool_allocation_generate']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.generateAllocation}"
 					title="#{msg['seminarpool_allocation_generate']}"
 					styleClass="button_save" />
 			</o:block>
-		</h:form>
+		</c:if>
+	</h:form>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

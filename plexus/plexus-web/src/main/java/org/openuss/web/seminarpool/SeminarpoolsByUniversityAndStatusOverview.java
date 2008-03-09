@@ -122,7 +122,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 			UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
 			// get all institutes. Does not depend whether it is enabled or
 			// disabled
-			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.PREPARATIONPHASE));
+			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.REGISTRATIONPHASE));
 			sort(seminarpoolList);
 			dataPage = new DataPage<SeminarpoolInfo>(seminarpoolList.size(), 0, seminarpoolList);
 		}
