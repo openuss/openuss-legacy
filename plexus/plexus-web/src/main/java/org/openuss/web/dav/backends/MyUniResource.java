@@ -7,15 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.acegisecurity.acls.domain.AclImpl;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
@@ -24,12 +28,12 @@ import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.springframework.web.context.WebApplicationContext;
 
-public class MyUniResource extends SimpleWebDAVResource{
+public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	
 	protected MyUniResource(WebApplicationContext wac, WebDAVPath path, long id) {
 		super(wac, path, id);
 		
-		desktopService = (DesktopService2)getWAC().getResource("desktopService2");
+		desktopService = (DesktopService2)(getWAC().getBean("desktopService2"));
 	}
 
 	protected DesktopService2 desktopService;
@@ -48,7 +52,9 @@ public class MyUniResource extends SimpleWebDAVResource{
 		WebApplicationContext context = getWAC();
 		if (desktopInfo == null) {
 			try {
-				desktopInfo = desktopService.findDesktopByUser(((User)(context.getResource(Constants.USER))).getId());
+				// TODO Why is user.getId() == null ?
+				User user = (User)(context.getBean(Constants.USER, User.class));
+				desktopInfo = desktopService.findDesktopByUser(user.getId());
 			} catch (DesktopException e) {
 				throw new RuntimeException(e.getMessage());
 			}
@@ -62,7 +68,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 				return new UniversityResource(getWAC(), path, u);
 			}
 			if (id == ID_NONE) {
-				if (u.getName().equals(name)) {
+				if (UniversityResource.getNameByData(u).equals(name)) {
 					return new UniversityResource(getWAC(), path, u);
 				}
 			}
@@ -77,7 +83,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 				return new DepartmentResource(getWAC(), path, d);
 			}
 			if (id == ID_NONE) {
-				if (d.getName().equals(name)) {
+				if (DepartmentResource.getNameByData(d).equals(name)) {
 					return new DepartmentResource(getWAC(), path, d);
 				}
 			}
@@ -92,7 +98,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 				return new InstituteResource(getWAC(), path, i);
 			}
 			if (id == ID_NONE) {
-				if (i.getName().equals(name)) {
+				if (InstituteResource.getNameByData(i).equals(name)) {
 					return new InstituteResource(getWAC(), path, i);
 				}
 			}
@@ -107,7 +113,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 				return new CourseResource(getWAC(), path, c);
 			}
 			if (id == ID_NONE) {
-				if (c.getName().equals(name)) {
+				if (CourseResource.getNameByData(c).equals(name)) {
 					return new CourseResource(getWAC(), path, c);
 				}
 			}
@@ -153,7 +159,9 @@ public class MyUniResource extends SimpleWebDAVResource{
 		WebApplicationContext context = getWAC();
 		if (desktopInfo == null){
 			try {
-				desktopInfo = desktopService.findDesktopByUser(((User)(context.getResource(Constants.USER))).getId());
+				// TODO Why is user.getId() == null ?
+				User user = ((User)(context.getBean(Constants.USER, User.class)));
+				desktopInfo = desktopService.findDesktopByUser(user.getId());
 			} catch (DesktopException e) {
 				throw new RuntimeException(e.getMessage());
 			}
@@ -163,7 +171,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 		}
 		for (UniversityInfo u : universities) {
 			long uniID = u.getId();
-			String name = u.getShortcut();
+			String name = UniversityResource.getNameByData(u);
 			childNames.put(uniID, name);
 		}
 		
@@ -172,7 +180,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 		}
 		for (DepartmentInfo d : departments) {
 			long depID = d.getId();
-			String name = d.getShortcut();
+			String name = DepartmentResource.getNameByData(d);
 			childNames.put(depID, name);
 		}
 		
@@ -181,7 +189,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 		}
 		for (InstituteInfo i : institutes) {
 			long instID = i.getId();
-			String name = i.getShortcut();
+			String name = InstituteResource.getNameByData(i);
 			childNames.put(instID, name);
 		}
 		
@@ -190,7 +198,7 @@ public class MyUniResource extends SimpleWebDAVResource{
 		}
 		for (CourseInfo c : courses) {
 			long courseID = c.getId();
-			String name = c.getShortcut();
+			String name = CourseResource.getNameByData(c);
 			childNames.put(courseID, name);
 		}
 		return childNames;

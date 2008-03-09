@@ -35,7 +35,6 @@ public class RootResource extends AbstractOrganisationResource {
 	 */
 	protected RootResource(WebApplicationContext wac, WebDAVPath path) {
 		super(wac, path, ID_ROOT);
-		
 		allUniversities = null;
 		universityService = (UniversityService) getWAC().getBean(Constants.UNIVERSITY_SERVICE, UniversityService.class);
 	}
@@ -58,19 +57,19 @@ public class RootResource extends AbstractOrganisationResource {
 	@Override
 	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
 		if (id == ID_NONE) {
-			// TODO add myUni
-			/* 
 			if (sname.equals(sanitizeName(getMyUniName()))) {
 				return new MyUniResource(getWAC(), path, MYUNI_ID);
 			}
-			*/
+			
 			for (UniversityInfo uni : getAllUniversities()) {
 				if (sname.equals(sanitizeName(UniversityResource.getNameByData(uni)))) {
 					return new UniversityResource(getWAC(), path, uni);
 				}
 			}
 		} else {
-			// TODO add MyUni
+			if (id == MYUNI_ID) {
+				return new MyUniResource(getWAC(), path, MYUNI_ID);
+			}
 			
 			UniversityInfo ui = universityService.findUniversity(id);
 			
@@ -89,9 +88,8 @@ public class RootResource extends AbstractOrganisationResource {
 	@Override
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long,String> resMap = new HashMap<Long, String>();
-		
-		// TODO MyUni
-		// resMap.put(MYUNI_ID, getMyUniName());
+
+		resMap.put(MYUNI_ID, getMyUniName());
 		
 		for (Object el : getAllUniversities()) {
 			UniversityInfo ui = (UniversityInfo) el;
