@@ -13,13 +13,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import org.openuss.groups.UserGroup;
-import org.openuss.groups.UserGroupDao;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.internationalisation.TranslationApplicationException;
 import org.openuss.internationalisation.TranslationTextInfo;
-import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
@@ -700,10 +696,11 @@ public class CalendarServiceImpl extends
 			appIt.setAppointmentType(substitutingAppType);
 			substitutingAppType.getAppointments().add(appIt);
 		}
-		
+		// remove the translations of the appointmenttype
+		getTranslationService().removeTranslationTexts(appointmentTypeInfoToDelete.getId());
 		getAppointmentTypeDao().remove(appTypeToDelete);
 		
-		// TODO Calendar Implement handleDeleteAppointment
+		
 
 	}
 
