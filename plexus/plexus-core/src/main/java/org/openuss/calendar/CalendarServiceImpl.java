@@ -16,6 +16,7 @@ import java.util.Set;
 import org.openuss.groups.UserGroup;
 import org.openuss.groups.UserGroupDao;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.internationalisation.TranslationApplicationException;
 import org.openuss.internationalisation.TranslationTextInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseDao;
@@ -670,6 +671,10 @@ public class CalendarServiceImpl extends
 	@Override
 	protected void handleCreateAppointmentType(
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
+		// check if an apptype with the same name already exists
+		AppointmentType existingAppType = getAppointmentTypeDao().findByName(appointmentTypeInfo.getName());
+		if (existingAppType == null) 
+			throw new CalendarApplicationException("AppointmentType with the same name is already existing");
 		AppointmentType appType = getAppointmentTypeDao().create(appointmentTypeInfo.getName());
 		TranslationTextInfo translation = new TranslationTextInfo();
 		translation.setDomainIdentifier(appType.getId());
@@ -680,12 +685,24 @@ public class CalendarServiceImpl extends
 
 	@Override
 	protected void handleDeleteAppointmentType(
-			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
+			AppointmentTypeInfo appointmentTypeInfoToDelete, AppointmentTypeInfo substitutingAppointmentTypeInfo) throws Exception {
 		
-		AppointmentType appType = getAppointmentTypeDao().load(appointmentTypeInfo.getId());
-		// get standard appointment type
-		AppointmentType standardType;
-		Set<Appointment> apps = appType.getAppointments();
+		AppointmentType appTypeToDelete = getAppointmentTypeDao().load(appointmentTypeInfoToDelete.getId());
+		AppointmentType substitutingAppType = getAppointmentTypeDao().load(substitutingAppointmentTypeInfo.getId());
+		
+		if ( (appTypeToDelete == null) || (substitutingAppType == null) )
+			throw new TranslationApplicationException("One or more appointment types are not found");
+		
+		// get appointments associated to the appointment to delete
+		Set<Appointment> apps = appTypeToDelete.getAppointments();
+		// remove the association to the "old" apptype and add the substitung app type
+		for (Appointment appIt : apps) {
+			appIt.setAppointmentType(substitutingAppType);
+			substitutingAppType.getAppointments().add(appIt);
+		}
+		
+		getAppointmentTypeDao().remove(appTypeToDelete);
+		
 		// TODO Calendar Implement handleDeleteAppointment
 
 	}

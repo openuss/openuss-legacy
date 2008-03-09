@@ -56,7 +56,7 @@ public class TranslationServiceImpl extends
 	protected void handleRemoveTranslationText(
 			org.openuss.internationalisation.TranslationTextInfo translationTextInfo)
 			throws java.lang.Exception {
-		// @todo implement
+		// @todo implement deletion of translationtext
 		throw new java.lang.UnsupportedOperationException(
 				"org.openuss.internationalisation.TranslationService.handleRemoveTranslationtext(org.openuss.internationalisation.TranslationTextInfo translationTextInfo) Not implemented!");
 	}
@@ -95,7 +95,13 @@ public class TranslationServiceImpl extends
 		if (returnList.size() != 0) {
 			return returnList.get(0).getText();
 		} else {
-			throw new NoTranslationFoundException("No Translation found");
+			// if no translation is available for the languageCode try english
+			if (languageCode != "en") {
+				return this.getTranslation(domainIdentifier, subKey, "en");
+			// if the languageCode is english, throw an exception
+			} else {
+				throw new NoTranslationFoundException("No Translation found");
+			}
 		}
 
 	}
