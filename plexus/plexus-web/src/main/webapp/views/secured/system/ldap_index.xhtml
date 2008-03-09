@@ -27,9 +27,17 @@
   		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/admin.xhtml" />
 		</ui:define>
+		
+		<!-- LDAP server configuration main page -->
   		<ui:define name="content">
-  			<h:form id="universitiesForm">
-				
+  			<o:block label="${msg.ldap_index_header}">
+  				<div class="content_font_normal">
+  					<h:outputText value="${msg.ldap_index_description}" escape="false" styleClass="content_font_normal"/>
+	   			</div>	  								
+	   		</o:block>  			
+	   			
+  			<h:form id="ldapIndexForm">  							
+				<!-- configure buttons -->
 				<s:authorize ifAllGranted="ROLE_ADMIN">
 	  				<o:block>
 						<h:commandButton 
@@ -37,22 +45,25 @@
 						action="ldap_roleattributekeys" 
 						value="#{msg.ldap_roleattributekey}" 
 						title="#{msg.ldap_roleattributekey_hint}"
-						styleClass="button"/>
-					</o:block>
-				</s:authorize>		
-				
-				<s:authorize ifAllGranted="ROLE_ADMIN">
-	  				<o:block>
+						styleClass="button"/>						
 						<h:commandButton 
 					    id="attributeMappings"
 						action="ldap_attributemappings" 
 						value="#{msg.ldap_attributemapping}" 
 						title="#{msg.ldap_attributemapping_hint}"
-						styleClass="button"/>
-					</o:block>
-				</s:authorize>				
-				<s:authorize ifAllGranted="ROLE_ADMIN">
-	  				<o:block>
+						styleClass="button"/>						
+						<h:commandButton 
+					    id="domains"
+						action="ldap_domains" 
+						value="#{msg.ldap_domain}" 
+						title="#{msg.ldap_domain_hint}"
+						styleClass="button"/>						
+						<h:commandButton 
+					    id="userDnPatten"
+						action="ldap_userdnpatterns" 
+						value="#{msg.ldap_userdnpattern}" 
+						title="#{msg.ldap_userdnpattern_hint}"
+						styleClass="button"/>						
 						<h:commandButton 
 					    id="servers"
 						action="ldap_servers" 
@@ -60,17 +71,7 @@
 						title="#{msg.ldap_server_hint}"
 						styleClass="button"/>
 					</o:block>
-				</s:authorize>			
-				<s:authorize ifAllGranted="ROLE_ADMIN">
-	  				<o:block>
-						<h:commandButton 
-					    id="domains"
-						action="ldap_domains" 
-						value="#{msg.ldap_domain}" 
-						title="#{msg.ldap_domain_hint}"
-						styleClass="button"/>
-					</o:block>
-				</s:authorize>
+				</s:authorize>		
 			</h:form>
 		</ui:define>
 	</ui:composition>
