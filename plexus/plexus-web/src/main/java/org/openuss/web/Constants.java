@@ -107,22 +107,24 @@ public class Constants {
 	public static final String LDAP_DOMAIN_REGISTRATION_STEP1_PAGE = "ldap_domain_registration_step1";
 	public static final String AUTHENTICATIONDOMAIN_INFO = "authenticationDomainInfo";
 	public static final String LDAP_DOMAIN_PAGE = "ldap_domains";
+	public static final String DOMAIN_CONFIRM_REMOVE_PAGE = "ldap_domain_remove_confirmation";
+	// session Entity bean
+	public static final String DOMAIN = "domain";
 
 	// ldap_attributemapping navigation outcomes and combobox long constants
 	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_CONTROLLER = "ldapAttributeMappingRegistration";
 	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE = "ldap_attributemapping_registration_step1";
 	public static final String ATTRIBUTEMAPPING_INFO = "attributeMappingInfo";
 	public static final String LDAP_ATTRIBUTEMAPPING_PAGE = "ldap_attributemappings";
-
-	// migration navigation outcomes constants
-	public static final String MIGRATION_PAGE = "migration";
+	public static final String ATTRIBUTEMAPPING_CONFIRM_REMOVE_PAGE = "ldap_attributemapping_remove_confirmation";
+	// session Entity bean
+	public static final String ATTRIBUTEMAPPING = "attributeMapping";
 
 	// ldap_roleattributekeys navigation outcomes and combobox long constants
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeyRegistration";
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE = "ldap_roleattributekey_registration_step1";
 	public static final String ROLEATTRIBUTEKEY_INFO = "roleAttributeKeyInfo";
 	public static final String LDAP_ROLEATTRIBUTEKEY_PAGE = "ldap_roleattributekeys";
-	public static final String ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE = "ldap_roleattributekey_remove_confirmation";
 	// session Entity bean
 	public static final String ROLEATTRIBUTEKEY = "roleAttributeKey";
 
@@ -131,6 +133,15 @@ public class Constants {
 	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
 	public static final String SERVER_INFO = "serverInfo";
 	public static final String LDAP_SERVER_PAGE = "ldap_server";
+	public static final String SERVER_CONFIRM_REMOVE_PAGE = "ldap_server_remove_confirmation";
+	// session Entity bean
+	public static final String SERVER = "server";
+	
+	
+	
+	// migration navigation outcomes constants
+	public static final String MIGRATION_PAGE = "migration";
+	
 
 	// institute navigation outcomes and combobox long constants
 	public static final String INSTITUTE_PAGE = "institute";

@@ -26,11 +26,16 @@
 				<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 					<o:block label="#{msg.ldap_attributemapping_registration_step1_headline}" styleClass="form_box">
 						<o:input entity="attributeMappingInfo" property="mappingName" maxlength="250" required="true"/>
-							<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-								<h:selectOneListbox id="department_preferences_university" size="1" styleClass="pulldown" value="#{ldapAttributeMappingRegistration.roleAttributeKeyId}">
-	  						 		<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
-								</h:selectOneListbox>
-						<o:input entity="attributeMappingInfo" property="userNameKey" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="usernameKey" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="firstNameKey" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="lastNameKey" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
+						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
+						<h:selectOneListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.roleAttributeKeyId}" styleClass="pulldown" >
+  							<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
+						</h:selectOneListbox>
+						
 					</o:block>
 				</c:if>
 				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
@@ -40,10 +45,10 @@
 				</c:if>
 					<o:block>
 						<h:commandButton value="${msg.back}" action="ldap_attributemapping_registration_start" styleClass="button_back" immediate="true"/>
-						<c:if test="#{not empty ldapDomainRegistration.allAttributeMappings}">
+						<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 							<h:commandButton value="${msg.forward}" action="ldap_attributemapping_registration_step2" styleClass="button_continue" />
 		  				</c:if>
-		  				<c:if test="#{empty ldapDomainRegistration.allAttributeMappings}">
+		  				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 		  					<h:commandButton value="${msg.ldap_roleattributekey}" action="ldap_roleattributekeys" styleClass="button_continue" />
 		  				</c:if>
 		  			</o:block>

@@ -1146,13 +1146,63 @@
 
  <navigation-rule>
 		<from-view-id>/views/secured/system/ldap/*</from-view-id>
-		
 		<navigation-case>
 			<from-outcome>ldap_roleattributekey_remove_confirmation</from-outcome>
 			<to-view-id>/views/secured/system/ldap/ldap_roleattributekeyremoveconfirmation.xhtml</to-view-id>
 		</navigation-case>
-		
 </navigation-rule>
+
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P A t t r i b u t e M a p p i n g  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+ <navigation-rule>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+		<navigation-case>
+			<from-outcome>ldap_attributemapping_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_attributemappingremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+</navigation-rule>
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P S e r v e r  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+ <navigation-rule>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+		<navigation-case>
+			<from-outcome>ldap_server_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_serverremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+</navigation-rule>
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P D o m a i n  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+ <navigation-rule>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+		<navigation-case>
+			<from-outcome>ldap_domain_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_domainremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+</navigation-rule>
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      L D A P U s e r D n P a t t e r n  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+ <navigation-rule>
+		<from-view-id>/views/secured/system/ldap/*</from-view-id>
+		<navigation-case>
+			<from-outcome>ldap_userdnpattern_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_userdnpatternremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+</navigation-rule>
+
+
+
    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
       U n i v e r s i t y  - P a g e 
     - - - - - - - - - - - - - - - - - - - - - - - - - -->		

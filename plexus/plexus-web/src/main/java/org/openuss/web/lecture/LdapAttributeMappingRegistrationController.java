@@ -2,6 +2,7 @@ package org.openuss.web.lecture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.faces.model.SelectItem;
 
@@ -81,12 +82,33 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		return roleAttributeKeyItems;
 	}
 
-	public Integer roleAttributeKeyId;
 	
-	public Integer getRoleAttributeKeyId(){
+	
+	private List<SelectItem> roleAttributeKeyIds = new Vector<SelectItem>();
+	
+	public List<SelectItem> getRoleAttributeKeyIds() {
+		return roleAttributeKeyIds;
+	}
+
+	public void setRoleAttributeKeyIds(List<SelectItem> roleAttributeKeyIds) {
+		this.roleAttributeKeyIds = roleAttributeKeyIds;
+	}
+	
+	// ================================================================================
+	
+	
+	
+	
+	
+	
+	
+	
+	private Long roleAttributeKeyId;
+	
+	public Long getRoleAttributeKeyId(){
 		return roleAttributeKeyId;
 	}
-	public void setRoleAttributeKeyId(){
+	public void setRoleAttributeKeyId(Long roleAttributeKeyId){
 		this.roleAttributeKeyId = roleAttributeKeyId;
 	}
 	
@@ -136,8 +158,9 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 
 		// by default set department enabled
 		departmentInfo.setEnabled(true);
-		ldapConfigurationService.create(authenticationDomainInfo);
-*/
+		*/
+		ldapConfigurationService.createAttributeMapping(attributeMappingInfo);
+
 		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 	}
 /*
@@ -175,4 +198,6 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		}
 	}
 	*/
+
+
 }
