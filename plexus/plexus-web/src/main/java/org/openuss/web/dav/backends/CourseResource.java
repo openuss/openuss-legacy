@@ -1,21 +1,23 @@
 package org.openuss.web.dav.backends;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.InstituteInfo;
+import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;
 
 public class CourseResource extends AbstractOrganisationResource{
 	
-	protected final CourseInfo ci;
+	protected final CourseInfo info;
 	
 	public CourseResource(WebApplicationContext wac, WebDAVPath path, CourseInfo ci) {
 		super(wac, path, ci.getId());
-		this.ci = ci;
+		this.info = ci;
 	}
 
 	@Override
@@ -27,13 +29,20 @@ public class CourseResource extends AbstractOrganisationResource{
 	@Override
 	protected Map<Long, String> getRawChildNames() {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyMap();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#simpleGetProperties(java.util.Set)
+	 */
 	@Override
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,String> res = new TreeMap<String, String>();
+		if ((propNames == null) || (propNames.contains(WebDAVConstants.XML_DISPLAYNAME))) {
+			res.put(WebDAVConstants.XML_DISPLAYNAME, info.getName());
+		}
+		
+		return res;
 	}
 
 	/* (non-Javadoc)

@@ -107,6 +107,8 @@ public class WebDAVPathImpl implements WebDAVPath {
 		int startPos = path.lastIndexOf(PATH_SEP, endPos - 1);
 		if (startPos < 0) {
 			startPos = 0;
+		} else {
+			startPos += PATH_SEP.length();
 		}
 		
 		String res = path.substring(startPos, endPos);

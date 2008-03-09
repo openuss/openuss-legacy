@@ -42,7 +42,7 @@ public class DepartmentResource extends AbstractOrganisationResource{
 		InstituteInfo resInfo = null;
 		
 		if (id != ID_NONE) {
-			resInfo = (InstituteInfo) instituteService.findInstitutesByDepartmentAndEnabled(id, true);
+			resInfo = (InstituteInfo) instituteService.findInstitute(id);
 		} else {
 			for (InstituteInfo childData : getSubInstitutes()) {
 				if (name.equals(sanitizeName(InstituteResource.getNameByData(childData)))) {

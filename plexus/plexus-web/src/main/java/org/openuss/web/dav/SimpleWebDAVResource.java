@@ -2,6 +2,7 @@ package org.openuss.web.dav;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -174,6 +175,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		Map<String,String> values = simpleGetProperties(reqProps);
+		
+		if (values == null) {
+			values = Collections.emptyMap();
+		}
 		
 		// Create result document
 		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
@@ -530,32 +535,34 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		Element html = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HTML);
 		doc.appendChild(html);
 		
+		// From here on without namespace to allow off-the-shelf browsers to parse i
+		
 		// Header
-		Element head = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HEAD);
+		Element head = doc.createElement(WebDAVConstants.XHTML_HEAD);
 		html.appendChild(head);
 		
-		Element title = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_TITLE);
+		Element title = doc.createElement(WebDAVConstants.XHTML_TITLE);
 		title.setTextContent("OpenUSS - " + getPath().getFileName());
 		head.appendChild(title);
 		
 		// Body
-		Element body = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_BODY);
+		Element body = doc.createElement(WebDAVConstants.XHTML_BODY);
 		html.appendChild(body);
 		
-		Element header = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HEADER);
+		Element header = doc.createElement(WebDAVConstants.XHTML_HEADER);
 		header.setTextContent(getPath().getPrefix());
 		body.appendChild(header);
 		
-		Element list = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_UNORDERED_LIST);
+		Element list = doc.createElement(WebDAVConstants.XHTML_UNORDERED_LIST);
 		body.appendChild(list);
 		
 		Collection<WebDAVResource> children = getChildren();
 		for (WebDAVResource c : children) {
-			Element li = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_LIST_ELEM);
+			Element li = doc.createElement(WebDAVConstants.XHTML_LIST_ELEM);
 			list.appendChild(li);
 			
-			Element link = doc.createElementNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_LINK);
-			link.setAttributeNS(WebDAVConstants.NAMESPACE_HTML, WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
+			Element link = doc.createElement(WebDAVConstants.XHTML_LINK);
+			link.setAttribute(WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
 			link.setTextContent(c.getPath().getFileName());
 			li.appendChild(link);
 		}

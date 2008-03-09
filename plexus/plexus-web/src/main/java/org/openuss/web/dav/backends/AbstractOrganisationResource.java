@@ -27,7 +27,7 @@ public abstract class AbstractOrganisationResource extends SimpleWebDAVResource 
 	protected AbstractOrganisationResource(WebApplicationContext wac, WebDAVPath path, long id) {
 		super(wac, path, id);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
 	 */

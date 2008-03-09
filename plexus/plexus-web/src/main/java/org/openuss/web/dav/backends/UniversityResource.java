@@ -78,7 +78,7 @@ public class UniversityResource extends AbstractOrganisationResource {
 	 */
 	@Override
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
-		Map<String,String> res = new HashMap<String, String>();
+		Map<String,String> res = new TreeMap<String, String>();
 		if ((propNames == null) || (propNames.contains(WebDAVConstants.XML_DISPLAYNAME))) {
 			res.put(WebDAVConstants.XML_DISPLAYNAME, info.getName());
 		}
