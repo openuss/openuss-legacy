@@ -9,8 +9,9 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
-import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
+import org.openuss.security.ldap.LdapServerInfo;
+import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -21,13 +22,12 @@ import org.openuss.web.Constants;
  * 
  */
 
-@Bean(name = Constants.LDAP_DOMAIN_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
+@Bean(name = Constants.LDAP_SERVER_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
 @View
-public class LdapDomainRegistrationController extends AbstractLdapDomainPage {
+public class LdapServerRegistrationController extends AbstractLdapServerPage {
 
 	
-	private static final Logger logger = Logger.getLogger(LdapDomainRegistrationController.class);
-
+	private static final Logger logger = Logger.getLogger(LdapServerRegistrationController.class);
 	/*
 	protected UniversityInfo universityInfo = (UniversityInfo) this.getSessionBean(Constants.UNIVERSITY_INFO);
 
@@ -47,10 +47,10 @@ public class LdapDomainRegistrationController extends AbstractLdapDomainPage {
 	public String start() {
 		logger.debug("start registration process");
 		
-		authenticationDomainInfo = new AuthenticationDomainInfo();
-		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomainInfo);
+		ldapServerInfo = new LdapServerInfo();
+		setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
 		
-		return Constants.LDAP_DOMAIN_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
 	}
 
 	/*
@@ -68,25 +68,65 @@ public class LdapDomainRegistrationController extends AbstractLdapDomainPage {
 	
 	
 */	
+	
+	public List<SelectItem> getAllAuthenticationDomains() {
 
-	public List<SelectItem> getAllAttributeMappings() {
+		List<SelectItem> domainItems = new ArrayList<SelectItem>();
 
-		List<SelectItem> attributeMappingItems = new ArrayList<SelectItem>();
-
-		List<AttributeMappingInfo> attributeMappings = ldapConfigurationService.getAllAttributeMappings();
+		List<AuthenticationDomainInfo> domains = ldapConfigurationService.getAllDomains();
 		
-		for (AttributeMappingInfo attributeMapping : attributeMappings) {
-				attributeMappingItems.add(new SelectItem(attributeMapping.getId(), attributeMapping.getMappingName()));
+		for (AuthenticationDomainInfo domain : domains) {
+				domainItems.add(new SelectItem(domain.getId(), domain.getName()));
 			}
 	
-		return attributeMappingItems;
+		return domainItems;
+	}
+
+	public List<SelectItem> getAllUserDnPatterns() {
+
+		List<SelectItem> userDnPatternItems = new ArrayList<SelectItem>();
+
+		List<UserDnPatternInfo> userDnPatterns = ldapConfigurationService.getAllUserDnPatterns();
+		
+		for (UserDnPatternInfo userDnPattern : userDnPatterns) {
+			userDnPatternItems.add(new SelectItem(userDnPattern.getId(), userDnPattern.getName()));
+			}
+	
+		return userDnPatternItems;
 	}
 	
 	
+	/*
+	private List<SelectItem> roleAttributeKeyIds = new Vector<SelectItem>();
+	
+	public List<SelectItem> getRoleAttributeKeyIds() {
+		return roleAttributeKeyIds;
+	}
+
+	public void setRoleAttributeKeyIds(List<SelectItem> roleAttributeKeyIds) {
+		this.roleAttributeKeyIds = roleAttributeKeyIds;
+	}
+	
+	// ================================================================================
 	
 	
+	
+	
+	
+	
+	
+	
+	private Long roleAttributeKeyId;
+	
+	public Long getRoleAttributeKeyId(){
+		return roleAttributeKeyId;
+	}
+	public void setRoleAttributeKeyId(Long roleAttributeKeyId){
+		this.roleAttributeKeyId = roleAttributeKeyId;
+	}
+	*/
 /*		
-	
+	List<RoleAttributeKeyInfo> roleAttributeKeyList = ldapConfigurationService.getAllRoleAttributeKeys();
 	
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUniversities() {
@@ -132,9 +172,9 @@ public class LdapDomainRegistrationController extends AbstractLdapDomainPage {
 		// by default set department enabled
 		departmentInfo.setEnabled(true);
 		*/
-		ldapConfigurationService.createDomain(authenticationDomainInfo);
+		ldapConfigurationService.createLdapServer(ldapServerInfo);
 
-		return Constants.LDAP_DOMAIN_PAGE;
+		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 	}
 /*
 	public String registrate() throws DesktopException, LectureException {
@@ -171,4 +211,6 @@ public class LdapDomainRegistrationController extends AbstractLdapDomainPage {
 		}
 	}
 	*/
+
+
 }
