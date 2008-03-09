@@ -64,7 +64,7 @@ public class RootResource extends AbstractOrganisationResource {
 			}
 			*/
 			for (UniversityInfo uni : getAllUniversities()) {
-				if (sname.equals(sanitizeName(uni.getShortName()))) {
+				if (sname.equals(sanitizeName(UniversityResource.getNameByData(uni)))) {
 					return new UniversityResource(getWAC(), path, uni);
 				}
 			}
@@ -93,7 +93,7 @@ public class RootResource extends AbstractOrganisationResource {
 		for (Object el : getAllUniversities()) {
 			UniversityInfo ui = (UniversityInfo) el;
 			
-			resMap.put(ui.getId(), ui.getShortName());
+			resMap.put(ui.getId(), UniversityResource.getNameByData(ui));
 		}
 		 
 		return resMap;

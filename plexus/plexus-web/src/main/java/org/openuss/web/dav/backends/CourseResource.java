@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;
@@ -43,4 +44,12 @@ public class CourseResource extends AbstractOrganisationResource{
 		return true;
 	}
 
+
+	/**
+	 * @param info The info object of the organisation to represent.  
+	 * @return The (raw) name to use in the WebDAV context. 
+	 */
+	public static String getNameByData(CourseInfo info) {
+		return info.getShortName();
+	}
 }

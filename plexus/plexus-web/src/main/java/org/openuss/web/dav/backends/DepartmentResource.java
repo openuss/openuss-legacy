@@ -1,10 +1,10 @@
 package org.openuss.web.dav.backends;
 
+import java.util.AbstractCollection; // FIXME security
 import java.util.Map;
 import java.util.Set;
 
 import org.openuss.lecture.DepartmentInfo;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;

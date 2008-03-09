@@ -42,7 +42,7 @@ public class UniversityResource extends AbstractOrganisationResource {
 			di = departmentService.findDepartment(id);
 		} else {
 			for (DepartmentInfo adi : getSubDepartments()) {
-				if (name.equals(sanitizeName(adi.getShortName()))) {
+				if (name.equals(sanitizeName(DepartmentResource.getNameByData(adi)))) {
 					di = adi;
 					break;
 				}
@@ -64,7 +64,7 @@ public class UniversityResource extends AbstractOrganisationResource {
 		Map<Long,String> resMap = new TreeMap<Long, String>();
 		
 		for (DepartmentInfo di : getSubDepartments()) {
-			resMap.put(di.getId(), di.getShortName());
+			resMap.put(di.getId(), DepartmentResource.getNameByData(di));
 		}
 		
 		return resMap;
