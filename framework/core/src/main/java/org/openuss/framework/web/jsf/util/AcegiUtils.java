@@ -76,7 +76,7 @@ public class AcegiUtils {
 			integers.add(new Integer(integer));
 		}
 	
-		return (Integer[]) integers.toArray(new Integer[] {});
+		return (Integer[]) integers.toArray(new Integer[integers.size()]); 
 	}
 
 	/**
@@ -98,13 +98,15 @@ public class AcegiUtils {
 		return acls;
 	}
 
-	private static AclManager _aclManager;
+	private volatile static AclManager _aclManager;
 	
 	public static AclManager getAclManager() {
 		// FIXME remove dependency to java server faces
 		if (_aclManager == null) {
-			FacesContext facesContext = FacesUtils.getFacesContext();
-			_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+			synchronized (AcegiUtils.class) {
+				FacesContext facesContext = FacesUtils.getFacesContext();
+				_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+			}
 		}	
 		return _aclManager;
 	}

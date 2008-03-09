@@ -1,13 +1,14 @@
 package org.openuss.framework.web.xss;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -310,7 +311,7 @@ public class HtmlInputFilter {
 		Pattern p = Pattern.compile("^/([a-z0-9]+)", REGEX_FLAGS_SI);
 		Matcher m = p.matcher(s);
 		if (m.find()) {
-			String name = m.group(1).toLowerCase();
+			String name = m.group(1).toLowerCase(Locale.ENGLISH);
 			if (vAllowed.containsKey(name)) {
 				if (!inArray(name, vSelfClosingTags)) {
 					if (vTagCounts.containsKey(name)) {
@@ -325,14 +326,14 @@ public class HtmlInputFilter {
 		p = Pattern.compile("^([a-z0-9]+)(.*?)(/?)$", REGEX_FLAGS_SI);
 		m = p.matcher(s);
 		if (m.find()) {
-			String name = m.group(1).toLowerCase();
+			String name = m.group(1).toLowerCase(Locale.ENGLISH);
 			String body = m.group(2);
 			String ending = m.group(3);
 
 			// debug( "in a starting tag, name='" + name + "'; body='" + body +
 			// "'; ending='" + ending + "'" );
 			if (vAllowed.containsKey(name)) {
-				String params = "";
+				StringBuilder params = new StringBuilder();
 
 				Pattern p2 = Pattern.compile("([a-z0-9]+)=([\"'])(.*?)\\2", REGEX_FLAGS_SI);
 				Pattern p3 = Pattern.compile("([a-z0-9]+)(=)([^\"\\s']+)", REGEX_FLAGS_SI);
@@ -351,7 +352,7 @@ public class HtmlInputFilter {
 
 				String paramName, paramValue;
 				for (int ii = 0; ii < paramNames.size(); ii++) {
-					paramName = paramNames.get(ii).toLowerCase();
+					paramName = paramNames.get(ii).toLowerCase(Locale.ENGLISH);
 					paramValue = paramValues.get(ii);
 
 					// debug( "paramName='" + paramName + "'" );
@@ -363,7 +364,11 @@ public class HtmlInputFilter {
 						if (inArray(paramName, vProtocolAtts)) {
 							paramValue = processParamProtocol(paramValue);
 						}
-						params += " " + paramName + "=\"" + paramValue + "\"";
+						params.append(" ");
+						params.append(paramName);
+						params.append("=\"");
+						params.append(paramValue);
+						params.append("\"");
 					}
 				}
 

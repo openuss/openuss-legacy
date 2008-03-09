@@ -1,10 +1,9 @@
 package org.openuss.framework.jsfcontrols.components.flexlist;
 
-import javax.faces.component.UIComponent;
-import javax.faces.webapp.UIComponentTag;
 import java.util.ArrayList;
 
-import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
+import javax.faces.component.UIComponent;
+import javax.faces.webapp.UIComponentTag;
 
 public class FlexListTag extends UIComponentTag {
 	private String title;
@@ -12,18 +11,15 @@ public class FlexListTag extends UIComponentTag {
 	private String hideButtonTitle;
 	private ArrayList<ListItemDAO> visibleItems;
 	private ArrayList<ListItemDAO> hiddenItems;
-	
-	
-	public String getTitle()
-	{
+
+	public String getTitle() {
 		return title;
 	}
-	
-	public void setTitle(String title)
-	{
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public void release() {
 		// the super class method should be called
 		super.release();
@@ -33,29 +29,31 @@ public class FlexListTag extends UIComponentTag {
 		visibleItems = null;
 		hiddenItems = null;
 	}
+
 	protected void setProperties(UIComponent component) {
 		// the super class method should be called
 		super.setProperties(component);
-		
-		if(title != null)
+
+		if (title != null)
 			component.getAttributes().put("title", title);
-		
-		if(showButtonTitle != null)
+
+		if (showButtonTitle != null)
 			component.getAttributes().put("showButtonTitle", showButtonTitle);
-		
-		if(hideButtonTitle != null)
+
+		if (hideButtonTitle != null)
 			component.getAttributes().put("hideButtonTitle", hideButtonTitle);
-		
-		if(visibleItems != null)
+
+		if (visibleItems != null)
 			component.getAttributes().put("visibleItems", visibleItems);
-		
-		if(hiddenItems != null)
+
+		if (hiddenItems != null)
 			component.getAttributes().put("hiddenItems", hiddenItems);
 	}
-	
+
 	public String getComponentType() {
 		return "flexlist";
-		}
+	}
+
 	public String getRendererType() {
 		// null means the component renders itself
 		return null;

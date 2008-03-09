@@ -7,7 +7,9 @@
 	<uri>http://www.openuss.org/jsfcontrols</uri>
 	<tag>
 		<name>defaultAction</name>
-		<tag-class>org.openuss.frameworks.jsfcontrols.tags.DefaultActionTag</tag-class>
+		<tag-class>
+			org.openuss.frameworks.jsfcontrols.tags.DefaultActionTag
+		</tag-class>
 		<attribute>
 			<name>id</name>
 		</attribute>
@@ -53,7 +55,7 @@
 		</attribute>
 
 	</tag>
-	
-	
+
+
 
 </taglib>

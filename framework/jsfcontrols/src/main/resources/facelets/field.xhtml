@@ -82,26 +82,22 @@
 		<c:set var="label" value="#{oc:getFieldLabel(fieldName,namespace)}" />
 	</c:if>
 	<c:if test="${empty disabled}">
-		<c:set var="disabled" value="false"/>
+		<c:set var="disabled" value="false" />
 	</c:if>
 	<c:if test="${!empty entity}">
 		<oc:setValueTypeBinding var="vb" valueBinding="#{entity[property]}" />
-		<c:set var="value" value="#{entity[property]}"/>
+		<c:set var="value" value="#{entity[property]}" />
 	</c:if>
 	<c:if test="${empty entity}">
-		<c:set var="value" value=""/>
-	</c:if>	
+		<c:set var="value" value="" />
+	</c:if>
 	<h:outputLabel id="${property}Label" value="${label}" for="${property}"
 		styleClass="${styleClass}_label" />
 	<c:choose>
 		<c:when test="${type == 'password'}">
-			<h:inputSecret id="${property}"
-				value="${value}"
-				required="${required}" 
-				styleClass="${styleClass}" 
-				disabled="${disabled}" 
-				redisplay="true"
-				size="${size}"
+			<h:inputSecret id="${property}" value="${value}"
+				required="${required}" styleClass="${styleClass}"
+				disabled="${disabled}" redisplay="true" size="${size}"
 				title="${title}">
 				<ui:insert />
 			</h:inputSecret>
@@ -117,53 +113,45 @@
 				<c:set var="AM_PM_24h" value="false" />
 			</c:if>
 			<c:if test="${value == ''}">
-				<t:inputDate id="${property}" 
-					type="${displayDateTime}" 
-					popupCalendar="${popupCalendar}"
-					ampm="${AM_PM_24h}" 
-					required="${required}"
-					styleClass="${styleClass}" 
+				<t:inputDate id="${property}" type="${displayDateTime}"
+					popupCalendar="${popupCalendar}" ampm="${AM_PM_24h}"
+					required="${required}" styleClass="${styleClass}"
 					disabled="${disabled}">
 					<ui:insert />
 				</t:inputDate>
 			</c:if>
 			<c:if test="${!(value == '')}">
-				<t:inputDate id="${property}" 
-					value="${value}"
-					type="${displayDateTime}" 
-					popupCalendar="${popupCalendar}"
-					ampm="${AM_PM_24h}" 
-					required="${required}"
-					styleClass="${styleClass}" 
-					disabled="${disabled}">
+				<t:inputDate id="${property}" value="${value}"
+					type="${displayDateTime}" popupCalendar="${popupCalendar}"
+					ampm="${AM_PM_24h}" required="${required}"
+					styleClass="${styleClass}" disabled="${disabled}">
 					<ui:insert />
 				</t:inputDate>
 			</c:if>
 		</c:when>
 		<c:when test="${type == 'memo'}">
-			<h:inputTextarea id="${property}" 
-				value="${value}"
-				required="${required}" 
-				styleClass="${styleClass}" 
-				disabled="${disabled}"
-				title="${title}">
+			<h:inputTextarea id="${property}" value="${value}"
+				required="${required}" styleClass="${styleClass}"
+				disabled="${disabled}" title="${title}">
 				<ui:insert />
 			</h:inputTextarea>
 		</c:when>
 		<c:when test="${type == 'auto'}">
 			<oc:isText id="vb">
-				<h:inputText id="${property}" value="${value}" required="${required}" styleClass="${styleClass}" size="${size}" title="${title}">
+				<h:inputText id="${property}" value="${value}"
+					required="${required}" styleClass="${styleClass}" size="${size}"
+					title="${title}">
 					<ui:insert />
 				</h:inputText>
 			</oc:isText>
-	
+
 			<oc:isBoolean id="vb">
-				<h:selectBooleanCheckbox id="${property}" value="${value}" required="${required}" styleClass="${styleClass}"/>
+				<h:selectBooleanCheckbox id="${property}" value="${value}"
+					required="${required}" styleClass="${styleClass}" />
 			</oc:isBoolean>
-	
+
 			<oc:isDate id="vb">
-				<t:inputDate id="${property}"
-					value="${value}"
+				<t:inputDate id="${property}" value="${value}"
 					type="${displayDateTime}" popupCalendar="${popupCalendar}"
 					ampm="${AM_PM_24h}" required="${required}"
 					styleClass="${styleClass}" disabled="${disabled}">
@@ -172,17 +160,14 @@
 			</oc:isDate>
 		</c:when>
 		<c:otherwise>
-			<h:inputText id="${property}" 
-				value="${value}"
-				required="${required}"
-				styleClass="${styleClass}" 
-				disabled="${disabled}"
-				size="${size}"
+			<h:inputText id="${property}" value="${value}" required="${required}"
+				styleClass="${styleClass}" disabled="${disabled}" size="${size}"
 				title="${title}">
 				<ui:insert />
 			</h:inputText>
 		</c:otherwise>
 	</c:choose>
-	<h:message id="${property}Error" for="${property}" styleClass="${styleClass}_error" showDetail="true" showSummary="false"  />
+	<h:message id="${property}Error" for="${property}"
+		styleClass="${styleClass}_error" showDetail="true" showSummary="false" />
 </ui:composition>
 </html>
