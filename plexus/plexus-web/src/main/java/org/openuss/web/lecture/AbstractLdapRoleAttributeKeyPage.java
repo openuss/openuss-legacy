@@ -7,7 +7,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.RoleAttributeKeyInfo;
-import org.openuss.security.ldap.RoleAttributeKeySetInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
