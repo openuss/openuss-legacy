@@ -48,6 +48,17 @@
 					<p class="content_font_normal"><h:outputText
 						value="#{appointmentInfo.description}" /></p>
 				</c:if>
+				<p class="content_font_normal">
+					<h:outputText value="#{msg.openuss4us_calendar_appointment_type}: " />
+					<h:outputText value="#{appointmentInfo.appointmentTypeInfo.name}" /><br />
+				<h:outputText
+					value="#{msg.openuss4us_calendar_type_user}"
+					rendered="#{appointmentInfo.calendarType eq 'USER'}" /> <h:outputText
+					value="#{msg.openuss4us_calendar_type_group}"
+					rendered="#{appointmentInfo.calendarType eq 'GROUP'}" /> <h:outputText
+					value="#{msg.openuss4us_calendar_type_course}"
+					rendered="#{appointmentInfo.calendarType eq 'COURSE'}" />
+				</p>
 				<p class="content_font_normal"><h:outputText
 					value="#{msg.openuss4us_calendar_appointment_time}: "
 					rendered="#{not views$secured$calendar$viewappointmentdetails.serial}" />
@@ -64,16 +75,9 @@
 				</h:outputText> <h:outputText value="#{appointmentInfo.endtime}"
 					rendered="#{views$secured$calendar$viewappointmentdetails.sameDay}">
 					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
-				</h:outputText></p>
-				<p class="content_font_normal"><h:outputText
-					value="#{msg.openuss4us_calendar_type_user}"
-					rendered="#{appointmentInfo.calendarType eq 'USER'}" /> <h:outputText
-					value="#{msg.openuss4us_calendar_type_group}"
-					rendered="#{appointmentInfo.calendarType eq 'GROUP'}" /> <h:outputText
-					value="#{msg.openuss4us_calendar_type_course}"
-					rendered="#{appointmentInfo.calendarType eq 'COURSE'}" /></p>
+				</h:outputText>
 				<c:if test="#{views$secured$calendar$viewappointmentdetails.serial}">
-					<p class="content_font_normal"><h:outputText
+					<h:outputText
 						value="#{msg.openuss4us_calendar_last_occurence}: " /><h:outputText
 						value="#{appointmentInfo.recurrenceEndtime}" /> <br />
 					<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
@@ -108,8 +112,8 @@
 						escape="false"
 						rendered="#{(appointmentInfo.recurrenceType eq 'YEARLY') and (not (appointmentInfo.recurrencePeriod eq 1))}">
 						<f:param value="#{appointmentInfo.recurrencePeriod}" />
-					</h:outputFormat></p>
-				</c:if>
+					</h:outputFormat>
+				</c:if></p>
 				<c:if test="#{not empty appointmentInfo.location}">
 					<p class="content_font_normal"><h:outputText
 						value="#{msg.openuss4us_calendar_location}: #{appointmentInfo.location}" /></p>
@@ -159,16 +163,14 @@
 					hasPermission="#{ACL.UPDATE}">
 					<h:commandButton action="delete_appointment"
 						value="#{msg.openuss4us_calendar_button_delete}"
-						styleClass="button_back"
-						rendered="#{calendarInfo.id eq appointmentInfo.calendarId}" />
+						styleClass="button_back" />
 				</s:acl>
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
 					hasPermission="#{ACL.UPDATE}">
 					<h:commandButton
 						action="#{views$secured$calendar$viewappointmentdetails.update}"
 						value="#{msg.openuss4us_calendar_button_update_appointment}"
-						styleClass="button_back"
-						rendered="#{calendarInfo.id eq appointmentInfo.calendarId}" />
+						styleClass="button_back" />
 				</s:acl>
 			</o:block>
 		</h:form>

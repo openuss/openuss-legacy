@@ -169,7 +169,7 @@
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
-					<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.DELETE}">
+					<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.UPDATE}">
 				<h:commandButton id="reallydelete" action="#{views$secured$calendar$viewappointmentdetails.delete}"
 					value="#{msg.openuss4us_calendar_button_delete}" styleClass="button_warning" />	
 				</s:acl>

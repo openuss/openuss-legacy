@@ -120,12 +120,12 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	}
 
 	public boolean isSameDay() {
-		return (appointmentInfo.getStarttime().getYear() == appointmentInfo
-				.getEndtime().getYear())
+		return (appointmentInfo.getStarttime().getDate() == appointmentInfo
+				.getEndtime().getDate())
 				&& (appointmentInfo.getStarttime().getMonth() == appointmentInfo
 						.getEndtime().getMonth())
-				&& (appointmentInfo.getStarttime().getDate() == appointmentInfo
-						.getEndtime().getDate());
+				&& (appointmentInfo.getStarttime().getYear() == appointmentInfo
+						.getEndtime().getYear());
 	}
 
 	public String delete() {

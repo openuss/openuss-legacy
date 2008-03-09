@@ -100,10 +100,6 @@ public class CalendarMainPage extends AbstractCalendarPage {
 		newCrumb.setName(i18n("openuss4us_command_groups"));
 		newCrumb.setHint(i18n("openuss4us_command_groups"));
 		breadcrumbs.addCrumb(newCrumb);
-	
-//		CalendarInfo calendarInfo = calendarService.getCalendar(user);
-//		setSessionBean(Constants.CALENDAR_INFO, calendarInfo);	
-
 	}
 	
 	public String changeSubscription(){

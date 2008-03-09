@@ -15,6 +15,7 @@
 	<c:if test="${not empty appointmentInfo.description}"><ui:insert />
 		<div class="description"><h:outputText value="${appointmentInfo.description}"><ui:insert /></h:outputText></div>
 	</c:if>
+	<span class="category">${appointmentInfo.appointmentTypeInfo.name}</span>
 	</div>
 </ui:composition>
 </html>
