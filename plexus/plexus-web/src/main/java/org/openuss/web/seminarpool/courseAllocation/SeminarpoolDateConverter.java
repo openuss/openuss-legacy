@@ -15,7 +15,7 @@ import org.apache.shale.tiger.register.FacesConverter;
 @FacesConverter(value = "seminarpoolDateConverter")
 public class SeminarpoolDateConverter implements Converter {
 
-	private static final String datePattern = "dd.MM.yyyy HH:mm";
+	private static final String datePattern = "HH:mm";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
 
 	

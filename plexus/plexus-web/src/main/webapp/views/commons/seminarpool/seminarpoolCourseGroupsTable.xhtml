@@ -46,10 +46,11 @@
 				<plexus:column header="#{msg.commands_header}">				
 						<plexus:command 
 							bean="#{views$commons$seminarpool$seminarpoolCourseGroupsTable}"
+							onclick="if (!confirm('#{msg.seminarpoolseminar_remove_confirmation}')) return false"
 							action="removeCurrentCourseGroup"
 							label="#{msg.seminarpool_add_course_allocation_remove_group}"
 							title="#{msg.seminarpool_add_course_allocation_remove_group}"
-							styleClass="icon_bookmark_remove"
+							styleClass="icon_remove"
 							>
 						</plexus:command>
 				</plexus:column>		

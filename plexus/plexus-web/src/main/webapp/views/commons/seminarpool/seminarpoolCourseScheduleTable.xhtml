@@ -24,7 +24,7 @@
 								label="#{msg.seminarpool_add_course_schedule_add_header}" 
 								value="views$commons$seminarpool$seminarpoolCourseScheduleTable.courseScheduleOverview" 
 								var="bean" 
-								columnClasses="col_max_left, col_max_left, col_commands"
+								columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
 								rows="20">
 								<t:column>
 									<plexus:commandSortHeader columnName="start">
@@ -43,13 +43,22 @@
 										<f:converter converterId="seminarpoolDateConverter" />
 									</h:outputText>
 								</t:column>
+								<t:column>
+									<plexus:commandSortHeader columnName="end">
+										#{msg['seminarpool_add_course_schedule_edit_weekday']}
+									</plexus:commandSortHeader>
+									<h:outputText value="#{bean.dayOfWeek}">
+										<f:converter converterId="dayOfWeekConverter" />
+									</h:outputText>
+								</t:column>
 								<plexus:column header="#{msg.commands_header}">				
 									<plexus:command 
 										bean="#{views$commons$seminarpool$seminarpoolCourseScheduleTable}"
+										onclick="if (!confirm('#{msg.seminarpoolseminar_remove_confirmation}')) return false"
 										action="removeCurrentCourseSchedule"
 										label="#{msg.seminarpool_add_course_allocation_remove_time}"
 										title="#{msg.seminarpool_add_course_allocation_remove_time}"
-										styleClass="icon_bookmark_remove"
+										styleClass="icon_remove"
 										>
 								</plexus:command>
 								</plexus:column>

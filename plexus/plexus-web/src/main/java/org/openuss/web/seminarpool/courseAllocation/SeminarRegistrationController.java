@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.event.ValueChangeEvent;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -11,11 +13,11 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
-import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.seminarpool.CourseGroupInfo;
 import org.openuss.seminarpool.CourseScheduleInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
+import org.openuss.seminarpool.DayOfWeek;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
 import org.openuss.web.BasePage;
@@ -49,9 +51,12 @@ public class SeminarRegistrationController extends BasePage {
 	public Date endTime;
 	
 	private int courseGroupCapacity;
-
+	
+	private Integer weekDay;
+	
 	
 	public String start(){
+		
 		if (courseSeminarpoolAllocationInfo == null){
 			courseSeminarpoolAllocationInfo = new CourseSeminarpoolAllocationInfo();
 			setSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO, courseSeminarpoolAllocationInfo);
@@ -119,6 +124,7 @@ public class SeminarRegistrationController extends BasePage {
 		CourseScheduleInfo courseScheduleInfo = new CourseScheduleInfo();
 		courseScheduleInfo.setStartTime(startTime);
 		courseScheduleInfo.setEndTime(endTime);
+		courseScheduleInfo.setDayOfWeek(DayOfWeek.fromInteger(weekDay));
 		courseGroupInfoList.get(groupIndex).getCourseSchedule().add(courseScheduleInfo);
 		courseGroupInfoList.get(groupIndex).setIsTimeSet(true);
 		setSessionBean("SEMINARPOOL_COURSE_GROUPS_COLLECTION", courseGroupInfoList);
@@ -138,6 +144,7 @@ public class SeminarRegistrationController extends BasePage {
 		CourseScheduleInfo courseScheduleInfo = new CourseScheduleInfo();
 		courseScheduleInfo.setStartTime(startTime);
 		courseScheduleInfo.setEndTime(endTime);
+		courseScheduleInfo.setDayOfWeek(DayOfWeek.fromInteger(weekDay));
 		CourseGroupInfo courseGroup = courseGroupInfoList.get(groupIndex);
 		courseGroup.setIsTimeSet(true);
 		courseScheduleInfo.setCourseGroupId(courseGroup.getId());
@@ -153,6 +160,11 @@ public class SeminarRegistrationController extends BasePage {
 //		aktCourseGroupInfo.setCourseSchedule(courseScheduleList);
 		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP2;
 	}
+	
+	public void processWeekdayListener(ValueChangeEvent event) {
+//		weekDay = (DayOfWeek)event.getNewValue();
+	}	
+	
 	
 	/**
 	 * Adds the current course to the selected seminarpool
@@ -183,6 +195,8 @@ public class SeminarRegistrationController extends BasePage {
 			return Constants.SEMINARPOOL_COURSE_ALLOCATION_FINISH;
 		}	
 	}
+	
+
 	
 	private void clearCourseGroupInfoId(Collection<CourseGroupInfo> collection){
 		for(CourseGroupInfo courseGroupInfo: collection){
@@ -278,5 +292,13 @@ public class SeminarRegistrationController extends BasePage {
 
 	public void setDesktopService2(DesktopService2 desktopService2) {
 		this.desktopService2 = desktopService2;
+	}
+
+	public Integer getWeekDay() {
+		return weekDay;
+	}
+
+	public void setWeekDay(Integer weekDay) {
+		this.weekDay = weekDay;
 	}
 }
