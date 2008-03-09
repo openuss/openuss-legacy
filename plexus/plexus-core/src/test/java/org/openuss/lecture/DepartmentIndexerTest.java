@@ -78,6 +78,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.clas
 			"classpath*:applicationContext-messaging.xml",
 			"classpath*:applicationContext-resources.xml",
 			"classpath*:applicationContext-aop.xml",
+			"classpath*:applicationContext-events.xml",
 			"classpath*:testContext.xml", 
 			"classpath*:testSecurity.xml", 
 			"classpath*:testDataSource.xml"};

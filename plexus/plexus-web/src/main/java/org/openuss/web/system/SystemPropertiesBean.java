@@ -22,35 +22,35 @@ public class SystemPropertiesBean {
 	@Property(value="#{systemService}")
 	private SystemService systemService;
 	
-	public String getDOCUMENTATION_URL() {
+	public String getDOCUMENTATION_URL() { //NOPMD
 		return value(SystemProperties.DOCUMENTATION_URL);
 	}
 
-	public String getSUPPORT_URL() {
+	public String getSUPPORT_URL() { //NOPMD
 		return value(SystemProperties.SUPPORT_URL);
 	}
 
-	public String getBUGTRACKING_URL() {
+	public String getBUGTRACKING_URL() { //NOPMD
 		return value(SystemProperties.BUGTRACKING_URL);
 	}
 
-	public String getIMPRESSUM_TEXT() {
+	public String getIMPRESSUM_TEXT() { //NOPMD
 		return value(SystemProperties.IMPRESSUM_TEXT);
 	}
 	
-	public String getPROVIDER_URL() {
+	public String getPROVIDER_URL() { //NOPMD
 		return value(SystemProperties.PROVIDER_URL);
 	}
 
-	public String getOPENUSS_SERVER_URL() {
+	public String getOPENUSS_SERVER_URL() { //NOPMD
 		return value(SystemProperties.OPENUSS_SERVER_URL);
 	}
 
-	public String getGETTING_STARTED() {
+	public String getGETTING_STARTED() { //NOPMD
 		return value(SystemProperties.GETTING_STARTED);
 	}
 	
-	public String getOPENUSS_INSTANCE_ID() {
+	public String getOPENUSS_INSTANCE_ID() { //NOPMD
 		try {
 			return systemService.getInstanceIdentity().toString();
 		} catch (Exception e) {

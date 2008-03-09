@@ -283,7 +283,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 	public void testFindInstitute() {
 		logger.debug("----> BEGIN access to findInstitute test <---- ");
-
+		testUtility.createUserSecureContext();
+		
 		// Create institutes
 		Institute institute = testUtility.createUniqueInstituteInDB();
 		institute.setEnabled(true);
@@ -460,6 +461,22 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		 */
 		logger.info("----> END access to findApplicationByInstitute test");
 	}
+	
+	protected String[] getConfigLocations() {
+		return new String[] { 
+			"classpath*:applicationContext.xml", 
+			"classpath*:applicationContext-beans.xml",
+			"classpath*:applicationContext-lucene.xml",
+			"classpath*:applicationContext-cache.xml", 
+			"classpath*:applicationContext-messaging.xml",
+			"classpath*:applicationContext-resources.xml",
+			"classpath*:applicationContext-aop.xml",
+			"classpath*:applicationContext-events.xml",
+			"classpath*:testContext.xml", 
+			"classpath*:testSecurity.xml", 
+			"classpath*:testDataSource.xml"};
+	}
+
 
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;

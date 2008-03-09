@@ -155,7 +155,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	public CourseBean getCourse(final long courseId) throws LectureLogicException {
 		Validate.notNull(courseId, "Parameter courseId must not be null.");
 
-		CourseInfo courseInfo = courseService.getCourseInfo(courseId);
+		CourseInfo courseInfo = courseService.findCourse(courseId);
 
 		CourseBean course = null;
 		if (courseInfo != null) {
@@ -175,7 +175,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 		Validate.notNull(role, "Parameter role must not be null.");
 		UserInfo user = securityService.getUser(userId);
 		Validate.notNull(user, "User not found.");
-		CourseInfo course = courseService.getCourseInfo(courseId);
+		CourseInfo course = courseService.findCourse(courseId);
 		Validate.notNull(course, "Course not found.");
 
 		if (role == Role.ASSISTANT) {
@@ -191,7 +191,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	public boolean removeCourseMember(final long courseId, final long userId) throws LectureLogicException {
 		UserInfo user = securityService.getUser(userId);
 		Validate.notNull(user, "User not found.");
-		CourseInfo course = courseService.getCourseInfo(courseId);
+		CourseInfo course = courseService.findCourse(courseId);
 		Validate.notNull(course, "Course not found.");
 
 		CourseMemberInfo member = courseService.getMemberInfo(course, user);
@@ -204,7 +204,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 	@Override
 	public Role isCourseMember(final long courseId, final long userId) throws LectureLogicException {
 		UserInfo user = securityService.getUser(userId);
-		CourseInfo course = courseService.getCourseInfo(courseId);
+		CourseInfo course = courseService.findCourse(courseId);
 
 		CourseMemberInfo member = courseService.getMemberInfo(course, user);
 

@@ -993,7 +993,7 @@
 		<site>
 			<id>openuss-site</id>
 			<name>OpenUSS Website</name>
-			<url>scpexe://teamopenuss.uni-muenster.de/</url>
+			<url>scpexe://openuss.sourceforge.net/plexus</url>
 		</site>
 	</distributionManagement>
 	<properties>

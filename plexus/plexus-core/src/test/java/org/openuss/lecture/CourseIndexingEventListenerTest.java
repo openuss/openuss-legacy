@@ -2,8 +2,8 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
-import org.openuss.aop.CourseIndexingAspect;
 import org.openuss.foundation.DomainObject;
+import org.openuss.lecture.events.CourseIndexingEventListener;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
@@ -15,13 +15,13 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests  {
+public class CourseIndexingEventListenerTest extends AbstractTransactionalDataSourceSpringContextTests  {
 
-	private static final Logger logger = Logger.getLogger(CourseIndexingAspectTest.class);
+	private static final Logger logger = Logger.getLogger(CourseIndexingEventListenerTest.class);
 	
 	private CourseService courseService;
 	private CourseDao courseDao;
-	private CourseIndexingAspect courseIndexAspectBean;
+	private CourseIndexingEventListener courseIndexEventListener;
 	private IndexerServiceMock indexerMock ;
 
 	private TestUtility testUtility;
@@ -30,7 +30,7 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		indexerMock = new IndexerServiceMock();
-		courseIndexAspectBean.setIndexerService(indexerMock);
+		courseIndexEventListener.setIndexerService(indexerMock);
 	}
 
 	public void testLectureIndex() throws Exception {
@@ -81,21 +81,12 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-events.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};
 	}
 
-	public CourseIndexingAspect getCourseIndexAspectBean() {
-		return courseIndexAspectBean;
-	}
-
-	public void setCourseIndexAspectBean(CourseIndexingAspect courseIndexAspectBean) {
-		this.courseIndexAspectBean = courseIndexAspectBean;
-	}
-
-	
 	private static class IndexerServiceMock implements IndexerService {
 		
 		private int create;
@@ -146,5 +137,13 @@ public class CourseIndexingAspectTest extends AbstractTransactionalDataSourceSpr
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
+	}
+
+	public CourseIndexingEventListener getCourseIndexEventListener() {
+		return courseIndexEventListener;
+	}
+
+	public void setCourseIndexEventListener(CourseIndexingEventListener courseIndexEventListener) {
+		this.courseIndexEventListener = courseIndexEventListener;
 	}
 }

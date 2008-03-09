@@ -10,7 +10,6 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.LectureService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
@@ -19,13 +18,11 @@ import org.openuss.web.Constants;
 
 /**
  * @author Kai Stettner
+ * @author Ingo Düppe
  */
 public class AbstractCoursePage extends BasePage {
 	private static final long serialVersionUID = 1394531398550932611L;
 
-	@Property(value = "#{lectureService}")
-	protected LectureService lectureService;
-	
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
 	
@@ -70,7 +67,7 @@ public class AbstractCoursePage extends BasePage {
 			return;
 		} else {
 			if (courseInfo.getCourseTypeId()==null){
-				courseInfo = getCourseService().getCourseInfo(courseInfo.getId());
+				courseInfo = getCourseService().findCourse(courseInfo.getId());
 			}
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
 			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
@@ -168,13 +165,4 @@ public class AbstractCoursePage extends BasePage {
 		this.periodInfo = periodInfo;
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-
-	
 }

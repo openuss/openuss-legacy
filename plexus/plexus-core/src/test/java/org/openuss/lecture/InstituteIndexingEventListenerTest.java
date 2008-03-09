@@ -2,8 +2,8 @@ package org.openuss.lecture;
 
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
-import org.openuss.aop.InstituteIndexingAspect;
 import org.openuss.foundation.DomainObject;
+import org.openuss.lecture.events.InstituteIndexingEventListener;
 import org.openuss.search.IndexerApplicationException;
 import org.openuss.search.IndexerService;
 import org.openuss.security.User;
@@ -16,15 +16,15 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
  * @author Ingo Dueppe
  * @author Kai Stettner
  */
-public class InstituteIndexingAspectTest extends AbstractTransactionalDataSourceSpringContextTests {
+public class InstituteIndexingEventListenerTest extends AbstractTransactionalDataSourceSpringContextTests {
 
-	private static final Logger logger = Logger.getLogger(InstituteIndexingAspectTest.class);
+	private static final Logger logger = Logger.getLogger(InstituteIndexingEventListenerTest.class);
 		
 	private InstituteService instituteService;
 	
 	private InstituteDao instituteDao;
 	
-	private InstituteIndexingAspect instituteIndexAspectBean;
+	private InstituteIndexingEventListener instituteIndexEventListener;
 
 	private IndexerServiceMock indexerMock ;
 	
@@ -34,7 +34,7 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
 		indexerMock = new IndexerServiceMock();
-		instituteIndexAspectBean.setIndexerService(indexerMock);
+		instituteIndexEventListener.setIndexerService(indexerMock);
 	}
 
 	public void testLectureIndex() throws Exception {
@@ -94,18 +94,19 @@ public class InstituteIndexingAspectTest extends AbstractTransactionalDataSource
 				"classpath*:applicationContext-cache.xml", 
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-aop.xml",
+//				"classpath*:applicationContext-aop.xml",
+				"classpath*:applicationContext-events.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testSecurity.xml", 
 				"classpath*:testDataSource.xml"};
 	}
 
-	public InstituteIndexingAspect getInstituteIndexAspectBean() {
-		return instituteIndexAspectBean;
+	public InstituteIndexingEventListener getInstituteIndexEventListener() {
+		return instituteIndexEventListener;
 	}
 
-	public void setInstituteIndexAspectBean(InstituteIndexingAspect instituteIndexAspectBean) {
-		this.instituteIndexAspectBean = instituteIndexAspectBean;
+	public void setInstituteIndexAspectBean(InstituteIndexingEventListener instituteIndexEventListener) {
+		this.instituteIndexEventListener = instituteIndexEventListener;
 	}
 
 	

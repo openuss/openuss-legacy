@@ -9,8 +9,8 @@ import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.lecture.Institute;
-import org.openuss.lecture.LectureService;
-import org.openuss.lecture.LectureServiceException;
+import org.openuss.lecture.InstituteService;
+import org.openuss.lecture.InstituteServiceException;
 import org.openuss.security.Group;
 import org.openuss.security.GroupDao;
 import org.openuss.security.Roles;
@@ -29,7 +29,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	private static final Logger logger = Logger.getLogger(AclPermissionIntegrationTest.class);
 
-	private LectureService lectureService;
+	private InstituteService instituteService;
 	private UserDao userDao;
 	private GroupDao groupDao;
 
@@ -58,13 +58,13 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 
 	public void testAclAccessDeniedMethodInvocation() {
 		try {
-			lectureService.getInstitute(institute.getId());
+			instituteService.findInstitute(institute.getId());
 			fail();
 		} catch (AcegiSecurityException ase) {
 			logger.error(ase);
-		} catch (LectureServiceException e) {
-			fail(e.getMessage());
-			e.printStackTrace();
+		} catch (InstituteServiceException ise) {
+			fail(ise.getMessage());
+			ise.printStackTrace();
 		}
 	}
 
@@ -80,12 +80,12 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		objectIdentityDao.create(oi);
 
 		try {
-			lectureService.getInstitute(institute.getId());
+			instituteService.findInstitute(institute.getId());
 			fail();
 		} catch (AcegiSecurityException ase) {
 			logger.info("access denied");
-		} catch (LectureServiceException e) {
-			fail(e.getMessage());
+		} catch (InstituteServiceException ise) {
+			fail(ise.getMessage());
 		}
 
 		oi.addPermission(permission);
@@ -93,12 +93,12 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		permissionDao.create(permission);
 
 		try {
-			lectureService.getInstitute(institute.getId());
+			instituteService.findInstitute(institute.getId());
 			logger.info("access granted");
-		} catch (AcegiSecurityException e) {
-			logger.error(e);
-			fail(e.getMessage());
-		} catch (LectureServiceException e) {
+		} catch (AcegiSecurityException ase) {
+			logger.error(ase);
+			fail(ase.getMessage());
+		} catch (InstituteServiceException ise) {
 			logger.info("access granted");
 		}
 	}
@@ -128,12 +128,12 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		institute2.setId(oid);
 
 		try {
-			lectureService.getInstitute(institute.getId());
+			instituteService.findInstitute(institute.getId());
 			logger.info("access granted");
-		} catch (AcegiSecurityException e) {
-			logger.error(e);
-			fail(e.getMessage());
-		} catch (LectureServiceException e) {
+		} catch (AcegiSecurityException ase) {
+			logger.error(ase);
+			fail(ase.getMessage());
+		} catch (InstituteServiceException ise) {
 			logger.info("access granted");
 		}
 	}
@@ -161,11 +161,11 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		institute2.setId(oid);
 
 		try {
-			lectureService.getInstitute(institute.getId());
+			instituteService.findInstitute(institute.getId());
 			logger.info("access granted");
-		} catch (Exception e) {
-			logger.error(e);
-			fail(e.getMessage());
+		} catch (Exception exception) {
+			logger.error("Exception occure during findInstitute", exception);
+			fail(exception.getMessage());
 		}
 	}
 	
@@ -214,17 +214,18 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 				"classpath*:applicationContext-messaging.xml",
 				"classpath*:applicationContext-resources.xml",
 //				"classpath*:applicationContext-aop.xml",
+//				"classpath*:applicationContext-events.xml",
 				"classpath*:testContext.xml", 
-				"classpath*:testSecurity.xml", 
+				"classpath*:testAclSecurity.xml", 
 				"classpath*:testDataSource.xml"};
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
+	public InstituteService getInstituteService() {
+		return instituteService;
 	}
 
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 
 	public GroupDao getGroupDao() {
