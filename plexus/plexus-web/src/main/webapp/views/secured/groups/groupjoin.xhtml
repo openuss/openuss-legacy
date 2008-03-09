@@ -2,55 +2,66 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:c="http://java.sun.com/jstl/core"
-      xmlns:news="http://www.openuss.org/news/jsf"
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
-      
- 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>
-			<ui:insert name="title"/>
-		</title>
-		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
-	</head>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
-	<body>
-	
-	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/layout.xhtml">
-  		<ui:define name="title">
-			<h:outputText value="#{msg['openuss4us_command_groups']}" />
-  		</ui:define>
-  		<ui:define name="navigation">  			
-			<ui:include src="/views/commons/navigation/desktop.xhtml" />
-  		</ui:define>
-  		<ui:define name="sidebar">  			
-			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
-			<ui:include src="/views/commons/sidebar/default.xhtml" />
-  		</ui:define>
-  		<ui:define name="content">
-			<h:form id="openuss4us_groups" enctype="multipart/form-data">
-		
-				<ui:include src="groupsjointable.xhtml" />
-				
-   			 	<o:block>
-   			 	
-   			 	<h:commandButton 
-   			 		value="#{msg.back}" 
-   			 		action="view:backward" 
-   			 		styleClass="button_back" 
-   			 		immediate="true" />
-   			 	
-		 		</o:block>
-	 		</h:form> 
-  		</ui:define>
-	</ui:composition>
-	<!-- text above will be ignored -->
-	</body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['openuss4us_command_groups']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="openuss4us_groups" enctype="multipart/form-data">
+
+			<ui:include src="groupsjointable.xhtml" />
+
+			<o:block label="#{msg.openuss4us_find_group_label}"
+				styleClass="form_box">
+				<p class="content_font_normal"><o:input
+					entity="views$secured$groups$groupjoin" property="groupname"
+					styleClass="field" /></p>
+			</o:block>
+
+			<o:block>
+				<h:commandButton id="getGroupButton"
+					action="#{views$secured$groups$groupjoin.findGroup}"
+					value="#{msg.openuss4us_find_group}"
+					hint="#{msg.openuss4us_find_group}" styleClass="button_big" />
+				<h:commandButton id="getAllGroupsButton"
+					action="#{views$secured$groups$groupjoin.getAllGroups}"
+					value="#{msg.openuss4us_find_allgroups}"
+					hint="#{msg.openuss4us_find_allgroups}"
+					styleClass="button_continue" />
+				<h:commandButton id="backButton" value="#{msg.back}"
+					action="view:backward" styleClass="button_back" immediate="true" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
 </html>

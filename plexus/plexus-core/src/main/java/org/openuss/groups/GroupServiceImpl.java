@@ -533,6 +533,22 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		}
 		return groupList;
 	}
+	
+
+	/**
+	 * @see org.openuss.groups.GroupService#getGroupByNameOrShortcut(java.long.String)
+	 */
+	protected List<UserGroupInfo> handleGetGroupByNameOrShortcut(String name) throws Exception {
+		Validate.notNull(name, "Name cannot be null.");
+		Collection<UserGroup> userGroups = getUserGroupDao().loadAll();
+		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
+		for (UserGroup userGroup : userGroups) {
+			if ((userGroup.getShortcut().contentEquals(name)) || (userGroup.getName().contains(name))){
+				group.add(getUserGroupDao().toUserGroupInfo(userGroup));
+			}
+		}
+		return group;
+	}
 
 	/**
 	 * @see org.openuss.groups.GroupService#getGroupInfo(java.lang.Long)

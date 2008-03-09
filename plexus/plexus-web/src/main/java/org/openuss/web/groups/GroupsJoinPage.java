@@ -28,6 +28,7 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;
 	private List<UserGroupInfo> groups;
+	private String groupname;
 
 	/* ----- private classes ----- */
 
@@ -39,7 +40,7 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 		public DataPage<UserGroupInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group list");
-				List<UserGroupInfo> groups = getGroups();
+				getGroups(null);
 				page = new DataPage<UserGroupInfo>(groups.size(), 0, groups);
 				sort(groups);
 			}
@@ -54,8 +55,6 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 	public void prerender() throws Exception {
 		super.prerender();
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(contextPath()
-				+ "/views/secured/groups/groupjoin.faces");
 		newCrumb.setName(i18n("openuss4us_command_groups_join"));
 		newCrumb.setHint(i18n("openuss4us_command_groups_join"));
 		breadcrumbs.addCrumb(newCrumb);
@@ -76,19 +75,50 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 		groups = null;
 	}
 
-	private List<UserGroupInfo> getGroups() {
-		if (groups == null) {
-			groups = groupService.getAllGroups();
-			List<UserGroupInfo> userGroups = groupService.getGroupsByUser(user
-					.getId());
-			groups.removeAll(userGroups);
-			for (UserGroupInfo group : groups) {
-				logger.debug("Gruppe Creator: " + group.getCreator() + " - "
-						+ group.getCreatorName());
-			}
-		}
+	public String getAllGroups() {
+		groups = null;
+		groupname = null;
+		getGroups(null);
+		page = null;
+		page = new DataPage<UserGroupInfo>(groups.size(), 0, groups);
+		groupname=null;
+		return Constants.OPENUSS4US_GROUPS_JOIN;
+	}
 
-		return groups;
+	public String findGroup() {
+		groups=null;
+		getGroups(groupname);
+		if(groups.size() == 1){
+			UserGroupInfo group = getGroupService().getGroupInfo(groups.get(0).getId());
+			setSessionAttribute(Constants.GROUP_INFO, group);
+			return Constants.GROUP_PAGE;
+		}
+		page = null;
+		page = new DataPage<UserGroupInfo>(groups.size(), 0, groups);
+		groupname = null;
+		if (groups.size() == 0){
+			addError(i18n("group_search_no_group_found"));
+		}
+		if (groups.size() > 1){
+			addMessage(i18n("group_search_more_than_one"));
+		}
+		return Constants.OPENUSS4US_GROUPS_JOIN;
+	}
+
+	private void getGroups(String name) {
+		groups = null;
+		if (name == null) {
+			groups = groupService.getAllGroups();
+		} else {
+			groups = groupService.getGroupByNameOrShortcut(name);
+		}
+		List<UserGroupInfo> userGroups = groupService.getGroupsByUser(user
+				.getId());
+		groups.removeAll(userGroups);
+		for (UserGroupInfo group : groups) {
+			logger.debug("Gruppe Creator: " + group.getCreator() + " - "
+					+ group.getCreatorName());
+		}
 	}
 
 	/* ----- getter and setter ----- */
@@ -99,6 +129,14 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 
 	public void setData(GroupsDataProvider data) {
 		this.data = data;
+	}
+
+	public String getGroupname() {
+		return groupname;
+	}
+
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
 	}
 
 }
