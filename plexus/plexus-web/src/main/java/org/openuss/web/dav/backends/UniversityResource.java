@@ -21,12 +21,15 @@ import org.springframework.web.context.WebApplicationContext;
  */
 public class UniversityResource extends AbstractOrganisationResource {
 	protected DepartmentService departmentService;
-	protected Collection<DepartmentInfo> subDepartments = null;
-	protected final UniversityInfo ui;
+	/**
+	 * Cache for the organization unit info objects contained in this one.
+	 */
+	protected Collection<DepartmentInfo> childrenData = null;
+	protected final UniversityInfo info;
 	
 	public UniversityResource(WebApplicationContext wac, WebDAVPath path, UniversityInfo ui) {
 		super(wac, path, ui.getId());
-		this.ui = ui;
+		this.info = ui;
 		
 		departmentService = (DepartmentService) getWAC().getBean(Constants.DEPARTMENT_SERVICE, DepartmentService.class);
 	}
@@ -36,21 +39,21 @@ public class UniversityResource extends AbstractOrganisationResource {
 	 */
 	@Override
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
-		DepartmentInfo di = null;
+		DepartmentInfo resInfo = null;
 		
 		if (id != ID_NONE) {
-			di = departmentService.findDepartment(id);
+			resInfo = departmentService.findDepartment(id);
 		} else {
-			for (DepartmentInfo adi : getSubDepartments()) {
-				if (name.equals(sanitizeName(DepartmentResource.getNameByData(adi)))) {
-					di = adi;
+			for (DepartmentInfo childData : getSubDepartments()) {
+				if (name.equals(sanitizeName(DepartmentResource.getNameByData(childData)))) {
+					resInfo = childData;
 					break;
 				}
 			}
 		}
 		
-		if (di != null) {
-			return new DepartmentResource(getWAC(), path, di);
+		if (resInfo != null) {
+			return new DepartmentResource(getWAC(), path, resInfo);
 		}
 		
 		return null;
@@ -77,7 +80,7 @@ public class UniversityResource extends AbstractOrganisationResource {
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
 		Map<String,String> res = new HashMap<String, String>();
 		if ((propNames == null) || (propNames.contains(WebDAVConstants.XML_DISPLAYNAME))) {
-			res.put(WebDAVConstants.XML_DISPLAYNAME, ui.getName());
+			res.put(WebDAVConstants.XML_DISPLAYNAME, info.getName());
 		}
 		
 		return res;
@@ -96,11 +99,11 @@ public class UniversityResource extends AbstractOrganisationResource {
 	 */
 	@SuppressWarnings("unchecked")
 	protected Collection<DepartmentInfo> getSubDepartments() {
-		if (subDepartments == null) {
-			subDepartments = departmentService.findDepartmentsByUniversityAndEnabled(getId(), true);
+		if (childrenData == null) {
+			childrenData = departmentService.findDepartmentsByUniversityAndEnabled(getId(), true);
 		}
 		
-		return subDepartments;
+		return childrenData;
 	}
 	
 	/**
@@ -108,6 +111,6 @@ public class UniversityResource extends AbstractOrganisationResource {
 	 * @return The (raw) name to use in the WebDAV context. 
 	 */
 	public static String getNameByData(UniversityInfo info) {
-		return info.getShortName();
+		return info.getShortName() + " äöüß"; // TODO removeme
 	}
 }

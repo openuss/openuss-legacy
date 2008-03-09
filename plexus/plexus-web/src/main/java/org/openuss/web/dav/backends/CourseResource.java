@@ -44,7 +44,6 @@ public class CourseResource extends AbstractOrganisationResource{
 		return true;
 	}
 
-
 	/**
 	 * @param info The info object of the organisation to represent.  
 	 * @return The (raw) name to use in the WebDAV context. 

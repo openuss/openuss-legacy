@@ -51,6 +51,7 @@ public class RootResource extends AbstractOrganisationResource {
 		return new RootResource(wac, WebDAVPathImpl.getRoot(prefix));
 	}
 	
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
 	 */
@@ -69,6 +70,8 @@ public class RootResource extends AbstractOrganisationResource {
 				}
 			}
 		} else {
+			// TODO add MyUni
+			
 			UniversityInfo ui = universityService.findUniversity(id);
 			
 			if (ui != null) {
