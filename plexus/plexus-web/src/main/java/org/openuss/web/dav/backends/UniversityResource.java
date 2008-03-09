@@ -102,4 +102,12 @@ public class UniversityResource extends AbstractOrganisationResource {
 		
 		return subDepartments;
 	}
+	
+	/**
+	 * @param info The info object of the organisation to represent.  
+	 * @return The (raw) name to use in the WebDAV context. 
+	 */
+	public static String getNameByData(UniversityInfo info) {
+		return info.getShortName();
+	}
 }

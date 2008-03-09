@@ -33,7 +33,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 
-
 /**
  * This is the entry point for WebDAV requests.
  * To configure the path of the WebDAV namespace, change web.xml. 

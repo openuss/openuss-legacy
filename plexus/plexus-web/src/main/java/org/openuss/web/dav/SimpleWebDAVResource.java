@@ -235,6 +235,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		checkWritable();
 		
+		if (req == null) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Empty body in a PROPPATCH request");
+		}
+		
 		Node updateNode = null;
 		NodeList rootNodeList = req.getChildNodes();
 		for (int i = 0;i < rootNodeList.getLength();i++) {

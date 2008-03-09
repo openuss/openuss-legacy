@@ -3,10 +3,8 @@ package org.openuss.webdav;
 /**
  * Constants as defined in RFC2518.
  * 
- * @see WebDAVStatusCodes for WebDAV/HTTP status codes (200, 404, ...)
+ * @see WebDAVStatusCodes for WebDAV/HTTP status codes (207, 404, ...)
  * @see WebDAVMethods for WebDAV/HTTP request methods (GET, PROPFIND, ...)
- * @author David Ullrich <lechuck@uni-muenster.de>
- * @version 2.0
  */
 public class WebDAVConstants {
 	// header values
@@ -82,6 +80,7 @@ public class WebDAVConstants {
 	public final static String XML_ALLPROP = "allprop";
 	public final static String XML_COLLECTION = "collection";
 	public final static String XML_DEPTH = "depth";
+	public final static String XML_DISPLAYNAME = "displayname";
 	public final static String XML_DST = "dst";
 	public final static String XML_EXCLUSIVE = "exclusive";
 	public final static String XML_GETCONTENTTYPE = "getcontenttype";
