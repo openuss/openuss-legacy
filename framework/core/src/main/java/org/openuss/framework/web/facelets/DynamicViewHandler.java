@@ -20,7 +20,7 @@ public class DynamicViewHandler extends FaceletViewHandler {
 	}
 
 	@Override
-	public String getActionURL(FacesContext context, String viewId) {
+	public String getActionURL(final FacesContext context, final String viewId) {
 		String url = super.getActionURL(context, viewId);
 		String parameters = getParameterString(viewId);
 		if (parameters.length() > 0) {
@@ -35,7 +35,7 @@ public class DynamicViewHandler extends FaceletViewHandler {
 		return Pages.instance().encodePageParameters(context, url, viewId);
 	}
 	
-	private String getPath(String url) {
+	private String getPath(final String url) {
 		String path = url;
 		int paramIndex = url.indexOf('?');
 		if (paramIndex > -1) {
@@ -44,7 +44,7 @@ public class DynamicViewHandler extends FaceletViewHandler {
 		return path;
 	}
 
-	private String getParameterString(String url) {
+	private String getParameterString(final String url) {
 		String parameters = "";
 		int paramIndex = url.indexOf('?');
 		if (paramIndex > -1) {
@@ -60,7 +60,7 @@ public class DynamicViewHandler extends FaceletViewHandler {
 	 *            The expression to test for value bindingness
 	 * @return true iff the expression contains a VB expression
 	 */
-	public boolean isVBExpression(String expression) {
+	public boolean isVBExpression(final String expression) {
 		boolean result = false;
 		if (!StringUtils.isBlank(expression)) {
 			// check for #{...}

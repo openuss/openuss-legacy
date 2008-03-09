@@ -5,25 +5,25 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 
 import com.sun.facelets.impl.DefaultResourceResolver;
-import com.sun.facelets.impl.ResourceResolver;
 
-public class ClasspathResourceResolver extends DefaultResourceResolver implements ResourceResolver {
+public class ClasspathResourceResolver extends DefaultResourceResolver {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(ClasspathResourceResolver.class);
 
-	public URL resolveUrl(String path) {
+	public URL resolveUrl(final String path) {
 		if (logger.isTraceEnabled()) {
-			logger.trace("resolveUrl(path=" + path + ") - start"); //$NON-NLS-1$ //$NON-NLS-2$
+			logger.trace("resolveUrl(path=" + path + ") - start"); 
 		}
 
 		URL url = resolveClasspath(Thread.currentThread().getContextClassLoader(), path);
-		if (url == null)
+		if (url == null){
 			url = super.resolveUrl(path);
+		}
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("found url "+url); //$NON-NLS-1$
+			logger.debug("found url "+url); 
 		}
 		return url;
 	}
@@ -32,16 +32,14 @@ public class ClasspathResourceResolver extends DefaultResourceResolver implement
 		return "ClasspathResourceResolver";
 	}
 	
-	public URL resolveClasspath(ClassLoader classLoader, String path) {
+	public URL resolveClasspath(final ClassLoader classLoader, String path) {
 		if (logger.isTraceEnabled()) {
-			logger.trace("resolveClasspath(path=" + path + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			logger.trace("resolveClasspath(path=" + path + ")"); 
 		}
-		
-		if (path.startsWith("/"))
+		if (path.charAt(0) == '/') {
 			path = path.substring(1);
-		URL url = classLoader.getResource(path);
-
-		return url;
+		}
+		return classLoader.getResource(path);
 	}
 	
 }
