@@ -6,6 +6,38 @@ http://www.ericdaugherty.com/java/mailserver
 Revision History
 ----------------
 
+1.6.1 - Release TBD
+
+Updated mail.conf to remove extra trailing semicolin from "smtpdelivery.threshold=10" Thanks to Siegfried Goeschl 
+(siegfried.goeschl@it20one.at).
+
+Updated mail.sh to accept a configuration directory as a command line parameter.  Thanks to Siegfried Goeschl 
+(siegfried.goeschl@it20one.at).
+
+Updated bulid.xml to build with JDK version 1.4 (minimun needed for codebase).  Thanks to Siegfried Goeschl 
+(siegfried.goeschl@it20one.at).
+
+Fixed error in SMTPRemoteSender introduced in release 1.5.  Server would fail to look up MX entries when
+not using a default SMTP server.  Thanks to Philipp Hagemeister for tracking this issue down.
+
+1.6 - Release 11/18/2007
+
+Server adds FROM address if message is received without one (unknown@example.com).  Server would
+accept the messages but throw errors when it tried to deliver them: "Unable to parse the address from the stored file."
+Thanks to Matthew Lohbihler of Serotonin Software (serotoninsoftware.com) for providing this fix.
+
+Added socket timeout to SMTP processor sockets.  This may address issues with threads getting hung in socket.read calls.
+Thanks to Matthew Lohbihler of Serotonin Software (serotoninsoftware.com) for providing this fix.
+
+1.5 - Release 08/05/2007
+
+New Features:
+
+Added the ability to use a default SMTP server that requires authentication.  This
+can be useful if your ISP prohibits outbound connections on port 25 and forces you 
+to authenticate with their default SMTP server.  Thanks to Matthew Lohbihler of 
+Serotonin Software (serotoninsoftware.com) for adding this feature.
+
 1.4 - Release 07/13/2004
 
 New Features:

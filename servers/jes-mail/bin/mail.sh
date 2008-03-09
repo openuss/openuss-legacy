@@ -5,6 +5,11 @@ if [ "$JAVAMAILSERVER_HOME" = "" ] ; then
   JAVAMAILSERVER_HOME=`dirname ${COMMAND}`/..
 fi
 
+if test "$1"; then
+  JAVAMAILSERVER_CONF=$1
+else
+  JAVAMAILSERVER_CONF=$JAVAMAILSERVER_HOME
+fi
 
 for i in ${JAVAMAILSERVER_HOME}/lib/* ; do
   if [ "$LOCALCLASSPATH" != "" ]; then
@@ -14,4 +19,4 @@ for i in ${JAVAMAILSERVER_HOME}/lib/* ; do
   fi
 done
 
-java -cp $LOCALCLASSPATH com.ericdaugherty.mail.server.Mail $JAVAMAILSERVER_HOME
+java -cp $LOCALCLASSPATH com.ericdaugherty.mail.server.Mail $JAVAMAILSERVER_CONF
