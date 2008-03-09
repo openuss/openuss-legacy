@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content"> 
+ 			<h:form id="reg2Form">
+ 				<o:block label="#{msg.ldap_server_registration_step2_headline}" styleClass="form_box">
+					
+					<h:panelGrid border="0" columns="2" footerClass="footer_right">
+						<h:outputText value="#{msg.ldapserverinfo_providerUrl}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.providerurl}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_port}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.port}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_rootdn}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.rootDn}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_authenticationtype}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.authenticationType}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_grouproleattribute}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.groupRoleAttribute}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_managerdn}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.managerDn}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_managerpassword}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.managerPassword}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_description}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.description}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_ldapservertype}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.ldapServerType}" styleClass="field_label" />
+						<h:outputText value="#{msg.ldapserverinfo_authenticationdomainid}" styleClass="field_label" />
+						<h:outputText value="#{LdapServerInfo.authenticationDomainId}" styleClass="field_label" />
+						ausgewaehlte UserDNPatternsListe, enabled, useconnectionpool und useldapcontext	
+					</h:panelGrid>
+					
+				</o:block>
+				<o:block>
+		  			<h:commandButton value="${msg.back}" action="ldap_server_registration_step1" styleClass="button_back" immediate="true"/>
+		  			<h:commandButton value="#{msg.institute_registration_step2_confirm_button}" action="#{ldapServerRegistration.register}" styleClass="button_big"/>
+		  		</o:block>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

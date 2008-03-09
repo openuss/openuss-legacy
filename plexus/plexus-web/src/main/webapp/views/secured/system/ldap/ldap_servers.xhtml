@@ -31,18 +31,18 @@
   			<h:form id="universitiesForm">
 				
 				<plexus:dataTable 
-					id="domain" 
-					label="#{msg.ldap_domainconfiguration_header}" 
-					value="views$secured$system$ldap$ldap_domain.authenticationDomains" 
+					id="department" 
+					label="#{msg.ldap_serverconfiguration_header}" 
+					value="views$secured$system$ldap$ldap_server.ldapServers" 
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 					rows="15">
 					<t:column>
 						<plexus:commandSortHeader columnName="name">
-							#{msg['ldap_domain_name']}
+							#{msg['ldap_server_name']}
 						</plexus:commandSortHeader>
-				        <h:commandLink action="#{views$secured$system$ldap$ldap_domain.selectAuthenticationDomain}" styleClass="command">
-							<h:outputText value="#{bean.name}"/>
+				        <h:commandLink action="#{views$secured$system$ldap$ldap_server.selectLdapServer}" styleClass="command">
+							<h:outputText value="#{bean.providerUrl}"/>
 						</h:commandLink> 
 					</t:column>
 					
@@ -50,8 +50,8 @@
 					<plexus:column header="#{msg.commands_header}">
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_domain}"
-								action = "selectAuthenticationDomainAndConfirmRemove"
+								bean = "#{views$secured$system$ldap$ldap_server}"
+								action = "selectLdapServerAndConfirmRemove"
 								styleClass="icon_remove"
 								label="#{msg.department_command_remove}"
 								title="#{msg.department_command_remove_hint}"/>
@@ -63,10 +63,10 @@
 				<s:authorize ifAllGranted="ROLE_ADMIN">
 	  				<o:block>
 						<h:commandButton 
-					    id="addDomain"
-						action="ldap_domain_registration_start" 
-						value="#{msg.ldap_domain_command_add_ldap_domain}" 
-						title="#{msg.ldap_domain_command_add_ldap_domain_hint}"
+					    id="addServer"
+						action="ldap_server_registration_start" 
+						value="#{msg.ldap_server_command_add_ldap_server}" 
+						title="#{msg.ldap_server_command_add_ldap_server_hint}"
 						styleClass="button_big"/>
 					</o:block>
 				</s:authorize>
