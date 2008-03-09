@@ -120,7 +120,7 @@ public class Constants {
 	// session Entity bean
 	public static final String ATTRIBUTEMAPPING = "attributeMapping";
 
-	// ldap_roleattributekeys navigation outcomes and combobox long constants
+	// ldap_roleattributekey navigation outcomes and combobox long constants
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeyRegistration";
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE = "ldap_roleattributekey_registration_step1";
 	public static final String ROLEATTRIBUTEKEY_INFO = "roleAttributeKeyInfo";
@@ -128,7 +128,7 @@ public class Constants {
 	// session Entity bean
 	public static final String ROLEATTRIBUTEKEY = "roleAttributeKey";
 
-	// ldap_servers navigation outcomes and combobox long constants
+	// ldap_server navigation outcomes and combobox long constants
 	public static final String LDAP_SERVER_REGISTRATION_CONTROLLER = "ldapServerRegistration";
 	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
 	public static final String SERVER_INFO = "serverInfo";
@@ -137,6 +137,14 @@ public class Constants {
 	// session Entity bean
 	public static final String SERVER = "server";
 	
+	// ldap_userdnpattern navigation outcomes and combobox long constants
+	public static final String LDAP_USERDNPATTERN_REGISTRATION_CONTROLLER = "ldapUserDnPatternRegistration";
+	public static final String LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE = "ldap_userdnpattern_registration_step1";
+	public static final String USERDNPATTERN_INFO = "userDnPatternInfo";
+	public static final String LDAP_USERDNPATTERN_PAGE = "ldap_userdnpattern";
+	public static final String USERDNPATTERN_CONFIRM_REMOVE_PAGE = "ldap_userdnpattern_remove_confirmation";
+	// session Entity bean
+	public static final String USERDNPATTERN = "userDnPattern";
 	
 	
 	// migration navigation outcomes constants
