@@ -50,6 +50,6 @@ public class CourseResource extends AbstractOrganisationResource{
 	 * @return The (raw) name to use in the WebDAV context. 
 	 */
 	public static String getNameByData(CourseInfo info) {
-		return info.getShortName();
+		return info.getName();
 	}
 }
