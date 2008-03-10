@@ -57,8 +57,8 @@
 					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
 					<h:outputText value="#{braincontest.answers} / #{braincontest.tries}" />
 				</t:column>
-
-				<plexus:column header="#{msg.braincontest_main_column_actions}">
+				
+				<t:column >
 						<plexus:command
 							bean="#{views$secured$braincontest$braincontestmain}"
 							action="topList" 
@@ -66,8 +66,6 @@
 							title="#{msg.braincontest_main_button_top}" 
 							rendered="#{braincontest.released}"
 							styleClass="icon_toplist"/>
-				</plexus:column>
-				<t:column >
 					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 						<plexus:command
 							bean="#{views$secured$braincontest$braincontestmain}"

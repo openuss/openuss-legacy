@@ -28,6 +28,36 @@ a.icon_edit:focus span, a.icon_edit:hover span {
   background-position: top right;
 }
 
+a.icon_toplist {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_toplist span {
+  background-position: left top;
+  background-image: url(../img/buttons/toplist_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_toplist:focus span, a.icon_toplist:hover span {
+  background-position: top right;
+}
+
 a.icon_settings {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
