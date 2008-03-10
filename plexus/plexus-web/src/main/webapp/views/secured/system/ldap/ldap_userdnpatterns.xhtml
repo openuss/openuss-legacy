@@ -51,7 +51,7 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_userdnpattern}"
-								action = "selectUserDnPatternAndConfirmRemove"
+								action = "selectUserDnPatternAndRemove" 
 								styleClass="icon_remove"
 								label="#{msg.department_command_remove}"
 								title="#{msg.department_command_remove_hint}"/>
@@ -64,7 +64,7 @@
 	  				<o:block>
 						<h:commandButton 
 					    id="addUserDnPattern"
-						action="ldap_userdnpattern_registration_start" 
+						action="#{ldapUserDnPatternRegistration.start}"
 						value="#{msg.ldap_userdnpattern_command_add_ldap_userdnpattern}" 
 						title="#{msg.ldap_userdnpattern_command_add_ldap_userdnpattern_hint}"
 						styleClass="button_big"/>

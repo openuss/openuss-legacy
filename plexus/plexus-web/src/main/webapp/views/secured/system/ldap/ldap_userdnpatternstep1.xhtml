@@ -28,7 +28,7 @@
 					</o:block>
 					<o:block>
 						<h:commandButton value="${msg.back}" action="ldap_userdnpattern_registration_start" styleClass="button_back" immediate="true"/>
-						<h:commandButton value="${msg.forward}" action="ldap_userdnpattern_registration_step2" styleClass="button_continue" />			
+						<h:commandButton value="${msg.forward}" action="#{ldapUserDnPatternRegistration.register}" styleClass="button_continue" />			
 		  			</o:block>
 	  		</h:form>
   		</ui:define>
