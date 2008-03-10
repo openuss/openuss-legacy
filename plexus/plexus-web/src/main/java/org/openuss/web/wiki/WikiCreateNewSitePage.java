@@ -3,8 +3,11 @@ package org.openuss.web.wiki;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * Backing Bean for wikicreatesite.xhtml.
@@ -18,6 +21,32 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	private static final Logger LOGGER = Logger.getLogger(WikiEditPage.class);
 	
 	private String createNewSiteName;
+	
+	@Override
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		
+		addBreadCrumbs();
+	}
+	
+	
+	private void addBreadCrumbs() {
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
+		final BreadCrumb wikiBreadCrumb = new BreadCrumb();
+		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
+		wikiBreadCrumb.setName(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.setHint(i18n(Constants.WIKI_MAIN_HEADER));
+		breadcrumbs.addCrumb(wikiBreadCrumb);
+		
+		final BreadCrumb wikiSiteBreadCrumb = new BreadCrumb();
+		wikiSiteBreadCrumb.setName(readablePageName(i18n(Constants.WIKI_NEW_SITE_HEADER)));
+		wikiSiteBreadCrumb.setHint(readablePageName(i18n(Constants.WIKI_NEW_SITE_HEADER)));
+		breadcrumbs.addCrumb(wikiSiteBreadCrumb);
+	}
+	
+	
 	
 	/**
 	 * Opens the Create or View Site Page.
