@@ -1131,6 +1131,7 @@ p.header_font_normal,span.header_font_normal {
 
 .content_iframe {
 	margin-left: 10px;
+	margin-bottom: 10px;
 }
 
 .content_normal .usercontact ul {
@@ -1192,6 +1193,7 @@ span.content_font_normal {
 
 #center .content_normal span.content_font_normal {
 	margin-left: 10px;
+	display: block;
 }
 
 .content_font_normal.infotext {
@@ -2348,6 +2350,10 @@ a:hover {
 }
 #center th.table_header a {
 	color:#505050 !important;
+	text-decoration:underline;
+}
+#center th.table_header a:hover {
+	color:#000000 !important;
 }
 #right .content_box a {
 	color:#2C5885 !important;	
