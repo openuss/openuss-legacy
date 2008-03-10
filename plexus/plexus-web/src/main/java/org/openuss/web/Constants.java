@@ -343,5 +343,7 @@ public class Constants {
 	public static final String SEMINARPOOL_PREFIX = "seminarpool_";
 	public static final String SEMINARPOOL_ADMIN_ERROR_LAST_ADMIN = "seminarpool_admin_error_last_admin"; 
 	public static final String SEMINARPOOL_MAIN_PASSWORD_ERROR = "seminarpool_main_password_error";
+	
+	public static final String SEMINARPOOL_REQUIREMENTS_STEP2 = "seminarpool_options_requirements_by_user_step2";
 
 }

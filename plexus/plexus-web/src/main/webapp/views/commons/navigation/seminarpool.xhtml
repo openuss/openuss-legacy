@@ -72,8 +72,17 @@
 								
 								<t:commandNavigation2 
 									action="seminarpool_options_requirements" 
-									activeOnViewIds="/views/secured/seminarpool/seminarpoolrequirements.xhtml">
-									<h:outputText value="#{msg['seminarpool_command_options_requirements']}" />
+									value="#{msg['seminarpool_command_options_requirements']}">
+									<t:commandNavigation2 
+										action="seminarpool_options_requirements"
+										activeOnViewIds="/views/secured/seminarpool/conditions/seminarpoolrequirements.xhtml">
+										<h:outputText value="#{msg['seminarpool_requirements_submenue_overview']}" />
+									</t:commandNavigation2>
+									<t:commandNavigation2 
+										action="seminarpool_options_requirements_by_user"
+										activeOnViewIds="/views/secured/seminarpool/conditions/seminarpoolRequirementsByUserStep1.xhtml,/views/secured/seminarpool/conditions/seminarpoolRequirementsByUserStep2.xhtml">
+										<h:outputText value="#{msg['seminarpool_requirements_submenue_by_user']}" />
+									</t:commandNavigation2>
 								</t:commandNavigation2>
 								<t:commandNavigation2 
 									action="seminarpool_options_config" 
