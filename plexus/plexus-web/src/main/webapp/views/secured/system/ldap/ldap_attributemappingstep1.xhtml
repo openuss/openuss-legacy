@@ -32,7 +32,7 @@
 						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
 						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-						<h:selectManyListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.roleAttributeKeyIds}" required="true"
+						<h:selectManyListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.initiallySelectedRoleAttributeKeyIds}" required="true"
 							valueChangeListener="#{ldapAttributeMappingRegistration.processValueChange}" styleClass="pulldown" >
   							<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
 						</h:selectManyListbox>

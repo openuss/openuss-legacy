@@ -17,10 +17,10 @@ import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
 
 /**
- * Backing bean for the ldap_domain registration. Is responsible starting the
- * wizard, binding the values and registrating the department.
+ * Backing bean for the attributeMapping maintenance.
  * 
- * @author
+ * @author Peter Schuh
+ * @author Christian Grelle
  * 
  */
 
@@ -30,22 +30,10 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 
 	
 	private static final Logger logger = Logger.getLogger(LdapAttributeMappingRegistrationController.class);
-	/*
-	protected UniversityInfo universityInfo = (UniversityInfo) this.getSessionBean(Constants.UNIVERSITY_INFO);
-
-	private List<SelectItem> localeItems;
 	
-	private List<SelectItem> universityItems;
-	
-	private List<UniversityInfo> allEnabledUniversities;
-	private List<UniversityInfo> allDisabledUniversities;
+	private List<String> initiallySelectedRoleAttributeKeyIds = new Vector<String>();
+	private List<Long> finallySelectedRoleAttributeKeyIds = new Vector<Long>();
 
-	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	private String locale = (String) binding.getValue(getFacesContext());
-	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
-
-	*/
-	
 	public String start() {
 		logger.debug("start registration process");
 		
@@ -54,33 +42,13 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		
 		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
 	}
-
-	/*
-	public List<SelectItem> getSupportedDepartmentTypes() {
-		localeItems = new ArrayList<SelectItem>();
-
-		SelectItem item1 = new SelectItem(DepartmentType.OFFICIAL, bundle.getString("departmenttype_official"));
-		SelectItem item2 = new SelectItem(DepartmentType.NONOFFICIAL, bundle.getString("departmenttype_non_offical"));
-
-		localeItems.add(item1);
-		localeItems.add(item2);
-
-		return localeItems;
-	}
-	
-	
-*/	
 	
 	public List<SelectItem> getAllRoleAttributeKeys() {
-
 		List<SelectItem> roleAttributeKeyItems = new ArrayList<SelectItem>();
-
 		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();
-		
 		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
 				roleAttributeKeyItems.add(new SelectItem(String.valueOf(roleAttributeKey.getId()), roleAttributeKey.getName()));
-			}
-	
+			}	
 		return roleAttributeKeyItems;
 	}
 
@@ -90,20 +58,12 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 	      for (Iterator iterator = selectedIds.iterator(); iterator.hasNext();) {
 			String idAsString = (String) iterator.next();
 			Long id = Long.valueOf(idAsString);
-            System.out.println(id);
+			finallySelectedRoleAttributeKeyIds.add(id);
+			System.out.println(id);
 		    logger.info(id);
 	      }
-	    }
+	}	
 	
-	private List<String> roleAttributeKeyIds = new Vector<String>();
-	
-	public List<String> getRoleAttributeKeyIds() {		
-		return roleAttributeKeyIds;
-	}
-
-	public void setRoleAttributeKeyIds(List<String> roleAttributeKeyIds) {
-		this.roleAttributeKeyIds = roleAttributeKeyIds;
-	}
 	
 	// ================================================================================
 	

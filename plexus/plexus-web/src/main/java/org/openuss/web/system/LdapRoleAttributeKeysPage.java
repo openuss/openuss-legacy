@@ -18,7 +18,8 @@ import org.openuss.web.lecture.AbstractLdapRoleAttributeKeysOverviewPage;
  * Backing Bean for the view secured/system/departments.xhtml
  * 
  * 
- *
+ * @author Peter Schuh
+ * @author Christian Grelle
  */
 @Bean(name = "views$secured$system$ldap$ldap_roleattributekeys", scope = Scope.REQUEST)
 @View
@@ -58,8 +59,6 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapRoleAttributeKeysOver
 		return Constants.ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE;
 	}	
 	
-
-
 	public String removeRoleAttributeKey() throws Exception {
 		try {
 			logger.debug("Starting method selectRoleAttributeKeyAndRemove");

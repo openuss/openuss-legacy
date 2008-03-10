@@ -38,7 +38,7 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 		logger.debug("preprocess - refreshing roleAttributeKey session object");
 		if (roleAttributeKeyInfo != null) {
 			if (roleAttributeKeyInfo.getId() != null) {
-				//roleAttributeKeyInfo = LdapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
+				roleAttributeKeyInfo = ldapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
 			} else {
 				roleAttributeKeyInfo = (RoleAttributeKeyInfo) getSessionBean(Constants.ROLEATTRIBUTEKEY_INFO);
 			}
@@ -51,9 +51,8 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing roleAttributeKey session object");
 		refreshRoleAttributeKeySet();
-		if (roleAttributeKeyInfo == null || roleAttributeKeyInfo.getId() == null) {
-			//TODO: CHRISTIAN: WRONG MESSAGE!!!
-			addError(i18n("message_error_no_department_selected"));
+		if (roleAttributeKeyInfo == null || roleAttributeKeyInfo.getId() == null) {			
+			addError(i18n("message_ldap_roleattributekey_no_roleattributekey_selected"));
 			redirect(Constants.DESKTOP);
 		}
 	}
@@ -61,7 +60,7 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 	private void refreshRoleAttributeKeySet() {
 		if (roleAttributeKeyInfo != null) {
 			if (roleAttributeKeyInfo.getId() != null) {
-				//roleAttributeKeyInfo = LdapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
+				roleAttributeKeyInfo = ldapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
 				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKeyInfo);
 			}
 		}

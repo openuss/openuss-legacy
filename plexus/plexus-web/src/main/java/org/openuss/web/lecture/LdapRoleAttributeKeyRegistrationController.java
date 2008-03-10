@@ -12,10 +12,10 @@ import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
 
 /**
- * Backing bean for the ldap_domain registration. Is responsible starting the
- * wizard, binding the values and registrating the department.
+ * Backing bean for the roleAttributeKey maintenance.
  * 
- * @author
+ * @author Peter Schuh
+ * @author Christian Grelle
  * 
  */
 
@@ -35,21 +35,6 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapRole
 		return Constants.LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE;
 	}
 
-	/*
-	public List<SelectItem> getSupportedDepartmentTypes() {
-		localeItems = new ArrayList<SelectItem>();
-
-		SelectItem item1 = new SelectItem(DepartmentType.OFFICIAL, bundle.getString("departmenttype_official"));
-		SelectItem item2 = new SelectItem(DepartmentType.NONOFFICIAL, bundle.getString("departmenttype_non_offical"));
-
-		localeItems.add(item1);
-		localeItems.add(item2);
-
-		return localeItems;
-	}
-	
-	
-*/	
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllRoleAttributeKeys() {
 		return ldapConfigurationService.getAllRoleAttributeKeys();
@@ -64,5 +49,5 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapRole
 		ldapConfigurationService.saveRoleAttributeKey(roleAttributeKeyInfo);
 		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 	}
-
+	
 }
