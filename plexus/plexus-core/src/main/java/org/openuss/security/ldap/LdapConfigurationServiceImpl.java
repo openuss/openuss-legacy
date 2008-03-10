@@ -635,6 +635,7 @@ public class LdapConfigurationServiceImpl
     	
     	RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().create(roleAttributeKey.getName());    	
     	roleAttributeKey.setId(roleAttributeKeyEntity.getId());
+    	roleAttributeKey.setAttributeMappingIds(roleAttributeKeyEntity.getAttributeMappings());
     	
     	return roleAttributeKey;
     }
@@ -690,6 +691,7 @@ public class LdapConfigurationServiceImpl
 			getAttributeMappingDao().update(attributeMappingEntity);
 			getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
 			attributeMappingInfo.getRoleAttributeKeyIds().add(roleAttributeKeyEntity.getId());
+			roleAttributeKeyInfo.getAttributeMappingIds().add(attributeMappingEntity.getId());
 		}    	
     }
 	
@@ -709,17 +711,11 @@ public class LdapConfigurationServiceImpl
 		if (( attributeMappingEntity.getRoleAttributeKeys().contains(roleAttributeKeyEntity)) &&
 			( roleAttributeKeyEntity.getAttributeMappings().contains(attributeMappingEntity)) ) {
 			logger.debug("handleRemoveRoleAttributeKeyFromAttributeMapping: REMOVE IT!!!");
-			// then remove it
-			// check if attribute has mapping to be removed
-//			if (attributeMappingEntity.getRoleAttributeKeys().size() == 1) {
-//				handleDeleteAttributeMapping(attributeMappingInfo);
-//			} else {
 				attributeMappingEntity.getRoleAttributeKeys().remove(roleAttributeKeyEntity);
 				roleAttributeKeyEntity.getAttributeMappings().remove(attributeMappingEntity);
 				
 				getAttributeMappingDao().update(attributeMappingEntity);
 				getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
-//			}
 		}
 		
 		attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
@@ -762,6 +758,7 @@ public class LdapConfigurationServiceImpl
     	List<RoleAttributeKey> keyEntityList = (List<RoleAttributeKey>) getRoleAttributeKeyDao().loadAll();
     	for (RoleAttributeKey roleAttributeKey : keyEntityList) {
     		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKey);
+    		roleAttributeKeyInfo.setAttributeMappingIds(roleAttributeKey.getAttributeMappings());
 			keyInfoList.add(roleAttributeKeyInfo);			
 		}
     	
@@ -790,6 +787,12 @@ public class LdapConfigurationServiceImpl
 	protected UserDnPatternInfo handleCreateUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {		
 		UserDnPattern userDnPatternEntity = getUserDnPatternDao().create(userDnPattern.getName());
 		userDnPattern.setId(userDnPatternEntity.getId());
+		
+		List<Long> ldapServerIds = new ArrayList<Long>();
+		for (LdapServer server : userDnPatternEntity.getLdapServers()) {
+			ldapServerIds.add(server.getId());
+		}
+		userDnPattern.setLdapServerIds(ldapServerIds);
 		
 		return userDnPattern;
 	}
@@ -864,7 +867,7 @@ public class LdapConfigurationServiceImpl
 	 /**
      * validates a role attribute key to create or save
      */
-    private void UserDnPattern(UserDnPatternInfo userDnPatternInfo) throws Exception {
+    private void validateUserDnPattern(UserDnPatternInfo userDnPatternInfo) throws Exception {
     	if (StringUtils.isBlank(userDnPatternInfo.getName())){
     		throw new LdapConfigurationServiceException("Name of new user dn pattern musst not be empty!");
     	} 
@@ -879,7 +882,10 @@ public class LdapConfigurationServiceImpl
 		
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
 		for (UserDnPattern entity : userDnPatternEntities) {
-			userDnPatternInfos.add(getUserDnPatternDao().toUserDnPatternInfo(entity));
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(entity);
+			userDnPatternInfo.setId(entity.getId());
+			userDnPatternInfo.setLdapServerIds((List) entity.getLdapServers());
+			userDnPatternInfos.add(userDnPatternInfo);
 		}
 
 		return userDnPatternInfos;
@@ -896,7 +902,11 @@ public class LdapConfigurationServiceImpl
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
 		
 		for (UserDnPattern entity : userDnPatternEntities) {
-			userDnPatternInfos.add(getUserDnPatternDao().toUserDnPatternInfo(entity));
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(entity);
+			userDnPatternInfo.setId(entity.getId());
+			userDnPatternInfo.setName(entity.getName());
+			userDnPatternInfo.setLdapServerIds((List)entity.getLdapServers());
+			userDnPatternInfos.add(userDnPatternInfo);
 		}
     	
     	return userDnPatternInfos;
@@ -972,8 +982,7 @@ public class LdapConfigurationServiceImpl
 	@Override
 	protected boolean handleIsValidRoleAttributeKey(RoleAttributeKeyInfo roleAttributeKey) throws Exception {
 		// check if role attribute key already exists
-		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKey.getId());
-		if (roleAttributeKeyEntity != null) {
+		if (null != getRoleAttributeKeyDao().findByName(roleAttributeKey.getName())) {
 			return false;
 		} else return true;
 	}
@@ -983,9 +992,8 @@ public class LdapConfigurationServiceImpl
 	 */
 	@Override
 	protected boolean handleIsValidUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {
-		// check if user dn pattern already exists
-		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
-		if (userDnPatternEntity != null) {
+		// check if role attribute key already exists
+		if (null != getUserDnPatternDao().findByName(userDnPattern.getName())) {
 			return false;
 		} else return true;
 	}

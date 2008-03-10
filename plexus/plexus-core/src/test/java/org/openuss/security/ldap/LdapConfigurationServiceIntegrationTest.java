@@ -334,10 +334,15 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		commit();
 		
 		RoleAttributeKeyInfo key1 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		key1.setName("key1");
+		service.saveRoleAttributeKey(key1);
 		assertTrue(false == service.isValidRoleAttributeKey(key1));
 		
 		UserDnPatternInfo pattern1 = service.createUserDnPattern(createUserDnPatternInfoDummy());
+		pattern1.setName("pattern1");
+		service.saveUserDnPattern(pattern1);
 		assertTrue(false == service.isValidUserDnPattern(pattern1));
+		
 		
 	}
 	
@@ -388,6 +393,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain2, pattern2, true));
 		server2.setDescription("Server 2");
 		service.saveLdapServer(server2);
+		
+	
 		
 		
 		RoleAttributeKeyInfo findKey = service.getRoleAttributeKeyById(key1.getId());
