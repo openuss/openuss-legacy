@@ -21,6 +21,22 @@ public class BreadCrumb implements Serializable{
 	private String name;
 	private String hint;
 	private Map<String, Object> parameters = new HashMap<String, Object>();
+	
+	public BreadCrumb() {
+		this(null, null, null);
+	}
+	public BreadCrumb(String link, String name, String hint) {
+		super();
+		this.link = link;
+		this.name = name;
+		this.hint = hint;
+	}
+	public BreadCrumb(String name, String hint) {
+		this(null, name, hint);
+	}
+	public BreadCrumb(String name) {
+		this(null, name, null);
+	}
 
 	public String getHint() {
 		return hint;
