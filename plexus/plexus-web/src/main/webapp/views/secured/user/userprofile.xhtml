@@ -38,7 +38,7 @@
 			<ui:include src="/views/commons/user/profile.xhtml"/>
 			<h:form>
 				<o:block>
-					<h:commandButton action="#{views$secured$internalmessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalmessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
+					<h:commandButton action="#{views$secured$internalmessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalMessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
 					<h:commandButton id="doit" action="openuss4us_addbuddy" value="#{msg.user_profile_addbuddy}" styleClass="button" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
 					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button"/>
 				</o:block>

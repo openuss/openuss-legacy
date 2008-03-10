@@ -26,7 +26,7 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="title">
-		<h:outputText value="#{msg['openuss4us_command_groups']}" />
+		<h:outputText value="#{msg['openuss4us_command_users']}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -36,7 +36,21 @@
 		<ui:include src="/views/commons/sidebar/default.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="openuss4us_groups" enctype="multipart/form-data">
+		<h:form id="openuss4us_users" enctype="multipart/form-data">
+
+			<o:block label="#{msg.openuss4us_find_group_label}"
+				styleClass="form_box">
+				<p class="content_font_normal"><o:input
+					entity="views$secured$buddylist$usersearch" property="username"
+					label="#{msg.openuss4us_find_user_username}" styleClass="field" />
+				<o:input entity="views$secured$buddylist$usersearch"
+					property="firstname" label="#{msg.openuss4us_find_user_firstname}"
+					styleClass="field" /> <o:input
+					entity="views$secured$buddylist$usersearch" property="lastname"
+					label="#{msg.openuss4us_find_user_lastname}" styleClass="field" />
+
+				</p>
+			</o:block>
 
 			<c:if test="#{not empty views$secured$buddylist$usersearch.users}">
 				<plexus:dataTable id="users"
@@ -45,17 +59,17 @@
 					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
 					var="user" rows="20">
 
-						<t:column>
+					<t:column>
 						<plexus:commandSortHeader columnName="userUsername"> #{msg['userInfo_username']}</plexus:commandSortHeader>
 						<h:commandLink value=""
 							action="#{views$secured$buddylist$usersearch.linkProfile}">
-							<h:outputText value="#{user.name}" />
+							<h:outputText value="#{user.username}" />
 						</h:commandLink>
 					</t:column>
 
 					<t:column>
 						<plexus:commandSortHeader columnName="userFirstName"> #{msg['userInfo_firstname']}</plexus:commandSortHeader>
-						<h:outputText value="#{user.fistName}" />
+						<h:outputText value="#{user.firstName}" />
 					</t:column>
 
 					<t:column>
@@ -65,35 +79,19 @@
 
 					<plexus:column header="#{msg.commands_header}">
 						<plexus:command bean="#{views$secured$buddylist$usersearch}"
-							action="writeMessage" label="#{msg['openuss4us_group_join']}"
-							title="#{msg['openuss4us_group_join_hint']}"
+							action="writeMessage" label=" "
+							title="#{msg['openuss4us_group_send_hint']}"
 							styleClass="icon_sendmessage" />
+						<plexus:command bean="#{views$secured$buddylist$usersearch}"
+							action="addAsBuddy" label=" "
+							title="#{msg['openuss4us_group_send_hint']}"
+							styleClass="icon_addbuddy" />
 					</plexus:column>
 
 				</plexus:dataTable>
 			</c:if>
 
-			<o:block label="#{msg.openuss4us_find_group_label}"
-				styleClass="form_box">
-				<p class="content_font_normal">
-				<o:input
-					entity="views$secured$buddylist$usersearch" 
-					property="username"
-					label="#{msg.openuss4us_find_user_username}"
-					styleClass="field" />
-				<o:input
-					entity="views$secured$buddylist$usersearch" 
-					property="firstname"
-					label="#{msg.openuss4us_find_user_firstname}"
-					styleClass="field" />
-				<o:input
-					entity="views$secured$buddylist$usersearch" 
-					property="lastname"
-					label="#{msg.openuss4us_find_user_lastname}"
-					styleClass="field" />
-				
-				</p>
-			</o:block>
+
 
 			<o:block>
 				<h:commandButton id="getUserButton"

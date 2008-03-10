@@ -11,6 +11,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.internalMessage.InternalMessageInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserCriteria;
@@ -31,7 +32,7 @@ public class UserSearchPage extends BasePage {
 	private UserDataProvider data = new UserDataProvider();
 	private DataPage<UserInfo> page;
 	private List<UserInfo> users;
-	private String username = null;
+	private String username;
 	private String firstname = null;
 	private String lastname = null;
 
@@ -58,7 +59,6 @@ public class UserSearchPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		users = new ArrayList<UserInfo>();
 	}
 
 	public String linkProfile() {
@@ -91,7 +91,18 @@ public class UserSearchPage extends BasePage {
 	}
 
 	public String writeMessage() {
-		return null;
+		User profile = User.Factory.newInstance();
+		profile.setId(this.data.getRowData().getId());
+		setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());
+		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
+	}
+	
+	public String addAsBuddy(){
+		User profile = User.Factory.newInstance();
+		profile.setId(this.data.getRowData().getId());
+		setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+		return Constants.OPENUSS4US_ADD_BUDDY;
 	}
 
 	private void getUsers(String uname, String fname, String lname) {
