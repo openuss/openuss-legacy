@@ -26,22 +26,6 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapRole
 	
 	private static final Logger logger = Logger.getLogger(LdapRoleAttributeKeyRegistrationController.class);
 
-	/*
-	protected UniversityInfo universityInfo = (UniversityInfo) this.getSessionBean(Constants.UNIVERSITY_INFO);
-
-	private List<SelectItem> localeItems;
-	
-	private List<SelectItem> universityItems;
-	
-	private List<UniversityInfo> allEnabledUniversities;
-	private List<UniversityInfo> allDisabledUniversities;
-
-	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
-	private String locale = (String) binding.getValue(getFacesContext());
-	private ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
-
-	*/
-	
 	public String start() {
 		logger.debug("start registration process");
 		
@@ -109,49 +93,14 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapRole
 		return universityItems;
 	}
 */
-	public String register() /*throws DesktopException, LectureException*/ {
-		/*// create department
-		if (user.getId().longValue() != Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId() == null)
-			departmentInfo.setUniversityId(universityInfo.getId());
-
-		// by default set department enabled
-		departmentInfo.setEnabled(true);*/
+	public String register() {
 		ldapConfigurationService.createRoleAttributeKey(roleAttributeKeyInfo);
 		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 	}
-/*
-	public String registrate() throws DesktopException, LectureException {
-		// create department
-		if (user.getId().longValue() != Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId() == null)
-			departmentInfo.setUniversityId(universityInfo.getId());
-
-		// by default set department enabled
-		departmentInfo.setEnabled(true);
-		departmentService.create(departmentInfo, user.getId());
-
-		return Constants.DEPARTMENT_PAGE;
+	
+	public String save() {
+		ldapConfigurationService.saveRoleAttributeKey(roleAttributeKeyInfo);
+		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 	}
 
-	public String getTransformedLocale() {
-		if (departmentInfo.getLocale().equals("en")) {
-			return bundle.getString("transform_locale_en");
-		} else if (departmentInfo.getLocale().equals("de")) {
-			return bundle.getString("transform_locale_de");
-		} else if (departmentInfo.getLocale().equals("ru")) {
-			return bundle.getString("transform_locale_ru");
-		} else {
-			return "";
-		}
-	}
-
-	public String getTransformedDepartmentType() {
-		if (departmentInfo.getDepartmentType().getValue() == 0) {
-			return bundle.getString("departmenttype_official");
-		} else if (departmentInfo.getDepartmentType().getValue() == 1) {
-			return bundle.getString("departmenttype_non_offical");
-		} else {
-			return "";
-		}
-	}
-	*/
 }

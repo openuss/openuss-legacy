@@ -30,7 +30,8 @@
 					</o:block>
 					<o:block>
 						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
-						<h:commandButton value="${msg.forward}" action="#{ldapRoleAttributeKeyRegistration.register}" styleClass="button_continue" />			
+						<h:commandButton value="${msg.save}" action="#{ldapRoleAttributeKeyRegistration.register}" styleClass="button" rendered="#{empty roleAttributeKeyInfo.name}"/>
+						<h:commandButton value="${msg.save}" action="#{ldapRoleAttributeKeyRegistration.save}" styleClass="button" rendered="#{not empty roleAttributeKeyInfo.name}"/>										
 		  			</o:block>
 	  		</h:form>
   		</ui:define>

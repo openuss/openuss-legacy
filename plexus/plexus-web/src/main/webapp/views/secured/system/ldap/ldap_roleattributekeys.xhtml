@@ -54,16 +54,16 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_roleattributekey}"
-								action = "selectRoleAttributeKeyAndRemove"
+								action = "selectRoleAttributeKeyAndConfirmRemove"
 								styleClass="icon_remove"
 								label="#{msg.ldap_roleattributekey_command_remove}"
 								title="#{msg.ldap_roleattributekey_command_remove_hint}"/>
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_roleattributekey}"
-								action = "selectRoleAttributeKeyAndRemove"
+								action = "selectRoleAttributeKeyAndEdit"
 								styleClass="icon_edit"
-								label="#{msg.ldap_roleattributekey_command_remove}"
-								title="#{msg.ldap_roleattributekey_command_remove_hint}"/>
+								label="#{msg.ldap_roleattributekey_command_edit}"
+								title="#{msg.ldap_roleattributekey_command_edit_hint}"/>
 						</s:authorize>
 					</plexus:column>
 					
