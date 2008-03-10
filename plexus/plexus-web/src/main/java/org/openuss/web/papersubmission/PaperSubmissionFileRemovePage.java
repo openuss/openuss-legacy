@@ -28,7 +28,7 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 	private List<FolderEntryInfo> entries;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		addPageCrumb();
 	}

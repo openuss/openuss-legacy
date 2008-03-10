@@ -96,7 +96,7 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 		return createNewSiteName;
 	}
 
-	public void setCreateNewSiteName(String createNewSiteName) {
+	public void setCreateNewSiteName(final String createNewSiteName) {
 		this.createNewSiteName = createNewSiteName;
 	}
 	

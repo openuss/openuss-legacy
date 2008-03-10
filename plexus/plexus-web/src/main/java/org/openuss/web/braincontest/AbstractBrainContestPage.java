@@ -35,7 +35,7 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 	
 	
 	@Prerender
-	public void prerender() throws Exception{
+	public void prerender() {
 		super.prerender();
 		generateBreadCrumbs();
 	}

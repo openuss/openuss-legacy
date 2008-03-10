@@ -37,7 +37,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		if (!isPostBack()) {
@@ -126,15 +126,19 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	}
 
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
-		LOGGER.debug("source is "+document.getSource());
+		LOGGER.debug("source is " + document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
 			selectedFile.setFileName(document.getFileName());
 		} else {
-			String fileName = selectedFile.getFileName();
-			if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-				fileName = fileName + '.' +extension(document.getFileName());
+			String fname = selectedFile.getFileName();
+			StringBuilder fileName = new StringBuilder(fname);
+			
+			String extension = extension(document.getFileName());			
+			if (!StringUtils.equals(extension(fname), extension)) {
+				fileName.append('.').append(extension);
 			}
-			selectedFile.setFileName(fileName);
+			
+			selectedFile.setFileName(fileName.toString());
 		}
 		selectedFile.setExtension(extension(document.getFileName()));
 		selectedFile.setContentType(document.getContentType());

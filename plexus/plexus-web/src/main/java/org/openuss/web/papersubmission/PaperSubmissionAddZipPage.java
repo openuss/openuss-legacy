@@ -33,7 +33,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		addPageCrumb();
 	}
@@ -47,25 +47,27 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		crumb = new BreadCrumb();
-		crumb.setName(examInfo.getName());
-		crumb.setHint(examInfo.getName());
-		
-		if(courseInfo != null && courseInfo.getId() != null 
-				&& examInfo != null && examInfo.getId() != null){
+		if (this.examInfo != null) {
+			crumb = new BreadCrumb();
+			crumb.setName(examInfo.getName());
+			crumb.setHint(examInfo.getName());
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-			crumb.addParameter("course",courseInfo.getId());
-			crumb.addParameter("exam",examInfo.getId());
+			if(courseInfo != null && courseInfo.getId() != null 
+					&& examInfo != null && examInfo.getId() != null){
+				
+				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+				crumb.addParameter("course",courseInfo.getId());
+				crumb.addParameter("exam",examInfo.getId());
+			}
+			
+			breadcrumbs.addCrumb(crumb);
+			
+			crumb = new BreadCrumb();
+			
+			crumb.setName(i18n("document_addzip_header"));
+			crumb.setHint(i18n("document_addzip_header"));
+			breadcrumbs.addCrumb(crumb);
 		}
-		
-		breadcrumbs.addCrumb(crumb);
-		
-		crumb = new BreadCrumb();
-		
-		crumb.setName(i18n("document_addzip_header"));
-		crumb.setHint(i18n("document_addzip_header"));
-		breadcrumbs.addCrumb(crumb);
 	}	
 	
 	public String unzip() throws DocumentApplicationException{
@@ -89,13 +91,13 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 				
 				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
-			} finally{
+			} finally {
 				unpacker.closeQuitly();
 				zipFile.delete();
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {
-			LOGGER.error(e);
+			LOGGER.error("Unzipping failed", e);
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}

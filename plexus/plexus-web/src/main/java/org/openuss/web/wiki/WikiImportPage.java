@@ -31,7 +31,7 @@ public class WikiImportPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		addBreadCrumbs();
@@ -95,8 +95,7 @@ public class WikiImportPage extends AbstractWikiPage {
 		
 		for (CourseInfo exportableWikiCourse : exportableWikiCourses) {
 			String exportableWikiCourseName = String.format(EXPORTABLE_WIKI_COURSE_NAME_FORMAT, exportableWikiCourse.getName(), exportableWikiCourse.getPeriodName());
-			final SelectItem exportableSelectItem = new SelectItem(exportableWikiCourse.getId(), exportableWikiCourseName);
-			exportableSelectItems.add(exportableSelectItem);
+			exportableSelectItems.add(new SelectItem(exportableWikiCourse.getId(), exportableWikiCourseName));
 		}
 		
 		return exportableSelectItems;

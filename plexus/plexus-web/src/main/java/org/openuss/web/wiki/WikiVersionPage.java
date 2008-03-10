@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -23,15 +22,9 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiVersionPage.class);
 	
-	private WikiDataProvider data = new WikiDataProvider();
+	private final WikiDataProvider data = new WikiDataProvider();
 	
 	private List<WikiSiteInfo> entries;
-	
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-	}
 	
 	/**
 	 * Returns Wiki Overview Page.
@@ -64,6 +57,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 		wikiService.deleteWikiSiteVersion(entry.getId());
 		
 		addMessage(i18n("wiki_message_version_delete_succeeded"));
+		
 		return Constants.WIKI_VERSION_PAGE;
 	}
 	
@@ -82,6 +76,8 @@ public class WikiVersionPage extends AbstractWikiPage{
 		private DataPage<WikiSiteInfo> page;
 		
 		public WikiDataProvider() {
+			super();
+			
 			setSortColumn("creationDate");
 			setAscending(false);
 		}

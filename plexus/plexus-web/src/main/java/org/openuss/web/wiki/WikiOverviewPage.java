@@ -3,7 +3,6 @@ package org.openuss.web.wiki;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
@@ -18,12 +17,6 @@ import org.openuss.wiki.WikiSiteInfo;
 public class WikiOverviewPage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiOverviewPage.class);
-	
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-	}
 
 	/**
 	 * Removes a Site and returns Wiki Remove Site Page.

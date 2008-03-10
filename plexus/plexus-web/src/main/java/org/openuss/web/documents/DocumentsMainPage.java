@@ -197,16 +197,18 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 
 	public Map<String, Boolean> getAvailableExtensions() {
-		if (avaliableExtensions == null) {
-			avaliableExtensions = new HashMap<String, Boolean>();
-			File extImgFolder = new File(getServletContext().getRealPath("/images/filetypes"));
-			File files[] = extImgFolder.listFiles();
-			for (File file : files) {
-				String name = file.getName();
-				name = name.substring(0, name.indexOf('.'));
-				avaliableExtensions.put(name, true);
+		synchronized (avaliableExtensions) {
+			if (avaliableExtensions == null) {
+				avaliableExtensions = new HashMap<String, Boolean>();
+				File extImgFolder = new File(getServletContext().getRealPath("/images/filetypes"));
+				File files[] = extImgFolder.listFiles();
+				for (File file : files) {
+					String name = file.getName();
+					name = name.substring(0, name.indexOf('.'));
+					avaliableExtensions.put(name, true);
+				}
 			}
-		}
-		return avaliableExtensions;
+			return avaliableExtensions;
+		}		
 	}
 }

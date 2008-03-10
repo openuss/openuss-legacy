@@ -28,7 +28,7 @@ public class WikiChooseImagePage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiChooseImagePage.class);
 	
-	private WikiImageProvider data = new WikiImageProvider();
+	private final WikiImageProvider data = new WikiImageProvider();
 	
 	private UIInput fileUpload;
 	

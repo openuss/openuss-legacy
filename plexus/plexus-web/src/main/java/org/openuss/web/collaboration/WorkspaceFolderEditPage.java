@@ -27,8 +27,9 @@ public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
 	private FolderInfo selectedFolder;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
+		
 		addPageCrumb();
 	}
 	

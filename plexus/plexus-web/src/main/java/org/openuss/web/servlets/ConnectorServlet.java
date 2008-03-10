@@ -72,6 +72,8 @@ import org.w3c.dom.Node;
 
 public class ConnectorServlet extends HttpServlet {
 	
+	private static final long serialVersionUID = -5337138288104687369L;
+
 	private static boolean debug = false;
 	
 	private transient WikiService wikiService;
@@ -204,8 +206,6 @@ public class ConnectorServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String commandStr = request.getParameter("Command");
-		String typeStr = request.getParameter("Type");
-		String currentFolderStr = request.getParameter("CurrentFolder");
 		
 		String retVal="0";
 		String newName="";
@@ -235,7 +235,6 @@ public class ConnectorServlet extends HttpServlet {
 				String[] pathParts = fileNameLong.split("/");
 				String fileName = pathParts[pathParts.length-1];
 				
-				String nameWithoutExt = getNameWithoutExtension(fileName);
 				String ext = getExtension(fileName);
 				
 				FileInfo file = new FileInfo();

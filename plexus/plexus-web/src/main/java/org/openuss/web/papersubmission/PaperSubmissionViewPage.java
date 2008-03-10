@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,13 +56,11 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
-		if (!isPostBack()) {
-			if ( examInfo != null && examInfo.getId() != null) {
-				setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
-				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-			}
+		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
+			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
+			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		} 
 		paperSelection.processSwitch();
 		addPageCrumbs();
@@ -98,19 +97,21 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		crumb = new BreadCrumb();
-		crumb.setName(examInfo.getName());
-		crumb.setHint(examInfo.getName());
-		
-		if(courseInfo != null && courseInfo.getId() != null 
-				&& examInfo != null && examInfo.getId() != null){
+		if (this.examInfo != null) {
+			crumb = new BreadCrumb();
+			crumb.setName(this.examInfo.getName());
+			crumb.setHint(this.examInfo.getName());
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-			crumb.addParameter("course",courseInfo.getId());
-			crumb.addParameter("exam",examInfo.getId());
+			if(courseInfo != null && courseInfo.getId() != null 
+					&& this.examInfo != null && this.examInfo.getId() != null){
+				
+				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+				crumb.addParameter("course", courseInfo.getId());
+				crumb.addParameter("exam", this.examInfo.getId());
+			}
+			
+			breadcrumbs.addCrumb(crumb);
 		}
-		
-		breadcrumbs.addCrumb(crumb);
 	}
 	
 	
@@ -139,9 +140,10 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	public String download () throws IOException{
 		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			//Storing the zip file name into the session 
-			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy").format(paperSubmissionInfo.getDeliverDate());
+			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy", 
+					Locale.GERMAN).format(paperSubmissionInfo.getDeliverDate());
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 				
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -189,15 +191,16 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		List<FileInfo> files = paperSubmissionService.getPaperSubmissionFiles(submissions);
 		for(FileInfo file : files){
 			if(examInfo.getDeadline().before(file.getModified())){
-				String path = file.getPath();
-				path += i18n("papersubmission_zip_foldername_notintime");
-				file.setPath(path);
-				file.setAbsoluteName(path + "/" + file.getFileName());
+				StringBuilder path = new StringBuilder(file.getPath());
+				path.append(i18n("papersubmission_zip_foldername_notintime"));
+				file.setPath(path.toString());
+				path.append("/").append(file.getFileName());
+				file.setAbsoluteName(path.toString());
 			}
 		}
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			//Storing the zip file name into the session 
-			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy_HH.mm").format(new Date());
+			String fileName = examInfo.getName() + "_" + new SimpleDateFormat("dd.MM.yyyy_HH.mm", Locale.GERMAN).format(new Date());
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -244,7 +247,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		}
 		
 		List<FolderEntryInfo> entries = selectedEntries();
-		if (entries.size() > 0) {
+		if (!entries.isEmpty()) {
 			LOGGER.debug("deleting documents:");
 			setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, entries);
 			paperSelection.getMap().clear();
@@ -278,8 +281,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	}
 	
 	private PaperSubmissionInfo currentSubmission() {
-		PaperSubmissionInfo submission = this.dataSubmissions.getRowData();
-		return submission;
+		return this.dataSubmissions.getRowData();
 	}
 	
 	
@@ -362,7 +364,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			}
 			Collections.sort(list, chain);
 		}
-		private Comparator<PaperSubmissionInfo> submissionComparator = new Comparator<PaperSubmissionInfo>() {
+		private final Comparator<PaperSubmissionInfo> submissionComparator = new Comparator<PaperSubmissionInfo>() {
 			public int compare(PaperSubmissionInfo info1, PaperSubmissionInfo info2) {
 				if(isAscending()){
 					return info1.getSubmissionStatus().compareTo(info2.getSubmissionStatus());
@@ -420,7 +422,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			}
 			Collections.sort(list, chain);
 		}
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+		private final Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
 			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
 					return 0;

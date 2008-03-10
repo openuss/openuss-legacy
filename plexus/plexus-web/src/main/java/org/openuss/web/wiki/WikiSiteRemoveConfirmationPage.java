@@ -10,7 +10,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteInfo;
 
@@ -26,7 +25,7 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	private static final Logger LOGGER = Logger.getLogger(WikiSiteRemoveConfirmationPage.class);
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() {
 		try {
 			super.prerender();
 			breadcrumbs.loadCourseCrumbs(courseInfo);
@@ -62,7 +61,7 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 	 * @param toValidate UIComponent that has to be validated.
 	 * @param value Inserted Value.
 	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
+	public void validateRemoveConfirmation(final FacesContext context, final UIComponent toValidate, final Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
 			((UIInput) toValidate).setValid(false);

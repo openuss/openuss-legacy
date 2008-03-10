@@ -25,7 +25,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	private static final Logger LOGGER = Logger.getLogger(WorkspaceRemoveConfirmationPage.class);
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() {
 		try {
 			super.prerender();
 			breadcrumbs.loadCourseCrumbs(courseInfo);
@@ -51,7 +51,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 			addMessage(i18n("collaboration_workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Removing workspace failed", e);
 			addMessage(i18n("collaboration_error_cannot_be_removed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		}
@@ -64,7 +64,8 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	 * @param toValidate
 	 * @param value
 	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
+	public void validateRemoveConfirmation(final FacesContext context, final UIComponent toValidate, 
+			final Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
 			((UIInput) toValidate).setValid(false);

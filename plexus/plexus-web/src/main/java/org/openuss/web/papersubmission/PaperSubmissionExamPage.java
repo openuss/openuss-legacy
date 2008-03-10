@@ -35,9 +35,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionExamPage.class);
 	
-	@Property(value = "#{documentService}")
-	protected DocumentService documentService;
-	
 	/** The datamodel for all papers. */
 	private LocalDataModelActiveExams dataActiveExams = new LocalDataModelActiveExams();
 	
@@ -55,18 +52,16 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @throws Exception */
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		addPageCrumbs();
 		
-		if (!isPostBack()) {
-			if(examInfo != null && examInfo.getId() != null){
-				setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
-				setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-			} 
+		if (!isPostBack() && examInfo != null && examInfo.getId() != null){
+			setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
+			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		}
-		if (examInfo != null && examInfo.getDeadline()==null){
+		if (examInfo != null && examInfo.getDeadline() == null){
 			examInfo.setDeadline(new Date());
 		}
 	}
@@ -248,9 +243,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	
 	public String removeAttachment() {
 		LOGGER.debug("exam attachment removed");
-		FileInfo attachment = (FileInfo) attachmentList.getRowData();
 		if (examInfo.getAttachments() != null) {
-			examInfo.getAttachments().remove(attachment);
+			examInfo.getAttachments().remove((FileInfo) attachmentList.getRowData());
 		}
 		return Constants.SUCCESS;
 	}
@@ -363,8 +357,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
-				List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
-				activeExams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
+				List<ExamInfo> activeExams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
 				//setSortColumn("deadline");
 				sort(activeExams);
 				page = new DataPage<ExamInfo>(activeExams.size(), 0, activeExams);
@@ -401,8 +394,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
-				List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
-				inactiveExams = paperSubmissionService.findInactiveExamsByDomainId(courseInfo.getId());
+				List<ExamInfo> inactiveExams = paperSubmissionService.findInactiveExamsByDomainId(courseInfo.getId());
 				sort(inactiveExams);
 				page = new DataPage<ExamInfo>(inactiveExams.size(), 0, inactiveExams);
 			}

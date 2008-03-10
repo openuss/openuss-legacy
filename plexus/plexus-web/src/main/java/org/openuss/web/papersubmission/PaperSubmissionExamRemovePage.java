@@ -4,6 +4,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -20,8 +21,10 @@ import org.openuss.web.Constants;
 @View
 public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionExamRemovePage.class);
+	
 	@Prerender
-	public void prerender() throws Exception{
+	public void prerender() {
 		super.prerender();
 		addPageCrumb();		
 	}
@@ -39,14 +42,14 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	 * Delete exam including all data
 	 * @return outcome
 	 **/
-	public String removeExam() throws Exception {
+	public String removeExam() {
 		try {
 			paperSubmissionService.removeExam(examInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
 			addMessage(i18n("papersubmission_removed_succeed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Removing exam failed.", e);
 			addMessage(i18n("papersubmission_exam_cannot_be_removed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		}

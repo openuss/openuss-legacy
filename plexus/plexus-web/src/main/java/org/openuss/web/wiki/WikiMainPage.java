@@ -30,7 +30,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		if (courseInfo == null || courseInfo.getId() == null) {
 			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
@@ -40,22 +40,24 @@ public class WikiMainPage extends AbstractWikiPage {
 		if (siteVersionId != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
-			String pageName = Constants.WIKI_STARTSITE_NAME;
+			String name;
 			if (this.siteName != null) {
-				pageName = URLUTF8Encoder.decode(this.siteName);
+				name = URLUTF8Encoder.decode(this.siteName);
 			} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
-				pageName = this.siteVersionInfo.getName();
+				name = this.siteVersionInfo.getName();
+			} else {
+				name = Constants.WIKI_STARTSITE_NAME;
 			}
 
 			final WikiSiteContentInfo backup = this.siteVersionInfo;
-			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), pageName);
+			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
 			
 			if (this.siteVersionInfo == null && 
-					Constants.WIKI_STARTSITE_NAME.equals(pageName)) {
+					Constants.WIKI_STARTSITE_NAME.equals(name)) {
 				createInfoIndexPage();
 			} else if (this.siteVersionInfo == null) {
 				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, backup);
-				setSessionBean(Constants.WIKI_NEW_SITE_NAME, pageName);
+				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
 				this.siteName = null;
 			}
 		}
@@ -66,28 +68,28 @@ public class WikiMainPage extends AbstractWikiPage {
 	}
 		
 	private void createInfoIndexPage() {
-		String text = "<h1>Wiki</h1>";
-		
 		Locale locale = new Locale(getUser().getLocale());
 		String country = locale.getLanguage();
 		
-		InputStream in = getClass().getClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
-		if (in == null) {
-			in = getClass().getClassLoader().getResourceAsStream("wiki_index.xhtml");
+		String text;
+		
+		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
+		if (inStream == null) {
+			inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index.xhtml");
 		}
-		if (in != null) {
+		if (inStream != null) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte buf[] = new byte[4096];
-			int i;
+			int read;
 			try {
-				while ((i = in.read(buf)) != -1) {
-					out.write(buf, 0, i);
+				while ((read = inStream.read(buf)) != -1) {
+					out.write(buf, 0, read);
 				}
 			} catch (IOException e) {
 				LOGGER.error("Error reading wiki_index.xhtml", e);
 			} finally {
 				try {
-					in.close();
+					inStream.close();
 					out.close();
 				} catch (IOException e) {
 					LOGGER.error("Error reading wiki_index.xhtml", e);
@@ -95,6 +97,8 @@ public class WikiMainPage extends AbstractWikiPage {
 				
 			}
 			text = out.toString();
+		} else {
+			text = "!! RESOURCE NOT FOUND!!";
 		}
 		
 		siteVersionInfo = new WikiSiteContentInfo();

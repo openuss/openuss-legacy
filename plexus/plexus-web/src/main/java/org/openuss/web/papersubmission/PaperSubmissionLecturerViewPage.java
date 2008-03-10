@@ -2,11 +2,13 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +39,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionViewPage.class);
 	
 	/** The data model for all submission files. */
-	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
+	private LocalDataModelSubmissionFiles dataFiles = new LocalDataModelSubmissionFiles();
 	
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION + "}")
 	private PaperSubmissionFileSelection paperFileSelection;
@@ -47,8 +49,9 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {		
 		super.prerender();
+		
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		paperFileSelection.processSwitch();
 	
@@ -66,36 +69,38 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		crumb.setName(i18n("papersubmission_paperlist_header"));
 		crumb.setHint(i18n("papersubmission_paperlist_header"));		
 		breadcrumbs.addCrumb(crumb);
-		
-		//specific exam crumb
-		crumb = new BreadCrumb();
-		crumb.setName(examInfo.getName());
-		crumb.setHint(examInfo.getName());
-		
-		if(courseInfo != null && courseInfo.getId() != null 
-				&& examInfo != null && examInfo.getId() != null){
+
+		if (this.examInfo != null) {
+			//specific exam crumb
+			crumb = new BreadCrumb();
+			crumb.setName(this.examInfo.getName());
+			crumb.setHint(this.examInfo.getName());
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-			crumb.addParameter("course",courseInfo.getId());
-			crumb.addParameter("exam",examInfo.getId());
-		}
-		breadcrumbs.addCrumb(crumb);
-		
-		//crumb of a specific submission
-		crumb = new BreadCrumb();
-		crumb.setName(paperSubmissionInfo.getDisplayName());
-		crumb.setHint(paperSubmissionInfo.getDisplayName());
-		
-		if(courseInfo != null && courseInfo.getId() != null 
-				&& examInfo != null && examInfo.getId() != null
-				&& paperSubmissionInfo != null && paperSubmissionInfo.getId() != null){
+			if(courseInfo != null && courseInfo.getId() != null 
+					&& this.examInfo != null && this.examInfo.getId() != null){
+				
+				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+				crumb.addParameter("course", courseInfo.getId());
+				crumb.addParameter("exam", this.examInfo.getId());
+			}
+			breadcrumbs.addCrumb(crumb);
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-			crumb.addParameter("course",courseInfo.getId());
-			crumb.addParameter("exam",examInfo.getId());
-			crumb.addParameter("paper",paperSubmissionInfo.getId());
+			//crumb of a specific submission
+			crumb = new BreadCrumb();
+			crumb.setName(paperSubmissionInfo.getDisplayName());
+			crumb.setHint(paperSubmissionInfo.getDisplayName());
+			
+			if(courseInfo != null && courseInfo.getId() != null 
+					&& this.examInfo != null && this.examInfo.getId() != null
+					&& paperSubmissionInfo != null && paperSubmissionInfo.getId() != null){
+				
+				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+				crumb.addParameter("course", courseInfo.getId());
+				crumb.addParameter("exam", this.examInfo.getId());
+				crumb.addParameter("paper", paperSubmissionInfo.getId());
+			}
+			breadcrumbs.addCrumb(crumb);
 		}
-		breadcrumbs.addCrumb(crumb);
 	}
 	
 
@@ -124,9 +129,10 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	public String download() throws IOException{
 		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			//Storing the zip file name into the session 
-			String fileName = examInfo.getName() + "_" + paperSubmissionInfo.getFirstName() + "_" + new SimpleDateFormat("dd.MM.yyyy_HH.mm").format(new Date());
+			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH.mm", Locale.GERMAN);
+			String fileName = examInfo.getName() + "_" + paperSubmissionInfo.getFirstName() + "_" + dateFormat.format(new Date());
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -143,11 +149,11 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	//// getter/setter methods ////////////////////////////////////////////////
 	public void setDataSubmissionFiles(
 			LocalDataModelSubmissionFiles dataSubmissionFiles) {
-		this.dataSubmissionFiles = dataSubmissionFiles;
+		this.dataFiles = dataSubmissionFiles;
 	}
 
 	public LocalDataModelSubmissionFiles getDataSubmissionFiles() {
-		return dataSubmissionFiles;
+		return dataFiles;
 	}
 
 	public List<FolderEntryInfo> getEntries() {

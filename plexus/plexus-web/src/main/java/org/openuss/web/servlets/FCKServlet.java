@@ -43,7 +43,7 @@ import org.fckfaces.util.Util;
 public class FCKServlet extends org.fckfaces.util.Servlet {
 
 	private static final long serialVersionUID = -945294405900760483L;
-	private static final String FCKEDITOR_WIKI_PREFIX = "/FCKeditorWiki/";
+	private static final String WIKI_PREFIX = "/FCKeditorWiki/";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,7 +52,7 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
         String uri = request.getRequestURI();
         String path = uri.substring(uri.indexOf(Util.FCK_FACES_RESOURCE_PREFIX)+Util.FCK_FACES_RESOURCE_PREFIX.length()+1);
         
-        File file = new File(getServletContext().getRealPath(FCKEDITOR_WIKI_PREFIX + path));
+        File file = new File(getServletContext().getRealPath(WIKI_PREFIX + path));
         
         if (!file.exists()) {
         	super.doGet(request, response);

@@ -11,7 +11,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /**
@@ -26,7 +25,7 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 	private static final Logger LOGGER = Logger.getLogger(WikiImageRemoveConfirmationPage.class);
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() {
 		try {
 			super.prerender();
 			breadcrumbs.loadCourseCrumbs(courseInfo);
@@ -53,7 +52,7 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			addMessage(i18n(Constants.WIKI_IMAGE_REMOVE_SUCCEEDED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Remove image failed", e);
 			addMessage(i18n(Constants.WIKI_IMAGE_CANNOT_BE_REMOVED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
 		}

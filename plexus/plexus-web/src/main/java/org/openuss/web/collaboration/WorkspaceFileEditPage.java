@@ -40,7 +40,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
@@ -55,8 +55,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	}
 	
 	private void addPageCrumb() {
-		// FIXME: create correct bread-crumbs
-		BreadCrumb crumb = new BreadCrumb();
+		final BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("documents_file"));
 		crumb.setHint(i18n("documents_file"));
 		breadcrumbs.addCrumb(crumb);
@@ -122,10 +121,14 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 			selectedFile.setFileName(document.getFileName());
 		} else {
 			String fileName = selectedFile.getFileName();
-			if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-				fileName = fileName + '.' +extension(document.getFileName());
+			
+			StringBuilder fname = new StringBuilder(fileName);
+			
+			String extension = extension(document.getFileName());
+			if (!StringUtils.equals(extension(fileName), extension)) {
+				fname.append('.').append(extension);
 			}
-			selectedFile.setFileName(fileName);
+			selectedFile.setFileName(fname.toString());
 		}
 		selectedFile.setExtension(extension(document.getFileName()));
 		selectedFile.setContentType(document.getContentType());

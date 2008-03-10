@@ -30,7 +30,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		addBreadCrumbs();
@@ -81,7 +81,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 			LOGGER.debug("Importing WikiSites from DomainID " + selectedCourseId + ".");
 			wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
 		} else {
-			throw new RuntimeException("Unexpected Wiki Import Type.");
+			throw new WikiUnexpectedImportTypeException("Unexpected Wiki Import Type.");
 		}
 		
 		addMessage(i18n("wiki_message_import_successful"));

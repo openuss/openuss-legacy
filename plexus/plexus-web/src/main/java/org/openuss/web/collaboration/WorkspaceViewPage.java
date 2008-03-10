@@ -60,14 +60,14 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 */
 	private List<SelectItem> folderList;
 
-	private List<FolderEntryInfo> entries;
+	private transient List<FolderEntryInfo> entries;
 
 	private boolean moveMode = false;
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		if (currentFolder == null && workspaceInfo == null) {
@@ -129,7 +129,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public String download() throws IOException {
 		LOGGER.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
@@ -148,7 +148,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 */
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
-		if (entries.size() > 0) {
+		if (!entries.isEmpty()) {
 			LOGGER.debug("deleting documents:");
 			setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
@@ -280,14 +280,15 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					String depth = "";
+					StringBuilder depth = new StringBuilder();
 					//check depth
 					List path = super.documentService.getFolderPath(info);
-					for(int i = 0; i < path.size(); i++)
-						depth = depth + "> ";
+					for(int i = 0; i < path.size(); i++) {
+						depth.append("> ");
+					}
 					//@TODO implement check wether element is root. Change name if so.
-					String name = info.getName() == null ? "Root" : info.getName();
-					folderList.add(new SelectItem(info,depth + name ));
+					depth.append(info.getName() == null ? "Root" : info.getName());
+					folderList.add(new SelectItem(info, depth.toString()));
 				} else {
 					SelectItem item = new SelectItem("--");
 					item.setDisabled(true);
@@ -301,7 +302,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		this.folderList = folderList;
 	}
 
-	public boolean getMoveMode() {
+	public boolean isMoveMode() {
 		return moveMode;
 	}
 	public void setMoveMode(boolean moveMode) {
@@ -352,7 +353,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			Collections.sort(list, chain);
 		}
 
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+		private final Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
 			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
 					return 0;

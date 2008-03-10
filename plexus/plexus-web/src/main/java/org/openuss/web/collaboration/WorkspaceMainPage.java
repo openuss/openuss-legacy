@@ -2,11 +2,8 @@ package org.openuss.web.collaboration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -56,7 +53,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @throws Exception */
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		memberSelection.processSwitch();
@@ -124,10 +121,9 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			LOGGER.debug("selected workspaceInfo " + workspaceInfo.getName());
 			editing = true;
 			
-			// get mapped users
-			List<UserInfo> members = loadCourseMembers();
-
 			if (this.workspaceInfo.getId() != null) {
+				// get mapped users
+				List<UserInfo> members = loadCourseMembers();
 				
 				List<Long> wsMemberIds = getWorkspaceMemberIds();
 				
@@ -151,7 +147,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	@SuppressWarnings("unchecked")
 	public String saveWorkspace() throws DesktopException, LectureException {
 		LOGGER.debug("Starting method saveWorkspace()");
-		boolean create = false;
+		boolean create;
 		if (workspaceInfo.getId() == null) {
 
 			workspaceInfo.setDomainId(courseInfo.getId());
@@ -160,6 +156,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			create = true;
 		} else {
 			workspaceService.updateWorkspace(workspaceInfo);
+			
+			create = false;
 		}
 		
 		// store mapping
@@ -232,8 +230,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	//// getter/setter methods ////////////////////////////////////////////////
 
 	private WorkspaceInfo currentWorkspace() {
-		WorkspaceInfo workspace = this.dataWorkspaces.getRowData();
-		return workspace;
+		return this.dataWorkspaces.getRowData();
 	}
 	
 	public Boolean getEditing() {
@@ -293,55 +290,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		}
 		
 		return courseMembers;
-	}
-	
-	public void setSelectedMembers(List<String> items) {
-		System.out.println(">>>> " + items);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String getSelectedMembers() {
-		List<Long> wsMemberIds = getWorkspaceMemberIds();
-		StringBuilder sb = new StringBuilder();
-		
-		for (Iterator it = wsMemberIds.iterator(); it.hasNext();) {
-			Long id = (Long)it.next();
-			sb.append(id.longValue());
-			if (it.hasNext()) {
-				sb.append(",");
-			}
-		}
-		return sb.toString();
-	}
-	
-	public List<SelectItem> getSelectedMembersList() {
-		List<UserInfo> members = loadCourseMembers();
-		
-		List<Long> wsMemberIds = getWorkspaceMemberIds();
-		
-		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
-		for (UserInfo cmi : members) {
-			if (wsMemberIds.contains(cmi.getId())) {
-				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
-			}
-		}
-		
-		return items;
-	}
-	
-	public List<SelectItem> getAvailableMembersList() {
-		List<UserInfo> members = loadCourseMembers();
-		
-		List<Long> wsMemberIds = getWorkspaceMemberIds();
-		
-		List<SelectItem> items = new ArrayList<SelectItem>(members.size());
-		for (UserInfo cmi : members) {
-			if (!wsMemberIds.contains(cmi.getId())) {
-				items.add(new SelectItem(cmi.getId().toString(), cmi.getLastName() + ", " + cmi.getFirstName()));
-			}
-		}
-		
-		return items;
 	}
 	
 	@SuppressWarnings("unchecked")

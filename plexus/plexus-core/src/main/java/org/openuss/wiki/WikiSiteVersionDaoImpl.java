@@ -136,7 +136,7 @@ public class WikiSiteVersionDaoImpl  extends org.openuss.wiki.WikiSiteVersionDao
         }
     	
         if (copyIfNull || sourceVO.isStable() != false) {
-            targetEntity.setStable(new java.lang.Boolean(sourceVO.isStable()));
+            targetEntity.setStable(sourceVO.isStable());
         }
     }
 

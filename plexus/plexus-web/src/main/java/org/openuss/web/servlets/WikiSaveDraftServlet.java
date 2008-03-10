@@ -25,7 +25,7 @@ public class WikiSaveDraftServlet extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(WikiSaveDraftServlet.class);
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp)
 			throws ServletException, IOException {
 		// currently only kind of "ping"... has to be implemented
 		HttpSession sess = req.getSession(false);
