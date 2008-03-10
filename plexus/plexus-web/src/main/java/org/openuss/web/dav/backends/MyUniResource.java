@@ -71,6 +71,34 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 			}
 		}
 		
+		if (institutes == null) {
+			institutes = desktopInfo.getInstituteInfos();
+		}
+		for (InstituteInfo i : institutes) {
+			long instID = i.getId();
+			
+			long depID = i.getDepartmentId();
+			if (departmentService == null){
+				departmentService = (DepartmentService)(getWAC().getBean(Constants.DEPARTMENT_SERVICE));
+			}
+			DepartmentInfo dep = departmentService.findDepartment(depID);
+			if (depID == id) {
+				return new DepartmentResource(getContext(), path, dep);
+			}
+			
+			if (instID == id) {
+				return new InstituteResource(getContext(), path, i);
+			}
+			if (id == ID_NONE) {
+				if (sanitizeName(InstituteResource.getNameByData(i)).equals(name)) {
+					return new InstituteResource(getContext(), path, i);
+				}
+				if (sanitizeName(DepartmentResource.getNameByData(dep)).equals(name)) {
+					return new DepartmentResource(getContext(), path, dep);
+				}
+			}
+		}
+		
 		if (departments == null) {
 			departments = desktopInfo.getDepartmentInfos();
 		}
@@ -82,21 +110,6 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 			if (id == ID_NONE) {
 				if (sanitizeName(DepartmentResource.getNameByData(d)).equals(name)) {
 					return new DepartmentResource(getContext(), path, d);
-				}
-			}
-		}
-		
-		if (institutes == null) {
-			institutes = desktopInfo.getInstituteInfos();
-		}
-		for (InstituteInfo i : institutes) {
-			long instID = i.getId();
-			if (instID == id) {
-				return new InstituteResource(getContext(), path, i);
-			}
-			if (id == ID_NONE) {
-				if (sanitizeName(InstituteResource.getNameByData(i)).equals(name)) {
-					return new InstituteResource(getContext(), path, i);
 				}
 			}
 		}
