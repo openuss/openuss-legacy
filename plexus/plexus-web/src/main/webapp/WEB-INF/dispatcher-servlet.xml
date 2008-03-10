@@ -11,6 +11,11 @@
 		<property name="instituteFeed"><ref bean="instituteFeed"/></property>
 	</bean>
 
+		
+	<bean name="/public/global.xml*" class="org.openuss.web.servlets.feedservlets.GlobalFeedController">	
+		<property name="globalFeed"><ref bean="globalFeed"/></property>
+	</bean>
+
 	<bean name="/secured/discussion.xml*" class="org.openuss.web.servlets.feedservlets.DiscussionFeedController">	
 		<property name="discussionFeed"><ref bean="discussionFeed"/></property>
 	</bean>
@@ -35,6 +40,11 @@
 
 	<bean name="instituteFeed" class="org.openuss.web.feeds.InstituteFeed" parent="feedTemplate">	
 		<property name="instituteService" ref="instituteService"/>
+		<property name="newsService" ref="newsService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="globalFeed" class="org.openuss.web.feeds.GlobalFeed" parent="feedTemplate">
 		<property name="newsService" ref="newsService"/>
 		<property name="securityService" ref="securityService"/>
 	</bean>

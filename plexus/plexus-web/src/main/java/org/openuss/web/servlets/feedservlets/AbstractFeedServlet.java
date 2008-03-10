@@ -1,5 +1,6 @@
 package org.openuss.web.servlets.feedservlets;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 
@@ -27,48 +28,61 @@ public abstract class AbstractFeedServlet{
 	
 	public ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		Long domainIdentifier = Long.parseLong(req.getParameter(domainParameterName()));
-		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
 
 		if (domainIdentifier != null) {
 			if (!hasPermissions(domainIdentifier)) {
 				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 				return null;
 			}
-
+			
 			FeedWrapper feedWrapper = getFeedWrapper(domainIdentifier);
-
-			if (feedWrapper == null) {
-				res.sendError(HttpServletResponse.SC_NOT_FOUND);
-				return null;
-			}
-
-			if (modifiedSince != null && modifiedSince != "" && feedWrapper.getLastModified() != null) {
-				try {
-					if (DateFormat.getDateTimeInstance().parse(modifiedSince).getTime() < feedWrapper.getLastModified()
-							.getTime()) {
-						res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
-						return null;
-					}
-				} catch (ParseException e) {
-					logger.debug("Malformed header information");
-				}
-			}
-			res.setContentType(APPLICATION_RSS_XML);
-			// FIXME - Workaround for NullPointerException
-			if (feedWrapper.getWriter() != null) {
-				res.getWriter().write(feedWrapper.getWriter().toString());
-			} 
-
-			if (feedWrapper.getLastModified() != null) {
-				String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
-				res.setHeader(LAST_MODIFIED, lastModified);
-			}
-			return null;
+			
+			sendFeed(req, res, feedWrapper);
 		}
-		res.sendError(HttpServletResponse.SC_NOT_FOUND);
+		
 		return null;
 	}
+	
+	/**
+	 * Sends the actual feed. 
+	 * 
+	 * @param req The request
+	 * @param res Response facility.
+	 * @param feedWrapper The feed wrapper determining the feed.
+	 * @return true if a non-error message was sent. 
+	 * @throws IOException Indicates a problem when writing the HTTP answer.
+	 */
+	protected boolean sendFeed(HttpServletRequest req, HttpServletResponse res, FeedWrapper feedWrapper) throws IOException {
+		if (feedWrapper == null) {
+			res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return false;
+		}
 
+		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
+		if (modifiedSince != null && modifiedSince != "" && feedWrapper.getLastModified() != null) {
+			try {
+				if (DateFormat.getDateTimeInstance().parse(modifiedSince).getTime() < feedWrapper.getLastModified()
+						.getTime()) {
+					res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+					return true;
+				}
+			} catch (ParseException e) {
+				logger.debug("Malformed header information");
+			}
+		}
+		res.setContentType(APPLICATION_RSS_XML);
+		// FIXME - Workaround for NullPointerException
+		if (feedWrapper.getWriter() != null) {
+			res.getWriter().write(feedWrapper.getWriter().toString());
+		}
+
+		if (feedWrapper.getLastModified() != null) {
+			String lastModified = DateFormatUtils.format(feedWrapper.getLastModified(), DATE_FORMAT);
+			res.setHeader(LAST_MODIFIED, lastModified);
+		}
+		
+		return true;
+	}
 	
 	/**
 	 * Hook method to define the domain object request parameter name
@@ -82,6 +96,7 @@ public abstract class AbstractFeedServlet{
 	 * @return
 	 */
 	protected abstract FeedWrapper getFeedWrapper(Long domainId);
+	
 
 	/**
 	 * Has the current user the permission to view the rss feed?

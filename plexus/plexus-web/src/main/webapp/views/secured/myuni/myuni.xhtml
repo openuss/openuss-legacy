@@ -26,6 +26,11 @@
 <!-- text above will be ignored -->
 <f:loadBundle basename="resources" var="msg" />
 <ui:composition template="/views/layout/layout.xhtml">
+
+	<ui:define name="header">
+		<link type="application/rss+xml" title="RSS-Global" rel="alternate" href="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/rss/public/global.xml"/>
+	</ui:define>
+	
 	<ui:define name="title">
 		<h:outputText value="#{msg.desktop_command_myuni}"/>
 	</ui:define>
@@ -34,6 +39,7 @@
 	</ui:define>
 	<ui:define name="sidebar">
 		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/feeds/globalfeed.xhtml" />
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 		<o:legend>
 			<o:legendItem styleClass="newsletter_none" label="#{msg.flexlist_title_newsletter_none}"/>
