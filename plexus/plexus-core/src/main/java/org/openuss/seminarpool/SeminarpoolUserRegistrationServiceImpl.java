@@ -7,8 +7,11 @@ package org.openuss.seminarpool;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.Validate;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.NewsletterInfo;
@@ -188,7 +191,16 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected void handleInformParticipantsByMail(Long seminarpoolId)
 			throws Exception {
-		
+		Validate.notNull(seminarpoolId, "handleInformParticipantsByMail ==> seminarpoolId connot be null");
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		Map<String, String> parameters = new HashMap<String, String>();
+		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
+		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
+		String assignedcourses = "";
+		parameters.put("courses", assignedcourses);
+		getMessageService().sendMessage(seminarpool.getName() + "(" + seminarpool.getShortcut() + ")",
+				"seminarpool.application.subject", "seminarpool_application", parameters, sur.getUser());
+		}
 	}
 
 }
