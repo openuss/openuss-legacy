@@ -32,7 +32,9 @@
 						<h:outputText value="#{bean.capacity}"/>
 					</plexus:column>
 					<plexus:column header="#{msg['seminarpool_add_course_groups_add_coursetimes_set']}">				
-						<h:outputText value="#{bean.isTimeSet}"/>
+						<h:outputText value="#{bean.isTimeSet}">
+							<f:converter converterId="seminarpoolBooleanConverter" />
+						</h:outputText>
 					</plexus:column>
 				<plexus:column header="#{msg.commands_header}">				
 						<plexus:command 

@@ -339,5 +339,6 @@ public class Constants {
 	public static final String SEMINARPOOL_USER_REGISTRATION_ERROR_NO_COURSE_SELECTED = "seminarpool_user_registration_error_no_course_selected";
 	
 	public static final String SEMINARPOOL_DAY_OF_WEEK_PREFIX = "seminarpool_day_of_week_prefix_";
+	public static final String SEMINARPOOL_PREFIX = "seminarpool_";
 
 }
