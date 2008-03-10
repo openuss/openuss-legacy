@@ -40,6 +40,10 @@
 				<!-- configure buttons -->
 				<s:authorize ifAllGranted="ROLE_ADMIN">
 	  				<o:block>
+	  					<h:commandButton id="backButton" 
+	  					action="view:backward"
+	  					value="#{msg.back}"
+	  					styleClass="button_cancel"/>
 						<h:commandButton 
 					    id="roleAttributeKey"
 						action="ldap_roleattributekeys" 

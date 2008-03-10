@@ -28,7 +28,12 @@
 			<ui:include src="/views/commons/navigation/admin.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<h:form id="universitiesForm">
+  			<h:form id="ldapServerForm">
+  				<o:block label="${msg.ldap_serverconfiguration_description_header}">
+  					<div class="content_font_normal">
+  						<h:outputText value="${msg.ldap_serverconfiguration_description}" escape="false" styleClass="content_font_normal"/>
+	   				</div>	  								
+	   			</o:block>  	
 				
 				<plexus:dataTable 
 					id="department" 
@@ -62,6 +67,10 @@
 				
 				<s:authorize ifAllGranted="ROLE_ADMIN">
 	  				<o:block>
+	  					<h:commandButton id="backButton" 
+	  					action="view:backward"
+	  					value="#{msg.back}"
+	  					styleClass="button_cancel"/>
 						<h:commandButton 
 					    id="addServer"
 						action="ldap_server_registration_start" 
