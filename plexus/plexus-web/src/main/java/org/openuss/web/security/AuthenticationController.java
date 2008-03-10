@@ -157,6 +157,8 @@ public class AuthenticationController extends BasePage {
 						UserDetails userDetails = principal;
 						auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
 						user = migrationUtility.migrate(user, auth);
+						// Set session bean here, so that i18n gets correct locale for user.
+						setSessionBean(Constants.USER_SESSION_KEY, user);
 						addError(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
 					}
 					else {

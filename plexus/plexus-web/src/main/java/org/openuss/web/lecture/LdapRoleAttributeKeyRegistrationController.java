@@ -54,45 +54,7 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapRole
 	public List<SelectItem> getAllRoleAttributeKeys() {
 		return ldapConfigurationService.getAllRoleAttributeKeys();
 	}
-/*		
-	
-	
-	@SuppressWarnings( { "unchecked" })
-	public List<SelectItem> getAllUniversities() {
 
-		universityItems = new ArrayList<SelectItem>();
-
-		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
-		allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
-
-		Iterator<UniversityInfo> iterEnabled = allEnabledUniversities.iterator();
-		UniversityInfo universityEnabled;
-
-		if (iterEnabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_ENABLED, bundle.getString("universities_enabled"));
-			universityItems.add(item);
-		}
-		while (iterEnabled.hasNext()) {
-			universityEnabled = iterEnabled.next();
-			SelectItem item = new SelectItem(universityEnabled.getId(), universityEnabled.getName());
-			universityItems.add(item);
-		}
-
-		Iterator<UniversityInfo> iterDisabled = allDisabledUniversities.iterator();
-		UniversityInfo universityDisabled;
-
-		if (iterDisabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_DISABLED, bundle.getString("universities_disabled"));
-			universityItems.add(item);
-		}
-		while (iterDisabled.hasNext()) {
-			universityDisabled = iterDisabled.next();
-			SelectItem item = new SelectItem(universityDisabled.getId(), universityDisabled.getName());
-			universityItems.add(item);
-		}
-		return universityItems;
-	}
-*/
 	public String register() {
 		ldapConfigurationService.createRoleAttributeKey(roleAttributeKeyInfo);
 		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
