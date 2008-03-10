@@ -51,8 +51,8 @@
    	    </plexus:dataTable>
    	    
         <o:block>   
-            <h:commandButton id="saveWorkspace"   action="#{views$secured$collaboration$main.saveWorkspace}" value="#{msg.save}" styleClass="button_save" />
-            <h:commandButton id="cancelWorkspace" action="#{views$secured$collaboration$main.cancelWorkspace}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+            <h:commandButton id="saveWorkspace"   action="#{views$secured$collaboration$main.saveWorkspace}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+            <h:commandButton id="cancelWorkspace" action="#{views$secured$collaboration$main.cancelWorkspace}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>
