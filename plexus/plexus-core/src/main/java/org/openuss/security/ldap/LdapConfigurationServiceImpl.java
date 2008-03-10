@@ -98,8 +98,8 @@ public class LdapConfigurationServiceImpl
     	// load related entities (domain + user dn patterns)
     	AuthenticationDomain domainEntity = getAuthenticationDomainDao().load(ldapServer.getAuthenticationDomainId());
     	List<UserDnPattern> userDnPatternEntities = new ArrayList<UserDnPattern>();
-    	for (Iterator<UserDnPatternInfo> iterator = ldapServer.getUserDnPatterns().iterator(); iterator.hasNext();) {    		
-			UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(iterator.next().getId());
+    	for (Iterator<Long> iterator = ldapServer.getUserDnPatternIds().iterator(); iterator.hasNext();) {    		
+			UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(iterator.next());
 			userDnPatternEntities.add(userDnPatternEntity);
 		}
     	
@@ -156,7 +156,7 @@ public class LdapConfigurationServiceImpl
     	if (ldapServer.getAuthenticationDomainId() == null) {
     		throw new LdapConfigurationServiceException("Specify an authentication domain!");
     	}
-    	if (ldapServer.getUserDnPatterns().isEmpty()) {
+    	if (ldapServer.getUserDnPatternIds().isEmpty()) {
     		throw new LdapConfigurationServiceException("Specify at least one user dn pattern!");
     	}
 
@@ -195,9 +195,9 @@ public class LdapConfigurationServiceImpl
     	}
     	
     	// remove ldap server from user dn patterns
-    	List<UserDnPatternInfo> userDnPatternInfos = ldapServer.getUserDnPatterns();
-    	for (Iterator<UserDnPatternInfo> iterator = userDnPatternInfos.iterator(); iterator.hasNext();) {    		
-			UserDnPattern userDnPattern = getUserDnPatternDao().load(iterator.next().getId());
+    	List<Long> userDnPatternIds = ldapServer.getUserDnPatternIds();
+    	for (Iterator<Long> iterator = userDnPatternIds.iterator(); iterator.hasNext();) {    		
+			UserDnPattern userDnPattern = getUserDnPatternDao().load(iterator.next());
 			userDnPattern.getLdapServers().remove(server);
 			getUserDnPatternDao().update(userDnPattern);
 		}
@@ -499,7 +499,7 @@ public class LdapConfigurationServiceImpl
 		if (StringUtils.isBlank(attributeMapping.getMappingName())) {
     		throw new LdapConfigurationServiceException("Name of new attribute mapping must not be empty!");
     	}
-		if (attributeMapping.getRoleAttributeKeys().isEmpty()) {
+		if (attributeMapping.getRoleAttributeKeyIds().isEmpty()) {
 			throw new LdapConfigurationServiceException("Attribute mapping needs at least one role attribute key!");
 		}
 	}
@@ -514,8 +514,8 @@ public class LdapConfigurationServiceImpl
     	
     	// load related role attribute keys
     	List<RoleAttributeKey> roleAttributeKeyEntities = new ArrayList<RoleAttributeKey>();
-    	for (Iterator<RoleAttributeKeyInfo> iterator = attributeMapping.getRoleAttributeKeys().iterator(); iterator.hasNext();) {    		
-			RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(iterator.next().getId());
+    	for (Iterator<Long> iterator = attributeMapping.getRoleAttributeKeyIds().iterator(); iterator.hasNext();) {    		
+			RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(iterator.next());
 			roleAttributeKeyEntities.add(roleAttributeKeyEntity);
 		}
     	
@@ -584,12 +584,18 @@ public class LdapConfigurationServiceImpl
     	
     	
     	// load related role attribute keys
-    	List<RoleAttributeKeyInfo> roleAttributeKeyInfos = attributeMapping.getRoleAttributeKeys();
+    	List<Long> roleAttributeKeyIds = attributeMapping.getRoleAttributeKeyIds();
     	List<RoleAttributeKey> roleAttributeKeyEntities = new ArrayList<RoleAttributeKey>();
-    	for (RoleAttributeKeyInfo info : roleAttributeKeyInfos) {
-    		roleAttributeKeyEntities.add(getRoleAttributeKeyDao().load(info.getId()));
+    	for (Long id : roleAttributeKeyIds) {
+    		roleAttributeKeyEntities.add(getRoleAttributeKeyDao().load(id));
     	}
     	attributeMappingEntity.setRoleAttributeKeys(roleAttributeKeyEntities);
+    	attributeMappingEntity.setEmailKey(attributeMapping.getEmailKey());
+    	attributeMappingEntity.setFirstNameKey(attributeMapping.getFirstNameKey());
+    	attributeMappingEntity.setGroupRoleAttributeKey(attributeMapping.getGroupRoleAttributeKey());
+    	attributeMappingEntity.setLastNameKey(attributeMapping.getLastNameKey());
+    	attributeMappingEntity.setMappingName(attributeMapping.getMappingName());
+    	attributeMappingEntity.setUsernameKey(attributeMapping.getUsernameKey());
 
     	getAttributeMappingDao().update(attributeMappingEntity);    	
     }
@@ -683,7 +689,7 @@ public class LdapConfigurationServiceImpl
 			
 			getAttributeMappingDao().update(attributeMappingEntity);
 			getRoleAttributeKeyDao().update(roleAttributeKeyEntity);
-			attributeMappingInfo.getRoleAttributeKeys().add(roleAttributeKeyEntity.getId());
+			attributeMappingInfo.getRoleAttributeKeyIds().add(roleAttributeKeyEntity.getId());
 		}    	
     }
 	
@@ -815,7 +821,7 @@ public class LdapConfigurationServiceImpl
 		getLdapServerDao().update(ldapServer);
 		getUserDnPatternDao().update(userDnPattern);
 		
-		ldapServerInfo.getUserDnPatterns().add(userDnPattern.getId());
+		ldapServerInfo.getUserDnPatternIds().add(userDnPattern.getId());
 	}
 	
 	/**
@@ -849,8 +855,7 @@ public class LdapConfigurationServiceImpl
 	}
 
 	@Override
-	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern)
-			throws Exception {		
+	protected void handleSaveUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {		
 		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
 		userDnPatternEntity.setName(userDnPattern.getName());
 		getUserDnPatternDao().update(userDnPatternEntity);
@@ -896,6 +901,75 @@ public class LdapConfigurationServiceImpl
     	
     	return userDnPatternInfos;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleGetAttributeMappingById(java.lang.Long)
+	 */
+	@Override
+	protected AttributeMappingInfo handleGetAttributeMappingById(Long id) throws Exception {
+		if (id == null) {
+			throw new LdapConfigurationServiceException("Cannot load attribute mapping: Id must not be null!");
+		}
+		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(id);
+		if (attributeMappingEntity == null) {
+			throw new LdapConfigurationServiceException("Attribute mapping not found in DB!");
+		}
+		
+		return getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleGetLdapServerById(java.lang.Long)
+	 */
+	@Override
+	protected LdapServerInfo handleGetLdapServerById(Long id) throws Exception {
+		if (id == null) {
+			throw new LdapConfigurationServiceException("Cannot load ldap server: Id must not be null!");
+		}
+		LdapServer ldapServerEntity = getLdapServerDao().load(id);
+		if (ldapServerEntity == null) {
+			throw new LdapConfigurationServiceException("Ldap server not found in DB!");
+		}
+		
+		return getLdapServerDao().toLdapServerInfo(ldapServerEntity);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleGetRoleAttributeKeyById(java.lang.Long)
+	 */
+	@Override
+	protected RoleAttributeKeyInfo handleGetRoleAttributeKeyById(Long id) throws Exception {
+		if (id == null) {
+			throw new LdapConfigurationServiceException("Cannot load role attribute key: Id must not be null!");
+		}
+		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(id);
+		if (roleAttributeKeyEntity == null) {
+			throw new LdapConfigurationServiceException("Role attribute key not found in DB!");
+		}
+		
+		return getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleGetUserDnPatternById(java.lang.Long)
+	 */
+	@Override
+	protected UserDnPatternInfo handleGetUserDnPatternById(Long id)	throws Exception {
+		if (id == null) {
+			throw new LdapConfigurationServiceException("Cannot load user dn pattern: Id must not be null!");
+		}
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(id);
+		if (userDnPatternEntity == null) {
+			throw new LdapConfigurationServiceException("User dn pattern not found in DB!");
+		}
+		
+		return getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
+	}
+	
+	
+	
+	
+	
 
 	
 

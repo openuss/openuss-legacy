@@ -28,7 +28,7 @@ public class LdapServerDaoImpl
     {
     	LdapServerInfo ldapServerInfo = super.toLdapServerInfo(entity);
     	ldapServerInfo.setAuthenticationDomainId(entity.getAuthenticationDomain().getId());
-    	ldapServerInfo.setUserDnPatterns(entity.getUserDnPatterns());
+    	ldapServerInfo.setUserDnPatternIds(entity.getUserDnPatterns());
     	return ldapServerInfo;
     }
 

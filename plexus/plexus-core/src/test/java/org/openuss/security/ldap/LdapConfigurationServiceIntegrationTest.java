@@ -97,9 +97,9 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		ldapServer.setAuthenticationDomainId(domain.getId());
 		ldapServer.setEnabled(isEnabled);
 		
-		List<UserDnPatternInfo> userDnPatterns = new ArrayList<UserDnPatternInfo>();
-		userDnPatterns.add(userDnPattern);
-		ldapServer.setUserDnPatterns(userDnPatterns);
+		List<Long> userDnPatternIds = new ArrayList<Long>();
+		userDnPatternIds.add(userDnPattern.getId());
+		ldapServer.setUserDnPatternIds(userDnPatternIds);
 		
 		return ldapServer;
 	}
@@ -122,9 +122,9 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		mapping.setLastNameKey("SN");
 		mapping.setUsernameKey("CN");
 		
-		List<RoleAttributeKeyInfo> roleAttributeKeys = new ArrayList<RoleAttributeKeyInfo>();
-		roleAttributeKeys.add(roleAttributeKey);
-		mapping.setRoleAttributeKeys(roleAttributeKeys);
+		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
+		roleAttributeKeyIds.add(roleAttributeKey.getId());
+		mapping.setRoleAttributeKeyIds(roleAttributeKeyIds);
 		
 		return mapping;
 	}
@@ -168,7 +168,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNull(attrMappingInfo.getId());
 		attrMappingInfo = service.createAttributeMapping(attrMappingInfo);
 		assertNotNull(attrMappingInfo.getId());
-		assertTrue(0 < attrMappingInfo.getRoleAttributeKeys().size());
+		assertTrue(0 < attrMappingInfo.getRoleAttributeKeyIds().size());
 		
 //		create AuthenticationDomainInfo object
 		AuthenticationDomainInfo domainInfo = createAuthenticationDomainInfoDummy(attrMappingInfo);
@@ -325,7 +325,82 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 
 		
 	}
-
+	
+	/*
+	 * test getById methods
+	 */
+	public void testGetById() {
+		service = getLdapConfigurationService();
+		commit();
+		
+		RoleAttributeKeyInfo key1 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		key1.setName("Key 1");
+		service.saveRoleAttributeKey(key1);
+		
+		RoleAttributeKeyInfo key2 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		key2.setName("Key 2");
+		service.saveRoleAttributeKey(key2);
+		
+		AttributeMappingInfo map1 = service.createAttributeMapping(createAttributeMappingInfoDummy(key1));
+		map1.setMappingName("Mapping 1");
+		service.saveAttributeMapping(map1);
+		
+		AttributeMappingInfo map2 = service.createAttributeMapping(createAttributeMappingInfoDummy(key2));
+		map2.setMappingName("Mapping 2");
+		service.saveAttributeMapping(map2);
+		
+		AuthenticationDomainInfo domain1 = service.createDomain(createAuthenticationDomainInfoDummy(map1));
+		domain1.setName("Domain 1");
+		service.saveDomain(domain1);
+		
+		AuthenticationDomainInfo domain2 = service.createDomain(createAuthenticationDomainInfoDummy(map2));
+		domain2.setName("Domain 2");
+		service.saveDomain(domain2);
+		
+		UserDnPatternInfo pattern1 = service.createUserDnPattern(createUserDnPatternInfoDummy());
+		pattern1.setName("Pattern 1");
+		service.saveUserDnPattern(pattern1);
+		
+		UserDnPatternInfo pattern2 = service.createUserDnPattern(createUserDnPatternInfoDummy());
+		pattern2.setName("Pattern 2");
+		service.saveUserDnPattern(pattern2);
+		
+		LdapServerInfo server1 = service.createLdapServer(createLdapServerInfoDummy(domain1, pattern1, true));
+		server1.setDescription("Server 1");
+		service.saveLdapServer(server1);
+		
+		LdapServerInfo server2 = service.createLdapServer(createLdapServerInfoDummy(domain2, pattern2, true));
+		server2.setDescription("Server 2");
+		service.saveLdapServer(server2);
+		
+		
+		RoleAttributeKeyInfo findKey = service.getRoleAttributeKeyById(key1.getId());
+		assertTrue("Key 1" == findKey.getName());
+		findKey = service.getRoleAttributeKeyById(key2.getId());
+		assertTrue("Key 2" == findKey.getName());
+		
+		AttributeMappingInfo findMap = service.getAttributeMappingById(map1.getId());
+		assertTrue("Mapping 1" == findMap.getMappingName());
+		findMap = service.getAttributeMappingById(map2.getId());
+		assertTrue("Mapping 2" == findMap.getMappingName());
+		
+		AuthenticationDomainInfo findDomain = service.getDomainById(domain1.getId());
+		assertTrue("Domain 1" == findDomain.getName());
+		findDomain = service.getDomainById(domain2.getId());
+		assertTrue("Domain 2" == findDomain.getName());
+		
+		UserDnPatternInfo findPattern = service.getUserDnPatternById(pattern1.getId());
+		assertTrue("Pattern 1" == findPattern.getName());
+		findPattern = service.getUserDnPatternById(pattern2.getId());
+		assertTrue("Pattern 2" == findPattern.getName());
+		
+		LdapServerInfo findServer = service.getLdapServerById(server1.getId());
+		assertTrue("Server 1" == findServer.getDescription());
+		findServer = service.getLdapServerById(server2.getId());
+		assertTrue("Server 2" == findServer.getDescription());
+		
+		
+	}
 	
 	/*
 	 * Tests alls
@@ -471,7 +546,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNull(attrMappingInfo.getId());
 		attrMappingInfo = service.createAttributeMapping(attrMappingInfo);
 		assertNotNull(attrMappingInfo.getId());
-		assertTrue(0 < attrMappingInfo.getRoleAttributeKeys().size());
+		assertTrue(0 < attrMappingInfo.getRoleAttributeKeyIds().size());
 		
 //		create AuthenticationDomainInfo object
 		AuthenticationDomainInfo domainInfo = createAuthenticationDomainInfoDummy(attrMappingInfo);
