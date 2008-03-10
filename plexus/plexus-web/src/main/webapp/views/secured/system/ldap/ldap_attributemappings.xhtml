@@ -38,7 +38,7 @@
 				<plexus:dataTable 
 					id="department" 
 					label="#{msg.ldap_attributemappingconfiguration_header}" 
-					value="views$secured$system$ldap$ldap_attributemapping.attributeMappings" 
+					value="views$secured$system$ldap$ldap_attributemappings.attributeMappings" 
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 					rows="15">
@@ -46,7 +46,7 @@
 						<plexus:commandSortHeader columnName="name">
 							#{msg['ldap_attributemapping_name']}
 						</plexus:commandSortHeader>
-				        <h:commandLink action="#{views$secured$system$ldap$ldap_attributemapping.selectAttributeMapping}" styleClass="command">
+				        <h:commandLink action="#{views$secured$system$ldap$ldap_attributemappings.selectAttributeMapping}" styleClass="command">
 							<h:outputText value="#{bean.mappingName}"/>
 						</h:commandLink> 
 					</t:column>
@@ -55,7 +55,7 @@
 					<plexus:column header="#{msg.commands_header}">
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_attributemapping}"
+								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
 								action = "selectAttributeMappingAndConfirmRemove"
 								styleClass="icon_remove"
 								label="#{msg.department_command_remove}"

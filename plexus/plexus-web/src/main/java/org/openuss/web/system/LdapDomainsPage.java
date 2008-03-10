@@ -18,7 +18,7 @@ import org.openuss.web.lecture.AbstractLdapDomainsOverviewPage;
  * 
  *
  */
-@Bean(name = "views$secured$system$ldap$ldap_domain", scope = Scope.REQUEST)
+@Bean(name = "views$secured$system$ldap$ldap_domains", scope = Scope.REQUEST)
 @View
 
 public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
@@ -27,17 +27,30 @@ public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 	public void prerender() {
 		try {
 			super.prerender();
+			addBreadCrumbs();
 		} catch (Exception e) {
 			
-		}
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("departmentList_header"));
-		newCrumb.setHint(i18n("departmentList_header"));
-		newCrumb.setLink(PageLinks.ADMIN_DEPARTMENTS);
-		
-		breadcrumbs.loadAdministrationCrumbs();
-		breadcrumbs.addCrumb(newCrumb);
+		}		
 	}
+	
+	/**
+	 * Adds an additional BreadCrumb.
+	 */
+	 private void addBreadCrumbs() {		 
+		 breadcrumbs.init();	
+		 
+		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
+		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);
+		 myBreadCrumb.setName(i18n("ldap_index"));
+		 myBreadCrumb.setHint(i18n("ldap_index"));
+		 breadcrumbs.addCrumb(myBreadCrumb);
+		 
+		 myBreadCrumb = new BreadCrumb();
+		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_AUTHENTICATIONDOMAIN);
+		 myBreadCrumb.setName(i18n("ldap_domain"));
+		 myBreadCrumb.setHint(i18n("ldap_domain_hint"));
+		 breadcrumbs.addCrumb(myBreadCrumb);
+	 }
 	
 	public DataPage<AuthenticationDomainInfo> fetchDataPage(int startRow, int pageSize) {
 		if (dataPage == null) {
