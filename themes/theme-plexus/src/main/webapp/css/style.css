@@ -1372,7 +1372,7 @@ ul {
 	margin: 0 3px 0 0;
 }
 
-.field_error {
+.field_error, .field_inline_error {
 	display: block;
 	font-size: 9pt;
 	color: #FF0000;
@@ -2170,11 +2170,14 @@ div .space_20above {
 	
 	/* STYLE RULES FOR ALL KINDS OF MESSAGES */
 #messages .content_box ul {
-	margin:5px 0px;	
+	margin: 5px 0px;	
 }
 .status_box .content_box .content_normal .content_font_normal {
-	display:block;
-	margin:5px 0px;
+	display: block;
+	margin: 5px 0px;
+}
+#messages .content_box .header_normal .header_font_normal, .status_box .content_box .header_normal .header_font_normal {
+	padding-left: 40px !important;
 }
 #messages .content_box .header_normal, .status_box .content_box .header_normal {
 	padding: 0;
@@ -2224,6 +2227,14 @@ div .space_20above {
 	height: 7px;
 	background-repeat: no-repeat;
 }
+
+.warning_box .content_box .content_normal ul.file-list, .warning_box .content_box .content_normal ul.coursetype-list {
+	padding-bottom: 15px;	
+}
+.warning_box .content_box .content_normal ul.file-list li, .warning_box .content_box .content_normal ul.coursetype-list li {
+	padding: 3px 0px 0px 10px;
+}
+
 
 	/* STYLE RULES FOR EACH MESSAGE TYPE */
 
