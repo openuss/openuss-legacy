@@ -327,6 +327,22 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	}
 	
 	/*
+	 * tests validators
+	 */
+	public void testIsValid() {
+		service = getLdapConfigurationService();
+		commit();
+		
+		RoleAttributeKeyInfo key1 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
+		assertTrue(false == service.isValidRoleAttributeKey(key1));
+		
+		UserDnPatternInfo pattern1 = service.createUserDnPattern(createUserDnPatternInfoDummy());
+		assertTrue(false == service.isValidUserDnPattern(pattern1));
+		
+	}
+	
+	
+	/*
 	 * test getById methods
 	 */
 	public void testGetById() {

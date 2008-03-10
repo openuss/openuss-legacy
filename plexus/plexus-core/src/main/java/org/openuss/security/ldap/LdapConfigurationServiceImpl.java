@@ -965,6 +965,31 @@ public class LdapConfigurationServiceImpl
 		
 		return getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleIsValidRoleAttributeKey(org.openuss.security.ldap.RoleAttributeKeyInfo)
+	 */
+	@Override
+	protected boolean handleIsValidRoleAttributeKey(RoleAttributeKeyInfo roleAttributeKey) throws Exception {
+		// check if role attribute key already exists
+		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKey.getId());
+		if (roleAttributeKeyEntity != null) {
+			return false;
+		} else return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.security.ldap.LdapConfigurationServiceBase#handleIsValidUserDnPattern(org.openuss.security.ldap.UserDnPatternInfo)
+	 */
+	@Override
+	protected boolean handleIsValidUserDnPattern(UserDnPatternInfo userDnPattern) throws Exception {
+		// check if user dn pattern already exists
+		UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(userDnPattern.getId());
+		if (userDnPatternEntity != null) {
+			return false;
+		} else return true;
+	}
+	
 	
 	
 	
