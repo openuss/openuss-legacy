@@ -96,6 +96,7 @@ public class WebDAVConstants {
 	public final static String XML_LOCKSCOPE = "lockscope";
 	public final static String XML_LOCKTOKEN = "locktoken";
 	public final static String XML_LOCKTYPE = "locktype";
+	public final static String XML_NAME = "name";
 	public final static String XML_OMIT = "omit";
 	public final static String XML_PROP = "prop";
 	public final static String XML_PROPERTYBEHAVIOR = "propertybehavior";

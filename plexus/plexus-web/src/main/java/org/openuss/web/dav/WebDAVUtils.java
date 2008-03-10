@@ -6,7 +6,12 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +26,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
@@ -49,7 +53,16 @@ public final class WebDAVUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	protected final static String DATEFORMAT_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz"; 
+	
+	private final static String DATEFORMAT_RFC1123_STRING = "EEE, dd MMM yyyy HH:mm:ss zzz";
+	protected final static DateFormat rfc1123DateFormat;
+	static {
+		TimeZone gmtTz = TimeZone.getTimeZone("GMT");
+		rfc1123DateFormat = new SimpleDateFormat(DATEFORMAT_RFC1123_STRING, Locale.US);
+		rfc1123DateFormat.setTimeZone(gmtTz);
+	}
+	
+
 	
 	/* HTTP */
 	
@@ -310,10 +323,12 @@ public final class WebDAVUtils {
 	}
 	
 	/**
+	 * Formats a date in the rfc1123-format as defined in RFC 2616 3.3.1.
+	 * 
 	 * @param d The date to represent.
 	 * @return A WebDAV-compatible string representing the date as defined by RFC2616 3.3.1
 	 */
-	public static String dateToString(Date d) {
-		return DateFormatUtils.format(d, DATEFORMAT_RFC1123);		
+	public static String dateToRFC1123String(Date d) {
+		return rfc1123DateFormat.format(d);		
 	}
 }

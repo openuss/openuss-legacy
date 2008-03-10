@@ -35,11 +35,22 @@ public class CourseResource extends AbstractOrganisationResource{
 		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
+	 */
 	@Override
-	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
+	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
 		if (id == ID_NONE) {
-			
+			if (sname.equals(sanitizeName(getMaterialsName()))) {
+				return getMaterialsBackend(path);
+			}
+		} else {
+			if (id == MATERIALS_ID) {
+				return getMaterialsBackend(path);
+			}
 		}
+		
+		
 		return null;
 	}
 	
@@ -53,7 +64,6 @@ public class CourseResource extends AbstractOrganisationResource{
 		Folder f = folderDao.folderInfoToEntity(fi);
 		
 		return new DocumentResource(getContext(), path, f);
-		
 	}
 
 	/* (non-Javadoc)

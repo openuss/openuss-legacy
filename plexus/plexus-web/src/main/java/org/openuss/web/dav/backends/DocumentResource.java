@@ -7,10 +7,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.Folder;
+import org.openuss.documents.FolderDao;
 import org.openuss.documents.FolderEntry;
+import org.openuss.documents.FolderInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.web.dav.IOContextImpl;
@@ -21,13 +26,17 @@ import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
+import org.openuss.webdav.WebDAVStatusCodes;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A WebDAV resource in the org.openuss.document system.
  */
 public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
+	private Logger logger = Logger.getLogger(DocumentResource.class);
 	protected DocumentService documentService;
+	protected FolderDao folderDao;
+	
 	protected FolderEntry entry;
 	protected Collection<FolderEntry> subEntriesCache = null;
 	
@@ -36,13 +45,32 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 		this.entry = entry;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
+		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createCollectionImpl(java.lang.String)
+	 */
 	@Override
 	protected WebDAVResource createCollectionImpl(String name)
 			throws WebDAVResourceException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		FolderInfo fi = documentService.getFolder(entry);
+		
+		FolderInfo newFolderInfo = new FolderInfo();
+		newFolderInfo.setName(name);
+		
+		try {
+			documentService.createFolder(newFolderInfo, fi);
+		} catch (DocumentApplicationException e) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this);
+		}
+		
+		subEntriesCache = null;
+		
+		FolderEntry childEntry = ((Folder) entry).getFolderEntryByName(name);
+		
+		return new DocumentResource(getWAC(), path, childEntry);
 	}
 
 	@Override
@@ -68,7 +96,6 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 			return readCollectionContent();
 		} else {
 			// this is a file
-			
 			IOContextImpl res = new IOContextImpl();
 			
 			FileInfo fi = documentService.getFileEntry(entry.getId(), true);
@@ -100,27 +127,46 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
 		Map<String,String> resMap = new TreeMap<String,String>();
 		
-		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_DISPLAYNAME)) { 
-			resMap.put(WebDAVConstants.PROPERTY_DISPLAYNAME, entry.getDescription());
+		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_DISPLAYNAME)) {
+			String description = entry.getDescription();
+			
+			if (StringUtils.isNotEmpty(description)) {
+				resMap.put(WebDAVConstants.PROPERTY_DISPLAYNAME, description);
+			}
 		}
+		
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETCONTENTLENGTH)) { 
 			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, String.valueOf(entry.getFileSize()));
 		}
-		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_CREATIONDATE)) { 
-			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToString(entry.getCreated()));
-		}
+		// FIXME date format
+		/*if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_CREATIONDATE)) { 
+			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToRFC1123String(entry.getCreated()));
+		}*/
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETLASTMODIFIED)) { 
-			resMap.put(WebDAVConstants.PROPERTY_GETLASTMODIFIED, WebDAVUtils.dateToString(entry.getModified()));
+			resMap.put(WebDAVConstants.PROPERTY_GETLASTMODIFIED, WebDAVUtils.dateToRFC1123String(entry.getModified()));
 		}
 		
 		return resMap;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#writeContentImpl(org.openuss.webdav.IOContext)
+	 */
 	@Override
 	protected void writeContentImpl(IOContext ioc)
 			throws WebDAVResourceException {
-		// TODO Auto-generated method stub
 		
+		FileInfo fi = documentService.getFileEntry(entry.getId(), false);
+		
+		fi.setContentType(ioc.getContentType());
+		fi.setInputStream(ioc.getInputStream());
+		// TODO checkme
+		try {
+			documentService.saveFileEntry(fi);
+		} catch (DocumentApplicationException e) {
+			logger.error("");
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -140,11 +186,9 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 		return true;
 	}
 
-	public boolean hasChild(String name) {
-		 // TODO Auto-generated method stub
-		return false;
-	}
-
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
+	 */
 	@Override
 	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
 		if (!isCollection()) {
@@ -173,6 +217,9 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 	 */
 	@Override
 	protected Map<Long, String> getRawChildNames() {
+		if (!isCollection()) {
+			return null;
+		}
 		Map<Long,String> res = new TreeMap<Long, String>();
 		
 		for (FolderEntry fe : getSubEntries()) {

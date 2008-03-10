@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
@@ -15,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
  * Furthermore, it reformats names so that they do not lead to special characters in common clients.  
  */
 public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAVResource {
+	private static Logger logger = Logger.getLogger(CollisionAvoidingSimpleWebDAVResource.class);
 	/**
 	 * Unspecified id (Wasn't contained in the original query).
 	 */
@@ -101,6 +103,11 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 			
 			WebDAVPath childPath = path.concat(fullName).asResolved();
 			WebDAVResource childRes = getChild(id, sanName, childPath);
+			
+			if (childRes == null) {
+				logger.error("Child \"" + fullName + "\" was listed, but not found!");
+				continue;
+			}
 			
 			if (childRes.isReadable()) {
 				res.add(childRes);

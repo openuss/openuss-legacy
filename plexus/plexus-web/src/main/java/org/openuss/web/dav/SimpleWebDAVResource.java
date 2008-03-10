@@ -500,6 +500,13 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	protected abstract void writeContentImpl(IOContext ioc) throws WebDAVResourceException;
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
+	 */
+	public boolean hasChild(String name) {
+		return getRawChildNames().containsValue(name);
+	}
+	
 	/**
 	 * @return The WebApplicationContext that allows to retrieve beans.
 	 */
