@@ -91,11 +91,13 @@ public class TranslationServiceImpl extends
 		for (TranslationText textIt : transTexts) {
 			if (textIt.getLanguage() == lang) returnList.add(getTranslationTextDao().toTranslationTextInfo(textIt));
 		}
+		if (languageCode == "en") System.out.println("Jetzt ist es " + lang.getLanguageCode());
 		if (returnList.size() != 0) {
 			return returnList.get(0).getText();
 		} else {
 			// if no translation is available for the languageCode try english
 			if (languageCode != "en") {
+				System.out.println("Ist nicht englisch! Es ist: " + lang.getLanguageCode());
 				return this.getTranslation(domainIdentifier, subKey, "en");
 			// if the languageCode is english, throw an exception
 			} else {

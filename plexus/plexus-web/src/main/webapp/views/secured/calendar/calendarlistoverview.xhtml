@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+	<h:form id="openuss4us_calendaroverview" enctype="multipart/form-data">
+		<plexus:dataTable id="appointmentTable"
+			value="views$secured$calendar$calendarlist.appointmentData"
+			var="appointment" rows="20"
+			label="#{msg.openuss4us_calendar_appointments}">
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendarlist.appointmentDetails}">
+					<h:outputText value="#{appointment.subject}"
+						styleClass="header_font_normal" />
+				</h:commandLink>
+				<br />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendarlist.appointmentDetails}">
+					<h:outputText value="#{appointment.description}"
+						styleClass="content_font_normal" />
+				</h:commandLink>
+					<o:microformatCalendar appointmentInfo="#{appointment}"/>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
+				<h:outputText value="#{appointment.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
+				</h:outputText>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
+				<h:outputText value="#{appointment.starttime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{appointment.endtime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
+				<h:outputText value="#{appointment.location}" />
+			</t:column>
+
+			<plexus:column header="#{msg.commands_header}"
+				styleClass="col_commands">
+				<h:commandButton id="details_serial"
+					action="#{views$secured$calendar$calendarlist.appointmentDetails}"
+					value="#{msg.openuss4us_calendar_view_appointment_details}"
+					title="#{msg.openuss4us_calendar_view_appointment_details}"
+					styleClass="button_remove" />
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
+					<br />
+					<h:commandButton id="delete_serialappointment"
+						action="#{views$secured$calendar$calendarlist.deleteAppointment}"
+						value="#{msg.openuss4us_calendar_button_delete}"
+						title="#{msg.openuss4us_calendar_appointment_delete}"
+						styleClass="button_remove" />
+				</s:acl>
+				</plexus:column>
+		</plexus:dataTable>
+		
+		<o:block>
+			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					action="calendar_create_single_appointment" styleClass="button" />
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					action="calendar_create_serial_appointment" styleClass="button" />
+			</s:acl>
+
+		</o:block>
+	</h:form>
+</ui:composition>

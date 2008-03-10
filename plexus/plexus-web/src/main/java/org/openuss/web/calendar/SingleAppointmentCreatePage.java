@@ -83,6 +83,7 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 		
 		try {
 			for(AppointmentTypeInfo appType : (Collection<AppointmentTypeInfo>)calendarService.getAllAppointmentTypes()){
+				System.out.println("name: " + appType.getName());
 				String name = translationService.getTranslation(appType.getId(), appType.getName(), user.getLocale());
 				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
