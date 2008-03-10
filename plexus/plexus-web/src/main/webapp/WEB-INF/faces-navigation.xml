@@ -1351,7 +1351,8 @@
 			<from-outcome>seminarpool_options_allocations_user_step2</from-outcome>
 			<to-view-id>/views/secured/seminarpool/allocation/userAllocationByUserStep2.xhtml</to-view-id>
 		</navigation-case>
-			<navigation-rule>
+	</navigation-rule>	
+	<navigation-rule>
 		<from-view-id>/views/secured/seminarpool/conditions/*</from-view-id>
 		<navigation-case>
 			<from-outcome>seminarpool_options_requirements_by_user</from-outcome>
@@ -1362,6 +1363,4 @@
 			<to-view-id>/views/secured/seminarpool/conditions/seminarpoolRequirementsByUserStep2.xhtml</to-view-id>
 		</navigation-case>		
 	</navigation-rule>	
-	</navigation-rule>	
-
 </faces-config>
