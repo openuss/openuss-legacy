@@ -123,6 +123,7 @@ public class SeminarpoolsByUniversityAndStatusOverview extends BasePage {
 			// get all institutes. Does not depend whether it is enabled or
 			// disabled
 			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.REGISTRATIONPHASE));
+			seminarpoolList.addAll(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(), SeminarpoolStatus.PREPARATIONPHASE));
 			sort(seminarpoolList);
 			dataPage = new DataPage<SeminarpoolInfo>(seminarpoolList.size(), 0, seminarpoolList);
 		}

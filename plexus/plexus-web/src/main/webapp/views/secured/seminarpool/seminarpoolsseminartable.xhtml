@@ -12,8 +12,8 @@
      <plexus:dataTable   
      	id="courseTypes" 
      	label="#{msg['coursetype_coursetypestable_header']}" 
-     	value="views$secured$seminarpool$seminarpoolcoursetypes.dataCourseTypes" 
-     	columnClasses="col_max_left, col_commands"
+     	value="views$secured$seminarpool$seminarpoolseminartable.dataCourseTypes" 
+     	columnClasses="col_max_left, col_max_left, col_commands"
      	var="bean" 
      	rows="20">  
    
@@ -24,19 +24,15 @@
 				<b><h:outputText value="#{bean.courseName} (#{bean.courseShortcut})"/></b>
 			</o:link>
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader>
-			<s:authorize ifAllGranted="ROLE_ADMIN">
-				<s:acl domainObject="#{bean}" hasPermission="#{ACL.GCRUD}">
-					<h:commandLink action="#{views$secured$seminarpool$seminarpoolcoursetypes.loadCourseGroups}">
-						<h:outputText value="#{msg.seminarpool_edit_course_allocation_edit}"/>
-					</h:commandLink>
-				</s:acl>
-			</s:authorize>		
+		
 		</t:column>
 		<s:authorize ifAllGranted="ROLE_ADMIN">
 			<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 			<t:column>
 				<plexus:commandSortHeader columnName="activated">#{msg.seminarpoolseminar_colheader_accepted}</plexus:commandSortHeader> 
-				<b><h:outputText value="#{bean.accepted}"/></b>
+				<b><h:outputText value="#{bean.accepted}">
+				<f:converter converterId="seminarpoolBooleanConverter" />
+				</h:outputText></b>
 			</t:column>
 			</s:acl>
 		</s:authorize>
@@ -47,20 +43,38 @@
 		<plexus:column header="#{msg.commands_header}">
 			 
 			<plexus:command 
-				bean="#{views$secured$seminarpool$seminarpoolcoursetypes}"
-				action="activateSeminar"
-				label="#{msg.seminarpoolseminar_command_activate}"
-				hint="#{msg.seminarpoolseminar_command_activate_hint}"
-				styleClass="icon_edit">
+				bean="#{views$secured$seminarpool$seminarpoolseminartable}"
+				action="loadCourseGroups"
+				styleClass="icon_edit"
+				label="#{msg.seminarpool_edit_course_allocation_edit}"
+				title="#{msg.seminarpool_edit_course_allocation_edit}">
 			</plexus:command>
+				<plexus:command 
+						bean = "#{views$secured$seminarpool$seminarpoolseminartable}"
+						action = "activateSeminar"
+						styleClass="icon_public"
+						label="#{msg.seminar_command_disable}"
+						title="#{msg.seminar_command_disable_hint}"
+						rendered="#{not bean.accepted}">
+				</plexus:command>
+				<plexus:command 
+						bean = "#{views$secured$seminarpool$seminarpoolseminartable}"
+						action = "deactivateSeminar"
+						styleClass="icon_hide"
+						label="#{msg.seminar_command_enable}"
+						title="#{msg.seminar_command_enable_hint}"
+						rendered="#{bean.accepted==true}">
+				</plexus:command>
+		
+
 				
 			<plexus:command   
-				bean="#{views$secured$seminarpool$seminarpoolcoursetypes}"
+				bean="#{views$secured$seminarpool$seminarpoolseminartable}"
 				action="selectSeminarAndConfirmRemove"
+				styleClass="icon_remove"
 				onclick="if (!confirm('#{msg.seminarpoolseminar_remove_confirmation}')) return false"
 				label="#{msg.seminarpoolseminar_command_remove}"
-				hint="#{msg.seminarpoolseminar_command_remove_hint}"
-				styleClass="icon_remove">
+				title ="#{msg.seminarpoolseminar_command_remove_hint}">
 			</plexus:command>
 		
 		</plexus:column>

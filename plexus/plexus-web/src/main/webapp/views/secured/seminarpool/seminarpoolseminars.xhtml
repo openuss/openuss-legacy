@@ -31,14 +31,11 @@
 	<ui:define name="content">
 	  		
 	  		
-	  		<t:saveState id="coursetype_editing" value="#{views$secured$lecture$institutecoursetypes.editing}" />
 	  		
   			<h:form id="courseTypesForm">
 				<ui:include src="seminarpoolsseminartable.xhtml"/>
 			</h:form>
-			<c:if test="#{views$secured$lecture$institutecoursetypes.editing}">
-				<ui:include src="coursetypeedit.xhtml"/>
-			</c:if>
+		
 				
   		</ui:define>
 	

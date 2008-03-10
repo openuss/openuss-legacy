@@ -16,13 +16,12 @@ import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPriorityDetailInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
-import org.openuss.web.seminarpool.SeminarpoolCourseTypesPage;
 
 	@Bean(name = "views$secured$seminarpool$participants$seminarpoolParticipantsStep2", scope = Scope.REQUEST)
 	@View
 	public class SeminarpoolParticipantsStep2Page extends AbstractSeminarpoolPage {
 
-		public static final Logger logger = Logger.getLogger(SeminarpoolCourseTypesPage.class);
+		public static final Logger logger = Logger.getLogger(SeminarpoolParticipantsStep2Page.class);
 
 		private SeminarCourseRegistrationsOverviewPage dataCourseTypes = new SeminarCourseRegistrationsOverviewPage();
 		

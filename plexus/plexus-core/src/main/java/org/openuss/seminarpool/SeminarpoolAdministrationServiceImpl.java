@@ -541,8 +541,6 @@ public class SeminarpoolAdministrationServiceImpl extends
 			}
 			b++;
 		}
-		
-		
 
 		// Sort table by groupId
 		for (int i = 0; i < coursegroups.length - 1; i++) {
@@ -555,10 +553,10 @@ public class SeminarpoolAdministrationServiceImpl extends
 			coursegroups[minPos] = coursegroups[i];
 			coursegroups[i] = temp;
 		}
-		
-		//Copy 2-dim array to 1-dim array for later binary search
-		for(int i=0; i<subgroups;i++){
-			coursegroups2[i]=coursegroups[i][0];
+
+		// Copy 2-dim array to 1-dim array for later binary search
+		for (int i = 0; i < subgroups; i++) {
+			coursegroups2[i] = coursegroups[i][0];
 		}
 
 		double[] capacity = new double[subgroups];
@@ -572,14 +570,17 @@ public class SeminarpoolAdministrationServiceImpl extends
 		}
 
 		int conflicts = 0;
-		long[][] timeconflict = new long[subgroups*subgroups][2];
+		long[][] timeconflict = new long[subgroups * subgroups][2];
 		// Time overlaps
-	
+
 		for (int i = 0; i < courseGroupList.size() - 1; i++) {
 			for (int j = i + 1; j < courseGroupList.size(); j++) {
-				if(courseGroupList.get(i).getCourseSchedule().size()>0 && courseGroupList.get(j).getCourseSchedule().size()>0 && timeconflict(courseGroupList.get(i),courseGroupList.get(j))){
-					timeconflict[conflicts][0]=courseGroupList.get(i).getId();
-					timeconflict[conflicts][1]=courseGroupList.get(j).getId();
+				if (courseGroupList.get(i).getCourseSchedule().size() > 0
+						&& courseGroupList.get(j).getCourseSchedule().size() > 0
+						&& timeconflict(courseGroupList.get(i), courseGroupList
+								.get(j))) {
+					timeconflict[conflicts][0] = courseGroupList.get(i).getId();
+					timeconflict[conflicts][1] = courseGroupList.get(j).getId();
 					conflicts++;
 				}
 			}
@@ -587,7 +588,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		int variables = subgroups * registrations.size();
 		int sideconditions = subgroups + registrations.size() + 2 * variables
-				+ registrations.size() * seminars.size() + conflicts * registrations.size();
+				+ registrations.size() * seminars.size() + conflicts
+				* registrations.size();
 		Simplex simplex = new Simplex(variables, sideconditions, false);
 
 		long[][] table = new long[variables][3];
@@ -682,16 +684,18 @@ public class SeminarpoolAdministrationServiceImpl extends
 				simplex.newSC(sc1, "<=");
 			}
 		}
-		
-		//Time restrictions
-		for(a = 0; a < registrations.size(); a++){
-			for(b = 0; b < conflicts; b++){
+
+		// Time restrictions
+		for (a = 0; a < registrations.size(); a++) {
+			for (b = 0; b < conflicts; b++) {
 				java.util.Arrays.fill(sc1, 0);
-				int index1 = java.util.Arrays.binarySearch(coursegroups2, timeconflict[b][0]);
-				int index2 = java.util.Arrays.binarySearch(coursegroups2, timeconflict[b][1]);
-				for(c = 0; c < subgroups; c++){
+				int index1 = java.util.Arrays.binarySearch(coursegroups2,
+						timeconflict[b][0]);
+				int index2 = java.util.Arrays.binarySearch(coursegroups2,
+						timeconflict[b][1]);
+				for (c = 0; c < subgroups; c++) {
 					double value = 0.0;
-					if(c == index1 || c == index2){
+					if (c == index1 || c == index2) {
 						value = 1.0;
 					}
 					sc1[subgroups * a + c] = value;
@@ -1034,12 +1038,19 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected void handleRemoveCourseSchedule(CourseScheduleInfo courseSchedule)
 			throws Exception {
-		Validate.notNull(courseSchedule,"handleRemoveCourseSchedule ==> courseGroup cannot be null");
-		Validate.notNull(courseSchedule.getCourseGroupId(),"handleRemoveCourseSchedule ==> getCourseSeminarpoolAllocationId cannot be null");
-		CourseGroup courseGroupEntity = getCourseGroupDao().load(courseSchedule.getCourseGroupId());
-		CourseSchedule courseScheduleEntity = getCourseScheduleDao().courseScheduleInfoToEntity(courseSchedule);
+		Validate.notNull(courseSchedule,
+				"handleRemoveCourseSchedule ==> courseGroup cannot be null");
+		Validate
+				.notNull(
+						courseSchedule.getCourseGroupId(),
+						"handleRemoveCourseSchedule ==> getCourseSeminarpoolAllocationId cannot be null");
+		CourseGroup courseGroupEntity = getCourseGroupDao().load(
+				courseSchedule.getCourseGroupId());
+		CourseSchedule courseScheduleEntity = getCourseScheduleDao()
+				.courseScheduleInfoToEntity(courseSchedule);
 		courseGroupEntity.removeCourseGroup(courseScheduleEntity);
-		if (courseGroupEntity.getCourseSchedule() != null && courseGroupEntity.getCourseSchedule().size() == 0 ) { 
+		if (courseGroupEntity.getCourseSchedule() != null
+				&& courseGroupEntity.getCourseSchedule().size() == 0) {
 			courseGroupEntity.setIsTimeSet(Boolean.FALSE);
 		}
 		getCourseGroupDao().update(courseGroupEntity);
@@ -1173,5 +1184,25 @@ public class SeminarpoolAdministrationServiceImpl extends
 			userInfoList.add(getUserDao().toUserInfo(user));
 		}
 		return userInfoList;
+	}
+
+	@Override
+	protected void handleDeactivateSeminar(
+			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo)
+			throws Exception {
+		Validate
+				.notNull(courseSeminarpoolAllocationInfo,
+						"handleDeactivateSeminar ==> courseSeminarpoolAllocation cannot be null");
+		Validate
+				.notNull(courseSeminarpoolAllocationInfo.getId(),
+						"handleDeactivateSeminar ==> courseSeminarpoolAllocation.getId() cannot be null");
+		CourseSeminarpoolAllocation courseAllocationEntity = getCourseSeminarpoolAllocationDao()
+				.load(courseSeminarpoolAllocationInfo.getId());
+		Validate
+				.notNull(courseAllocationEntity,
+						"handleDeactivateSeminar ==> Cannot load CourseSeminarpoolAllocation");
+		courseAllocationEntity.setAccepted(false);
+		getCourseSeminarpoolAllocationDao().update(courseAllocationEntity);
+
 	}
 }

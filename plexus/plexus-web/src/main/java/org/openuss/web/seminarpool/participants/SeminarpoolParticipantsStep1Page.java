@@ -17,7 +17,6 @@ import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.util.CourseSeminarpoolAllocationCourseNameComparator;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
-import org.openuss.web.seminarpool.SeminarpoolCourseTypesPage;
 
 
 @Bean(name = "views$secured$seminarpool$participants$seminarpoolParticipantsStep1", scope = Scope.REQUEST)
