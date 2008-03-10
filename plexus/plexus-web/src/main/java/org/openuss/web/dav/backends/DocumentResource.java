@@ -70,7 +70,7 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 		
 		FolderEntry childEntry = ((Folder) entry).getFolderEntryByName(name);
 		
-		return new DocumentResource(getWAC(), path, childEntry);
+		return new DocumentResource(getContext(), path, childEntry);
 	}
 
 	@Override
