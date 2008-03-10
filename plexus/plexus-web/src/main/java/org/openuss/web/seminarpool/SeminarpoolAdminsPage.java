@@ -68,24 +68,10 @@ public class SeminarpoolAdminsPage extends AbstractSeminarpoolPage {
 		  UserInfo member = members.getRowData(); 
 		  logger.debug(member.getUsername());
 		  logger.debug("removeUserFromGroup");
-		  logger.debug(seminarpoolGroups.get(0).getName());
-		  
-		  //remove an user from an organisation
-		  try{
-			  organisationService.removeMember(seminarpoolInfo.getId(), member.getId());
-			  }
-		  catch(Exception e){
-			  		addError(i18n("auth_message_error_removed_member"));
-					return Constants.SUCCESS;
-			  }
-		// remove an user from all his groups  
-		  try{
-			  organisationService.removeUserFromGroup(member.getId(),seminarpoolGroups.get(0).getId());
-			  addMessage(i18n("department_auth_message_removed_member", member.getUsername()));
-		  }
-		  catch(Exception e){
-				addError(i18n(e.getMessage()));
-				return Constants.SUCCESS;
+		  try {
+			  seminarpoolAdministrationService.removeSeminarpoolAdmin(member.getId(), seminarpoolInfo.getId());
+		  } catch (Exception ex) {
+			  addError(i18n(Constants.SEMINARPOOL_ADMIN_ERROR_LAST_ADMIN));
 		  }
 		  		  
 		  if(! StringUtils.equals(member.getUsername(),user.getUsername()))
@@ -110,20 +96,17 @@ public class SeminarpoolAdminsPage extends AbstractSeminarpoolPage {
 			logger.debug(username);
 			newadmin = securityService.getUserByName(username);
 			seminarpoolAdministrationService.addSeminarpoolAdmin(newadmin.getId(), seminarpoolInfo.getId());
-			addMessage(i18n("department_add_member_to_department", username));		
-		} catch (OrganisationServiceException e) {
-			logger.debug(e.getMessage());
-			addError(i18n("organisation_error_apply_member_at_department_already_applied"));
+			addMessage(i18n("seminarpool_admin_add_member_to_seminarpool", username));		
 		} catch (Exception e){
 			logger.debug(e.getMessage());
-			addError(i18n("organisation_error_apply_member_at_department"));
+			addError(i18n("seminarpool_admin_error_apply_member_at_seminarpool"));
 		}
 		if(newadmin != null) {
 			try {
 				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(newadmin.getId());
 				desktopService2.linkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
 			} catch(Exception e) {
-				addError(i18n(e.getMessage()));
+				addMessage(i18n("seminarpool_admin_error_apply_member_at_seminarpool"));
 			}
 		}
 	}
@@ -143,14 +126,14 @@ public class SeminarpoolAdminsPage extends AbstractSeminarpoolPage {
 
 
 	/**
-	 * LocalDataModel of University Members
+	 * LocalDataModel of Seminarpool Members
 	 */
 	private class MembersTable extends AbstractPagedTable<UserInfo> {
 		private static final long serialVersionUID = 449438749521068451L;
 
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
-			List<UserInfo> members = organisationService.findAllMembers(seminarpoolInfo.getUniversityId());
+			List<UserInfo> members = getSeminarpoolAdministrationService().getAllSeminarpoolAdmins(seminarpoolInfo.getId());
 			sort(members);
 			
 			return new DataPage<UserInfo>(members.size(),0,members);

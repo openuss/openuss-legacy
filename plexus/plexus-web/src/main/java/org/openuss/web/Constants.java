@@ -340,5 +340,6 @@ public class Constants {
 	
 	public static final String SEMINARPOOL_DAY_OF_WEEK_PREFIX = "seminarpool_day_of_week_prefix_";
 	public static final String SEMINARPOOL_PREFIX = "seminarpool_";
+	public static final String SEMINARPOOL_ADMIN_ERROR_LAST_ADMIN = "seminarpool_admin_error_last_admin"; 
 
 }

@@ -137,9 +137,11 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "No User found corresponding to the ID " + user);
-
 		this.getMembershipService()
 				.addMember(seminarpool.getMembership(), user);
+		for (Group group : seminarpool.getMembership().getGroups()) {
+				getSecurityService().addAuthorityToGroup(user, group);
+		}
 
 	}
 
@@ -164,6 +166,9 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		this.getMembershipService().removeMember(seminarpool.getMembership(),
 				user);
+		for (Group group : seminarpool.getMembership().getGroups()) {
+			getSecurityService().removeAuthorityFromGroup(user, group);
+		}
 	}
 
 	/**
