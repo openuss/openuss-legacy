@@ -31,7 +31,7 @@ public class SeminarpoolOptionsPage extends AbstractSeminarpoolPage {
 	private static final long serialVersionUID = -202776319652385870L;
 	private static final Logger logger = Logger.getLogger(SeminarpoolOptionsPage.class);
 	
-	@Property(value = "#{universityService}")
+	@Property(value = "#{" + Constants.UNIVERSITY_SERVICE  + "}")
 	protected UniversityService universityService;
 
 	private Long universityId;

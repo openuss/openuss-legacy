@@ -31,12 +31,21 @@
 
 	<ui:define name="content" styleClass="footer_normal">
 	   <h:form id="requirements">
-		<o:block label="#{msg.seminarpool_requirements_by_user_header}">
-			<div class="content_font_normal"> 
-				
-			</div>
-
-	   </o:block>
+		<t:dataList 
+			id="condition"  
+			var="condition"
+			value="#{views$secured$seminarpool$conditions$seminarpoolRequirementsByUserStep2.seminarUserConditionValueList}"
+			rendered="#{not empty views$secured$seminarpool$conditions$seminarpoolRequirementsByUserStep2.seminarUserConditionValueList}"
+			layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+			<o:block label="#{msg.seminarpool_condition_entrance_limitation} #{condition.index}">
+			 <p>
+				<h:outputText value="#{admins.seminarConditionDescription}"/>
+			 </p>
+			 <p>
+				<h:outputText value="#{admins.conditionValue}"/>
+			 </p>
+			</o:block>
+		</t:dataList>
 		<o:block>
 	   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
 		</o:block>

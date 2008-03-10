@@ -80,13 +80,9 @@ public class SeminarpoolUserRegistrationServiceImpl
 	}
 	
 	private List<SeminarUserConditionValueInfo> findConditionValueBySeminarUserRegistration(SeminarUserRegistration userRegistration) throws Exception {
-		Collection<SeminarUserConditionValue> set = userRegistration.getSeminarUserConditionValue();
-		Iterator<SeminarUserConditionValue> iter = set.iterator();
 		List<SeminarUserConditionValueInfo> list = new ArrayList<SeminarUserConditionValueInfo>();
-		while( iter.hasNext() ){
-			SeminarUserConditionValueInfo conditionValueInfo = new SeminarUserConditionValueInfo();
-			getSeminarUserConditionValueDao().toSeminarUserConditionValueInfo(iter.next(), conditionValueInfo);
-			list.add(conditionValueInfo);
+		for ( SeminarUserConditionValue conditionValue : userRegistration.getSeminarUserConditionValue()) {
+			list.add(getSeminarUserConditionValueDao().toSeminarUserConditionValueInfo(conditionValue));
 		}
 		return list;
 	}

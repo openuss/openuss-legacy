@@ -1252,10 +1252,6 @@
 			<to-view-id>/views/secured/seminarpool/allocation/userAllocationByUser.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>seminarpool_remove_confirmation</from-outcome>
-			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>seminarpooluserregistration_step1</from-outcome>
 			<to-view-id>/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step2.xhtml</to-view-id>
 		</navigation-case>
