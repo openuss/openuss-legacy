@@ -1,9 +1,11 @@
 package org.openuss.web.lecture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -76,21 +78,30 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();
 		
 		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
-				roleAttributeKeyItems.add(new SelectItem(roleAttributeKey.getId(), roleAttributeKey.getName()));
+				roleAttributeKeyItems.add(new SelectItem(String.valueOf(roleAttributeKey.getId()), roleAttributeKey.getName()));
 			}
 	
 		return roleAttributeKeyItems;
 	}
 
+
+	public void processValueChange(ValueChangeEvent valueChangeEvent) {
+	      ArrayList selectedIds = (ArrayList)valueChangeEvent.getNewValue();
+	      for (Iterator iterator = selectedIds.iterator(); iterator.hasNext();) {
+			String idAsString = (String) iterator.next();
+			Long id = Long.valueOf(idAsString);
+            System.out.println(id);
+		    logger.info(id);
+	      }
+	    }
 	
+	private List<String> roleAttributeKeyIds = new Vector<String>();
 	
-	private List<SelectItem> roleAttributeKeyIds = new Vector<SelectItem>();
-	
-	public List<SelectItem> getRoleAttributeKeyIds() {
+	public List<String> getRoleAttributeKeyIds() {		
 		return roleAttributeKeyIds;
 	}
 
-	public void setRoleAttributeKeyIds(List<SelectItem> roleAttributeKeyIds) {
+	public void setRoleAttributeKeyIds(List<String> roleAttributeKeyIds) {
 		this.roleAttributeKeyIds = roleAttributeKeyIds;
 	}
 	
