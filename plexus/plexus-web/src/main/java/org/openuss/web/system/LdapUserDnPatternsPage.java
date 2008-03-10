@@ -37,7 +37,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapUserDnPatternsOverviewPa
 	 * Adds an additional BreadCrumb.
 	 */
 	 private void addBreadCrumbs() {		 
-		 breadcrumbs.init();	
+		 breadcrumbs.loadAdministrationCrumbs();
 		 
 		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
 		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);

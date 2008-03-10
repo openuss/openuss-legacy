@@ -36,8 +36,8 @@ public class LdapServersPage extends AbstractLdapServersOverviewPage{
 	/**
 	 * Adds an additional BreadCrumb.
 	 */
-	 private void addBreadCrumbs() {		 
-		 breadcrumbs.init();	
+	 private void addBreadCrumbs() {		 	
+		 breadcrumbs.loadAdministrationCrumbs();
 		 
 		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
 		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);
@@ -48,7 +48,7 @@ public class LdapServersPage extends AbstractLdapServersOverviewPage{
 		 myBreadCrumb = new BreadCrumb();
 		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_LDAPSERVER);
 		 myBreadCrumb.setName(i18n("ldap_server"));
-		 myBreadCrumb.setHint(i18n("ldap_server"));
+		 myBreadCrumb.setHint(i18n("ldap_server"));	 
 		 breadcrumbs.addCrumb(myBreadCrumb);
 	 }
 

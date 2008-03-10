@@ -38,7 +38,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	 * Adds an additional BreadCrumb.
 	 */
 	 private void addBreadCrumbs() {		 
-		 breadcrumbs.init();	
+		 breadcrumbs.loadAdministrationCrumbs();
 		 
 		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
 		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);
