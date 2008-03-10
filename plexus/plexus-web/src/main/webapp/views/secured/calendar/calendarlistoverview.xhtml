@@ -18,6 +18,24 @@
 			value="views$secured$calendar$calendarlist.appointmentData"
 			var="appointment" rows="20"
 			label="#{msg.openuss4us_calendar_appointments}">
+			
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime" arrow="down">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
+				<h:outputText value="#{appointment.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
+				</h:outputText>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
+				<h:outputText value="#{appointment.starttime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{appointment.endtime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+			</t:column>
+			
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 				<h:commandLink value=""
@@ -33,44 +51,12 @@
 				</h:commandLink>
 					<o:microformatCalendar appointmentInfo="#{appointment}"/>
 			</t:column>
-			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
-				<h:outputText value="#{appointment.starttime}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
-				</h:outputText>
-			</t:column>
-			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
-				<h:outputText value="#{appointment.starttime}">
-					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
-				</h:outputText>
-				<h:outputText value=" - " />
-				<h:outputText value="#{appointment.endtime}">
-					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
-				</h:outputText>
-
-			</t:column>
+			
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
 				<h:outputText value="#{appointment.location}" />
 			</t:column>
 
-			<plexus:column header="#{msg.commands_header}"
-				styleClass="col_commands">
-				<h:commandButton id="details_serial"
-					action="#{views$secured$calendar$calendarlist.appointmentDetails}"
-					value="#{msg.openuss4us_calendar_view_appointment_details}"
-					title="#{msg.openuss4us_calendar_view_appointment_details}"
-					styleClass="button_remove" />
-				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
-					<br />
-					<h:commandButton id="delete_serialappointment"
-						action="#{views$secured$calendar$calendarlist.deleteAppointment}"
-						value="#{msg.openuss4us_calendar_button_delete}"
-						title="#{msg.openuss4us_calendar_appointment_delete}"
-						styleClass="button_remove" />
-				</s:acl>
-				</plexus:column>
 		</plexus:dataTable>
 		
 		<o:block>

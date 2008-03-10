@@ -313,11 +313,17 @@
 			<from-outcome>calendar_create_serial_appointment</from-outcome>
 			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>openuss4us_usercalendar_upcominglist</from-outcome>
+			<to-view-id>//views/secured/calendar/calendarlist.xhtml</to-view-id>
+		</navigation-case>		
 		
 		<navigation-case>
 			<from-outcome>openuss4us_user_search</from-outcome>
 			<to-view-id>/views/secured/buddylist/usersearch.xhtml</to-view-id>
 		</navigation-case>
+		
 			
 	</navigation-rule>
 	

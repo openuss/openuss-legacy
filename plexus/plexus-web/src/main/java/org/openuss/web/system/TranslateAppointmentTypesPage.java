@@ -82,7 +82,6 @@ public class TranslateAppointmentTypesPage extends BasePage{
 		try {
 			translationService.addTranslationText(translationTextInfo, chosenLocale);
 		} catch (TranslationApplicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Constants.OPENUSS4US_CALENDAR_TRANSLATE;

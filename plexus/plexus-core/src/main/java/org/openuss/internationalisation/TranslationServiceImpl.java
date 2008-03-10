@@ -37,17 +37,21 @@ public class TranslationServiceImpl extends
 		Language lang = getLanguageDao().load(languageCode);
 		Set<TranslationText> transTexts = lang.getTranslationTexts();
 				
-		 // are there existing translations for the same domain idfer and 		 subkey?
+		 // are there existing translations for the same domainidfer and subkey?
 		 for (TranslationText textIt : transTexts) {
-			 if ( (textIt.getDomainIdentifier() ==
-			 translationTextInfo.getDomainIdentifier())
-			 && (textIt.getSubKey() == translationTextInfo.getSubKey()) ) {
-			 throw new TranslationApplicationException("translation is already existing");
-			 }
-		 }
-		getTranslationTextDao().create(
+			if ((textIt.getDomainIdentifier().equals(translationTextInfo
+					.getDomainIdentifier()))
+					&& (textIt.getSubKey().equals(translationTextInfo.getSubKey()))) {
+				translationTextInfo.setId(textIt.getId());
+				this.updateTranslationText(translationTextInfo);
+				return;
+			}
+		}
+		TranslationText trans = getTranslationTextDao().create(
 				translationTextInfo.getDomainIdentifier(), lang,
 				translationTextInfo.getSubKey(), translationTextInfo.getText());
+		lang.getTranslationTexts().add(trans);
+		getLanguageDao().update(lang);
 	}
 
 	/**
@@ -91,13 +95,11 @@ public class TranslationServiceImpl extends
 		for (TranslationText textIt : transTexts) {
 			if (textIt.getLanguage() == lang) returnList.add(getTranslationTextDao().toTranslationTextInfo(textIt));
 		}
-		if (languageCode == "en") System.out.println("Jetzt ist es " + lang.getLanguageCode());
 		if (returnList.size() != 0) {
 			return returnList.get(0).getText();
 		} else {
 			// if no translation is available for the languageCode try english
 			if (languageCode != "en") {
-				System.out.println("Ist nicht englisch! Es ist: " + lang.getLanguageCode());
 				return this.getTranslation(domainIdentifier, subKey, "en");
 			// if the languageCode is english, throw an exception
 			} else {

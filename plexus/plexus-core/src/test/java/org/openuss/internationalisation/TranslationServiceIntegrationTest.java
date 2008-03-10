@@ -20,7 +20,7 @@ import org.openuss.security.SecurityService;
  */
 public class TranslationServiceIntegrationTest extends
 		TranslationServiceIntegrationTestBase {
-	
+
 	SecurityService securityService;
 
 	public void testLanguageAdministration() {
@@ -28,17 +28,17 @@ public class TranslationServiceIntegrationTest extends
 			translationService.addLanguage("deDE");
 			List<String> languages = translationService.getLanguages();
 			assertNotNull(languages);
-			assertEquals(1, languages.size());
-			assertEquals("deDE", languages.get(0).toString());
+			assertEquals(5, languages.size());
+			assertEquals("deDE", languages.get(4).toString());
 			translationService.removeLanguage("deDE");
 			List<String> languages2 = translationService.getLanguages();
-			assertEquals(0, languages2.size());
+			assertEquals(4, languages2.size());
 		} catch (TranslationApplicationException e) {
 			e.printStackTrace();
 			fail();
 		}
 	}
-	
+
 	public void testTranslationAdministration() {
 		TranslationTextInfo transInfo = new TranslationTextInfo();
 		transInfo.setDomainIdentifier(1L);
@@ -51,14 +51,30 @@ public class TranslationServiceIntegrationTest extends
 		try {
 			translationService.addLanguage("deDE");
 			translationService.addTranslationText(transInfo, "deDE");
+		} catch (TranslationApplicationException e) {
+			e.printStackTrace();
+			fail();
+		}
+		try {
+			translationService.addTranslationText(transInfo, "deDE");
+		} catch (TranslationApplicationException e) {
+			e.printStackTrace();
+			fail();
+		} catch (Exception e){
+			fail();
+		}
+		try {
 			translationService.addTranslationText(transInfo2, "deDE");
-			String result = translationService.getTranslation(1L, "street", "deDE");
+			String result = translationService.getTranslation(1L, "street",
+					"deDE");
 			assertEquals("Straﬂe", result);
-			String result2 = translationService.getTranslation(1L, "description", "deDE");
+			String result2 = translationService.getTranslation(1L,
+					"description", "deDE");
 			assertEquals("Bezeichnung", result2);
-			// remove all translations for a domain identifiert
+			// remove all translations for a domain identifier
 			translationService.removeTranslationTexts(1L);
-			List<TranslationTextInfo> textInfoList = translationService.getTranslationTexts("deDE", 1L);
+			List<TranslationTextInfo> textInfoList = translationService
+					.getTranslationTexts("deDE", 1L);
 			assertNotNull(textInfoList);
 			assertEquals(0, textInfoList.size());
 			// add the translations again for further tests
@@ -70,11 +86,14 @@ public class TranslationServiceIntegrationTest extends
 			} catch (NoTranslationFoundException e) {
 				e.printStackTrace();
 			}
-			List<TranslationTextInfo> newTranslationInfos = translationService.getTranslationTexts("deDE", 1L);
+			List<TranslationTextInfo> newTranslationInfos = translationService
+					.getTranslationTexts("deDE", 1L);
+			assertEquals(2, newTranslationInfos.size());
 			TranslationTextInfo newTranslationInfo = newTranslationInfos.get(1);
 			newTranslationInfo.setText("Beschreibung");
 			translationService.updateTranslationText(newTranslationInfo);
-			String result3 = translationService.getTranslation(1L, "description", "deDE");
+			String result3 = translationService.getTranslation(1L,
+					"description", "deDE");
 			assertNotNull(result3);
 			assertEquals("Beschreibung", result3);
 		} catch (TranslationApplicationException e) {
