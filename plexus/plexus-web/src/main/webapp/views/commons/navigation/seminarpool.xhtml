@@ -11,7 +11,9 @@
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
 
-		<s:authorize ifAllGranted="ROLE_USER">
+		
+		  <s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.READ}">
+		
 			<h:form id="seminarpoolNavigationForm">
 				<t:panelNavigation2 id="seminarpool_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 					<t:commandNavigation2 value="#{msg['seminarpool_navigation_header']}">
@@ -84,5 +86,5 @@
 					</t:commandNavigation2>
 				</t:panelNavigation2>	
 			</h:form>
-		</s:authorize>
+			</s:acl>
 </ui:composition>

@@ -65,7 +65,35 @@
 				</t:dataList>
 				</span>
 			</o:block>
-
+			
+			<s:authorize ifAllGranted="ROLE_USER">
+				<s:acl domainObject="#{seminarpoolInfo}" hasNotPermission="#{ACL.READ}">
+					<!-- check if access type is AccessType.PASSWORD -->
+					<c:if test="#{seminarpoolInfo.accessType.value == 1}">
+						<h:form id="seminarpool_main_apply_password_form">
+							<o:block label="#{msg.seminarpool_main_access}" styleClass="form_box">
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.seminarpool_main_access_passtext}"/>
+								</p> 
+								<h:outputLabel for="seminarpool_password"
+									value="#{msg.seminarpool_main_access_password}"
+									styleClass="field_label" />
+								<h:inputSecret id="seminarpool_password"
+									value="#{views$secured$seminarpool$main.password}"
+									styleClass="field" validator="#{views$secured$seminarpool$main.validatePassword}" required="true">
+								</h:inputSecret> 
+								<h:message for="seminarpool_password" styleClass="field_error" showDetail="true" showSummary="false"/>
+							</o:block>
+		
+							<o:block>
+								<h:commandButton action="#{views$secured$seminarpool$main.applyWithPassword}"
+									value ="#{msg['seminarpool_main_access']}"
+									hint="#{msg['seminarpool_main_access']}" styleClass="button" />
+							</o:block>
+						</h:form>
+					</c:if>
+				</s:acl>
+			</s:authorize>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

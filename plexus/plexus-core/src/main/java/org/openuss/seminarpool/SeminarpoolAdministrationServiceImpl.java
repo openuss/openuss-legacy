@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.foundation.DomainObject;
+import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.Organisation;
 import org.openuss.lecture.University;
@@ -20,6 +21,7 @@ import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
+import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -82,10 +84,12 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		// Add Owner to Members and the group of Administrators
 		getMembershipService().addMember(membership, user);
-
+		if (seminarpoolInfo.getAccessType().equals(SeminarpoolAccessType.OPEN)) {
+			getSecurityService().setPermissions(Roles.USER, seminarpoolEntity, LectureAclEntry.COURSE_PARTICIPANT);
+		}
 		return seminarpoolEntity.getId();
 	}
-
+	
 	/**
 	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#updateSeminarpool(org.openuss.seminarpool.SeminarpoolInfo)
 	 */
@@ -210,6 +214,9 @@ public class SeminarpoolAdministrationServiceImpl extends
 		// Set Security
 		this.getSecurityService()
 				.createObjectIdentity(courseAllocation, course);
+		for ( User member : seminarpool.getMembership().getMembers()) {
+			getSecurityService().setPermissions(member, courseAllocation, LectureAclEntry.OGCRUD);
+		}
 
 		// getSecurityService().setPermissions(seminarpool ,courseAllocation ,
 		// LectureAclEntry.CRUD);

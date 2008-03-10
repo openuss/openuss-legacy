@@ -64,6 +64,13 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
 		}
 	}
+	
+	public String applyWithPassword(){
+		if (! seminarpoolUserRegistrationService.applyUserByPassword(password, user.getId(), seminarpoolInfo.getId()) ){
+			addError(i18n(Constants.SEMINARPOOL_MAIN_PASSWORD_ERROR));
+		}
+		return "";
+	}
 
 	/**
 	 * Returns true, if seminarpool is boookmarked, otherwise false

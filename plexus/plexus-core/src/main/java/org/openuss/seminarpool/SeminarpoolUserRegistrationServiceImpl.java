@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.security.User;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @see org.openuss.seminarpool.SeminarpoolUserRegistrationService
@@ -170,6 +171,22 @@ public class SeminarpoolUserRegistrationServiceImpl
 		detailInfo.setPriority(entity.getPriority());
 		detailInfo.setCourseName(entity.getCourseSeminarPoolAllocation().getCourse().getName());
 		return detailInfo;
+	}
+
+	@Override
+	protected boolean handleApplyUserByPassword(String password, Long userId,
+			Long seminarpoolId) throws Exception {
+		Validate.notNull(userId, "handleApplyUserByPassword ==> userId cannot be null");
+		Validate.notNull(seminarpoolId, "handleApplyUserByPassword ==> seminarpoolId cannot be null");
+		User user = getUserDao().load(userId);
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		if ( seminarpool.isPasswordCorrect(password) ) {
+			getSecurityService().setPermissions(user, seminarpool,
+					LectureAclEntry.COURSE_PARTICIPANT);
+			return true;
+		}
+		return false;
+
 	}
 
 }
