@@ -1,5 +1,9 @@
 package org.openuss.web.lecture;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
@@ -89,24 +93,11 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 
 	public abstract DataPage<RoleAttributeKeyInfo> fetchDataPage(int startRow,
 			int pageSize);
-/*
-	protected DataPage<DepartmentInfo> dataPage;
 
-	public abstract DataPage<DepartmentInfo> fetchDataPage(int startRow,
-			int pageSize);
-
-	protected void sort(List<DepartmentInfo> departmentList) {
-		if (StringUtils.equals("shortcut", departments.getSortColumn())) {
-			Collections.sort(departmentList, new ShortcutComparator());
-		} else if (StringUtils.equals("city", departments.getSortColumn())) {
-			Collections.sort(departmentList, new CityComparator());
-		} else if (StringUtils.equals("country", departments.getSortColumn())) {
-			Collections.sort(departmentList, new CountryComparator());
-		} else {
-			Collections.sort(departmentList, new NameComparator());
-		}
+	protected void sort(List<RoleAttributeKeyInfo> roleAttributeKeyList) {
+				Collections.sort(roleAttributeKeyList, new NameComparator());		
 	}
-*/
+
 	public LdapConfigurationService getLdapConfigurationService() {
 		return ldapConfigurationService;
 	}
@@ -115,11 +106,9 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		this.ldapConfigurationService = ldapConfigurationService;
 	}
 
-	/* ----------- departments sorting comparators ------------- */
-/*
-	protected class NameComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
+	protected class NameComparator implements Comparator<RoleAttributeKeyInfo> {
+		public int compare(RoleAttributeKeyInfo f1, RoleAttributeKeyInfo f2) {
+			if (roleAttributeKeys.isAscending()) {
 				return f1.getName().compareToIgnoreCase(f2.getName());
 			} else {
 				return f2.getName().compareToIgnoreCase(f1.getName());
@@ -127,36 +116,6 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		}
 	}
 
-	protected class CityComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getCity().compareToIgnoreCase(f2.getCity());
-			} else {
-				return f2.getCity().compareToIgnoreCase(f1.getCity());
-			}
-		}
-	}
-
-	protected class CountryComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
-			} else {
-				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
-			}
-		}
-	}
-
-	protected class ShortcutComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
-			} else {
-				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
-			}
-		}
-	}
-*/
 	
 	public String confirmRemoveRoleAttributeKey() {
 		RoleAttributeKeyInfo roleAttributeKeyInfo = currentRoleAttributeKey();

@@ -53,36 +53,10 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapRoleAttributeKeysOver
 				logger.info("Size:"+roleAttributeKeyList.size());
 			}
 			
-			/*sort(roleAttributeKeyList);*/
+//			sort(roleAttributeKeyList);
 			dataPage = new DataPage<RoleAttributeKeyInfo>(roleAttributeKeyList.size(),0,roleAttributeKeyList);
 		}
 		
-		/*
-		 public DataPage<RoleAttributeKeyInfo> fetchDataPage(int startRow, int pageSize) {
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch roleattributekeys data page at " + startRow + ", "+ pageSize+" sorted by "+roleAttributeKeys.getSortColumn());
-			}
-			List<DepartmentInfo> officialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.OFFICIAL));
-			List<DepartmentInfo> nonOfficialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.NONOFFICIAL));
-			
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-			for(DepartmentInfo departmentInfo : officialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
-			for(DepartmentInfo departmentInfo : nonOfficialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
-
-			logger.info("Departments:"+departmentList);
-			if (departmentList != null) {
-				logger.info("Size:"+departmentList.size());
-			}
-			
-			sort(departmentList);
-			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
-		}
-		 */
 		return dataPage;
 	}
 }
