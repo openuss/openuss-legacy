@@ -62,9 +62,9 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	public String selectRoleAttributeKeyAndConfirmRemove() throws Exception {
 		logger.debug("Starting method selectRoleAttributeKeyAndConfirmRemove");
 		RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentRoleAttributeKey());
+		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, currentRoleAttributeKey());
 		
-		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
+		return Constants.ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE;
 	}	
 	
 
@@ -73,15 +73,14 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		try {
 			logger.debug("Starting method selectRoleAttributeKeyAndRemove");
 			RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
-			if (currentRoleAttributeKey.getAttributeMappingIds()!=null)
-				throw new IllegalArgumentException();
-			ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
-			setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
-			return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
-			}
-			catch (IllegalArgumentException ie) {
+			if (currentRoleAttributeKey.getAttributeMappingIds() == null || currentRoleAttributeKey.getAttributeMappingIds().size()==0) {
+				ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
+				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
+				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			} else {
 				addMessage(i18n("message_ldap_roleattributekey_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			  }
 			}
 			catch (Exception e) {
 				addMessage(i18n("message_ldap_roleattributekey_cannot_be_removed"));

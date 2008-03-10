@@ -125,6 +125,7 @@ public class Constants {
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE = "ldap_roleattributekey_registration_step1";
 	public static final String ROLEATTRIBUTEKEY_INFO = "roleAttributeKeyInfo";
 	public static final String LDAP_ROLEATTRIBUTEKEY_PAGE = "ldap_roleattributekeys";
+	public static final String ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE = "ldap_roleattributekey_remove_confirmation";
 	// session Entity bean
 	public static final String ROLEATTRIBUTEKEY = "roleAttributeKey";
 
