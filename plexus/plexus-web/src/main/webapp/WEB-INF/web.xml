@@ -484,7 +484,7 @@
 -->	
 
     <!-- ADDITION FOR FCKEDITOR -->
-    <servlet>
+    <!-- servlet>
         <servlet-name>Connector</servlet-name>
         <servlet-class>org.openuss.web.servlets.ConnectorServlet</servlet-class>
         <init-param>
@@ -496,7 +496,7 @@
 	<servlet-mapping>
 	        <servlet-name>Connector</servlet-name>
 	        <url-pattern>/fckfaces/FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	<servlet-mapping>
 	   <servlet-name>WikiSaveDraft</servlet-name>
 	   <url-pattern>/fckfaces/FCKeditor/editor/savedraft</url-pattern>
