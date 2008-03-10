@@ -84,6 +84,11 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 			CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo) {
 		this.courseSeminarpoolAllocationInfo = courseSeminarpoolAllocationInfo;
 	}
+	
+	public String removeUserRegistrationFinal(){
+		this.getSeminarpoolUserRegistrationService().removeUserRegistration(this.seminarUserRegistrationInfo.getId());
+		return "seminarpool_main";
+	}
 
 	public String start() {
 		logger.debug("Start seminarpool registration process");

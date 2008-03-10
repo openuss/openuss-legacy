@@ -36,6 +36,8 @@ public class SeminarpoolUserRegistrationEditStep1Page extends
 		crumb.setName(i18n("seminarpool_user_registration_edit_breadcrumb_step1"));
 		crumb.setHint(i18n("seminarpool_user_registration_edit_breadcrumb_step1"));
 		breadcrumbs.addCrumb(crumb);
+		
+		
 	}
 	
 	

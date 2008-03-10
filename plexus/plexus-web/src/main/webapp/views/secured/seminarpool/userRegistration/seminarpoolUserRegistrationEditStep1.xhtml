@@ -56,6 +56,12 @@
 					</plexus:dataTable>
 					<o:block>
 						<h:commandButton action="#{seminarpoolUserRegistration.startEditProcess}" value="#{msg.seminarpool_user_registration_edit}" styleClass="button_cancel"/>
+						<h:outputText value="&#8195;" />
+						<h:commandButton 
+							value="${msg.remove}"
+							title="#{msg.seminarpool_userregistration_command_remove_hint}"
+							action="seminarpool_userregistration_remove"
+							styleClass="button_warning" />
 				   	</o:block>
 		  	</h:form>
   		</ui:define>
