@@ -47,6 +47,8 @@
 						label="#{msg.seminarpool_field_description}"
 						entity="seminarpoolRegistration.seminarConditionInfo" 
 						property="conditionDescription" 
+						type="textarea"
+						maxlength="950"
 						required="true"/> 
 				<h:commandButton value="#{msg['seminarpool_conditions_command_add']}" actionListener="#{seminarpoolRegistration.addCondition}" title="#{msg['seminarpool_conditions_command_add_hint']}" styleClass="button_save"/>
 			</o:block>	

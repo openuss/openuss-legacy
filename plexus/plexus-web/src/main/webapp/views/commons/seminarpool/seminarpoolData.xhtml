@@ -45,24 +45,22 @@
 					label="#{msg.seminarpool_shortcut}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="shortcut" 
-					maxlength="30" 
+					maxlength="50" 
 					required="true" />
 									
 				<o:input 
 					label="#{msg.seminarpool_max_seminar_allocations}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="maxSeminarAllocations" 
-					size="5"
 					maxlength="5"
 					required="true" />
 				<o:input 
 					label="#{msg.seminarpool_priorities}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="priorities"
-					size="5"
+					size="10"
 					maxlength="5" 
 					required="true" />
-<!--					maxlength="100"  --> 
 				<o:input
 					label="#{msg.seminarpool_registration_start_time}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
@@ -99,6 +97,7 @@
 	 					label="#{msg.seminarpool_password}"
 	 					entity="seminarpoolRegistration.seminarpoolInfo" 
 	 					property="password" 
+	 					maxlength="50"
 	 					required="true"/>
  				</c:if> 	
 			</o:block>

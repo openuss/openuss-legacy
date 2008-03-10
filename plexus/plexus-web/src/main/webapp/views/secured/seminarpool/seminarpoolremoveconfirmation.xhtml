@@ -34,7 +34,10 @@
 	<ui:define name="content">
 		<h:form id="seminarpool_remove">
 						
-			<o:block>
+			<o:block label="#{msg.seminarpool_command_remove_hint}">
+				<div class="content_font_normal"> 
+					<h:outputText value="#{msg.seminarpool_remove_text}" escape="false"/>
+		   		</div>
 				<h:commandButton value="#{msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true" />
 				<h:outputText value="&#8195;" />
 				<h:commandButton 
