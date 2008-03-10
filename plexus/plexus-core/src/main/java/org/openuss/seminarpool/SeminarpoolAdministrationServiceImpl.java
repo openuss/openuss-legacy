@@ -330,13 +330,9 @@ public class SeminarpoolAdministrationServiceImpl extends
 		for (CourseSeminarpoolAllocation courseAllocation : courseAllocations) {
 			// only if the course is accepted or if the user is the owner the
 			// course or is seminarpool admin
-			if (courseAllocation.isAccepted()
-					|| (getSecurityService().hasPermission(courseAllocation,
-							new Integer[] { LectureAclEntry.GCRUD }) || getSecurityService()
-							.hasPermission(seminarpoolEntity,
-									new Integer[] { LectureAclEntry.GCRUD }))) {
-				courseAllocationList.add(getCourseSeminarpoolAllocationDao()
-						.toCourseSeminarpoolAllocationInfo(courseAllocation));
+			if ( getSecurityService().hasPermission(courseAllocation, new Integer[] { LectureAclEntry.GCRUD }) 
+					|| getSecurityService().hasPermission(seminarpoolEntity, new Integer[] { LectureAclEntry.GCRUD })) {
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
 			}
 		}
 		return courseAllocationList;
@@ -1211,5 +1207,25 @@ public class SeminarpoolAdministrationServiceImpl extends
 		courseAllocationEntity.setAccepted(false);
 		getCourseSeminarpoolAllocationDao().update(courseAllocationEntity);
 
+	}
+
+	@Override
+	protected List handleFindAcceptedCoursesInSeminarpool(Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(seminarpoolId,	"handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
+		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
+		// SeminarpoolInfo seminarpoolInfo =
+		// getSeminarpoolDao().toSeminarpoolInfo(seminarpoolEntity);
+		Validate.notNull(seminarpoolEntity,"handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
+		Collection<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity
+				.getCourseSeminarpoolAllocation();
+		List<CourseSeminarpoolAllocationInfo> courseAllocationList = new ArrayList<CourseSeminarpoolAllocationInfo>();
+		for (CourseSeminarpoolAllocation courseAllocation : courseAllocations) {
+			// only if the course is accepted 
+			if ( courseAllocation.isAccepted() ) {
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+			}
+		}
+		return courseAllocationList;
 	}
 }

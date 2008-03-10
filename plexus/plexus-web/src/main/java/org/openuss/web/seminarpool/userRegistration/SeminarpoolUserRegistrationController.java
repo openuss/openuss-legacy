@@ -168,7 +168,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	public List<SelectItem> getAllSeminars() {
 		List<SelectItem> seminarItems = new ArrayList<SelectItem>();
-		List<CourseSeminarpoolAllocationInfo> seminarlist = this.seminarpoolAdministrationService.findCoursesInSeminarpool(seminarpoolInfo.getId());
+		List<CourseSeminarpoolAllocationInfo> seminarlist = this.seminarpoolAdministrationService.findAcceptedCoursesInSeminarpool(seminarpoolInfo.getId());
 		
 		
 		if (!seminarlist.isEmpty()) {
