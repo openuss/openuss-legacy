@@ -12,32 +12,22 @@ import org.openuss.web.Constants;
 
 /**
  * 
- * Abstract class which can be used to derive backing beans for department
+ * Abstract class which can be used to derive backing beans for roleAttributeKeys
  * overview views
  * 
- * @author Tianyu Wang
- * @author Weijun Chen
- * @author Kai Stettner
- * @author Malte Stockmann
+ * @author Christian Grelle
+ * @author Peter Schuh
  * 
  */
 public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage {
 
 	protected static final Logger logger = Logger.getLogger(AbstractLdapRoleAttributeKeysOverviewPage.class);
 
-	/*protected static final long serialVersionUID = 5069635747478432045L; */
-
 	protected RoleAttributeKeyTable roleAttributeKeys = new RoleAttributeKeyTable();
-/*
-	@Property(value = "#{universityInfo}")
-	protected UniversityInfo universityInfo;
-*/
+
 	@Property(value = "#{ldapConfigurationService}")
 	protected LdapConfigurationService ldapConfigurationService;
-/*
-	@Property(value = "#{organisationService}")
-	protected OrganisationService organisationService;
-*/
+
 	@Prerender
 	public void prerender() throws Exception {
 	}
@@ -48,27 +38,19 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	}
 
 	/**
-	 * Store the selected university into session scope and go to university
-	 * main page.
+	 * Store the selected roleAttributeKey into session scope and go to roleAttributeKey
+	 * edit page.
 	 * 
 	 * @return Outcome
 	 */
-	public String selectRoleAttributeKey() {
+	public String selectRoleAttributeKeyAndEdit() {
 		RoleAttributeKeyInfo roleAttributeKey = currentRoleAttributeKey();
-		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKey);
-
-		return Constants.DEPARTMENT_PAGE;
+		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKey);		
+		return Constants.LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE;
 	}
-	/*
-	public String selectDepartment() {
-		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
 
-		return Constants.DEPARTMENT_PAGE;
-	}
-*/
 	/**
-	 * Store the selected department into session scope and go to department
+	 * Store the selected roleAttributeKey into session scope and go to roleAttributeKey
 	 * remove confirmation page.
 	 * 
 	 * @return Outcome
@@ -83,6 +65,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 		}
 		catch (Exception e) {
+			//TODO: CHRISTIAN: WRONG MESSAGE!!!
 			addMessage(i18n("message_department_cannot_be_removed"));
 			return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 		}
@@ -222,15 +205,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	public void setLdapConfigurationService(LdapConfigurationService ldapConfigurationService) {
 		this.ldapConfigurationService = ldapConfigurationService;
 	}
-/*
-	public UniversityInfo getUniversityInfo() {
-		return universityInfo;
-	}
 
-	public void setUniversityInfo(UniversityInfo universityInfo) {
-		this.universityInfo = universityInfo;
-	}
-*/
 	/* ----------- departments sorting comparators ------------- */
 /*
 	protected class NameComparator implements Comparator<DepartmentInfo> {
@@ -296,35 +271,14 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		return departments;
 	}
 
-	public OrganisationService getOrganisationService() {
-		return organisationService;
-	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
-	}
 */
 	protected class RoleAttributeKeyTable extends AbstractPagedTable<RoleAttributeKeyInfo> {
-/*
-		protected static final long serialVersionUID = -6077435481342714879L;
-*/
+
 		@Override
 		public DataPage<RoleAttributeKeyInfo> getDataPage(int startRow, int pageSize) {
 			return fetchDataPage(startRow, pageSize);
 		}
 
 	}
-
-/*
-	protected class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
-
-		protected static final long serialVersionUID = -6077435481342714879L;
-
-		@Override
-		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
-		}
-
-	}
-*/
 }

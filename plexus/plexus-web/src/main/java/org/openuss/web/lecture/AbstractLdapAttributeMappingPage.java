@@ -13,7 +13,7 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Abstract Department Page
+ * Abstract AttribtuteMapping Page
  * 
  */
 public abstract class AbstractLdapAttributeMappingPage extends BasePage {
@@ -28,14 +28,14 @@ public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 
 
 	/**
-	 * Refreshing department VO
+	 * Refreshing attributeMapping VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing attributeMapping session object");
 		if (attributeMappingInfo != null) {
 			if (attributeMappingInfo.getId() != null) {
 				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
@@ -49,7 +49,7 @@ public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing department session object");
+		logger.debug("prerender - refreshing attributeMapping session object");
 		refreshAuthenticationDomain();
 		if (attributeMappingInfo == null || attributeMappingInfo.getId() == null) {
 			addError(i18n("message_error_no_department_selected"));
@@ -60,7 +60,7 @@ public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 	private void refreshAuthenticationDomain() {
 		if (attributeMappingInfo != null) {
 			if (attributeMappingInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.findDepartment(departmentInfo.getId());
+				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
 				setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMappingInfo);
 			}
 		}

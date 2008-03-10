@@ -24,7 +24,9 @@
   		<ui:define name="content">
 			<h:form id="reg1Form">
 					<o:block label="#{msg.ldap_roleattributekey_registration_step1_headline}" styleClass="form_box">
-						<o:input entity="roleAttributeKeyInfo" property="name" maxlength="250" required="true"/>
+						<o:input entity="roleAttributeKeyInfo" property="name" maxlength="250" required="true">
+							<f:validator validatorId="roleAttributeKeyUniqueValidator" />
+						</o:input>
 					</o:block>
 					<o:block>
 						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>

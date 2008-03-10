@@ -11,7 +11,10 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Abstract Department Page
+ * Abstract userDnPattern Page
+ * 
+ * @author Christian Grelle
+ * @author Peter Schuh 
  * 
  */
 public abstract class AbstractLdapUserDnPatternPage extends BasePage {
@@ -26,17 +29,17 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 
 
 	/**
-	 * Refreshing department VO
+	 * Refreshing userDnPattern VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing userDnPattern session object");
 		if (userDnPatternInfo != null) {
 			if (userDnPatternInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				//userDnPatternInfo = LdapConfigurationService.getUserDnPattern(userDnPatternInfo.getId());
 			} else {
 				userDnPatternInfo = (UserDnPatternInfo) getSessionBean(Constants.USERDNPATTERN_INFO);
 			}
@@ -47,9 +50,10 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing department session object");
+		logger.debug("prerender - refreshing userDnPattern session object");
 		refreshUserDnPattern();
 		if (userDnPatternInfo == null || userDnPatternInfo.getId() == null) {
+			//TODO: CHRISTIAN: WRONG MESSAGE!!!			
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		}
@@ -58,7 +62,7 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 	private void refreshUserDnPattern() {
 		if (userDnPatternInfo != null) {
 			if (userDnPatternInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.findDepartment(departmentInfo.getId());
+				//userDnPatternInfo = LdapConfigurationService.getUserDnPattern(userDnPatternInfo.getId());
 				setSessionBean(Constants.USERDNPATTERN_INFO, userDnPatternInfo);
 			}
 		}

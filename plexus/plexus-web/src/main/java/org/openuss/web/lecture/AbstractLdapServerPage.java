@@ -11,12 +11,15 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Abstract Department Page
+ * Abstract ldapServer Page
+ * 
+ * @author Christian Grelle
+ * @author Peter Schuh 
  * 
  */
 public abstract class AbstractLdapServerPage extends BasePage {
 
-	private static final Logger logger = Logger.getLogger(AbstractLdapUserDnPatternPage.class);
+	private static final Logger logger = Logger.getLogger(AbstractLdapServerPage.class);
 	
 	@Property(value = "#{ldapServerInfo}")
 	protected LdapServerInfo ldapServerInfo;
@@ -26,17 +29,17 @@ public abstract class AbstractLdapServerPage extends BasePage {
 
 
 	/**
-	 * Refreshing department VO
+	 * Refreshing ldapServer VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing ldapServer session object");
 		if (ldapServerInfo != null) {
 			if (ldapServerInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				//ldapServerInfo = LdapConfigurationService.getLdapServer(ldapServerInfo.getId());
 			} else {
 				ldapServerInfo = (LdapServerInfo) getSessionBean(Constants.SERVER_INFO);
 			}
@@ -47,9 +50,10 @@ public abstract class AbstractLdapServerPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing department session object");
+		logger.debug("prerender - refreshing ldapServer session object");
 		refreshLdapServer();
 		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {
+			//TODO: CHRISTIAN: WRONG MESSAGE!!!
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		}
@@ -58,7 +62,7 @@ public abstract class AbstractLdapServerPage extends BasePage {
 	private void refreshLdapServer() {
 		if (ldapServerInfo != null) {
 			if (ldapServerInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.findDepartment(departmentInfo.getId());
+				//ldapServerInfo = LdapConfigurationService.getLdapServer(ldapServerInfo.getId());
 				setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
 			}
 		}

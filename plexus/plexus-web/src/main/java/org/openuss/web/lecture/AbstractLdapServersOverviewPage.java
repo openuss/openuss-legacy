@@ -13,28 +13,22 @@ import org.openuss.web.Constants;
 
 /**
  * 
- * Abstract class which can be used to derive backing beans for department
+ * Abstract class which can be used to derive backing beans for ldapServers
  * overview views
  * 
+ * @author Christian Grelle
+ * @author Peter Schuh 
  * 
  */
 public abstract class AbstractLdapServersOverviewPage extends BasePage {
 
 	protected static final Logger logger = Logger.getLogger(AbstractLdapServersOverviewPage.class);
 
-	/*protected static final long serialVersionUID = 5069635747478432045L; */
-
 	protected LdapServerTable ldapServers = new LdapServerTable();
-/*
-	@Property(value = "#{universityInfo}")
-	protected UniversityInfo universityInfo;
-*/
+
 	@Property(value = "#{ldapConfigurationService}")
 	protected LdapConfigurationService ldapConfigurationService;
-/*
-	@Property(value = "#{organisationService}")
-	protected OrganisationService organisationService;
-*/
+
 	@Prerender
 	public void prerender() throws Exception {
 	}
@@ -45,7 +39,7 @@ public abstract class AbstractLdapServersOverviewPage extends BasePage {
 	}
 
 	/**
-	 * Store the selected university into session scope and go to university
+	 * Store the selected university into session scope and go to ldapServers
 	 * main page.
 	 * 
 	 * @return Outcome
@@ -53,19 +47,12 @@ public abstract class AbstractLdapServersOverviewPage extends BasePage {
 	public String selectLdapServer() {
 		LdapServerInfo ldapServer = currentLdapServer();
 		setSessionBean(Constants.SERVER_INFO, ldapServer);
-
+		//TODO: CHRISTIAN: WRONG OUTCOME!!!!!
 		return Constants.DEPARTMENT_PAGE;
 	}
-	/*
-	public String selectDepartment() {
-		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
 
-		return Constants.DEPARTMENT_PAGE;
-	}
-*/
 	/**
-	 * Store the selected department into session scope and go to department
+	 * Store the selected ldapServer into session scope and go to ldapServer
 	 * remove confirmation page.
 	 * 
 	 * @return Outcome
@@ -208,15 +195,7 @@ public abstract class AbstractLdapServersOverviewPage extends BasePage {
 	public void setLdapConfigurationService(LdapConfigurationService ldapConfigurationService) {
 		this.ldapConfigurationService = ldapConfigurationService;
 	}
-/*
-	public UniversityInfo getUniversityInfo() {
-		return universityInfo;
-	}
 
-	public void setUniversityInfo(UniversityInfo universityInfo) {
-		this.universityInfo = universityInfo;
-	}
-*/
 	/* ----------- departments sorting comparators ------------- */
 /*
 	protected class NameComparator implements Comparator<DepartmentInfo> {
@@ -291,26 +270,11 @@ public abstract class AbstractLdapServersOverviewPage extends BasePage {
 	}
 */
 	protected class LdapServerTable extends AbstractPagedTable<LdapServerInfo> {
-/*
-		protected static final long serialVersionUID = -6077435481342714879L;
-*/
+
 		@Override
 		public DataPage<LdapServerInfo> getDataPage(int startRow, int pageSize) {
 			return fetchDataPage(startRow, pageSize);
 		}
 
 	}
-
-/*
-	protected class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
-
-		protected static final long serialVersionUID = -6077435481342714879L;
-
-		@Override
-		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
-		}
-
-	}
-*/
 }

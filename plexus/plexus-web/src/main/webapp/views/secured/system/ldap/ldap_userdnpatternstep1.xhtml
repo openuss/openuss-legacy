@@ -24,7 +24,9 @@
   		<ui:define name="content">
 			<h:form id="reg1Form">
 					<o:block label="#{msg.ldap_userdnpattern_registration_step1_headline}" styleClass="form_box">
-						<o:input entity="userDnPatternInfo" property="name" maxlength="250" required="true"/>
+						<o:input entity="userDnPatternInfo" property="name" maxlength="250" required="true">
+							<f:validator validatorId="userDnPatternUniqueValidator" />
+						</o:input>
 					</o:block>
 					<o:block>
 						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>

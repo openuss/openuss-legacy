@@ -14,11 +14,11 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Abstract Department Page
+ * Abstract LdapDomain Page
  * 
- * @author Kai Stettner
- * @author Tianyu Wang
- * @author Weijun Chen
+ * @author Christian Grelle
+ * @author Peter Schuh
+
  */
 public abstract class AbstractLdapDomainPage extends BasePage {
 
@@ -30,21 +30,18 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 	@Property(value = "#{ldapConfigurationService}")
 	protected LdapConfigurationService ldapConfigurationService;
 
-	@Property(value = "#{universityService}")
-	protected UniversityService universityService;
-
 	/**
-	 * Refreshing department VO
+	 * Refreshing authenticationDomain VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing authenticationDomain session object");
 		if (authenticationDomainInfo != null) {
 			if (authenticationDomainInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				//authenticationDomainInfo = LdapConfigurationService.getDomain(authenticationDomainInfo.getId());
 			} else {
 				authenticationDomainInfo = (AuthenticationDomainInfo) getSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO);
 			}
@@ -55,9 +52,10 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing department session object");
+		logger.debug("prerender - refreshing authenticationDomain session object");
 		refreshAuthenticationDomain();
 		if (authenticationDomainInfo == null || authenticationDomainInfo.getId() == null) {
+			// TODO: CHRISTIAN: WRONG MESSAGE!!!
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		}
@@ -66,7 +64,7 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 	private void refreshAuthenticationDomain() {
 		if (authenticationDomainInfo != null) {
 			if (authenticationDomainInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.findDepartment(departmentInfo.getId());
+				//authenticationDomainInfo = departmentService.getDomain(departmentInfo.getId());
 				setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomainInfo);
 			}
 		}
@@ -99,15 +97,4 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 			LdapConfigurationService ldapConfigurationService) {
 		this.ldapConfigurationService = ldapConfigurationService;
 	}
-	
-	public UniversityService getUniversityService() {
-		return universityService;
-	}
-
-	public void setUniversityService(UniversityService universityService) {
-		this.universityService = universityService;
-	}
-
-
-
 }

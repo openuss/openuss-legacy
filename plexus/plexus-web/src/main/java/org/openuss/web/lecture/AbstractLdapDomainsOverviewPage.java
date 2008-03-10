@@ -13,28 +13,22 @@ import org.openuss.web.Constants;
 
 /**
  * 
- * Abstract class which can be used to derive backing beans for department
+ * Abstract class which can be used to derive backing beans for authentication domains
  * overview views
  * 
+ * @author Christian Grelle
+ * @author Peter Schuh
  * 
  */
 public abstract class AbstractLdapDomainsOverviewPage extends BasePage {
 
-	protected static final Logger logger = Logger.getLogger(AbstractLdapRoleAttributeKeysOverviewPage.class);
-
-	/*protected static final long serialVersionUID = 5069635747478432045L; */
+	protected static final Logger logger = Logger.getLogger(AbstractLdapDomainsOverviewPage.class);
 
 	protected AuthenticationDomainTable authenticationDomains = new AuthenticationDomainTable();
-/*
-	@Property(value = "#{universityInfo}")
-	protected UniversityInfo universityInfo;
-*/
+
 	@Property(value = "#{ldapConfigurationService}")
 	protected LdapConfigurationService ldapConfigurationService;
-/*
-	@Property(value = "#{organisationService}")
-	protected OrganisationService organisationService;
-*/
+
 	@Prerender
 	public void prerender() throws Exception {
 	}
@@ -45,7 +39,7 @@ public abstract class AbstractLdapDomainsOverviewPage extends BasePage {
 	}
 
 	/**
-	 * Store the selected university into session scope and go to university
+	 * Store the selected authentication domain into session scope and go to authentication domain
 	 * main page.
 	 * 
 	 * @return Outcome
@@ -53,19 +47,12 @@ public abstract class AbstractLdapDomainsOverviewPage extends BasePage {
 	public String selectAuthenticationDomain() {
 		AuthenticationDomainInfo authenticationDomain = currentAuthenticationDomain();
 		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomain);
-
+		//TODO: CHRISTIAN: WRONG OUTCOME!!!
 		return Constants.DEPARTMENT_PAGE;
 	}
-	/*
-	public String selectDepartment() {
-		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
 
-		return Constants.DEPARTMENT_PAGE;
-	}
-*/
 	/**
-	 * Store the selected department into session scope and go to department
+	 * Store the selected department into session scope and go to authentication domain
 	 * remove confirmation page.
 	 * 
 	 * @return Outcome
@@ -81,104 +68,11 @@ public abstract class AbstractLdapDomainsOverviewPage extends BasePage {
 			AuthenticationDomainInfo currentAuthenticationDomain = currentAuthenticationDomain();
 			ldapConfigurationService.deleteDomain(currentAuthenticationDomain);
 			setSessionBean("authenticationDomainInfo", null);
+			//TODO: CHRISTIAN: WRONG MESSAGE!!!
 			addMessage(i18n("message_department_removed"));
-			return Constants.LDAP_DOMAIN_PAGE;
-		
-		
-	}
-	
-	
-	
-	
-	/*
-	
-	public String selectDepartmentAndConfirmRemove() {
-		logger.debug("Starting method selectDepartmentAndConfirmRemove");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+			return Constants.LDAP_DOMAIN_PAGE;				
+	}	
 
-		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
-	}
-*/
-	/**
-	 * Store the selected department into session scope and go to department
-	 * disable confirmation page.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String selectDepartmentAndConfirmDisable() {
-		logger.debug("Starting method selectDepartmentAndConfirmDisable");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
-
-		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
-	}
-*/
-	/**
-	 * Enables the chosen department. This is just evident for the search
-	 * indexing.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String enableDepartment() {
-		logger.debug("Starting method enableDepartment");
-		DepartmentInfo currentDepartment = currentDepartment();
-		try {
-			departmentService.setDepartmentStatus(currentDepartment.getId(), true);
-			addMessage(i18n("message_department_enabled"));
-		} catch(DepartmentServiceException iae) {
-			addMessage(i18n("message_department_enabled_failed_university_disabled"));
-		} catch(Exception ex){
-			addMessage(i18n("message_department_enabled_failed"));
-		}
-		return Constants.SUCCESS;
-	}
-	*/
-	/**
-	 * Bookmarks the chosen department and therefore sets a link on the MyUni
-	 * Page for the department.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String shortcutDepartment() throws DesktopException {
-		logger.debug("Starting method shortcutDepartment");
-		DepartmentInfo currentDepartment = currentDepartment();
-		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
-				.getId());
-
-		addMessage(i18n("message_department_shortcut_created"));
-		return Constants.SUCCESS;
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			return desktopService2.isDepartmentBookmarked(currentDepartment
-					.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
-	}
-
-	public String removeShortcut() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			desktopService2.unlinkDepartment(desktopInfo.getId(),
-					currentDepartment.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
-	}
-*/
 	protected DataPage<AuthenticationDomainInfo> dataPage;
 
 	public abstract DataPage<AuthenticationDomainInfo> fetchDataPage(int startRow,

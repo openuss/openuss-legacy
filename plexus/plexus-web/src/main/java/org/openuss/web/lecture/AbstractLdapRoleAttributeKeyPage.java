@@ -11,8 +11,10 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * Abstract Department Page
+ * Abstract RoleAttributeKey Page
  * 
+ * @author Christian Grelle
+ * @author Peter Schuh 
  */
 public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 
@@ -26,17 +28,17 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 
 
 	/**
-	 * Refreshing department VO
+	 * Refreshing roleAttributeKey VO
 	 * 
 	 * @throws Exception
 	 */
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing roleAttributeKey session object");
 		if (roleAttributeKeyInfo != null) {
 			if (roleAttributeKeyInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				//roleAttributeKeyInfo = LdapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
 			} else {
 				roleAttributeKeyInfo = (RoleAttributeKeyInfo) getSessionBean(Constants.ROLEATTRIBUTEKEY_INFO);
 			}
@@ -47,9 +49,10 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws LectureException {
-		logger.debug("prerender - refreshing department session object");
+		logger.debug("prerender - refreshing roleAttributeKey session object");
 		refreshRoleAttributeKeySet();
 		if (roleAttributeKeyInfo == null || roleAttributeKeyInfo.getId() == null) {
+			//TODO: CHRISTIAN: WRONG MESSAGE!!!
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
 		}
@@ -58,20 +61,10 @@ public abstract class AbstractLdapRoleAttributeKeyPage extends BasePage {
 	private void refreshRoleAttributeKeySet() {
 		if (roleAttributeKeyInfo != null) {
 			if (roleAttributeKeyInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.findDepartment(departmentInfo.getId());
+				//roleAttributeKeyInfo = LdapConfigurationService.getRoleAttributeKeyById(roleAttributeKeyInfo.getId());
 				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKeyInfo);
 			}
 		}
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			return desktopService2.isDepartmentBookmarked(roleAttributeKeyInfo.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
 	}
 
 	public RoleAttributeKeyInfo getRoleAttributeKeyInfo() {

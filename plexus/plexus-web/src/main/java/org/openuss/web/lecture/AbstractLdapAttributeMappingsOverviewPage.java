@@ -5,37 +5,30 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
-import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
  * 
- * Abstract class which can be used to derive backing beans for department
+ * Abstract class which can be used to derive backing beans for attributeMapping
  * overview views
  * 
+ * @author Christian Grelle
+ * @author Peter Schuh
  * 
  */
 public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage {
 
 	protected static final Logger logger = Logger.getLogger(AbstractLdapRoleAttributeKeysOverviewPage.class);
-
-	/*protected static final long serialVersionUID = 5069635747478432045L; */
+	
 
 	protected AttributeMappingTable attributeMappings = new AttributeMappingTable();
-/*
-	@Property(value = "#{universityInfo}")
-	protected UniversityInfo universityInfo;
-*/
+
 	@Property(value = "#{ldapConfigurationService}")
 	protected LdapConfigurationService ldapConfigurationService;
-/*
-	@Property(value = "#{organisationService}")
-	protected OrganisationService organisationService;
-*/
+
 	@Prerender
 	public void prerender() throws Exception {
 	}
@@ -46,7 +39,7 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 	}
 
 	/**
-	 * Store the selected university into session scope and go to university
+	 * Store the selected attributeMapping into session scope and go to attributeMapping
 	 * main page.
 	 * 
 	 * @return Outcome
@@ -54,19 +47,12 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 	public String selectAttributeMapping() {
 		AttributeMappingInfo attributeMapping = currentAttributeMapping();
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMapping);
-
+		//TODO: CHRISTIAN: WRONG OUTCOME!!!!!
 		return Constants.DEPARTMENT_PAGE;
 	}
-	/*
-	public String selectDepartment() {
-		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
 
-		return Constants.DEPARTMENT_PAGE;
-	}
-*/
 	/**
-	 * Store the selected department into session scope and go to department
+	 * Store the selected attributeMapping into session scope and go to attributeMapping
 	 * remove confirmation page.
 	 * 
 	 * @return Outcome
@@ -91,16 +77,6 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 	
 	
 	
-	/*
-	
-	public String selectDepartmentAndConfirmRemove() {
-		logger.debug("Starting method selectDepartmentAndConfirmRemove");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
-
-		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
-	}
-*/
 	/**
 	 * Store the selected department into session scope and go to department
 	 * disable confirmation page.
@@ -143,43 +119,7 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 	 * 
 	 * @return Outcome
 	 */
-/*
-	public String shortcutDepartment() throws DesktopException {
-		logger.debug("Starting method shortcutDepartment");
-		DepartmentInfo currentDepartment = currentDepartment();
-		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
-				.getId());
 
-		addMessage(i18n("message_department_shortcut_created"));
-		return Constants.SUCCESS;
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			return desktopService2.isDepartmentBookmarked(currentDepartment
-					.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
-	}
-
-	public String removeShortcut() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			desktopService2.unlinkDepartment(desktopInfo.getId(),
-					currentDepartment.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
-	}
-*/
 	protected DataPage<AttributeMappingInfo> dataPage;
 
 	public abstract DataPage<AttributeMappingInfo> fetchDataPage(int startRow,
@@ -209,15 +149,7 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 	public void setLdapConfigurationService(LdapConfigurationService ldapConfigurationService) {
 		this.ldapConfigurationService = ldapConfigurationService;
 	}
-/*
-	public UniversityInfo getUniversityInfo() {
-		return universityInfo;
-	}
 
-	public void setUniversityInfo(UniversityInfo universityInfo) {
-		this.universityInfo = universityInfo;
-	}
-*/
 	/* ----------- departments sorting comparators ------------- */
 /*
 	protected class NameComparator implements Comparator<DepartmentInfo> {
@@ -278,40 +210,14 @@ public abstract class AbstractLdapAttributeMappingsOverviewPage extends BasePage
 		setSessionBean(Constants.DEPARTMENT, departmentInfo);
 		return "removed";
 	}
+	*/
 
-	public DepartmentTable getDepartments() {
-		return departments;
-	}
-
-	public OrganisationService getOrganisationService() {
-		return organisationService;
-	}
-
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
-	}
-*/
 	protected class AttributeMappingTable extends AbstractPagedTable<AttributeMappingInfo> {
-/*
-		protected static final long serialVersionUID = -6077435481342714879L;
-*/
+		
 		@Override
 		public DataPage<AttributeMappingInfo> getDataPage(int startRow, int pageSize) {
 			return fetchDataPage(startRow, pageSize);
 		}
 
 	}
-
-/*
-	protected class DepartmentTable extends AbstractPagedTable<DepartmentInfo> {
-
-		protected static final long serialVersionUID = -6077435481342714879L;
-
-		@Override
-		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
-		}
-
-	}
-*/
 }
