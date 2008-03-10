@@ -15,6 +15,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.security.UserInfo;
+import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.Constants;
 
 /**
@@ -38,6 +39,19 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 		super.prerender();
 		if ( seminarpoolInfo != null && seminarpoolInfo.getId() != null ) {
 			userInfoList = getSeminarpoolAdministrationService().getAllSeminarpoolAdmins(seminarpoolInfo.getId());
+		}
+		//Check phase
+		if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.PREPARATIONPHASE){
+			if(seminarpoolInfo.getRegistrationStartTime().getTime()< System.currentTimeMillis() && System.currentTimeMillis() < seminarpoolInfo.getRegistrationEndTime().getTime()){
+				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONPHASE);
+				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
+			}
+		}
+		else if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE){
+			if(System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
+				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
+				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
+			}
 		}
 	}
 	

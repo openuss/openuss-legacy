@@ -20,12 +20,13 @@
 							activeOnViewIds="/views/secured/seminarpool/main.xhtml" >
 							<h:outputText value="#{msg['seminarpool_command_options_overview']}" />
 						</t:commandNavigation2>
+						<c:if test="#{seminarpoolUserRegistration.status}">
 						<t:commandNavigation2 
 							action="#{seminarpoolUserRegistration.start}" 
 							activeOnViewIds="/views/secured/seminarpool/userRegistration/seminarpooluserregistration.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step2.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step3.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep1.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep2.xhtml" >
 							<h:outputText value="#{msg['seminarpool_command_options_registration']}" />
 						</t:commandNavigation2>
-						
+						</c:if>
 						<t:commandNavigation2 
 							action="seminarpool_options_seminars" 
 							activeOnViewIds="/views/secured/seminarpool/seminarpoolseminars.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseGroups.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseSchedules.xhtml"

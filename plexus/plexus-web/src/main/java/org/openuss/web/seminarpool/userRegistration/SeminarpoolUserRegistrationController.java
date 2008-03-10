@@ -59,7 +59,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 
 	
-	
+	private boolean status;
 	
 	protected long priority;
 
@@ -252,6 +252,14 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 	public void setPriorities(List<String> priorities) {
 		this.priorities = priorities;
+	}
+
+	public boolean getStatus() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue()>0);
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	
 }
