@@ -37,18 +37,7 @@ public abstract class AbstractLdapUserDnPatternsOverviewPage extends BasePage {
 		return userDnPattern;
 	}
 
-	/**
-	 * Store the selected userDnPattern into session scope and go to userDnPattern
-	 * main page.
-	 * 
-	 * @return Outcome
-	 */
-	public String selectUserDnPattern() {
-		UserDnPatternInfo userDnPattern = currentUserDnPattern();
-		setSessionBean(Constants.USERDNPATTERN_INFO, userDnPattern);
-		//TODO: CHRISTIAN: WRONG OUTCOME!!!
-		return Constants.DEPARTMENT_PAGE;
-	}
+
 
 	/**
 	 * Store the selected userDnPattern into session scope and go to userDnPattern
@@ -56,31 +45,49 @@ public abstract class AbstractLdapUserDnPatternsOverviewPage extends BasePage {
 	 * 
 	 * @return Outcome
 	 */
-	
-	public String selectUserDnPatternAndRemove() throws Exception {
-		try {
-		logger.debug("Starting method selectRoleAttributeKeyAndRemove");
-		UserDnPatternInfo currentUserDnPattern = currentUserDnPattern();
-		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, currentUserDnPattern);
-		ldapConfigurationService.deleteUserDnPattern(currentUserDnPattern);
-		setSessionBean("userDnPatternInfo", null);
-		return Constants.LDAP_USERDNPATTERN_PAGE;
-		}
-		catch (Exception e) {
-			addMessage(i18n("message_department_cannot_be_removed"));
-			return Constants.LDAP_USERDNPATTERN_PAGE;
-		}
+
+	public String selectUserDnPatternAndConfirmRemove() throws Exception {
+		logger.debug("Starting method selectUserDnPatternAndConfirmRemove");		
+		setSessionBean(Constants.USERDNPATTERN_INFO, currentUserDnPattern());
+		
+		return Constants.USERDNPATTERN_CONFIRM_REMOVE_PAGE;
 	}	
 	
-		
+
+
 	public String removeUserDnPattern() throws Exception {
-		UserDnPatternInfo currentUserDnPattern = currentUserDnPattern();
-			ldapConfigurationService.deleteUserDnPattern(currentUserDnPattern);
-			setSessionBean("userDnPatternInfo", null);
-			//TODO: CHRISTIAN: WRONG MESSAGE!!!
-			addMessage(i18n("message_department_removed"));
-			return Constants.LDAP_USERDNPATTERN_PAGE;		
+		try {
+			logger.debug("Starting method selectUserDnPatternAndRemove");
+			UserDnPatternInfo currentUserDnPattern = (UserDnPatternInfo) getSessionBean(Constants.USERDNPATTERN_INFO);
+			if (currentUserDnPattern.getLdapServerIds() == null || currentUserDnPattern.getLdapServerIds().size()==0) {
+				ldapConfigurationService.deleteUserDnPattern(currentUserDnPattern);
+				setSessionBean(Constants.USERDNPATTERN_INFO, null);
+				return Constants.LDAP_USERDNPATTERN_PAGE;
+			} else {
+				addMessage(i18n("message_ldap_userdnpattern_still_in_use_cannot_be_removed"));
+				return Constants.LDAP_USERDNPATTERN_PAGE;
+			  }
+			}
+			catch (Exception e) {
+				addMessage(i18n("message_ldap_userdnpattern_cannot_be_removed"));
+				return Constants.LDAP_USERDNPATTERN_PAGE;
+			}
 	}
+
+	
+	/**
+	 * Store the selected UserDnPattern into session scope and go to userDnPattern
+	 * edit page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectUserDnPatternAndEdit() {
+		UserDnPatternInfo userDnPattern = currentUserDnPattern();
+		setSessionBean(Constants.USERDNPATTERN_INFO, userDnPattern);		
+		return Constants.LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE;
+	}
+	
+	
 	
 
 	protected DataPage<UserDnPatternInfo> dataPage;
