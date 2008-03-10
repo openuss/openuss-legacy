@@ -39,7 +39,9 @@
 				<o:input label="#{msg.openuss4us_calendar_appointment_endtime}"
 					entity="appointmentInfo" property="endtime" maxlength="16"
 					required="true"
-					title="#{msg.openuss4us_calendar_appointment_endtime_hint}" />
+					title="#{msg.openuss4us_calendar_appointment_endtime_hint}" >
+					<f:validator validatorId="appointmentInfoDateValidator" />
+				</o:input>
 				<o:input entity="appointmentInfo" property="recurrencePeriod"
 					maxlength="10" required="true"
 					label="#{msg.openuss4us_calendar_appointment_recurrence_period}"

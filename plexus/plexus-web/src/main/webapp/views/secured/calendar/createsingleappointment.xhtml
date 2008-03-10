@@ -29,10 +29,12 @@
 			<o:block>
 				<o:input id="appointment" label="#{msg.openuss4us_calendar_appointment_subject}" entity="appointmentInfo"
 					property="subject" maxlength="100" required="true" title="#{msg.openuss4us_calendar_appointment_subject_hint}" />
-				<o:input label="#{msg.openuss4us_calendar_appointment_starttime}" entity="appointmentInfo"
+				<o:input id="startdate" label="#{msg.openuss4us_calendar_appointment_starttime}" entity="appointmentInfo"
 					property="starttime" maxlength="16" required="true" title="#{msg.openuss4us_calendar_appointment_starttime_hint}"/>
-				<o:input label="#{msg.openuss4us_calendar_appointment_endtime}" entity="appointmentInfo"
-					property="endtime" maxlength="16" required="true" title="#{msg.openuss4us_calendar_appointment_endtime_hint}"/>
+				<o:input id="enddate" label="#{msg.openuss4us_calendar_appointment_endtime}" entity="appointmentInfo"
+					property="endtime" maxlength="16" required="true" title="#{msg.openuss4us_calendar_appointment_endtime_hint}">
+					<f:validator validatorId="appointmentInfoDateValidator" />
+				</o:input>
 				<o:input id="location" label="#{msg.openuss4us_calendar_appointment_location}" entity="appointmentInfo"
 					property="location" maxlength="100" title="#{msg.openuss4us_calendar_appointment_location_hint}"/>
 				<h:outputLabel for="accessType" value="#{msg.appointmenttypeinfo_name}"
