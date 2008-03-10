@@ -37,7 +37,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		if (!isPostBack()) {

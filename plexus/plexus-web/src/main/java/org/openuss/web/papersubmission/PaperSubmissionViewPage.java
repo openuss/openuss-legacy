@@ -56,7 +56,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
 			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));

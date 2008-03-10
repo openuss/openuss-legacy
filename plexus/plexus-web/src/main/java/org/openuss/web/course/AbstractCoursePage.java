@@ -60,7 +60,7 @@ public class AbstractCoursePage extends BasePage {
 	protected PeriodInfo periodInfo;
 
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 		}

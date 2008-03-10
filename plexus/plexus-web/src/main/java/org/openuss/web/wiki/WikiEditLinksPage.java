@@ -28,7 +28,7 @@ public class WikiEditLinksPage extends AbstractWikiPage {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		final List<WikiSiteInfo> sites = wikiService.findWikiSitesByDomainObject(this.courseInfo.getId());

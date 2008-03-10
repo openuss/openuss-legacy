@@ -40,7 +40,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {

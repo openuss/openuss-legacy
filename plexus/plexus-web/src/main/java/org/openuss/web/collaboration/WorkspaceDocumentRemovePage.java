@@ -33,7 +33,7 @@ public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {
 	private List<FolderEntryInfo> entries;
 
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		addPageCrumb();
 	}

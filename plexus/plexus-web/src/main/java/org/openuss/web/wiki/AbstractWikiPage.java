@@ -38,7 +38,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	private final DateFormat dateFormat = new SimpleDateFormat();
 	
 	@Override
-	public void prerender() {
+	public void prerender() throws Exception {
 		if (!checkSession()) {
 			return;
 		}

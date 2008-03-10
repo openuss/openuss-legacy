@@ -52,7 +52,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @throws Exception */
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		addPageCrumbs();

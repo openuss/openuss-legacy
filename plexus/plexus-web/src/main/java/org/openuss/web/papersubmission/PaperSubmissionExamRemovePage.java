@@ -24,7 +24,7 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionExamRemovePage.class);
 	
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		addPageCrumb();		
 	}

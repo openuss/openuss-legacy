@@ -31,7 +31,7 @@ public class WikiMainPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		if (!checkSession()) {
 			return;
 		}

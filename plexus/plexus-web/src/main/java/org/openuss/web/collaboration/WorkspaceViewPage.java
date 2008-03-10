@@ -65,9 +65,10 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	private boolean moveMode = false;
 	
 	/** Prepares the information needed for rendering. 
+	 * @throws Exception 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		if (currentFolder == null && workspaceInfo == null) {

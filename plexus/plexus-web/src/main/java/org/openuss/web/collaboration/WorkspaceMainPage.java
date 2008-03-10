@@ -53,7 +53,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @throws Exception */
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		memberSelection.processSwitch();

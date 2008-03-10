@@ -31,7 +31,7 @@ public class WikiImportPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		addBreadCrumbs();

@@ -49,7 +49,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() {		
+	public void prerender() throws Exception {		
 		super.prerender();
 		
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);

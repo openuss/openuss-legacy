@@ -35,7 +35,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	protected ExamInfo examInfo = null;
 	
 	@Override
-	public void prerender() {
+	public void prerender() throws Exception {
 		super.prerender();
 		
 		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
