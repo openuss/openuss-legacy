@@ -86,7 +86,7 @@ public class DigestMd5 {
     		rootDn2 = rootDn2.toLowerCase();
     		
     		String groupRoleAttribute = "cn";
-    		groupRoleAttribute.trim();
+    		groupRoleAttribute = groupRoleAttribute.trim();
     		groupRoleAttribute = groupRoleAttribute.replaceAll("\\s+","");
     		groupRoleAttribute = groupRoleAttribute.toUpperCase();
     		

@@ -261,8 +261,14 @@ public class LdapConfigurationServiceImpl
     	List<LdapServerInfo> ldapList = new ArrayList<LdapServerInfo>();
     	List<LdapServer> ldapEntityList = (List<LdapServer>) getLdapServerDao().loadAll();
     	
-    	for (LdapServer ldapServer : ldapEntityList) {
-    		ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));    					
+    	for (LdapServer ldapServerEntity : ldapEntityList) {
+    		LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
+    		List<Long> userDnPatternIds = new ArrayList<Long>();
+    		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
+    			userDnPatternIds.add(userDnPatternEntity.getId());
+    		}
+    		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
+    		ldapList.add(ldapServerInfo);    					
 		}
     	
     	return ldapList;
@@ -280,8 +286,14 @@ public class LdapConfigurationServiceImpl
     	if(authDomain != null) {
     		Set<LdapServer> ldapServerSet = authDomain.getLdapServers();
     		for (Iterator<LdapServer> iterator = ldapServerSet.iterator(); iterator.hasNext();) {    		
-    			LdapServer ldapServer = iterator.next();
-    			ldapList.add(getLdapServerDao().toLdapServerInfo(ldapServer));
+    			LdapServer ldapServerEntity = iterator.next();
+    			LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
+    			List<Long> userDnPatternIds = new ArrayList<Long>();
+        		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
+        			userDnPatternIds.add(userDnPatternEntity.getId());
+        		}
+        		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
+    			ldapList.add(ldapServerInfo);
     		}
     	}
 		return ldapList;
@@ -378,12 +390,15 @@ public class LdapConfigurationServiceImpl
     @Override
     protected java.util.List<AuthenticationDomainInfo> handleGetAllDomains() {
     	List<AuthenticationDomainInfo> authDomainInfoList = new ArrayList<AuthenticationDomainInfo>();
-    	
     	List<AuthenticationDomain> authDomainEntityList = (List<AuthenticationDomain>) getAuthenticationDomainDao().loadAll();
 
     	for (AuthenticationDomain authenticationDomain : authDomainEntityList) {
-    		
     		AuthenticationDomainInfo authenticationDomainInfo = getAuthenticationDomainDao().toAuthenticationDomainInfo(authenticationDomain);
+    		List<Long> ldapServerIds = new ArrayList<Long>();
+    		for (LdapServer ldapServerEntity : authenticationDomain.getLdapServers()) {
+    			ldapServerIds.add(ldapServerEntity.getId());
+    		}
+    		authenticationDomainInfo.setLdapServerIds(ldapServerIds);
     		if(authenticationDomain.getAttributeMapping() != null) {
     			authenticationDomainInfo.setAttributeMappingId(authenticationDomain.getAttributeMapping().getId());
     		}
@@ -406,7 +421,12 @@ public class LdapConfigurationServiceImpl
     	authenticationDomainInfo.setName(authenticationDomain.getName());
     	if(authenticationDomain.getAttributeMapping()!= null) {
     		authenticationDomainInfo.setAttributeMappingId(authenticationDomain.getAttributeMapping().getId());    		
-    	}    	
+    	}  
+    	List<Long> ldapServerIds = new ArrayList<Long>();
+    	for (LdapServer ldapServerEntity : authenticationDomain.getLdapServers()) {
+    		ldapServerIds.add(ldapServerEntity.getId());
+    	}
+    	authenticationDomainInfo.setLdapServerIds(ldapServerIds);
     	
     	return authenticationDomainInfo;
     }
@@ -605,13 +625,27 @@ public class LdapConfigurationServiceImpl
      */
     @Override
     protected List<AttributeMappingInfo> handleGetAllAttributeMappings() {
-    	
     	List<AttributeMappingInfo> attributeMappingInfoList = new ArrayList<AttributeMappingInfo>();
-    	
     	Collection<AttributeMapping> attributeMappingEntityList = getAttributeMappingDao().loadAll();
+    	
     	for (Iterator<AttributeMapping> iterator = attributeMappingEntityList.iterator(); iterator.hasNext();) {
 			AttributeMapping attributeMappingEntity = (AttributeMapping) iterator.next();
-			attributeMappingInfoList.add(getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity));			
+			AttributeMappingInfo attributeMappingInfo = getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity);
+			
+			List<Long> authenticationDomainIds = new ArrayList<Long>();
+			for (AuthenticationDomain authenticationDomainEntity : attributeMappingEntity.getAuthenticationDomains()) {
+				authenticationDomainIds.add(authenticationDomainEntity.getId());
+			}
+			
+			List<Long> roleAttributeKeyIds = new ArrayList<Long>();
+			for (RoleAttributeKey roleAttributeKeyEntity : attributeMappingEntity.getRoleAttributeKeys()) {
+				roleAttributeKeyIds.add(roleAttributeKeyEntity.getId());
+			}
+			
+			attributeMappingInfo.setAuthenticationDomainIds(authenticationDomainIds);
+			attributeMappingInfo.setRoleAttributeKeyIds(roleAttributeKeyIds);
+			
+			attributeMappingInfoList.add(attributeMappingInfo);			
 		}
     	
     	return attributeMappingInfoList;
@@ -737,10 +771,17 @@ public class LdapConfigurationServiceImpl
 			
 			if(attributeMappingEntity != null) {
 				List<RoleAttributeKey> roleAttributeKeyEntities = attributeMappingEntity.getRoleAttributeKeys();
-				
 				List<RoleAttributeKeyInfo> roleAttributeKeyInfos = new ArrayList<RoleAttributeKeyInfo>();
-				for (RoleAttributeKey key : roleAttributeKeyEntities) {
-					roleAttributeKeyInfos.add(getRoleAttributeKeyDao().toRoleAttributeKeyInfo(key));
+				for (RoleAttributeKey roleAttributeKeyEntity : roleAttributeKeyEntities) {
+					RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
+					
+					List<Long> attributeMappingIds = new ArrayList<Long>();
+					for (AttributeMapping entity : roleAttributeKeyEntity.getAttributeMappings()) {
+						attributeMappingIds.add(entity.getId());
+					}
+					roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
+					
+					roleAttributeKeyInfos.add(roleAttributeKeyInfo);
 				}
 		    	return roleAttributeKeyInfos;
 			} else return new ArrayList<RoleAttributeKeyInfo>();
@@ -754,11 +795,14 @@ public class LdapConfigurationServiceImpl
 	@Override
 	protected java.util.List<RoleAttributeKeyInfo> handleGetAllRoleAttributeKeys(){
 		List<RoleAttributeKeyInfo> keyInfoList = new ArrayList<RoleAttributeKeyInfo>();
-    	
     	List<RoleAttributeKey> keyEntityList = (List<RoleAttributeKey>) getRoleAttributeKeyDao().loadAll();
     	for (RoleAttributeKey roleAttributeKey : keyEntityList) {
     		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKey);
-    		roleAttributeKeyInfo.setAttributeMappingIds(roleAttributeKey.getAttributeMappings());
+    		List<Long> attributeMappingIds = new ArrayList<Long>();
+    		for (AttributeMapping attributeMappingEntity : roleAttributeKey.getAttributeMappings()) {
+    			attributeMappingIds.add(attributeMappingEntity.getId());
+    		}
+    		roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
 			keyInfoList.add(roleAttributeKeyInfo);			
 		}
     	
@@ -881,10 +925,14 @@ public class LdapConfigurationServiceImpl
 		List<UserDnPattern> userDnPatternEntities = (List<UserDnPattern>) getUserDnPatternDao().loadAll();
 		
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
-		for (UserDnPattern entity : userDnPatternEntities) {
-			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(entity);
-			userDnPatternInfo.setId(entity.getId());
-			userDnPatternInfo.setLdapServerIds((List) entity.getLdapServers());
+		for (UserDnPattern userDnPatternEntity : userDnPatternEntities) {
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
+			userDnPatternInfo.setId(userDnPatternEntity.getId());
+			List<Long> ldapServerIds = new ArrayList<Long>();
+			for (LdapServer ldapServerEntity : userDnPatternEntity.getLdapServers()) {
+				ldapServerIds.add(ldapServerEntity.getId());
+			}
+			userDnPatternInfo.setLdapServerIds(ldapServerIds);
 			userDnPatternInfos.add(userDnPatternInfo);
 		}
 
@@ -901,11 +949,16 @@ public class LdapConfigurationServiceImpl
 		
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
 		
-		for (UserDnPattern entity : userDnPatternEntities) {
-			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(entity);
-			userDnPatternInfo.setId(entity.getId());
-			userDnPatternInfo.setName(entity.getName());
-			userDnPatternInfo.setLdapServerIds((List)entity.getLdapServers());
+		for (UserDnPattern userDnPatternEntity : userDnPatternEntities) {
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
+			userDnPatternInfo.setId(userDnPatternEntity.getId());
+			userDnPatternInfo.setName(userDnPatternEntity.getName());
+			List<Long> ldapServerIds = new ArrayList<Long>();
+			for (LdapServer entity : userDnPatternEntity.getLdapServers()) {
+				ldapServerIds.add(entity.getId());
+			}
+			userDnPatternInfo.setLdapServerIds(ldapServerIds);
+			
 			userDnPatternInfos.add(userDnPatternInfo);
 		}
     	
@@ -925,7 +978,21 @@ public class LdapConfigurationServiceImpl
 			throw new LdapConfigurationServiceException("Attribute mapping not found in DB!");
 		}
 		
-		return getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity);
+		AttributeMappingInfo attributeMappingInfo = getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity); 
+		
+		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
+		for (RoleAttributeKey roleAttributeKeyEntity : attributeMappingEntity.getRoleAttributeKeys()) {
+			roleAttributeKeyIds.add(roleAttributeKeyEntity.getId());
+		}
+		attributeMappingInfo.setRoleAttributeKeyIds(roleAttributeKeyIds);
+		
+		List<Long> authenticationDomainIds = new ArrayList<Long>();
+		for (AuthenticationDomain authenticationDomainEntity : attributeMappingEntity.getAuthenticationDomains()) {
+			authenticationDomainIds.add(authenticationDomainEntity.getId());
+		}
+		attributeMappingInfo.setAuthenticationDomainIds(authenticationDomainIds);
+		
+		return attributeMappingInfo;
 	}
 
 	/* (non-Javadoc)
@@ -941,7 +1008,15 @@ public class LdapConfigurationServiceImpl
 			throw new LdapConfigurationServiceException("Ldap server not found in DB!");
 		}
 		
-		return getLdapServerDao().toLdapServerInfo(ldapServerEntity);
+		LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
+		
+		List<Long> userDnPatternIds = new ArrayList<Long>();
+		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
+			userDnPatternIds.add(userDnPatternEntity.getId());
+		}
+		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
+		
+		return ldapServerInfo;
 	}
 
 	/* (non-Javadoc)
@@ -957,7 +1032,15 @@ public class LdapConfigurationServiceImpl
 			throw new LdapConfigurationServiceException("Role attribute key not found in DB!");
 		}
 		
-		return getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
+		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
+		
+		List<Long> attributeMappingIds = new ArrayList<Long>();
+		for (AttributeMapping attributeMappingEntity : roleAttributeKeyEntity.getAttributeMappings()) {
+			attributeMappingIds.add(attributeMappingEntity.getId());
+		}
+		roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
+		
+		return roleAttributeKeyInfo;
 	}
 
 	/* (non-Javadoc)
@@ -973,7 +1056,15 @@ public class LdapConfigurationServiceImpl
 			throw new LdapConfigurationServiceException("User dn pattern not found in DB!");
 		}
 		
-		return getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
+		UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
+		
+		List<Long> ldapServerIds = new ArrayList<Long>();
+		for (LdapServer ldapServerEntity : userDnPatternEntity.getLdapServers()) {
+			ldapServerIds.add(ldapServerEntity.getId());
+		}
+		userDnPatternInfo.setLdapServerIds(ldapServerIds);
+		
+		return userDnPatternInfo;
 	}
 
 	/* (non-Javadoc)
