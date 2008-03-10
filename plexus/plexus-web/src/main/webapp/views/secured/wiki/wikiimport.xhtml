@@ -48,13 +48,13 @@
 						<h:commandButton id="importWikiSitesButton"
 							action="#{views$secured$wiki$wikiimport.importWikiSites}"
 							value="#{msg.wiki_import_newest_versions}"
-							hint="#{msg.wiki_import_newest_versions_hint}"
-							styleClass="button_add" />
+							title="#{msg.wiki_import_newest_versions_hint}"
+							styleClass="button_big" />
 						<h:commandButton id="importWikiVersionsButton"
 							action="#{views$secured$wiki$wikiimport.importWikiVersions}"
 							value="#{msg.wiki_import_all_versions}"
-							hint="#{msg.wiki_import_all_versions_hint}"
-							styleClass="button_add" />
+							title="#{msg.wiki_import_all_versions_hint}"
+							styleClass="button_big" />
 					</c:if>
 				
 					<c:if test="#{empty views$secured$wiki$wikiimport.exportableWikiCourses}">

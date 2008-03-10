@@ -47,11 +47,13 @@
 				    <h:commandButton 
 						value="#{msg['wiki_edit_button_save']}" 
 						action="#{views$secured$wiki$wikiedit.save}" 
+						title="#{msg.save}"
 						styleClass="button"/>
 					<h:commandButton 
 						value="${msg.wiki_edit_button_cancel}" 
 						action="course_wiki" 
 						immediate="true" 
+						title="#{msg.cancel}"						
 						styleClass="button"/>
 				</o:block>
 			</h:form>

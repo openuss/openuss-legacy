@@ -64,11 +64,12 @@
 
 			<o:block>
 				<h:commandButton action="#{views$secured$collaboration$workspacefileedit.save}"
-					value="#{msg['newdocument_button_save']}"
-					title="#{msg['newdocument_button_save']}" 
+					value="#{msg.save}"
+					title="#{msg.save_hint}" 
 					styleClass="button_save" />
 				<h:commandButton action="workspaceview" immediate="true"
-					value="#{msg['newdocument_button_cancel']}"
+					value="#{msg.cancel}"
+					title="#{msg.cancel_hint}" 
 					styleClass="button_cancel" />
 			</o:block>
 		</h:form>
