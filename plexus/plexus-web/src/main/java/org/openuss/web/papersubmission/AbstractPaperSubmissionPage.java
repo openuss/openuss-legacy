@@ -38,7 +38,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public void prerender() throws Exception {
 		super.prerender();
 		
-		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
+		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null && paperSubmissionInfo.getExamId() != null){
 			this.paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 		}
 		

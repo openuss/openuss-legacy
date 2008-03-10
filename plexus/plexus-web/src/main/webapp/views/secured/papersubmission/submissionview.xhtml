@@ -124,14 +124,14 @@
 					        value="views$secured$papersubmission$submissionview.dataSubmissions" 
 					        columnClasses="col_min_center, col_min_center, col_max_center, col_min_left"
 					        var="bean" 
-					        rows="20">
+					        rows="7">
 					        
 					        <t:column>
 					            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
 					        </t:column>
 					        
 					        <plexus:column header="#{msg.documents_main_column_type}"> 
-								<h:graphicImage value="/images/filetypes/folder.gif"/>
+								<h:graphicImage value="/images/filetypes/folder.gif" />
 							</plexus:column>
 					   
 					        <t:column>
@@ -186,7 +186,7 @@
 		                    value="views$secured$papersubmission$submissionview.dataSubmissionFiles" 
 		                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date, col_commands"
 		                    var="bean" 
-		                    rows="20">  
+		                    rows="7">  
 		                    
 		                    <t:column>
 					            <f:facet name="header">
@@ -202,7 +202,10 @@
 					        
 		                    <t:column> 
 					            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-					            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" onError="this.value = /images/filetypes/default.gif"/>
+					            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+								<h:graphicImage value="/images/filetypes/default.gif" 
+					                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
 					        </t:column>
 		               
 		                    <t:column>
@@ -244,7 +247,7 @@
 									styleClass="icon_edit"/>
 								<plexus:command 
 								    bean="#{views$secured$papersubmission$submissionview}"
-									action="editFolderEntry" 
+									action="selectFileAndConfirmRemove" 
 									label="#{msg.documents_main_button_change}" 
 									title="#{msg.documents_main_button_change}"
 									styleClass="icon_remove"/>

@@ -211,6 +211,11 @@
         <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>papersubmission_current_folder_entry_info</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderEntryInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
      <managed-bean>
         <managed-bean-name>papersubmission_folderentry_selection</managed-bean-name>
         <managed-bean-class>org.openuss.web.papersubmission.PaperSubmissionFileSelection</managed-bean-class>

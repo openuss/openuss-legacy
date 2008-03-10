@@ -236,8 +236,9 @@ public class Constants {
 	public static final String PAPERSUBMISSION_EXAMLIST_PAGE = "examlist";
 	public static final String PAPERSUBMISSION_EXAM_REMOVE_PAGE = "papersubmission_exam_remove";
 	public static final String PAPERSUBMISSION_SUBMISSION_SELECTION = "papersubmission_submission_selection";
-	public static final String PAPERSUBMISSION_EXTENDEDFOLDERENTRY_SELECTION = "papersubmission_extendedfolderentry_selection";
+	//public static final String PAPERSUBMISSION_EXTENDEDFOLDERENTRY_SELECTION = "papersubmission_extendedfolderentry_selection";
 	public static final String PAPERSUBMISSION_SELECTED_FILEENTRY = "papersubmission_selected_file";
+	public static final String PAPERSUBMISSION_SELECTED_FOLDERENTRYINFO = "papersubmission_current_folder_entry_info";
 	public static final String PAPERSUBMISSION_FILE_EDIT_PAGE = "papersubmission_file_edit";
 	public static final String PAPERSUBMISSION_OVERVIEW_PAGE   = "submissionview";
 	public static final String PAPERSUBMISSION_LECTURE_OVERVIEW_PAGE   = "submissionviewlecturer";

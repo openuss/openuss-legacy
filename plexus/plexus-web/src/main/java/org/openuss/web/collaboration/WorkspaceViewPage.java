@@ -226,7 +226,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Store the selected workspace into session scope and go to workspace
+	 * Store the selected FolderEntry into session scope and go to workspace
 	 * remove confirmation page. 
 	 * 
 	 * @return outcome

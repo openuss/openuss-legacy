@@ -1,13 +1,17 @@
 package org.openuss.web.papersubmission;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,6 +50,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** The datamodel for all submission files. */
 	private LocalDataModelSubmissionFiles dataSubmissionFiles = new LocalDataModelSubmissionFiles();
 	
+
 	private List<PaperSubmissionInfo> submissions;
 	
 	private List<FolderEntryInfo> entries;
@@ -265,6 +270,21 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 	
+	/**
+	 * Store the selected File into session scope and go to remove confirmation page. 
+	 * 
+	 * @return outcome
+	 */
+	public String selectFileAndConfirmRemove() {
+		LOGGER.debug("Starting method selectFileAndConfirmRemove");
+		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
+		LOGGER.debug("Returning to method selectFileAndConfirmRemove");
+		LOGGER.debug(entry.getId());
+		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, Arrays.asList(new FolderEntryInfo[] {entry}));
+
+		return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
+	}
+	
 	public String selectSubmission(){
 		LOGGER.debug("Starting method selectSubmission");
 		PaperSubmissionInfo currentSubmission = currentSubmission();
@@ -283,8 +303,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	private PaperSubmissionInfo currentSubmission() {
 		return this.dataSubmissions.getRowData();
 	}
-	
-	
 	
 	//// getter/setter methods ////////////////////////////////////////////////
 	public LocalDataModelSubmissions getDataSubmissions() {

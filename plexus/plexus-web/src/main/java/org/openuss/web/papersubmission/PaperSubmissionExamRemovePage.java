@@ -46,6 +46,7 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 		try {
 			paperSubmissionService.removeExam(examInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
+			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
 			addMessage(i18n("papersubmission_removed_succeed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		} catch (Exception e) {
