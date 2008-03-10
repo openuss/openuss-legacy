@@ -746,4 +746,47 @@ public class CalendarServiceImpl extends
 		return this.getSingleAppointmentsAfterDate(new Timestamp(System.currentTimeMillis()), calendarInfo);
 	}
 
+	@Override
+	protected void handleAddSubscriptionForUser(CalendarInfo calendarInfo,
+			UserInfo userInfo) throws Exception {
+		
+		User user = getUserDao().load(userInfo.getId());
+
+		// add the link between the subscribing and the subscribed
+		Calendar calToSubscribe = getCalendarDao().load(calendarInfo.getId());
+
+		Calendar subscribingCal = getCalendarDao().findByDomainIdentifier(
+				user.getId());
+
+		// test if the user wants to subscribe his own calendar
+		if (subscribingCal.equals(calToSubscribe))
+			throw new CalendarApplicationException(
+					"It is not possible to subscribe to the own calendar!");
+		calToSubscribe.getSubscribedCalendars().add(subscribingCal);
+		subscribingCal.getSubscriptions().add(calToSubscribe);
+
+		// add already existing single appointments (including apps generated
+		// from serial app)
+
+		// get single apps from subscribed calendar
+		List<Appointment> appsToAdd = calToSubscribe.getSingleAppointments();
+
+		for (Appointment app : appsToAdd) {
+			subscribingCal.getLinkedAppointments().add(app);
+			app.getAssignedCalendars().add(subscribingCal);
+		}
+
+		// add natural serial appointments
+		List<SerialAppointment> serialApps = calToSubscribe
+				.getNaturalSerialAppointments();
+
+		for (SerialAppointment serialApp : serialApps) {
+			subscribingCal.getLinkedAppointments().add(serialApp);
+			serialApp.getAssignedCalendars().add(subscribingCal);
+		}
+
+		getCalendarDao().update(subscribingCal);
+		getCalendarDao().update(calToSubscribe);
+	}
+
 }
