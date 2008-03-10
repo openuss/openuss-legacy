@@ -141,7 +141,7 @@ public class Constants {
 	public static final String LDAP_USERDNPATTERN_REGISTRATION_CONTROLLER = "ldapUserDnPatternRegistration";
 	public static final String LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE = "ldap_userdnpattern_registration_step1";
 	public static final String USERDNPATTERN_INFO = "userDnPatternInfo";
-	public static final String LDAP_USERDNPATTERN_PAGE = "ldap_userdnpattern";
+	public static final String LDAP_USERDNPATTERN_PAGE = "ldap_userdnpatterns";
 	public static final String USERDNPATTERN_CONFIRM_REMOVE_PAGE = "ldap_userdnpattern_remove_confirmation";
 	// session Entity bean
 	public static final String USERDNPATTERN = "userDnPattern";

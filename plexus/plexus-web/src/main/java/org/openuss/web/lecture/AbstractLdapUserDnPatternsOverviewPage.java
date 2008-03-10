@@ -70,7 +70,7 @@ public abstract class AbstractLdapUserDnPatternsOverviewPage extends BasePage {
 	 * 
 	 * @return Outcome
 	 */
-	public String selectUserDnPatternAndConfirmRemove() {
+	public String selectUserDnPatternAndConfirmRemove2() {
 		UserDnPatternInfo currentUserDnPattern = currentUserDnPattern();
 		setSessionBean(Constants.USERDNPATTERN_INFO, currentUserDnPattern);
 
