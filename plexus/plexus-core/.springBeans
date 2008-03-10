@@ -16,10 +16,12 @@
 		<config>src/main/resources/applicationContext-messaging.xml</config>
 		<config>src/main/resources/applicationContext-newsletter.xml</config>
 		<config>src/main/resources/applicationContext-quartz.xml</config>
+		<config>src/main/resources/applicationContext-events.xml</config>
 		<config>src/main/resources/applicationContext-resources.xml</config>
+		<config>src/main/resources/applicationContext-events.xml</config>
 		<config>target/src/applicationContext.xml</config>
 		<config>target/src/applicationContext-localDataSource.xml</config>
-		<config>target/src/ehcache.xml</config>
+		<config>target/src/ehcache.xml</config>			
 	</configs>
 	<configSets>
 		<configSet>
@@ -36,6 +38,7 @@
 				<config>src/main/resources/applicationContext-messaging.xml</config>
 				<config>src/main/resources/applicationContext-newsletter.xml</config>
 				<config>src/main/resources/applicationContext-resources.xml</config>
+				<config>src/main/resources/applicationContext-events.xml</config>
 				<config>target/src/applicationContext.xml</config>
 				<config>target/src/applicationContext-localDataSource.xml</config>
 				<config>target/src/ehcache.xml</config>
