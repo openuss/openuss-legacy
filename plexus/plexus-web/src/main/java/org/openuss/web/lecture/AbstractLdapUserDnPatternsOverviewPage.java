@@ -7,6 +7,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
+import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -70,12 +71,22 @@ public abstract class AbstractLdapUserDnPatternsOverviewPage extends BasePage {
 	 * 
 	 * @return Outcome
 	 */
-	public String selectUserDnPatternAndConfirmRemove2() {
+	
+	public String selectUserDnPatternAndRemove() throws Exception {
+		try {
+		logger.debug("Starting method selectRoleAttributeKeyAndRemove");
 		UserDnPatternInfo currentUserDnPattern = currentUserDnPattern();
-		setSessionBean(Constants.USERDNPATTERN_INFO, currentUserDnPattern);
-
-		return Constants.USERDNPATTERN_CONFIRM_REMOVE_PAGE;
-	}
+		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, currentUserDnPattern);
+		ldapConfigurationService.deleteUserDnPattern(currentUserDnPattern);
+		setSessionBean("userDnPatternInfo", null);
+		return Constants.LDAP_USERDNPATTERN_PAGE;
+		}
+		catch (Exception e) {
+			addMessage(i18n("message_department_cannot_be_removed"));
+			return Constants.LDAP_USERDNPATTERN_PAGE;
+		}
+	}	
+	
 		
 	public String removeUserDnPattern() throws Exception {
 		UserDnPatternInfo currentUserDnPattern = currentUserDnPattern();
