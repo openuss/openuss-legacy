@@ -56,10 +56,16 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_userdnpatterns}"
-								action = "selectUserDnPatternAndRemove" 
+								action = "selectUserDnPatternAndEdit"
+								styleClass="icon_edit"
+								label="#{msg.ldap_userdnpattern_command_edit}"
+								title="#{msg.ldap_userdnpattern_command_edit_hint}"/>
+							<plexus:command
+								bean = "#{views$secured$system$ldap$ldap_userdnpatterns}"
+								action = "selectUserDnPatternAndConfirmRemove" 
 								styleClass="icon_remove"
-								label="#{msg.department_command_remove}"
-								title="#{msg.department_command_remove_hint}"/>
+								label="#{msg.userdnpattern_command_remove}"
+								title="#{msg.userdnpattern_command_remove_hint}"/>
 						</s:authorize>
 					</plexus:column>
 					
