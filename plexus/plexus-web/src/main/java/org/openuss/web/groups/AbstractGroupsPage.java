@@ -6,6 +6,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
 public class AbstractGroupsPage extends BasePage {
@@ -20,6 +21,7 @@ public class AbstractGroupsPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		setSessionBean(Constants.GROUP_INFO, null);
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(PageLinks.GROUPS_MAIN);
 		newCrumb.setName(i18n("openuss4us_command_groups"));

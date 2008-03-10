@@ -62,11 +62,17 @@ public class GroupsMainPage extends AbstractGroupsPage {
 	public String leaveGroup() {
 		logger.debug("member leave group");
 		UserGroupInfo group = data.getRowData();
-		groupService.removeMember(group, user.getId());
-		if(groupService.getAllMembers(group).size() == 0){
-			groupService.deleteUserGroup(group);
-		}
-		addMessage(i18n("message_group_left", group.getName()));
+		if((groupService.getModerators(group).size() == 1) && groupService.isModerator(group, user.getId())){
+			if (groupService.getAllMembers(group).size() == 1){
+				groupService.deleteUserGroup(group);
+				addMessage(i18n("message_group_deleted", group.getName()));	
+			} else {
+				addError(i18n("group_last_moderator_error"));
+			}		
+		} else {
+			groupService.removeMember(group, user.getId());
+			addMessage(i18n("message_group_left", group.getName()));
+		}	
 		resetCachedData();
 		return Constants.SUCCESS;
 	}

@@ -14,6 +14,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserCriteria;
+import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.groups.GroupsMainPage;
@@ -21,30 +22,30 @@ import org.openuss.web.groups.GroupsMainPage;
 @Bean(name = "views$secured$buddylist$usersearch", scope = Scope.REQUEST)
 @View
 public class UserSearchPage extends BasePage {
-	
+
 	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
-	
+
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;
 
 	private UserDataProvider data = new UserDataProvider();
-	private DataPage<User> page;
-	private List<User> users;
+	private DataPage<UserInfo> page;
+	private List<UserInfo> users;
 	private String username = null;
 	private String firstname = null;
 	private String lastname = null;
 
 	/* ----- private classes ----- */
 
-	private class UserDataProvider extends AbstractPagedTable<User> {
+	private class UserDataProvider extends AbstractPagedTable<UserInfo> {
 
 		private static final long serialVersionUID = -5342817757466323535L;
 
 		@Override
-		public DataPage<User> getDataPage(int startRow, int pageSize) {
+		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				logger.debug("fetching user list");
-				page = new DataPage<User>(users.size(), 0, users);
+				page = new DataPage<UserInfo>(users.size(), 0, users);
 				sort(users);
 			}
 			return page;
@@ -57,7 +58,7 @@ public class UserSearchPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		users = new ArrayList<User>();
+		users = new ArrayList<UserInfo>();
 	}
 
 	public String linkProfile() {
@@ -66,44 +67,49 @@ public class UserSearchPage extends BasePage {
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
-	
-	public String findUser(){
+
+	public String findUser() {
 		getUsers(username, firstname, lastname);
-		if (users.size() == 0){
+		if (users.size() == 0) {
 			users = null;
 			page = null;
 			addError(i18n("user_not_found_error"));
 			return Constants.OPENUSS4US_USER_SEARCH;
 		}
-		if (users.size() == 1){
+		if (users.size() == 1) {
 			User profile = User.Factory.newInstance();
 			profile.setId(users.get(0).getId());
 			setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
 			return Constants.USER_PROFILE_VIEW_PAGE;
 		}
-		if(users.size() > 1){
+		if (users.size() > 1) {
 			page = null;
-			page = new DataPage<User>(users.size(), 0, users);
+			page = new DataPage<UserInfo>(users.size(), 0, users);
 			addMessage(i18n("user_more_found_error"));
 		}
 		return Constants.OPENUSS4US_USER_SEARCH;
 	}
-	
-	public String writeMessage(){
+
+	public String writeMessage() {
 		return null;
 	}
-	
-	
-	private void getUsers(String uname, String fname, String lname){
+
+	private void getUsers(String uname, String fname, String lname) {
 		UserCriteria criteria = new UserCriteria();
-		criteria.setUsername(uname);
-//		criteria.setFirstName(fname);
-//		criteria.setLastName(lname);
+		if (uname != null && !uname.isEmpty()) {
+			criteria.setUsername(uname.toLowerCase());
+		}
+		if (!fname.isEmpty()) {
+			criteria.setFirstName(fname);
+		}
+		if (!lname.isEmpty()) {
+			criteria.setLastName(lname);
+		}
 		users = securityService.getUsers(criteria);
 	}
-		
+
 	/* ----- getter and setter ----- */
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -144,12 +150,12 @@ public class UserSearchPage extends BasePage {
 		this.securityService = securityService;
 	}
 
-	public List<User> getUsers() {
+	public List<UserInfo> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserInfo> users) {
 		this.users = users;
 	}
-	
+
 }

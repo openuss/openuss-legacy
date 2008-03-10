@@ -45,7 +45,7 @@
 						<h:outputText value="#{post.title}" styleClass="header_font_normal" />
 					</td>
 					<td class="col_post_commands">
-						<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}" >
+						<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}" >
 							<h:commandButton 
 								id="removeButtonAssist"
 								action="#{views$secured$discussion$groups$discussionthread.removePost}"
@@ -66,7 +66,7 @@
 								title="#{msg['discussion_thread_quote']}"
 								styleClass="button_remove"/>  
 						</s:acl>
-						<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.ASSIST}" >
+						<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.CRUD}" >
 							<h:commandButton  
 								id="removeButton"
 								action="#{views$secured$discussion$groups$discussionthread.removePost}"
