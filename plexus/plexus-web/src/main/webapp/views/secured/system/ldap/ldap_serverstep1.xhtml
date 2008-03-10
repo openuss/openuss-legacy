@@ -45,9 +45,9 @@
 					</o:block>
 				</c:if>
 					<o:block>
-						<h:commandButton value="${msg.back}" action="ldap_server_registration_start" styleClass="button_back" immediate="true"/>
+						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
 						<c:if test="#{not empty ldapServerRegistration.allUserDnPatterns}">
-							<h:commandButton value="${msg.forward}" action="ldap_server_registration_step2" styleClass="button_continue" />
+							<h:commandButton value="${msg.forward}" action="#{ldapServerRegistration.register}" styleClass="button_continue" />
 		  				</c:if>
 		  				<c:if test="#{empty ldapServerRegistration.allUserDnPatterns}">
 		  					<h:commandButton value="${msg.ldap_server}" action="ldap_servers" styleClass="button_continue" />

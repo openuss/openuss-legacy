@@ -45,9 +45,9 @@
 					</o:block>
 				</c:if>
 					<o:block>
-						<h:commandButton value="${msg.back}" action="ldap_attributemapping_registration_start" styleClass="button_back" immediate="true"/>
+						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
 						<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
-							<h:commandButton value="${msg.forward}" action="ldap_attributemapping_registration_step2" styleClass="button_continue" />
+							<h:commandButton value="${msg.forward}" action="#{ldapAttributeMappingRegistration.register}" styleClass="button_continue" />
 		  				</c:if>
 		  				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 		  					<h:commandButton value="${msg.ldap_roleattributekey}" action="ldap_roleattributekeys" styleClass="button_continue" />
