@@ -177,7 +177,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
 		} catch (NamingException e) {
-			new RuntimeException(e.getMessage(),e);
+			throw new RuntimeException(e.getMessage(),e);
 		}
 		
 		// Assign lastname
@@ -188,7 +188,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
 		} catch (NamingException e) {
-			new RuntimeException(e.getMessage(),e);
+			throw new RuntimeException(e.getMessage(),e);
 		}
 		
 		// Assign email address
@@ -199,7 +199,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 			value = (String) ldapUserDetails.getAttributes().get(sourceKey).get();
 			ldapUserDetails.getAttributes().put(destKey, value);
 		} catch (NamingException e) {
-			new RuntimeException(e.getMessage(),e);
+			throw new RuntimeException(e.getMessage(),e);
 		}		
 	}
 	
