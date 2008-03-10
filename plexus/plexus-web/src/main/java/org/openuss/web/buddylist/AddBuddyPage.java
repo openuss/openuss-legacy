@@ -18,6 +18,8 @@ import org.openuss.internalMessage.InternalMessageService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.system.SystemProperties;
+import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -49,6 +51,17 @@ public class AddBuddyPage extends BasePage{
 		this.internalMessageService = internalMessageService;
 	}
 	
+	@Property(value = "#{systemService}")
+	transient private SystemService systemService;
+	
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender - refreshing showuser session bean");
@@ -79,7 +92,7 @@ public class AddBuddyPage extends BasePage{
 	        imInfo.setMessageDate(new Date());
 	        //TODO make information dynamically
 	        imInfo.setSubject(i18n("openuss4us_buddylist_requestsubject"));
-	        imInfo.setContent(user.getDisplayName() + " " + i18n("openuss4us_buddylist_requestcontent"));
+	        imInfo.setContent(user.getDisplayName() + " " + i18n("openuss4us_buddylist_requestcontent") + systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + i18n("openuss4us_buddylist_requestcontent2"));
 	        InternalMessageRecipientsInfo imrecInfo = new InternalMessageRecipientsInfo();
 	        imrecInfo.setInternalMessageInfo(imInfo);
 	        imrecInfo.setRead(false);

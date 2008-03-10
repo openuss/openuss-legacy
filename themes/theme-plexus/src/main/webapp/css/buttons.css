@@ -72,8 +72,22 @@ a.icon_sendmessage:focus, a.icon_sendmessage:hover{
 	background-position: top right;
 }
 
+a.icon_deleteappointment {
+	background-image: url(../img/buttons/delete_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_deleteappointment:focus, a.icon_deleteappointment:hover{
+	background-position: top right;
+}
+
 a.icon_edittags {
-	background-image: url(../img/buttons/edit_tags_icon.png);
+	background-image: url(../img/buttons/delete_icon.png);
 	background-position: left top;
 	height: 16px;
 	width: 16px;
@@ -99,6 +113,20 @@ a.icon_removebuddy {
 a.icon_removebuddy:focus, a.icon_removebuddy:hover{
 	background-position: top right;
 }	
+
+a.icon_addbuddy {
+	background-image: url(../img/buttons/add_buddy_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_addbuddy:focus, a.icon_addbuddy:hover{
+	background-position: top right;
+}
 
 a.icon_viewmessage {
 	background-image: url(../img/buttons/view_mail_icon.png);
@@ -168,6 +196,34 @@ a.icon_rejectaspirant {
 }
 
 a.icon_rejectaspirant:focus, a.icon_rejectaspirant:hover{
+	background-position: top right;
+}
+
+a.icon_authorizebuddy {
+	background-image: url(../img/buttons/ok_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_authorizebuddy:focus, a.icon_authorizebuddy:hover{
+	background-position: top right;
+}
+
+a.icon_declinebuddy {
+	background-image: url(../img/buttons/missing_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_declinebuddy:focus, a.icon_declinebuddy:hover{
 	background-position: top right;
 }
 
