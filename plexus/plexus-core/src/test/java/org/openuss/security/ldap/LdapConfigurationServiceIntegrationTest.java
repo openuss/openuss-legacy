@@ -208,6 +208,8 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		
 	}
 	
+
+	
 	
 	/*
 	 * Tests role attribute key and attribute mapping integration
@@ -350,7 +352,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	/*
 	 * test getById methods
 	 */
-	public void testGetById() {
+	public void testGetter() {
 		service = getLdapConfigurationService();
 		commit();
 		
@@ -394,7 +396,15 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		server2.setDescription("Server 2");
 		service.saveLdapServer(server2);
 		
-	
+		
+		List<RoleAttributeKeyInfo> roleAttributeKeys = service.getAllRoleAttributeKeys();
+		assertTrue(2 == roleAttributeKeys.size());
+		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
+			assertTrue(1 == roleAttributeKey.getAttributeMappingIds().size());
+		}
+		assertTrue(map1.getId() == roleAttributeKeys.get(0).getAttributeMappingIds().get(0));
+		assertTrue(map2.getId() == roleAttributeKeys.get(1).getAttributeMappingIds().get(0));
+
 		
 		
 		RoleAttributeKeyInfo findKey = service.getRoleAttributeKeyById(key1.getId());

@@ -803,6 +803,7 @@ public class LdapConfigurationServiceImpl
     			attributeMappingIds.add(attributeMappingEntity.getId());
     		}
     		roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
+    		roleAttributeKeyInfo.setId(roleAttributeKey.getId());
 			keyInfoList.add(roleAttributeKeyInfo);			
 		}
     	
