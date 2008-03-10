@@ -239,6 +239,38 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public AttributeMappingInfo getAttributeMappingById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public LdapServerInfo getLdapServerById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public RoleAttributeKeyInfo getRoleAttributeKeyById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public UserDnPatternInfo getUserDnPatternById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isValidRoleAttributeKey(RoleAttributeKeyInfo roleAttributeKey) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isValidUserDnPattern(UserDnPatternInfo userDnPattern) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
 	
 	
 
