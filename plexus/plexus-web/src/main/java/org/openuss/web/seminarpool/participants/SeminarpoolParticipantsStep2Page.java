@@ -14,6 +14,7 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPriorityDetailInfo;
+import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
@@ -24,6 +25,8 @@ import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 		public static final Logger logger = Logger.getLogger(SeminarpoolParticipantsStep2Page.class);
 
 		private SeminarCourseRegistrationsOverviewPage dataCourseTypes = new SeminarCourseRegistrationsOverviewPage();
+		
+		private boolean status;
 		
 		/** course type info */
 		@Property(value="#{"+Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO+"}")
@@ -82,5 +85,13 @@ import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 		public void setCourseSeminarpoolAllocationInfo(
 				CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo) {
 			this.courseSeminarpoolAllocationInfo = courseSeminarpoolAllocationInfo;
+		}
+		
+		public boolean getStatus() {
+			return (seminarpoolInfo.getSeminarpoolStatus().getValue() <= SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
+		}
+		
+		public void setStatus(boolean status) {
+			this.status = status;
 		}
 	}

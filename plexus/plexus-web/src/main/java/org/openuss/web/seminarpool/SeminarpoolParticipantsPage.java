@@ -27,6 +27,7 @@ import org.openuss.security.UserInfo;
 import org.openuss.security.User;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
+import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -56,6 +57,8 @@ public class SeminarpoolParticipantsPage extends BasePage {
 	private MembersTable members = new MembersTable();
 
 	private String username;
+	
+	private boolean status;
 
 	private List<GroupItem> seminarpoolGroups;
 	
@@ -227,6 +230,12 @@ public class SeminarpoolParticipantsPage extends BasePage {
 	public void setSeminarpoolAdministrationService(
 			SeminarpoolAdministrationService seminarpoolAdministrationService) {
 		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
+	}
+	public boolean getStatus() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue() < SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 

@@ -53,6 +53,7 @@
 				label="#{msg['user_profile_command_show_profile']}"
 				title="#{msg['user_profile_command_show_profile_hint']}"
 				styleClass="icon_profile" />
+			<c:if test="#{views$secured$seminarpool$seminarpoolparticipants.status"}>
 			<plexus:command 
 				bean="#{views$secured$seminarpool$seminarpoolparticipants}"
 				action="removeMember"
@@ -60,6 +61,7 @@
 				label="#{msg['course_assistants_delete']}"
 				title="#{msg['course_assistants_delete_hint']}"
 				styleClass="icon_remove" />
+			</c:if>
 		</plexus:column>		
 	</plexus:dataTable>      
 </ui:composition>

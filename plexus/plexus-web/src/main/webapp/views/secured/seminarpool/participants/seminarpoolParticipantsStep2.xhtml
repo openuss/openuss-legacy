@@ -46,6 +46,7 @@
 					<b><h:outputText value="#{bean.priority}"/></b>
 			</t:column>
 			<plexus:column header="#{msg.commands_header}">
+			<c:if test="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2.status}">
 				<plexus:command   
 					bean="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2}"
 					action="removeParticipant"
@@ -54,6 +55,7 @@
 					hint="#{msg.seminarpool_participants_command_remove_hint}"
 					styleClass="icon_remove">
 				</plexus:command>
+			</c:if>
 			</plexus:column>
 		</plexus:dataTable>
 		<o:block>
