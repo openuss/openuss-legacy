@@ -22,7 +22,7 @@
                         </fck:editor>
                     </div>           
            
-            <h:outputLabel value="#{msg.braincontest_attachment}" for="attachmentUpload" styleClass="field_label" />
+            <h:outputLabel value="#{msg.papersubmission_exam_edit_attachment}" for="attachmentUpload" styleClass="field_label" />
 					<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
 						<div class="content_font_normal">
 							<t:dataList 
@@ -55,8 +55,9 @@
 						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 					</t:inputFileUpload>
 					
-					<h:commandButton value="#{msg.braincontest_add_attachment}"
+					<h:commandButton value="#{msg.papersubmission_exam_edit_add_attachment}"
 						action="#{views$secured$papersubmission$examlist.addAttachment}"
+						title="#{msg.papersubmission_exam_edit_add_attachment}"
 						immediate="true"
 						styleClass="button_add"/> 
 					
@@ -64,8 +65,8 @@
             <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full"/>
         </o:block> 
         <o:block>   
-            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" styleClass="button_save" />
-            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>

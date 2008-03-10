@@ -30,6 +30,9 @@
 						</h:inputSecret>
 						<h:message for="confirmPassword" styleClass="field_error" />
 					</s:authorize>
+					<s:authorize ifGranted="ROLE_USER"><br />
+						<h:commandButton action="secure_password_change" value="#{msg.user_new_password}" styleClass="button_save"/><br />
+					</s:authorize>
 
 				<!-- public profile information -->
 					<br />

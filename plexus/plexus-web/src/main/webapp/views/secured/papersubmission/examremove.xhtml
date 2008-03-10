@@ -53,8 +53,8 @@
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$papersubmission$examremove.removeExam}" styleClass="button_warning"/>
-					<h:commandButton value="${msg.cancel}" action="examlist" styleClass="button_cancel" immediate="true"/>				
+					<h:commandButton value="${msg.remove}" title="${msg.remove}" action="#{views$secured$papersubmission$examremove.removeExam}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" title="${msg.cancel_hint}" action="examlist" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
 		</ui:define>
