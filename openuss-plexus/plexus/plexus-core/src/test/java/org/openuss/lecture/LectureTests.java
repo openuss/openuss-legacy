@@ -25,6 +25,7 @@ public class LectureTests {
 		suite.addTestSuite(InstituteServiceIntegrationTest.class);
 		suite.addTestSuite(CourseTypeServiceIntegrationTest.class);
 		suite.addTestSuite(CourseServiceIntegrationTest.class);
+		suite.addTestSuite(OrganisationServiceIntegrationTest.class);
 		suite.addTestSuite(PeriodMappingTest.class);
 		//$JUnit-END$
 		return suite;
