@@ -31,7 +31,7 @@
 										#{msg['seminarpool_add_course_schedule_edit_startdate']}
 									</plexus:commandSortHeader>
 									<h:outputText value="#{bean.startTime}">
-										<f:converter converterId="seminarpoolDateConverter" />
+										<f:converter converterId="seminarpoolTimeConverter" />
 									</h:outputText>
 									
 								</t:column>
@@ -40,7 +40,7 @@
 										#{msg['seminarpool_add_course_schedule_edit_enddate']}
 									</plexus:commandSortHeader>
 									<h:outputText value="#{bean.endTime}">
-										<f:converter converterId="seminarpoolDateConverter" />
+										<f:converter converterId="seminarpoolTimeConverter" />
 									</h:outputText>
 								</t:column>
 								<t:column>

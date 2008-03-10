@@ -1,4 +1,4 @@
-package org.openuss.web.seminarpool.courseAllocation;
+package org.openuss.web.seminarpool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,11 +11,10 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.shale.tiger.register.FacesConverter;
 
-
-@FacesConverter(value = "seminarpoolDateConverter")
-public class SeminarpoolDateConverter implements Converter {
-
-	private static final String datePattern = "dd.MM.yyyy HH:mm";
+@FacesConverter(value = "seminarpoolTimeConverter")
+public class SeminarpoolTimeConverter implements Converter {
+	
+	private static final String datePattern = "HH:mm";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
 
 	

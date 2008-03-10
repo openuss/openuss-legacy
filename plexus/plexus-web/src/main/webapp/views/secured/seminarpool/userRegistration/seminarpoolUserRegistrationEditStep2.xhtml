@@ -29,34 +29,44 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="seminarpool_user_registration_form2">
+				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
+				<t:saveState value="#{seminarUserRegistrationInfo}" id="seminarUserRegistrationInfo"/>
   				<o:block label="#{msg.seminarpool_user_registration_step2_headline}">
 					<div class="content_font_normal"> 
-						<h:outputText value="#{msg.seminarpool_user_registration_edit_step1_text}" escape="false"/>
+						<h:outputText value="#{msg.seminarpool_user_registration_step2_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
-					<plexus:dataTable 
-						id="institutes" 
-						label="#{msg.seminarpool_user_registration_edit_course_overview}" 
-						value="views$secured$seminarpool$userRegistration$seminarpoolUserRegistrationEditStep1.seminarPriorityInfoTable" 
-						var="bean" 
-						columnClasses="col_max_left, col_commands"
-						rows="20">
-						<t:column>
-							<plexus:commandSortHeader columnName="courseName">
-								#{msg['seminarpool_user_registration_edit_table_coursename']}
-							</plexus:commandSortHeader>
-							<h:outputText value="#{bean.courseName}"/>
-						</t:column>
-						<t:column>
-							<plexus:commandSortHeader columnName="priority">
-								#{msg['seminarpool_user_registration_edit_table_priority']}
-							</plexus:commandSortHeader>
-							<h:outputText value="#{bean.priority}"/>
-						</t:column>						
-					</plexus:dataTable>
-					<o:block>
-						<h:commandButton action="#{seminarpoolUserRegistration.startEditProcess}" value="#{msg.seminarpool_user_registration_edit}" styleClass="button_cancel"/>
-				   	</o:block>
+			   	<o:block> 	
+				   	<o:input 
+						label="#{msg.seminarpool_neededseminars}"
+						entity="seminarpoolUserRegistration.seminarUserRegistrationInfo" 
+						property="neededSeminars" 
+						maxlength="30" 
+						required="true" />
+				   	
+				   	<c:forEach var="i" begin="1" end="#{seminarpoolUserRegistration.maxPriority}">
+					   	<h:outputLabel value="#{i}. #{msg.seminarpool_user_registration_seminar}" 
+		 				   for="seminar_list#{i}" 
+		 				   styleClass="field_label" />
+						<h:selectOneListbox 
+							id="seminar_list#{i}" 
+							size="1" 
+							styleClass="pulldown" 
+							value="#{seminarpoolUserRegistration.priority}"
+							valueChangeListener="#{seminarpoolUserRegistration.processSeminarSelectChanged}"
+							required="false"
+							immediate="true">
+		 					<f:selectItems value="#{seminarpoolUserRegistration.allSeminars}"/>
+						</h:selectOneListbox>				
+					</c:forEach>
+					<h:messages/>
+				</o:block>
+
+				<o:block>
+				
+			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true"/>
+					<h:commandButton action="#{seminarpoolUserRegistration.editStep2}" value="#{msg.save}" styleClass="button_continue"/>
+		  		</o:block>
 		  	</h:form>
   		</ui:define>
 	</ui:composition>

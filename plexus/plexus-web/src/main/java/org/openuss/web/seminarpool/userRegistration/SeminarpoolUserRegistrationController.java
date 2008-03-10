@@ -91,33 +91,30 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		// create new seminarpoolInfo object for session
 		seminarUserRegistrationInfo = this.getSeminarpoolUserRegistrationService().findSeminarUserRegistrationByUserAndSeminarpool(user.getId(), seminarpoolInfo.getId());
 		setSessionBean(Constants.SEMINARPOOL_USER_REGISTRATION_INFO, seminarUserRegistrationInfo);
-		if ( seminarUserRegistrationInfo != null ) {
-			createPrioritieList();
+		if ( seminarUserRegistrationInfo != null && seminarUserRegistrationInfo.getId() != null) {
 			return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP1_PAGE;
-		}
+		} 
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
 	}
 	
-	private void createPrioritieList(){
-		priorities = new ArrayList<String>();
-		int size = seminarpoolInfo.getMaxSeminarAllocations();
-		for ( long i = 0; i < size; i++ ) {
-			priorities.add(""+i);
-		}
+	public String startEditProcess() {
+		logger.debug("Starts the edit process");
+		return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP2_PAGE;
 	}
+	
 	
 	public String step2(){
 		seminarUserRegistrationInfo = (SeminarUserRegistrationInfo) this.getSessionBean("seminarUserRegistrationInfo");
 		if(seminarPriorityList == null){
 			seminarPriorityList = seminarUserRegistrationInfo.getSeminarPriorityList();
 		}
-		if (seminarPriorityList != null && !checkDoubleElements(seminarPriorityList)){
-			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED));
-			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
-		}
 		if ( seminarPriorityList == null || seminarPriorityList.size() == 0 ) {
 			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_NO_COURSE_SELECTED));
 			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;			
+		}
+		if (seminarPriorityList != null && seminarPriorityList.size() > 0 && !checkDoubleElements(seminarPriorityList)){
+			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED));
+			return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
 		}
 		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
 		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());
@@ -126,6 +123,24 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		this.setSessionBean("seminarUserRegistrationInfo", seminarUserRegistrationInfo);
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP2_PAGE;
 	}
+	
+	public String editStep2(){
+		seminarUserRegistrationInfo = (SeminarUserRegistrationInfo) this.getSessionBean("seminarUserRegistrationInfo");
+		if (seminarPriorityList != null && seminarPriorityList.size() > 0 && !checkDoubleElements(seminarPriorityList)){
+			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_DOUBLE_COURSES_SELECTED));
+			return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP2_PAGE;
+		}
+		if ( seminarPriorityList == null || seminarPriorityList.size() == 0 ) {
+			addError(i18n(Constants.SEMINARPOOL_USER_REGISTRATION_ERROR_NO_COURSE_SELECTED));
+			return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP2_PAGE;			
+		}
+		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
+		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());
+		seminarUserRegistrationInfo.setUserId(user.getId());
+		seminarpoolUserRegistrationService.editUserRegistration(seminarUserRegistrationInfo, null);
+		return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP1_PAGE;
+	}
+
 	
 	private boolean checkDoubleElements(List<SeminarPrioritiesInfo> list){
 		int size = list.size();

@@ -96,7 +96,13 @@ public class SeminarpoolUserRegistrationServiceImpl
 			Collection userConditions) throws Exception {
 		Validate.notNull(seminarUserRegistrationInfo, "handleEditUserRegistration UserRegistrationInfo cannot be null");
 		Validate.notNull(seminarUserRegistrationInfo.getSeminarPriorityList(), "handleEditUserRegistration SeminarPriorities cannot be null");
-		SeminarUserRegistration targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo);
+		SeminarUserRegistration targetEntity = 	getSeminarUserRegistrationDao().load(seminarUserRegistrationInfo.getId());
+		for (SeminarPriority priority : targetEntity.getSeminarPriority()){
+			priority.getCourseSeminarPoolAllocation().getSeminarPriority().remove(priority);
+			priority.setSeminarUserRegistration(null);
+		}
+		targetEntity.getSeminarPriority().clear();
+		targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo);
 		if ( userConditions != null ) {
 			Collection<SeminarUserConditionValue> userConditionValueEntityList = new ArrayList<SeminarUserConditionValue>();
 			for (SeminarUserConditionValueInfo seminarUserConditionInfo : (Collection<SeminarUserConditionValueInfo>)userConditions){
