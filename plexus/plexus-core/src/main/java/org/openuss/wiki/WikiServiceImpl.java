@@ -37,7 +37,15 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	@Override
 	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId)
 	throws Exception {
-		getWikiSiteVersionDao().remove(wikiSiteVersionId);
+		WikiSiteVersion version = getWikiSiteVersionDao().load(wikiSiteVersionId);
+		WikiSite site = version.getWikiSite();
+		
+		getWikiSiteVersionDao().remove(version);
+		
+		site.getWikiSiteVersions().remove(version);
+		if (site.getWikiSiteVersions().isEmpty()) {
+			getWikiSiteDao().remove(site);
+		}
 	}
 
 	@Override
