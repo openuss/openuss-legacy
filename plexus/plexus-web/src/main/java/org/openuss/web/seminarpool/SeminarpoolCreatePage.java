@@ -135,6 +135,20 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	}
 	
 	/**
+	 * goes to step 2 of seminarpool registration process
+	 * @return Outcome
+	 */
+	public String toStep2() {
+		logger.debug("go to step 2 of seminarpool registration process");
+		if(seminarpoolInfo.getMaxSeminarAllocations() <= seminarpoolInfo.getPriorities())
+			return "seminarpool_create_step2";
+		else {
+			this.addError(i18n("seminarpool_allocations_priorities_error"));
+			return "";
+		}
+	}
+	
+	/**
 	 * Final creation method
 	 * @return Outcome
 	 */
@@ -245,6 +259,14 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		seminarConditionInfo.setFieldType((ConditionType) conditionTypeGroup);
 	}
 	
+	/**
+	 * processing the change of the maxSeminarAllocations textfield
+	 * @param event ValueChangeEvent
+	 */
+	public void processMaxSeminarAllocationsChanged(ValueChangeEvent event) {
+		String newMaxSeminarAllocation = event.getNewValue().toString();
+		seminarpoolInfo.setMaxSeminarAllocations(Integer.parseInt(newMaxSeminarAllocation));
+	}
 	
 	
 	

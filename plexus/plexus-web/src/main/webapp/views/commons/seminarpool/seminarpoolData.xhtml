@@ -30,10 +30,6 @@
  					<f:selectItems value="#{seminarpoolRegistration.allUniversities}"/>
  					<f:validator validatorId="universityDepartmentSelectValidator"/>
 				</h:selectOneListbox>
-
-<!-- LUECKE OBEN	 
-					onchange="this.form.submit();"
-					immediate="true"   -->
 				
 				<o:input 
 					label="#{msg.seminarpool_name}"
@@ -52,15 +48,21 @@
 					label="#{msg.seminarpool_max_seminar_allocations}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="maxSeminarAllocations" 
-					maxlength="5"
-					required="true" />
+					maxlength="2"
+					required="true"
+					valueChangeListener="#{seminarpoolRegistration.processMaxSeminarAllocationsChanged}">
+					<f:validateLongRange minimum="1" />
+				</o:input> 
 				<o:input 
+					id="priorities_field"
 					label="#{msg.seminarpool_priorities}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="priorities"
 					size="10"
-					maxlength="5" 
-					required="true" />
+					maxlength="2" 
+					required="true">
+					<f:validateLongRange minimum="#{seminarpoolRegistration.seminarpoolInfo.maxSeminarAllocations}"/>
+				</o:input>
 				<o:input
 					label="#{msg.seminarpool_registration_start_time}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
