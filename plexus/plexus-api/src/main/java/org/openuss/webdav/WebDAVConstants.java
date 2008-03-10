@@ -15,6 +15,10 @@ public class WebDAVConstants {
 	public final static int DEPTH_INFINITY = Integer.MAX_VALUE;
 	public final static String DEPTH_INFINITY_STRING = "infinity";
 	public final static String TIMEOUT_INFINITE = "Infinite";
+
+	// MIME types
+	public static final String MIMETYPE_DEFAULT = "application/octet-stream";
+	public static final String MIMETYPE_DIRECTORY = "httpd/unix-directory";
 	public final static String MIMETYPE_XML = "text/xml";
 	public final static String MIMETYPE_TEXT = "text/plain";
 	public final static String MIMETYPE_HTML = "text/html";

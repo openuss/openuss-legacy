@@ -3,7 +3,6 @@ package org.openuss.web.dav;
 import org.openuss.webdav.WebDAVAnswer;
 import org.openuss.webdav.WebDAVConstants;
 
-
 /**
  * A simple, string-based WebDAVAnswer implementation.
  */

@@ -49,6 +49,7 @@ public class Constants {
 	public static final String LECTURE_SERVICE = "lectureService";
 	public static final String SECURITY_SERVICE ="securityService";
 	public static final String ONLINE_STATISTIC_SERVICE = "onlineStatisticService";
+	public static final String DOCUMENT_SERVICE = "documentService";
 	
 	// Session View Controller
 	public static final String INSTITUTE_REGISTRATION_CONTROLLER = "instituteRegistration";

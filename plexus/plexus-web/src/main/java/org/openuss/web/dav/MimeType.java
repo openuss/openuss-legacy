@@ -7,21 +7,15 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.openuss.webdav.WebDAVConstants;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>
  * @version 0.9
+ * 
+ * @see WebDAVConstants for static mime type definitions
  */
 public class MimeType {
-	/**
-	 * The default mime type for resources.
-	 */
-	public static final String DEFAULT_MIME_TYPE = "application/octet-stream";
-	/**
-	 * Mimetype for directories.
-	 */
-	public static final String DIRECTORY_MIMETYPE = "httpd/unix-directory";
-	
 	private static final Logger logger = Logger.getLogger(MimeType.class);
 	
 	private static final Properties mimeTypes = new Properties();
@@ -54,7 +48,7 @@ public class MimeType {
 		}
 
 		if (mimeType == null) {
-			return DEFAULT_MIME_TYPE;
+			return WebDAVConstants.MIMETYPE_DEFAULT;
 		}
 		
 		return mimeType;

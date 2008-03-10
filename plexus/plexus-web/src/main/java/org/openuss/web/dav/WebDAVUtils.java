@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVException;
@@ -47,6 +49,7 @@ public final class WebDAVUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	protected final static String DATEFORMAT_RFC1123 = "EEE, dd MMM yyyy HH:mm:ss zzz"; 
 	
 	/* HTTP */
 	
@@ -234,7 +237,7 @@ public final class WebDAVUtils {
 		Transformer t;
 		try {
 			t = tf.newTransformer();
-			t.setOutputProperty(OutputKeys.INDENT, "yes"); // TODO necessary?
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
 			t.transform(new DOMSource(doc), new StreamResult(sw));
 		} catch (TransformerException e) {
 			throw new RuntimeException(e);
@@ -292,5 +295,25 @@ public final class WebDAVUtils {
 			(n.getNamespaceURI().equals(WebDAVConstants.NAMESPACE_WEBDAV) &&
 			(n.getLocalName().equals(localName)));
 			
+	}
+	
+	/* Conversions */
+	
+	/**
+	 * Converts a date object to a timestamp one.
+	 * 
+	 * @param d The date object to convert.
+	 * @return The timestamp representing the specified date.
+	 */
+	public static Timestamp timestampToDate(Date d) {
+		return new Timestamp(d.getTime());
+	}
+	
+	/**
+	 * @param d The date to represent.
+	 * @return A WebDAV-compatible string representing the date as defined by RFC2616 3.3.1
+	 */
+	public static String dateToString(Date d) {
+		return DateFormatUtils.format(d, DATEFORMAT_RFC1123);		
 	}
 }

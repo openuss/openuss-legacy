@@ -1,38 +1,40 @@
 package org.openuss.web.dav.backends;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.openuss.desktop.DesktopService2;
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.FileEntry;
+import org.openuss.documents.FileInfo;
 import org.openuss.documents.Folder;
 import org.openuss.documents.FolderEntry;
-import org.openuss.documents.FolderInfo;
-import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseService;
-import org.openuss.lecture.InstituteService;
 import org.openuss.web.Constants;
-import org.openuss.web.dav.SimpleWebDAVResource;
+import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
+import org.openuss.web.dav.IOContextImpl;
+import org.openuss.web.dav.WebDAVUtils;
 import org.openuss.webdav.IOContext;
+import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * 
+ * A WebDAV resource in the org.openuss.document system.
  */
-public class DocumentResource extends SimpleWebDAVResource {
+public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 	protected DocumentService documentService;
-	protected FolderEntry fe;
+	protected FolderEntry entry;
+	protected Collection<FolderEntry> subEntriesCache = null;
 	
-	public DocumentResource(WebApplicationContext wac, WebDAVPath path, FolderEntry fe) {
-		super(wac, path);
+	public DocumentResource(WebApplicationContext wac, WebDAVPath path, FolderEntry entry) {
+		super(wac, path, entry.getId());
+		this.entry = entry;
 		
-		documentService = (DocumentService) getWAC().getBean("documentService", DocumentService.class);
+		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
 	}
 	
 	@Override
@@ -55,25 +57,64 @@ public class DocumentResource extends SimpleWebDAVResource {
 		
 	}
 	
-	@Override
-	protected Map<Long, String> getRawChildNames() {
-		
-		return null;
-	}
-
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#readContentImpl()
+	 */
 	@Override
 	protected IOContext readContentImpl() throws WebDAVResourceException,
 			IOException {
-		// TODO Auto-generated method stub
-		return null;
+		if (isCollection()) {
+			return readCollectionContent();
+		} else {
+			// this is a file
+			
+			IOContextImpl res = new IOContextImpl();
+			
+			FileInfo fi = documentService.getFileEntry(entry.getId(), true);
+			res.setInputStream(fi.getInputStream());
+			res.setContentLength(entry.getFileSize());
+			Timestamp mts = WebDAVUtils.timestampToDate(entry.getModified());
+			res.setModificationTime(mts);
+			res.setContentType(fi.getContentType());
+			
+			return res;
+		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#getContentType()
+	 */
+	public String getContentType() {
+		if (isCollection()) {
+			return WebDAVConstants.MIMETYPE_DIRECTORY;
+		}
+		FileInfo fi = documentService.getFileEntry(entry.getId(), true);
+		return fi.getContentType();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#simpleGetProperties(java.util.Set)
+	 */
 	@Override
 	protected Map<String, String> simpleGetProperties(Set<String> propNames) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,String> resMap = new TreeMap<String,String>();
+		
+		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_DISPLAYNAME)) { 
+			resMap.put(WebDAVConstants.PROPERTY_DISPLAYNAME, entry.getDescription());
+		}
+		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETCONTENTLENGTH)) { 
+			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, String.valueOf(entry.getFileSize()));
+		}
+		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_CREATIONDATE)) { 
+			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToString(entry.getCreated()));
+		}
+		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETLASTMODIFIED)) { 
+			resMap.put(WebDAVConstants.PROPERTY_GETLASTMODIFIED, WebDAVUtils.dateToString(entry.getModified()));
+		}
+		
+		return resMap;
 	}
-
+	
 	@Override
 	protected void writeContentImpl(IOContext ioc)
 			throws WebDAVResourceException {
@@ -85,33 +126,77 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#isCollection()
 	 */
 	public boolean isCollection() {
-		return (fe instanceof Folder);
+		return (entry instanceof Folder);
 	}
 
 	public boolean isReadable() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public boolean isWritable() {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	protected WebDAVResource getChild(String name, WebDAVPath path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<WebDAVResource> getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	public boolean hasChild(String name) {
-		// TODO Auto-generated method stub
+		 // TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
+		if (!isCollection()) {
+			return null;
+		}
+		
+		if (id != ID_NONE) {
+			for (FolderEntry fe : getSubEntries()) {
+				if (fe.getId() == id) {
+					return new DocumentResource(getWAC(), path, fe);
+				}
+			}
+		} else {
+			for (FolderEntry fe : getSubEntries()) {
+				if (sname.equals(sanitizeName(getNameByFolderEntry(fe)))) {
+					return new DocumentResource(getWAC(), path, fe);
+				}
+			}
+		}
+			
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#getRawChildNames()
+	 */
+	@Override
+	protected Map<Long, String> getRawChildNames() {
+		Map<Long,String> res = new TreeMap<Long, String>();
+		
+		for (FolderEntry fe : getSubEntries()) {
+			res.put(fe.getId(), getNameByFolderEntry(fe));
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @return All FileEntry objects of all the children.
+	 */
+	protected Collection<FolderEntry> getSubEntries() {
+		if ((subEntriesCache == null) && (entry instanceof Folder)) {
+			subEntriesCache = ((Folder)entry).getEntries(); 
+		}
+		
+		return subEntriesCache;
+	}
+	
+	/**
+	 * @param fe The FolderEntry object that should be created.
+	 * @return The name to choose for the object.
+	 */
+	public static String getNameByFolderEntry(FolderEntry fe) {
+		return fe.getFileName();
 	}
 }

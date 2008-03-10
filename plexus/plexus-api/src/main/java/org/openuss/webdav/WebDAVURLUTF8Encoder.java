@@ -104,8 +104,7 @@ public class WebDAVURLUTF8Encoder
       } else if (ch == '-' || ch == '_'		// unreserved
           || ch == '.' || ch == '!'
           || ch == '~' || ch == '*'
-          || ch == '\'' || ch == '('
-          || ch == ')'
+          || ch == '\'' 
           /* reserved */
           || ch == '/') {
         sbuf.append((char)ch);

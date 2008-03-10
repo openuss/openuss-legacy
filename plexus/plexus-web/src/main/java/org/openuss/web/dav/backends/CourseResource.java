@@ -1,16 +1,15 @@
 package org.openuss.web.dav.backends;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.FolderEntry;
+import org.openuss.documents.Folder;
+import org.openuss.documents.FolderDao;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.UniversityService;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.webdav.WebDAVConstants;
@@ -20,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 public class CourseResource extends AbstractOrganisationResource{
 	protected DocumentService documentService;
+	protected FolderDao folderDao;
 	/**
 	 * pro forma id for the materials backend.
 	 */
@@ -30,7 +30,8 @@ public class CourseResource extends AbstractOrganisationResource{
 		super(wac, path, ci.getId());
 		this.info = ci;
 		
-		documentService = (DocumentService) getWAC().getBean("documentService", DocumentService.class);
+		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
+		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
 	}
 
 	@Override
@@ -47,9 +48,11 @@ public class CourseResource extends AbstractOrganisationResource{
 	 */
 	protected WebDAVResource getMaterialsBackend(WebDAVPath path) {
 		FolderInfo fi = documentService.getFolder(info);
-				
-		//return new DocumentResource(getWAC(), path, fi);
-		return null; //TODO
+		
+		Folder f = folderDao.folderInfoToEntity(fi);
+		
+		return new DocumentResource(getWAC(), path, f);
+		
 	}
 
 	/* (non-Javadoc)
