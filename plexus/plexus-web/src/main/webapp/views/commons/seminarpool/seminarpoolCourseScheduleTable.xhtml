@@ -26,32 +26,22 @@
 								var="bean" 
 								columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
 								rows="20">
-								<t:column>
-									<plexus:commandSortHeader columnName="start">
-										#{msg['seminarpool_add_course_schedule_edit_startdate']}
-									</plexus:commandSortHeader>
+								<plexus:column header="#{msg['seminarpool_add_course_schedule_edit_startdate']}">
 									<h:outputText value="#{bean.startTime}">
 										<f:converter converterId="seminarpoolTimeConverter" />
 									</h:outputText>
-									
-								</t:column>
-								<t:column>
-									<plexus:commandSortHeader columnName="end">
-										#{msg['seminarpool_add_course_schedule_edit_enddate']}
-									</plexus:commandSortHeader>
+								</plexus:column>									
+								<plexus:column header="#{msg['seminarpool_add_course_schedule_edit_enddate']}">
 									<h:outputText value="#{bean.endTime}">
 										<f:converter converterId="seminarpoolTimeConverter" />
 									</h:outputText>
-								</t:column>
-								<t:column>
-									<plexus:commandSortHeader columnName="end">
-										#{msg['seminarpool_add_course_schedule_edit_weekday']}
-									</plexus:commandSortHeader>
+								</plexus:column>
+								<plexus:column header="#{msg['seminarpool_add_course_schedule_edit_weekday']}">
 									<h:outputText value="#{bean.dayOfWeek}">
 										<f:converter converterId="dayOfWeekConverter" />
 									</h:outputText>
-								</t:column>
-								<plexus:column header="#{msg.commands_header}">				
+								</plexus:column>
+									<plexus:column header="#{msg.commands_header}">				
 									<plexus:command 
 										bean="#{views$commons$seminarpool$seminarpoolCourseScheduleTable}"
 										onclick="if (!confirm('#{msg.seminarpoolseminar_remove_confirmation}')) return false"

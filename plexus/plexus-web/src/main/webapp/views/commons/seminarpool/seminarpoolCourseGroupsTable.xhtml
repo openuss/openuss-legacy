@@ -23,26 +23,17 @@
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
 					rows="20">
-					<t:column>
-						<plexus:commandSortHeader columnName="name">
-							#{msg['seminarpool_add_course_groups_add_name']}
-						</plexus:commandSortHeader>
+					<plexus:column header="#{msg['seminarpool_add_course_groups_add_name']}">				
 						<h:commandLink action="#{views$commons$seminarpool$seminarpoolCourseGroupsTable.selectCurrentCourseGroup}">
 								<h:outputText value="#{bean.name}"/>
 						</h:commandLink>
-					</t:column>
-					<t:column>
-						<plexus:commandSortHeader columnName="capacity">
-							#{msg['seminarpool_add_course_groups_add_capacity']}
-						</plexus:commandSortHeader>
+					</plexus:column>
+					<plexus:column header="#{msg['seminarpool_add_course_groups_add_capacity']}">				
 						<h:outputText value="#{bean.capacity}"/>
-					</t:column>
-					<t:column>
-						<plexus:commandSortHeader columnName="courseTimes">
-							#{msg['seminarpool_add_course_groups_add_coursetimes_set']}
-						</plexus:commandSortHeader>
+					</plexus:column>
+					<plexus:column header="#{msg['seminarpool_add_course_groups_add_coursetimes_set']}">				
 						<h:outputText value="#{bean.isTimeSet}"/>
-					</t:column>	
+					</plexus:column>
 				<plexus:column header="#{msg.commands_header}">				
 						<plexus:command 
 							bean="#{views$commons$seminarpool$seminarpoolCourseGroupsTable}"
