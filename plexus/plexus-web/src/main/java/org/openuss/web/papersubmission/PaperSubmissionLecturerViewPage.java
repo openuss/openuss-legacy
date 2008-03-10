@@ -64,8 +64,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	private void addPageCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		
-		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, 
-				i18n("papersubmission_paperlist_header")));
+		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, i18n("papersubmission_paperlist_header"), i18n("papersubmission_paperlist_header")));
 
 		if (this.examInfo != null) {
 			//specific exam crumb

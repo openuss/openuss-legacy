@@ -267,6 +267,7 @@ public class Constants {
 	public static final String WIKI_STARTSITE_NAME_I18N = "wiki_index_page_readable";
 	public static final String WIKI_MAIN_PAGE = "course_wiki";
 	public static final String WIKI_EDIT_PAGE = "wiki_edit";
+	public static final String WIKI_EDIT_LINKS_NEWPAGE = "wiki_editlinks_newpage";
 	public static final String WIKI_OVERVIEW = "wiki_overview";
 	public static final String WIKI_NEW_SITE_NAME = "wiki_new_site_name";
 	public static final String WIKI_IMAGE = "wiki_image";
@@ -281,12 +282,12 @@ public class Constants {
 	public static final String WIKI_IMPORT_TYPE = "wiki_import_type";
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
 	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
+	public static final String WIKI_IMPORT_WIKI = "wiki_import_wiki";
+	public static final String WIKI_OVERVIEW_HEADER = "wiki_overview_header";
 	public static final String WIKI_OVERWRITE_PAGE = "wiki_overwrite";
 	public static final String WIKI_MAIN_HEADER = "wiki_main_header";
 	public static final String WIKI_NEW_SITE_HEADER = "wiki_new_site_create";	
-	public static final String WIKI_IMPORT_WIKI = "wiki_import_wiki";
 	public static final String WIKI_NEW_TAG = "__new__";
-	public static final String WIKI_EDIT_LINKS_NEWPAGE = "wiki_editlinks_newpage";
 	public static final String WIKI_SITE_SAVE_SUCCEEDED = "wiki_site_save_succeeded";
 	public static final String WIKI_IMAGE_REMOVE_HEADER = "wiki_image_remove_header";
 	public static final String WIKI_IMAGE_REMOVE_SUCCEEDED = "wiki_image_removed_succeed";
