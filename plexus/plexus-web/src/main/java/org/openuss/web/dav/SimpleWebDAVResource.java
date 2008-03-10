@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.apache.tools.ant.filters.StringInputStream;
+import org.openuss.security.User;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
@@ -41,14 +42,13 @@ import org.w3c.dom.NodeList;
  * @see CollisionAvoidingSimpleWebDAVResource
  */
 public abstract class SimpleWebDAVResource implements WebDAVResource {
-	/**
-	 * The Spring bean factory.
-	 */
-	private final WebApplicationContext wac;
+
 	/**
 	 * The path of this resource.
 	 */
 	protected final WebDAVPath path;
+	
+	protected final WebDAVContext context;
 
 	
 	/**
@@ -57,9 +57,9 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @param wac The WebApplication
 	 * @param path The path of this resource.
 	 */
-	protected SimpleWebDAVResource(WebApplicationContext wac, WebDAVPath path) {
-		this.wac = wac;
+	protected SimpleWebDAVResource(WebDAVContext context, WebDAVPath path) {
 		this.path = path.asFinalPath();
+		this.context = context;
 	}
 		
 	/* (non-Javadoc)
@@ -259,7 +259,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		WebDAVPath nextPath = path.next();
-		WebDAVResource nextRes = getChild(nextName, path);
+		WebDAVResource nextRes = getChild(nextName, nextPath);
 		
 		if (nextRes == null) {
 			// Cannot find sub-element
@@ -504,7 +504,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @return The WebApplicationContext that allows to retrieve beans.
 	 */
 	protected WebApplicationContext getWAC() {
-		return this.wac;
+		return this.context.getWac();
 	}
 	
 	/**
@@ -526,4 +526,13 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		return res;
 	}
+	
+	public User getUser() {
+		return this.context.getUser();
+	}
+
+	public WebDAVContext getContext() {
+		return context;
+	}
+
 }

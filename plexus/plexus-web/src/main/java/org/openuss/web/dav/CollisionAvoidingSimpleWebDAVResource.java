@@ -44,12 +44,13 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	 * @param path The path of this resource.
 	 * @param id The internal Id of this resource.
 	 */
-	public CollisionAvoidingSimpleWebDAVResource(WebApplicationContext wac,
+	public CollisionAvoidingSimpleWebDAVResource(WebDAVContext context,
 			WebDAVPath path, long id) {
-		super(wac, path);
+		super(context, path);
 		
 		this.id = id;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(java.lang.String, org.openuss.webdav.WebDAVPath)

@@ -3,6 +3,7 @@ package org.openuss.web.dav.backends;
 import java.io.IOException;
 
 import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
@@ -24,8 +25,8 @@ public abstract class AbstractOrganisationResource extends CollisionAvoidingSimp
 	 * @param path The path of this object.
 	 * @param id The id of this object.
 	 */
-	protected AbstractOrganisationResource(WebApplicationContext wac, WebDAVPath path, long id) {
-		super(wac, path, id);
+	protected AbstractOrganisationResource(WebDAVContext context, WebDAVPath path, long id) {
+		super(context, path, id);
 	}
 	
 	/* (non-Javadoc)

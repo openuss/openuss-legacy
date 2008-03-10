@@ -14,6 +14,7 @@ import org.openuss.documents.FolderEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.web.dav.IOContextImpl;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.web.dav.WebDAVUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
@@ -30,8 +31,8 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 	protected FolderEntry entry;
 	protected Collection<FolderEntry> subEntriesCache = null;
 	
-	public DocumentResource(WebApplicationContext wac, WebDAVPath path, FolderEntry entry) {
-		super(wac, path, entry.getId());
+	public DocumentResource(WebDAVContext context, WebDAVPath path, FolderEntry entry) {
+		super(context, path, entry.getId());
 		this.entry = entry;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
@@ -153,13 +154,13 @@ public class DocumentResource extends CollisionAvoidingSimpleWebDAVResource {
 		if (id != ID_NONE) {
 			for (FolderEntry fe : getSubEntries()) {
 				if (fe.getId() == id) {
-					return new DocumentResource(getWAC(), path, fe);
+					return new DocumentResource(getContext(), path, fe);
 				}
 			}
 		} else {
 			for (FolderEntry fe : getSubEntries()) {
 				if (sname.equals(sanitizeName(getNameByFolderEntry(fe)))) {
-					return new DocumentResource(getWAC(), path, fe);
+					return new DocumentResource(getContext(), path, fe);
 				}
 			}
 		}

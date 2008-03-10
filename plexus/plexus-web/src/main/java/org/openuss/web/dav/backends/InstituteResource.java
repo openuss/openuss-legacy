@@ -9,6 +9,7 @@ import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
@@ -25,8 +26,8 @@ public class InstituteResource extends AbstractOrganisationResource{
 	protected Collection<CourseInfo> childrenData = null;
 	protected final InstituteInfo info;
 	
-	public InstituteResource(WebApplicationContext wac, WebDAVPath path, InstituteInfo info) {
-		super(wac, path, info.getId());
+	public InstituteResource(WebDAVContext context, WebDAVPath path, InstituteInfo info) {
+		super(context, path, info.getId());
 		this.info = info;
 		
 		courseService = (CourseService) getWAC().getBean(Constants.COURSE_SERVICE, CourseService.class);
@@ -51,7 +52,7 @@ public class InstituteResource extends AbstractOrganisationResource{
 		}
 		
 		if (resInfo != null) {
-			return new CourseResource(getWAC(), path, resInfo);
+			return new CourseResource(getContext(), path, resInfo);
 		}
 		
 		return null;

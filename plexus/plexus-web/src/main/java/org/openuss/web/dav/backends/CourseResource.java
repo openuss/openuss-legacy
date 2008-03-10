@@ -12,6 +12,7 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
@@ -26,8 +27,8 @@ public class CourseResource extends AbstractOrganisationResource{
 	protected final static long MATERIALS_ID = 0;
 	protected final CourseInfo info;
 	
-	public CourseResource(WebApplicationContext wac, WebDAVPath path, CourseInfo ci) {
-		super(wac, path, ci.getId());
+	public CourseResource(WebDAVContext context, WebDAVPath path, CourseInfo ci) {
+		super(context, path, ci.getId());
 		this.info = ci;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
@@ -51,7 +52,7 @@ public class CourseResource extends AbstractOrganisationResource{
 		
 		Folder f = folderDao.folderInfoToEntity(fi);
 		
-		return new DocumentResource(getWAC(), path, f);
+		return new DocumentResource(getContext(), path, f);
 		
 	}
 

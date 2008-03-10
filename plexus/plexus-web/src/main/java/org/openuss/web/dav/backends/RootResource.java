@@ -10,6 +10,7 @@ import java.util.Set;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.Constants;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
@@ -33,8 +34,8 @@ public class RootResource extends AbstractOrganisationResource {
 	 * @param wac The Spring context.
 	 * @param path The root path
 	 */
-	protected RootResource(WebApplicationContext wac, WebDAVPath path) {
-		super(wac, path, ID_ROOT);
+	protected RootResource(WebDAVContext context, WebDAVPath path) {
+		super(context, path, ID_ROOT);
 		allUniversities = null;
 		universityService = (UniversityService) getWAC().getBean(Constants.UNIVERSITY_SERVICE, UniversityService.class);
 	}
@@ -46,8 +47,8 @@ public class RootResource extends AbstractOrganisationResource {
 	 * @param prefix The prefix of all WebDAV paths.
 	 * @return A WebDAVResource representing the root.
 	 */
-	public static RootResource getRoot(WebApplicationContext wac, String prefix) {
-		return new RootResource(wac, WebDAVPathImpl.getRoot(prefix));
+	public static RootResource getRoot(WebDAVContext context, String prefix) {
+		return new RootResource(context, WebDAVPathImpl.getRoot(prefix));
 	}
 	
 	
@@ -58,23 +59,23 @@ public class RootResource extends AbstractOrganisationResource {
 	protected WebDAVResource getChild(long id, String sname, WebDAVPath path) {
 		if (id == ID_NONE) {
 			if (sname.equals(sanitizeName(getMyUniName()))) {
-				return new MyUniResource(getWAC(), path, MYUNI_ID);
+				return new MyUniResource(getContext(), path, MYUNI_ID);
 			}
 			
 			for (UniversityInfo uni : getAllUniversities()) {
 				if (sname.equals(sanitizeName(UniversityResource.getNameByData(uni)))) {
-					return new UniversityResource(getWAC(), path, uni);
+					return new UniversityResource(getContext(), path, uni);
 				}
 			}
 		} else {
 			if (id == MYUNI_ID) {
-				return new MyUniResource(getWAC(), path, MYUNI_ID);
+				return new MyUniResource(getContext(), path, MYUNI_ID);
 			}
 			
 			UniversityInfo ui = universityService.findUniversity(id);
 			
 			if (ui != null) {
-				return new UniversityResource(getWAC(), path, ui);
+				return new UniversityResource(getContext(), path, ui);
 			}
 		}
 		

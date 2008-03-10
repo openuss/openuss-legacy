@@ -8,14 +8,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.acegisecurity.Authentication;
 import org.acegisecurity.acl.AclManager;
+import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+import org.acegisecurity.context.SecurityContext;
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.User;
 import org.openuss.web.dav.MultiStatusAnswerImpl;
 import org.openuss.web.dav.SimpleStatusResponse;
 import org.openuss.web.dav.NullIOContext;
 import org.openuss.web.dav.SimpleWebDAVAnswer;
+import org.openuss.web.dav.WebDAVContext;
 import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.web.dav.WebDAVUtils;
 import org.openuss.web.dav.backends.RootResource;
@@ -64,6 +70,16 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
  		try	{
+ 			HttpSession session = request.getSession();
+ 			SecurityContext secContext;
+ 			User user = null;
+			secContext = (SecurityContext) session.getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+			if (secContext != null) {
+ 				Authentication auth = secContext.getAuthentication();
+ 				if (auth != null) {
+ 					user = (User) auth.getPrincipal();
+ 				}
+ 			}
  			String destination;
 	 		WebDAVPath destinationPath;
 	 		WebDAVPath parentPath;
@@ -77,10 +93,11 @@ public class WebDAVServlet extends HttpServlet {
 			WebDAVResource resource;
 			Document doc;
 			WebDAVAnswer answer;
+			WebDAVContext davContext = new WebDAVContext(wac, user);
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
 			
-			WebDAVResource root = getRoot();
+			WebDAVResource root = getRoot(davContext);
 			
 			switch(code) {
 			case WebDAVMethods.DAV_OPTIONS:
@@ -106,7 +123,7 @@ public class WebDAVServlet extends HttpServlet {
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				depth = WebDAVUtils.readDepthHeader(request);
 				recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
-				answer = copy(resource, destinationPath, recursive, overwrite);
+				answer = copy(resource, destinationPath, davContext, recursive, overwrite);
 				printResponse(response, answer);
 				break;
 			case WebDAVMethods.DAV_DELETE:
@@ -140,7 +157,7 @@ public class WebDAVServlet extends HttpServlet {
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				depth = WebDAVUtils.readDepthHeader(request);
 				recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
-				answer = copy(resource, destinationPath, recursive, overwrite);
+				answer = copy(resource, destinationPath, davContext, recursive, overwrite);
 				resource.delete();
 				printResponse(response, answer);
 				break;
@@ -298,9 +315,9 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param overwrite true iff overwrite is allowed
  	 * @return the MultiStatusAnswer object
  	 */
- 	public MultiStatusAnswer copy(WebDAVResource src, WebDAVPath dst, boolean recursive, boolean overwrite){
+ 	public MultiStatusAnswer copy(WebDAVResource src, WebDAVPath dst, WebDAVContext context, boolean recursive, boolean overwrite){
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		WebDAVResource parentResource = getRoot();
+ 		WebDAVResource parentResource = getRoot(context);
  		copy(src, parentResource, recursive, overwrite, answer);
  		return answer;
  	}
@@ -377,8 +394,8 @@ public class WebDAVServlet extends HttpServlet {
 	/**
 	 * @return The root resource
 	 */
-	protected WebDAVResource getRoot() {
-		return RootResource.getRoot(wac, resourcePathPrefix);
+	protected WebDAVResource getRoot(WebDAVContext context) {
+		return RootResource.getRoot(context, resourcePathPrefix);
 	}
 	
 	/**
@@ -392,4 +409,8 @@ public class WebDAVServlet extends HttpServlet {
 		response.addHeader("MS-Author-Via", WebDAVConstants.HEADER_DAV);
 		response.setStatus(WebDAVStatusCodes.SC_OK);
 	}	
+	
+	public WebApplicationContext getWAC(){
+		return wac;
+	}
 }
