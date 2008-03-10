@@ -38,7 +38,7 @@
 				<plexus:dataTable 
 					id="roleattributekey" 
 					label="#{msg.ldap_roleattributekeyconfiguration_header}" 
-					value="views$secured$system$ldap$ldap_roleattributekey.roleAttributeKeys" 
+					value="views$secured$system$ldap$ldap_roleattributekeys.roleAttributeKeys" 
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 					rows="15">
@@ -53,13 +53,13 @@
 					<plexus:column header="#{msg.commands_header}">
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_roleattributekey}"
+								bean = "#{views$secured$system$ldap$ldap_roleattributekeys}"
 								action = "selectRoleAttributeKeyAndConfirmRemove"
 								styleClass="icon_remove"
 								label="#{msg.ldap_roleattributekey_command_remove}"
 								title="#{msg.ldap_roleattributekey_command_remove_hint}"/>
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_roleattributekey}"
+								bean = "#{views$secured$system$ldap$ldap_roleattributekeys}"
 								action = "selectRoleAttributeKeyAndEdit"
 								styleClass="icon_edit"
 								label="#{msg.ldap_roleattributekey_command_edit}"
