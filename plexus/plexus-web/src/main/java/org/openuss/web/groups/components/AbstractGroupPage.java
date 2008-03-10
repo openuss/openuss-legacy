@@ -52,6 +52,8 @@ public class AbstractGroupPage extends BasePage {
 			return;
 		} else {
 			addGroupCrumb();
+			calendarInfo = calendarService.getCalendar(groupInfo);
+			setSessionBean(Constants.CALENDAR_INFO, calendarInfo);
 			setSessionBean(Constants.GROUP_INFO, groupInfo);
 		}
 		setSessionBean(Constants.COURSE_INFO, null);

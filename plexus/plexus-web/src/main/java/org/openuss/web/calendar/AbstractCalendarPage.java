@@ -16,7 +16,7 @@ import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
- * AbstractCalendarPage
+ * Abstract Calendar Page
  * @author Thomas Jansing
  *
  */
@@ -41,11 +41,10 @@ public class AbstractCalendarPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		// TODO Thomas: check calendarInfo
-//		if (calendarInfo == null || calendarInfo.getId() == null) {
-//			addError(i18n("TODO: Calendar not found!"));
-//			redirect(Constants.OUTCOME_BACKWARD);
-//			return; }
+		if (calendarInfo == null || calendarInfo.getId() == null) {
+			addError(i18n("calendar_error_not_found"));
+			redirect(Constants.OUTCOME_BACKWARD);
+			return; }
 		
 	}
 	
