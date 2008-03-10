@@ -185,7 +185,9 @@
 		  			
 		  			<c:if test="${not empty wiki_current_site_version.text}">
             			<o:block rendered="#{wiki_current_site_version.readOnly}" styleClass="status_box">							
-  							<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+  							<p class="content_font_normal">
+  								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
+  							</p>
    						</o:block>
 	  					
             			<o:block rendered="#{wiki_current_site_version.stable}" styleClass="status_box">								

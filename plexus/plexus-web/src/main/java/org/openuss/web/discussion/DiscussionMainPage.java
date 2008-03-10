@@ -31,9 +31,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
-		if (forum.isReadOnly()){
-			addMessage(i18n("discussion_forum_readonly_true_simple"));
-		}
 	}	
 	
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
@@ -79,8 +76,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		ForumInfo forum = discussionService.getForum(courseInfo);
 		if (discussionService.watchesForum(forum)){
 			discussionService.removeForumWatch(forum);
+			addMessage(i18n("discussion_unsubscribe_success"));
 		} else if(!discussionService.watchesForum(forum)){
 			discussionService.addForumWatch(forum);
+			addMessage(i18n("discussion_subscribe_success"));
 		} 
 		return Constants.SUCCESS;
 	}

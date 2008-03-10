@@ -66,12 +66,14 @@ public class PropertiesPage extends BasePage  {
 	public String saveProperties() {
 		Collection<SystemProperty> properties = propertyList.getData();
 		systemService.persistProperties(properties);
+		addMessage(i18n("admin_properties_saved_success"));
 		return Constants.SUCCESS;
 	}
 	
 	public String recreateLectureIndex() throws Exception {
 		RecreateLectureIndex recreateIndex = (RecreateLectureIndex) getBean("recreateLectureIndex");
 		recreateIndex.recreate();
+		addMessage(i18n("admin_lectureindex_recreated_success"));
 		return Constants.SUCCESS;
 	}
 

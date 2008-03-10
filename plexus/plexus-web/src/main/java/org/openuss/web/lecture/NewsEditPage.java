@@ -72,8 +72,8 @@ public class NewsEditPage extends AbstractLecturePage {
 		courseNewsCrumb.addParameter("institute",instituteInfo.getId());
 		
 		BreadCrumb newsEditCrumb = new BreadCrumb();
-		newsEditCrumb.setName(i18n("mews_selected_newsitem_header"));
-		newsEditCrumb.setHint(i18n("mews_selected_newsitem_header"));
+		newsEditCrumb.setName(i18n("news_selected_newsitem_header"));
+		newsEditCrumb.setHint(i18n("news_selected_newsitem_header"));
 		newsEditCrumb.setLink("");
 		
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
@@ -98,7 +98,7 @@ public class NewsEditPage extends AbstractLecturePage {
 		newsItem.setAuthor(getAuthorName());
 		newsItem.setPublisherType(PublisherType.INSTITUTE);
 		newsService.saveNewsItem(newsItem);
-
+		addMessage(i18n("news_saved_success"));		
 		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 

@@ -80,6 +80,9 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 		instituteService.applyAtDepartment(instituteId, selectedDepartment, user.getId());
 
 		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		
+		addMessage(i18n("institute_registration_success"));
+		
 		return Constants.INSTITUTE_PAGE;
 	}
 

@@ -37,6 +37,11 @@
 		<ui:include src="/views/commons/sidebar/feeds/discussionfeed.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+	
+		<o:block rendered="#{discussion_forum.readOnly}" styleClass="status_box">							
+  			<h:outputFormat value="#{msg.discussion_forum_readonly_true_simple}" styleClass="content_font_normal" />
+   		</o:block>
+   		
 		<h:form id="discussionTableView">
 			<ui:include src="discussionstable.xhtml" />
 			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >

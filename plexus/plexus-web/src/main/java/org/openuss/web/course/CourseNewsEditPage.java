@@ -70,8 +70,8 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		breadcrumbs.addCrumb(newCrumb);
 		
 		newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("mews_selected_newsitem_header"));
-		newCrumb.setHint(i18n("mews_selected_newsitem_header"));
+		newCrumb.setName(i18n("news_selected_newsitem_header"));
+		newCrumb.setHint(i18n("news_selected_newsitem_header"));
 		breadcrumbs.addCrumb(newCrumb);
 	}
 
@@ -92,6 +92,8 @@ public class CourseNewsEditPage extends AbstractCoursePage {
 		newsItem.setPublisherType(PublisherType.COURSE);
 		newsService.saveNewsItem(newsItem);
 
+		addMessage(i18n("coursenews_saved"));
+		
 		return Constants.COURSE_NEWS_PAGE;
 	}
 

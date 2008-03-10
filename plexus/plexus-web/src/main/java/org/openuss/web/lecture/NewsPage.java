@@ -80,7 +80,6 @@ public class NewsPage extends AbstractLecturePage {
 		
 		newsItemInfo.setPublisherIdentifier(instituteInfo.getId());
 		newsItemInfo.setPublisherName(instituteInfo.getName());
-		
 		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
@@ -92,7 +91,7 @@ public class NewsPage extends AbstractLecturePage {
 	public String editNewsItem() {
 		logger.debug("edit news item");
 		NewsItemInfo newsItemInfo = data.getRowData();
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
+		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);	
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	

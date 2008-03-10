@@ -136,9 +136,9 @@ public class InstitutesPage extends BasePage{
 			instituteService.setInstituteStatus(currentInstitute.getId(), true);		
 			addMessage(i18n("message_institute_enabled"));
 		} catch(InstituteServiceException iae) {
-			addMessage(i18n("message_institute_enabled_failed_department_disabled"));
+			addError(i18n("message_institute_enabled_failed_department_disabled"));
 		} catch(Exception ex){
-			addMessage(i18n("message_institute_enabled_failed"));
+			addError(i18n("message_institute_enabled_failed"));
 		}
 		return Constants.SUCCESS;
 	}

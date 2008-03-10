@@ -144,6 +144,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		logger.debug("Switching to move mode");
 		setSessionBean(Constants.COURSE_INFO, currentCourse());
 		moving = true;
+		
 		return Constants.SUCCESS;
 	}
 

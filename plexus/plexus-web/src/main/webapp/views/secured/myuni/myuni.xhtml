@@ -46,28 +46,39 @@
 		</o:legend>
 	</ui:define>
 	<ui:define name="content">
-	<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
-		<div class="content_box">
-			<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
-			</o:flexlist_tabs>
-			<div class="content_normal">
-				<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.departmentsList}"></o:flexlist>
-				<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.institutesList}"></o:flexlist>
-				<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}"></o:courseflexlist>
-				<o:flexlist binding="#{views$secured$myuni$myuni.examsList}"></o:flexlist>
+		<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
+			<div class="content_box">
+				<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
+				</o:flexlist_tabs>
+				<div class="content_normal">
+					<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.departmentsList}"></o:flexlist>
+					<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.institutesList}"></o:flexlist>
+					<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}"></o:courseflexlist>
+					<o:flexlist binding="#{views$secured$myuni$myuni.examsList}"></o:flexlist>
+				</div>
+				<div class="footer_normal">
+					<div class="footer_normal_left_bg" />
+					<div class="footer_normal_right_bg" />
+				</div>
 			</div>
-			<div class="footer_normal">
-				<div class="footer_normal_left_bg" />
-				<div class="footer_normal_right_bg" />
-			</div>
-		</div>
-	</c:if>	
-	<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
-		<o:block>	
-			<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}"
-		 	escape="false"/>
-		 </o:block>
-	</c:if>
+		</c:if>	
+		
+		<c:if test="#{empty views$secured$myuni$myuni.myUniData}">
+            <o:block styleClass="status_box">								
+	  			<h:outputFormat value="#{msg.myuni_empty_page_explanation}" styleClass="content_font_normal"/>
+  			</o:block>
+  			
+ 		  	<h:form id="universitiesForm">
+				<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
+			</h:form> 			
+		</c:if>
+		
+		<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
+			<o:block>	
+				<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}"
+			 	escape="false"/>
+			</o:block>
+		</c:if>
 		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 </ui:composition>

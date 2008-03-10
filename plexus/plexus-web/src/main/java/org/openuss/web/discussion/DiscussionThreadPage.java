@@ -54,13 +54,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 			discussionService.addHit(topic);
 			topicWatchState = discussionService.watchesTopic(topic);
 			topicReadOnly = topic.isReadOnly();
-			if (forum.isReadOnly()){
-				addMessage(i18n("discussion_forum_readonly_true_simple"));
-			}else if (!forum.isReadOnly()){
-				if (topicReadOnly){
-					addMessage(i18n("discussion_topic_readonly_true_simple"));
-				} 
-			}
 			addPageCrumb();
 		}
 	}	
@@ -157,8 +150,10 @@ public class DiscussionThreadPage extends AbstractDiscussionPage{
 	public String changeWatchState(){
 		if (discussionService.watchesTopic(topic)){
 			discussionService.removeTopicWatch(topic);
+			addMessage(i18n("discussion_topic_unsubscribe_success"));
 		} else if(!discussionService.watchesTopic(topic)){
 			discussionService.addTopicWatch(topic);
+			addMessage(i18n("discussion_topic_subscribe_success"));
 		} 
 		return Constants.SUCCESS;
 	}

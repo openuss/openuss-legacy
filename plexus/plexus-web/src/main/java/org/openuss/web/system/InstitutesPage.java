@@ -131,7 +131,7 @@ public class InstitutesPage extends BasePage{
 					} catch(DepartmentServiceException dse){
 						departmentName = "";
 					}
-					addMessage(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ instituteInfo.getName(), departmentName }));
+					addError(i18n("message_institute_enabled_failed_department_disabled_detailed", new Object[]{ instituteInfo.getName(), departmentName }));
 				}
 			// disable institute
 			} else {

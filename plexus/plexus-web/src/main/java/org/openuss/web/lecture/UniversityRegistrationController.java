@@ -72,6 +72,8 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 		Long universityId = universityService.createUniversity(universityInfo, user.getId());
 		universityInfo.setId(universityId);
 
+		addMessage(i18n("university_registration_success"));
+		
 		return Constants.UNIVERSITY_PAGE;
 	}
 

@@ -38,13 +38,14 @@
 				<o:block label="#{msg.warning_attention_dataloss}- #{msg.course_type_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
-	  						<h:outputText value="#{msg.course_type_remove_text}" styleClass="warning"/> <br/>
-							<strong>#{courseTypeInfo.name} (#{courseTypeInfo.shortcut})	</strong><br/> 
-							<br/>
-							<t:dataList var="course" value="#{views$secured$lecture$coursetyperemoveconfirmation.courses}" layout="unorderedList">
-								#{course.name} (#{course.shortcut}) - #{course.periodName}
-							</t:dataList>
-							
+	  						<h:outputText value="#{msg.course_type_remove_text}" styleClass="warning"/>
+							<br />
+							<strong>#{courseTypeInfo.name} (#{courseTypeInfo.shortcut})	</strong>
+							<ul class="coursetype-list">
+								<t:dataList var="course" value="#{views$secured$lecture$coursetyperemoveconfirmation.courses}" layout="unorderedList">
+									#{course.name} (#{course.shortcut}) - #{course.periodName}
+								</t:dataList>
+							</ul>							
 	  					</span>
 					</p>
 					<p class="content_font_normal">

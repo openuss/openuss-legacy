@@ -61,6 +61,8 @@ public class FileEditPage extends AbstractDocumentPage{
 				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
 				return Constants.FAILURE;
 			}
+			else
+				addMessage(i18n("documents_upload_successful"));
 		} else if (isExistingFile()) {
 			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 			if (document != null) {

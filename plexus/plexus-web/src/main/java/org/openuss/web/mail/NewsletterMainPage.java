@@ -65,7 +65,8 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	public String delMail(){
 		MailInfo mi = data.getRowData();		
 		getCourseNewsletterService().deleteMail(courseInfo, getCourseNewsletterService().getMail(mi));
-		this.mail = new MailDetail();
+		this.mail = new MailDetail();		
+		addMessage(i18n("newsletter_mail_delete_successful"));		
 		return Constants.SUCCESS;
 	}
 	
@@ -80,9 +81,11 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	
 	public String toggleNewsletterStatus(){
 		if (getNewsletter().isSubscribed()){
-			getCourseNewsletterService().unsubscribe(courseInfo, user);			
+			getCourseNewsletterService().unsubscribe(courseInfo, user);	
+			addMessage(i18n("newsletter_unsubscribe_success"));
 		} else if (!getNewsletter().isSubscribed()){
 			getCourseNewsletterService().subscribe(courseInfo, user);
+			addMessage(i18n("newsletter_subscribe_success"));
 		}
 		return Constants.SUCCESS;
 	}
@@ -93,6 +96,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		this.mail = md;
 		setSessionBean(Constants.NEWSLETTER_MAIL, md);
 		getCourseNewsletterService().sendMail(courseInfo, getMail());
+		addMessage(i18n("newsletter_draft_sent"));	
 		return Constants.SUCCESS;
 	}
 	
@@ -109,6 +113,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		MailDetail md = getCourseNewsletterService().getMail(mi);		
 		md.setSendDate(new Date(System.currentTimeMillis()));
 		getCourseNewsletterService().updateMail(courseInfo, md);
+		addMessage(i18n("newsletter_planned_now_sent"));		
 		return Constants.NEWSLETTER_MAIN;
 		
 	}
@@ -116,6 +121,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	public String stopMail(){
 		MailInfo mailInfo = data.getRowData();
 		getCourseNewsletterService().cancelSending(mailInfo);
+		addMessage(i18n("newsletter_stop"));		
 		return Constants.NEWSLETTER_MAIN;
 	}
 	

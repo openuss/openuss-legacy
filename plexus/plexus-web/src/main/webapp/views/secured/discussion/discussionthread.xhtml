@@ -37,6 +37,15 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
+		<o:block rendered="#{discussion_forum.readOnly}" styleClass="status_box">							
+  			<h:outputFormat value="#{msg.discussion_forum_readonly_true_simple}" styleClass="content_font_normal" />
+   		</o:block>	
+
+		<o:block rendered="#{discussion_topic.readOnly}" styleClass="status_box">							
+  			<h:outputFormat value="#{msg.discussion_topic_readonly_true_simple}" styleClass="content_font_normal" />
+   		</o:block>	
+	
 		<h:form id="discussionThreadTableView">
 			<ui:include src="discussionthreadtable.xhtml" />
 			<o:block>
