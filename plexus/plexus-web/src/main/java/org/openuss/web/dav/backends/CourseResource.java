@@ -16,7 +16,6 @@ import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
-import org.springframework.web.context.WebApplicationContext;
 
 public class CourseResource extends AbstractOrganisationResource{
 	protected DocumentService documentService;

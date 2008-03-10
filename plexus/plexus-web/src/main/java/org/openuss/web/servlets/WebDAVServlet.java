@@ -8,15 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.Authentication;
 import org.acegisecurity.acl.AclManager;
-import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
-import org.acegisecurity.context.SecurityContext;
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
-import org.openuss.security.User;
 import org.openuss.web.dav.MultiStatusAnswerImpl;
 import org.openuss.web.dav.SimpleStatusResponse;
 import org.openuss.web.dav.NullIOContext;
@@ -70,16 +65,6 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
  		try	{
- 			HttpSession session = request.getSession();
- 			SecurityContext secContext;
- 			User user = null;
-			secContext = (SecurityContext) session.getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
-			if (secContext != null) {
- 				Authentication auth = secContext.getAuthentication();
- 				if (auth != null) {
- 					user = (User) auth.getPrincipal();
- 				}
- 			}
  			String destination;
 	 		WebDAVPath destinationPath;
 	 		WebDAVPath parentPath;
@@ -93,7 +78,7 @@ public class WebDAVServlet extends HttpServlet {
 			WebDAVResource resource;
 			Document doc;
 			WebDAVAnswer answer;
-			WebDAVContext davContext = new WebDAVContext(wac, user);
+			WebDAVContext davContext = new WebDAVContext(wac);
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
 			

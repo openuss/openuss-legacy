@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.apache.tools.ant.filters.StringInputStream;
-import org.openuss.security.User;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.WebDAVConstants;
@@ -532,10 +531,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		return res;
-	}
-	
-	public User getUser() {
-		return this.context.getUser();
 	}
 
 	public WebDAVContext getContext() {

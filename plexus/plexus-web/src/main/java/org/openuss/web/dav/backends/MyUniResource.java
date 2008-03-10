@@ -7,28 +7,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.acegisecurity.acls.domain.AclImpl;
-import org.acegisecurity.context.SecurityContext;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.UniversityInfo;
-import org.openuss.security.User;
-import org.openuss.security.UserInfo;
+import org.openuss.security.SecurityService;
 import org.openuss.web.Constants;
 import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
-import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
-import org.springframework.web.context.WebApplicationContext;
 
 public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	
@@ -36,9 +31,12 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 		super(context, path, id);
 		
 		desktopService = (DesktopService2)(getWAC().getBean("desktopService2"));
+		securityService = (SecurityService) getWAC().getBean(Constants.SECURITY_SERVICE);
 	}
-
+	
+	protected SecurityService securityService;
 	protected DesktopService2 desktopService;
+	protected DepartmentService departmentService;
 	protected List<UniversityInfo> universities;
 	protected List<DepartmentInfo> departments;
 	protected List<InstituteInfo> institutes;
@@ -53,7 +51,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
 		if (desktopInfo == null) {
 			try {
-				desktopInfo = desktopService.findDesktopByUser(getUser().getId());
+				desktopInfo = desktopService.findDesktopByUser(securityService.getCurrentUser().getId());
 			} catch (DesktopException e) {
 				throw new RuntimeException(e.getMessage());
 			}
@@ -67,7 +65,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 				return new UniversityResource(getContext(), path, u);
 			}
 			if (id == ID_NONE) {
-				if (UniversityResource.getNameByData(u).equals(name)) {
+				if (sanitizeName(UniversityResource.getNameByData(u)).equals(name)) {
 					return new UniversityResource(getContext(), path, u);
 				}
 			}
@@ -82,7 +80,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 				return new DepartmentResource(getContext(), path, d);
 			}
 			if (id == ID_NONE) {
-				if (DepartmentResource.getNameByData(d).equals(name)) {
+				if (sanitizeName(DepartmentResource.getNameByData(d)).equals(name)) {
 					return new DepartmentResource(getContext(), path, d);
 				}
 			}
@@ -97,7 +95,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 				return new InstituteResource(getContext(), path, i);
 			}
 			if (id == ID_NONE) {
-				if (InstituteResource.getNameByData(i).equals(name)) {
+				if (sanitizeName(InstituteResource.getNameByData(i)).equals(name)) {
 					return new InstituteResource(getContext(), path, i);
 				}
 			}
@@ -112,7 +110,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 				return new CourseResource(getContext(), path, c);
 			}
 			if (id == ID_NONE) {
-				if (CourseResource.getNameByData(c).equals(name)) {
+				if (sanitizeName(CourseResource.getNameByData(c)).equals(name)) {
 					return new CourseResource(getContext(), path, c);
 				}
 			}
@@ -155,17 +153,10 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	@Override
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long, String> childNames = new HashMap<Long, String>();
-		WebApplicationContext context = getWAC();
 		if (desktopInfo == null){
 			try {
-				// TODO Why is user.getId() == null ?
-//				String[] names = context.getBeanDefinitionNames();
-//				for(int i=0; i<names.length;i++){
-//					System.out.println(names[i]);
-//				}
-				//User user = (User) context.getBean("sessionScope."+Constants.USER_SESSION_KEY);
-				//User user = ((User)(context.getBean(Constants.USER, User.class)));
-				desktopInfo = desktopService.findDesktopByUser(getUser().getId());
+				long userId = securityService.getCurrentUser().getId();
+				desktopInfo = desktopService.findDesktopByUser(userId);
 			} catch (DesktopException e) {
 				throw new RuntimeException(e.getMessage());
 			}
@@ -192,6 +183,14 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 			institutes = desktopInfo.getInstituteInfos();
 		}
 		for (InstituteInfo i : institutes) {
+			long depID = i.getDepartmentId();
+			if (departmentService == null){
+				departmentService = (DepartmentService)(getWAC().getBean(Constants.DEPARTMENT_SERVICE));
+			}
+			DepartmentInfo dep = departmentService.findDepartment(depID);
+			String depName = DepartmentResource.getNameByData(dep);
+			departments.add(dep);
+			childNames.put(depID, depName);
 			long instID = i.getId();
 			String name = InstituteResource.getNameByData(i);
 			childNames.put(instID, name);
