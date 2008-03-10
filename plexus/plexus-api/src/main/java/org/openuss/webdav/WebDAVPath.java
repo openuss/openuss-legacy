@@ -18,7 +18,7 @@ public interface WebDAVPath extends Serializable {
 	public final String FILEEXT_SEP = ".";
 	
 	/**
-	 * Add a further path element.
+	 * Add a further path element to the list of elements to resolve.
 	 * 
 	 * @param subResStr The name of a sub resource.
 	 * @return A WebDAVPathElement representing the designated sub resource.

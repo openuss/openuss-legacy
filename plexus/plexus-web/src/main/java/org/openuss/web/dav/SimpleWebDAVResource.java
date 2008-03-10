@@ -280,14 +280,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	public abstract Set<WebDAVResource> getChildren();
 	
-	/**
-	 * Return child names. This method can assume that it is only called on collections.
-	 * 
-	 * @return The map of IDs to the names of the resources in this collection or null if this is not a collection.
-	 * 			If you can ensure that the names are unique, any key set will do (1,2,3,4,... is a suggesting choice)
-	 */
-	protected abstract Map<Long,String> getRawChildNames();
-	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#isDeletable()
 	 */
@@ -498,13 +490,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see #writeContent()
 	 */
 	protected abstract void writeContentImpl(IOContext ioc) throws WebDAVResourceException;
-	
-	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
-	 */
-	public boolean hasChild(String name) {
-		return getRawChildNames().containsValue(name);
-	}
 	
 	/**
 	 * @return The WebApplicationContext that allows to retrieve beans.

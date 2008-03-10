@@ -9,7 +9,6 @@ import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A resource representing any organisation, i.e. university.

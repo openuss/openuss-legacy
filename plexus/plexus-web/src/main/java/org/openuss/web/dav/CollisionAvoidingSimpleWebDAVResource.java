@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A simple WebDAVResource that avoids collisions between identical entry names by appending an id.
@@ -28,7 +27,7 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	/**
 	 * Regex for invalid characters.
 	 */
-	protected static final String INVALID_CHAR_REGEX = "( |/)";
+	protected static final String INVALID_CHAR_REGEX = "(/)|(\\\\)";
 	/**
 	 * Replacement for invalid characters.
 	 */
@@ -117,6 +116,14 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 		return res;
 	}
 	
+	/**
+	 * Return child names. This method can assume that it is only called on collections.
+	 * 
+	 * @return The map of IDs to the names of the resources in this collection or null if this is not a collection.
+	 * 			If you can ensure that the names are unique, any key set will do (1,2,3,4,... is a suggesting choice)
+	 */
+	protected abstract Map<Long,String> getRawChildNames();
+
 	/* (non-Javadoc)
 	 * 
 	 * @see org.openuss.webdav.WebDAVResource#createCollection()
@@ -156,18 +163,7 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
 	 */
 	public boolean hasChild(String name) {
-		name = sanitizeName(name);
-		name = parseName(name).name; // Ensure no future conflicts
-		
-		for (String cn : getRawChildNames().values()) {
-			cn = sanitizeName(cn);
-			
-			if (name.equals(cn)) {
-				return true;
-			}
-		}
-		
-		return false;
+		return getRawChildNames().containsValue(name);
 	}
 
 	/**

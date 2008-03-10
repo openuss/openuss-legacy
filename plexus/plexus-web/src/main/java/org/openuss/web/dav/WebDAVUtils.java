@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,12 +53,17 @@ public final class WebDAVUtils {
 		}
 	}
 	
-	private final static String DATEFORMAT_RFC1123_STRING = "EEE, dd MMM yyyy HH:mm:ss zzz";
+	private final static String DATEFORMAT_RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
+	private final static String DATEFORMAT_INTERNET_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	protected final static DateFormat rfc1123DateFormat;
+	protected final static DateFormat internetDateFormat;
 	static {
 		TimeZone gmtTz = TimeZone.getTimeZone("GMT");
-		rfc1123DateFormat = new SimpleDateFormat(DATEFORMAT_RFC1123_STRING, Locale.US);
+		rfc1123DateFormat = new SimpleDateFormat(DATEFORMAT_RFC1123_PATTERN, Locale.US);
 		rfc1123DateFormat.setTimeZone(gmtTz);
+		
+		internetDateFormat = new SimpleDateFormat(DATEFORMAT_INTERNET_PATTERN, Locale.US);
+		internetDateFormat.setTimeZone(gmtTz);
 	}
 	
 
@@ -330,5 +334,9 @@ public final class WebDAVUtils {
 	 */
 	public static String dateToRFC1123String(Date d) {
 		return rfc1123DateFormat.format(d);		
+	}
+	
+	public static String dateToInternetString(Date d) {
+		return internetDateFormat.format(d);
 	}
 }

@@ -14,7 +14,6 @@ import org.openuss.web.dav.WebDAVContext;
 import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * The resource representing the WebDAV root.

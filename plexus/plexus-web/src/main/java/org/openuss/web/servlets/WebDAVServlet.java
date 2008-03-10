@@ -123,14 +123,16 @@ public class WebDAVServlet extends HttpServlet {
 				parentPath = path.getParent();
 				parentResource = root.resolvePath(parentPath);
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
-				if (parentResource.hasChild(path.getFileName())){
+				String newFilename = path.asResolved().getFileName();
+				if (parentResource.hasChild(newFilename)){
 					if (!overwrite){
 						answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
 						printResponse(response, answer);
 						break;
 					}
 				}
-				parentResource.createCollection(path.getFileName());
+				parentResource.createCollection(newFilename);
+				
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
 				printResponse(response, answer);
 				break;
@@ -288,7 +290,9 @@ public class WebDAVServlet extends HttpServlet {
  		response.setContentType(answer.getContentType());
  		
  		Writer w = response.getWriter();
- 		w.write(msg);
+ 		if (msg != null) {
+ 			w.write(msg);
+ 		}
  		w.close();
  	}
  	

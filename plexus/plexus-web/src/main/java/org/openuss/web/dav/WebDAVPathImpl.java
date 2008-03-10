@@ -173,9 +173,6 @@ public class WebDAVPathImpl implements WebDAVPath {
 			newToResolve += subResStr;
 		} else {
 			newToResolve = subResStr;
-			if (! newToResolve.endsWith(PATH_SEP)) {
-				newToResolve = newToResolve + PATH_SEP;
-			}
 			
 			if (! newPath.endsWith(PATH_SEP)) {
 				newPath += PATH_SEP;
