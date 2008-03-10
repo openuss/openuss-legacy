@@ -208,7 +208,7 @@ public class TestUtility {
 		university.setAddress("Leo 18");
 		university.setCity("Münster");
 		university.setCountry("Germany");
-		university.setEmail("openuss@uni-muenster.de");
+		university.setEmail(unique("openuss@uni-muenster.de"));
 		university.setLocale("de");
 		university.setPostcode("48149");
 		university.setTelefax("0251-telefax");
@@ -669,7 +669,7 @@ public class TestUtility {
 		user.setFirstName("firstName");
 		user.setLastName("lastName");
 		user.setTitle("title");
-		user.setEmail("email");
+		user.setEmail(unique("email"));
 		user.setEnabled(true);
 		Group group = groupDao.load(roleId);
 		user.addGroup(group);

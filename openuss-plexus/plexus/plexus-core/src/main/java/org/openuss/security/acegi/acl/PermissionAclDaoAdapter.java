@@ -7,8 +7,6 @@ import org.acegisecurity.acl.basic.BasicAclDao;
 import org.acegisecurity.acl.basic.BasicAclEntry;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
-import org.openuss.security.Group; // FIXME PACKAGE CYCLE
-import org.openuss.security.GroupType; // FIXME PACKAGE CYCLE
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
 import org.openuss.security.acl.Permission;
@@ -57,13 +55,8 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	 * @return BasicAclEntry
 	 */
 	private BasicAclEntry createBasicAclEntry(ObjectIdentity identity) {
-		Permission permission = Permission.Factory.newInstance();
-		permission.setAclObjectIdentity(identity);
-		permission.setId(identity.getId());
-		permission.setMask(0);
-		permission.setRecipient(Group.Factory.newInstance(RECIPIENT_USED_FOR_INHERITENCE_MARKER,GroupType.UNDEFINED));
-		
-		return new AclPermissionAdapter(permission);
+		Long parentId = identity.getParent() == null ? null : identity.getParent().getId();
+		return new AclPermissionAdapter(RECIPIENT_USED_FOR_INHERITENCE_MARKER,0,identity.getId(),parentId);
 	}
 
 	/**
@@ -71,8 +64,8 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	 * @return List<BasicAclEntry>
 	 */
 	private List<BasicAclEntry> getBasicAclPermissions(ObjectIdentity objectIdentity) {
-		List entries = permissionDao.findPermissions(objectIdentity);
-		CollectionUtils.transform(entries, new AclPermissionAdapterTransformer());
+		List entries = permissionDao.findPermissionsWithRecipient(objectIdentity);
+//		CollectionUtils.transform(entries, new AclPermissionAdapterTransformer());
 		return entries; 
 	}
 
@@ -92,9 +85,4 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 		this.objectIdentityDao = objectIdentityDao;
 	}
 
-	private static final class AclPermissionAdapterTransformer implements Transformer {
-		public Object transform(Object input) {
-			return new AclPermissionAdapter((Permission)input);
-		}
-	}
 }

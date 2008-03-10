@@ -26,10 +26,19 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		setTheme("plexus");
 	}
 	
-	@Override
 	public void setUsername(String username) {
-		super.setUsername(username.toLowerCase(Locale.ENGLISH).trim());
+		setName(username);
 	}
+
+	public String getUsername() {
+		return super.getName();
+	}
+	
+	@Override
+	public void setName(String name) {
+		super.setName(name.toLowerCase(Locale.ENGLISH).trim());
+	}
+
 	
 	@Override
 	public void setEmail(String email) {
@@ -95,11 +104,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		} else {
 			return super.toString();
 		}
-	}
-
-	@Override
-	public String getName() {
-		return getUsername();
 	}
 
 	@Override

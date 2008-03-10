@@ -21,8 +21,8 @@ public class UserImplTest extends TestCase {
 	}
 	
 	public void testGrantedAuthority() {
-		user.addGroup(Group.Factory.newInstance("admins",GroupType.ADMINISTRATOR));
-		user.addGroup(Group.Factory.newInstance("asssistants",GroupType.ASSISTANT));
+		user.addGroup(Group.Factory.newInstance(GroupType.ADMINISTRATOR, "admins"));
+		user.addGroup(Group.Factory.newInstance(GroupType.ASSISTANT,"asssistants"));
 		GrantedAuthority[] authorities = user.getAuthorities();
 		assertEquals(2, authorities.length);
 		assertTrue(authorities[0] instanceof Authority);
