@@ -35,6 +35,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 
 	@Prerender
 	public void prerender() throws Exception {
+		
 		super.prerender();
 		logger.debug("Starting prerender of usercalendar");
 		breadcrumbs.loadOpenuss4usCrumbs();
@@ -44,7 +45,6 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 		newCrumb.setName(i18n("openuss4us_command_calendar"));
 		newCrumb.setHint(i18n("openuss4us_command_calendar"));
 		breadcrumbs.addCrumb(newCrumb);
-
 		CalendarInfo calInfo = calendarService.getCalendar(user);
 		setSessionBean(Constants.CALENDAR_INFO, calInfo);
 		if (calInfo.getId() != null) {

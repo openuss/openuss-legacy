@@ -87,8 +87,8 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
 	
 	// Default combinations of base group permissions
-	public static final int GROUP_MEMBER = READ | PARTICIPATE | ASSIST;
-	public static final int GROUP_MODERATOR = CREATE | UPDATE | DELETE | MANAGE_NEWS | GROUP_MEMBER;
+	public static final int GROUP_MEMBER = READ | PARTICIPATE | UPDATE;
+	public static final int GROUP_MODERATOR = CREATE | DELETE | MANAGE_NEWS | GROUP_MEMBER;
 	
 	
 	// Combinations of base permissions we permit

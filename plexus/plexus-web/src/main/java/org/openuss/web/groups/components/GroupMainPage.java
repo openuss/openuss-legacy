@@ -15,6 +15,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupAccessType;
@@ -67,10 +68,13 @@ public class GroupMainPage extends AbstractGroupPage {
 		}
 	}
 
-	public String applyWithPassword() throws GroupApplicationException {
+	public String applyWithPassword() throws GroupApplicationException, CalendarApplicationException {
 		logger.debug("group entry with password applied");
 		groupService.addUserByPassword(groupInfo, password, user.getId());
 		addMessage(i18n("message_group_password_accepted"));
+		if (user.getProfile().isSubscribeCalenderEntries()){
+			calendarService.addSubscription(calendarInfo);
+		}
 		return Constants.SUCCESS;
 	}
 
@@ -81,10 +85,13 @@ public class GroupMainPage extends AbstractGroupPage {
 		return Constants.SUCCESS;
 	}
 	
-	public String apply() throws GroupApplicationException {
+	public String apply() throws GroupApplicationException, CalendarApplicationException {
 		logger.debug("group entry applied");
 		groupService.addMember(groupInfo, user.getId());
 		addMessage(i18n("message_group_applied_as_member"));
+		if (user.getProfile().isSubscribeCalenderEntries()){
+			calendarService.addSubscription(calendarInfo);
+		}
 		return Constants.SUCCESS;
 	}
 

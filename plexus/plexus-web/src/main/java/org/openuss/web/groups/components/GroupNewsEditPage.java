@@ -81,11 +81,11 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
 		
-		newsItem.setCategory(NewsCategory.COURSE);
+		newsItem.setCategory(NewsCategory.GROUP);
 		newsItem.setExpireDate(null);
 		newsItem.setPublisherIdentifier(groupInfo.getId());
 		newsItem.setAuthor(getAuthorName());
-		newsItem.setPublisherType(PublisherType.COURSE);
+		newsItem.setPublisherType(PublisherType.GROUP);
 		newsService.saveNewsItem(newsItem);
 
 		return Constants.GROUP_NEWS_PAGE;

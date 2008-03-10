@@ -317,6 +317,7 @@ public class Constants {
 	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";	
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
 	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
+	public static final String OPENUSS4US_USER_SEARCH ="openuss4us_user_search";
 	
 	// openuss4us constants
 	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
