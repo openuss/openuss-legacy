@@ -24,7 +24,7 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionFileRemovePage.class);
 
-	@Property(value="#{sessionScope.papersubmission_selected_fileentries}")
+	@Property(value="#{sessionScope.papersubmission_folderentry_selection}")
 	private List<FolderEntryInfo> entries;
 
 	@Prerender
