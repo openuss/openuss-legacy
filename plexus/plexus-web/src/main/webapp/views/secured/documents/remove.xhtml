@@ -47,7 +47,7 @@
 					<h:outputText value="#{msg.documents_selected_files}" styleClass="field_label"/>
 					<ul class="file-list">
 						<t:dataList id="entries" var="entry" layout="list" value="#{documents_selected_folderentries}">
-							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.sizeAsString}</li>
+							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif" style="vertical-align:text-bottom"/> #{entry.name} #{entry.sizeAsString}</li>
 						</t:dataList>					
 					</ul>
 					<p class="content_font_normal">

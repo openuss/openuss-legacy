@@ -34,12 +34,15 @@
 			</h:outputText>
 		</t:column>
 		
+		<!--
+			FIXME: This column doesnt seem to be used by course news - is it a copy/paste mistake? Institute news do have a working "expire" column
 		<t:column>
 			<plexus:commandSortHeader columnName="expireDate">#{msg.news_colheader_expire}</plexus:commandSortHeader>
 			<h:outputText id="expireDate" value="#{item.expireDate}">
 				<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 			</h:outputText>
 		</t:column>
+		-->
 		
 		<plexus:column header="#{msg.commands_header}">		
 			<plexus:command 
