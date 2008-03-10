@@ -49,25 +49,19 @@ public class AppointmentTypesPage extends BasePage{
 		try {
 			calendarService.createAppointmentType(appointmentTypeInfo);
 		} catch (CalendarApplicationException e) {
-			this.addError("Error");
-			return Constants.ERROR;
+			this.addError(i18n("openuss4us_calendar_appointmenttype_exists"));
+			e.printStackTrace();
+			return "admin_calendar";
 		}
 		this.addMessage(i18n("openuss4us_calendar_appointmenttype_added"));
 		return Constants.SUCCESS;
 	}
 	
 	public String delete(){
-		try {
-			//TODO correct here
-			//User should choose a new appointmenttype.
-			calendarService.deleteAppointmentType(this.data.getRowData(), (AppointmentTypeInfo)calendarService.getAllAppointmentTypes().get(0));
-		} catch (CalendarApplicationException e) {
-			this.addError(Constants.ERROR);
-			return Constants.ERROR;
-		}
-		this.addMessage(i18n("openuss4us_calendar_appointmenttype_deleted"));
-		return "admin_calendar";
+		setSessionAttribute(Constants.APPOINTMENTTYPE_INFO, data.getRowData());
+		return "admin_delete_appointmenttype";
 	}
+	
 	
 	public String translate(){
 		setSessionAttribute(Constants.APPOINTMENTTYPE_INFO, data.getRowData());
@@ -82,10 +76,10 @@ public class AppointmentTypesPage extends BasePage{
 			
 		}
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("departmentList_header"));
-		newCrumb.setHint(i18n("departmentList_header"));
-		newCrumb.setLink(PageLinks.ADMIN_DEPARTMENTS);
-		
+//		newCrumb.setName(i18n("departmentList_header"));
+//		newCrumb.setHint(i18n("departmentList_header"));
+//		newCrumb.setLink(PageLinks.ADMIN_DEPARTMENTS);
+		appointmentTypeInfo = new AppointmentTypeInfo();
 		breadcrumbs.loadAdministrationCrumbs();
 		breadcrumbs.addCrumb(newCrumb);
 	}

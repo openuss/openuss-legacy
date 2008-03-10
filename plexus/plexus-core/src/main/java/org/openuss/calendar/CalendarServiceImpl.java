@@ -669,7 +669,7 @@ public class CalendarServiceImpl extends
 			AppointmentTypeInfo appointmentTypeInfo) throws Exception {
 		// check if an apptype with the same name already exists
 		AppointmentType existingAppType = getAppointmentTypeDao().findByName(appointmentTypeInfo.getName());
-		if (existingAppType == null) 
+		if (existingAppType != null) 
 			throw new CalendarApplicationException("AppointmentType with the same name is already existing");
 		AppointmentType appType = getAppointmentTypeDao().create(appointmentTypeInfo.getName());
 		TranslationTextInfo translation = new TranslationTextInfo();
