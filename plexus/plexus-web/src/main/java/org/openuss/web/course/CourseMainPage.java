@@ -15,6 +15,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
 import org.openuss.desktop.DesktopException;
@@ -100,11 +101,18 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String shortcutCourse() {
 		try {
 			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+			if (user.getProfile().isSubscribeCalenderEntries())
+				getCalendarService().addSubscription(
+						getCalendarService().getCalendar(courseInfo));
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
 			logger.error(e);
 			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		} catch (CalendarApplicationException e2) {
+			logger.error(e2);
+			addError(i18n(e2.getMessage()));
 			return Constants.FAILURE;
 		}
 	}
@@ -112,11 +120,18 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String removeCourseShortcut() {
 		try {
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
+			if (user.getProfile().isSubscribeCalenderEntries())
+				getCalendarService().endSubscription(
+						getCalendarService().getCalendar(courseInfo));
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
 			logger.error(e);
 			addError(i18n(e.getMessage()));
+			return Constants.FAILURE;
+		} catch (CalendarApplicationException e2) {
+			logger.error(e2);
+			addError(i18n(e2.getMessage()));
 			return Constants.FAILURE;
 		}
 	}

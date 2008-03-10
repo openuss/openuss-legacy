@@ -42,19 +42,21 @@
 				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
 				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
 				</h:selectOneListbox>
-
-				<br />
 				<s:authorize ifAllGranted="ROLE_USER">
+					<br />
+					<br />
+					<o:input entity="user.profile" property="subscribeCalenderEntries"/>
+
 					<!-- visibility -->
-						<br />
-						<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
-						<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
-						<o:input entity="user.profile" property="profileContactPublic"/>
-						<o:input entity="user.profile" property="telephonePublic"/>
-						<o:input entity="user.profile" property="addressPublic"/> 
-						<o:input entity="user.profile" property="emailPublic"/>
-						<o:input entity="user.profile" property="profilePersonalPublic"/>
-						<o:input entity="user.profile" property="profileUniPublic"/>
+					<br />
+					<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
+					<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
+					<o:input entity="user.profile" property="profileContactPublic"/>
+					<o:input entity="user.profile" property="telephonePublic"/>
+					<o:input entity="user.profile" property="addressPublic"/> 
+					<o:input entity="user.profile" property="emailPublic"/>
+					<o:input entity="user.profile" property="profilePersonalPublic"/>
+					<o:input entity="user.profile" property="profileUniPublic"/>
 				</s:authorize>
 
 </ui:composition>

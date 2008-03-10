@@ -56,16 +56,18 @@ public class AppointmentTypesPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
-//	public String delete(){
-//		try {
-//			calendarService.deleteAppointmentType(this.data.getRowData());
-//		} catch (CalendarApplicationException e) {
-//			this.addError(Constants.ERROR);
-//			return Constants.ERROR;
-//		}
-//		this.addMessage(i18n("openuss4us_calendar_appointmenttype_deleted"));
-//		return "admin_calendar";
-//	}
+	public String delete(){
+		try {
+			//TODO correct here
+			//User should choose a new appointmenttype.
+			calendarService.deleteAppointmentType(this.data.getRowData(), (AppointmentTypeInfo)calendarService.getAllAppointmentTypes().get(0));
+		} catch (CalendarApplicationException e) {
+			this.addError(Constants.ERROR);
+			return Constants.ERROR;
+		}
+		this.addMessage(i18n("openuss4us_calendar_appointmenttype_deleted"));
+		return "admin_calendar";
+	}
 	
 	public String translate(){
 		setSessionAttribute(Constants.APPOINTMENTTYPE_INFO, data.getRowData());
