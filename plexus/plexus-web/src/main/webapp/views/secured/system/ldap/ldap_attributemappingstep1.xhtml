@@ -32,7 +32,7 @@
 						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
 						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-						<h:selectManyListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.roleAttributeKeyIds}" 
+						<h:selectManyListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.roleAttributeKeyIds}" required="true"
 							valueChangeListener="#{ldapAttributeMappingRegistration.processValueChange}" styleClass="pulldown" >
   							<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
 						</h:selectManyListbox>
@@ -47,7 +47,7 @@
 					<o:block>
 						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
 						<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
-							<h:commandButton value="${msg.forward}" action="#{ldapAttributeMappingRegistration.register}" styleClass="button_continue" />
+							<h:commandButton value="${msg.save}" action="#{ldapAttributeMappingRegistration.register}" styleClass="button" />
 		  				</c:if>
 		  				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 		  					<h:commandButton value="${msg.ldap_roleattributekey}" action="ldap_roleattributekeys" styleClass="button_continue" />

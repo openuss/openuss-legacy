@@ -60,8 +60,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	 * @return Outcome
 	 */
 	public String selectRoleAttributeKeyAndConfirmRemove() throws Exception {
-		logger.debug("Starting method selectRoleAttributeKeyAndConfirmRemove");
-		RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
+		logger.debug("Starting method selectRoleAttributeKeyAndConfirmRemove");		
 		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, currentRoleAttributeKey());
 		
 		return Constants.ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE;
@@ -72,7 +71,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	public String removeRoleAttributeKey() throws Exception {
 		try {
 			logger.debug("Starting method selectRoleAttributeKeyAndRemove");
-			RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
+			RoleAttributeKeyInfo currentRoleAttributeKey = (RoleAttributeKeyInfo) getSessionBean(Constants.ROLEATTRIBUTEKEY_INFO);
 			if (currentRoleAttributeKey.getAttributeMappingIds() == null || currentRoleAttributeKey.getAttributeMappingIds().size()==0) {
 				ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
 				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
@@ -126,20 +125,7 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 		return roleAttributeKeys;
 	}
 	
-	/*
 	
-	public String confirmRemoveDepartment() {
-		DepartmentInfo departmentInfo = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT, departmentInfo);
-		return "removed";
-	}
-
-	public DepartmentTable getDepartments() {
-		return departments;
-	}
-
-
-*/
 	protected class RoleAttributeKeyTable extends AbstractPagedTable<RoleAttributeKeyInfo> {
 
 		@Override
