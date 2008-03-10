@@ -1,1 +1,51 @@
-fybgdfh
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+	
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['seminarpool_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="seminarpool_remove">
+						
+			<o:block>
+				<h:commandButton value="#{msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true" />
+				<h:outputText value="&#8195;" />
+				<h:commandButton 
+					value="${msg.remove}"
+					title="#{msg.seminarpool_command_remove_hint}"
+					action="#{views$secured$seminarpool$seminarpooloptions.removeSeminarpoolFinal}"
+					styleClass="button_warning" />
+			</o:block>	
+	 	</h:form> 
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

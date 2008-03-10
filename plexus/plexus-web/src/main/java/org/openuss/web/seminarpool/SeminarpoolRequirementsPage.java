@@ -30,7 +30,7 @@ import org.openuss.seminarpool.SeminarpoolInfo;
 import org.openuss.web.Constants;
 
 /**
- * Admins page to define admin of a seminarpool
+ * Admins page to specify the seminarpool requirements
  * 
  * @author PS-Seminarplatzvergabe
  */
@@ -125,8 +125,10 @@ public class SeminarpoolRequirementsPage extends AbstractSeminarpoolPage {
 		return "";	  
 	}
 	
-	public void showCondition(ActionEvent event) {
-		
+	public String showCondition() {
+		SeminarConditionInfo condition = conditionsTable.getRowData();
+		setSessionBean(Constants.SEMINARCONDITION_INFO, condition);
+		return "seminarpool_edit_requirement";
 	}
 
 

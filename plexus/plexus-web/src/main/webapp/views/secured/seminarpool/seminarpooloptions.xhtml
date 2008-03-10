@@ -39,6 +39,13 @@
 			<o:block>
 				<h:commandButton value="#{msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true" />
 				<h:commandButton value="#{msg.save}" action="#{views$secured$seminarpool$seminarpooloptions.saveSeminarpool}" styleClass="button_continue" />
+				<h:outputText value="&#8195;" />
+				<h:commandButton 
+					value="${msg.remove}"
+					title="#{msg.seminarpool_command_remove_hint}"
+					action="#{views$secured$seminarpool$seminarpooloptions.removeSeminarpool}"
+					onclick="if (!confirm('#{msg.seminarpool_remove_seminarpool_confirmation}')) return false"
+					styleClass="button_warning" />
 			</o:block>	
 	 	</h:form> 
 	</ui:define>

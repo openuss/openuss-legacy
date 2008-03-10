@@ -58,16 +58,9 @@
 				</t:column>
 			
 				<plexus:column header="#{msg.commands_header}">
-					<plexus:command 
-						bean="#{views$secured$seminarpool$seminarpoolrequirements}"
-						action="showCondition"
-						label="#{msg['seminarpool_condition_command_show']}"
-						title="#{msg['seminarpool_condition_command_show_hint']}"
-						styleClass="icon_edit" />
 					<plexus:command
 						bean="#{views$secured$seminarpool$seminarpoolrequirements}"
 						action="removeCondition"
-						onclick="if (!confirm('#{msg.seminarpool_remove_condition_confirmation}')) return false"
 						label="#{msg.seminarpool_condition_command_remove}"
 						title="#{msg.seminarpool_condition_command_remove_hint}"
 						styleClass="icon_remove" />

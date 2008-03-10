@@ -58,6 +58,24 @@ public class SeminarpoolOptionsPage extends AbstractSeminarpoolPage {
 
 		return Constants.SUCCESS;
 	}
+	
+	/**
+	 * goes to final delete seminarpool page
+	 * @return outcome
+	 */
+	public String removeSeminarpool() {
+		return "seminarpool_remove_confirmation";
+	}
+	
+	/**
+	 * deletes the seminarpool now
+	 * @return outcome
+	 */
+	public String removeSeminarpoolFinal() {
+		seminarpoolAdministrationService.removeSeminarpool(seminarpoolInfo.getId());
+		removeSessionBean(Constants.SEMINARPOOL_INFO);
+		return "desktop";
+	}
 
 
 
