@@ -19,6 +19,7 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	
 	private boolean status;
 	private boolean status2;
+	private boolean status3;
 	
 	@Prerender
 	public void prerender() throws Exception {
@@ -33,6 +34,14 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	public String generateAllocation(ActionEvent event){
 		this.seminarpoolAdministrationService.generateAllocation(seminarpoolInfo.getId());
 		addMessage(i18n("seminarpool_allocation_sucessfull"));
+		return "";
+	}
+	public String completeAllocation(ActionEvent event){
+		seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.CONFIRMEDPHASE);
+		this.getSeminarpoolAdministrationService().updateSeminarpool(seminarpoolInfo);
+		//Send Email
+		this.getSeminarpoolUserRegistrationService().informParticipantsByMail(seminarpoolInfo.getId());
+		addMessage(i18n("seminarpool_allocation_complete_sucessfull"));
 		return "";
 	}
 	
@@ -50,6 +59,14 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 
 	public void setStatus2(boolean status2) {
 		this.status2 = status2;
+	}
+	
+	public boolean getStatus3() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue() == 3);
+	}
+
+	public void setStatus3(boolean status3) {
+		this.status3 = status3;
 	}
 
 }

@@ -29,11 +29,13 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="seminarpool_user_registration_form2">
+  			<c:if test="#{seminarpoolUserRegistration.status2}">
   				<o:block label="#{msg.seminarpool_user_registration_step2_headline}">
 					<div class="content_font_normal"> 
 						<h:outputText value="#{msg.seminarpool_user_registration_edit_step1_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
+			</c:if>
 					<plexus:dataTable 
 						id="institutes" 
 						label="#{msg.seminarpool_user_registration_edit_course_overview}" 
@@ -54,6 +56,7 @@
 							<h:outputText value="#{bean.priority}"/>
 						</t:column>						
 					</plexus:dataTable>
+					<c:if test="#{seminarpoolUserRegistration.status2}">
 					<o:block>
 						<h:commandButton action="#{seminarpoolUserRegistration.startEditProcess}" value="#{msg.seminarpool_user_registration_edit}" styleClass="button_cancel"/>
 						<h:outputText value="&#8195;" />
@@ -63,6 +66,7 @@
 							action="seminarpool_userregistration_remove"
 							styleClass="button_warning" />
 				   	</o:block>
+				   	</c:if>
 		  	</h:form>
   		</ui:define>
 	</ui:composition>

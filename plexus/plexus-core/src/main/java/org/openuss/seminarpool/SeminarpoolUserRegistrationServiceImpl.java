@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.Validate;
+import org.openuss.newsletter.MailDetail;
+import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -183,6 +183,12 @@ public class SeminarpoolUserRegistrationServiceImpl
 		}
 		return false;
 
+	}
+
+	@Override
+	protected void handleInformParticipantsByMail(Long seminarpoolId)
+			throws Exception {
+		
 	}
 
 }

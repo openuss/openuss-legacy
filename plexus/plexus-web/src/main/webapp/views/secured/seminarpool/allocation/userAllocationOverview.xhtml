@@ -43,6 +43,14 @@
 					styleClass="button_save" />
 			</o:block>
 		</c:if>
+		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status3}">
+			<o:block>
+				<h:commandButton value="#{msg['seminarpool_allocation_complete']}"
+					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.completeAllocation}"
+					title="#{msg['seminarpool_allocation_complete']}"
+					styleClass="button_save" />
+			</o:block>
+		</c:if>
 	</h:form>
 	</ui:define>
 </ui:composition>

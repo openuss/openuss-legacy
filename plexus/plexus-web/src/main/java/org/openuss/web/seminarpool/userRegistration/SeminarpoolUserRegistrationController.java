@@ -24,7 +24,9 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
+import org.openuss.seminarpool.SeminarConditionInfo;
 import org.openuss.seminarpool.SeminarPrioritiesInfo;
+import org.openuss.seminarpool.SeminarUserConditionValueInfo;
 import org.openuss.seminarpool.SeminarUserRegistrationInfo;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
@@ -46,6 +48,9 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	private static final Logger logger = Logger.getLogger(SeminarpoolUserRegistrationController.class);
 	
+	private List<SeminarConditionInfo> conditionList = new ArrayList<SeminarConditionInfo>();
+	private List<SeminarUserConditionValueInfo> seminarUserConditionValueList = new ArrayList<SeminarUserConditionValueInfo>();
+	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
 	@Property(value = "#{" + Constants.SEMINARPOOL_USER_REGISTRATION_INFO + "}")
@@ -57,9 +62,10 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	@Property(value="#{courseSeminarpoolAllocationInfo}")
 	private CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo;
 	
-
+	int counter=0;
 	
 	private boolean status;
+	private boolean status2;
 	
 	protected long priority;
 
@@ -161,10 +167,10 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	
 	public String create(){
 		if(seminarUserRegistrationInfo.getId() == null){
-			this.getSeminarpoolUserRegistrationService().registerUserForSeminarpool(seminarUserRegistrationInfo, null);
+			this.getSeminarpoolUserRegistrationService().registerUserForSeminarpool(seminarUserRegistrationInfo, seminarUserConditionValueList);
 		}
 		else{
-			this.getSeminarpoolUserRegistrationService().editUserRegistration(seminarUserRegistrationInfo, null);
+			this.getSeminarpoolUserRegistrationService().editUserRegistration(seminarUserRegistrationInfo, seminarUserConditionValueList);
 		}
 		
 		return Constants.SEMINARPOOL_MAIN;
@@ -190,6 +196,17 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		return seminarpoolInfo.getPriorities();
 	}
 	
+	public int getCountConditions(){
+		List<SeminarConditionInfo> seminarconditions = this.seminarpoolAdministrationService.findConditionBySeminarpool(seminarpoolInfo.getId());
+		return seminarconditions.size();
+	}
+	
+	public int getType(){
+		List<SeminarConditionInfo> seminarconditions = this.seminarpoolAdministrationService.findConditionBySeminarpool(seminarpoolInfo.getId());
+		int type = seminarconditions.get(counter).getFieldType().getValue();
+		counter++;
+		return type;
+	}
 	
 	
 	public void processSeminarSelectChanged(ValueChangeEvent event) {
@@ -205,6 +222,20 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 			seminarPriorityList.add(spi);
 			logger.info("ValueChangeEvent: Changing course id for new SeminarPriority to " + spi.getCourseId());
 		}
+	}
+	
+	public void processChanged(ValueChangeEvent event) {
+		if (seminarUserConditionValueList == null){
+			seminarUserConditionValueList = new ArrayList<SeminarUserConditionValueInfo>();
+		}
+		List<SeminarConditionInfo> seminarconditions = this.seminarpoolAdministrationService.findConditionBySeminarpool(seminarpoolInfo.getId());
+		int index=seminarUserConditionValueList.size();
+		SeminarUserConditionValueInfo suci = new SeminarUserConditionValueInfo();
+		suci.setConditionValue(event.getNewValue().toString());
+		suci.setSeminarConditionId(seminarconditions.get(index).getId());
+		seminarUserConditionValueList.add(suci);
+		
+		
 	}
 
 	public SeminarpoolInfo getSeminarpoolInfo() {
@@ -265,6 +296,23 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	
+	public boolean getStatus2() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue() < SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
+	}
+
+	public void setStatus2(boolean status) {
+		this.status = status;
+	}
+
+	public List<SeminarConditionInfo> getConditionList() {
+		conditionList = this.getSeminarpoolAdministrationService().findConditionBySeminarpool(seminarpoolInfo.getId());
+		return conditionList;
+	}
+
+	public void setConditionList(List<SeminarConditionInfo> conditionList) {
+		this.conditionList = conditionList;
 	}
 	
 }
