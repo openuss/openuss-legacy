@@ -35,7 +35,7 @@
 		</ui:define>
   		<ui:define name="content">
   			<h:form id="removeWorkspaceConfirmation">
-				<o:block label="#{msg.warning_attention_dataloss}- #{msg.workspace_remove_header}" styleClass="warning_box">
+				<o:block label="#{msg.warning_attention_dataloss}- #{msg.collaboration_workspace_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">
 	  					<span>
 							<h:outputText value="#{msg.collaboration_workspace_remove_text}" styleClass="warning"/>
@@ -55,8 +55,8 @@
 					
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$collaboration$removeconfirmation.removeWorkspace}" styleClass="button_warning"/>
-					<h:commandButton value="${msg.cancel}" action="collaboration" styleClass="button_cancel" immediate="true"/>				
+					<h:commandButton value="${msg.remove}" title="${msg.remove}" action="#{views$secured$collaboration$removeconfirmation.removeWorkspace}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" title="${msg.cancel_hint}" action="collaboration" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
 		</ui:define>
