@@ -8,6 +8,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -63,16 +64,16 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	protected UniversityService universityService;
 	@Property(value="#{desktopService2}")
 	protected DesktopService2 desktopService2;
+	
 	@Property(value="#{"+ Constants.SEMINARPOOL_CONDITIONS_LIST + "}")
 	private List<SeminarConditionInfo> conditionsList;
 	
 	private ConditionsTable conditionsTable = new ConditionsTable();
-
 	
 	/* ----- business logic ----- */
 	
 	/**
-	 * Refreshing seminarpool entity
+	 * Refreshing seminarpool and condition entity
 	 * 
 	 * @throws Exception
 	 */
@@ -81,11 +82,17 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		super.preprocess();
 		logger.debug("preprocess - refreshing seminarpool session object");
 		if (seminarpoolInfo != null) {
-			seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
+			if(seminarpoolInfo.getId() != null) {
+				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
+			}
 		} else {
 			seminarpoolInfo = (SeminarpoolInfo) getSessionBean(Constants.SEMINARPOOL_INFO);
 		}
+		if(seminarConditionInfo != null) {
+			seminarConditionInfo = (SeminarConditionInfo) getSessionBean(Constants.SEMINARCONDITION_INFO);
+		}
 		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
+		setSessionBean(Constants.SEMINARCONDITION_INFO, seminarConditionInfo);
 	}
 
 	@Prerender
@@ -121,6 +128,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		seminarpoolInfo = new SeminarpoolInfo();
 		seminarConditionInfo = new SeminarConditionInfo();
 		conditionsList = new ArrayList<SeminarConditionInfo>();
+		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
 		setSessionBean(Constants.SEMINARPOOL_CONDITIONS_LIST, conditionsList);
 		
 		return Constants.SEMINARPOOL_REGISTRATION_STEP1_PAGE;
@@ -166,10 +174,26 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	public void addCondition(ActionEvent event) throws Exception {
 		conditionsList.add(seminarConditionInfo);
 		seminarConditionInfo = new SeminarConditionInfo();
-		setSessionBean(Constants.SEMINARPOOL_CONDITIONS_LIST, conditionsList);
+		setSessionBean(Constants.SEMINARCONDITION_INFO, seminarConditionInfo);
 	}
 	
-	public void removeCondition(ActionEvent event) {
+	public String removeCondition() {
+		logger.debug("remove condition");
+		  
+		SeminarConditionInfo condition = conditionsTable.getRowData(); 
+		// search condition
+		for(SeminarConditionInfo aktCondi : conditionsList) {
+			if(aktCondi.getConditionDescription().equals(condition.getConditionDescription()) && 
+					aktCondi.getFieldType().equals(condition.getFieldType())) {
+				// remove condition
+				conditionsList.remove(aktCondi);
+				break;
+			}	
+		}
+		return "";	  
+	}
+	
+	public void showCondition(ActionEvent event) {
 		
 	}
 
@@ -208,7 +232,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		List<SelectItem> conditionItems = new ArrayList<SelectItem>();
 		conditionItems.add(new SelectItem(ConditionType.TEXTFIELD, i18n("seminarpool_conditiontype_textfield")));
 		conditionItems.add(new SelectItem(ConditionType.TEXTAREA, i18n("seminarpool_conditiontype_textarea")));
-		conditionItems.add(new SelectItem(ConditionType.CHECKBOX, i18n("seminarpool_conditiontype_textfield")));
+		conditionItems.add(new SelectItem(ConditionType.CHECKBOX, i18n("seminarpool_conditiontype_checkbox")));
 		return conditionItems;
 	}
 	

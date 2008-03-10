@@ -8,45 +8,47 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core">
       
-    <plexus:dataTable 
-    	id="conditionsTable" 
-    	label="#{msg.seminarpool_conditions_subheading}" 
-    	value="seminarpoolRegistration.conditionsTable" 
-    	columnClasses="col_min_left, col_max_left, col_commands"
-    	var="bean" 
-    	rows="20">  
-      
-		<t:column>
-			<plexus:commandSortHeader columnName="fieldDescription">
-   				<h:outputText value="#{msg['seminarpool_field_description']}"/>
-			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.fieldDescription}"/>
-		</t:column>
+	<h:form id="seminarpool_create_seminarpool">
+	    <plexus:dataTable 
+	    	id="conditionsTable" 
+	    	label="#{msg.seminarpool_conditions_subheading}" 
+	    	value="seminarpoolRegistration.conditionsTable" 
+	    	columnClasses="col_max_left, col_max_left, col_commands"
+	    	var="bean" 
+	    	rows="20">  
+	      
+			<t:column>
+				<plexus:commandSortHeader columnName="fieldDescription">
+	   				<h:outputText value="#{msg['seminarpool_field_description']}"/>
+				</plexus:commandSortHeader>
+				<h:outputText value="#{bean.conditionDescription}"/>
+			</t:column>
+			
+			<t:column sortable="true">
+				<plexus:commandSortHeader columnName="fieldType">
+					<h:outputText value="#{msg['seminarpool_field_type']}"/>
+				</plexus:commandSortHeader>
+				<h:outputText value="#{bean.fieldType}">
+					<f:converter converterId="seminarpoolConditionTypeConverter" />
+				</h:outputText>
+			</t:column>
 		
-		<t:column sortable="true">
-			<plexus:commandSortHeader columnName="fieldType">
-				<h:outputText value="#{msg['seminarpool_field_type']}"/>
-			</plexus:commandSortHeader>
-			<h:outputText value="#{bean.fieldType}">
-				<f:converter converterId="seminarpoolConditionTypeConverter" />
-			</h:outputText>
-		</t:column>
-		
+			<plexus:column header="#{msg.commands_header}">
+				<plexus:command 
+					bean="#{seminarpoolRegistration}"
+					action="showCondition"
+					label="#{msg['seminarpool_condition_command_show']}"
+					title="#{msg['seminarpool_condition_command_show_hint']}"
+					styleClass="icon_edit" />
+				<plexus:command
+					bean="#{seminarpoolRegistration}"
+					action="removeCondition"
+					onclick="if (!confirm('#{msg.seminarpool_remove_condition_confirmation}')) return false"
+					label="#{msg.seminarpool_condition_command_remove}"
+					title="#{msg.seminarpool_condition_command_remove_hint}"
+					styleClass="icon_remove" />
+			</plexus:column>
+		</plexus:dataTable>
+	</h:form>
 	
-		<plexus:column header="#{msg.commands_header}">
-			<plexus:command 
-				bean="seminarpoolRegistration"
-				action="showCondition"
-				label="#{msg['user_profile_command_show_profile']}"
-				title="#{msg['user_profile_command_show_profile_hint']}"
-				styleClass="icon_profile" />
-			<plexus:command
-				bean="seminarpoolRegistration"
-				action="removeCondition"
-				onclick="if (!confirm('#{msg.lecture_remove_departmentmember_confirmation}')) return false"
-				label="#{msg.department_members_command_remove}"
-				title="#{msg.department_members_command_remove_hint}"
-				styleClass="icon_remove"/>
-		</plexus:column>
-	</plexus:dataTable>
 </ui:composition>

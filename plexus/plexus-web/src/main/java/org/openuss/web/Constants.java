@@ -302,6 +302,7 @@ public class Constants {
 	public static final String SEMINARPOOL_CONFIRM_REMOVE_PAGE = "seminarpool_remove_confirmation";
 
 	public static final String SEMINARPOOL_INFO = "seminarpoolInfo";
+	public static final String SEMINARCONDITION_INFO = "seminarConditionInfo";
 	public static final String SEMINARPOOL_COURSE_ALLOCATION_INFO = "courseSeminarpoolAllocationInfo";
 	public static final String SEMINARPOOL = "seminarpool";
 	public static final String SEMINARPOOL_COURSE_GROUPS_COLLECTION = "SEMINARPOOL_COURSE_GROUPS_COLLECTION";
@@ -310,6 +311,7 @@ public class Constants {
 	public static final String SEMINARPOOL_CONDITION_VIEW_PAGE = "seminarpool_condition_view";
 	public static final String SHOW_SEMINARPOOL_CONDITION = "showcondition";
 	public static final String SEMINARPOOL_CONDITIONS_LIST = "conditionslist";
+	public static final String SEMINARPOOL_CONDITION_PREFIX="seminarpool_condition_type_prefix_";
 
 	public static final String COURSE_GROUP_INDEX = "COURSE_GROUP_INDEX";
 	public static final String SEMINARPOOL_COURSE_GROUPS_EDIT = "seminarpoolEditCourseGroups";

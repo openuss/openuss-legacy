@@ -30,9 +30,76 @@
 	</ui:define>
 
 	<ui:define name="content" styleClass="footer_normal">
-			<o:block>
-				<h:outputText value="TODO: Seminarpool-Voraussetzungen hinzufügen"/>
-			</o:block>
+			
+		
+		<h:form id="seminarpool_conditions">
+		    <plexus:dataTable 
+		    	id="conditionsTable" 
+		    	label="#{msg.seminarpool_conditions_subheading}" 
+		    	value="views$secured$seminarpool$seminarpoolrequirements.conditionsTable" 
+		    	columnClasses="col_max_left, col_max_left, col_commands"
+		    	var="bean" 
+		    	rows="20">  
+		      
+				<t:column>
+					<plexus:commandSortHeader columnName="fieldDescription">
+		   				<h:outputText value="#{msg['seminarpool_field_description']}"/>
+					</plexus:commandSortHeader>
+					<h:outputText value="#{bean.conditionDescription}"/>
+				</t:column>
+				
+				<t:column sortable="true">
+					<plexus:commandSortHeader columnName="fieldType">
+						<h:outputText value="#{msg['seminarpool_field_type']}"/>
+					</plexus:commandSortHeader>
+					<h:outputText value="#{bean.fieldType}">
+						<f:converter converterId="seminarpoolConditionTypeConverter" />
+					</h:outputText>
+				</t:column>
+			
+				<plexus:column header="#{msg.commands_header}">
+					<plexus:command 
+						bean="#{views$secured$seminarpool$seminarpoolrequirements}"
+						action="showCondition"
+						label="#{msg['seminarpool_condition_command_show']}"
+						title="#{msg['seminarpool_condition_command_show_hint']}"
+						styleClass="icon_edit" />
+					<plexus:command
+						bean="#{views$secured$seminarpool$seminarpoolrequirements}"
+						action="removeCondition"
+						onclick="if (!confirm('#{msg.seminarpool_remove_condition_confirmation}')) return false"
+						label="#{msg.seminarpool_condition_command_remove}"
+						title="#{msg.seminarpool_condition_command_remove_hint}"
+						styleClass="icon_remove" />
+				</plexus:column>
+			</plexus:dataTable>
+		</h:form>
+		
+		
+		<h:form id="seminarpool_condition_new_form">
+	  		<o:block label="#{msg['seminarpool_conditions_add_subheading']}" styleClass="form_box">
+				<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
+				<h:selectOneMenu id="conditionType" 
+					layout="pageDirection" 
+					value="#{views$secured$seminarpool$seminarpoolrequirements.seminarConditionInfo.fieldType}" 
+					valueChangeListener="#{views$secured$seminarpool$seminarpoolrequirements.processConditionTypeChanged}"
+					styleClass="pulldown">
+					<f:converter converterId="seminarpoolConditionTypeConverter" />
+					<f:selectItems value="#{seminarpoolRegistration.conditionTypes}"/>
+				</h:selectOneMenu>
+				<h:message for="conditionType" styleClass="field_error"/>	
+	 			<o:input 
+						label="#{msg.seminarpool_field_description}"
+						entity="views$secured$seminarpool$seminarpoolrequirements.seminarConditionInfo" 
+						property="conditionDescription" 
+						required="true"/>
+				<h:commandButton
+					value="#{msg['seminarpool_conditions_command_add']}"
+					actionListener="#{views$secured$seminarpool$seminarpoolrequirements.addCondition}"
+					title="#{msg['seminarpool_conditions_command_add_hint']}"
+					styleClass="button_save" />
+			</o:block>	
+	 	</h:form> 
 
 	</ui:define>
 </ui:composition>

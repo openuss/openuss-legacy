@@ -295,6 +295,11 @@
  		<managed-bean-class>org.openuss.seminarpool.SeminarpoolInfo</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	     <managed-bean>
+ 		<managed-bean-name>seminarConditionInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.seminarpool.SeminarConditionInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
    
     
     <!-- Schedule Beans -->

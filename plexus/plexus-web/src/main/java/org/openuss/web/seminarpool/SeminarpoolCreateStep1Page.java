@@ -23,16 +23,13 @@ import org.openuss.web.BasePage;
 	@Bean(name = "views$secured$seminarpool$seminarpoolcreatestep1", scope = Scope.REQUEST)
 	@View
 	public class SeminarpoolCreateStep1Page extends BasePage {		
-		private static final long serialVersionUID = 5069930000478432045L;
 				
-		private static final Logger logger = Logger.getLogger(SeminarpoolCreateStep1Page.class);
-
 		@Prerender
 		public void prerender() throws Exception {
 			breadcrumbs.init();	
 			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(i18n("seminarpool_add_course_allocation_breadcrumb_step2"));
-			newCrumb.setHint(i18n("seminarpool_add_course_allocation_breadcrumb_step2"));
+			newCrumb.setName(i18n("seminarpool_create_step1_breadcrumb"));
+			newCrumb.setHint(i18n("seminarpool_create_step1_breadcrumb"));
 			breadcrumbs.addCrumb(newCrumb);	
 		}		
 	}

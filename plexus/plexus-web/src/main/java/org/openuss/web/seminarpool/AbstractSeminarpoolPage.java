@@ -35,7 +35,7 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 	@Preprocess
 	public void preprocess() throws Exception {
 		super.preprocess();
-		logger.debug("preprocess - refreshing department session object");
+		logger.debug("preprocess - refreshing seminarpool session object");
 		if (seminarpoolInfo != null) {
 			if (seminarpoolInfo.getId() != null) {
 				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
@@ -43,9 +43,9 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 				seminarpoolInfo = (SeminarpoolInfo) getSessionBean(Constants.SEMINARPOOL_INFO);
 			}
 		}
-
 		setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
 	}
+	
 	@Prerender
 	public void prerender() throws Exception {
 		logger.debug("prerender - refreshing seminarpool session object");

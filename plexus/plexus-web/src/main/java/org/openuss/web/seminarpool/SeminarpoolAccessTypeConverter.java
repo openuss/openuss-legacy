@@ -6,7 +6,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.apache.shale.tiger.register.FacesConverter;
-import org.openuss.groups.GroupAccessType;
 import org.openuss.seminarpool.SeminarpoolAccessType;
 
 @FacesConverter(value = "seminarpoolAccessTypeConverter")
@@ -22,9 +21,6 @@ public class SeminarpoolAccessTypeConverter implements Converter  {
 		if (value instanceof SeminarpoolAccessType){
 			SeminarpoolAccessType seminarpoolAccessType = (SeminarpoolAccessType) value;
 			return seminarpoolAccessType.getValue().toString();
-		} else if (value instanceof GroupAccessType) {
-			GroupAccessType groupAccessType = (GroupAccessType) value;
-			return groupAccessType.getValue().toString();
 		} else if (value instanceof Integer) {
 			return String.valueOf(value);
 		} else if (value instanceof String) {

@@ -26,15 +26,36 @@
 <ui:composition template="/views/layout/dialog.xhtml">
 
 	<ui:define name="content">
-		<h:form id="seminarpool_create_seminarpool">
-			
-			<ui:include src="seminarpoolConditionstable.xhtml" />
-			
+	
+		<ui:include src="seminarpoolConditionstable.xhtml" />
+		
+					
+		<h:form id="seminarpool_create_seminarpool2">
+	  		<o:block label="#{msg['seminarpool_conditions_add_subheading']}" styleClass="form_box">
+				<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
+				<h:selectOneMenu id="conditionType" 
+					layout="pageDirection" 
+					value="#{seminarpoolRegistration.seminarConditionInfo.fieldType}" 
+					valueChangeListener="#{seminarpoolRegistration.processConditionTypeChanged}"
+	
+					styleClass="pulldown">
+					<f:converter converterId="seminarpoolConditionTypeConverter" />
+					<f:selectItems value="#{seminarpoolRegistration.conditionTypes}"/>
+				</h:selectOneMenu>
+				<h:message for="conditionType" styleClass="field_error"/>	
+	 			<o:input 
+						label="#{msg.seminarpool_field_description}"
+						entity="seminarpoolRegistration.seminarConditionInfo" 
+						property="conditionDescription" 
+						required="true"/> 
+				<h:commandButton value="#{msg['seminarpool_conditions_command_add']}" actionListener="#{seminarpoolRegistration.addCondition}" title="#{msg['seminarpool_conditions_command_add_hint']}" styleClass="button_save"/>
+			</o:block>	
+		
 			<o:block>
 				<h:commandButton value="#{msg.back}" action="seminarpool_create_step1" styleClass="button_back" immediate="true" />
-				<h:commandButton value="#{msg.seminarpool_create_button}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" />
+				<h:commandButton value="#{msg.seminarpool_create_button}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" immediate="true" />
 			</o:block>	
-	 	</h:form> 
+		</h:form> 
 	</ui:define>
 	
 </ui:composition>
