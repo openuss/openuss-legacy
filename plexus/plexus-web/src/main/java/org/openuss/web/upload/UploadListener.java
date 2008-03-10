@@ -1,5 +1,7 @@
 package org.openuss.web.upload;
 
+import java.io.IOException;
+
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
@@ -24,7 +26,12 @@ public class UploadListener extends BaseBean implements ValueChangeListener {
 		UploadedFile uploadedFile = (UploadedFile) event.getNewValue();
 		if (uploadedFile != null) {
 			logValueChangeEvent(event);
-			UploadedDocument document = new UploadedDocument(uploadedFile, event.getSource().toString());
+			UploadedDocument document;
+			try {
+				document = new UploadedDocument(uploadedFile, event.getSource().toString());
+			} catch (IOException e) {
+				throw new AbortProcessingException("Creating temp file failed", e);
+			}
 			getUploadFileManager().registerDocument(document);
 			setSessionBean(Constants.UPLOADED_FILE, document);
 		}

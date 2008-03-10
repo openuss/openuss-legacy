@@ -47,15 +47,10 @@ public class PaperSubmissionServiceImpl
     	examInfo.setId(examEntity.getId());
     	getSecurityService().createObjectIdentity(examEntity, examInfo.getDomainId());
     	
-    	if (examInfo.getAttachments() != null && !examInfo.getAttachments().isEmpty()) {
-			logger.debug("found " + examInfo.getAttachments().size()+" attachments.");
-			final FolderInfo folder = getDocumentService().getFolder(examEntity);
-			for (FileInfo attachment : examInfo.getAttachments()) {
-				getDocumentService().createFileEntry(attachment, folder);
-			}
+    	if (examInfo.getAttachments() != null) {
+    		logger.debug("found " + examInfo.getAttachments().size()+" attachments.");
+			getDocumentService().diffSave(examEntity, examInfo.getAttachments());
 		}
-    	
-    	
 
 		getExamDao().toExamInfo(examEntity, examInfo);
 	}

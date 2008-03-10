@@ -40,9 +40,11 @@
 				<ui:include src="pathinfo.xhtml" />
 				
 				<h:outputLabel value="#{msg.newdocument_file}" for="zipfile" styleClass="field_label" />
-				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" styleClass="uploadField">
+				<t:inputFileUpload id="zipfile" storage="file" accept="*" immediate="true" required="true" styleClass="uploadField">
 					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 				</t:inputFileUpload>
+				<h:message id="zipfileError" for="zipfile" styleClass="field_error" showDetail="true" showSummary="false" />
+				
 				<o:input entity="documents_selected_file" property="created" type="full" label="#{msg.documents_selected_file_release}"/>
 			</o:block>
 			

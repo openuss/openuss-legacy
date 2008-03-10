@@ -533,8 +533,8 @@ function Ok()
     }
 
     // No link selected, so try to create one.
-    if ( !oLink )
-        oLink = oEditor.FCK.CreateLink( sUri ) ;
+   // if ( !oLink )
+   //     oLink = oEditor.FCK.CreateLink( sUri ) ;
     
     if ( oLink )
         sInnerHtml = oLink.innerHTML ;      // Save the innerHTML (IE changes it if it is like a URL).

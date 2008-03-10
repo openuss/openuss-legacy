@@ -256,7 +256,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	}
 
 	public String addAttachment() throws IOException, BrainContestApplicationException {
-		LOGGER.debug("braincontest attachment add");
+		LOGGER.debug("papersubmission attachment add");
 		if (examInfo.getAttachments() == null) {
 			examInfo.setAttachments(new ArrayList<FileInfo>());
 		}
@@ -265,7 +265,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			if (validFileName(fileInfo.getFileName())) {
 				examInfo.getAttachments().add(fileInfo);
 			} else {
-				addError(i18n("braincontest_filename_already_exists"));
+				addError(i18n("papersubmission_filename_already_exists"));
 				return Constants.FAILURE;
 			}
 		}

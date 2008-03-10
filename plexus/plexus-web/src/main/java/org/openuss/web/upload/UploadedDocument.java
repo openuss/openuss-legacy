@@ -31,7 +31,7 @@ public class UploadedDocument implements Serializable {
 	
 	private transient InputStream inputStream;
 	
-	public UploadedDocument(UploadedFile uploadedFile, String source) {
+	public UploadedDocument(UploadedFile uploadedFile, String source) throws IOException {
 		Validate.notNull(uploadedFile, "Parameter uploadedFile must not be null!");
 		Validate.notNull(source, "Paramter component must not be null");
 		
@@ -39,7 +39,7 @@ public class UploadedDocument implements Serializable {
 		importUploadedFile(uploadedFile);
 	}
 	
-	private void importUploadedFile(UploadedFile uploadedFile) {
+	private void importUploadedFile(UploadedFile uploadedFile) throws IOException {
 		logger.debug("file name " + uploadedFile.getName());
 		logger.debug("file type " + uploadedFile.getContentType());
 		logger.debug("file size " + uploadedFile.getSize());
@@ -50,7 +50,7 @@ public class UploadedDocument implements Serializable {
 		file = storeTempFile(uploadedFile);
 	}
 	
-	private File storeTempFile(UploadedFile uploadedFile) {
+	private File storeTempFile(UploadedFile uploadedFile) throws IOException {
 		File file = TempFileHelper.createTempFile();
 		FileOutputStream fos = null;
 		InputStream is = null;
