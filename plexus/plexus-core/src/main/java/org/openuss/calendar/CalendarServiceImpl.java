@@ -748,9 +748,9 @@ public class CalendarServiceImpl extends
 
 	@Override
 	protected void handleAddSubscriptionForUser(CalendarInfo calendarInfo,
-			UserInfo userInfo) throws Exception {
+			Long userId) throws Exception {
 		
-		User user = getUserDao().load(userInfo.getId());
+		User user = getUserDao().load(userId);
 
 		// add the link between the subscribing and the subscribed
 		Calendar calToSubscribe = getCalendarDao().load(calendarInfo.getId());
