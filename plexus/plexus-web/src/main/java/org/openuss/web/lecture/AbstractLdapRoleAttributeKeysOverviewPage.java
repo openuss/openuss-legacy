@@ -55,127 +55,36 @@ public abstract class AbstractLdapRoleAttributeKeysOverviewPage extends BasePage
 	 * 
 	 * @return Outcome
 	 */
-	public String selectRoleAttributeKeyAndRemove() throws Exception {
-		try {
-		logger.debug("Starting method selectRoleAttributeKeyAndRemove");
+	public String selectRoleAttributeKeyAndConfirmRemove() throws Exception {
+		logger.debug("Starting method selectRoleAttributeKeyAndConfirmRemove");
 		RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
-		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, currentRoleAttributeKey);
-		ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
-		setSessionBean("roleAttributeKeyInfo", null);
-		return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
-		}
-		catch (Exception e) {
-			//TODO: CHRISTIAN: WRONG MESSAGE!!!
-			addMessage(i18n("message_department_cannot_be_removed"));
-			return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
-		}
-	}	
-		/*
-	public String removeDepartment() throws Exception {
-		try {
-			departmentService.removeDepartment(departmentInfo.getId());
-			setSessionBean("departmentInfo", null);
-			setSessionBean("instituteInfo", null);
-			setSessionBean("courseTypeInfo", null);
-			setSessionBean("courseInfo", null);
-			addMessage(i18n("message_department_removed"));
-			return Constants.DEPARTMENTS_PAGE;
-		} catch (Exception e) {
-			addMessage(i18n("message_department_cannot_be_removed"));
-			return Constants.OUTCOME_BACKWARD;
-		}
+		setSessionBean(Constants.DEPARTMENT_INFO, currentRoleAttributeKey());
 		
-	}
-	
-	
-	
-	public String selectDepartmentAndConfirmRemove() {
-		logger.debug("Starting method selectDepartmentAndConfirmRemove");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
-
 		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
-	}
-*/
-	/**
-	 * Store the selected department into session scope and go to department
-	 * disable confirmation page.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String selectDepartmentAndConfirmDisable() {
-		logger.debug("Starting method selectDepartmentAndConfirmDisable");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+	}	
+	
 
-		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
-	}
-*/
-	/**
-	 * Enables the chosen department. This is just evident for the search
-	 * indexing.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String enableDepartment() {
-		logger.debug("Starting method enableDepartment");
-		DepartmentInfo currentDepartment = currentDepartment();
+
+	public String removeRoleAttributeKey() throws Exception {
 		try {
-			departmentService.setDepartmentStatus(currentDepartment.getId(), true);
-			addMessage(i18n("message_department_enabled"));
-		} catch(DepartmentServiceException iae) {
-			addMessage(i18n("message_department_enabled_failed_university_disabled"));
-		} catch(Exception ex){
-			addMessage(i18n("message_department_enabled_failed"));
-		}
-		return Constants.SUCCESS;
+			logger.debug("Starting method selectRoleAttributeKeyAndRemove");
+			RoleAttributeKeyInfo currentRoleAttributeKey = currentRoleAttributeKey();
+			if (currentRoleAttributeKey.getAttributeMappingIds()!=null)
+				throw new IllegalArgumentException();
+			ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
+			setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
+			return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			}
+			catch (IllegalArgumentException ie) {
+				addMessage(i18n("message_ldap_roleattributekey_still_in_use_cannot_be_removed"));
+				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			}
+			catch (Exception e) {
+				addMessage(i18n("message_ldap_roleattributekey_cannot_be_removed"));
+				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			}
 	}
-	*/
-	/**
-	 * Bookmarks the chosen department and therefore sets a link on the MyUni
-	 * Page for the department.
-	 * 
-	 * @return Outcome
-	 */
-/*
-	public String shortcutDepartment() throws DesktopException {
-		logger.debug("Starting method shortcutDepartment");
-		DepartmentInfo currentDepartment = currentDepartment();
-		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
-				.getId());
-
-		addMessage(i18n("message_department_shortcut_created"));
-		return Constants.SUCCESS;
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			return desktopService2.isDepartmentBookmarked(currentDepartment
-					.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
-	}
-
-	public String removeShortcut() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			desktopService2.unlinkDepartment(desktopInfo.getId(),
-					currentDepartment.getId());
-		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
-			return Constants.FAILURE;
-		}
-
-		addMessage(i18n("institute_success_remove_shortcut"));
-		return Constants.SUCCESS;
-	}
-*/
+	
 	protected DataPage<RoleAttributeKeyInfo> dataPage;
 
 	public abstract DataPage<RoleAttributeKeyInfo> fetchDataPage(int startRow,
