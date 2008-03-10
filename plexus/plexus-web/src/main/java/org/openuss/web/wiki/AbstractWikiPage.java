@@ -52,9 +52,9 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		if (courseInfo == null || courseInfo.getId() == null) {
 			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 	}
 	

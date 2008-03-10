@@ -36,7 +36,7 @@ public class WikiMainPage extends AbstractWikiPage {
 			return;
 		}
 		
-		if (siteVersionId != null) {
+		if (this.siteVersionId != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
 			String name = getPageName(this.siteName);
@@ -48,27 +48,26 @@ public class WikiMainPage extends AbstractWikiPage {
 			} else if (version == null) {
 				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, this.siteVersionInfo);
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
+				this.siteVersionInfo = null;
 				this.siteName = null;
 			} else {
 				this.siteVersionInfo = version;
-				setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 			}
 		}
+		
+		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 				
 		super.prerender();
 	}
 		
 	private String getPageName(String siteName) {
-		String name;
-		if (this.siteName != null) {
-			name = URLUTF8Encoder.decode(siteName);
+		if (siteName != null) {
+			return URLUTF8Encoder.decode(siteName);
 		} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
-			name = this.siteVersionInfo.getName();
+			return this.siteVersionInfo.getName();
 		} else {
-			name = Constants.WIKI_STARTSITE_NAME;
+			return Constants.WIKI_STARTSITE_NAME;
 		}
-		
-		return name;
 	}
 
 	private void createInfoIndexPage() {
@@ -99,18 +98,18 @@ public class WikiMainPage extends AbstractWikiPage {
 	}
 
 	private WikiSiteContentInfo saveIndexVersion(String text) {
-		WikiSiteContentInfo siteVersionInfo = new WikiSiteContentInfo();
-		siteVersionInfo.setId(null);
-		siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
-		siteVersionInfo.setText(text);
-		siteVersionInfo.setNote(i18n("wiki_index_description_note"));
+		this.siteVersionInfo = new WikiSiteContentInfo();
+		this.siteVersionInfo.setId(null);
+		this.siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
+		this.siteVersionInfo.setText(text);
+		this.siteVersionInfo.setNote(i18n("wiki_index_description_note"));
 
-		siteVersionInfo.setCreationDate(new Date());
-		siteVersionInfo.setAuthorId(user.getId());
-		siteVersionInfo.setDomainId(this.courseInfo.getId());
-		siteVersionInfo.setDeleted(false);
-		siteVersionInfo.setReadOnly(false);
-		siteVersionInfo.setStable(false);
+		this.siteVersionInfo.setCreationDate(new Date());
+		this.siteVersionInfo.setAuthorId(user.getId());
+		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
+		this.siteVersionInfo.setDeleted(false);
+		this.siteVersionInfo.setReadOnly(false);
+		this.siteVersionInfo.setStable(false);
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
