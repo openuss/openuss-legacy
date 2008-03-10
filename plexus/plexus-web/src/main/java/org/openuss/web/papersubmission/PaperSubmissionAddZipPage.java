@@ -75,6 +75,11 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 			injectReleaseDate(infos);
 			try {
 				final FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+				for(FileInfo fileInfo : infos){
+					String fileName = fileInfo.getFileName();
+					fileName.replaceAll("/", "_");
+					
+				}
 				documentService.createFileEntries(infos, folder);
 				
 				for (FileInfo fileInfo : infos) {
