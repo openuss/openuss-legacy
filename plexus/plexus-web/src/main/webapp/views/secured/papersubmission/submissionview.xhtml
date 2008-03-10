@@ -96,9 +96,10 @@
                             <h:outputText value="#{examInfo.description}" escape="false"/>
                         </div>
 	                </o:block> 
-	                <o:block label="#{msg.papersubmission_materials}" styleClass="form_box">
+	                
 								
-						<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
+					<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
+						<o:block label="#{msg.papersubmission_materials}" styleClass="form_box">
 							<div class="content_font_normal">
 								<t:dataList 
 									var="attachment" 
@@ -111,8 +112,9 @@
 									<br/>	
 								</t:dataList>
 							</div>
-						</f:subview>
-					</o:block>
+						</o:block>	
+					</f:subview>
+					
 	                
 	                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}"> 
 	                    <!-- Assitant-view -->
