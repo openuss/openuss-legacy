@@ -14,22 +14,43 @@
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
 
 	<h:form id="openuss4us_calendaroverview" enctype="multipart/form-data">
+		<div id="appointmentbox">
 		<plexus:dataTable id="serialAppointmentTable"
 			value="views$secured$calendar$calendar.serialAppointmentData"
 			var="serialAppointment" rows="20"
-			label="#{msg.openuss4us_calendar_serial_appointments}">
+			label="#{msg.openuss4us_calendar_serial_appointments}"
+			columnClasses="col_left_min, col_left_max, col_left_max, col_left_max, col_left_max, col_left_max, col_left_max">
+			
+			<t:column>
+			<plexus:commandSortHeader columnName="serialAppointmentType"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'USER'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'GROUP'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'COURSE'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			</t:column>
+		
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
+				
 				<h:commandLink value=""
 					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
 					<h:outputText value="#{serialAppointment.subject}"
-						styleClass="header_font_normal" />
+						styleClass="appointmentheader" />
 				</h:commandLink>
+				
 				<br />
 				<h:commandLink value=""
 					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
 					<h:outputText value="#{serialAppointment.description}"
-						styleClass="content_font_normal" />
+						styleClass="appointmentdetails" />
 				</h:commandLink>
 					<o:microformatCalendar appointmentInfo="#{serialAppointment}"/>
 			</t:column>
@@ -115,21 +136,38 @@
 				</s:acl>
 				</plexus:column>
 		</plexus:dataTable>
+		</div>
+		<div id="appointmentbox">
 		<plexus:dataTable id="singleAppointmentTable"
 			value="views$secured$calendar$calendar.singleAppointmentData"
 			var="singleAppointment" rows="20"
 			label="#{msg.openuss4us_calendar_single_appointments}">
+			<t:column>
+			<plexus:commandSortHeader columnName="singleAppointmentType"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'USER'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'GROUP'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'COURSE'}">
+			<img src="#{theme.imagesPath}/icons/viewstate1.png"/>
+			</h:commandLink>
+			</t:column>
 			<t:column styleClass="col_max_left">
 				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 				<h:commandLink value=""
 					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
 					<h:outputText value="#{singleAppointment.subject}"
-						styleClass="header_font_normal" />
+						styleClass="appointmentheader" />
 				</h:commandLink><br />
 				<h:commandLink value=""
 					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
 					<h:outputText value="#{singleAppointment.description}"
-						styleClass="content_font_normal" />
+						styleClass="appointmentdetails" />
 				</h:commandLink>
 					<o:microformatCalendar appointmentInfo="#{singleAppointment}"/>
 			</t:column>
@@ -172,6 +210,7 @@
 				</s:acl>
 				</plexus:column>
 		</plexus:dataTable>
+		</div>
 		<o:block>
 			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
 				<h:commandButton

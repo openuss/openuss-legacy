@@ -1069,6 +1069,18 @@ p.header_font_normal,span.header_font_normal {
 	color: #505050;
 }
 
+#appointmentbox .appointmentheader{
+	padding: 8px 0 0 0px;
+	margin: 10px 0 0 0;
+	font-size: 8pt;
+	text-decoration: none;
+	font-weight: bold;
+	color: #505050;
+}
+
+#appointmentbox .appointmentdetails{
+	font-weight: normal;
+	}
 #messagebox .userphoto {
 	margin: 10px 10px 10px 0px;
 }
