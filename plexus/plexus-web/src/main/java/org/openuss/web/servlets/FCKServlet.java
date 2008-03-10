@@ -57,35 +57,41 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
         if (!file.exists()) {
         	super.doGet(request, response);
         } else {
-        	if (uri.endsWith(".jsf")) {
-	        	response.setContentType("text/html;");
-	        } else {
-	            response.setHeader("Cache-Control", "public");
-	            response.setHeader("Last-Modified", calcModify());
-	        }
-	        if (uri.endsWith(".css")) {
-	        	response.setContentType("text/css;");
-	        } else if (uri.endsWith(".js")) {
-	        	response.setContentType("text/javascript;");
-	        } else if (uri.endsWith(".gif")) {
-	        	response.setContentType("image/gif;");
-	        }
-	        response.setContentLength((int) file.length());
-	        
-	        // resource found, copying on output stream
-	        OutputStream out = response.getOutputStream();
-	        byte[] buffer = new byte[4096];
-	        InputStream bis = new FileInputStream(file);
-	        int read = 0;
-	        while ((read = bis.read(buffer)) != -1) {
-	            out.write(buffer, 0, read);
-	        }
-	        bis.close();
-	        out.flush();
-	        out.close();
+        	sendFile(uri, file, response);
         }
     }
 	
+	private void sendFile(final String uri, final File file, final HttpServletResponse response) throws IOException {
+		setHeaders(uri, file, response);
+        
+        // resource found, copying on output stream
+        OutputStream out = response.getOutputStream();
+        InputStream bis = new FileInputStream(file);
+        byte[] buffer = new byte[4096];
+        int read = bis.read(buffer);
+        while (read != -1) {
+            out.write(buffer, 0, read);
+            read = bis.read(buffer);
+        }
+        bis.close();
+        out.close();
+	}
+
+	private void setHeaders(final String uri, final File file, 
+			final HttpServletResponse response) {
+		response.setHeader("Cache-Control", "public");
+        response.setHeader("Last-Modified", calcModify());
+        
+        if (uri.endsWith(".css")) {
+        	response.setContentType("text/css;");
+        } else if (uri.endsWith(".js")) {
+        	response.setContentType("text/javascript;");
+        } else if (uri.endsWith(".gif")) {
+        	response.setContentType("image/gif;");
+        }
+        response.setContentLength((int) file.length());
+	}
+
 	private static final String calcModify() {
 		Date mod = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z",Locale.ENGLISH);

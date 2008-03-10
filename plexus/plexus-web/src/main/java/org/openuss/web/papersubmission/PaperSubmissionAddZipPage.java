@@ -39,39 +39,31 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	}
 	
 	private void addPageCrumb() {
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
-		crumb.setName(i18n("papersubmission_paperlist_header"));
-		crumb.setHint(i18n("papersubmission_paperlist_header"));
+		BreadCrumb crumb = new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, 
+				i18n("papersubmission_paperlist_header"), 
+				i18n("papersubmission_paperlist_header"));
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
 		if (this.examInfo != null) {
-			crumb = new BreadCrumb();
-			crumb.setName(examInfo.getName());
-			crumb.setHint(examInfo.getName());
-			
+			crumb = new BreadCrumb(examInfo.getName(), examInfo.getName());
 			if(courseInfo != null && courseInfo.getId() != null 
 					&& examInfo != null && examInfo.getId() != null){
 				
 				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 				crumb.addParameter("course",courseInfo.getId());
 				crumb.addParameter("exam",examInfo.getId());
-			}
-			
+			}			
 			breadcrumbs.addCrumb(crumb);
 			
-			crumb = new BreadCrumb();
-			
-			crumb.setName(i18n("document_addzip_header"));
-			crumb.setHint(i18n("document_addzip_header"));
-			breadcrumbs.addCrumb(crumb);
+			breadcrumbs.addCrumb(new BreadCrumb(i18n("document_addzip_header"), i18n("document_addzip_header")));
 		}
 	}	
 	
 	public String unzip() throws DocumentApplicationException{
 		LOGGER.debug("new document saved");
+		
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		paperSubmissionInfo = loadPaperSubmission();
 

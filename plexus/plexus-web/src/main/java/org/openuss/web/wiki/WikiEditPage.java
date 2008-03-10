@@ -1,6 +1,5 @@
 package org.openuss.web.wiki;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -46,8 +45,6 @@ public class WikiEditPage extends AbstractWikiPage {
 		
 		Date creationDate = new Date();
 		
-		LOGGER.debug("Saving Site " + siteVersionInfo.getName() + ", (Version: " + SimpleDateFormat.getInstance().format(creationDate) + ").");
-
 		siteVersionInfo.setCreationDate(creationDate);
 		siteVersionInfo.setAuthorId(user.getId());
 		siteVersionInfo.setDomainId(this.courseInfo.getId());

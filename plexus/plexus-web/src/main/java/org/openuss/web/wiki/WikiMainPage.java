@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -31,47 +32,48 @@ public class WikiMainPage extends AbstractWikiPage {
 	@Override
 	@Prerender
 	public void prerender() {
-		if (courseInfo == null || courseInfo.getId() == null) {
-			addError(i18n("message_error_course_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
+		if (!checkSession()) {
 			return;
 		}
 		
 		if (siteVersionId != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
-			String name;
-			if (this.siteName != null) {
-				name = URLUTF8Encoder.decode(this.siteName);
-			} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
-				name = this.siteVersionInfo.getName();
-			} else {
-				name = Constants.WIKI_STARTSITE_NAME;
-			}
+			String name = getPageName(this.siteName);
 
-			final WikiSiteContentInfo backup = this.siteVersionInfo;
-			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
+			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
 			
-			if (this.siteVersionInfo == null && 
-					Constants.WIKI_STARTSITE_NAME.equals(name)) {
+			if (version == null && Constants.WIKI_STARTSITE_NAME.equals(name)) {
 				createInfoIndexPage();
-			} else if (this.siteVersionInfo == null) {
-				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, backup);
+			} else if (version == null) {
+				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, this.siteVersionInfo);
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
 				this.siteName = null;
+			} else {
+				this.siteVersionInfo = version;
+				setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 			}
 		}
-		
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-
+				
 		super.prerender();
 	}
 		
+	private String getPageName(String siteName) {
+		String name;
+		if (this.siteName != null) {
+			name = URLUTF8Encoder.decode(siteName);
+		} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
+			name = this.siteVersionInfo.getName();
+		} else {
+			name = Constants.WIKI_STARTSITE_NAME;
+		}
+		
+		return name;
+	}
+
 	private void createInfoIndexPage() {
 		Locale locale = new Locale(getUser().getLocale());
 		String country = locale.getLanguage();
-		
-		String text;
 		
 		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
 		if (inStream == null) {
@@ -79,14 +81,12 @@ public class WikiMainPage extends AbstractWikiPage {
 		}
 		if (inStream != null) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			byte buf[] = new byte[4096];
-			int read;
 			try {
-				while ((read = inStream.read(buf)) != -1) {
-					out.write(buf, 0, read);
-				}
-			} catch (IOException e) {
-				LOGGER.error("Error reading wiki_index.xhtml", e);
+				IOUtils.copyLarge(inStream, out);
+				
+				saveIndexVersion(out.toString());
+			} catch (IOException ex) {
+				LOGGER.error("Error creating info page.", ex);
 			} finally {
 				try {
 					inStream.close();
@@ -94,14 +94,12 @@ public class WikiMainPage extends AbstractWikiPage {
 				} catch (IOException e) {
 					LOGGER.error("Error reading wiki_index.xhtml", e);
 				}
-				
 			}
-			text = out.toString();
-		} else {
-			text = "!! RESOURCE NOT FOUND!!";
 		}
-		
-		siteVersionInfo = new WikiSiteContentInfo();
+	}
+
+	private WikiSiteContentInfo saveIndexVersion(String text) {
+		WikiSiteContentInfo siteVersionInfo = new WikiSiteContentInfo();
 		siteVersionInfo.setId(null);
 		siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
 		siteVersionInfo.setText(text);
@@ -116,6 +114,8 @@ public class WikiMainPage extends AbstractWikiPage {
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		
+		return siteVersionInfo;
 	}
 
 	/**

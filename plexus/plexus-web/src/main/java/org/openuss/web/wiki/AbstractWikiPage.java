@@ -39,15 +39,23 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	
 	@Override
 	public void prerender() {
-		if (courseInfo == null || courseInfo.getId() == null) {
-			addError(i18n("message_error_course_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
+		if (!checkSession()) {
 			return;
 		}
 		
 		super.prerender();
 		
 		addBreadCrumbs();
+	}
+	
+	protected boolean checkSession() {
+		if (courseInfo == null || courseInfo.getId() == null) {
+			addError(i18n("message_error_course_page"));
+			redirect(Constants.OUTCOME_BACKWARD);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**

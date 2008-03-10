@@ -61,7 +61,6 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	 * @throws DocumentApplicationException
 	 */
 	public String unzip() throws DocumentApplicationException{
-		LOGGER.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 
 		File zipFile = document.getFile(); 
@@ -69,13 +68,11 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 		try {
 			unpacker = new ZipFileUnpacker(zipFile);
 			List<FileInfo> infos = unpacker.extractZipFile();
-			injectReleaseDate(infos);
+			
+			injectReleaseDateAndPermissions(infos);
+			
 			try {
 				documentService.createFileEntries(infos, retrieveActualFolder());
-				
-				for (FileInfo fileInfo : infos) {
-					permitRolesImageReadPermission(fileInfo);
-				}
 				
 				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
@@ -92,12 +89,14 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 		return Constants.SUCCESS;
 	}
 
-	private void injectReleaseDate(List<FileInfo> infos) {
+	private void injectReleaseDateAndPermissions(List<FileInfo> infos) {
 		if (file != null && file.getCreated() != null) {
 			LOGGER.debug("injecting release date "+file.getCreated());
 			for(FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
 				fileInfo.setModified(file.getCreated());
+				
+				permitRolesImageReadPermission(fileInfo);
 			}
 		}
 	}

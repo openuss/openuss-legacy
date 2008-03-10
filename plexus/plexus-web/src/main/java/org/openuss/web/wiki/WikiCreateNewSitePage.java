@@ -24,7 +24,7 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 		super.prerender();
 		
 		addBreadCrumbs();

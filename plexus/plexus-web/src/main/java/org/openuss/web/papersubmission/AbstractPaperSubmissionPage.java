@@ -52,10 +52,9 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	@SuppressWarnings("unchecked")
 	protected PaperSubmissionInfo loadPaperSubmission(){
 		
-		final List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 				
-		paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
+		final List<PaperSubmissionInfo> paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
 		if(paperInfos.isEmpty()){
 			//Create a submission, if the user doesn't have any
@@ -73,10 +72,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			} else{
 				addWarning(i18n("papersubmission_message_papersubmission_notintime"));
 			}
-			
-			return paperSubmissionInfo;
-		}
-		else{
+		} else{
 			//either update or creating a new submission
 			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1));
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
@@ -88,9 +84,9 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			}
 
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
-			return paperSubmissionInfo;
 		}
-}
+		return paperSubmissionInfo;
+	}
 	
 	public DocumentService getDocumentService() {
 		return documentService;

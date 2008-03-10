@@ -64,17 +64,12 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	private void addPageCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
-		crumb.setName(i18n("papersubmission_paperlist_header"));
-		crumb.setHint(i18n("papersubmission_paperlist_header"));		
-		breadcrumbs.addCrumb(crumb);
+		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, 
+				i18n("papersubmission_paperlist_header")));
 
 		if (this.examInfo != null) {
 			//specific exam crumb
-			crumb = new BreadCrumb();
-			crumb.setName(this.examInfo.getName());
-			crumb.setHint(this.examInfo.getName());
+			BreadCrumb crumb = new BreadCrumb(this.examInfo.getName());
 			
 			if(courseInfo != null && courseInfo.getId() != null 
 					&& this.examInfo != null && this.examInfo.getId() != null){
@@ -86,9 +81,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			breadcrumbs.addCrumb(crumb);
 			
 			//crumb of a specific submission
-			crumb = new BreadCrumb();
-			crumb.setName(paperSubmissionInfo.getDisplayName());
-			crumb.setHint(paperSubmissionInfo.getDisplayName());
+			crumb = new BreadCrumb(paperSubmissionInfo.getDisplayName());
 			
 			if(courseInfo != null && courseInfo.getId() != null 
 					&& this.examInfo != null && this.examInfo.getId() != null

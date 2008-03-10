@@ -96,13 +96,10 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		breadcrumbs.addCrumb(crumb);
 		
 		for(FolderInfo folder : getCurrentPath()) {
-			crumb = new BreadCrumb();
 			if (folder.isRoot()) {
-				crumb.setName(workspaceInfo.getName());
-				crumb.setHint(workspaceInfo.getName());
+				crumb = new BreadCrumb(workspaceInfo.getName());
 			} else {
-				crumb.setName(folder.getName());
-				crumb.setHint(folder.getDescription());
+				crumb = new BreadCrumb(folder.getName(), folder.getDescription());
 			}
 			crumb.setLink(PageLinks.COLLABORATION_WORKSPACE);
 			crumb.addParameter("workspace",workspaceInfo.getId());
