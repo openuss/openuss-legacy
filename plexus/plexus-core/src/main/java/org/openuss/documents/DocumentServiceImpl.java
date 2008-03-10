@@ -185,6 +185,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	@Override
 	protected void handleSaveFolder(FolderInfo folderInfo) throws Exception {
 		Validate.notNull(folderInfo, "Parameter folderInfo must not be null.");
+		
 		Folder folder = getFolderDao().folderInfoToEntity(folderInfo);
 		persistFolder(folder);
 	}
@@ -195,7 +196,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Validate.notNull(fileInfo.getId(), "Parameter fileInfo must contain an id.");
 		FileEntry entry = getFileEntryDao().fileInfoToEntity(fileInfo);
 		entry.setModified(new Date());
-		getFileEntryDao().update(entry);
+		persistFileEntry(entry);
 		if (fileInfo.getInputStream() != null) {
 			getRepositoryService().saveContent(fileInfo.getId(), fileInfo.getInputStream());
 		}
@@ -326,10 +327,15 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		getFolderDao().update(parent);
 	}
 
-	private void persistFileEntry(FileEntry file) {
+	private void persistFileEntry(FileEntry file) throws DocumentApplicationException {
 		logger.debug("saving file entry " + file.getName());
 		if (file.getCreated() == null) {
 			file.setCreated(new Date());
+		}
+		
+		// check if file with same name exists
+		if (!canRename(file, file.getParent())) {
+			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
 		}
 
 		if (file.getId() == null) {
@@ -339,12 +345,18 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 	}
 
-	private void persistFolder(Folder folder) {
+	private void persistFolder(Folder folder) throws DocumentApplicationException {
 		Validate.notNull(folder, "Parameter folder must not be null!");
 		Validate.notNull(folder, "Parameter folder must have a parent folder!");
 		if (logger.isDebugEnabled()) {
 			logger.debug("persisting folder " + folder.getName());
 		}
+		
+		// check if folder with same name exists
+		if (!canRename(folder, folder.getParent())) {
+			throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+		}
+		
 		if (folder.getId() == null) {
 			getFolderDao().create(folder);
 		} else {
@@ -473,4 +485,12 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		return isFolderOfDomainObject(domainObject, folder);
 	}
 
+	private boolean canRename(FolderEntry folderEntry, Folder folder) {
+		for (FolderEntry entry : folder.getEntries()) {
+			if (StringUtils.equalsIgnoreCase(folderEntry.getFileName(), entry.getFileName()) && !ObjectUtils.equals(entry, folderEntry)) {
+				return false; // not valid
+			}
+		}
+		return true; // vaild
+	}
 }
