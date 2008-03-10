@@ -178,7 +178,7 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		user.setPassword(password);
 		user.setFirstName("firstName");
 		user.setLastName("lastName");
-		user.setEmail("email");
+		user.setEmail(testUtility.unique("email"));
 		user.setEnabled(true);
 		
 		roleUser = groupDao.load(Roles.USER_ID);

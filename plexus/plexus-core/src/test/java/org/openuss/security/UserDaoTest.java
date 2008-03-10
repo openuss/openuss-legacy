@@ -133,7 +133,7 @@ public class UserDaoTest extends UserDaoTestBase {
 	public void testUserRolesRelationship() {
 		logger.info("---> BEGIN user roles relationships test");
 
-		Group adminRole = Group.Factory.newInstance("ROLE_ADMIN",GroupType.ROLE);
+		Group adminRole = Group.Factory.newInstance(GroupType.ROLE, "ROLE_ADMIN");
 		groupDao.create(adminRole);
 		assertNotNull(adminRole.getId());
 		

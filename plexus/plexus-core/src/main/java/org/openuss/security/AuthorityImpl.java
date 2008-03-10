@@ -64,18 +64,10 @@ public abstract class AuthorityImpl extends AuthorityBase implements Authority {
 	}
 
 	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
 	public boolean equals(Object object) {
 		if (getId()  != null && object instanceof DomainObject) {
 			return getId().equals(((DomainObject)object).getId());
 		}
 		return super.equals(object);
 	}
-	
-	
-
 }

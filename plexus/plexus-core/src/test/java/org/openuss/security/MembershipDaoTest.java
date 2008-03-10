@@ -39,7 +39,7 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		// Create Groups
 		List<Group> groups = new ArrayList<Group>(4);
 		for(int i=0;i<4;i++) {
-			groups.add(Group.Factory.newInstance("Group"+i, GroupType.ADMINISTRATOR));
+			groups.add(Group.Factory.newInstance(GroupType.ADMINISTRATOR, "Group"+i));
 			groups.get(0).addMember(users.get(i));
 		}
 		
