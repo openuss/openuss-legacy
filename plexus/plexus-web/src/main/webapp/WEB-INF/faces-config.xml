@@ -12,6 +12,11 @@
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener
 		</phase-listener>
+		<!-- 
+		<phase-listener>
+			org.openuss.framework.web.jsv.events.LocaleContextPhaseListener
+		</phase-listener>
+		 -->
 		<!--
 		<phase-listener>
 			org.openuss.framework.web.jsf.events.DebugPhaseListener

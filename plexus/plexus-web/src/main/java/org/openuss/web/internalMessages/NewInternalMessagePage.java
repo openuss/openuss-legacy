@@ -25,7 +25,7 @@ import org.openuss.web.Constants;
 
 
 
-@Bean(name = "views$secured$internalmessages$newinternalmessage", scope = Scope.REQUEST)
+@Bean(name = "views$secured$internalMessages$newinternalmessage", scope = Scope.REQUEST)
 @View
 public class NewInternalMessagePage extends BasePage{
 	private static final Logger logger = Logger
@@ -41,23 +41,28 @@ public class NewInternalMessagePage extends BasePage{
 	private User profile;
 	
 	@Property(value= "#{"+Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE+"}")
-	private InternalMessageInfo internalMessageInfo = new InternalMessageInfo();
+	private InternalMessageInfo internalMessageInfo;
 	
+
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-		
+		super.prerender();
+		if ((profile != null)&&(profile.getId()!=null)) {
+			profile = securityService.getUser(profile.getId());
+			setSessionBean(Constants.SHOW_USER_PROFILE, profile);
+		}
 	}
 	
-	public String linkToSendMessage(){
-		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, new InternalMessageInfo());
-		if(profile.getId().equals(securityService.getCurrentUser().getId())){
+	public String linkToSendMessage() {
+		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE,
+				new InternalMessageInfo());
+		if (profile.getId().equals(securityService.getCurrentUser().getId())) {
 			addMessage(i18n("openuss4us_message_messagecenter_addbuddy"));
 			return Constants.SUCCESS;
 		}
 		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 	}
-	
 	
 	public String sendmessage() {
 		logger.debug("Send Message to " + profile.getId());
@@ -73,7 +78,7 @@ public class NewInternalMessagePage extends BasePage{
 		recipients.add(internalMessageRecipientsInfo);
 		internalMessageService.sendInternalMessage(internalMessageInfo);
 		addMessage(i18n("openuss4us_message_messagecenter_sendmessage"));
-	return Constants.OUTCOME_BACKWARD;
+		return Constants.LAST_VIEW;
 	}
 
 	public InternalMessageService getInternalMessageService() {

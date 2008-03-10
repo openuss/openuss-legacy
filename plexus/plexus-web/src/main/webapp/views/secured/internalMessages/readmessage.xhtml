@@ -63,7 +63,7 @@
 			
 			<o:block>
 				
-				<h:commandButton action="#{views$secured$internalmessages$readmessage.answerMessage}"
+				<h:commandButton action="#{views$secured$internalMessages$readmessage.answerMessage}"
 					value="#{msg.openuss4us_messagecenter_replymessage}" styleClass="button"
 					rendered="#{internalMessageInfo.senderId != securityService.currentUser.id}"/>
 				<h:commandButton id="requestdelete" action="openuss4us_delete_message"

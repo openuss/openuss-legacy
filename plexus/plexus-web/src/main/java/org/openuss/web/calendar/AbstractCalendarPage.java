@@ -42,9 +42,8 @@ public class AbstractCalendarPage extends BasePage {
 	public void prerender() throws Exception {
 		super.prerender();
 		if (calendarInfo == null || calendarInfo.getId() == null) {
-			addError(i18n("calendar_error_not_found"));
-			redirect(Constants.OUTCOME_BACKWARD);
-			return; }
+			calendarInfo = calendarService.getCalendar(user);
+		}
 		
 	}
 	

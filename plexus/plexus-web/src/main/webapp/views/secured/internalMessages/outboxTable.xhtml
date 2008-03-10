@@ -10,7 +10,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 	<div id="messagebox">
 	<plexus:dataTable id="outboxTable"
-		value="views$secured$internalmessages$messagecenter.outboxData" var="outboxMessage"
+		value="views$secured$internalMessages$messagecenter.outboxData" var="outboxMessage"
 		 label="#{msg.openuss4us_messagecenter_outbox_header}" rows="10">
 		<t:column styleClass="userphoto">
 		<f:facet name="header">
@@ -30,7 +30,7 @@
 		<f:facet name="header">
 				#{msg['discussion_thread_column_message']} 
 			</f:facet>
-			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readSentMessage}">
+			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readSentMessage}">
 			<h:outputText value="#{outboxMessage.subject}"
 				styleClass="messagecenter_header" /><br />
 			<h:outputText value="#{fn:substring(outboxMessage.content, 0, 100)}..."
@@ -54,11 +54,11 @@
 			</f:facet>
 			
 			<h:commandLink
-				action="#{views$secured$internalmessages$messagecenter.readSentMessage}"
+				action="#{views$secured$internalMessages$messagecenter.readSentMessage}"
 				title="#{msg.openuss4us_messagecenter_readmessage}"
 				class="icon_viewmessage" />
 			<h:commandLink
-				action="#{views$secured$internalmessages$messagecenter.deleteSent}"
+				action="#{views$secured$internalMessages$messagecenter.deleteSent}"
 				title="#{msg.openuss4us_messagecenter_deletemessageicon}"
 				class="icon_deletemessage" />
 									

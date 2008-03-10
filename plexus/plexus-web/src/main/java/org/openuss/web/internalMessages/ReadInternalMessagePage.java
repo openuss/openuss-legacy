@@ -22,7 +22,7 @@ import org.openuss.web.Constants;
  * @author Ralf Plattfaut
  *
  */
-@Bean(name = "views$secured$internalmessages$readmessage", scope = Scope.REQUEST)
+@Bean(name = "views$secured$internalMessages$readmessage", scope = Scope.REQUEST)
 @View
 public class ReadInternalMessagePage extends BasePage {
 	
@@ -63,7 +63,6 @@ public class ReadInternalMessagePage extends BasePage {
 		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, imInfoHelp);
 		profile.setId(internalMessageInfo.getSenderId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
-		addMessage(i18n("openuss4us_message_messagecenter_sendmessage"));
 		return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 	}
 	
@@ -71,6 +70,10 @@ public class ReadInternalMessagePage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if(internalMessageInfo.getId() == null){
+			redirect(Constants.OUTCOME_BACKWARD);
+			return;
+		}
 		addPageCrumb();
 	}
 

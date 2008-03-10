@@ -11,18 +11,18 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 	<div id="messagebox">
 	<plexus:dataTable id="inboxTable"
-		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
+		value="views$secured$internalMessages$messagecenter.inboxData" var="inboxMessage"
 		 label="#{msg.openuss4us_messagecenter_inbox_header}" rows="10">
 		<t:column>
 			<plexus:commandSortHeader columnName="readByCurrentUser"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
-			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
 			<img src="#{theme.imagesPath}/icons/viewstate#{inboxMessage.readByCurrentUser ? 0 : 1}.png"/>
 			</h:commandLink>
 		</t:column>
 		<t:column styleClass="userphoto">
 			<plexus:commandSortHeader columnName="senderDisplayName"> #{msg['discussion_thread_column_author']}</plexus:commandSortHeader>
 			<div class="userimage"><h:commandLink value=""
-				action="#{views$secured$internalmessages$messagecenter.linkToSender}">
+				action="#{views$secured$internalMessages$messagecenter.linkToSender}">
 				<h:outputText value="#{inboxMessage.senderDisplayName}"
 					styleClass="messagecenter_header" />
 				<h:graphicImage styleClass="userphoto"
@@ -37,15 +37,15 @@
 		</t:column>
 		<t:column styleClass="col_max_left">
 			<plexus:commandSortHeader columnName="subject"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>  
-			<span class="messagecenter_header"><h:commandLink value="#{inboxMessage.subject}" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<span class="messagecenter_header"><h:commandLink value="#{inboxMessage.subject}" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
 			</h:commandLink></span>
 			<br />
-			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
 			<h:outputText value="#{fn:substring(inboxMessage.content, 0, 100)}..."
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) gt 100}" />
 			</h:commandLink>
-			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
 			<h:outputText value="#{inboxMessage.content}"
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) le 100}" />
@@ -66,15 +66,15 @@
 			</f:facet>
 			
 			<h:commandLink
-				action="#{views$secured$internalmessages$messagecenter.readReceivedMessage}"
+				action="#{views$secured$internalMessages$messagecenter.readReceivedMessage}"
 				title="#{msg.openuss4us_messagecenter_readmessage}"
 				class="icon_viewmessage" />
 			<h:commandLink
-				action="#{views$secured$internalmessages$messagecenter.answerMessage}"
+				action="#{views$secured$internalMessages$messagecenter.answerMessage}"
 				title="#{msg.user_answer_internalmessage}"
 				class="icon_sendmessage" />
 			<h:commandLink
-				action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
+				action="#{views$secured$internalMessages$messagecenter.deleteRecieved}"
 				title="#{msg.openuss4us_messagecenter_deletemessageicon}"
 				class="icon_deletemessage" />
 
