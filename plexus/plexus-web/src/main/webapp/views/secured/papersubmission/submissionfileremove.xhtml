@@ -40,7 +40,7 @@
 					</p>
 					<h:outputText value="#{msg.documents_selected_files}" styleClass="field_label"/>
 					<ul class="file-list">
-						<t:dataList id="entries" var="entry" layout="list" value="#{papersubmission_selected_fileentries}">
+						<t:dataList id="entries" var="entry" layout="list" value="#{papersubmission_folderentry_selection}">
 							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.sizeAsString}</li>
 						</t:dataList>					
 					</ul>
