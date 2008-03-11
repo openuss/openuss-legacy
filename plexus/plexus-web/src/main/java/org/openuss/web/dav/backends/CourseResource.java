@@ -31,7 +31,6 @@ public class CourseResource extends AbstractOrganisationResource{
 		this.info = ci;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
-		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
 	}
 
 	/* (non-Javadoc)
@@ -58,9 +57,7 @@ public class CourseResource extends AbstractOrganisationResource{
 	 * @return The materials backend resource of this course.
 	 */
 	protected WebDAVResource getMaterialsBackend(WebDAVPath path) {
-		FolderInfo fi = documentService.getFolder(info);
 		
-		Folder f = folderDao.folderInfoToEntity(fi);
 		
 		return new DocumentResource(getContext(), path, f);
 	}

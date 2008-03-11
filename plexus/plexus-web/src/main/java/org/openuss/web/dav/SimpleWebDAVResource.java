@@ -265,6 +265,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);
 		}
 		
+		if (! nextRes.isReadable()) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, nextRes);
+		}
+		
 		return nextRes.resolvePath(nextPath);
 	}
 	
@@ -498,7 +502,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @return The WebApplicationContext that allows to retrieve beans.
 	 */
 	protected WebApplicationContext getWAC() {
-		return this.context.getWac();
+		return this.context.getWAC();
 	}
 	
 	/**

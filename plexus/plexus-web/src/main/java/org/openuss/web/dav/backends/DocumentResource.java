@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.acegisecurity.acl.AclManager;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
@@ -25,6 +26,7 @@ import org.openuss.documents.FolderEntry;
 import org.openuss.documents.FolderEntryDao;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.web.Constants;
 import org.openuss.web.dav.IOContextImpl;
@@ -44,23 +46,33 @@ import org.openuss.webdav.WebDAVStatusCodes;
  */
 public class DocumentResource extends SimpleWebDAVResource {
 	private Logger logger = Logger.getLogger(DocumentResource.class);
+	
 	protected DocumentService documentService;
-	protected AclManager aclManager;
-	protected FolderDao folderDao;
-	protected FolderEntryDao folderEntryDao;
 	
-	protected FolderEntry entry;
-	protected Collection<FolderEntry> subEntriesCache = null;
+	protected DomainObject domainObj;
 	
-	public DocumentResource(WebDAVContext context, WebDAVPath path, FolderEntry entry) {
+	protected FolderEntryInfo info;
+	protected Collection<FolderEntryInfo> subEntriesCache = null;
+	
+	protected DocumentResource(WebDAVContext context, WebDAVPath path, DomainObject domainObj, FolderEntryInfo info) {
 		super(context, path);
-		this.entry = entry;
+		this.info = info;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
-		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
-		folderEntryDao = (FolderEntryDao) getWAC().getBean("folderEntryDao", FolderEntryDao.class);
-		aclManager = (AclManager) getWAC().getBean("aclManager", AclManager.class);
-		AcegiUtils.setAclManager(aclManager);
+	}
+	
+	/**
+	 * @param context The context of the current query.
+	 * @param path The path of this object.
+	 * @param domainObject The domain object (course etc.) whose associated documents should be represented.
+	 * @return The DocumentResource associated to the given domain object.
+	 */
+	public static DocumentResource createByDomainObject(WebDAVContext context, WebDAVPath path, DomainObject domainObject) {
+		DocumentService documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);;
+		
+		FolderInfo fi = documentService.getFolder(domainObject);
+		
+		
 	}
 	
 	/* (non-Javadoc)
@@ -70,22 +82,20 @@ public class DocumentResource extends SimpleWebDAVResource {
 	protected WebDAVResource createCollectionImpl(String name)
 			throws WebDAVResourceException {
 		
-		FolderInfo fi = folderDao.toFolderInfo((Folder)entry);
-		
 		FolderInfo newFolderInfo = new FolderInfo();
 		newFolderInfo.setName(name);
 		newFolderInfo.setDescription(name);
 		newFolderInfo.setCreated(new Date());
 		
 		try {
-			documentService.createFolder(newFolderInfo, fi);
+			documentService.createFolder(newFolderInfo, info);
 		} catch (DocumentApplicationException e) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
 		}
 		
 		subEntriesCache = null;
 		
-		FolderEntry childEntry = ((Folder) entry).getFolderEntryByName(name);
+		FolderEntry childEntry = ((Folder) info).getFolderEntryByName(name);
 		
 		return new DocumentResource(getContext(), path, childEntry);
 	}
@@ -96,7 +106,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	@Override
 	protected WebDAVResource createFileImpl(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		FolderInfo folderInfo = folderDao.toFolderInfo((Folder)entry);
+		FolderInfo folderInfo = folderDao.toFolderInfo((Folder)info);
 		
 		// The final input stream
 		InputStream is;
@@ -107,15 +117,16 @@ public class DocumentResource extends SimpleWebDAVResource {
 			File tmpf = File.createTempFile("openuss", "webdav-documentresource");
 			
 			fos = new FileOutputStream(tmpf);
+			IOUtils.copyLarge(ioc.getInputStream(), fos);
+			fos.close();
 		} catch (IOException ioe) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
 		}
-		is = ioc.getInputStream();
+		*/
 
 		
 		// TODO Ask Ingo why Hibernate queries available()
-
-		
+		is = ioc.getInputStream();
 		FileInfo newFileInfo = new FileInfo();
 		newFileInfo.setFileName(name);
 		newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
@@ -124,9 +135,9 @@ public class DocumentResource extends SimpleWebDAVResource {
 		int t = 0;
 		try {
 			t = is.available();
-		} catch (IOException e1) {
+		} catch (IOException ex) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			ex.printStackTrace();
 		}
 		newFileInfo.setFileSize(t);
 		newFileInfo.setCreated(new Date());
@@ -141,7 +152,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 		
 		subEntriesCache = null;
 		
-		FolderEntry childEntry = ((Folder) entry).getFolderEntryByName(name);
+		FolderEntry childEntry = ((Folder) info).getFolderEntryByName(name);
 		
 		return new DocumentResource(getContext(), path, childEntry);
 	}
@@ -152,7 +163,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	@Override
 	protected void deleteImpl() throws WebDAVResourceException {
 		try {
-			FolderEntryInfo fei = folderEntryDao.toFolderEntryInfo(entry);
+			FolderEntryInfo fei = folderEntryDao.toFolderEntryInfo(info);
 			
 			Collection<FolderEntryInfo> entryInfosToDelete = new ArrayList<FolderEntryInfo>(1);
 			entryInfosToDelete.add(fei);
@@ -174,10 +185,10 @@ public class DocumentResource extends SimpleWebDAVResource {
 			// this is a file
 			IOContextImpl res = new IOContextImpl();
 			
-			FileInfo fi = documentService.getFileEntry(entry.getId(), true);
+			FileInfo fi = documentService.getFileEntry(info.getId(), true);
 			res.setInputStream(fi.getInputStream());
-			res.setContentLength(entry.getFileSize());
-			Timestamp mts = WebDAVUtils.timestampToDate(entry.getModified());
+			res.setContentLength(info.getFileSize());
+			Timestamp mts = WebDAVUtils.timestampToDate(info.getModified());
 			res.setModificationTime(mts);
 			res.setContentType(fi.getContentType());
 			
@@ -192,7 +203,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 		if (isCollection()) {
 			return WebDAVConstants.MIMETYPE_DIRECTORY;
 		}
-		FileInfo fi = documentService.getFileEntry(entry.getId(), true);
+		FileInfo fi = documentService.getFileEntry(info.getId(), true);
 		return fi.getContentType();
 	}
 	
@@ -204,7 +215,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 		Map<String,String> resMap = new TreeMap<String,String>();
 		
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_DISPLAYNAME)) {
-			String description = entry.getDescription();
+			String description = info.getDescription();
 			
 			if (StringUtils.isNotEmpty(description)) {
 				resMap.put(WebDAVConstants.PROPERTY_DISPLAYNAME, description);
@@ -212,13 +223,13 @@ public class DocumentResource extends SimpleWebDAVResource {
 		}
 		
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETCONTENTLENGTH)) { 
-			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, String.valueOf(entry.getFileSize()));
+			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, String.valueOf(info.getFileSize()));
 		}
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_CREATIONDATE)) { 
-			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToInternetString(entry.getCreated()));
+			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToInternetString(info.getCreated()));
 		}
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETLASTMODIFIED)) { 
-			resMap.put(WebDAVConstants.PROPERTY_GETLASTMODIFIED, WebDAVUtils.dateToRFC1123String(entry.getModified()));
+			resMap.put(WebDAVConstants.PROPERTY_GETLASTMODIFIED, WebDAVUtils.dateToRFC1123String(info.getModified()));
 		}
 		
 		return resMap;
@@ -231,7 +242,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	protected void writeContentImpl(IOContext ioc)
 			throws WebDAVResourceException {
 		
-		FileInfo fi = documentService.getFileEntry(entry.getId(), false);
+		FileInfo fi = documentService.getFileEntry(info.getId(), false);
 		
 		fi.setContentType(ioc.getContentType());
 		fi.setInputStream(ioc.getInputStream());
@@ -248,7 +259,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#isCollection()
 	 */
 	public boolean isCollection() {
-		return (entry instanceof Folder);
+		return (info instanceof Folder);
 	}
 
 	public boolean isReadable() {
@@ -317,15 +328,16 @@ public class DocumentResource extends SimpleWebDAVResource {
 		newEntry.setName(name);
 		newEntry.setDescription(name);
 		
-		return (!((Folder) entry).canAdd(newEntry));
+		return (!((Folder) info).canAdd(newEntry));
 	}
 	
 	/**
 	 * @return All FileEntry objects of all the children.
 	 */
 	protected Collection<FolderEntry> getSubEntries() {
-		if ((subEntriesCache == null) && (entry instanceof Folder)) {
-			subEntriesCache = ((Folder)entry).getEntries(); 
+		if ((subEntriesCache == null) && (info instanceof Folder)) {
+			documentService.getFolderEntries(domainObject, info);
+			subEntriesCache = info).getEntries(); 
 		}
 		
 		return subEntriesCache;
