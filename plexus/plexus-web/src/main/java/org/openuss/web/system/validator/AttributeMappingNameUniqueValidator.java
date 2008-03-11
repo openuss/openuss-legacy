@@ -27,7 +27,7 @@ public class AttributeMappingNameUniqueValidator extends BaseBean implements Val
 		AttributeMappingInfo container = new AttributeMappingInfo();
 	    container.setMappingName(attributeMappingName);
 	    AttributeMappingInfo attributeMappingInfo = (AttributeMappingInfo) getBean(Constants.ATTRIBUTEMAPPING_INFO);
-	    if (attributeMappingInfo.getMappingName().equals(attributeMappingName)) {
+	    if (attributeMappingInfo.getMappingName()!=null && attributeMappingInfo.getMappingName().equals(attributeMappingName)) {
 	    	//Update of AttributeMapping -> Name can stay the same
 	    	((UIInput)component).setValid(true);
 	    }
