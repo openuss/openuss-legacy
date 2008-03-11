@@ -31,15 +31,10 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 	
 	private static final Logger logger = Logger.getLogger(LdapAttributeMappingRegistrationController.class);
 	
-	private List<String> allInitiallySelectableRoleAttributeKeyIds = new Vector<String>();	
-	private List<String> initiallySelectedRoleAttributeKeyIds = new Vector<String>();
-	
-	private List<Long> finallySelectedRoleAttributeKeyIds = new Vector<Long>();
-
 	public String start() {
 		logger.debug("start registration process");
 		
-		attributeMappingInfo = new AttributeMappingInfo();
+		attributeMappingInfo = new AttributeMappingInfo();		
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMappingInfo);
 		
 		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
@@ -49,61 +44,25 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		List<SelectItem> roleAttributeKeyItems = new ArrayList<SelectItem>();
 		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();
 		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
-				String idAsString = String.valueOf(roleAttributeKey.getId());
-				roleAttributeKeyItems.add(new SelectItem(idAsString, roleAttributeKey.getName()));
-				allInitiallySelectableRoleAttributeKeyIds.add(idAsString);
-			}	
+				Long id = roleAttributeKey.getId();
+				roleAttributeKeyItems.add(new SelectItem(id, roleAttributeKey.getName()));
+		}	
 		return roleAttributeKeyItems;
 	}
 
-
+	
 	public void processValueChange(ValueChangeEvent valueChangeEvent) {
-	      ArrayList selectedIds = (ArrayList)valueChangeEvent.getNewValue();
-	      for (Iterator iterator = selectedIds.iterator(); iterator.hasNext();) {
-			String idAsString = (String) iterator.next();
-			Long id = Long.valueOf(idAsString);
-			finallySelectedRoleAttributeKeyIds.add(id);
-			System.out.println(id);
-		    logger.info(id);
-	      }
+		ArrayList selectedIds = (ArrayList)valueChangeEvent.getNewValue();
+		attributeMappingInfo.setRoleAttributeKeyIds(selectedIds);
 	}				
 
 	public String register() {
-		attributeMappingInfo.setRoleAttributeKeyIds(finallySelectedRoleAttributeKeyIds);
 		ldapConfigurationService.createAttributeMapping(attributeMappingInfo);
 		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 	}
 	
 	public String save() {
-		attributeMappingInfo.setRoleAttributeKeyIds(finallySelectedRoleAttributeKeyIds);
 		ldapConfigurationService.saveAttributeMapping(attributeMappingInfo);
 		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
-	}
-
-	public List<Long> getFinallySelectedRoleAttributeKeyIds() {
-		return finallySelectedRoleAttributeKeyIds;
-	}
-
-	public void setFinallySelectedRoleAttributeKeyIds(
-			List<Long> finallySelectedRoleAttributeKeyIds) {
-		this.finallySelectedRoleAttributeKeyIds = finallySelectedRoleAttributeKeyIds;
-	}
-
-	public List<String> getAllInitiallySelectableRoleAttributeKeyIds() {
-		return allInitiallySelectableRoleAttributeKeyIds;
-	}
-
-	public void setAllInitiallySelectableRoleAttributeKeyIds(
-			List<String> allInitiallySelectableRoleAttributeKeyIds) {
-		this.allInitiallySelectableRoleAttributeKeyIds = allInitiallySelectableRoleAttributeKeyIds;
-	}
-
-	public List<String> getInitiallySelectedRoleAttributeKeyIds() {
-		return initiallySelectedRoleAttributeKeyIds;
-	}
-
-	public void setInitiallySelectedRoleAttributeKeyIds(
-			List<String> initiallySelectedRoleAttributeKeyIds) {
-		this.initiallySelectedRoleAttributeKeyIds = initiallySelectedRoleAttributeKeyIds;
 	}
 }

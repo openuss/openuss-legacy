@@ -11,6 +11,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.AttributeMappingInfo;
+import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.lecture.AbstractLdapAttributeMappingsOverviewPage;
@@ -63,19 +64,6 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 		return attributeMapping;
 	}
 
-	/**
-	 * Store the selected attributeMapping into session scope and go to attributeMapping
-	 * main page.
-	 * 
-	 * @return Outcome
-	 */
-	public String selectAttributeMapping() {
-		AttributeMappingInfo attributeMapping = currentAttributeMapping();
-		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMapping);
-		//TODO: CHRISTIAN: WRONG OUTCOME!!!!!
-		return Constants.DEPARTMENT_PAGE;
-	}
-	
 	
 	/**
 	 * Store the selected attributeMapping into session scope and go to attributeMapping
@@ -93,8 +81,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 		for (Long roleAttributeKeyId : selectedRoleAttributeKeyIds) {
 			initiallySelectedRoleAttributeKeys.add(String.valueOf(roleAttributeKeyId));			
 		}
-		attributeMappingRegistrationController.setInitiallySelectedRoleAttributeKeyIds(initiallySelectedRoleAttributeKeys);
-
+		
 		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
 	}
 
@@ -112,12 +99,22 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 	
 		
 	public String removeAttributeMapping() throws Exception {
-		
-		AttributeMappingInfo currentAttributeMapping = currentAttributeMapping();
-		ldapConfigurationService.deleteAttributeMapping(currentAttributeMapping);
-		setSessionBean("attributeMappingInfo", null);
-		addMessage(i18n("message_department_removed"));
-		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;			
+		try {
+			logger.debug("Starting method selectRoleAttributeKeyAndRemove");
+			AttributeMappingInfo currentAttributeMapping = (AttributeMappingInfo) getSessionBean(Constants.ATTRIBUTEMAPPING_INFO);
+			if (currentAttributeMapping.getAuthenticationDomainIds() == null || currentAttributeMapping.getAuthenticationDomainIds().size()==0) {
+				ldapConfigurationService.deleteAttributeMapping(currentAttributeMapping);
+				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
+				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+			} else {
+				addMessage(i18n("message_ldap_attributemapping_still_in_use_cannot_be_removed"));
+				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
+			  }
+			}
+			catch (Exception e) {
+				addMessage(i18n("message_ldap_attributemapping_cannot_be_removed"));
+				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
+			}		
 	}
 
 	

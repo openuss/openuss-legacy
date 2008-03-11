@@ -25,18 +25,23 @@
 			<h:form id="reg1Form">
 				<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
 					<o:block label="#{msg.ldap_attributemapping_registration_step1_headline}" styleClass="form_box">
-						<o:input entity="attributeMappingInfo" property="mappingName" maxlength="250" required="true"/>
+						<o:input entity="attributeMappingInfo" property="mappingName" maxlength="250" required="true">
+							<f:validator validatorId="attributeMappingNameUniqueValidator" />
+						</o:input>
 						<o:input entity="attributeMappingInfo" property="usernameKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="firstNameKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="lastNameKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
 						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-						<h:selectManyListbox id="attribute_mapping" size="7" value="#{ldapAttributeMappingRegistration.initiallySelectedRoleAttributeKeyIds}" required="true"
+						<h:selectManyListbox id="attribute_mapping_roleattributekey_listbox" size="7" value="#{attributeMappingInfo.roleAttributeKeyIds}" required="true"
 							valueChangeListener="#{ldapAttributeMappingRegistration.processValueChange}" styleClass="pulldown" >
+  							<f:converter converterId="longConverter" />
   							<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
 						</h:selectManyListbox>
-						<h:messages/>
+						<span class="field_error">
+							<h:message for="attribute_mapping_roleattributekey_listbox"></h:message>
+						</span>
 					</o:block>
 				</c:if>
 				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">

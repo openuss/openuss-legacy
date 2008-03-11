@@ -2,10 +2,14 @@ package org.openuss.web.security.converter;
 
 import junit.framework.TestCase;
 
-import org.openuss.lecture.InstituteGroup;
 import org.openuss.security.SecurityConstants;
-import org.openuss.web.lecture.InstituteGroupConverter;
 
+/**
+ * Tests for DeleteDomainNameFromUsernameConverter
+ * 
+ * @author Peter Schuh
+ *
+ */
 public class DeleteDomainNameFromUsernameConverterTest extends TestCase {
 
 	public void testAsObjectWithDelimiterContained() {
@@ -62,5 +66,12 @@ public class DeleteDomainNameFromUsernameConverterTest extends TestCase {
 		DeleteDomainNameFromUsernameConverter converter = new DeleteDomainNameFromUsernameConverter();
 		String clearedUsername = converter.getAsString(null, null, username);
 		assertTrue(clearedUsername.equals(username));
+	}
+	
+	public void testAsStringWithNonStringObject() {
+		Long userId = 42L;
+		DeleteDomainNameFromUsernameConverter converter = new DeleteDomainNameFromUsernameConverter();
+		String clearedUsername = converter.getAsString(null, null, userId);
+		assertNull(clearedUsername);
 	}
 }

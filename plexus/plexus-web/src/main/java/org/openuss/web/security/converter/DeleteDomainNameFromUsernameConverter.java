@@ -7,6 +7,12 @@ import javax.faces.convert.Converter;
 import org.apache.shale.tiger.register.FacesConverter;
 import org.openuss.security.SecurityConstants;
 
+/**
+ * Deletes domainName part from a username within a central users profile
+ * 
+ * @author Peter Schuh
+ *
+ */
 @FacesConverter(value = "deleteDomainNameFromUsernameConverter")
 public class DeleteDomainNameFromUsernameConverter implements Converter {
 
@@ -19,7 +25,10 @@ public class DeleteDomainNameFromUsernameConverter implements Converter {
     }
  
     public String getAsString(FacesContext context, UIComponent component, Object obj) {
-    	String str = (String)obj; 
-        return str!=null ? str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1): str;
+    	if (obj instanceof String) {
+    		String str = (String)obj;
+    		return str!=null ? str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1): null;
+    	}
+        return null;
     }
 }

@@ -66,6 +66,7 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapRoleAttributeKeysOver
 			if (currentRoleAttributeKey.getAttributeMappingIds() == null || currentRoleAttributeKey.getAttributeMappingIds().size()==0) {
 				ldapConfigurationService.deleteRoleAttributeKey(currentRoleAttributeKey);
 				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
+				addMessage("message_ldap_roleattributekey_removed");
 				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 			} else {
 				addMessage(i18n("message_ldap_roleattributekey_still_in_use_cannot_be_removed"));

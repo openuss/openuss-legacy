@@ -36,19 +36,16 @@
 	   			</o:block>  
 				
 				<plexus:dataTable 
-					id="department" 
+					id="attributeMapping" 
 					label="#{msg.ldap_attributemappingconfiguration_header}" 
 					value="views$secured$system$ldap$ldap_attributemappings.attributeMappings" 
-					var="bean" 
-					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
+					var="bean" 					
 					rows="15">
 					<t:column>
-						<plexus:commandSortHeader columnName="name">
+						<plexus:commandSortHeader columnName="mappingName">
 							#{msg['ldap_attributemapping_name']}
-						</plexus:commandSortHeader>
-				        <h:commandLink action="#{views$secured$system$ldap$ldap_attributemappings.selectAttributeMapping}" styleClass="command">
-							<h:outputText value="#{bean.mappingName}"/>
-						</h:commandLink> 
+						</plexus:commandSortHeader>				        
+							<h:outputText value="#{bean.mappingName}"/>						 
 					</t:column>
 					
 			
@@ -58,14 +55,14 @@
 								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
 								action = "selectAttributeMappingAndConfirmRemove"
 								styleClass="icon_remove"
-								label="#{msg.department_command_remove}"
-								title="#{msg.department_command_remove_hint}"/>
+								label="#{msg.ldap_attributemapping_command_remove}"
+								title="#{msg.ldap_attributemapping_command_remove_hint}"/>
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
 								action = "selectAttributeMappingAndEdit"
 								styleClass="icon_edit"
-								label="#{msg.ldap_roleattributekey_command_edit}"
-								title="#{msg.ldap_roleattributekey_command_edit_hint}"/>	
+								label="#{msg.ldap_attributemapping_command_edit}"
+								title="#{msg.ldap_attributemapping_command_edit_hint}"/>	
 						</s:authorize>
 					</plexus:column>
 					
