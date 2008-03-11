@@ -145,17 +145,17 @@ public class LdapUserDnPatternRegistrationController extends AbstractLdapUserDnP
 	}
 */
 	public String register() /*throws DesktopException, LectureException*/ {
-		/*// create department
-		if (user.getId().longValue() != Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId() == null)
-			departmentInfo.setUniversityId(universityInfo.getId());
-
-		// by default set department enabled
-		departmentInfo.setEnabled(true);
-		*/
 		ldapConfigurationService.createUserDnPattern(userDnPatternInfo);
 
 		return Constants.LDAP_USERDNPATTERN_PAGE;
 	}
+	
+	public String save() {
+		ldapConfigurationService.saveUserDnPattern(userDnPatternInfo);
+		return Constants.LDAP_USERDNPATTERN_PAGE;
+	}
+	
+	
 /*
 	public String registrate() throws DesktopException, LectureException {
 		// create department
