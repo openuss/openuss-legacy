@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.openuss.web.seminarpool;
+package org.openuss.web.seminarpool.validator;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -26,13 +26,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.validator.ValidatorBase;
+import org.apache.shale.tiger.register.FacesValidator;
 
 
 /**
  * @author mwessendorf (latest modification by $Author: paulsp $) modiefied by PS-Team Seminarplaceallocation
  * @version $Revision: 491777 $ $Date: 2007-01-02 12:27:11 +0100 (Di, 02 Jän 2007) $
  */
-
+@FacesValidator(value = "prioritiesSeminarsValidator")
 public class PrioritiesSeminarsValidator extends ValidatorBase {
 
 	/**
@@ -46,7 +47,7 @@ public class PrioritiesSeminarsValidator extends ValidatorBase {
 	 */
 	public static final String EQUAL_MESSAGE_ID = "org.apache.myfaces.Equal.INVALID";
 
-	public EqualValidator(){
+	public PrioritiesSeminarsValidator(){
 	}
 
 	//the foreign component_id on which the validation is based.
@@ -80,7 +81,7 @@ public class PrioritiesSeminarsValidator extends ValidatorBase {
 
 		Object[] args = {value.toString(),(foreignEditableValueHolder.getValue()==null) ? foreignComp.getId():foreignEditableValueHolder.getValue().toString()};
 
-		if(foreignEditableValueHolder.getValue()==null || !foreignEditableValueHolder.getValue().toString() < value.toString()  )
+		if(foreignEditableValueHolder.getValue()==null || foreignEditableValueHolder.getValue().toString().compareTo(value.toString()) < 0  )
         {
             throw new ValidatorException(getFacesMessage(EQUAL_MESSAGE_ID, args));
         }
