@@ -26,6 +26,7 @@ public class WikiEditPage extends AbstractWikiPage {
 	public void prerender() throws Exception {
 		super.prerender();
 		
+		siteVersionInfo.setDomainId(this.courseInfo.getId());
 		siteVersionInfo.setNote(null);
 	}
 	
