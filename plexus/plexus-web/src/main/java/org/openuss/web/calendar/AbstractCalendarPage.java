@@ -39,7 +39,7 @@ public class AbstractCalendarPage extends BasePage {
 	protected ScheduleModel model;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 16:13
 		super.prerender();
 		if (calendarInfo == null || calendarInfo.getId() == null) {
 			calendarInfo = calendarService.getCalendar(user);
