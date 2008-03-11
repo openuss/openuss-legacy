@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.documents.DocumentApplicationException;
@@ -34,6 +34,35 @@ import org.openuss.security.acl.LectureAclEntry;
 public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	
 	private static final String IMPORT_IMAGE_STRING = "fileid=%s";
+	
+	private static final String IMPORT_IMAGE_TEMPLATE = "<img.+src=\".*%s\\?fileid=%s\".*/>";
+	
+	private class ImageImportAllocation {
+		
+		private final Long importId;
+		
+		private final Long exportId;
+		
+		private final String filename;
+		
+		public ImageImportAllocation(final Long importId, final Long exportId, final String filename) {
+			this.importId = importId;
+			this.exportId = exportId;
+			this.filename = filename;
+		}
+
+		public Long getImportId() {
+			return importId;
+		}
+
+		public Long getExportId() {
+			return exportId;
+		}
+
+		public String getFilename() {
+			return filename;
+		}
+	}
 
 	@Override
 	protected void handleDeleteWikiSite(Long wikiSiteId) throws Exception {
@@ -332,7 +361,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 */
 	@SuppressWarnings("unchecked")
 	private void importWikiSiteImages(Long importDomainId, List<WikiSiteContentInfo> importWikiSites, Long exportDomainId) throws DocumentApplicationException {
-		final Map<Long, Long> imageImportMap = new HashMap<Long, Long>();
+		final List<ImageImportAllocation> imageImportAllocations = new LinkedList<ImageImportAllocation>();
 		
 		final List<FolderEntryInfo> imageFolderEntries = findImagesByDomainId(exportDomainId);
 		
@@ -344,11 +373,12 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 			handleSaveImage(importDomainId, imageFile);
 			final Long importImageId = imageFile.getId();
 			
-			imageImportMap.put(exportImageId, importImageId);
+			final ImageImportAllocation imageImportAllocation = new ImageImportAllocation(importImageId, exportImageId, imageFile.getFileName());
+			imageImportAllocations.add(imageImportAllocation);
 		}
 		
 		for (WikiSiteContentInfo importWikiSite : importWikiSites) {
-			updateWikiSiteImages(importWikiSite, imageImportMap);
+			updateWikiSiteImages(importWikiSite, imageImportAllocations);
 		}
 	}
 	
@@ -357,14 +387,16 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 * @param wikiSiteContent Imported WikiSiteContentInfo.
 	 * @param imageImportMap Map with the old Image ID as key and the new Image ID as corresponding value.
 	 */
-	private void updateWikiSiteImages(WikiSiteContentInfo wikiSiteContent, Map<Long, Long> imageImportMap) {
+	private void updateWikiSiteImages(WikiSiteContentInfo wikiSiteContent, List<ImageImportAllocation> imageImportAllocations) {
 		String newContent = wikiSiteContent.getText();
 		
-		final Set<Entry <Long, Long>> entrySet = imageImportMap.entrySet();
-		for (Entry<Long, Long> entry : entrySet) {
-			final String searchString = String.format(IMPORT_IMAGE_STRING, entry.getKey());
-			final String replaceString = String.format(IMPORT_IMAGE_STRING, entry.getValue());
-			newContent = newContent.replaceAll(searchString, replaceString);
+		for (ImageImportAllocation imageImportAllocation : imageImportAllocations) {
+			final String searchString = String.format(IMPORT_IMAGE_TEMPLATE, imageImportAllocation.getFilename(), imageImportAllocation.getExportId());
+			final String replaceString = String.format(IMPORT_IMAGE_TEMPLATE, imageImportAllocation.getFilename(), imageImportAllocation.getImportId());
+			
+			final Pattern searchPattern = Pattern.compile(searchString);
+			final Matcher matcher = searchPattern.matcher(newContent);
+			newContent = matcher.replaceAll(replaceString);
 		}
 		wikiSiteContent.setText(newContent);
 		
