@@ -33,8 +33,8 @@
 	<ui:define name="content">
 		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}" styleClass="form_box">
-				<o:input entity="documents_selected_file" property="name" maxlength="100" />
-				<o:input entity="documents_selected_file" property="description" type="textarea" />
+				<o:input entity="papersubmission_selected_file" property="name" maxlength="100" />
+				<o:input entity="papersubmission_selected_file" property="description" type="textarea" />
 				
 				<f:subview rendered="${!empty papersubmission_selected_file.fileName}">
 					<div class="content_font_normal">
@@ -56,7 +56,7 @@
 				</t:inputFileUpload>
 				<h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
 
-				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
+				<o:input entity="papersubmission_selected_file" property="fileName" maxlength="100"/>
 			</o:block>
 
 			<o:block>
