@@ -606,7 +606,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 		for (SeminarUserRegistration sur : sp.getSeminarUserRegistration()) {
 			a = 0;
 			for (SeminarPriority sprio : sur.getSeminarPriority()) {
-				for (CourseGroup cg : sprio.getCourseSeminarPoolAllocation()
+				for (CourseGroup cg : sur.getSeminarPriority().iterator().next().getCourseSeminarPoolAllocation()
 						.getCourseGroup()) {
 					table[c][0] = sprio.getSeminarUserRegistration().getUser()
 							.getId();
@@ -616,6 +616,14 @@ public class SeminarpoolAdministrationServiceImpl extends
 					capacity[a] = cg.getCapacity();
 					a++;
 				}
+			}
+			for(int i = 0; i<sp.getPriorities()-sur.getSeminarPriority().size();i++){
+				table[c][0] = sur.getUser()
+				.getId();
+				table[c][1] = Long.MAX_VALUE;
+				table[c][2] = -1;
+				c++;
+				a++;
 			}
 		}
 
@@ -659,13 +667,16 @@ public class SeminarpoolAdministrationServiceImpl extends
 		// Participants
 		for (a = 0; a < registrations.size(); a++) {
 			for (b = 0; b < variables; b += subgroups) {
-				double wert = 0.0;
+				double value = 0.0;
 				if (b == a * subgroups) {
-					wert = 1.0;
+					value = 1.0;
 				}
 				for (c = 0; c < subgroups; c++) {
-					// TODO aus Tabelle auslesen, ob Priovorhanden
-					sc1[b + c] = wert;
+					if(table[a*subgroups+c][2]==-1){
+						value=0.0;
+					}
+					sc1[b + c] = value;
+					value=1.0;
 				}
 			}
 			sc1[variables] = neededSeminars[a];
