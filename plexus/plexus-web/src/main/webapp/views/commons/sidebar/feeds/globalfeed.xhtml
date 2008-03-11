@@ -14,17 +14,17 @@
 	
 	
 		<h:form>
-		    <div class="feed">		
-				<o:block styleClass="option_box" label="#{msg.rss_sidebox_title}">
+		    <div class="feed">
+		    	<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
 						<ul class="int">
 							<li>
-								<o:link value="/rss/public/global.xml" 
+								<h:outputLink value="/rss/public/global.xml" 
 								 			title="#{msg.rss_global}" >
 								   <h:outputText value="#{msg.rss_global}" />
-								</o:link>
+								</h:outputLink>									
 							</li>
 						</ul>
-				</o:block>
+				</o:expandableBlock>
 			</div>
 		</h:form>
 </f:subview>
