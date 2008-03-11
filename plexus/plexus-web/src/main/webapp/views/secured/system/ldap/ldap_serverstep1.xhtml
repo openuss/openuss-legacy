@@ -36,7 +36,7 @@
 						<h:selectOneListbox id="ldapserver_authenticationdomain_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true"
 							valueChangeListener="#{ldapServerRegistration.processValueChangeAuthenticationDomain}" styleClass="pulldown">
 							<f:converter converterId="longConverter" />
-							<f:selectItems value="#{ldapServerRegistration.allAuthenticationDomains}}"/>
+							<f:selectItems value="#{ldapServerRegistration.allAuthenticationDomains}"/>
 						</h:selectOneListbox>
 						<h:outputLabel value="#{msg.ldap_server_userdnpattern_select}" for="ldapserver_userdnpattern_listbox" styleClass="field_label" />
 						<h:selectManyListbox id="ldapserver_userdnpattern_listbox" size="5" value="#{ldapServerInfo.userDnPatternIds}" required="true"
