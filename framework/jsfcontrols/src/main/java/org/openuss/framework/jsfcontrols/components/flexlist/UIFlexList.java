@@ -16,6 +16,7 @@ public class UIFlexList extends UIOutput {
 	protected ResourceBundle bundle;
 	
 	protected boolean expanded; //if expanded="false" dont expand the list
+	protected String styleClass;
 	
 	public void encodeBegin(FacesContext context) throws IOException {
 		writer = context.getResponseWriter();
@@ -27,8 +28,14 @@ public class UIFlexList extends UIOutput {
 		if (expandedAttribute == "true" || expandedAttribute == null) this.expanded = true;
 		else this.expanded = false;
 		
+		String styleClass = (String)getAttributes().get("styleClass");
+		if(styleClass!="")
+			styleClass = " " + styleClass;
+		else
+			styleClass = "";
+		
 		writer.startElement("div", this);
-			writer.writeAttribute("class", "flexList", null);
+			writer.writeAttribute("class", "flexList" + styleClass, null);
 			writeHeader();
 			writeContent();
 			
