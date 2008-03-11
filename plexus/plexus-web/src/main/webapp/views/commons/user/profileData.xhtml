@@ -47,28 +47,6 @@
 					<o:input entity="user.contact" property="postcode" maxlength="50" required="true"/>
 					<o:input entity="user.contact" property="city" maxlength="100" required="true"/>
 					<o:input entity="user.contact" property="country" maxlength="100" required="false"/>
-					<o:input entity="user.contact" property="telephone" maxlength="100"/>
-					<o:input entity="user.contact" property="mobile" maxlength="100"/>
-					<o:input entity="user.contact" property="skype" maxlength="100"/>
-					<o:input entity="user.contact" property="icq" maxlength="100"/>
-					<o:input entity="user.contact" property="msn" maxlength="100"/>
-				
-				<!-- personal information -->
-					<br />
-					<h:outputText value="#{msg.profile_personal_header}" styleClass="header_font_normal"/> <br />
-					<o:input entity="user.contact" property="birthday" maxlength="16" required="false" type="date"/>
-					<o:input entity="user.contact" property="searching" maxlength="500" required="false"/>
-					<o:input entity="user.contact" property="providing" maxlength="500" required="false"/>
-					<o:input entity="user.contact" property="interests" maxlength="500" required="false"/>
-					<!-- user portrait -->
-						<br />
-					  	<h:outputText value="#{msg.user_profile_portrait}" styleClass="header_font_normal"/>
-					  	<div class="content_iframe">
-							<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px">
-								<f:converter converterId="xssFilter"/>
-							</fck:editor>
-						</div>
-					
 					
 				<!-- hidden profile information -->
 					<br />
@@ -77,10 +55,6 @@
 					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
 					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
 					<o:input entity="user.profile" property="studies" maxlength="50"/>
-					<o:input entity="user.contact" property="smsEmail" maxlength="100">
-						<t:validateEmail/>
-					</o:input>
-					
 				
 				<br />
 				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
@@ -92,69 +66,5 @@
 				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
 				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
 				</h:selectOneListbox>
-
-				<br />
-				<!-- Newsletter Settings -->
-					<br />
-					<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
-					<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
-					<br />
-					<o:input entity="user.profile" property="newsletterSelected" required="false"/>
-					<o:input entity="user.profile" property="discussionSelected" required="false" /> 
-					<br />	
-				<s:authorize ifAllGranted="ROLE_USER">
-					<!-- visibility -->
-						<br />
-						<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
-						<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
-						<o:input entity="user.profile" property="profileContactPublic"/>
-						<o:input entity="user.profile" property="telephonePublic"/>
-						<o:input entity="user.profile" property="addressPublic"/> 
-						<o:input entity="user.profile" property="emailPublic"/>
-						<o:input entity="user.profile" property="profilePersonalPublic"/>
-						<o:input entity="user.profile" property="profileUniPublic"/>
-		
-					<!-- photo -->
-						<br />
-						<h:outputText value="#{msg.profile_personal_header}" styleClass="header_font_normal" /><br />					
-
-						<h:outputLabel id="avatarSelectLabel" value="${msg.user_profile_image}" for="avatarSelect" styleClass="fieldLabel"/>
-						<h:panelGrid columns="2">
-							<h:panelGroup>
-								
-								<c:if test="#{not empty user.imageId}">
-									<h:graphicImage styleClass="userphoto"
-										renderer="${not empty user.imageId}"
-										value="/files?fileid=#{user.imageId}"
-										alt="#{user.contact.firstName} #{user.contact.lastName}"
-										title="#{user.contact.firstName} #{user.contact.lastName}"/> 
-									&#160;
-							  		<h:commandLink 
-							  			actionListener="#{views$secured$user$profile.removeImage}" 
-							  			immediate="true" 
-							  			title="#{msg.user_profile_command_remove_image}">
-							  			<h:graphicImage value="/images/icons/remove.gif" alt="delete"/>
-							  		</h:commandLink>
-								</c:if>
-										
-								<c:if test="#{empty user.imageId}">
-									<h:graphicImage 
-										styleClass="userphoto" 
-										value="/images/icons/no_pic.gif" 
-										alt="#{msg.user_profile_no_image}" 
-										title="#{msg.user_profile_no_image}"/>
-								</c:if>
-							</h:panelGroup>
-					
-							<h:panelGroup>
-								<h:outputLabel value="#{msg.user_profile_image}" for="image"/>
-								<br/>
-							  	<t:inputFileUpload id="image" storage="file" accept="image/*" immediate="true" styleClass="uploadField" >
-					  				<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
-					  			</t:inputFileUpload>
-							  	<h:message for="image" styleClass="fieldError" showDetail="true" showSummary="false"/>
-							</h:panelGroup>
-						</h:panelGrid>
-				</s:authorize>
 
 </ui:composition>
