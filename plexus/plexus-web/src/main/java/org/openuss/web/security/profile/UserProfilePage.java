@@ -53,8 +53,7 @@ public class UserProfilePage extends BasePage{
 		if (user != null) {
 			user = securityService.getUser(user.getId());
 			setSessionBean(Constants.USER, user);
-		}
-		
+		}		
 		breadcrumbs.loadProfileCrumbs();
 	}
 	

@@ -494,6 +494,19 @@ public class BreadCrumbs extends BaseBean {
 		crumbs.add(administrationCrumb);
 		return crumbs;
 	}
+	
+	// Appointment Details Crumb Generation
+
+	private List<BreadCrumb> getAppointmentDetailsCrumbs() {
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(i18n("openuss4us_calendar_view_appointment_details_page"));
+		newCrumb.setHint(i18n("openuss4us_calendar_view_appointment_details_page"));
+		crumbs.add(newCrumb);
+		return crumbs;
+	}
 
 	// Public loader methods to generate crumbs for the domain object types
 
@@ -533,6 +546,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
 
+	public void loadAppointmentDetailsCrumbs() {
+		setCrumbs(getAppointmentDetailsCrumbs());
+	}
+	
 	public void loadMyUniCrumbs() {
 		setCrumbs(getMyUniCrumbs());
 	}

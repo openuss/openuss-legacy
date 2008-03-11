@@ -50,12 +50,7 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			redirect(Constants.CALENDAR_HOME);
 			return;
 		}
-		// TODO correct breadcrumbs
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(contextPath() + calendarBasePath);
-		newCrumb.setName(i18n("openuss4us_command_groups"));
-		newCrumb.setHint(i18n("openuss4us_command_groups"));
-		breadcrumbs.addCrumb(newCrumb);
+		breadcrumbs.loadAppointmentDetailsCrumbs();
 	}
 
 	// Data-Provider single appointments
