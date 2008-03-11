@@ -32,7 +32,7 @@
 						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
 						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
-						<h:selectManyListbox id="attribute_mapping" value="#{ldapAttributeMappingRegistration.initiallySelectedRoleAttributeKeyIds}" required="true"
+						<h:selectManyListbox id="attribute_mapping" size="7" value="#{ldapAttributeMappingRegistration.initiallySelectedRoleAttributeKeyIds}" required="true"
 							valueChangeListener="#{ldapAttributeMappingRegistration.processValueChange}" styleClass="pulldown" >
   							<f:selectItems value="#{ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
 						</h:selectManyListbox>
@@ -44,15 +44,11 @@
 						<h:outputLabel value="#{msg.error_ldap_roleattributekey_empty}" for="descriptionEditor" styleClass="field_error" />
 					</o:block>
 				</c:if>
-					<o:block>
-						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
-						<c:if test="#{not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
-							<h:commandButton value="${msg.save}" action="#{ldapAttributeMappingRegistration.register}" styleClass="button" />
-		  				</c:if>
-		  				<c:if test="#{empty ldapAttributeMappingRegistration.allRoleAttributeKeys}">
-		  					<h:commandButton value="${msg.ldap_roleattributekey}" action="ldap_roleattributekeys" styleClass="button_continue" />
-		  				</c:if>
-		  			</o:block>
+				<o:block>
+					<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
+					<h:commandButton value="${msg.save}" action="#{ldapAttributeMappingRegistration.register}" styleClass="button" rendered="#{empty attributeMappingInfo.mappingName and not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>
+		  			<h:commandButton value="${msg.save}" action="#{ldapAttributeMappingRegistration.save}" styleClass="button" rendered="#{not empty attributeMappingInfo.mappingName and not empty ldapAttributeMappingRegistration.allRoleAttributeKeys}"/>		  				
+		  		</o:block>
 	  		</h:form>
   		</ui:define>
 	</ui:composition>

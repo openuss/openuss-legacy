@@ -31,7 +31,9 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 	
 	private static final Logger logger = Logger.getLogger(LdapAttributeMappingRegistrationController.class);
 	
+	private List<String> allInitiallySelectableRoleAttributeKeyIds = new Vector<String>();	
 	private List<String> initiallySelectedRoleAttributeKeyIds = new Vector<String>();
+	
 	private List<Long> finallySelectedRoleAttributeKeyIds = new Vector<Long>();
 
 	public String start() {
@@ -47,7 +49,9 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 		List<SelectItem> roleAttributeKeyItems = new ArrayList<SelectItem>();
 		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();
 		for (RoleAttributeKeyInfo roleAttributeKey : roleAttributeKeys) {
-				roleAttributeKeyItems.add(new SelectItem(String.valueOf(roleAttributeKey.getId()), roleAttributeKey.getName()));
+				String idAsString = String.valueOf(roleAttributeKey.getId());
+				roleAttributeKeyItems.add(new SelectItem(idAsString, roleAttributeKey.getName()));
+				allInitiallySelectableRoleAttributeKeyIds.add(idAsString);
 			}	
 		return roleAttributeKeyItems;
 	}
@@ -62,113 +66,44 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapAttr
 			System.out.println(id);
 		    logger.info(id);
 	      }
-	}	
-	
-	
-	// ================================================================================
-	
-	
-	
-	
-	
-	
-	
-	
-	private Long roleAttributeKeyId;
-	
-	public Long getRoleAttributeKeyId(){
-		return roleAttributeKeyId;
-	}
-	public void setRoleAttributeKeyId(Long roleAttributeKeyId){
-		this.roleAttributeKeyId = roleAttributeKeyId;
-	}
-	
-/*		
-	List<RoleAttributeKeyInfo> roleAttributeKeyList = ldapConfigurationService.getAllRoleAttributeKeys();
-	
-	@SuppressWarnings( { "unchecked" })
-	public List<SelectItem> getAllUniversities() {
+	}				
 
-		universityItems = new ArrayList<SelectItem>();
-
-		allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
-		allDisabledUniversities = universityService.findUniversitiesByEnabled(false);
-
-		Iterator<UniversityInfo> iterEnabled = allEnabledUniversities.iterator();
-		UniversityInfo universityEnabled;
-
-		if (iterEnabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_ENABLED, bundle.getString("universities_enabled"));
-			universityItems.add(item);
-		}
-		while (iterEnabled.hasNext()) {
-			universityEnabled = iterEnabled.next();
-			SelectItem item = new SelectItem(universityEnabled.getId(), universityEnabled.getName());
-			universityItems.add(item);
-		}
-
-		Iterator<UniversityInfo> iterDisabled = allDisabledUniversities.iterator();
-		UniversityInfo universityDisabled;
-
-		if (iterDisabled.hasNext()) {
-			SelectItem item = new SelectItem(Constants.UNIVERSITIES_DISABLED, bundle.getString("universities_disabled"));
-			universityItems.add(item);
-		}
-		while (iterDisabled.hasNext()) {
-			universityDisabled = iterDisabled.next();
-			SelectItem item = new SelectItem(universityDisabled.getId(), universityDisabled.getName());
-			universityItems.add(item);
-		}
-		return universityItems;
-	}
-*/
-	public String register() /*throws DesktopException, LectureException*/ {
-		/*// create department
-		if (user.getId().longValue() != Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId() == null)
-			departmentInfo.setUniversityId(universityInfo.getId());
-
-		// by default set department enabled
-		departmentInfo.setEnabled(true);
-		*/
+	public String register() {
+		attributeMappingInfo.setRoleAttributeKeyIds(finallySelectedRoleAttributeKeyIds);
 		ldapConfigurationService.createAttributeMapping(attributeMappingInfo);
-
 		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 	}
-/*
-	public String registrate() throws DesktopException, LectureException {
-		// create department
-		if (user.getId().longValue() != Constants.USER_SUPER_ADMIN && departmentInfo.getUniversityId() == null)
-			departmentInfo.setUniversityId(universityInfo.getId());
-
-		// by default set department enabled
-		departmentInfo.setEnabled(true);
-		departmentService.create(departmentInfo, user.getId());
-
-		return Constants.DEPARTMENT_PAGE;
+	
+	public String save() {
+		attributeMappingInfo.setRoleAttributeKeyIds(finallySelectedRoleAttributeKeyIds);
+		ldapConfigurationService.saveAttributeMapping(attributeMappingInfo);
+		return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 	}
 
-	public String getTransformedLocale() {
-		if (departmentInfo.getLocale().equals("en")) {
-			return bundle.getString("transform_locale_en");
-		} else if (departmentInfo.getLocale().equals("de")) {
-			return bundle.getString("transform_locale_de");
-		} else if (departmentInfo.getLocale().equals("ru")) {
-			return bundle.getString("transform_locale_ru");
-		} else {
-			return "";
-		}
+	public List<Long> getFinallySelectedRoleAttributeKeyIds() {
+		return finallySelectedRoleAttributeKeyIds;
 	}
 
-	public String getTransformedDepartmentType() {
-		if (departmentInfo.getDepartmentType().getValue() == 0) {
-			return bundle.getString("departmenttype_official");
-		} else if (departmentInfo.getDepartmentType().getValue() == 1) {
-			return bundle.getString("departmenttype_non_offical");
-		} else {
-			return "";
-		}
+	public void setFinallySelectedRoleAttributeKeyIds(
+			List<Long> finallySelectedRoleAttributeKeyIds) {
+		this.finallySelectedRoleAttributeKeyIds = finallySelectedRoleAttributeKeyIds;
 	}
-	*/
 
+	public List<String> getAllInitiallySelectableRoleAttributeKeyIds() {
+		return allInitiallySelectableRoleAttributeKeyIds;
+	}
 
+	public void setAllInitiallySelectableRoleAttributeKeyIds(
+			List<String> allInitiallySelectableRoleAttributeKeyIds) {
+		this.allInitiallySelectableRoleAttributeKeyIds = allInitiallySelectableRoleAttributeKeyIds;
+	}
+
+	public List<String> getInitiallySelectedRoleAttributeKeyIds() {
+		return initiallySelectedRoleAttributeKeyIds;
+	}
+
+	public void setInitiallySelectedRoleAttributeKeyIds(
+			List<String> initiallySelectedRoleAttributeKeyIds) {
+		this.initiallySelectedRoleAttributeKeyIds = initiallySelectedRoleAttributeKeyIds;
+	}
 }

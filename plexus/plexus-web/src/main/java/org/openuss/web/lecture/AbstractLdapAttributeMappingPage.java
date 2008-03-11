@@ -4,10 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.lecture.LectureException;
-import org.openuss.lecture.UniversityService;
 import org.openuss.security.ldap.AttributeMappingInfo;
-import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -38,42 +35,31 @@ public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 		logger.debug("preprocess - refreshing attributeMapping session object");
 		if (attributeMappingInfo != null) {
 			if (attributeMappingInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				attributeMappingInfo = ldapConfigurationService.getAttributeMappingById(attributeMappingInfo.getId());
 			} else {
-				attributeMappingInfo = (AttributeMappingInfo) getSessionBean(Constants.ATTRIBUTEMAPPING_INFO);
+				attributeMappingInfo = (AttributeMappingInfo) getSessionBean(Constants.ATTRIBUTEMAPPING_INFO);				
 			}
 		}
-
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMappingInfo);
 	}
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() {
 		logger.debug("prerender - refreshing attributeMapping session object");
-		refreshAuthenticationDomain();
+		refreshAttributeMapping();
 		if (attributeMappingInfo == null || attributeMappingInfo.getId() == null) {
-			addError(i18n("message_error_no_department_selected"));
+			addError(i18n("message_ldap_attributemapping_no_attributemapping_selected"));
 			redirect(Constants.DESKTOP);
 		}
 	}
 
-	private void refreshAuthenticationDomain() {
+	private void refreshAttributeMapping() {
 		if (attributeMappingInfo != null) {
 			if (attributeMappingInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.findDepartment(authenticationDomainInfo.getId());
+				attributeMappingInfo = ldapConfigurationService.getAttributeMappingById(attributeMappingInfo.getId());
 				setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMappingInfo);
 			}
 		}
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			return desktopService2.isDepartmentBookmarked(attributeMappingInfo.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
 	}
 
 	public AttributeMappingInfo getAttributeMappingInfo() {
