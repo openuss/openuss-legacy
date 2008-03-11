@@ -96,11 +96,9 @@ public class DepartmentIndexer extends DomainIndexer {
 		} else {
 			details.append(" (inoffizieller Fachbereich)"+NEWLINE);
 		}
-		details.append(NEWLINE);
 		
-		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(department.getDescription(), 200)));
-		details.append(NEWLINE);
-		details.append(NEWLINE);
+		if(!StringUtils.isEmpty(department.getDescription()))
+			details.append(NEWLINE + StringUtils.trimToEmpty(StringUtils.abbreviate(department.getDescription(), 200)));
 		
 		return details.toString();
 	}

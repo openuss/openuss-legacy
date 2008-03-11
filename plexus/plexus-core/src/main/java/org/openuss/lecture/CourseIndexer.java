@@ -106,11 +106,9 @@ public class CourseIndexer extends DomainIndexer {
 		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getUniversity().getName()+NEWLINE));
 		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getDepartment().getName()+NEWLINE));
 		details.append(StringUtils.trimToEmpty(course.getCourseType().getInstitute().getName()+NEWLINE));
-		details.append(NEWLINE);
 		
-		details.append(StringUtils.trimToEmpty(StringUtils.abbreviate(course.getDescription(), 200)));
-		details.append(NEWLINE);
-		details.append(NEWLINE);
+		if(!StringUtils.isEmpty(course.getDescription()))
+			details.append(NEWLINE + StringUtils.trimToEmpty(StringUtils.abbreviate(course.getDescription(), 200)));
 		
 		return details.toString();
 	}
