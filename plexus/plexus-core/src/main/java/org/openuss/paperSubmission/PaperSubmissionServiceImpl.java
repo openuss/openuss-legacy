@@ -144,6 +144,9 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(examId, "examId cannot be null.");
 		
 		final ExamInfo examInfo = (ExamInfo) getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
+		if (examInfo == null) {
+			return null;
+		}
 		final List<FileInfo> attachments = getDocumentService().getFileEntries(examInfo);
 		examInfo.setAttachments(attachments);
     	
@@ -155,7 +158,10 @@ public class PaperSubmissionServiceImpl
 			Long paperSubmissionId) throws Exception {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
 		
-		final PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId); 
+		final PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
+		if (submission == null) {
+			return null;
+		}
 		final Exam exam = getExamDao().load(submission.getExamId());
 		final UserInfo user = getSecurityService().getUser(submission.getUserId());
 		
@@ -178,7 +184,13 @@ public class PaperSubmissionServiceImpl
 
     	final Exam examEntity = getExamDao().load(examId);
         
+    	for (PaperSubmission paperSubmission : examEntity.getPapersubmissions()) {
+			FolderInfo folder = getDocumentService().getFolder(paperSubmission);
+			getDocumentService().removeFolderEntry(folder.getId());
+		}
+    	
     	getExamDao().remove(examEntity);
+    	
 	}
 
 	@Override

@@ -33,9 +33,6 @@
 	<ui:define name="content">
 		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}" styleClass="form_box">
-				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label" />
-				<ui:include src="pathinfo.xhtml" />		
-						
 				<o:input entity="documents_selected_file" property="name" maxlength="100" />
 				<o:input entity="documents_selected_file" property="description" type="textarea" />
 				
