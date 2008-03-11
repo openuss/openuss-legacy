@@ -10,7 +10,7 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,82 +26,84 @@
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="header">
-		<link type="application/rss+xml" title="RSS-#{groupInfo.name}" rel="alternate" href="../../../rss/secured/documents.xml?group=#{groupInfo.id}"/>
+		<link type="application/rss+xml" title="RSS-#{groupInfo.name}"
+			rel="alternate"
+			href="../../../rss/secured/documents.xml?group=#{groupInfo.id}" />
 	</ui:define>
 	<ui:define name="title">
-		<h:outputText
-			value="#{msg.group_main_title} - #{groupInfo.shortcut}" />
+		<h:outputText value="#{msg.group_main_title} - #{groupInfo.shortcut}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/groups.xhtml" />
 	</ui:define>
-	<!--  
-	<ui:define name="sidebar"> 
+
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<!--  
 		<ui:include src="/views/commons/sidebar/feeds/groupdocumentsfeed.xhtml" />
-	</ui:define>	
-	-->
+		-->
+	</ui:define>
+
 	<ui:define name="content">
 		<h:form id="documentTableView">
 			<ui:include src="documentstable.xhtml" />
-			<o:block rendered="#{!views$secured$documents$groups$documents.moveMode}">
-					<h:commandButton 
-					    id="download"
-						action="#{views$secured$documents$groups$documents.download}" 
-						value="#{msg.documents_main_button_download}" 
-						title="#{msg.documents_main_button_download}"
-						styleClass="button_add"/>
+			<o:block
+				rendered="#{!views$secured$documents$groups$documents.moveMode}">
+				<h:commandButton id="download"
+					action="#{views$secured$documents$groups$documents.download}"
+					value="#{msg.documents_main_button_download}"
+					title="#{msg.documents_main_button_download}"
+					styleClass="button_add" />
 				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-					<h:commandButton 
-					    id="addZip"
-						action="group_documents_add_zip" 
-						value="#{msg.documents_main_button_zip}" 
-						title="#{msg.documents_main_button_zip}"
-						styleClass="button_add"/>
-					<h:commandButton 
-					    id="newFile"
-						action="#{views$secured$documents$groups$documents.newFile}" 
-						value="#{msg.documents_main_button_newfile}" 
+					<h:commandButton id="addZip" action="group_documents_add_zip"
+						value="#{msg.documents_main_button_zip}"
+						title="#{msg.documents_main_button_zip}" styleClass="button_add" />
+					<h:commandButton id="newFile"
+						action="#{views$secured$documents$groups$documents.newFile}"
+						value="#{msg.documents_main_button_newfile}"
 						title="#{msg.documents_main_button_newfile}"
-						styleClass="button_add"/>
-					<h:commandButton 
-					    id="newFolder"
-						action="#{views$secured$documents$groups$documents.newFolder}" 
-						value="#{msg.documents_main_button_newfolder}" 
+						styleClass="button_add" />
+					<h:commandButton id="newFolder"
+						action="#{views$secured$documents$groups$documents.newFolder}"
+						value="#{msg.documents_main_button_newfolder}"
 						title="#{msg.documents_main_button_newfolder}"
-						styleClass="button_add"/>
+						styleClass="button_add" />
 				</s:acl>
 				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-					<h:commandButton 
-					    id="delete"
-						action="#{views$secured$documents$groups$documents.delete}" 
-						value="#{msg.documents_main_button_delete}" 
+					<h:commandButton id="delete"
+						action="#{views$secured$documents$groups$documents.delete}"
+						value="#{msg.documents_main_button_delete}"
 						title="#{msg.documents_main_button_delete}"
-						styleClass="button_add"/>
+						styleClass="button_add" />
 				</s:acl>
 				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-					<h:commandButton
-						id="move"
-						value="#{msg['documents_move']}"
+					<h:commandButton id="move" value="#{msg['documents_move']}"
 						action="#{views$secured$documents$groups$documents.switchToMoveMode}"
-						styleClass="button_add"/>
+						styleClass="button_add" />
 				</s:acl>
 			</o:block>
 			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-				<o:block rendered="#{views$secured$documents$groups$documents.moveMode}">
-					
-					<h:outputText value="#{msg['documents_choose_target']}" styleClass="field_label"/>
-					
-					<h:selectOneMenu id="targetFolder" value="#{views$secured$documents$groups$documents.targetFolder}" styleClass="pulldown_inline">
-					   	<f:selectItems value="#{views$secured$documents$groups$documents.folderList}"/>
-					</h:selectOneMenu><br/>
-					<h:commandButton 
-							action="#{views$secured$documents$groups$documents.moveFolderEntriesToTarget}"
-							value="#{msg['documents_move']}"
-							hint="#{msg['course_assistants_add_hint']}"
-							styleClass="button_add" />
+				<o:block
+					rendered="#{views$secured$documents$groups$documents.moveMode}">
+
+					<h:outputText value="#{msg['documents_choose_target']}"
+						styleClass="field_label" />
+
+					<h:selectOneMenu id="targetFolder"
+						value="#{views$secured$documents$groups$documents.targetFolder}"
+						styleClass="pulldown_inline">
+						<f:selectItems
+							value="#{views$secured$documents$groups$documents.folderList}" />
+					</h:selectOneMenu>
+					<br />
+					<h:commandButton
+						action="#{views$secured$documents$groups$documents.moveFolderEntriesToTarget}"
+						value="#{msg['documents_move']}"
+						hint="#{msg['course_assistants_add_hint']}"
+						styleClass="button_add" />
 					<h:commandButton action="view:back" immediate="true"
-							value="#{msg['newdocument_button_cancel']}"
-							styleClass="button_cancel" />
+						value="#{msg['newdocument_button_cancel']}"
+						styleClass="button_cancel" />
 				</o:block>
 			</s:acl>
 		</h:form>
