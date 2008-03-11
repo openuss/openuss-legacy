@@ -9,6 +9,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
+import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -90,7 +91,18 @@ public class CalendarListMainPage extends AbstractCalendarPage {
 	}
 	
 	public String appointmentDetails(){
-		setSessionBean(Constants.APPOINTMENT_INFO, this.appointmentData.getRowData());
+		AppointmentInfo app = this.appointmentData.getRowData();
+		if(app.isSerial() == true && !(app instanceof SerialAppointmentInfo)){
+			logger.debug("Try to open calculated single appointment, open serial appointment instead");
+			this.addWarning(i18n("openuss4us_calendar_message_warning_appointemt_is_serial"));
+			try {
+				app = getCalendarService().getAssigendSerialAppointment(app);
+			} catch (CalendarApplicationException e) {
+				logger.error(e.getMessage());
+				return Constants.FAILURE;
+			}
+		}
+		setSessionBean(Constants.APPOINTMENT_INFO, app);
 		return Constants.OPENUSS4US_APPOINTMENT_DETAILS;
 	}
 	

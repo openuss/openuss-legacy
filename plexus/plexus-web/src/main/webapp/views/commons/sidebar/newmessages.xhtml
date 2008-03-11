@@ -13,13 +13,15 @@
 	
 	<h:form>
 	<s:authorize ifAllGranted="ROLE_USER">
-	<c:if test="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages gt 0}">
+	<c:if test="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages gt 0}">
 	  	<o:block styleClass="option_box" label="Nachrichten">
 	  		<p class="content_font_normal"> 
 		  		<ul class="int">
 		  			<li>
 					  	<o:link value="/views/secured/internalMessages/messagecenter.faces">
-					  		You've got #{views$secured$internalmessages$messagecenter.numberOfUnreadMessages} new internal messages!
+					  		<h:outputFormat value="#{msg.openuss4us_messagecenter_numberofunreadmessages}" styleClass="content_font_normal" >
+					  			<f:param value="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages}" />
+					  		</h:outputFormat>
 				  		</o:link>
 			  		</li>
 			  	</ul>

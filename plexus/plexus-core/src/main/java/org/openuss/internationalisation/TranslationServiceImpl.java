@@ -96,7 +96,7 @@ public class TranslationServiceImpl extends
 			return returnList.get(0).getText();
 		} else {
 			// if no translation is available for the languageCode try english
-			if (languageCode.equals("en")) {
+			if (!languageCode.equals("en")) {
 				return this.getTranslation(domainIdentifier, subKey, "en");
 			// if the languageCode is english, throw an exception
 			} else {

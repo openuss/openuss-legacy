@@ -8,6 +8,7 @@ package org.openuss.calendar;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import org.openuss.framework.utilities.TranslationContext;
 import org.openuss.groups.UserGroupInfo;
+import org.openuss.internalMessage.InternalMessageInfo;
 import org.openuss.internationalisation.TranslationApplicationException;
 import org.openuss.internationalisation.TranslationTextInfo;
 import org.openuss.lecture.CourseInfo;
@@ -535,6 +537,7 @@ public class CalendarServiceImpl extends
 			this.translate(appInfo.getAppointmentTypeInfo());
 			appInfos.add(appInfo);
 		}
+		this.sortAppointmentInfoList(appInfos);
 		return appInfos;
 
 	}
@@ -741,6 +744,7 @@ public class CalendarServiceImpl extends
 				appsAfterDate.add(appInfo);
 			}
 		}
+		this.sortAppointmentInfoList(appsAfterDate);
 		return appsAfterDate;
 	}
 
@@ -797,7 +801,27 @@ public class CalendarServiceImpl extends
 	private void translate(AppointmentTypeInfo appTI) throws TranslationApplicationException{
 		appTI.setName(getTranslationService().getTranslation(appTI.getId(), appTI.getName(), TranslationContext.getCurrentInstance().getLocale().toString()));
 	}
+	
+	private void sortAppointmentInfoList(List<AppointmentInfo> list){
+		Collections.sort(list, new AppointmentInfoComparator());
+		System.out.println("-----------------------> sort");
+	}
 
+    /**
+     * Comparator for List of InternalMessageInfo objects.
+     * Sorts by message-date
+     */
+    private class AppointmentInfoComparator implements java.util.Comparator<AppointmentInfo>{
+
+		public int compare(AppointmentInfo o1, AppointmentInfo o2) {
+			if(o1.getStarttime().before(o2.getStarttime()))
+				return -1;
+			if(o2.getStarttime().before(o1.getStarttime()))
+				return 1;
+			return 0;
+		}
+    }
+	
 	@Override
 	protected SerialAppointmentInfo handleGetAssigendSerialAppointment(
 			AppointmentInfo appointmentInfo) throws Exception {

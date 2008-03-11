@@ -112,7 +112,7 @@ public class InternalMessageServiceImpl
 		public int compare(InternalMessageInfo o1, InternalMessageInfo o2) {
 			if(o1.getMessageDate().before(o2.getMessageDate()))
 				return 1;
-			if(o1.getMessageDate().before(o2.getMessageDate()))
+			if(o2.getMessageDate().before(o1.getMessageDate()))
 				return -1;
 			return 0;
 		}
