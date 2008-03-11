@@ -41,7 +41,7 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 		logger.debug("preprocess - refreshing authenticationDomain session object");
 		if (authenticationDomainInfo != null) {
 			if (authenticationDomainInfo.getId() != null) {
-				//authenticationDomainInfo = LdapConfigurationService.getDomain(authenticationDomainInfo.getId());
+				authenticationDomainInfo = ldapConfigurationService.getDomainById(authenticationDomainInfo.getId());
 			} else {
 				authenticationDomainInfo = (AuthenticationDomainInfo) getSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO);
 			}
@@ -54,9 +54,8 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing authenticationDomain session object");
 		refreshAuthenticationDomain();
-		if (authenticationDomainInfo == null || authenticationDomainInfo.getId() == null) {
-			// TODO: CHRISTIAN: WRONG MESSAGE!!!
-			addError(i18n("message_error_no_department_selected"));
+		if (authenticationDomainInfo == null || authenticationDomainInfo.getId() == null) {	
+			addError(i18n("message_ldap_authenticationdomain_no_authenticationdomain_selected"));
 			redirect(Constants.DESKTOP);
 		}
 	}
@@ -64,20 +63,10 @@ public abstract class AbstractLdapDomainPage extends BasePage {
 	private void refreshAuthenticationDomain() {
 		if (authenticationDomainInfo != null) {
 			if (authenticationDomainInfo.getId() != null) {
-				//authenticationDomainInfo = departmentService.getDomain(departmentInfo.getId());
+				authenticationDomainInfo = ldapConfigurationService.getDomainById(authenticationDomainInfo.getId());
 				setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomainInfo);
 			}
 		}
-	}
-
-	public Boolean getBookmarked() {
-		try {
-			return desktopService2.isDepartmentBookmarked(authenticationDomainInfo.getId(), user.getId());
-		} catch (Exception e) {
-
-		}
-
-		return false;
 	}
 
 	public AuthenticationDomainInfo getAuthenticationDomainInfo() {

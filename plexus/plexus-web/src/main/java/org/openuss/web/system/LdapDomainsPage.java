@@ -1,14 +1,19 @@
 package org.openuss.web.system;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
+import org.openuss.security.ldap.LdapConfigurationService;
+import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.lecture.AbstractLdapDomainsOverviewPage;
 
@@ -23,6 +28,8 @@ import org.openuss.web.lecture.AbstractLdapDomainsOverviewPage;
 
 public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 	
+	protected AuthenticationDomainTable authenticationDomains = new AuthenticationDomainTable();
+
 	@Prerender
 	public void prerender() {
 		try {
@@ -52,48 +59,96 @@ public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 		 breadcrumbs.addCrumb(myBreadCrumb);
 	 }
 	
-	public DataPage<AuthenticationDomainInfo> fetchDataPage(int startRow, int pageSize) {
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch attributemappings data page at " + startRow + ", "+ pageSize+" sorted by "+authenticationDomains.getSortColumn());
-			}
-			List<AuthenticationDomainInfo> domainList = ldapConfigurationService.getAllDomains();
-			
+	public AuthenticationDomainTable getAuthenticationDomains() {
+			return authenticationDomains;
+	}
+	
+	protected AuthenticationDomainInfo currentAuthenticationDomain() {
+		AuthenticationDomainInfo authenticationDomain = authenticationDomains.getRowData();
+		return authenticationDomain;
+	}
 
-			if (domainList != null) {
-				logger.info("Size:"+domainList.size());
-			}
-			
-			/*sort(roleAttributeKeyList);*/
-			dataPage = new DataPage<AuthenticationDomainInfo>(domainList.size(),0,domainList);
-		}
+	/**
+	 * Store the selected authenticationDomain into session scope and go to authenticationDomain
+	 * main page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectAuthenticationDomainAndEdit() {
+		AuthenticationDomainInfo authenticationDomain = currentAuthenticationDomain();
+		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomain);
 		
-		/*
-		 public DataPage<RoleAttributeKeyInfo> fetchDataPage(int startRow, int pageSize) {
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch roleattributekeys data page at " + startRow + ", "+ pageSize+" sorted by "+roleAttributeKeys.getSortColumn());
-			}
-			List<DepartmentInfo> officialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.OFFICIAL));
-			List<DepartmentInfo> nonOfficialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.NONOFFICIAL));
-			
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-			for(DepartmentInfo departmentInfo : officialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
-			for(DepartmentInfo departmentInfo : nonOfficialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
+		return Constants.LDAP_DOMAIN_REGISTRATION_STEP1_PAGE;
+	}
+	
+	/**
+	 * Store the selected department into session scope and go to authentication domain
+	 * remove confirmation page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectAuthenticationDomainAndConfirmRemove() {
+		AuthenticationDomainInfo currentAuthenticationDomain = currentAuthenticationDomain();
+		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, currentAuthenticationDomain);
 
-			logger.info("Departments:"+departmentList);
-			if (departmentList != null) {
-				logger.info("Size:"+departmentList.size());
+		return Constants.DOMAIN_CONFIRM_REMOVE_PAGE;
+	}
+		
+	public String removeAuthenticationDomain() throws Exception {
+		try {
+			logger.debug("Starting method removeAuthenticationDomain");
+			AuthenticationDomainInfo currentAuthenticationDomain  = (AuthenticationDomainInfo) getSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO);
+			if (currentAuthenticationDomain.getLdapServerIds() == null || currentAuthenticationDomain.getLdapServerIds().size()==0) {
+				ldapConfigurationService.deleteDomain(currentAuthenticationDomain);
+				setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, null);
+				return Constants.LDAP_DOMAIN_PAGE;
+			} else {
+				addMessage(i18n("message_ldap_authenticationdomain_still_in_use_cannot_be_removed"));
+				return Constants.LDAP_DOMAIN_PAGE;
+			  }
+			}
+			catch (Exception e) {
+				addError(e.getMessage());
+				addMessage(i18n("message_ldap_authenticationdomain_cannot_be_removed"));
+				return Constants.LDAP_DOMAIN_PAGE;
+			}		
+	}	
+
+
+	
+	public String confirmRemoveAuthenticationDomain() {
+		AuthenticationDomainInfo authenticationDomainInfo = currentAuthenticationDomain();
+		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomainInfo);
+		return "removed";
+	}
+
+
+	 
+	protected class AuthenticationDomainTable extends AbstractPagedTable<AuthenticationDomainInfo> {
+		
+		private DataPage<AuthenticationDomainInfo> dataPage;
+		
+		@Override
+		public DataPage<AuthenticationDomainInfo> getDataPage(int startRow, int pageSize) {
+
+			if (dataPage == null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("fetch attributemappings data page at " + startRow + ", "+ pageSize+" sorted by "+authenticationDomains.getSortColumn());
+				}
+				List<AuthenticationDomainInfo> domainList = ldapConfigurationService.getAllDomains();
+				
+
+				if (domainList != null) {
+					logger.info("Size:"+domainList.size());
+				}
+				
+				sort(domainList);
+				dataPage = new DataPage<AuthenticationDomainInfo>(domainList.size(),0,domainList);
 			}
 			
-			sort(departmentList);
-			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
+			return dataPage;
+
 		}
-		 */
-		return dataPage;
+
 	}
 }

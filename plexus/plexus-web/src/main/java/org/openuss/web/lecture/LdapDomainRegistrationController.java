@@ -15,10 +15,10 @@ import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.web.Constants;
 
 /**
- * Backing bean for the ldap_domain registration. Is responsible starting the
- * wizard, binding the values and registrating the department.
+ * Backing bean for the ldap_domain maintenance. 
  * 
- * @author
+ * @author Peter Schuh
+ * @author Christian Grelle
  * 
  */
 

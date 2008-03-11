@@ -74,13 +74,6 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 		AttributeMappingInfo attributeMapping = currentAttributeMapping();
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMapping);
 		
-		// set selected items
-		List<String> initiallySelectedRoleAttributeKeys = new Vector<String>();
-		List<Long> selectedRoleAttributeKeyIds = attributeMapping.getRoleAttributeKeyIds();
-		for (Long roleAttributeKeyId : selectedRoleAttributeKeyIds) {
-			initiallySelectedRoleAttributeKeys.add(String.valueOf(roleAttributeKeyId));			
-		}
-		
 		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
 	}
 
@@ -99,11 +92,11 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 		
 	public String removeAttributeMapping() throws Exception {
 		try {
-			logger.debug("Starting method selectRoleAttributeKeyAndRemove");
+			logger.debug("Starting method removeAttributeMapping");
 			AttributeMappingInfo currentAttributeMapping = (AttributeMappingInfo) getSessionBean(Constants.ATTRIBUTEMAPPING_INFO);
 			if (currentAttributeMapping.getAuthenticationDomainIds() == null || currentAttributeMapping.getAuthenticationDomainIds().size()==0) {
 				ldapConfigurationService.deleteAttributeMapping(currentAttributeMapping);
-				setSessionBean(Constants.ATTRIBUTEMAPPING, null);
+				setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, null);
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			} else {
 				addMessage(i18n("message_ldap_attributemapping_still_in_use_cannot_be_removed"));
