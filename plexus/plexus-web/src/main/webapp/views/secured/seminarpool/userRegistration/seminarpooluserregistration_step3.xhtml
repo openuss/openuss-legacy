@@ -46,7 +46,7 @@
 						<h:selectBooleanCheckbox id="field#{index}" rendered="#{conditions.fieldType.value==3}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==3}" />
 						<h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" /><h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==2}" />
 						<br />
-						<h:inputText rendered="#{conditions.fieldType.value==1}" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:inputTextarea rendered="#{conditions.fieldType.value==2}" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
+						<h:inputText rendered="#{conditions.fieldType.value==1}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:inputTextarea rendered="#{conditions.fieldType.value==2}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
 						<br />
 				</t:dataList>
 			   </o:block>
