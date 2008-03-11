@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.desktop.DesktopInfo;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
@@ -191,15 +192,33 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected void handleInformParticipantsByMail(Long seminarpoolId)
 			throws Exception {
+		String assignedcourses="";
 		Validate.notNull(seminarpoolId, "handleInformParticipantsByMail ==> seminarpoolId connot be null");
 		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
 		Map<String, String> parameters = new HashMap<String, String>();
 		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
 		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
-		String assignedcourses = "";
+		List<SeminarPlaceAllocationInfo> courseList = this.getSeminarpoolAdministrationService().getAllocationsByUserAndSeminarpool(sur.getUser().getId(), seminarpoolId);
+		for(SeminarPlaceAllocationInfo spai : courseList){
+			assignedcourses += spai.getCourseName()+"<br />";
+		}
 		parameters.put("courses", assignedcourses);
 		getMessageService().sendMessage(seminarpool.getName() + "(" + seminarpool.getShortcut() + ")",
-				"seminarpool.application.subject", "seminarpool_application", parameters, sur.getUser());
+				"seminarpool.application.subject", "seminarpoolapplication", parameters, sur.getUser());
+		}
+	}
+
+	@Override
+	protected void handleSetBookmarksOnMyUniPage(Long seminarpoolId)
+			throws Exception {
+		Validate.notNull(seminarpoolId, "handleSetBookmarksOnMyUniPage ==> seminarpoolId connot be null");
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
+			DesktopInfo desktopInfo = getDesktopService2().findDesktopByUser(sur.getUser().getId()); 
+			List<SeminarPlaceAllocationInfo> courseList = this.getSeminarpoolAdministrationService().getAllocationsByUserAndSeminarpool(sur.getUser().getId(), seminarpoolId);
+			for(SeminarPlaceAllocationInfo spai : courseList){
+				this.getDesktopService2().linkCourse(desktopInfo.getId(), spai.getCourseId());
+			}
 		}
 	}
 

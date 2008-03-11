@@ -41,6 +41,7 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		this.getSeminarpoolAdministrationService().updateSeminarpool(seminarpoolInfo);
 		//Send Email
 		this.getSeminarpoolUserRegistrationService().informParticipantsByMail(seminarpoolInfo.getId());
+		this.getSeminarpoolUserRegistrationService().setBookmarksOnMyUniPage(seminarpoolInfo.getId());
 		addMessage(i18n("seminarpool_allocation_complete_sucessfull"));
 		return "";
 	}

@@ -5,6 +5,10 @@
 			The allocation of seminarpool <i>${seminarpoolname}</i> is finished! Your assigned courses were added to your MyUni Page.
 		</p>
 		<p>
+			The following courses have been applied to you:<br />
+			${courses}
+		</p>
+		<p>
 			Thank you for using OpenUSS.
 		</p>
 		<p>
