@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
+import org.openuss.framework.utilities.TranslationContext;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.internationalisation.TranslationApplicationException;
 import org.openuss.internationalisation.TranslationTextInfo;
@@ -206,9 +207,6 @@ public class CalendarServiceImpl extends
 						serialAppointmentInfo.getStarttime(),
 						serialAppointmentInfo.getSubject(), true);
 
-		// cal.addSerialAppointment(serialAppointment); is replaced by the next
-		// block
-
 		/** ********************** calculate appointments ********************* */
 
 		GregorianCalendar absoluteEnd = new GregorianCalendar();
@@ -261,10 +259,9 @@ public class CalendarServiceImpl extends
 			if (appCounter > 500)
 				throw new CalculatedAppointmentException(
 						"Too many calculated appointments");
-			// TODO Logger!
-			System.out.println("Generate Appointment "
-					+ calculatedStart.getTime().toGMTString() + " to "
-					+ calculatedEnd.getTime().toGMTString());
+//			System.out.println("Generate Appointment "
+//					+ calculatedStart.getTime().toGMTString() + " to "
+//					+ calculatedEnd.getTime().toGMTString());
 
 			// set appointment data
 
@@ -419,8 +416,11 @@ public class CalendarServiceImpl extends
 		List<SerialAppointment> apps = cal.getNaturalSerialAppointments();
 		List<SerialAppointmentInfo> serialAppInfos = new ArrayList<SerialAppointmentInfo>();
 		for (SerialAppointment saIt : apps) {
-			serialAppInfos.add(getSerialAppointmentDao()
+			SerialAppointmentInfo serialApp = (getSerialAppointmentDao()
 					.toSerialAppointmentInfo(saIt));
+			this.translate(serialApp.getAppointmentTypeInfo());
+			serialAppInfos.add(serialApp);
+			
 		}
 		return serialAppInfos;
 	}
@@ -430,8 +430,11 @@ public class CalendarServiceImpl extends
 	 */
 	protected org.openuss.calendar.AppointmentInfo handleGetAppointment(
 			java.lang.Long id) throws java.lang.Exception {
-		return (AppointmentInfo) getAppointmentDao().load(
+		
+		AppointmentInfo app = (AppointmentInfo) getAppointmentDao().load(
 				AppointmentDao.TRANSFORM_APPOINTMENTINFO, id);
+		this.translate(app.getAppointmentTypeInfo());
+		return app;
 	}
 
 	/**
@@ -439,8 +442,10 @@ public class CalendarServiceImpl extends
 	 */
 	protected org.openuss.calendar.SerialAppointmentInfo handleGetSerialAppointment(
 			java.lang.Long id) throws java.lang.Exception {
-		return (SerialAppointmentInfo) getSerialAppointmentDao().load(
+		SerialAppointmentInfo serialApp = (SerialAppointmentInfo) getSerialAppointmentDao().load(
 				SerialAppointmentDao.TRANSFORM_SERIALAPPOINTMENTINFO, id);
+		this.translate(serialApp.getAppointmentTypeInfo());
+		return serialApp;
 	}
 
 	/**
@@ -536,8 +541,11 @@ public class CalendarServiceImpl extends
 		List<Appointment> apps = cal.getNaturalSingleAppointments();
 		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
 		for (Appointment appIt : apps) {
-			appInfos.add(getAppointmentDao().toAppointmentInfo(appIt));
+			AppointmentInfo appInfo = getAppointmentDao().toAppointmentInfo(appIt);
+			this.translate(appInfo.getAppointmentTypeInfo());
+			appInfos.add(appInfo);
 		}
+		System.out.println(TranslationContext.getCurrentInstance().getLocale().toString());
 		return appInfos;
 
 	}
@@ -549,7 +557,9 @@ public class CalendarServiceImpl extends
 		List<Appointment> apps = cal.getSingleAppointments();
 		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
 		for (Appointment appIt : apps) {
-			appInfos.add(getAppointmentDao().toAppointmentInfo(appIt));
+			AppointmentInfo appInfo = getAppointmentDao().toAppointmentInfo(appIt);
+			this.translate(appInfo.getAppointmentTypeInfo());
+			appInfos.add(appInfo);
 		}
 		return appInfos;
 
@@ -657,8 +667,9 @@ public class CalendarServiceImpl extends
 		List<AppointmentInfo> calAppInfos = new ArrayList<AppointmentInfo>();
 		if (!calcApps.isEmpty()) {
 			for (Appointment calcAppIt : calcApps) {
-				calAppInfos.add(getAppointmentDao()
-						.toAppointmentInfo(calcAppIt));
+				AppointmentInfo calcApp = getAppointmentDao().toAppointmentInfo(calcAppIt);
+				this.translate(calcApp.getAppointmentTypeInfo());
+				calAppInfos.add(calcApp);
 			}
 		}
 		return calAppInfos;
@@ -734,7 +745,12 @@ public class CalendarServiceImpl extends
 		List<Appointment> apps = cal.getSingleAppointments();
 		List<AppointmentInfo> appsAfterDate = new ArrayList<AppointmentInfo>();
 		for (Appointment appIt : apps) {
-			if (appIt.getEndtime().after(date)) appsAfterDate.add(getAppointmentDao().toAppointmentInfo(appIt));
+			if (appIt.getEndtime().after(date)) {
+				AppointmentInfo appInfo = getAppointmentDao()
+						.toAppointmentInfo(appIt);
+				this.translate(appInfo.getAppointmentTypeInfo());
+				appsAfterDate.add(appInfo);
+			}
 		}
 		return appsAfterDate;
 	}
@@ -787,6 +803,10 @@ public class CalendarServiceImpl extends
 
 		getCalendarDao().update(subscribingCal);
 		getCalendarDao().update(calToSubscribe);
+	}
+	
+	private void translate(AppointmentTypeInfo appTI) throws TranslationApplicationException{
+		appTI.setName(getTranslationService().getTranslation(appTI.getId(), appTI.getName(), TranslationContext.getCurrentInstance().getLocale().toString()));
 	}
 
 }
