@@ -56,7 +56,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 				
 		final List<PaperSubmissionInfo> paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
-		if(paperInfos.isEmpty()){
+		if (paperInfos.isEmpty()){
 			//Create a submission, if the user doesn't have any
 			PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
 			SubmissionInfo.setExamId(examInfo.getId());
@@ -66,26 +66,22 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			//load the submission which has just been created into the session
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
-			
-			if(SubmissionStatus.IN_TIME.equals(paperSubmissionInfo.getSubmissionStatus())){
-				addMessage(i18n("papersubmission_message_papersubmission_intime"));
-			} else{
-				addWarning(i18n("papersubmission_message_papersubmission_notintime"));
-			}
 		} else{
 			//either update or creating a new submission
 			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1));
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 			
-			if(SubmissionStatus.IN_TIME.equals(paperSubmissionInfo.getSubmissionStatus())){
-				addMessage(i18n("papersubmission_message_papersubmission_intime"));
-			} else {
-				addError(i18n("papersubmission_message_papersubmission_notintime"));
-			}
-
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
 		return paperSubmissionInfo;
+	}
+	
+	protected void checkSubmissionStatus(PaperSubmissionInfo paperSubmissionInfo) {
+		if(SubmissionStatus.IN_TIME.equals(paperSubmissionInfo.getSubmissionStatus())){
+			addMessage(i18n("papersubmission_message_papersubmission_intime"));
+		} else{
+			addWarning(i18n("papersubmission_message_papersubmission_notintime"));
+		}
 	}
 	
 	public DocumentService getDocumentService() {

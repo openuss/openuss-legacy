@@ -88,6 +88,8 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 				
 				uploadFileManager.removeDocument(document);
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
+				
+				checkSubmissionStatus(paperSubmissionInfo);
 			} finally {
 				unpacker.closeQuitly();
 				zipFile.delete();

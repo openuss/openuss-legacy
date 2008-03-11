@@ -103,6 +103,9 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			}
 			addMessage(i18n("message_documents_save_file"));
 		}
+		
+		checkSubmissionStatus(paperSubmissionInfo);
+		
 		removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}

@@ -238,7 +238,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		LOGGER.debug("editing folder entry");
 		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
 		FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
-		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, selectedFile);
+		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 
@@ -262,7 +262,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	public String addFile() {
 		LOGGER.debug("create new file");
-		setSessionBean(Constants.PAPERSUBMISSION_FOLDERENTRY_SELECTION, new FileInfo());
+		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
