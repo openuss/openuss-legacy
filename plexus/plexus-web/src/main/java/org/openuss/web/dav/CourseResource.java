@@ -1,13 +1,12 @@
 package org.openuss.web.dav;
 
+import java.util.AbstractCollection; // TODOs
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.Folder;
 import org.openuss.documents.FolderDao;
-import org.openuss.documents.FolderInfo;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -17,6 +16,9 @@ import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 
+/**
+ * A WebDAV resource representing an OpenUSS course.
+ */
 public class CourseResource extends AbstractOrganisationResource{
 	protected DocumentService documentService;
 	protected FolderDao folderDao;
@@ -57,9 +59,7 @@ public class CourseResource extends AbstractOrganisationResource{
 	 * @return The materials backend resource of this course.
 	 */
 	protected WebDAVResource getMaterialsBackend(WebDAVPath path) {
-		
-		
-		return new DocumentResource(getContext(), path, f);
+		return DocumentResource.createByDomainObject(getContext(), path, info);
 	}
 
 	/* (non-Javadoc)

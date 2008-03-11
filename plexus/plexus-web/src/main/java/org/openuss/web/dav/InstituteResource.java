@@ -13,7 +13,6 @@ import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A WebDAVResource representing an OpenUSS institute.

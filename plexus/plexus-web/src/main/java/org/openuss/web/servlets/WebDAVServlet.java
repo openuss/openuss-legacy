@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.acl.AclManager;
 import org.apache.log4j.Logger;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.web.dav.RootResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusAnswer;
@@ -51,14 +49,15 @@ public class WebDAVServlet extends HttpServlet {
 	
 	// servlet initialization parameter names
 	private static final String INIT_PARAMETER_RESOURCE_PATH_PREFIX = "resource-path-prefix";
+	private static final String INIT_PARAMETER_MAX_FILE_SIZE = "max-file-size";
 
 	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
+
 	
  	private String resourcePathPrefix;
- 	private WebApplicationContext wac;
- 	private AclManager aclManager;
+ 	private WebDAVContext davContext;
 	
  	/* (non-Javadoc)
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -78,7 +77,6 @@ public class WebDAVServlet extends HttpServlet {
 			WebDAVResource resource;
 			Document doc;
 			WebDAVAnswer answer;
-			WebDAVContext davContext = new WebDAVContext(wac);
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
 			
@@ -395,9 +393,12 @@ public class WebDAVServlet extends HttpServlet {
 		if (resourcePathPrefix == null) {
 			throw new ServletException("resource path prefix not set");
 		}
-		wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		aclManager = (AclManager) wac.getBean("aclManager", AclManager.class);
-		AcegiUtils.setAclManager(aclManager);
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		String maxFileSizeStr = getInitParameter(INIT_PARAMETER_MAX_FILE_SIZE);
+		long maxFileSize = (maxFileSizeStr == null) ? WebDAVContext.NO_MAX_FILESIZE :
+				Long.valueOf(maxFileSizeStr);
+		davContext = new WebDAVContext(wac, maxFileSize);
+		
 		logger.info("ResourcePathPrefix: " + resourcePathPrefix);   
         logger.info(" init() done.");
 	}
@@ -419,9 +420,5 @@ public class WebDAVServlet extends HttpServlet {
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", WebDAVConstants.HEADER_DAV);
 		response.setStatus(WebDAVStatusCodes.SC_OK);
-	}	
-	
-	public WebApplicationContext getWAC(){
-		return wac;
 	}
 }
