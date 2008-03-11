@@ -104,8 +104,8 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 			AttributeMappingInfo currentAttributeMapping = (AttributeMappingInfo) getSessionBean(Constants.ATTRIBUTEMAPPING_INFO);
 			if (currentAttributeMapping.getAuthenticationDomainIds() == null || currentAttributeMapping.getAuthenticationDomainIds().size()==0) {
 				ldapConfigurationService.deleteAttributeMapping(currentAttributeMapping);
-				setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, null);
-				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
+				setSessionBean(Constants.ATTRIBUTEMAPPING, null);
+				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			} else {
 				addMessage(i18n("message_ldap_attributemapping_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
