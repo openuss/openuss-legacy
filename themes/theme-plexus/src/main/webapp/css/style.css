@@ -1594,6 +1594,7 @@ td .remove_shortcut_button:hover {
 	width: 151px;
 	height: 23px;
 	margin-right: 10px;
+	margin-left: 10px;
 	padding: 0;
 	background-position: left top;
 	background-image: url(../img/button_140_normal2.png);

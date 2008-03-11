@@ -594,7 +594,7 @@ ul.action_list li a span {
 
 /* calendar optionbox */
 
-ul.action_list li.calendar_listmode a span{
+ul.action_list li.calendar_listview a span{
   background-image:url(../img/buttons/list_icon.png);
 }
 
