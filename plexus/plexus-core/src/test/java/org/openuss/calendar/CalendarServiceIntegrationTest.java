@@ -54,22 +54,13 @@ public class CalendarServiceIntegrationTest extends
 
 	public TestUtility testUtil;
 
-	private DefaultDomainObject defaultDomainObject;
 	private AclManager aclManager;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
 		testUtility.createUserSecureContext();
-		defaultDomainObject = createDomainObject();
 		super.onSetUpInTransaction();
-	}
-
-	private DefaultDomainObject createDomainObject() {
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(
-				TestUtility.unique());
-		securityService.createObjectIdentity(defaultDomainObject, null);
-		return defaultDomainObject;
 	}
 
 	public void testCreateCalendars() {

@@ -11,12 +11,9 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.AppointmentTypeInfo;
 import org.openuss.calendar.CalculatedAppointmentException;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarInfo;
-import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.calendar.RecurrenceType;
 import org.openuss.calendar.SerialAppointmentInfo;
@@ -37,8 +34,6 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 			.getLogger(SingleAppointmentCreatePage.class);
 
 	private Integer appointmentType;
-
-	private List<AppointmentTypeInfo> appointmentTypes;
 
 	private String recurrenceType;
 
@@ -71,12 +66,10 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 			((SerialAppointmentInfo)(appointmentInfo)).setRecurrenceType(RecurrenceType.fromString(recurrenceType));
 			calendarService.updateSerialAppointment((SerialAppointmentInfo)appointmentInfo, calendarInfo);
 		} catch (CalculatedAppointmentException e) {
-			//TODO correct here
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			addError("Ein Serientermin darf nicht mehr als 500 Einzeltermine umfassen. Es wurden die ersten 500 Einzeltermine angelegt.");
 		} catch (CalendarApplicationException e) {
-			// TODO correct here
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			addError("Das Anlegen eines Appointments schlug fehl");
 		}
 		if (calendarInfo.getCalendarType().equals(CalendarType.course_calendar)) {

@@ -55,7 +55,7 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 					al = calendarService.getSubscriptions();
 				} catch (CalendarApplicationException e) {
 					this.addError(Constants.ERROR);
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 				sort(al);
 				page = new DataPage<CalendarInfo>(al.size(), 0, al);
@@ -84,7 +84,7 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 			this.addMessage(i18n("openuss4us_calendar_message_unsubscribe"));
 		} catch (CalendarApplicationException e) {
 			this.addError(i18n("openuss4us_calendar_message_subscribe_error"));
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return Constants.CALENDAR_EDIT_SUBSCRIPTIONS;
 	}

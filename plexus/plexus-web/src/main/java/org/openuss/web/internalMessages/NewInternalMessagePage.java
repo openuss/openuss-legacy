@@ -1,8 +1,6 @@
 package org.openuss.web.internalMessages;
 
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -10,10 +8,9 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.buddylist.Buddy;
-import org.openuss.buddylist.BuddyList;
-import org.openuss.buddylist.BuddyService;
-import org.openuss.internalMessage.*;
+import org.openuss.internalMessage.InternalMessageInfo;
+import org.openuss.internalMessage.InternalMessageRecipientsInfo;
+import org.openuss.internalMessage.InternalMessageService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;

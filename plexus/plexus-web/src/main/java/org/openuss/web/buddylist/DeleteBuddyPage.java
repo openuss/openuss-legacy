@@ -5,12 +5,11 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.buddylist.BuddyInfo;
 import org.openuss.buddylist.BuddyService;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.buddylist.BuddyInfo;
 
 @Bean(name = "views$secured$buddylist$deletebuddy", scope = Scope.REQUEST)
 @View

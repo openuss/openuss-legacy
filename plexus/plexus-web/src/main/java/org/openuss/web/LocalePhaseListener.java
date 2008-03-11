@@ -8,7 +8,6 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.apache.log4j.Logger;
 import org.openuss.framework.utilities.TranslationContext;
 
 /**
@@ -18,17 +17,12 @@ import org.openuss.framework.utilities.TranslationContext;
  */
 public class LocalePhaseListener implements PhaseListener {
 
-	private static final Logger logger = Logger.getLogger(LocalePhaseListener.class);
-
 	public PhaseId getPhaseId() {
 		return PhaseId.RESTORE_VIEW;
 	}
 	
-	ValueBinding bindLocale;
+	protected ValueBinding bindLocale;
 	
-	public LocalePhaseListener(){
-	}
-
 	/**
 	 * Assign locale to TranslationContext
 	 */

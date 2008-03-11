@@ -1,13 +1,11 @@
 package org.openuss.web.buddylist;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -55,12 +53,6 @@ public class UserSearchPage extends BasePage {
 
 	/* ----- business logic ----- */
 
-	@Override
-	@Prerender
-	public void prerender() throws Exception {
-		super.prerender();
-	}
-
 	public String linkProfile() {
 		User profile = User.Factory.newInstance();
 		profile.setId(this.data.getRowData().getId());
@@ -70,7 +62,7 @@ public class UserSearchPage extends BasePage {
 
 	public String findUser() {
 		getUsers(username, firstname, lastname);
-		if (users.size() == 0) {
+		if (users.isEmpty()) {
 			users = null;
 			page = null;
 			addError(i18n("user_not_found_error"));

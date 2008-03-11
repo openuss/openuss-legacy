@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -12,11 +11,8 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.AppointmentTypeInfo;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarInfo;
-import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
@@ -35,8 +31,6 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 	
 	private Integer appointmentType;
 		
-	private List<AppointmentTypeInfo> appointmentTypes;
-	
 	/* ----- business logic ----- */
 
 	@Override
@@ -66,7 +60,7 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 		logger.debug("Updating appointmentInfo:" + appointmentInfo.getId());		
 		} catch (CalendarApplicationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			addError("Das Updaten eines Appointments schlug fehl");
 		}
 		if (calendarInfo.getCalendarType().equals(CalendarType.course_calendar)) {

@@ -2,13 +2,10 @@ package org.openuss.web.calendar;
 
 import java.util.List;
 
-import javax.faces.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -17,7 +14,6 @@ import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
-import org.springframework.web.context.request.SessionScope;
 
 /**
  * Backing Bean for the user calendar-overview page (usercalendar.xhtml)
@@ -111,22 +107,25 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 	}
 
 	public String changeToWorkWeekMode() {
-		if (model == null)
+		if (model == null){
 			addError(i18n("calendar_mode_change_error"));
+		}
 		model.setMode(1);
 		return Constants.OPENUSS4US_CALENDAR;
 	}
 
 	public String changeToWeekMode() {
-		if (model == null)
+		if (model == null){
 			addError(i18n("calendar_mode_change_error"));
+		}
 		model.setMode(2);
 		return Constants.OPENUSS4US_CALENDAR;
 	}
 
 	public String changeToMonthMode() {
-		if (model == null)
+		if (model == null){
 			addError(i18n("calendar_mode_change_error"));
+		}
 		model.setMode(3);
 		return Constants.OPENUSS4US_CALENDAR;
 	}

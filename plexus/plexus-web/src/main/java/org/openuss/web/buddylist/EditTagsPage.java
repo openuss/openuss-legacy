@@ -2,20 +2,22 @@ package org.openuss.web.buddylist;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.buddylist.*;
+import org.openuss.buddylist.BuddyApplicationException;
+import org.openuss.buddylist.BuddyInfo;
+import org.openuss.buddylist.BuddyService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.security.User;
-import org.openuss.web.Constants;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * 
@@ -119,8 +121,7 @@ public class EditTagsPage extends BasePage {
 				List<String> al = buddyInfo.getTags();
 				page = new DataPage<String>(al.size(), 0, al);
 			} catch (BuddyApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 		}
 	}

@@ -9,8 +9,6 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarType;
-import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -51,7 +49,7 @@ public class CalendarListMainPage extends AbstractCalendarPage {
 					al = calendarService.getUpcomingSingleAppointments(calendarInfo);
 				} catch (CalendarApplicationException e) {
 					this.addError(Constants.ERROR);
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 				sort(al);
 				page = new DataPage<AppointmentInfo>(al.size(), 0, al);

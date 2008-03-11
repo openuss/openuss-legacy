@@ -10,7 +10,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.buddylist.BuddyInfo;
 import org.openuss.buddylist.BuddyService;
 import org.openuss.internalMessage.InternalMessageInfo;
 import org.openuss.internalMessage.InternalMessageRecipientsInfo;
@@ -85,7 +84,7 @@ public class AddBuddyPage extends BasePage{
 			buddyService.addBuddy(userInfo);
 			
 			 //inform about request
-	        System.out.println("Sending message");
+			logger.debug("sending message");
 	        InternalMessageInfo imInfo = new InternalMessageInfo();
 	        imInfo.setSenderDisplayName(user.getDisplayName());
 	        imInfo.setSenderId(user.getId());

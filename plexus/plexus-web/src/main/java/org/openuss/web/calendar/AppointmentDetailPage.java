@@ -3,7 +3,6 @@ package org.openuss.web.calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -83,7 +82,7 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 							.getCalculatedAppointments((SerialAppointmentInfo) appointmentInfo);
 				} catch (CalendarApplicationException e) {
 					this.addError(Constants.ERROR);
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 				sort(al);
 				page = new DataPage<AppointmentInfo>(al.size(), 0, al);
@@ -140,7 +139,7 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			}
 			addMessage(i18n("openuss4us_calendar_message_appointment_deleted"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			addError(i18n("openuss4us_calendar_message_appointment_deleted_error"));
 		}
 		if (calendarInfo.getCalendarType().equals(CalendarType.course_calendar)) {
@@ -155,10 +154,11 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 	}
 	
 	public String update(){
-		if(isSerial())
+		if(isSerial()){
 			return Constants.CALENDAR_UPDATE_SERIAL;
-		else
+		} else {
 			return Constants.CALENDAR_UPDATE_SINGLE;
+		}
 	}
 	
 	public SingleAppointmentDataProvider getData() {

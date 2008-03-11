@@ -1,18 +1,14 @@
 package org.openuss.web.internalMessages;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.framework.web.jsf.model.AbstractPagedTable;
-import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.internalMessage.*;
+import org.openuss.internalMessage.InternalMessageInfo;
+import org.openuss.internalMessage.InternalMessageService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -34,13 +30,7 @@ public class ReadInternalMessagePage extends BasePage {
 	
 	@Property(value= "#{"+Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE+"}")
 	private InternalMessageInfo internalMessageInfo = new InternalMessageInfo();
-	
-
-		
-	private static final Logger logger = Logger
-			.getLogger(ReadInternalMessagePage.class);
-	
-		
+			
 	public String linkToSender(){
 		profile.setId(internalMessageInfo.getSenderId());
 		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);

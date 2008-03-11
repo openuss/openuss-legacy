@@ -41,12 +41,10 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 
 	private Integer appointmentType;
 
-	private List<AppointmentTypeInfo> appointmentTypes;
-
 	private String recurrenceType;
 
 	@Property(value = "#{translationService}")
-	TranslationService translationService;
+	private TranslationService translationService;
 
 	/* ----- business logic ----- */
 
@@ -110,7 +108,7 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			this.addError("Error");
 			return null;
 		}

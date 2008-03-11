@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -20,7 +19,6 @@ import org.openuss.calendar.CalendarInfo;
 import org.openuss.calendar.CalendarService;
 import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.internationalisation.TranslationApplicationException;
 import org.openuss.internationalisation.TranslationService;
 import org.openuss.web.Constants;
 
@@ -33,7 +31,7 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 	private Integer appointmentType;
 	
 	@Property(value = "#{translationService}")
-	TranslationService translationService;
+	private TranslationService translationService;
 	
 	private List<AppointmentTypeInfo> appointmentTypes;
 	
@@ -83,12 +81,11 @@ public class SingleAppointmentCreatePage extends AbstractCalendarPage{
 		
 		try {
 			for(AppointmentTypeInfo appType : (Collection<AppointmentTypeInfo>)calendarService.getAllAppointmentTypes()){
-				System.out.println("name: " + appType.getName());
 				String name = translationService.getTranslation(appType.getId(), appType.getName(), user.getLocale());
 				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			this.addError("Error");
 			return null;
 		}

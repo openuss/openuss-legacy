@@ -20,15 +20,10 @@
 package org.openuss.web.calendar;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import javax.faces.event.ActionEvent;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
-import org.apache.myfaces.custom.schedule.model.SimpleScheduleModel;
 
 /**
  * Handler class for the schedule example 
@@ -54,8 +49,9 @@ public class ScheduleExampleHandler implements Serializable
 
 	public void deleteSelectedEntry(ActionEvent event)
     {
-        if (model == null)
+        if (model == null){
             return;
+        }
         model.removeSelectedEntry();
     }
 }

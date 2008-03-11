@@ -626,6 +626,7 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupMemberInfo aspirant : aspirants) {
 			boolean test = false;
 			for (User user : users) {
+				//TODO Lutz Check if this works
 				if (aspirant.getUserId() == user.getId()) {
 					test = true;
 				}
@@ -677,6 +678,7 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupInfo groupByUser : groupsByUser) {
 			boolean test = false;
 			for (UserGroup userGroup : userGroups) {
+				//TODO Lutz Check if this works
 				if (userGroup.getId() == testUtility.getUserGroupDao()
 						.userGroupInfoToEntity(groupByUser).getId()) {
 					test = true;
@@ -729,6 +731,7 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupInfo groupByUser : groupsByUser) {
 			boolean test = false;
 			for (UserGroup userGroup : userGroups) {
+				//TODO Lutz Check if this works
 				if (userGroup.getId() == testUtility.getUserGroupDao()
 						.userGroupInfoToEntity(groupByUser).getId()) {
 					test = true;

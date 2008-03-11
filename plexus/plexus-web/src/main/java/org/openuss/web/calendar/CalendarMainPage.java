@@ -29,8 +29,6 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	private static final Logger logger = Logger	.getLogger(CalendarMainPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
 
-	private boolean subscribed;
-
 	// Data-Provider serial appointments
 	private SerialAppointmentDataProvider serialAppointmentData = new SerialAppointmentDataProvider();
 
@@ -51,7 +49,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 					al = calendarService.getNaturalSerialAppointments(calendarInfo);
 				} catch (CalendarApplicationException e) {
 					this.addError(Constants.ERROR);
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 				sort(al);
 				page = new DataPage<SerialAppointmentInfo>(al.size(), 0, al);
@@ -81,7 +79,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 					al = calendarService.getNaturalSingleAppointments(calendarInfo);
 				} catch (CalendarApplicationException e) {
 					this.addError(Constants.ERROR);
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 				sort(al);
 				page = new DataPage<AppointmentInfo>(al.size(), 0, al);
@@ -179,16 +177,10 @@ public class CalendarMainPage extends AbstractCalendarPage {
 				return true;
 			}
 		} catch (CalendarApplicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		logger.debug("Not yet subscribed to this calendar");
 		return false;
-	}
-
-	public void setSubscribed(boolean isSubscribed) {
-		this.subscribed = isSubscribed;
-	}
-	
+	}	
 	
 }

@@ -6,13 +6,13 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.internalMessage.*;
+import org.openuss.internalMessage.InternalMessageInfo;
+import org.openuss.internalMessage.InternalMessageService;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -105,14 +105,7 @@ public class InternalMessageMainPage extends BasePage {
 		setSessionBean(Constants.OPENUSS4US_INTERNALMESSAGE_MESSAGE, imInfo);
 		return Constants.OPENUSS4US_MESSAGECENTER_REQUESTDELETE;
 	}
-		
-	private String delete(InternalMessageInfo message){
-		internalMessageService.deleteInternalMessage(message);
-		addMessage(i18n("openuss4us_message_messagecenter_deletesent"));
-		return Constants.OPENUSS4US_MESSAGECENTER;
-	}
-
-	
+			
 	public String answerMessage(){
 		InternalMessageInfo imInfo = new InternalMessageInfo();
 		imInfo.setSubject("Re: " + this.inboxData.getRowData().getSubject());
