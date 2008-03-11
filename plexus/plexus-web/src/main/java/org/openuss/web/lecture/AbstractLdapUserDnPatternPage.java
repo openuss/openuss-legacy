@@ -39,7 +39,7 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 		logger.debug("preprocess - refreshing userDnPattern session object");
 		if (userDnPatternInfo != null) {
 			if (userDnPatternInfo.getId() != null) {
-				//userDnPatternInfo = LdapConfigurationService.getUserDnPattern(userDnPatternInfo.getId());
+				userDnPatternInfo = ldapConfigurationService.getUserDnPatternById(userDnPatternInfo.getId());
 			} else {
 				userDnPatternInfo = (UserDnPatternInfo) getSessionBean(Constants.USERDNPATTERN_INFO);
 			}
@@ -52,9 +52,8 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing userDnPattern session object");
 		refreshUserDnPattern();
-		if (userDnPatternInfo == null || userDnPatternInfo.getId() == null) {
-			//TODO: CHRISTIAN: WRONG MESSAGE!!!			
-			addError(i18n("message_error_no_department_selected"));
+		if (userDnPatternInfo == null || userDnPatternInfo.getId() == null) {			
+			addError(i18n("message_ldap_userdnpattern_no_userdnpattern_selected"));
 			redirect(Constants.DESKTOP);
 		}
 	}
@@ -62,7 +61,7 @@ public abstract class AbstractLdapUserDnPatternPage extends BasePage {
 	private void refreshUserDnPattern() {
 		if (userDnPatternInfo != null) {
 			if (userDnPatternInfo.getId() != null) {
-				//userDnPatternInfo = LdapConfigurationService.getUserDnPattern(userDnPatternInfo.getId());
+				userDnPatternInfo = ldapConfigurationService.getUserDnPatternById(userDnPatternInfo.getId());
 				setSessionBean(Constants.USERDNPATTERN_INFO, userDnPatternInfo);
 			}
 		}
