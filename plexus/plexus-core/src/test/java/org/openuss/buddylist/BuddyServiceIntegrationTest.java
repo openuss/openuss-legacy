@@ -23,8 +23,6 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	
 	private SecurityService securityService;
 	
-	private DefaultDomainObject defaultDomainObject;
-	
 	private BuddyDao buddyDao;
 	
 	private TagDao tagDao;
@@ -35,15 +33,9 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
 		testUtility.createUserSecureContext();
-		defaultDomainObject = createDomainObject();
 		super.onSetUpInTransaction();
 	}
 	
-	private DefaultDomainObject createDomainObject() {
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
-		securityService.createObjectIdentity(defaultDomainObject, null);
-		return defaultDomainObject;
-	}
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
@@ -125,7 +117,7 @@ public class BuddyServiceIntegrationTest extends BuddyServiceIntegrationTestBase
 		assertEquals(1, buddyService.getAllUsedTags().size());
 		assertEquals(1, buddyDao.load(buddy3.getId()).getTags().size());
 		assertEquals(1, buddyService.getBuddyList().size());
-		} catch(Exception e1){
+		} catch(BuddyApplicationException e1){
 			fail();
 		}
 	}

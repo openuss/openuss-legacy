@@ -23,7 +23,6 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 	private UserDao userDao;
 	private InternalMessageDao internalMessageDao;
 	private MessageStatusDao messageStatusDao;
-	private DefaultDomainObject defaultDomainObject;
 	private AclManager aclManager;
 	
 	
@@ -31,15 +30,9 @@ public class InternalMessageServiceIntegrationTest extends InternalMessageServic
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
 		testUtility.createUserSecureContext();
-		defaultDomainObject = createDomainObject();
 		super.onSetUpInTransaction();
 	}
 	
-	private DefaultDomainObject createDomainObject() {
-		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
-		securityService.createObjectIdentity(defaultDomainObject, null);
-		return defaultDomainObject;
-	}
 	
 	public UserDao getUserDao() {
 		return userDao;

@@ -21,15 +21,13 @@ import org.openuss.security.SecurityService;
 public class TranslationServiceIntegrationTest extends
 		TranslationServiceIntegrationTestBase {
 
-	SecurityService securityService;
-
 	public void testLanguageAdministration() {
 		try {
 			translationService.addLanguage("deDE");
 			List<String> languages = translationService.getLanguages();
 			assertNotNull(languages);
 			assertEquals(5, languages.size());
-			assertEquals("deDE", languages.get(4).toString());
+			assertEquals("deDE", languages.get(4));
 			translationService.removeLanguage("deDE");
 			List<String> languages2 = translationService.getLanguages();
 			assertEquals(4, languages2.size());
