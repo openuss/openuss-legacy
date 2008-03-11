@@ -11,7 +11,7 @@ public class WebDAVException extends Exception implements WebDAVAnswer {
 	 */
 	private static final long serialVersionUID = 5132720312122649706L;
 
-	protected final int statusCode;
+	protected int statusCode;
 
 	/**
 	 * Constructor.
@@ -67,6 +67,16 @@ public class WebDAVException extends Exception implements WebDAVAnswer {
 	 */
 	public String getStatusPhrase() {
 		return WebDAVStatusCodes.getReasonPhrase(getStatusCode());
+	}
+	
+	/**
+	 * Reset the status code of this exception
+	 * 
+	 * @param statusCode The new code to set.
+	 * @return 
+	 */
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
 	
 	/**

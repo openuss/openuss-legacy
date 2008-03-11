@@ -373,23 +373,26 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	protected abstract WebDAVResource createCollectionImpl(String name) throws WebDAVResourceException;
 
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#createFile(java.lang.String)
+	 * @see org.openuss.webdav.WebDAVResource#createFile(java.lang.String, org.openuss.webdav.IOContext)
 	 */
-	public WebDAVResource createFile(String name)
+	public WebDAVResource createFile(String name, IOContext ioc)
 			throws WebDAVResourceException {
 		checkCreate();
 		checkFreeName(name);
 		
-		return createFileImpl(name);
+		ioc = getExistingIOC(ioc);
+		
+		return createFileImpl(name, ioc);
 	}
 	
 	/**
 	 * Creates a new file in this collection without having to check preconditions.
 	 * 
 	 * @param name The name of the file to create.
+	 * @param ioc The data to write. This may be a NullIOContext. Guaranteed not to be null.
 	 * @return A WebDAVResource pointing to the created file.
 	 */
-	protected abstract WebDAVResource createFileImpl(String name) throws WebDAVResourceException;
+	protected abstract WebDAVResource createFileImpl(String name, IOContext ioc) throws WebDAVResourceException;
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#delete()
@@ -516,6 +519,18 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		return res;
+	}
+	
+	/**
+	 * @param ioc The IOContext to validate.
+	 * @return ioc or a virtual IOContext, iff ioc is null
+	 */
+	protected static IOContext getExistingIOC(IOContext ioc) {
+		if (ioc != null) {
+			return ioc;
+		} else {
+			return new NullIOContext(null);
+		}
 	}
 
 	public WebDAVContext getContext() {

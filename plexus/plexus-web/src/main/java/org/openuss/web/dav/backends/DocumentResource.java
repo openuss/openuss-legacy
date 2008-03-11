@@ -10,11 +10,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.FileEntry;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.Folder;
 import org.openuss.documents.FolderDao;
@@ -24,6 +22,7 @@ import org.openuss.web.Constants;
 import org.openuss.web.dav.IOContextImpl;
 import org.openuss.web.dav.SimpleWebDAVResource;
 import org.openuss.web.dav.WebDAVContext;
+import org.openuss.web.dav.WebDAVPathImpl;
 import org.openuss.web.dav.WebDAVUtils;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVConstants;
@@ -58,7 +57,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	protected WebDAVResource createCollectionImpl(String name)
 			throws WebDAVResourceException {
 		
-		FolderInfo fi = documentService.getFolder(entry);
+		FolderInfo fi = folderDao.toFolderInfo((Folder)entry);
 		
 		FolderInfo newFolderInfo = new FolderInfo();
 		newFolderInfo.setName(name);
@@ -78,11 +77,33 @@ public class DocumentResource extends SimpleWebDAVResource {
 		return new DocumentResource(getContext(), path, childEntry);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFileImpl(java.lang.String, org.openuss.webdav.IOContext)
+	 */
 	@Override
-	protected WebDAVResource createFileImpl(String name)
+	protected WebDAVResource createFileImpl(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		// TODO Auto-generated method stub
-		return null;
+		FolderInfo fi = folderDao.toFolderInfo((Folder)entry);
+		
+		FileInfo newFileInfo = new FileInfo();
+		newFileInfo.setName(name);
+		newFileInfo.setFileName(name);
+		newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
+		newFileInfo.setCreated(new Date());
+		newFileInfo.setInputStream(ioc.getInputStream());
+		//newFileInfo.setContentType(ioc.getContentType());
+		
+		try {
+			documentService.createFileEntry(newFileInfo, fi);
+		} catch (DocumentApplicationException e) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
+		}
+		
+		subEntriesCache = null;
+		
+		FolderEntry childEntry = ((Folder) entry).getFolderEntryByName(name);
+		
+		return new DocumentResource(getContext(), path, childEntry);
 	}
 
 	@Override

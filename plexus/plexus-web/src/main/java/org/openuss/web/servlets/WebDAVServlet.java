@@ -54,7 +54,7 @@ public class WebDAVServlet extends HttpServlet {
 
 	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
-	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, POST, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
+	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 	
  	private String resourcePathPrefix;
  	private WebApplicationContext wac;
@@ -121,7 +121,17 @@ public class WebDAVServlet extends HttpServlet {
 			case WebDAVMethods.DAV_MKCOL:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
 				parentPath = path.getParent();
-				parentResource = root.resolvePath(parentPath);
+				try {
+					parentResource = root.resolvePath(parentPath);
+				} catch (WebDAVException e) {
+					// If an intermediate resource can not be found, reset status code to Conflict
+					// See RFC 4918 9.3.1 for details
+					if (e.getStatusCode() == WebDAVStatusCodes.SC_NOT_FOUND) {
+						e.setStatusCode(WebDAVStatusCodes.SC_CONFLICT);
+					}
+					
+					throw e;
+				}
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				String newFilename = path.asResolved().getFileName();
 				if (parentResource.hasChild(newFilename)){
@@ -149,7 +159,7 @@ public class WebDAVServlet extends HttpServlet {
 				printResponse(response, answer);
 				break;
 			case WebDAVMethods.DAV_POST:
-				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_BAD_REQUEST);
+				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
 				printResponse(response, answer);
 				break;
 			case WebDAVMethods.DAV_PUT:
@@ -157,15 +167,27 @@ public class WebDAVServlet extends HttpServlet {
 				parentPath = path.getParent();
 				parentResource = root.resolvePath(parentPath);
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
-				if (parentResource.hasChild(path.getFileName())){
+				String fileName = path.asResolved().getFileName();
+				IOContext ioc = WebDAVUtils.getClientInputContext(request);
+				
+				if (parentResource.hasChild(fileName)){
 					if (!overwrite){
 						answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
 						printResponse(response, answer);
 						break;
+					} else {
+						resource = parentResource.resolvePath(parentPath.asResolved().concat(fileName));
+						
+						if (resource.isCollection()) {
+							throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, resource);
+						} else {
+							resource.writeContent(ioc);
+						}
 					}
+				} else {
+					resource = parentResource.createFile(fileName, ioc);
 				}
-				resource = parentResource.createFile(path.getFileName());
-				resource.writeContent(WebDAVUtils.getClientInputContext(request));
+				
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
 				printResponse(response, answer);
 				break;
@@ -345,8 +367,8 @@ public class WebDAVServlet extends HttpServlet {
  				}
 			} else {
  				IOContext context = src.readContent();
- 				WebDAVResource destinationResource = parentDst.createFile(filename);
- 				destinationResource.writeContent(context);
+ 				parentDst.createFile(filename, context);
+ 				
  				MultiStatusResponse msr = new SimpleStatusResponse(destinationPath.toClientString(), WebDAVStatusCodes.SC_CREATED); 
  	 			answer.addResponse(msr);
  	 			return;

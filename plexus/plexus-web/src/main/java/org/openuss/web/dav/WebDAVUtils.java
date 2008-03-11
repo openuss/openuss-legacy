@@ -314,7 +314,7 @@ public final class WebDAVUtils {
 			
 	}
 	
-	/* Conversions */
+	/* Time */
 	
 	/**
 	 * Converts a date object to a timestamp one.
@@ -336,7 +336,20 @@ public final class WebDAVUtils {
 		return rfc1123DateFormat.format(d);		
 	}
 	
+	/**
+	 * Formats a date in the internet time format (date-time as defined in RFC 3339)
+	 * 
+	 * @param d The date to represent.
+	 * @return A string representing d as defined in RFC 3339 5.6 (date-time)
+	 */
 	public static String dateToInternetString(Date d) {
 		return internetDateFormat.format(d);
+	}
+	
+	/**
+	 * @return A timestamp representing the current time.
+	 */
+	public static Timestamp nowTimestamp() {
+		return new Timestamp(new Date().getTime());
 	}
 }

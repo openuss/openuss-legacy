@@ -38,10 +38,10 @@ public abstract class AbstractOrganisationResource extends CollisionAvoidingSimp
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFileImpl(java.lang.String)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFileImpl(java.lang.String, org.openuss.webdav.IOContext)
 	 */
 	@Override
-	protected WebDAVResource createFileImpl(String name)
+	protected WebDAVResource createFileImpl(String name, IOContext ioc)
 			throws WebDAVResourceException {
 		// should never be called because isWritable() returns false.
 		throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Creation of files in the organization tree via WebDAV is not implemented");

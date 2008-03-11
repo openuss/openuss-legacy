@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 import org.apache.commons.io.input.NullInputStream;
 import org.openuss.webdav.IOContext;
+import org.openuss.webdav.WebDAVConstants;
 
 /**
  * A structure of file information with an empty InputStream and a context length of 0. 
@@ -14,12 +15,21 @@ import org.openuss.webdav.IOContext;
 public class NullIOContext implements IOContext{
 	
 	/**
-	 * the IOContext object, which is used to get the context
+	 * The IOContext object, which is used to get the context
+	 * null if even this should be emulated.
 	 */
 	protected IOContext context;
 	
 	/**
+	 * Constructor for a completely virtual IOContext.
+	 */
+	public NullIOContext() {
+		this(null);
+	}
+	
+	/**
 	 * @param context the IOContext object, which will be stored to get the context
+	 * 				Provide null for a generic 0-byte information.
 	 */
 	public NullIOContext(IOContext context){
 		this.context = context;
@@ -43,7 +53,7 @@ public class NullIOContext implements IOContext{
 	 * @see org.openuss.webdav.IOContext#getContentLanguage()
 	 */
 	public String getContentLanguage() {
-		return context.getContentLanguage();
+		return (context == null) ? null : context.getContentLanguage();
 	}
 
 	/** 
@@ -57,7 +67,7 @@ public class NullIOContext implements IOContext{
 	 * @see org.openuss.webdav.IOContext#getContentType()
 	 */
 	public String getContentType() {
-		return context.getContentType();
+		return (context == null) ? WebDAVConstants.MIMETYPE_DEFAULT : context.getContentLanguage();
 	}
 
 	/* (non-Javadoc)
@@ -78,6 +88,6 @@ public class NullIOContext implements IOContext{
 	 * @see org.openuss.webdav.IOContext#getModificationTime()
 	 */
 	public Timestamp getModificationTime() {
-		return context.getModificationTime();
+		return (context == null) ? WebDAVUtils.nowTimestamp() : context.getModificationTime();
 	}
 }

@@ -64,7 +64,7 @@ public interface WebDAVResource {
 	 * Read a document from the client or write for a copy/move task.
 	 * If this resource points to a collection, the returned
 	 * 
-	 * @param ec The ExportContext that allows writing to the client. This may be a virtual one.
+	 * @param ioc Wrapper of the data to write.
 	 * @throws WebDAVResourceException An error that can be handed directly to the client.
 	 * @throws IOException On internal reading errors.
 	 */
@@ -84,11 +84,12 @@ public interface WebDAVResource {
 	 * Creates a file with the the given name as a child of this resource.
 	 * 
 	 * @param name The name of the new file
+	 * @param ioc The data to write.
 	 * @return the new collection as a WebDAVResource object
 	 * @throws WebDAVResourceException An error that can be handed directly to the client.
 	 * 			If !isCollection() or the resource already exists, a Conflict exception is thrown.
 	 */
-	public WebDAVResource createFile(String name) throws WebDAVResourceException;
+	public WebDAVResource createFile(String name, IOContext ioc) throws WebDAVResourceException;
 	
 	/**
 	 * @param name The name of the child.

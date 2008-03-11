@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.openuss.webdav.IOContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
@@ -129,27 +130,19 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	 * @see org.openuss.webdav.WebDAVResource#createCollection()
 	 */
 	public WebDAVResource createCollection(String name) throws WebDAVResourceException {
-		checkCreate();
-		
 		name = sanitizeName(name);
 		
-		checkFreeName(name);		
-		
-		return createCollectionImpl(name);
+		return super.createCollection(name);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#createFile(java.lang.String)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFile(java.lang.String, org.openuss.webdav.IOContext)
 	 */
-	public WebDAVResource createFile(String name)
+	public WebDAVResource createFile(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		checkCreate();
-		
 		name = sanitizeName(name);
 		
-		checkFreeName(name);
-		
-		return createFileImpl(name);
+		return super.createFile(name, ioc);
 	}
 	
 	/**

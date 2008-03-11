@@ -341,4 +341,20 @@ public class WebDAVPathImpl implements WebDAVPath {
 		
 		return new WebDAVPathImpl(path, toResolve.substring(0, p));
 	}
+
+	/**
+	 * Get the base name of a file without the extension.
+	 * 
+	 * @param fileName The full file name (without directory components)
+	 * @return The name without the extension. For example, an input of "test.a.txt" yields "txt". If no extension is present, "" is returned.
+	 */
+	public static String stripExtension(String fileName) {
+		int dotPos = fileName.lastIndexOf(FILEEXT_SEP);
+		
+		if (dotPos < 0) {
+			return "";
+		} else {
+			return fileName.substring(dotPos + FILEEXT_SEP.length());
+		}
+	}
 }
