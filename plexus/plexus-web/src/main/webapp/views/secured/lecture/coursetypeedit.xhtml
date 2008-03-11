@@ -12,15 +12,57 @@
       
 	<h:form id="courseTypeForm">
 		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
-			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100"/>
+			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100" />
 			<o:input entity="courseTypeInfo" property="shortcut" required="true" maxlength="30">
 				<f:validator validatorId="filenameValidator"/>			
 			</o:input>
 			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
-		</o:block> 
-		<o:block>	
-			<h:commandButton id="saveCourseType"   action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
-			<h:commandButton id="cancelCourseType" action="#{views$secured$lecture$institutecoursetypes.cancelCourseType}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+			<br />
+			<c:if test="#{views$secured$lecture$institutecoursetypes.instantiate}">
+				<label class="field_label">
+					<h:selectBooleanCheckbox id="checkInstantiate" 
+						value="#{views$secured$lecture$institutecoursetypes.instantiate}"
+						styleClass="fieldCheckBox" 
+						valueChangeListener="#{views$secured$lecture$institutecoursetypes.processInstantiateBooleanChanged}" 
+						onchange="this.form.submit();"
+						immediate="true" 
+						checked="true" />
+						#{msg.coursetype_instantiate}
+				</label>
+			</c:if>
+			<c:if test="#{!views$secured$lecture$institutecoursetypes.instantiate}">
+				<label class="field_label">
+					<h:selectBooleanCheckbox id="checkInstantiate" 
+						value="#{views$secured$lecture$institutecoursetypes.instantiate}"
+						styleClass="fieldCheckBox" 
+						valueChangeListener="#{views$secured$lecture$institutecoursetypes.processInstantiateBooleanChanged}" 
+						onchange="this.form.submit();"
+						immediate="true" />
+						#{msg.coursetype_instantiate}
+				</label>
+			</c:if>
+			<h:outputText value="#{msg.coursetype_instantiate_info}" styleClass="content_font_normal"/>
+   			<h:outputLabel value="#{msg.institute_period_selection}" for="periodSelection" styleClass="field_label"/>
+			<h:selectOneListbox 
+				id="periodSelection" 
+				size="1" 
+				value="#{periodInfo.id}"
+				
+				styleClass="pulldown">
+			    <f:selectItems value="#{views$secured$lecture$institutecourses.allPeriodsOfInstitute}"/>	    
+			    <f:validator validatorId="coursePeriodSelectValidator"/>
+			</h:selectOneListbox>
+		</o:block>
+		<o:block>
+			<h:outputText value="#{msg.coursetype_save_info}" styleClass="content_font_normal" />
+			<br /><br />
+			<c:if test="#{!views$secured$lecture$institutecoursetypes.instantiate}">
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big button_disabled"  disabled="true"/>
+			</c:if>
+			<c:if test="#{views$secured$lecture$institutecoursetypes.instantiate}">
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big" />
+			</c:if>
+			<h:commandButton id="saveCourseType" action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save_only}" styleClass="button_save" />
 		</o:block>
 	</h:form>
 </ui:composition>

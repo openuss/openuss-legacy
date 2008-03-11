@@ -1578,6 +1578,11 @@ td .remove_shortcut_button:hover {
 	background-position: top right;
 }
 
+.button_disabled {
+	background-image: url(../img/button_180_disabled.png);
+	color: #A1A1A1;
+}
+
 table {
 	margin: 0;
 	padding: 0;

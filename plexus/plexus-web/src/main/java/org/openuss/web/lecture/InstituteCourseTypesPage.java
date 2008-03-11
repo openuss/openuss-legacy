@@ -1,5 +1,10 @@
 package org.openuss.web.lecture;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,9 +19,12 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.AccessType;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
+
 
 /**
  * CourseType Administration Page
@@ -34,6 +42,11 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	/** currently editing course type */
 	private Boolean editing = false;
 
+	/** period selection and instantiation of a course type */
+	private Boolean instantiate = true;
+	
+	private UIComponent component;
+	
 	/** course type info */
 	@Property(value="#{"+Constants.COURSE_TYPE_INFO+"}")
 	private CourseTypeInfo courseTypeInfo;
@@ -90,6 +103,13 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 			return Constants.SUCCESS;
 		}
 	}
+	
+	public void processInstantiateBooleanChanged(ValueChangeEvent event) {
+		logger.debug("InstantiateBooleanChanged() processed");
+		//final Long periodId = (Long) event.getNewValue();
+		//periodInfo = universityService.findPeriod(periodId);
+		//setSessionBean(Constants.PERIOD_INFO, periodInfo);
+	}
 
 	/**
 	 * Saves new courseType or updates changes to courseType Removed current
@@ -99,27 +119,64 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	 */
 	public String saveCourseType() throws DesktopException, LectureException {
 		logger.debug("Starting method saveCourseType()");
-		if (courseTypeInfo.getId() == null) {
-
-			courseTypeInfo.setInstituteId(instituteInfo.getId());
-			courseTypeService.create(courseTypeInfo);
-
-			addMessage(i18n("institute_message_add_coursetype_succeed") + " " + i18n("institute_message_add_coursetype_advice"));
-			courseTypeInfo = null;
-			editing = false;
-			return Constants.INSTITUTE_COURSES_PAGE;
+		if(instantiate && ((periodInfo.getId().longValue() == Constants.PERIODS_ACTIVE) || (periodInfo.getId().longValue() == Constants.PERIODS_PASSIVE))) {
+			//((UIInput) component).setValid(false);
+			//addError(component.getClientId(FacesContext.getCurrentInstance()), i18n("error_choose_a_valid_period"),null);
+			//addError("periodSelection", i18n("error_choose_a_valid_period"),null);
+			addError(i18n("error_choose_a_valid_period"),null);
+			return Constants.FAILURE;
 		} else {
-			courseTypeService.update(courseTypeInfo);
-			addMessage(i18n("institute_message_persist_coursetype_succeed"));
-			removeSessionBean(Constants.COURSE_TYPE_INFO);
-			courseTypeInfo = null;
-			editing = false;
-			return Constants.SUCCESS;
+			if (courseTypeInfo.getId() == null) {
+				
+				courseTypeInfo.setInstituteId(instituteInfo.getId());
+				courseTypeService.create(courseTypeInfo);
+				
+				if(instantiate)
+					addCourse();
+				
+				addMessage(i18n("institute_message_add_coursetype_succeed"));
+				courseTypeInfo = null;
+				editing = false;
+				return Constants.SUCCESS;
+			} else {
+				courseTypeService.update(courseTypeInfo);
+				addMessage(i18n("institute_message_persist_coursetype_succeed"));
+				removeSessionBean(Constants.COURSE_TYPE_INFO);
+				courseTypeInfo = null;
+				editing = false;
+				return Constants.SUCCESS;
+			}	
 		}
-
-		
 	}
+	
+	public String saveCourseTypeAndGoToSettings() throws DesktopException, LectureException {
+		instantiate = true;
+		this.saveCourseType();
+		return Constants.COURSE_OPTIONS_PAGE;
+	}
+	
+	public String addCourse() throws DesktopException {
+		logger.debug("Starting method addCourse");
+		courseInfo = new CourseInfo();
+		courseInfo.setCourseTypeDescription(courseTypeInfo.getDescription());
+		courseInfo.setCourseTypeId(courseTypeInfo.getId());
+		courseInfo.setPeriodId(periodInfo.getId());
+		courseInfo.setPeriodName(periodInfo.getName());
+		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
+		// new course by default with the features newsletter, documents and
+		// discussion
+		//FIXME should not be defined in web layer 
+		courseInfo.setNewsletter(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setDiscussion(true);
 
+		courseInfo.setAccessType(AccessType.CLOSED);
+		courseService.create(courseInfo);
+		addMessage(i18n("institute_message_persist_coursetype_succeed"));
+		setSessionBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_OPTIONS_PAGE;
+	}
+	
 	/**
 	 * Cancels editing or adding of current courseType
 	 * 
@@ -200,6 +257,22 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 
 	public void setCourseTypeInfo(CourseTypeInfo courseTypeInfo) {
 		this.courseTypeInfo = courseTypeInfo;
+	}
+
+	public Boolean getInstantiate() {
+		return instantiate;
+	}
+
+	public void setInstantiate(Boolean instantiate) {
+		this.instantiate = instantiate;
+	}
+
+	public UIComponent getComponent() {
+		return component;
+	}
+
+	public void setComponent(UIComponent component) {
+		this.component = component;
 	}
 
 
