@@ -29,7 +29,7 @@
 			<o:block>
 				<o:input id="appointment"
 					label="#{msg.openuss4us_calendar_appointment_subject}"
-					entity="appointmentInfo" property="subject" maxlength="100"
+					entity="appointmentInfo" property="subject" maxlength="200"
 					required="true"
 					title="#{msg.openuss4us_calendar_appointment_subject_hint}" />
 				<o:input label="#{msg.openuss4us_calendar_appointment_starttime}"
@@ -56,7 +56,7 @@
 					required="true" maxlength="16" />
 				<o:input id="location"
 					label="#{msg.openuss4us_calendar_appointment_location}"
-					entity="appointmentInfo" property="location" maxlength="100"
+					entity="appointmentInfo" property="location" maxlength="150"
 					title="#{msg.openuss4us_calendar_appointment_location_hint}" />
 				<h:outputLabel for="accessType"
 					value="#{msg.appointmenttypeinfo_name}" styleClass="field_label" />
@@ -69,10 +69,10 @@
 				<h:message for="appointmentType" styleClass="field_error" />
 				<o:input entity="appointmentInfo" property="description"
 					id="description" type="textarea" styleClass="field_message"
-					maxlength="300" label="#{msg.openuss4us_calendar_description}"
+					maxlength="500" label="#{msg.openuss4us_calendar_description}"
 					title="#{msg.openuss4us_calendar_description_hint}" minlength="0"
 					required="false">
-					<f:validateLength maximum="300" />
+					<f:validateLength maximum="500" />
 					<f:converter converterId="xssFilter" />
 				</o:input>
 
