@@ -57,11 +57,11 @@
 				</t:column>
 				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.CRU}">
 						<plexus:column header="#{msg.commands_header}" styleClass="col_commands">
-					<h:commandButton id="unsubscribe"
+					
+					<h:commandLink
 						action="#{views$secured$calendar$subscribedcalendars.removeSubscription}"
-						value="#{msg.openuss4us_calendar_subscribe_delete}"
 						title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
-						styleClass="button_remove" />
+						class="icon_deletesubscription" />
 				</plexus:column> </s:acl>
 			</plexus:dataTable>
 

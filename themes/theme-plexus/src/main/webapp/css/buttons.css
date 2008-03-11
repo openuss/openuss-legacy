@@ -87,7 +87,7 @@ a.icon_deleteappointment:focus, a.icon_deleteappointment:hover{
 }
 
 a.icon_edittags {
-	background-image: url(../img/buttons/delete_icon.png);
+	background-image: url(../img/buttons/edit_tags_icon.png);
 	background-position: left top;
 	height: 16px;
 	width: 16px;
@@ -154,6 +154,20 @@ a.icon_deletemessage {
 }
 
 a.icon_deletemessage:focus, a.icon_deletemessage:hover{
+	background-position: top right;
+}
+
+a.icon_deletesubscription {
+	background-image: url(../img/buttons/delete_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_deletesubscription:focus, a.icon_deletesubscription:hover{
 	background-position: top right;
 }
 
