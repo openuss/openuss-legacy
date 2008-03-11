@@ -5,10 +5,8 @@
  */
 package org.openuss.wiki;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,36 +31,9 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	
-	private static final String IMPORT_IMAGE_STRING = "fileid=%s";
+	private static final String IMPORT_IMAGE_TEMPLATE_SEARCH = "<img(.+)src=\"(.*)%s\\?fileid=%s\"(.*)/>";
 	
-	private static final String IMPORT_IMAGE_TEMPLATE = "<img.+src=\".*%s\\?fileid=%s\".*/>";
-	
-	private class ImageImportAllocation {
-		
-		private final Long importId;
-		
-		private final Long exportId;
-		
-		private final String filename;
-		
-		public ImageImportAllocation(final Long importId, final Long exportId, final String filename) {
-			this.importId = importId;
-			this.exportId = exportId;
-			this.filename = filename;
-		}
-
-		public Long getImportId() {
-			return importId;
-		}
-
-		public Long getExportId() {
-			return exportId;
-		}
-
-		public String getFilename() {
-			return filename;
-		}
-	}
+	private static final String IMPORT_IMAGE_TEMPLATE_REPLACE = "<img$1src=\"$2%s\\?fileid=%s\"$3/>";
 
 	@Override
 	protected void handleDeleteWikiSite(Long wikiSiteId) throws Exception {
@@ -391,8 +362,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		String newContent = wikiSiteContent.getText();
 		
 		for (ImageImportAllocation imageImportAllocation : imageImportAllocations) {
-			final String searchString = String.format(IMPORT_IMAGE_TEMPLATE, imageImportAllocation.getFilename(), imageImportAllocation.getExportId());
-			final String replaceString = String.format(IMPORT_IMAGE_TEMPLATE, imageImportAllocation.getFilename(), imageImportAllocation.getImportId());
+			final String searchString = String.format(IMPORT_IMAGE_TEMPLATE_SEARCH, imageImportAllocation.getFilename(), imageImportAllocation.getExportId());
+			final String replaceString = String.format(IMPORT_IMAGE_TEMPLATE_REPLACE, imageImportAllocation.getFilename(), imageImportAllocation.getImportId());
 			
 			final Pattern searchPattern = Pattern.compile(searchString);
 			final Matcher matcher = searchPattern.matcher(newContent);
@@ -479,6 +450,51 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		}
 		
 		return assistantCourses;
+	}
+	
+	/**
+	 * Bean for encapsulation of Information regarding Import of Images and Update of References.
+	 * @author  Projektseminar WS 07/08, Team Collaboration
+	 * @see org.openuss.wiki.WikiService
+	 * 
+	 */
+	private class ImageImportAllocation {
+		
+		private final Long importId;
+		
+		private final Long exportId;
+		
+		private final String filename;
+		
+		public ImageImportAllocation(final Long importId, final Long exportId, final String filename) {
+			this.importId = importId;
+			this.exportId = exportId;
+			this.filename = filename;
+		}
+
+		/**
+		 * Returns ID of the imported Image.
+		 * @return ID of the imported Image.
+		 */
+		public Long getImportId() {
+			return importId;
+		}
+
+		/**
+		 * Returns ID of the exported Image.
+		 * @return ID of the exported Image.
+		 */
+		public Long getExportId() {
+			return exportId;
+		}
+
+		/**
+		 * Returns Filename of the imported Image.
+		 * @return Filename of the imported Image.
+		 */
+		public String getFilename() {
+			return filename;
+		}
 	}
 
 }
