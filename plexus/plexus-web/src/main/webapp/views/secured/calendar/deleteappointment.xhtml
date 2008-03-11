@@ -130,41 +130,8 @@
 					<p class="content_font_normal"><h:outputText
 						value="#{msg.openuss4us_calendar_location}: #{appointmentInfo.location}" /></p>
 				</c:if>
-				<c:if
-					test="#{views$secured$calendar$viewappointmentdetails.serial}">
-					
-					<plexus:dataTable id="singleAppointmentTable"
-			value="views$secured$calendar$viewappointmentdetails.data"
-			var="singleAppointment" rows="10"
-			label="#{msg.openuss4us_calendar_single_appointments}">
-			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
-				<h:outputText value="#{singleAppointment.subject}"
-					styleClass="header_font_normal" />
-			</t:column>
-			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
-				<h:outputText value="#{singleAppointment.starttime}">
-					<f:convertDateTime pattern="E, dd.MM.yyyy"  timeZone="#{user.timezone}" />
-				</h:outputText>
-			</t:column>
-			<t:column styleClass="col_max_left">
-				<plexus:commandSortHeader columnName="takingPlace">#{msg.openuss4us_calendar_taking_place}</plexus:commandSortHeader>
-				<h:selectBooleanCheckbox value="#{singleAppointment.takingPlace}" disabled="true"/>
-			</t:column>
-			<s:acl domainObject="#{singleAppointment.calendarId}" hasPermission="#{ACL.CREATE}">
-			<t:column styleClass="col_commands">
-				<h:commandButton id="delete" action="#{views$secured$calendar$viewappointmentdetails.deactivate}"
-					value="#{msg.openuss4us_calendar_appointment_change_status}" title="#{msg.openuss4us_calendar_appointment_change_status_hint}"
-					styleClass="button_remove" />
-			</t:column></s:acl>
-		</plexus:dataTable>
-						
-				</c:if>
+				
 			</o:block>
-			
-			
-			
 			
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"

@@ -176,7 +176,7 @@ public class CalendarServiceIntegrationTest extends
 
 			// test delete appointment
 
-			calendarService.deleteAppointment(newAppointmentInfo, userCalInfo);
+			calendarService.deleteAppointment(newAppointmentInfo);
 			List<AppointmentInfo> appointmentInfos = calendarService
 					.getSingleAppointments(userCalInfo);
 			assertEquals(0, appointmentInfos.size());
@@ -307,8 +307,7 @@ public class CalendarServiceIntegrationTest extends
 
 			/* test delete serial appointment */
 
-			calendarService.deleteSerialAppointment(saAfterUpdate,
-					userCalendarInfo);
+			calendarService.deleteSerialAppointment(saAfterUpdate);
 
 			// test if natural serial appointments exist after delete
 			List<SerialAppointmentInfo> serialAppInfosAfterDelete = calendarService
@@ -596,7 +595,7 @@ public class CalendarServiceIntegrationTest extends
 					.getSingleAppointments(courseCalInfo);
 			AppointmentInfo appInfoToDel = courseAppInfos2.get(0);
 			assertNotNull(appInfoToDel);
-			calendarService.deleteAppointment(appInfoToDel, courseCalInfo);
+			calendarService.deleteAppointment(appInfoToDel);
 			List<AppointmentInfo> appInfosAfterDel = calendarService
 					.getSingleAppointments(courseCalInfo);
 			assertEquals(1, appInfosAfterDel.size());
@@ -745,8 +744,7 @@ public class CalendarServiceIntegrationTest extends
 			// test delete of serial appointment
 
 			// test if natural serial appointment is deletet
-			calendarService.deleteSerialAppointment(serialAppInfos2.get(1),
-					courseCalInfo);
+			calendarService.deleteSerialAppointment(serialAppInfos2.get(1));
 			List<SerialAppointmentInfo> serialAppInfos3 = calendarService
 					.getNaturalSerialAppointments(userCalInfo);
 			assertEquals(1, serialAppInfos3.size());

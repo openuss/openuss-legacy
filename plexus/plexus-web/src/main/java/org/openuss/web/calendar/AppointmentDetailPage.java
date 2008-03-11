@@ -127,10 +127,10 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 		try {
 			if (isSerial()) {
 				removeSerialModelEntries(appointmentInfo);
-				calendarService.deleteSerialAppointment((SerialAppointmentInfo) appointmentInfo, calendarInfo);			
+				calendarService.deleteSerialAppointment((SerialAppointmentInfo) appointmentInfo);			
 			} else {
 				removeSingleModelEntry(appointmentInfo);
-				calendarService.deleteAppointment(appointmentInfo, calendarInfo);
+				calendarService.deleteAppointment(appointmentInfo);
 			}
 			addMessage(i18n("openuss4us_calendar_message_appointment_deleted"));
 		} catch (Exception e) {

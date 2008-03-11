@@ -141,21 +141,16 @@ public class CalendarServiceImpl extends
 	}
 
 	/**
-	 * @see org.openuss.calendar.CalendarService#deleteAppointment(org.openuss.calendar.AppointmentInfo,
-	 *      org.openuss.calendar.CalendarInfo)
+	 * @see org.openuss.calendar.CalendarService#deleteAppointment(org.openuss.calendar.AppointmentInfo)
 	 */
 	protected void handleDeleteAppointment(
-			org.openuss.calendar.AppointmentInfo singleAppointmentInfo,
-			org.openuss.calendar.CalendarInfo calendar)
+			org.openuss.calendar.AppointmentInfo singleAppointmentInfo)
 			throws java.lang.Exception {
 
 		if (singleAppointmentInfo.getId() == null)
 			throw new Exception("Appointment does not exist");
 		Appointment app = getAppointmentDao().load(
 				singleAppointmentInfo.getId());
-		if (app.getSourceCalendar().getId().longValue() != calendar.getId().longValue()){
-			throw new Exception("Calendar is not source for the appointment");
-		}
 		// appointment can only be deleted if its not part of a serial
 		// appointment
 		if (app.isSerial())
@@ -165,10 +160,10 @@ public class CalendarServiceImpl extends
 			throw new Exception(
 					"Cannot delete appointment, it is part of a serial appointment");
 
+		Calendar cal = app.getSourceCalendar();
 		// remove associations to all assigned calendars of this appointment
 		// (including source calendar)
 		app.setSourceCalendar(null);
-		Calendar cal = getCalendarDao().load(calendar.getId());
 		cal.deleteAppointment(app);
 
 		// finally remove appointment
@@ -339,26 +334,24 @@ public class CalendarServiceImpl extends
 					"Given Calendar is not the source calendar for this appointment");
 
 		
-		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
+		this.deleteSerialAppointment(serialAppointmentInfo);
 
 		// add the serial appointment again with updated data
 		this.createSerialAppointment(serialAppointmentInfo, calendarInfo);
 	}
 
 	/**
-	 * @see org.openuss.calendar.CalendarService#deleteSerialAppointment(org.openuss.calendar.SerialAppointmentInfo,
-	 *      org.openuss.calendar.CalendarInfo)
+	 * @see org.openuss.calendar.CalendarService#deleteSerialAppointment(org.openuss.calendar.SerialAppointmentInfo)
 	 */
 	protected void handleDeleteSerialAppointment(
-			org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo,
-			org.openuss.calendar.CalendarInfo calendarInfo)
+			org.openuss.calendar.SerialAppointmentInfo serialAppointmentInfo)
 			throws java.lang.Exception {
 
 		// create entities from info objects
 
-		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		SerialAppointment serialApp = getSerialAppointmentDao().load(
 				serialAppointmentInfo.getId());
+		Calendar cal = serialApp.getSourceCalendar();
 
 		// remove (association) serial appointment and its created single
 		// appointments from all calendars
