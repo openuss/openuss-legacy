@@ -1,5 +1,6 @@
 package org.openuss.webdav;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,7 +10,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
-import org.apache.tools.ant.filters.StringInputStream;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -376,11 +376,14 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		ioc = getExistingIOC(ioc);
 		
+		checkFileSize(ioc.getContentLength());
+		
 		return createFileImpl(name, ioc);
 	}
 	
 	/**
 	 * Creates a new file in this collection without having to check preconditions.
+	 * Implementations must call {@link #checkFileSize(long)} as soon as they know the real size.
 	 * 
 	 * @param name The name of the file to create.
 	 * @param ioc The data to write. This may be a NullIOContext. Guaranteed not to be null.
@@ -463,10 +466,14 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			li.appendChild(link);
 		}
 		
-		StringInputStream sis = new StringInputStream(WebDAVUtils.documentToString(doc));
+		String docStr = WebDAVUtils.documentToString(doc);
+		byte[] bar = docStr.getBytes(WebDAVConstants.PREFERRED_CHARSET);
+		ByteArrayInputStream bais = new ByteArrayInputStream(bar);
+		
 		IOContextImpl ioc = new IOContextImpl();
-		ioc.setContentType(WebDAVConstants.MIMETYPE_HTML);
-		ioc.setInputStream(sis);
+		ioc.setContentType(WebDAVConstants.MIMETYPE_HTML +
+					WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.PREFERRED_CHARSET.name());
+		ioc.setInputStream(bais);
 		
 		return ioc;
 	}
@@ -477,12 +484,14 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	public void writeContent(IOContext ioc) throws WebDAVResourceException,
 			IOException {
 		checkWritable();
+		checkFileSize(ioc.getContentLength());
 		
 		writeContentImpl(ioc);
 	}
 	
 	/**
 	 * Implementation of writeContent() that does not need to check the user's permissions.
+	 * Implementations must call {@link #checkFileSize(long)} as soon as they know the real size.
 	 * 
 	 * @see #writeContent()
 	 */
@@ -531,4 +540,13 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		return context;
 	}
 
+	/**
+	 * @param size The size to check.
+	 * @throws WebDAVResourceException If the specified size exceeds the limitations of this server.
+	 */
+	protected void checkFileSize(long size) throws WebDAVResourceException {
+		if (getContext().checkMaxFileSize(size)) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_UNSUPPORTED_MEDIA_TYPE, this, "Maximum allowed file size is " + getContext().getMaxFileSize());
+		}
+	}
 }
