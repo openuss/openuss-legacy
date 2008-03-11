@@ -60,6 +60,8 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		// Breadcrumbs
+		breadcrumbs.loadAppointmentCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("calender_create_serial_appointment_page"));
 		newCrumb.setHint(i18n("calender_create_serial_appointment_page"));

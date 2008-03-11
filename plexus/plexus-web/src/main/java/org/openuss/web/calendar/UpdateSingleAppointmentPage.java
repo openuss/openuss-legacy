@@ -37,9 +37,11 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 	@Prerender
 	public void prerender() throws Exception{
 		super.prerender();
+		// Breadcrumbs
+		breadcrumbs.loadAppointmentCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("calender_create_single_appointment_page"));
-		newCrumb.setHint(i18n("calender_create_single_appointment_page"));
+		newCrumb.setName(i18n("calender_update_single_appointment_page"));
+		newCrumb.setHint(i18n("calender_update_single_appointment_page"));
 		breadcrumbs.addCrumb(newCrumb);	
 		
 		// remove the old entry from the user calendar schedule model

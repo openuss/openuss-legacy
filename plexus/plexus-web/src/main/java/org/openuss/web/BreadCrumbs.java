@@ -497,14 +497,9 @@ public class BreadCrumbs extends BaseBean {
 	
 	// Appointment Details Crumb Generation
 
-	private List<BreadCrumb> getAppointmentDetailsCrumbs() {
+	private List<BreadCrumb> getAppointmentCrumbs() {
 		List<BreadCrumb> crumbs = getBaseCrumbs();
 		assert crumbs != null;
-
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setName(i18n("openuss4us_calendar_view_appointment_details_page"));
-		newCrumb.setHint(i18n("openuss4us_calendar_view_appointment_details_page"));
-		crumbs.add(newCrumb);
 		return crumbs;
 	}
 
@@ -546,8 +541,8 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
 
-	public void loadAppointmentDetailsCrumbs() {
-		setCrumbs(getAppointmentDetailsCrumbs());
+	public void loadAppointmentCrumbs() {
+		setCrumbs(getAppointmentCrumbs());
 	}
 	
 	public void loadMyUniCrumbs() {
