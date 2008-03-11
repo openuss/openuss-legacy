@@ -23,8 +23,7 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="content">
 			<h:form id="reg1Form">
-				
-				<!--  and not empty ldapServerRegistration.allAuthenticationDomains -->
+			<!--  and not empty ldapServerRegistration.allAuthenticationDomains -->
 				  <c:if test="#{not empty ldapServerRegistration.allUserDnPatterns}">
 					<o:block label="#{msg.ldap_ldapserver_registration_step1_headline}" styleClass="form_box">
 						<o:input entity="ldapServerInfo" property="providerUrl" maxlength="250" required="true"/>
@@ -34,7 +33,10 @@
 						<o:input entity="ldapServerInfo" property="description" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>	
 						<h:outputLabel value="#{msg.ldap_server_authenticationdomain_select}" for="ldapserver_authenticationdomain_listbox" styleClass="field_label" />
-						<h:selectOneListbox id="ldapserver_authenticationdomain_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true">
+						<h:selectOneListbox id="ldapserver_authenticationdomain_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true"
+							valueChangeListener="#{ldapServerRegistration.processValueChangeAuthenticationDomain}" styleClass="pulldown">
+							<f:converter converterId="longConverter" />
+							<f:selectItems value="#{ldapServerRegistration.allAuthenticationDomains}}"/>
 						</h:selectOneListbox>
 						<h:outputLabel value="#{msg.ldap_server_userdnpattern_select}" for="ldapserver_userdnpattern_listbox" styleClass="field_label" />
 						<h:selectManyListbox id="ldapserver_userdnpattern_listbox" size="5" value="#{ldapServerInfo.userDnPatternIds}" required="true"
@@ -44,8 +46,7 @@
 						</h:selectManyListbox>
 						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
-						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>
-						
+						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>						
 					</o:block>
 				</c:if>
 				<c:if test="#{empty ldapServerRegistration.allUserDnPatterns}">

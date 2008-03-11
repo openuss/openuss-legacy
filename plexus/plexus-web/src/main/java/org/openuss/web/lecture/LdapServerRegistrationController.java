@@ -59,7 +59,12 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
 		List selectedIds = (ArrayList) valueChangeEvent.getNewValue();
 		ldapServerInfo.setUserDnPatternIds(selectedIds);
-	}		
+	}	
+	
+	public void processValueChangeAuthenticationDomain(ValueChangeEvent valueChangeEvent) {
+		Long selectedId = (Long) valueChangeEvent.getNewValue();
+		ldapServerInfo.setAuthenticationDomainId(selectedId);
+	}	
 	
 	
 	public List<SelectItem> getAllAuthenticationDomains() {
