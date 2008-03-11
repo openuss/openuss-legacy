@@ -22,6 +22,7 @@
 		<module>tests</module>
 		<module>tools</module>
 		<module>core</module>
+		<module>webdav</module>
 		<module>wtp-facelets-hack</module>
 	</modules>
 	
