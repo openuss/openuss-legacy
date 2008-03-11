@@ -13,25 +13,33 @@
 	<h:form>
 		<o:block label="#{msg['openuss4us_calendar_sidebar_options_header']}" styleClass="option_box">
 			<h:outputText value="#{msg['openuss4us_calendar_sidebar_options_text']}" styleClass="content_font_normal" escape="false" />
-			<ul class="int">
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_list_mode']}" action="openuss4us_usercalendar_list" />
+			<ul class="action_list">
+			
+				<li class="calendar_listmode">
+					<h:commandLink action="openuss4us_usercalendar_list" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_list_mode']} </h:commandLink>
 				</li>
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_day_mode']}" action="#{views$secured$calendar$usercalendar.changeToDayMode}" />
+				<li class="calendar_daymode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToDayMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_day_mode']} </h:commandLink>
 				</li>
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_workweek_mode']}" action="#{views$secured$calendar$usercalendar.changeToWorkWeekMode}" />
+				<li class="calendar_workweekmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToWorkWeekMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_workweek_mode']} </h:commandLink>
 				</li>
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_week_mode']}" action="#{views$secured$calendar$usercalendar.changeToWeekMode}" />
+				<li class="calendar_weekmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToWeekMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_week_mode']} </h:commandLink>
 				</li>
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_month_mode']}" action="#{views$secured$calendar$usercalendar.changeToMonthMode}" />
+				<li class="calendar_monthmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToMonthMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_month_mode']} </h:commandLink>
 				</li>
-				<li>
-					<h:commandLink value="#{msg['openuss4us_calendar_sidebar_options_upcominglist_mode']}" action="openuss4us_usercalendar_upcominglist" />
+				<li class="calendar_upcomingmode">
+					<h:commandLink action="openuss4us_usercalendar_upcominglist" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_upcominglist_mode']} </h:commandLink>
 				</li>
+	
 			</ul>
 		</o:block>
 	</h:form>

@@ -77,9 +77,10 @@
 					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
 				</h:outputText>
 				<c:if test="#{views$secured$calendar$viewappointmentdetails.serial}">
+					<br />
 					<h:outputText
 						value="#{msg.openuss4us_calendar_last_occurence}: " /><h:outputText
-						value="#{appointmentInfo.recurrenceEndtime}" /> <br />
+						value="#{appointmentInfo.recurrenceEndtime}" /> <br /> <br />
 					<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
 						escape="false"
 						rendered="#{(appointmentInfo.recurrenceType eq 'DAILY') and (appointmentInfo.recurrencePeriod eq 1)}">
@@ -144,13 +145,20 @@
 				</t:column>
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
 					hasPermission="#{ACL.UPDATE}">
-
 					<t:column styleClass="col_commands">
-						<h:commandButton id="delete"
+						<f:facet name="header">
+							#{msg.commands_header}
+						</f:facet>
+						<h:commandLink
 							action="#{views$secured$calendar$viewappointmentdetails.deactivate}"
-							value="#{msg.openuss4us_calendar_appointment_change_status}"
-							title="#{msg.openuss4us_calendar_appointment_change_status_hint}"
-							styleClass="button_remove" />
+							title="#{msg.openuss4us_calendar_appointmentexception_hint}"
+							class="icon_appointmentexception" 
+							rendered="#{singleAppointment.takingPlace}"/>
+						<h:commandLink
+							action="#{views$secured$calendar$viewappointmentdetails.deactivate}"
+							title="#{msg.openuss4us_calendar_no_appointmentexception_hint}"
+							class="icon_noappointmentexception"
+							rendered="#{!singleAppointment.takingPlace}"/>
 					</t:column>
 				</s:acl>
 			</plexus:dataTable>
@@ -170,7 +178,7 @@
 					<h:commandButton
 						action="#{views$secured$calendar$viewappointmentdetails.update}"
 						value="#{msg.openuss4us_calendar_button_update_appointment}"
-						styleClass="button_back" />
+						styleClass="button_big" />
 				</s:acl>
 			</o:block>
 		</h:form>

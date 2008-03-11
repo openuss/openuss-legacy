@@ -521,3 +521,99 @@ a.icon_reject {
   white-space: nowrap;
 }
 
+a.icon_appointmentexception {
+	background-image: url(../img/buttons/hide_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_appointmentexception:focus, a.icon_appointmentexception:hover{
+	background-position: top right;
+}
+
+a.icon_noappointmentexception {
+	background-image: url(../img/buttons/public_icon.png);
+	background-position: left top;
+	height: 16px;
+	width: 16px;
+	margin: 0 5px 0 0;
+	overflow: visible;
+	float: left;
+}
+
+a.icon_noappointmentexception:focus, a.icon_appointmentexception:hover{
+	background-position: top right;
+}
+
+/*Actionbox*/
+
+ul.action_list {
+  list-style: none;
+  padding:0;
+  margin: 5px 0 15px 20px;
+  color: #a5a5a5;
+}
+
+ul.action_list li {
+  margin-top: 10px;	
+}
+
+ul.action_list li a {
+  color:#2C5885;
+  text-decoration: none;
+  vertical-align:middle;
+  height:16px;
+  padding:0;
+  position: relative;
+  cursor: pointer;
+}
+
+ul.action_list li a:focus, ul.action_list li a:hover {
+  text-decoration: none;
+}
+
+ul.action_list li a:focus span, ul.action_list li a:hover span {
+  background-position: center right;
+}
+
+ul.action_list li a span {
+  display:block; 
+  background-position: center left;
+  background-repeat: no-repeat;
+  padding: 0 16px 0 0;
+  margin: 0 4px 0 -20px;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+}
+
+/* calendar optionbox */
+
+ul.action_list li.calendar_listmode a span{
+  background-image:url(../img/buttons/list_icon.png);
+}
+
+ul.action_list li.calendar_daymode a span{
+  background-image:url(../img/buttons/calendar_day_icon.png);
+}
+
+ul.action_list li.calendar_workweekmode a span{
+  background-image:url(../img/buttons/calendar_workweek_icon.png);
+}
+
+ul.action_list li.calendar_weekmode a span{
+  background-image:url(../img/buttons/calendar_week_icon.png);
+}
+
+ul.action_list li.calendar_monthmode a span{
+  background-image:url(../img/buttons/calendar_month_icon.png);
+}
+
+ul.action_list li.calendar_upcomingmode a span{
+  background-image:url(../img/buttons/late_icon.png);
+}
