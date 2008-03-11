@@ -19,7 +19,10 @@
 		  		<ul class="int">
 		  			<li>
 					  	<o:link value="/views/secured/internalMessages/messagecenter.faces">
-					  		<h:outputFormat value="#{msg.openuss4us_messagecenter_numberofunreadmessages}" styleClass="content_font_normal" >
+					  		<h:outputFormat rendered="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages gt 1}" value="#{msg.openuss4us_messagecenter_numberofunreadmessages}" styleClass="content_font_normal" >
+					  			<f:param value="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages}" />
+					  		</h:outputFormat>
+					  		<h:outputFormat rendered="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages eq 1}" value="#{msg.openuss4us_messagecenter_numberofunreadmessage}" styleClass="content_font_normal" >
 					  			<f:param value="#{views$secured$internalMessages$messagecenter.numberOfUnreadMessages}" />
 					  		</h:outputFormat>
 				  		</o:link>
