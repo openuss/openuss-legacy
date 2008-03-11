@@ -21,7 +21,7 @@ public class GroupExportedSubscribersPage extends AbstractGroupNewsletterPage {
 
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		newsletter = getGroupNewsletterService().getNewsletter(groupInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);

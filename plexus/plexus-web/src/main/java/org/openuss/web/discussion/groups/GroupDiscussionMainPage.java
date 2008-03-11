@@ -28,7 +28,7 @@ public class GroupDiscussionMainPage extends AbstractGroupDiscussionPage{
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:20
 		super.prerender();
 		if (groupInfo != null) {
 			forumWatchState = discussionService.watchesForum(getForum());
@@ -48,7 +48,7 @@ public class GroupDiscussionMainPage extends AbstractGroupDiscussionPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<TopicInfo> getDataPage(int startRow, int pageSize) {		
-			List<TopicInfo> al = discussionService.getTopics(getForum());		
+			List<TopicInfo> al = discussionService.getTopics(getForum());		 // NOPMD by devopenuss on 11.03.08 14:20
 			setSessionBean(Constants.FORUM_THREADLENGTH, 0);
 			page = new DataPage<TopicInfo>(al.size(),0,al);
 			sort(al);
@@ -61,9 +61,9 @@ public class GroupDiscussionMainPage extends AbstractGroupDiscussionPage{
 			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}
-		TopicInfo ti = new TopicInfo();
+		TopicInfo ti = new TopicInfo(); // NOPMD by devopenuss on 11.03.08 14:20
 		setSessionBean(Constants.DISCUSSION_TOPIC, ti);
-		PostInfo pi = new PostInfo();
+		PostInfo pi = new PostInfo(); // NOPMD by devopenuss on 11.03.08 14:20
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
 		return Constants.FORUM_NEW;
 	}
@@ -73,7 +73,7 @@ public class GroupDiscussionMainPage extends AbstractGroupDiscussionPage{
 			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
-		TopicInfo t = this.data.getRowData();
+		TopicInfo t = this.data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:20
 		setSessionBean(Constants.DISCUSSION_TOPIC, t);
 		return Constants.FORUM_REMOVETHREAD;
 	}

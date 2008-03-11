@@ -52,7 +52,7 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:23
 		super.prerender();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("openuss4us_command_groups_join"));
@@ -96,7 +96,7 @@ public class GroupsJoinPage extends AbstractGroupsPage {
 		page = null;
 		page = new DataPage<UserGroupInfo>(groups.size(), 0, groups);
 		groupname = null;
-		if (groups.size() == 0){
+		if (groups.size() == 0){ // NOPMD by devopenuss on 11.03.08 14:23
 			addError(i18n("group_search_no_group_found"));
 		}
 		if (groups.size() > 1){

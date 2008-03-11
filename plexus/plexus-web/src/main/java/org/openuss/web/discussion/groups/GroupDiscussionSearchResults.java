@@ -135,7 +135,7 @@ public class GroupDiscussionSearchResults implements Serializable {
 		return hits != null ? hits.size() : 0;
 	}
 
-	public boolean getIsFuzzy() {
+	public boolean getIsFuzzy() { // NOPMD by devopenuss on 11.03.08 14:21
 		return isFuzzy;
 	}
 

@@ -30,8 +30,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected Long handleCreateUserGroup(UserGroupInfo groupInfo, Long userId)
-			 {
+	protected Long handleCreateUserGroup(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.isTrue(groupInfo.getId() == null,
 				"The Group shouldn't have an ID yet, the aktual ID is: "
@@ -115,8 +114,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#updateUserGroup(org.openuss.groups.UserGroupInfo)
 	 */
-	protected void handleUpdateUserGroup(UserGroupInfo groupInfo)
-			 {
+	protected void handleUpdateUserGroup(UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -151,8 +149,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#deleteUserGroup(org.openuss.groups.UserGroupInfo)
 	 */
-	protected void handleDeleteUserGroup(UserGroupInfo groupInfo)
-			 {
+	protected void handleDeleteUserGroup(UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -190,8 +187,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addModerator(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleAddModerator(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleAddModerator(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -223,8 +219,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#removeModerator(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleRemoveModerator(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleRemoveModerator(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -256,8 +251,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addMember(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleAddMember(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleAddMember(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "GroupInfo cannot be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -286,7 +280,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 *      java.lang.String, java.lang.Long)
 	 */
 	protected void handleAddUserByPassword(UserGroupInfo groupInfo,
-			String password, Long userId) throws Exception {
+			String password, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -307,8 +301,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#removeMember(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleRemoveMember(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleRemoveMember(UserGroupInfo groupInfo, Long userId) {
 
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
@@ -341,8 +334,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#addAspirant(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleAddAspirant(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleAddAspirant(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "GroupInfo cannot be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -364,8 +356,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#acceptAspirant(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleAcceptAspirant(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleAcceptAspirant(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -393,8 +384,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#rejectAspirant(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleRejectAspirant(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected void handleRejectAspirant(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -417,7 +407,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#getAllMembers(org.openuss.groups.UserGroupInfo)
 	 */
 	protected List<UserGroupMemberInfo> handleGetAllMembers(
-			UserGroupInfo groupInfo) throws Exception {
+			UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -430,8 +420,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getMembers(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<UserGroupMemberInfo> handleGetMembers(UserGroupInfo groupInfo)
-			throws Exception {
+	protected List<UserGroupMemberInfo> handleGetMembers(UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -453,7 +442,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#getModerators(org.openuss.groups.UserGroupInfo)
 	 */
 	protected List<UserGroupMemberInfo> handleGetModerators(
-			UserGroupInfo groupInfo) throws Exception {
+			UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -474,7 +463,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#getAspirants(org.openuss.groups.UserGroupInfo)
 	 */
 	protected List<UserGroupMemberInfo> handleGetAspirants(
-			UserGroupInfo groupInfo) throws Exception {
+			UserGroupInfo groupInfo) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -493,7 +482,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getAllGroups()
 	 */
-	protected List<UserGroupInfo> handleGetAllGroups() throws Exception {
+	protected List<UserGroupInfo> handleGetAllGroups() {
 		Collection<UserGroup> userGroups = getUserGroupDao().loadAll();
 		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
 		for (UserGroup userGroup : userGroups) {
@@ -505,8 +494,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getGroupsByUser(java.lang.Long)
 	 */
-	protected List<UserGroupInfo> handleGetGroupsByUser(Long userId)
-			throws Exception {
+	protected List<UserGroupInfo> handleGetGroupsByUser(Long userId) {
 		Validate.notNull(userId, "UserId cannot be null.");
 
 		// Load User Entity
@@ -533,17 +521,17 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		}
 		return groupList;
 	}
-	
 
 	/**
 	 * @see org.openuss.groups.GroupService#getGroupByNameOrShortcut(java.long.String)
 	 */
-	protected List<UserGroupInfo> handleGetGroupByNameOrShortcut(String name) throws Exception {
+	protected List<UserGroupInfo> handleGetGroupByNameOrShortcut(String name) {
 		Validate.notNull(name, "Name cannot be null.");
 		Collection<UserGroup> userGroups = getUserGroupDao().loadAll();
 		List<UserGroupInfo> group = new ArrayList<UserGroupInfo>();
 		for (UserGroup userGroup : userGroups) {
-			if ((userGroup.getShortcut().contentEquals(name)) || (userGroup.getName().contains(name))){
+			if ((userGroup.getShortcut().contentEquals(name))
+					|| (userGroup.getName().contains(name))) {
 				group.add(getUserGroupDao().toUserGroupInfo(userGroup));
 			}
 		}
@@ -553,7 +541,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#getGroupInfo(java.lang.Long)
 	 */
-	protected UserGroupInfo handleGetGroupInfo(Long groupId) throws Exception {
+	protected UserGroupInfo handleGetGroupInfo(Long groupId) {
 		Validate.notNull(groupId, "GroupId cannot be null.");
 		return getUserGroupDao().toUserGroupInfo(
 				getUserGroupDao().load(groupId));
@@ -563,8 +551,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#isModerator(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected boolean handleIsModerator(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected boolean handleIsModerator(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -589,8 +576,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#isMember(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected boolean handleIsMember(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected boolean handleIsMember(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -618,8 +604,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#isAspirant(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected boolean handleIsAspirant(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected boolean handleIsAspirant(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -647,8 +632,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#isCreator(org.openuss.groups.UserGroupInfo,
 	 *      java.lang.Long)
 	 */
-	protected boolean handleIsCreator(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+	protected boolean handleIsCreator(UserGroupInfo groupInfo, Long userId) {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -665,7 +649,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupService#isUniqueShortcut(java.lang.String)
 	 */
-	protected boolean handleIsUniqueShortcut(String shortcut) throws Exception {
+	protected boolean handleIsUniqueShortcut(String shortcut) {
 		Validate.notNull(shortcut, "Parameter shortcut must not be null.");
 		UserGroup group = getUserGroupDao().findByShortcut(shortcut);
 		return (group == null);
@@ -699,8 +683,8 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			users = users2;
 		}
 		List<UserGroupMemberInfo> groupMembers = new ArrayList<UserGroupMemberInfo>();
+		UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 		for (User user : users) {
-			UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 			groupMember.setUserId(user.getId());
 			groupMember.setUsername(user.getUsername());
 			groupMember.setFirstName(user.getFirstName());

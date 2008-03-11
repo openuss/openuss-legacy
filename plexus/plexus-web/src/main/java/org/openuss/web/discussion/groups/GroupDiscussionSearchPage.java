@@ -43,7 +43,7 @@ private static final Logger logger = Logger.getLogger(GroupDiscussionSearchPage.
 	private DiscussionSearchResultDataProvider resultProvider = new DiscussionSearchResultDataProvider();	 
 	
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:20
 		super.prerender();
 		addPageCrumb();
 	}
@@ -59,11 +59,11 @@ private static final Logger logger = Logger.getLogger(GroupDiscussionSearchPage.
 	 * performs a discussion search
 	 * @return outcome of action (used for navigation)
 	 */
-	public String search() {
+	public String search() { // NOPMD by devopenuss on 11.03.08 14:20
 		
 		logger.debug("Starting method search");
 		
-		List<DiscussionSearchDomainResult> searchResult = null;
+		List<DiscussionSearchDomainResult> searchResult = null; // NOPMD by devopenuss on 11.03.08 14:20
 		
 		if (StringUtils.isNotBlank(discussionSearchResults.getTextToSearch()) || StringUtils.isNotBlank(discussionSearchResults.getSubmitter())) {
 						
@@ -76,7 +76,7 @@ private static final Logger logger = Logger.getLogger(GroupDiscussionSearchPage.
 								discussionSearchResults.getSubmitter()
 							);
 							discussionSearchResults.setHits(searchResult);
-				if(searchResult == null || searchResult.size() == 0){
+				if(searchResult == null || searchResult.size() == 0){ // NOPMD by devopenuss on 11.03.08 14:20
 					logger.debug("search_no_matches_found");
 					getFacesContext().addMessage(null, new FacesMessage(i18n("search_no_matches_found")) );
 				}

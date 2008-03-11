@@ -31,7 +31,7 @@ public class GroupNewsletterSubscribersPage extends AbstractGroupNewsletterPage{
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		newsletter = getGroupNewsletterService().getNewsletter(groupInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
@@ -55,7 +55,7 @@ public class GroupNewsletterSubscribersPage extends AbstractGroupNewsletterPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<SubscriberInfo> getDataPage(int startRow, int pageSize) {		
-			List<SubscriberInfo> al = groupNewsletterService.getSubscribers(groupInfo);			
+			List<SubscriberInfo> al = groupNewsletterService.getSubscribers(groupInfo);			 // NOPMD by devopenuss on 11.03.08 14:27
 			sort(al);
 			page = new DataPage<SubscriberInfo>(al.size(),0,al);
 			return page;

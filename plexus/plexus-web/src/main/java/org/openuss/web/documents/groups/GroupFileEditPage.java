@@ -33,7 +33,7 @@ public class GroupFileEditPage extends AbstractGroupDocumentPage{
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:31
 		super.prerender();
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
@@ -95,7 +95,7 @@ public class GroupFileEditPage extends AbstractGroupDocumentPage{
 		} else {
 			String fileName = selectedFile.getFileName();
 			if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-				fileName = fileName + '.' +extension(document.getFileName());
+				fileName = fileName + '.' +extension(document.getFileName()); // NOPMD by devopenuss on 11.03.08 14:32
 			}
 			selectedFile.setFileName(fileName);
 		}

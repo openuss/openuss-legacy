@@ -5,7 +5,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupNewsletterService;
 import org.openuss.newsletter.MailDetail;
@@ -36,10 +35,10 @@ public class ShowMailPage extends AbstractGroupPage {
 
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
 		
 		if (mail==null){
-			addError(i18n("newsletter_mailaccess_impossible"));
+			addError(i18n("newsletter_mailaccess_impossible")); // NOPMD by devopenuss on 11.03.08 14:28
 			redirect(Constants.NEWSLETTER_MAIN);
 			return;
 		}			
@@ -49,7 +48,7 @@ public class ShowMailPage extends AbstractGroupPage {
 			return;
 		}
 		if (mail.getId()!=null){
-			MailInfo mi = new MailInfo(); 
+			MailInfo mi = new MailInfo();  // NOPMD by devopenuss on 11.03.08 14:28
 			mi.setId(mail.getId());
 			mail = getGroupNewsletterService().getMail(mi);
 			if (mail==null){

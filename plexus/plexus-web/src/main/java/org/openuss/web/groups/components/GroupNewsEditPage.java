@@ -29,6 +29,7 @@ import org.openuss.web.upload.UploadFileManager;
 
 /**
  * Group News Edit Page Controller
+ * 
  * @author Ingo Dueppe
  * @author Thomas Jansing
  */
@@ -36,42 +37,42 @@ import org.openuss.web.upload.UploadFileManager;
 @View
 public class GroupNewsEditPage extends AbstractGroupPage {
 
-	private static final Logger logger = Logger.getLogger(GroupNewsEditPage.class);
+	private static final Logger logger = Logger
+			.getLogger(GroupNewsEditPage.class);
 
 	private static final long serialVersionUID = 792199034646593736L;
 
-	@Property(value = "#{"+Constants.NEWS_SELECTED_NEWSITEM+"}")
+	@Property(value = "#{" + Constants.NEWS_SELECTED_NEWSITEM + "}")
 	private NewsItemInfo newsItem;
 
 	@Property(value = "#{newsService}")
 	private NewsService newsService;
 
-	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
+	@Property(value = "#{" + Constants.UPLOAD_FILE_MANAGER + "}")
 	private UploadFileManager uploadFileManager;
-	
+
 	private UIData attachmentList;
-	
+
 	/* ----- business logic ----- */
-	
+
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on
+												// 11.03.08 14:26
 		super.prerender();
-		if (!isPostBack()) {
-			if (newsItem != null && newsItem.getId() != null) {
-				newsItem = newsService.getNewsItem(newsItem);
-				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-			} 
+		if (!isPostBack() && newsItem != null && newsItem.getId() != null) {
+			newsItem = newsService.getNewsItem(newsItem);
+			setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 		}
 
 		BreadCrumb newCrumb;
-		
+
 		newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("group_command_news"));
 		newCrumb.setHint(i18n("group_command_news"));
 		newCrumb.setLink(PageLinks.GROUP_NEWS);
 		breadcrumbs.addCrumb(newCrumb);
-		
+
 		newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("mews_selected_newsitem_header"));
 		newCrumb.setHint(i18n("mews_selected_newsitem_header"));
@@ -80,7 +81,7 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
-		
+
 		newsItem.setCategory(NewsCategory.GROUP);
 		newsItem.setExpireDate(null);
 		newsItem.setPublisherIdentifier(groupInfo.getId());
@@ -95,17 +96,18 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 		User user = (User) getSessionBean(Constants.USER);
 		return user.getFirstName() + " " + user.getLastName();
 	}
-	
+
 	public String removeAttachment() {
 		logger.debug("news attachment removed");
-		FileInfo attachment = (FileInfo) attachmentList.getRowData();
+		FileInfo attachment = (FileInfo) attachmentList.getRowData(); // NOPMD by devopenuss on 11.03.08 14:27
 		if (newsItem.getAttachments() != null) {
 			newsItem.getAttachments().remove(attachment);
 		}
 		return Constants.SUCCESS;
 	}
 
-	public String addAttachment() throws IOException, BrainContestApplicationException {
+	public String addAttachment() throws IOException,
+			BrainContestApplicationException {
 		logger.debug("news attachment add");
 		if (newsItem.getAttachments() == null) {
 			newsItem.setAttachments(new ArrayList<FileInfo>());
@@ -118,24 +120,29 @@ public class GroupNewsEditPage extends AbstractGroupPage {
 				addError(i18n("news_filename_already_exists"));
 				return Constants.FAILURE;
 			}
-			
+
 		}
-		
+
 		return Constants.SUCCESS;
 	}
-	
+
 	public List<SelectItem> getNewsCategories() {
 		List<SelectItem> items = new ArrayList<SelectItem>();
-//		items.add(new SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
-//		items.add(new SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
-//		items.add(new SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
-		items.add(new SelectItem(NewsCategory.COURSE,i18n("news_category_course")));
+		// items.add(new
+		// SelectItem(NewsCategory.GLOBAL,i18n("news_category_global")));
+		// items.add(new
+		// SelectItem(NewsCategory.DESKTOP,i18n("news_category_desktop")));
+		// items.add(new
+		// SelectItem(NewsCategory.INSTITUTE,i18n("news_category_institute")));
+		items.add(new SelectItem(NewsCategory.COURSE,
+				i18n("news_category_course")));
 		return items;
 	}
-	
+
 	private boolean validFileName(String fileName) {
 		for (FileInfo attachment : newsItem.getAttachments()) {
-			if (StringUtils.equalsIgnoreCase(fileName, attachment.getFileName())) {
+			if (StringUtils
+					.equalsIgnoreCase(fileName, attachment.getFileName())) {
 				return false;
 			}
 		}

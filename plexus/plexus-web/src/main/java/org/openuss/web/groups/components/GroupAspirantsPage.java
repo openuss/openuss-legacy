@@ -13,7 +13,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.UserGroupMemberInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -31,7 +30,7 @@ public class GroupAspirantsPage extends AbstractGroupPage {
 	
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupMemberInfo> page;
-	List<UserGroupMemberInfo> members;
+	List<UserGroupMemberInfo> members; // NOPMD by devopenuss on 11.03.08 14:24
 	
 	
 

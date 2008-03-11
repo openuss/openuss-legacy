@@ -61,7 +61,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 
 	private List<FolderEntryInfo> loadFolderEntries() {
-		if (entries == null & courseInfo.getId() != null) {
+		if (entries == null && courseInfo.getId() != null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
 		}
 		

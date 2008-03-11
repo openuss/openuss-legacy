@@ -17,13 +17,10 @@ import org.openuss.calendar.AppointmentDao;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.AppointmentType;
 import org.openuss.calendar.AppointmentTypeDao;
-import org.openuss.calendar.CalendarDao;
 import org.openuss.calendar.RecurrenceType;
 import org.openuss.calendar.SerialAppointment;
 import org.openuss.calendar.SerialAppointmentDao;
 import org.openuss.groups.GroupAccessType;
-import org.openuss.groups.GroupService;
-import org.openuss.groups.GroupServiceImpl;
 import org.openuss.groups.UserGroup;
 import org.openuss.groups.UserGroupDao;
 import org.openuss.lecture.AccessType;
@@ -768,8 +765,7 @@ public class TestUtility {
 
 	public UserGroup createUniqueUserGroupInDB() {
 
-		// Create a unique CourseType
-		GroupService groupService = new GroupServiceImpl();
+		// Create a unique GroupType
 		UserGroup userGroup = UserGroup.Factory.newInstance();
 		userGroup.setName("UserGroup");
 		userGroup.setShortcut(unique("group"));

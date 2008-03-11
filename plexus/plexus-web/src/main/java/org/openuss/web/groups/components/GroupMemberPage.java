@@ -1,6 +1,5 @@
 package org.openuss.web.groups.components;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -56,7 +55,7 @@ public class GroupMemberPage extends AbstractGroupPage {
 
 	@Prerender
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:24
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_member"));

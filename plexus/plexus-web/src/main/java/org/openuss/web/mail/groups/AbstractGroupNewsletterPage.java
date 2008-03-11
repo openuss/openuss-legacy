@@ -30,7 +30,7 @@ public class AbstractGroupNewsletterPage extends AbstractGroupPage {
 	protected NewsletterInfo newsletter;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		addNewsletterCrumb();
 	}

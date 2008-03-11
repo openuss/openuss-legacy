@@ -32,7 +32,7 @@ public class GroupDocumentAddZipPage extends AbstractGroupDocumentPage{
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:28
 		super.prerender();
 		if (file != null && file.getCreated() == null) {
 			logger.debug("reseting date");
@@ -48,7 +48,7 @@ public class GroupDocumentAddZipPage extends AbstractGroupDocumentPage{
 		breadcrumbs.addCrumb(crumb);
 	}	
 	
-	public String unzip() throws DocumentApplicationException{
+	public String unzip() throws DocumentApplicationException{ // NOPMD by devopenuss on 11.03.08 14:28
 		logger.debug("new document saved");
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 

@@ -34,10 +34,10 @@ public class ChatMainPage extends AbstractGroupPage {
 	
 	private String roomTopic;
 	
-	List<ChatRoomInfo> groupRooms;
+	private List<ChatRoomInfo> groupRooms;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:23
 		super.prerender();
 		addPageCrumb();
 	}
@@ -109,6 +109,14 @@ public class ChatMainPage extends AbstractGroupPage {
 
 	public void setRoomTopic(String roomName) {
 		this.roomTopic = roomName;
+	}
+
+	public List<ChatRoomInfo> getGroupRooms() {
+		return groupRooms;
+	}
+
+	public void setGroupRooms(List<ChatRoomInfo> groupRooms) {
+		this.groupRooms = groupRooms;
 	}
 
 }

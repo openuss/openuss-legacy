@@ -86,7 +86,7 @@ public class CalendarServiceIntegrationTest extends
 			assertEquals("COURSE", courseCalInfo.getCalendarType().toString());
 			CalendarInfo groupCalInfo = calendarService
 					.getCalendar(userGroupInfo);
-			CalendarInfo userCalInfo = calendarService.getCalendar(userInfo1);
+			calendarService.getCalendar(userInfo1);
 			
 
 		} catch (Exception e) {

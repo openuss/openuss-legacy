@@ -33,7 +33,7 @@ public class GroupsDiscussionNewEntryPage extends AbstractGroupDiscussionPage{
 	private UIData attachmentList;
 
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:22
 		super.prerender();
 		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
 			addError(i18n("discussion_readonly"));
@@ -42,11 +42,11 @@ public class GroupsDiscussionNewEntryPage extends AbstractGroupDiscussionPage{
 		addPageCrumb();
 	}
 	
-	public String send(){
+	public String send(){ // NOPMD by devopenuss on 11.03.08 14:22
 		logger.debug("new document saved");
 		
 		postInfo.setCreated(new Date(System.currentTimeMillis()));
-		String ip = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr();
+		String ip = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr(); // NOPMD by devopenuss on 11.03.08 14:22
 		logger.debug("Client IP = "+ ip);
 		postInfo.setIsEdited(postInfo.getId()!=null);
 		postInfo.setLastModification(new Date(System.currentTimeMillis()));
@@ -79,7 +79,7 @@ public class GroupsDiscussionNewEntryPage extends AbstractGroupDiscussionPage{
 	
 	public String removeAttachment() {
 		logger.debug("discussion attachment removed");
-		FileInfo attachment = (FileInfo) attachmentList.getRowData();
+		FileInfo attachment = (FileInfo) attachmentList.getRowData(); // NOPMD by devopenuss on 11.03.08 14:22
 		if (postInfo.getAttachments() != null) {
 			postInfo.getAttachments().remove(attachment);
 		}
@@ -121,7 +121,9 @@ public class GroupsDiscussionNewEntryPage extends AbstractGroupDiscussionPage{
 	}
 	
 	public String cancel(){
-		if (topic.getId()==null) return Constants.FORUM_MAIN;
+		if (topic.getId()==null){
+			return Constants.FORUM_MAIN;
+		}
 		return Constants.FORUM_THREAD;
 	}
 

@@ -36,7 +36,7 @@ public class GroupOptionsPage extends AbstractGroupPage {
 
 	@Prerender
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		if (accessType.compareTo(-1) == 0){
 			accessType = groupInfo.getAccessType().getValue();

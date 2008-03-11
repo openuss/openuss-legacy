@@ -35,7 +35,7 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:21
 		super.prerender();
 		if ( topic != null && topic.getId() != null) {
 			topic = discussionService.getTopic(topic);
@@ -50,7 +50,7 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 			if (forum.isReadOnly()){
 				addMessage(i18n("discussion_forum_readonly_true_simple"));
 			}else if (!forum.isReadOnly()){
-				if (topicReadOnly){
+				if (topicReadOnly){ // NOPMD by devopenuss on 11.03.08 14:21
 					addMessage(i18n("discussion_topic_readonly_true_simple"));
 				} 
 			}
@@ -75,7 +75,7 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 		@Override 
 		public DataPage<PostInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<PostInfo> al = discussionService.getPosts(topic);
+				List<PostInfo> al = discussionService.getPosts(topic); // NOPMD by devopenuss on 11.03.08 14:21
 				setSessionBean(Constants.FORUM_THREADLENGTH, al.size());
 				sort(al);
 				page = new DataPage<PostInfo>(al.size(),0,al);
@@ -84,16 +84,18 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 		}
 	}
 	
-	public String addPost(){
+	public String addPost(){ // NOPMD by devopenuss on 11.03.08 14:21
 		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
-			addError(i18n("discussion_readonly"));
+			addError(i18n("discussion_readonly")); // NOPMD by devopenuss on 11.03.08 14:21
 			return Constants.FAILURE;			
 		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
 		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo post = new PostInfo();
 		String title = "Re: "+this.topic.getTitle();
-		if (title.length()>250) title = StringUtils.abbreviate(title, 250);
+		if (title.length()>250){
+			title = StringUtils.abbreviate(title, 250); // NOPMD by devopenuss on 11.03.08 14:21
+		}
 		post.setTitle(title);
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.FORUM_NEW;
@@ -104,7 +106,7 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
-		PostInfo pi = this.data.getRowData();
+		PostInfo pi = this.data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:21
 		if (this.length==1){
 			discussionService.deleteTopic(topic);
 			addMessage(i18n("discussion_post_deleted", pi.getTitle()));
@@ -120,13 +122,13 @@ public class GroupDiscussionThreadPage extends AbstractGroupDiscussionPage{
 			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			
 		}		
-		PostInfo pi = this.data.getRowData();
+		PostInfo pi = this.data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:21
 		pi = discussionService.getPost(pi);
 		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
 		return Constants.FORUM_NEW;
 	}
 	
-	public String quote(){
+	public String quote(){ // NOPMD by devopenuss on 11.03.08 14:21
 		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
 			addError(i18n("discussion_readonly"));
 			return Constants.FAILURE;			

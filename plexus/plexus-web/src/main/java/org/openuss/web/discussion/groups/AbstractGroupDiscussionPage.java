@@ -34,7 +34,7 @@ public class AbstractGroupDiscussionPage extends AbstractGroupPage{
 	public ForumInfo forum;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception{ // NOPMD by devopenuss on 11.03.08 14:19
 		super.prerender();
 		if (groupInfo!=null&&groupInfo.getId()!=null){
 			forum = getDiscussionService().getForum(groupInfo);
@@ -46,12 +46,12 @@ public class AbstractGroupDiscussionPage extends AbstractGroupPage{
 	protected boolean isAssistant(){
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AclEntry[] acls = aclManager.getAcls(groupInfo, auth);
-		Integer required = LectureAclEntry.ASSIST;
+		Integer required = LectureAclEntry.ASSIST; // NOPMD by devopenuss on 11.03.08 14:20
 		if ((acls != null) && acls.length > 0) {
 			for (AclEntry aclEntry : acls) {
 				if (aclEntry instanceof BasicAclEntry) {
 					BasicAclEntry processableAcl = (BasicAclEntry) aclEntry;
-					if (processableAcl.isPermitted(required)) {
+					if (processableAcl.isPermitted(required)) { // NOPMD by devopenuss on 11.03.08 14:20
 						return true;
 					}
 				}

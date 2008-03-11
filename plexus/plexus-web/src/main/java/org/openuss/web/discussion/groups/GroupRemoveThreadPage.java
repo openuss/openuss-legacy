@@ -15,7 +15,7 @@ import org.openuss.web.Constants;
 public class GroupRemoveThreadPage extends AbstractGroupDiscussionPage{
 	
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:21
 		super.prerender();
 		if (!isAssistant()){
 			addError(i18n("error_access_denied_details"));

@@ -12,7 +12,6 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.course.AbstractCoursePage;
 import org.openuss.web.documents.AbstractDocumentPage;
 import org.openuss.web.groups.components.AbstractGroupPage;
 
@@ -30,7 +29,7 @@ public class AbstractGroupDocumentPage extends AbstractGroupPage {
 	protected FolderInfo currentFolder;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:28
 		super.prerender();
 		if (currentFolder == null && groupInfo == null) {
 			redirect(Constants.OUTCOME_BACKWARD);
@@ -45,7 +44,7 @@ public class AbstractGroupDocumentPage extends AbstractGroupPage {
 		breadcrumbs.loadGroupCrumbs(groupInfo);
 		
 		for(FolderInfo folder : getCurrentPath()) {
-			BreadCrumb crumb = new BreadCrumb();
+			BreadCrumb crumb = new BreadCrumb(); // NOPMD by devopenuss on 11.03.08 14:28
 			if (folder.isRoot()) {
 				crumb.setName(i18n("documents_main_header"));
 				crumb.setHint(i18n("documents_root_folder"));

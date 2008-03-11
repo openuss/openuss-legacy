@@ -10,19 +10,14 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
-import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.GroupApplicationException;
 import org.openuss.groups.UserGroupMemberInfo;
-import org.openuss.lecture.CourseMemberInfo;
-import org.openuss.lecture.CourseMemberType;
 import org.openuss.web.Constants;
 
 /**
@@ -47,7 +42,7 @@ public class GroupMainPage extends AbstractGroupPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:24
 		super.prerender();
 		if (groupInfo != null) {
 			moderators = groupService.getModerators(groupInfo);

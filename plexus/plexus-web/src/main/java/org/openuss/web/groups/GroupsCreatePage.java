@@ -6,7 +6,6 @@ import java.util.List;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -28,9 +27,6 @@ import org.openuss.web.PageLinks;
 @View
 public class GroupsCreatePage extends AbstractGroupsPage {
 
-	private static final Logger logger = Logger
-			.getLogger(GroupsCreatePage.class);
-
 	private String name;
 	private String shortcut;
 	private String password;
@@ -46,7 +42,7 @@ public class GroupsCreatePage extends AbstractGroupsPage {
 
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:22
 		super.prerender();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath()
@@ -56,7 +52,7 @@ public class GroupsCreatePage extends AbstractGroupsPage {
 		breadcrumbs.addCrumb(newCrumb);
 	}
 
-	public String register() {
+	public String register() { // NOPMD by devopenuss on 11.03.08 14:22
 		if (groupService.isUniqueShortcut(shortcut)) {
 
 			// create group info object

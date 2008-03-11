@@ -19,7 +19,7 @@ public class AbstractGroupsPage extends BasePage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:22
 		super.prerender();
 		setSessionBean(Constants.GROUP_INFO, null);
 		BreadCrumb newCrumb = new BreadCrumb();

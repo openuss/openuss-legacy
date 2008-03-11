@@ -23,7 +23,7 @@ public class GroupServiceIntegrationTest extends
 
 	private TestUtility testUtility;
 
-	public void testCreateUserGroup() {
+	public void testCreateUserGroup() { // NOPMD by devopenuss on 11.03.08 14:16
 		logger.debug("----> BEGIN access to create test <---- ");
 
 		// Synchronize with DB
@@ -36,33 +36,33 @@ public class GroupServiceIntegrationTest extends
 		groupInfo.setChat(true);
 		User user = testUtility.createUniqueUserInDB();
 		groupInfo.setCreator(user.getId());
-		groupInfo.setDescription("A UserGroup");
+		groupInfo.setDescription("A UserGroup"); // NOPMD by devopenuss on 11.03.08 14:16
 		groupInfo.setDocuments(true);
 		groupInfo.setForum(true);
-		groupInfo.setName("UserGroup");
+		groupInfo.setName("UserGroup"); // NOPMD by devopenuss on 11.03.08 14:16
 		groupInfo.setPassword(null);
 		groupInfo.setShortcut("group");
 
 		// Test
 		Long groupId = this.getGroupService().createUserGroup(groupInfo,
 				user.getId());
-		assertNotNull(groupId);
+		assertNotNull("groupId is null", groupId);
 
 		UserGroup groupTest = testUtility.getUserGroupDao().load(groupId);
-		assertNotNull(groupTest);
-		assertEquals(groupInfo.getAccessType(), groupTest.getAccessType());
-		assertEquals(groupInfo.getDescription(), groupTest.getDescription());
-		assertEquals(groupInfo.getCreator(), groupTest.getCreator().getId());
-		assertEquals(groupInfo.getName(), groupTest.getName());
-		assertEquals(groupInfo.getPassword(), groupTest.getPassword());
-		assertEquals(groupInfo.getShortcut(), groupTest.getShortcut());
-		assertEquals(groupInfo.isCalendar(), groupTest.getCalendar()
+		assertNotNull("groupTest is null", groupTest);
+		assertEquals("accesstype failure", groupInfo.getAccessType(), groupTest.getAccessType());
+		assertEquals("descrition failure", groupInfo.getDescription(), groupTest.getDescription());
+		assertEquals("creator failure", groupInfo.getCreator(), groupTest.getCreator().getId());
+		assertEquals("name failure", groupInfo.getName(), groupTest.getName());
+		assertEquals("password failure", groupInfo.getPassword(), groupTest.getPassword());
+		assertEquals("shortcut failure", groupInfo.getShortcut(), groupTest.getShortcut());
+		assertEquals("calendar failure", groupInfo.isCalendar(), groupTest.getCalendar()
 				.booleanValue());
-		assertEquals(groupInfo.isChat(), groupTest.getChat().booleanValue());
-		assertEquals(groupInfo.isDocuments(), groupTest.getDocuments()
+		assertEquals("chat failure", groupInfo.isChat(), groupTest.getChat().booleanValue());
+		assertEquals("documents failure", groupInfo.isDocuments(), groupTest.getDocuments()
 				.booleanValue());
-		assertEquals(groupInfo.isForum(), groupTest.getForum().booleanValue());
-		assertEquals(groupInfo.isNewsletter(), groupTest.getNewsletter()
+		assertEquals("forum failure", groupInfo.isForum(), groupTest.getForum().booleanValue());
+		assertEquals("newsletter failure", groupInfo.isNewsletter(), groupTest.getNewsletter()
 				.booleanValue());
 
 		logger.debug("----> END access to create test <---- ");
@@ -87,19 +87,19 @@ public class GroupServiceIntegrationTest extends
 		this.getGroupService().updateUserGroup(groupInfo);
 		UserGroup groupTest = testUtility.getUserGroupDao().load(
 				groupInfo.getId());
-		assertEquals(groupInfo.getAccessType(), groupTest.getAccessType());
-		assertEquals(groupInfo.getDescription(), groupTest.getDescription());
-		assertEquals(groupInfo.getCreator(), groupTest.getCreator().getId());
-		assertEquals(groupInfo.getName(), groupTest.getName());
-		assertEquals(groupInfo.getPassword(), groupTest.getPassword());
-		assertEquals(groupInfo.getShortcut(), groupTest.getShortcut());
-		assertEquals(groupInfo.isCalendar(), groupTest.getCalendar()
+		assertEquals("accesstype failure", groupInfo.getAccessType(), groupTest.getAccessType());
+		assertEquals("description failure", groupInfo.getDescription(), groupTest.getDescription());
+		assertEquals("creator failure", groupInfo.getCreator(), groupTest.getCreator().getId());
+		assertEquals("name failure", groupInfo.getName(), groupTest.getName());
+		assertEquals("password failure", groupInfo.getPassword(), groupTest.getPassword());
+		assertEquals("shortcut failure", groupInfo.getShortcut(), groupTest.getShortcut());
+		assertEquals("calendar failure", groupInfo.isCalendar(), groupTest.getCalendar()
 				.booleanValue());
-		assertEquals(groupInfo.isChat(), groupTest.getChat().booleanValue());
-		assertEquals(groupInfo.isDocuments(), groupTest.getDocuments()
+		assertEquals("chat failure", groupInfo.isChat(), groupTest.getChat().booleanValue());
+		assertEquals("documents failure", groupInfo.isDocuments(), groupTest.getDocuments()
 				.booleanValue());
-		assertEquals(groupInfo.isForum(), groupTest.getForum().booleanValue());
-		assertEquals(groupInfo.isNewsletter(), groupTest.getNewsletter()
+		assertEquals("forum failure", groupInfo.isForum(), groupTest.getForum().booleanValue());
+		assertEquals("newsletter failure", groupInfo.isNewsletter(), groupTest.getNewsletter()
 				.booleanValue());
 
 		logger.debug("----> END access to update test <---- ");
@@ -126,23 +126,23 @@ public class GroupServiceIntegrationTest extends
 		groupInfo.setName("UserGroup");
 		groupInfo.setPassword(null);
 		groupInfo.setShortcut("group");
-		assertNotNull(groupInfo);
+		assertNotNull("groupInfo is not null", groupInfo);
 		
 		
 		// Create UserGroup
 		Long groupId = this.getGroupService().createUserGroup(groupInfo,
 				user.getId());
-		assertNotNull(groupId);
+		assertNotNull("groupId is null", groupId);
 		
 		// Load Group
 		UserGroup userGroup = testUtility.getUserGroupDao().load(groupId);
-		assertNotNull(userGroup);
+		assertNotNull("userGroup is null", userGroup);
 		
 
 		// Load UserInfoObject
 		UserGroupInfo groupInfoTest = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfoTest);
+		assertNotNull("groupInfoTest is null", groupInfoTest);
 
 		// Delete Group
 		this.getGroupService().deleteUserGroup(groupInfoTest);
@@ -151,7 +151,7 @@ public class GroupServiceIntegrationTest extends
 		try {
 			UserGroup groupTest = testUtility.getUserGroupDao().load(
 					groupInfoTest.getId());
-			assertNull(groupTest);
+			assertNull("groupTest is null", groupTest);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}
@@ -167,17 +167,17 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup is null", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user is null", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("group Info is null", groupInfo);
+		assertNotNull("group Info Id is null", groupInfo.getId());
 
 		// Add User as Aspirant
 		this.getGroupService().addAspirant(groupInfo, user.getId());
@@ -190,9 +190,9 @@ public class GroupServiceIntegrationTest extends
 				asp = true;
 			}
 		}
-		assertTrue(asp);
+		assertTrue("asp is not true", asp);
 		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
-		assertFalse(mem);
+		assertFalse("mem is not false", mem);
 
 		logger.debug("----> END access to AddAspirant test <---- ");
 	}
@@ -205,27 +205,27 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup is null", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user is null", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo is null", groupInfo);
+		assertNotNull("groupInfoId is null", groupInfo.getId());
 
 		// Add User as Member
 		this.getGroupService().addMember(groupInfo, user.getId());
 
 		// Test
 		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
-		assertTrue(mem);
+		assertTrue("mem is false", mem);
 		boolean mod = this.getGroupService().isModerator(groupInfo,
 				user.getId());
-		assertFalse(mod);
+		assertFalse("mod is true", mod);
 
 		logger.debug("----> END access to AddMember test <---- ");
 	}
@@ -238,17 +238,17 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup is null", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user is null", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo is null", groupInfo);
+		assertNotNull("groupInfoId is null", groupInfo.getId());
 
 		// Add User as Moderator
 		this.getGroupService().addMember(groupInfo, user.getId());
@@ -257,7 +257,7 @@ public class GroupServiceIntegrationTest extends
 		// Test
 		boolean mod = this.getGroupService().isModerator(groupInfo,
 				user.getId());
-		assertTrue(mod);
+		assertTrue("mod is false", mod);
 
 		logger.debug("----> END access to AddModerator test <---- ");
 	}
@@ -270,7 +270,7 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup is null", userGroup);
 
 		// Set AccessType to Password
 		userGroup.setAccessType(GroupAccessType.PASSWORD);
@@ -279,13 +279,13 @@ public class GroupServiceIntegrationTest extends
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user is null", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupinfo.getId", groupInfo.getId());
 
 		// Add User as Member
 		this.getGroupService().addUserByPassword(groupInfo, "Password",
@@ -293,10 +293,10 @@ public class GroupServiceIntegrationTest extends
 
 		// Test
 		boolean mem = this.getGroupService().isMember(groupInfo, user.getId());
-		assertTrue(mem);
+		assertTrue("mem", mem);
 		boolean mod = this.getGroupService().isModerator(groupInfo,
 				user.getId());
-		assertFalse(mod);
+		assertFalse("mod", mod);
 
 		logger.debug("----> END access to AddUserByPassword test <---- ");
 	}
@@ -309,17 +309,17 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupInfo.getId", groupInfo.getId());
 
 		// Add User as Moderator
 		this.getGroupService().addMember(groupInfo, user.getId());
@@ -328,7 +328,7 @@ public class GroupServiceIntegrationTest extends
 		// Test
 		boolean mod1 = this.getGroupService().isModerator(groupInfo,
 				user.getId());
-		assertTrue(mod1);
+		assertTrue("mod1", mod1);
 
 		// Remove User as Moderator
 		this.getGroupService().removeModerator(groupInfo, user.getId());
@@ -336,7 +336,7 @@ public class GroupServiceIntegrationTest extends
 		// Test
 		boolean mod2 = this.getGroupService().isModerator(groupInfo,
 				user.getId());
-		assertFalse(mod2);
+		assertFalse("mod2", mod2);
 
 		logger.debug("----> END access to RemoveModerator test <---- ");
 	}
@@ -349,31 +349,31 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupInfo.getId", groupInfo.getId());
 
 		// Add User as Member
 		this.getGroupService().addMember(groupInfo, user.getId());
 
 		// Test
 		boolean mem1 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertTrue(mem1);
+		assertTrue("mem1", mem1);
 
 		// Remove User as Member
 		this.getGroupService().removeMember(groupInfo, user.getId());
 
 		// Test
 		boolean mem2 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertFalse(mem2);
+		assertFalse("mem2", mem2);
 
 		logger.debug("----> END access to RemoveMember test <---- ");
 	}
@@ -386,17 +386,17 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupInfo.getId", groupInfo.getId());
 
 		// Add User as Aspirant
 		this.getGroupService().addAspirant(groupInfo, user.getId());
@@ -409,9 +409,9 @@ public class GroupServiceIntegrationTest extends
 				asp1 = true;
 			}
 		}
-		assertTrue(asp1);
+		assertTrue("asp1", asp1);
 		boolean mem1 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertFalse(mem1);
+		assertFalse("mem1", mem1);
 
 		// Accept User as Aspirant
 		this.getGroupService().acceptAspirant(groupInfo, user.getId());
@@ -424,9 +424,9 @@ public class GroupServiceIntegrationTest extends
 				asp2 = true;
 			}
 		}
-		assertFalse(asp2);
+		assertFalse("asp2", asp2);
 		boolean mem2 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertTrue(mem2);
+		assertTrue("mem2", mem2);
 
 		logger.debug("----> END access to AcceptAspirant test <---- ");
 	}
@@ -439,17 +439,17 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup", userGroup);
 
 		// Create User
 		User user = testUtility.createUniqueUserInDB();
-		assertNotNull(user);
+		assertNotNull("user", user);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupInfo.getId", groupInfo.getId());
 
 		// Add User as Aspirant
 		this.getGroupService().addAspirant(groupInfo, user.getId());
@@ -462,9 +462,9 @@ public class GroupServiceIntegrationTest extends
 				asp1 = true;
 			}
 		}
-		assertTrue(asp1);
+		assertTrue("asp1", asp1);
 		boolean mem1 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertFalse(mem1);
+		assertFalse("mem1", mem1);
 
 		// Accept User as Aspirant
 		this.getGroupService().rejectAspirant(groupInfo, user.getId());
@@ -477,9 +477,9 @@ public class GroupServiceIntegrationTest extends
 				asp2 = true;
 			}
 		}
-		assertFalse(asp2);
+		assertFalse("asp2", asp2);
 		boolean mem2 = this.getGroupService().isMember(groupInfo, user.getId());
-		assertFalse(mem2);
+		assertFalse("mem2", mem2);
 
 		logger.debug("----> END access to RejectAspirant test <---- ");
 	}
@@ -492,24 +492,24 @@ public class GroupServiceIntegrationTest extends
 
 		// Create UserGroup
 		UserGroup userGroup = testUtility.createUniqueUserGroupInDB();
-		assertNotNull(userGroup);
+		assertNotNull("userGroup", userGroup);
 
 		// Create Users
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < 10; i++) {
 			User user = testUtility.createUniqueUserInDB();
-			assertNotNull(user);
+			assertNotNull("user", user);
 			users.add(user);
-			assertNotNull(users.get(i));
+			assertNotNull("user.get(i)", users.get(i));
 
 		}
-		assertNotNull(users);
+		assertNotNull("users", users);
 
 		// Group to GroupInfo
 		UserGroupInfo groupInfo = testUtility.getUserGroupDao()
 				.toUserGroupInfo(userGroup);
-		assertNotNull(groupInfo);
-		assertNotNull(groupInfo.getId());
+		assertNotNull("groupInfo", groupInfo);
+		assertNotNull("groupInfo.getId", groupInfo.getId());
 
 		// Add User as Member
 		for (User user : users) {
@@ -626,8 +626,7 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupMemberInfo aspirant : aspirants) {
 			boolean test = false;
 			for (User user : users) {
-				//TODO Lutz Check if this works
-				if (aspirant.getUserId() == user.getId()) {
+				if (aspirant.getUserId().equals(user.getId())) {
 					test = true;
 				}
 			}
@@ -678,9 +677,8 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupInfo groupByUser : groupsByUser) {
 			boolean test = false;
 			for (UserGroup userGroup : userGroups) {
-				//TODO Lutz Check if this works
-				if (userGroup.getId() == testUtility.getUserGroupDao()
-						.userGroupInfoToEntity(groupByUser).getId()) {
+				if (userGroup.getId().equals(testUtility.getUserGroupDao()
+						.userGroupInfoToEntity(groupByUser).getId())) {
 					test = true;
 				}
 			}
@@ -731,9 +729,8 @@ public class GroupServiceIntegrationTest extends
 		for (UserGroupInfo groupByUser : groupsByUser) {
 			boolean test = false;
 			for (UserGroup userGroup : userGroups) {
-				//TODO Lutz Check if this works
-				if (userGroup.getId() == testUtility.getUserGroupDao()
-						.userGroupInfoToEntity(groupByUser).getId()) {
+				if (userGroup.getId().equals(testUtility.getUserGroupDao()
+						.userGroupInfoToEntity(groupByUser).getId())) {
 					test = true;
 				}
 			}

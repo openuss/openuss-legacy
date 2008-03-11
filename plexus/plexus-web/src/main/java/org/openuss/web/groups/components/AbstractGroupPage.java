@@ -7,7 +7,6 @@ import org.openuss.calendar.CalendarService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupInfo;
-import org.openuss.lecture.CourseService;
 import org.openuss.lecture.LectureService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -40,7 +39,7 @@ public class AbstractGroupPage extends BasePage {
 	protected CalendarInfo calendarInfo;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:23
 		if (groupInfo != null && groupInfo.getId() != null) {
 			groupInfo = groupService.getGroupInfo(groupInfo.getId());
 			calendarInfo = calendarService.getCalendar(groupInfo);

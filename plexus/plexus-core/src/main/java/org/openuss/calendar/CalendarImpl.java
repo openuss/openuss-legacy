@@ -17,8 +17,6 @@ import java.util.Set;
 public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		org.openuss.calendar.Calendar {
 
-	public AppointmentDao appointmentDao;
-
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
@@ -241,14 +239,6 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		}
 
 
-	}
-
-	public AppointmentDao getAppointmentDao() {
-		return appointmentDao;
-	}
-
-	public void setAppointmentDao(AppointmentDao appointmentDao) {
-		this.appointmentDao = appointmentDao;
 	}
 
 }

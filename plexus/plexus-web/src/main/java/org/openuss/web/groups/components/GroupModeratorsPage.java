@@ -1,6 +1,5 @@
 package org.openuss.web.groups.components;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,11 +14,8 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.groups.GroupService;
 import org.openuss.groups.UserGroupMemberInfo;
-import org.openuss.lecture.LectureException;
 import org.openuss.security.User;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -29,14 +25,14 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$components$groupmoderators", scope = Scope.REQUEST)
 @View
-public class GroupModeratorsPage extends AbstractGroupPage {
+public class GroupModeratorsPage extends AbstractGroupPage { // NOPMD by devopenuss on 11.03.08 14:26
 
 	private static final Logger logger = Logger
 			.getLogger(GroupModeratorsPage.class);
 
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupMemberInfo> page;
-	private Set<UserGroupMemberInfo> changedUsers = new HashSet<UserGroupMemberInfo>();
+	private Set<UserGroupMemberInfo> changedUsers = new HashSet<UserGroupMemberInfo>(); // NOPMD by devopenuss on 11.03.08 14:26
 
 	/* ----- private classes ----- */
 
@@ -72,7 +68,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 
 	@Prerender
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:25
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_moderator"));
@@ -87,11 +83,11 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
-	public String save() {
-		boolean newMod = false;
+	public String save() { // NOPMD by devopenuss on 11.03.08 14:25
+		boolean newMod = false; // NOPMD by devopenuss on 11.03.08 14:25
 		for (UserGroupMemberInfo userInfo : changedUsers) {
 			if (userInfo.isModerator()) {
-				newMod = true;
+				newMod = true; // NOPMD by devopenuss on 11.03.08 14:25
 			}
 		}
 		if (groupService.getModerators(groupInfo).size() == 1) {
@@ -151,11 +147,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	}
 
 	public boolean isAspirants() {
-		if (groupService.getAspirants(groupInfo).size() == 0) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(groupService.getAspirants(groupInfo).size() == 0);
 	}
 
 	public void resetCachedData() {

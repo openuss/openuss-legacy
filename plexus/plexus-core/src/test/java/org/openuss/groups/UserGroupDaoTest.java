@@ -6,10 +6,8 @@
 package org.openuss.groups;
 
 import org.openuss.TestUtility;
-import org.openuss.lecture.Course;
 import org.openuss.security.Group;
 import org.openuss.security.Membership;
-import org.openuss.security.User;
 import org.openuss.security.UserDao;
 
 /**
@@ -66,20 +64,17 @@ public class UserGroupDaoTest extends UserGroupDaoTestBase {
 		assertEquals(userGroup.getNewsletter().booleanValue(),groupInfo.isNewsletter());
 	}
 	
-	public void testUserGroupInfoToEntitiy(){
-		
+	public void testUserGroupInfoToEntitiy(){ // NOPMD by devopenuss on 11.03.08 14:18
 		//Create UserGroupInfo
 		UserGroupInfo groupInfo = new UserGroupInfo();
 		groupInfo.setAccessType(GroupAccessType.OPEN);
 		groupInfo.setCalendar(true);
 		groupInfo.setChat(true);
-		User user = testUtility.createUniqueUserInDB();
-		groupInfo.setCreator(user.getId());
+		groupInfo.setCreator(testUtility.createUniqueUserInDB().getId());
 		groupInfo.setDescription("A UserGroup");
 		groupInfo.setDocuments(true);
 		groupInfo.setForum(true);
 		groupInfo.setName("UserGroup");
-		groupInfo.setPassword(null);
 		groupInfo.setShortcut("group");
 		
 		// Test toEntity

@@ -31,7 +31,7 @@ public class InternalMessageServiceImpl
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
         LinkedList sentMessages = new LinkedList();
         if(imCenter==null){
-        	imCenter = getInternalMessageCenterDao().create(user);
+        	getInternalMessageCenterDao().create(user);
         	return sentMessages;
         }
         Set<InternalMessage> sentMessagesSet = imCenter.getSentInternalMessage();
@@ -83,7 +83,7 @@ public class InternalMessageServiceImpl
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
         LinkedList<InternalMessageInfo> recMessages = new LinkedList();
         if(imCenter==null){
-        	imCenter = getInternalMessageCenterDao().create(user);
+        	getInternalMessageCenterDao().create(user);
         	return recMessages;
         }
         Set<MessageStatus> recMessagesSet = imCenter.getReceivedMessages();

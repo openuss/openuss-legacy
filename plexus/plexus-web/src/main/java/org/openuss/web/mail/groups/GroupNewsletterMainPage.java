@@ -34,7 +34,7 @@ public class GroupNewsletterMainPage extends AbstractGroupNewsletterPage{
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {	 // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		newsletter = getGroupNewsletterService().getNewsletter(groupInfo);
 		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
@@ -49,7 +49,7 @@ public class GroupNewsletterMainPage extends AbstractGroupNewsletterPage{
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<MailInfo> getDataPage(int startRow, int pageSize) {		
-			List<MailInfo> al = groupNewsletterService.getMails(groupInfo);			
+			List<MailInfo> al = groupNewsletterService.getMails(groupInfo);			 // NOPMD by devopenuss on 11.03.08 14:27
 			sort(al);
 			page = new DataPage<MailInfo>(al.size(),0,al);
 			return page;
@@ -57,22 +57,22 @@ public class GroupNewsletterMainPage extends AbstractGroupNewsletterPage{
 	}
 
 	public String newMail(){
-		MailDetail md = new MailDetail();
+		MailDetail md = new MailDetail(); // NOPMD by devopenuss on 11.03.08 14:27
 		md.setSendDate(new Date(System.currentTimeMillis()));
 		setSessionBean(Constants.NEWSLETTER_MAIL, md);
 		return Constants.GROUP_NEWSLETTER_NEWMAIL;
 	}
 	
 	public String delMail(){
-		MailInfo mi = data.getRowData();		
+		MailInfo mi = data.getRowData();		 // NOPMD by devopenuss on 11.03.08 14:27
 		getGroupNewsletterService().deleteMail(groupInfo, getGroupNewsletterService().getMail(mi));
 		this.mail = new MailDetail();
 		return Constants.SUCCESS;
 	}
 	
 	public String changeMail(){	
-		MailInfo mi = data.getRowData();
-		MailDetail md = getGroupNewsletterService().getMail(mi);
+		MailInfo mi = data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:27
+		MailDetail md = getGroupNewsletterService().getMail(mi); // NOPMD by devopenuss on 11.03.08 14:27
 		md.setStatus(MailingStatus.DRAFT);
 		getGroupNewsletterService().updateMail(groupInfo, md);
 		setSessionBean(Constants.NEWSLETTER_MAIL, md);
@@ -89,8 +89,8 @@ public class GroupNewsletterMainPage extends AbstractGroupNewsletterPage{
 	}
 	
 	public String sendMail(){
-		MailInfo mi = data.getRowData();
-		MailDetail md = getGroupNewsletterService().getMail(mi);
+		MailInfo mi = data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:27
+		MailDetail md = getGroupNewsletterService().getMail(mi); // NOPMD by devopenuss on 11.03.08 14:27
 		this.mail = md;
 		setSessionBean(Constants.NEWSLETTER_MAIL, md);
 		getGroupNewsletterService().sendMail(groupInfo, getMail());
@@ -98,16 +98,16 @@ public class GroupNewsletterMainPage extends AbstractGroupNewsletterPage{
 	}
 	
 	public String showMail(){
-		MailInfo mi = data.getRowData();
-		MailDetail md = getGroupNewsletterService().getMail(mi);		
+		MailInfo mi = data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:27
+		MailDetail md = getGroupNewsletterService().getMail(mi);		 // NOPMD by devopenuss on 11.03.08 14:27
 		this.mail = md;		
 		setSessionBean(Constants.NEWSLETTER_MAIL, md);
 		return Constants.GROUP_NEWSLETTER_SHOWMAIL;
 	}
 	
 	public String sendPlannedMailNow(){
-		MailInfo mi = data.getRowData();
-		MailDetail md = getGroupNewsletterService().getMail(mi);		
+		MailInfo mi = data.getRowData(); // NOPMD by devopenuss on 11.03.08 14:27
+		MailDetail md = getGroupNewsletterService().getMail(mi);		 // NOPMD by devopenuss on 11.03.08 14:27
 		md.setSendDate(new Date(System.currentTimeMillis()));
 		getGroupNewsletterService().updateMail(groupInfo, md);
 		return Constants.GROUP_NEWSLETTER_MAIN;

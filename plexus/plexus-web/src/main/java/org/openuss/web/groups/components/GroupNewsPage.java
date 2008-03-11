@@ -59,7 +59,7 @@ public class GroupNewsPage extends AbstractGroupPage {
 	
 	@Prerender
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_news"));

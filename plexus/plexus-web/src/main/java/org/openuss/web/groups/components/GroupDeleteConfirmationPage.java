@@ -24,7 +24,7 @@ public class GroupDeleteConfirmationPage extends AbstractGroupPage {
 	/* ----- business logic ----- */
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:24
 		super.prerender();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("group_delete_header"));
@@ -39,7 +39,7 @@ public class GroupDeleteConfirmationPage extends AbstractGroupPage {
 			addMessage(i18n("group_removed_succeed"));
 			return Constants.OPENUSS4US_GROUPS;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			addMessage(i18n("group_removed_failed"));
 			return Constants.OPENUSS4US_GROUPS;
 		}

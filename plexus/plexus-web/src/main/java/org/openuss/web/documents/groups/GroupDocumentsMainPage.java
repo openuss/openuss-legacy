@@ -55,14 +55,14 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 	private boolean moveMode = false;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:28
 		super.prerender();
 		entrySelection.setEntries(loadFolderEntries());
 		entrySelection.processSwitch();
 	}
 
 	private List<FolderEntryInfo> loadFolderEntries() {
-		if (entries == null & groupInfo.getId() != null) {
+		if (entries == null && groupInfo.getId() != null) {
 			entries = documentService.getFolderEntries(groupInfo, currentFolder);
 		}
 		
@@ -118,7 +118,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 			Collections.sort(list, chain);
 		}
 
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
+		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() { // NOPMD by devopenuss on 11.03.08 14:28
 			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
 					return 0;
@@ -133,7 +133,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
-		if (files.size() > 0) {
+		if (files.size() > 0) { // NOPMD by devopenuss on 11.03.08 14:28
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
@@ -148,7 +148,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
 	
-		if (entries.size() > 0) {
+		if (entries.size() > 0) { // NOPMD by devopenuss on 11.03.08 14:28
 			logger.debug("deleting documents:");
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
@@ -227,7 +227,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 		this.targetFolder = targetFolder;
 	}
 
-	public List<SelectItem> getFolderList() {
+	public List<SelectItem> getFolderList() { // NOPMD by devopenuss on 11.03.08 14:29
 		if(folderList == null){
 			//get Folder List from Document Service
 
@@ -236,21 +236,24 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 			if (groupInfo.getId() != null) {
 				allFolderInfos = super.documentService.getAllSubfolders(groupInfo);
 			}
-			else allFolderInfos = new ArrayList<FolderInfo>();
+			else {
+				allFolderInfos = new ArrayList<FolderInfo>();
+			}
 			
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					String depth = "";
+					String depth = ""; // NOPMD by devopenuss on 11.03.08 14:30
 					//check depth
 					List path = super.documentService.getFolderPath(info);
-					for(int i = 0; i < path.size(); i++)
-						depth = depth + "> ";
+					for(int i = 0; i < path.size(); i++){
+						depth = depth + "> "; // NOPMD by devopenuss on 11.03.08 14:30
+					}
 					//@TODO implement check wether element is root. Change name if so.
 					String name = info.getName() == null ? "Root" : info.getName();
-					folderList.add(new SelectItem(info,depth + name ));
+					folderList.add(new SelectItem(info,depth + name )); // NOPMD by devopenuss on 11.03.08 14:30
 				} else {
-					SelectItem item = new SelectItem("--");
+					SelectItem item = new SelectItem("--"); // NOPMD by devopenuss on 11.03.08 14:30
 					item.setDisabled(true);
 					folderList.add(item);
 				}
@@ -268,7 +271,7 @@ public class GroupDocumentsMainPage extends AbstractGroupDocumentPage {
 		this.folderList = folderList;
 	}
 
-	public boolean getMoveMode() {
+	public boolean getMoveMode() { // NOPMD by devopenuss on 11.03.08 14:30
 		return moveMode;
 	}
 
