@@ -49,7 +49,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	private static final Logger logger = Logger.getLogger(SeminarpoolUserRegistrationController.class);
 	
 	private List<SeminarConditionInfo> conditionList = new ArrayList<SeminarConditionInfo>();
-	private List<SeminarUserConditionValueInfo> seminarUserConditionValueList = new ArrayList<SeminarUserConditionValueInfo>();
+	private List<SeminarUserConditionValueInfo> seminarUserConditionValueList = null;
 	
 	@Property(value = "#{seminarpoolInfo}")
 	protected SeminarpoolInfo seminarpoolInfo;
@@ -105,11 +105,13 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		if ( seminarUserRegistrationInfo != null && seminarUserRegistrationInfo.getId() != null) {
 			return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP1_PAGE;
 		} 
+		seminarUserConditionValueList = new ArrayList<SeminarUserConditionValueInfo>();
 		return Constants.SEMINARPOOL_USER_REGISTRATION_STEP1_PAGE;
 	}
 	
 	public String startEditProcess() {
 		logger.debug("Starts the edit process");
+		seminarUserConditionValueList = seminarpoolUserRegistrationService.findConditionValuesByUserAndSeminarpool(seminarUserRegistrationInfo.getUserId(), seminarUserRegistrationInfo.getSeminarpoolId());
 		return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP2_PAGE;
 	}
 	
@@ -313,6 +315,15 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 
 	public void setConditionList(List<SeminarConditionInfo> conditionList) {
 		this.conditionList = conditionList;
+	}
+
+	public List<SeminarUserConditionValueInfo> getSeminarUserConditionValueList() {
+		return seminarUserConditionValueList;
+	}
+
+	public void setSeminarUserConditionValueList(
+			List<SeminarUserConditionValueInfo> seminarUserConditionValueList) {
+		this.seminarUserConditionValueList = seminarUserConditionValueList;
 	}
 	
 }

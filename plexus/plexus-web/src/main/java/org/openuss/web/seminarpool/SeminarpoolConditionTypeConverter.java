@@ -15,29 +15,19 @@ import org.openuss.web.Constants;
 public class SeminarpoolConditionTypeConverter extends BaseBean implements Converter  {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-		if (value instanceof String) {
-			int literal = Integer.parseInt(value);
-			return ConditionType.fromInteger(literal);
-		}
-/*		if(value.equals(#{msg['seminarpool_condition_type_prefix_1']}))
-			literal = 1;
-		else if(value.equals("#{msg['seminarpool_condition_type_prefix_2']}"))
-			literal = 2;
-		else if(value.equals("#{msg['seminarpool_condition_type_prefix_3']}"))
-			literal = 3;
-		else return null;	
-*/		else return null;
+		if (value.equals(i18n(Constants.SEMINARPOOL_CONDITION_PREFIX + 1))) {
+			return ConditionType.TEXTFIELD;
+		} else if (value.equals(i18n(Constants.SEMINARPOOL_CONDITION_PREFIX + 2))) {
+			return ConditionType.TEXTAREA;			
+		} else if (value.equals(i18n(Constants.SEMINARPOOL_CONDITION_PREFIX + 3))) {
+			return ConditionType.CHECKBOX;
+		}	
+		return null;
 	}
 
 	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		if (value instanceof ConditionType){
-//			return i18n(Constants.SEMINARPOOL_CONDITION_PREFIX + ((ConditionType)value).getValue());
-			ConditionType seminarpoolConditionType = (ConditionType) value;
-			return seminarpoolConditionType.getValue().toString(); 
-		} else if (value instanceof Integer) {
-			return String.valueOf(value);
-		} else if (value instanceof String) {
-			return (String) value;
+			return i18n(Constants.SEMINARPOOL_CONDITION_PREFIX + ((ConditionType)value).getValue());
 		}
 		return null;   
 	}

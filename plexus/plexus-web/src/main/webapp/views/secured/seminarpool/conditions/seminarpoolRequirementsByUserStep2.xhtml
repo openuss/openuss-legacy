@@ -37,12 +37,17 @@
 			value="#{views$secured$seminarpool$conditions$seminarpoolRequirementsByUserStep2.seminarUserConditionValueList}"
 			rendered="#{not empty views$secured$seminarpool$conditions$seminarpoolRequirementsByUserStep2.seminarUserConditionValueList}"
 			layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
-			<o:block label="#{msg.seminarpool_condition_entrance_limitation} #{condition.index}">
-			 <p>
-				<h:outputText value="#{admins.seminarConditionDescription}"/>
-			 </p>
-			 <p>
-				<h:outputText value="#{admins.conditionValue}"/>
+			<o:block label="#{msg.seminarpool_condition_entrance_limitation} #{index+1}">
+			 <div class="content_font_normal">
+				<h:outputText value="#{condition.seminarConditionDescription}"/>
+			 </div>
+			 <p class="header_font_normal">
+					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==3}">
+						<f:converter converterId="seminarpoolBooleanConverter" />
+					</h:outputText>
+					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==1}"/>
+					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==2}"/>
+					
 			 </p>
 			</o:block>
 		</t:dataList>

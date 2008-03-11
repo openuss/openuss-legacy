@@ -61,7 +61,19 @@
 					</c:forEach>
 					<h:messages/>
 				</o:block>
-
+			   <o:block label="#{msg.seminarpool_entrance_limitation}">
+			   	<t:dataList 
+						id="conditions"  
+						var="conditions"
+						value="#{seminarpoolUserRegistration.seminarUserConditionValueList}"
+						layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+						<h:selectBooleanCheckbox id="field#{index}" rendered="#{conditions.seminarConditionType.value==3}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:outputText value="#{conditions.seminarConditionDescription}" rendered="#{conditions.seminarConditionType.value==3}" />
+						<h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" /><h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.seminarConditionType.value==2}" />
+						<br />
+						<h:inputText rendered="#{conditions.seminarConditionType.value==1}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:inputTextarea rendered="#{conditions.seminarConditionType.value==2}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
+						<br />
+				</t:dataList>
+			   </o:block>
 				<o:block>
 				
 			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true"/>

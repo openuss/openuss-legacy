@@ -13,7 +13,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.UserInfo;
-import org.openuss.seminarpool.util.UserInfoFirstNameComparator;
+import org.openuss.seminarpool.util.UserInfoLastNameComparator;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 import org.openuss.web.seminarpool.allocation.UserAllocationByUserPage;
@@ -60,7 +60,7 @@ public class SeminarpoolRequirementsByUserStep1Page extends AbstractSeminarpoolP
 		}
 		
 		public void sort(List<UserInfo> page) {
-			Collections.sort(page, new UserInfoFirstNameComparator(dataCourseTypes.isAscending()));
+			Collections.sort(page, new UserInfoLastNameComparator(dataCourseTypes.isAscending()));
 		}
 
 	}
