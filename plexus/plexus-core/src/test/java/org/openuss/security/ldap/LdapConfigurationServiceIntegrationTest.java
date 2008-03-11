@@ -333,17 +333,20 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	 */
 	public void testIsValid() {
 		service = getLdapConfigurationService();
-		commit();
+//		commit();
 		
 		RoleAttributeKeyInfo key1 = service.createRoleAttributeKey(createRoleAttributeKeyInfoDummy());
-		key1.setName("key1");
-		service.saveRoleAttributeKey(key1);
+//		key1.setName("key1");
+//		service.saveRoleAttributeKey(key1);
 		assertTrue(false == service.isValidRoleAttributeKey(key1));
 		
 		UserDnPatternInfo pattern1 = service.createUserDnPattern(createUserDnPatternInfoDummy());
-		pattern1.setName("pattern1");
-		service.saveUserDnPattern(pattern1);
+//		pattern1.setName("pattern1");
+//		service.saveUserDnPattern(pattern1);
 		assertTrue(false == service.isValidUserDnPattern(pattern1));
+		
+		AttributeMappingInfo mapping1 = service.createAttributeMapping(createAttributeMappingInfoDummy(key1));
+		service.isValidAttributeMappingName(mapping1);
 		
 		
 	}

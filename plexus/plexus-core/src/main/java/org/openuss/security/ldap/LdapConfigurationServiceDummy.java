@@ -12,7 +12,7 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
 		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
 		ldapServerConfiguration.setAuthenticationDomainId(42L);
-		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
+		ldapServerConfiguration.setAuthenticationDomainName("uni-muenster");
 		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
 		ldapServerConfiguration.setEmailKey("mail");
 		ldapServerConfiguration.setFirstNameKey("givenName");
@@ -266,6 +266,23 @@ public class LdapConfigurationServiceDummy implements LdapConfigurationService {
 	}
 
 	public boolean isValidUserDnPattern(UserDnPatternInfo userDnPattern) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isValidAttributeMappingName(
+			AttributeMappingInfo attributeMappingInfo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isValidAuthenticationDomainName(
+			AuthenticationDomainInfo authenticationDomainInfo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isValidURL(String[] schemes, String url) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -4,6 +4,10 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.security.ldap;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @see org.openuss.security.ldap.RoleAttributeKey
  */
@@ -26,7 +30,16 @@ public class RoleAttributeKeyDaoImpl
      */
     public org.openuss.security.ldap.RoleAttributeKeyInfo toRoleAttributeKeyInfo(final org.openuss.security.ldap.RoleAttributeKey entity)
     {       
-        return super.toRoleAttributeKeyInfo(entity);
+        RoleAttributeKeyInfo roleAttributeKeyInfo = super.toRoleAttributeKeyInfo(entity);    
+        
+//      set AttributeMapping Ids
+        List<AttributeMapping> attributeMappingEntity = entity.getAttributeMappings();        
+        List<Long> attributeMappingIds = new ArrayList<Long>();
+        for (AttributeMapping attributeMapping : attributeMappingEntity) {
+        	attributeMappingIds.add(attributeMapping.getId());
+		}
+        roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
+        return roleAttributeKeyInfo;
     }
 
 

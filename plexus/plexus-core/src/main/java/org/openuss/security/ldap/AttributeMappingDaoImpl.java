@@ -4,6 +4,11 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.security.ldap;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @see org.openuss.security.ldap.AttributeMapping
  */
@@ -26,8 +31,23 @@ public class AttributeMappingDaoImpl
      */
     public org.openuss.security.ldap.AttributeMappingInfo toAttributeMappingInfo(final org.openuss.security.ldap.AttributeMapping entity) {
     	
-    	AttributeMappingInfo attributeMappingInfo = super.toAttributeMappingInfo(entity);    	
-    	attributeMappingInfo.setRoleAttributeKeyIds(entity.getRoleAttributeKeys());
+    	AttributeMappingInfo attributeMappingInfo = super.toAttributeMappingInfo(entity);    
+    	
+//    	set RoleAttributeKey Ids    		
+    	List<RoleAttributeKey> roleAttributeKeyList = entity.getRoleAttributeKeys();        
+        List<Long> roleAttributeKeyIds = new ArrayList<Long>();
+        for (RoleAttributeKey roleAttributeKey : roleAttributeKeyList) {
+        	roleAttributeKeyIds.add(roleAttributeKey.getId());
+		}
+        attributeMappingInfo.setRoleAttributeKeyIds(roleAttributeKeyIds);    	
+    	
+//    	set AuthenticationDomain Ids
+    	List<Long> authenticationDomainIds = new ArrayList<Long>();
+    	Set<AuthenticationDomain> authenticationDomainSet = entity.getAuthenticationDomains();
+    	for (AuthenticationDomain authenticationDomain : authenticationDomainSet) {
+    		authenticationDomainIds.add(authenticationDomain.getId());
+		}
+    	attributeMappingInfo.setAuthenticationDomainIds(authenticationDomainIds);
     	
     	return attributeMappingInfo;
     }

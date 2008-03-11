@@ -147,7 +147,7 @@ public class LdapConfigurationServiceImpl
     	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
     		throw new LdapConfigurationServiceException("URL must not be empty!");
     	}
-    	if (!handleIsValidURL(ldapServer.getProviderUrl())) {
+    	if (!handleIsValidURL(new String[]{"ldap"}, ldapServer.getProviderUrl())) {
     		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
     	}
     	if (! (ldapServer.getPort() > 0)) {
@@ -169,18 +169,8 @@ public class LdapConfigurationServiceImpl
     
     
     
-    /**
-     * validates if an url is a valid url and protocol is ldap:// only
-     */
-    @Override
-    protected boolean handleIsValidURL(String url) {
-    	String[] schemes = {"ldap"};
-    	UrlValidator urlValidator = new UrlValidator(schemes);
-    	return urlValidator.isValid(url);
-    }
-
-    
-    /**
+   
+	/**
      * 
      */
     @Override
@@ -262,12 +252,7 @@ public class LdapConfigurationServiceImpl
     	List<LdapServer> ldapEntityList = (List<LdapServer>) getLdapServerDao().loadAll();
     	
     	for (LdapServer ldapServerEntity : ldapEntityList) {
-    		LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
-    		List<Long> userDnPatternIds = new ArrayList<Long>();
-    		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
-    			userDnPatternIds.add(userDnPatternEntity.getId());
-    		}
-    		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
+    		LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);    		
     		ldapList.add(ldapServerInfo);    					
 		}
     	
@@ -285,16 +270,10 @@ public class LdapConfigurationServiceImpl
     	// if domain does not exist simply return empty list 
     	if(authDomain != null) {
     		Set<LdapServer> ldapServerSet = authDomain.getLdapServers();
-    		for (Iterator<LdapServer> iterator = ldapServerSet.iterator(); iterator.hasNext();) {    		
-    			LdapServer ldapServerEntity = iterator.next();
-    			LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
-    			List<Long> userDnPatternIds = new ArrayList<Long>();
-        		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
-        			userDnPatternIds.add(userDnPatternEntity.getId());
-        		}
-        		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
+    		for (LdapServer ldapServer : ldapServerSet) {
+    			LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServer);
     			ldapList.add(ldapServerInfo);
-    		}
+			}
     	}
 		return ldapList;
     }
@@ -394,15 +373,7 @@ public class LdapConfigurationServiceImpl
 
     	for (AuthenticationDomain authenticationDomain : authDomainEntityList) {
     		AuthenticationDomainInfo authenticationDomainInfo = getAuthenticationDomainDao().toAuthenticationDomainInfo(authenticationDomain);
-    		List<Long> ldapServerIds = new ArrayList<Long>();
-    		for (LdapServer ldapServerEntity : authenticationDomain.getLdapServers()) {
-    			ldapServerIds.add(ldapServerEntity.getId());
-    		}
-    		authenticationDomainInfo.setLdapServerIds(ldapServerIds);
-    		if(authenticationDomain.getAttributeMapping() != null) {
-    			authenticationDomainInfo.setAttributeMappingId(authenticationDomain.getAttributeMapping().getId());
-    		}
-			authDomainInfoList.add(authenticationDomainInfo);			
+    		authDomainInfoList.add(authenticationDomainInfo);			
 		}
     	
     	return authDomainInfoList;    	
@@ -632,19 +603,6 @@ public class LdapConfigurationServiceImpl
 			AttributeMapping attributeMappingEntity = (AttributeMapping) iterator.next();
 			AttributeMappingInfo attributeMappingInfo = getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity);
 			
-			List<Long> authenticationDomainIds = new ArrayList<Long>();
-			for (AuthenticationDomain authenticationDomainEntity : attributeMappingEntity.getAuthenticationDomains()) {
-				authenticationDomainIds.add(authenticationDomainEntity.getId());
-			}
-			
-			List<Long> roleAttributeKeyIds = new ArrayList<Long>();
-			for (RoleAttributeKey roleAttributeKeyEntity : attributeMappingEntity.getRoleAttributeKeys()) {
-				roleAttributeKeyIds.add(roleAttributeKeyEntity.getId());
-			}
-			
-			attributeMappingInfo.setAuthenticationDomainIds(authenticationDomainIds);
-			attributeMappingInfo.setRoleAttributeKeyIds(roleAttributeKeyIds);
-			
 			attributeMappingInfoList.add(attributeMappingInfo);			
 		}
     	
@@ -772,15 +730,9 @@ public class LdapConfigurationServiceImpl
 			if(attributeMappingEntity != null) {
 				List<RoleAttributeKey> roleAttributeKeyEntities = attributeMappingEntity.getRoleAttributeKeys();
 				List<RoleAttributeKeyInfo> roleAttributeKeyInfos = new ArrayList<RoleAttributeKeyInfo>();
+				
 				for (RoleAttributeKey roleAttributeKeyEntity : roleAttributeKeyEntities) {
-					RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
-					
-					List<Long> attributeMappingIds = new ArrayList<Long>();
-					for (AttributeMapping entity : roleAttributeKeyEntity.getAttributeMappings()) {
-						attributeMappingIds.add(entity.getId());
-					}
-					roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
-					
+					RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);					
 					roleAttributeKeyInfos.add(roleAttributeKeyInfo);
 				}
 		    	return roleAttributeKeyInfos;
@@ -798,13 +750,7 @@ public class LdapConfigurationServiceImpl
     	List<RoleAttributeKey> keyEntityList = (List<RoleAttributeKey>) getRoleAttributeKeyDao().loadAll();
     	for (RoleAttributeKey roleAttributeKey : keyEntityList) {
     		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKey);
-    		List<Long> attributeMappingIds = new ArrayList<Long>();
-    		for (AttributeMapping attributeMappingEntity : roleAttributeKey.getAttributeMappings()) {
-    			attributeMappingIds.add(attributeMappingEntity.getId());
-    		}
-    		roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
-    		roleAttributeKeyInfo.setId(roleAttributeKey.getId());
-			keyInfoList.add(roleAttributeKeyInfo);			
+    		keyInfoList.add(roleAttributeKeyInfo);			
 		}
     	
     	return keyInfoList;  
@@ -909,14 +855,14 @@ public class LdapConfigurationServiceImpl
 		getUserDnPatternDao().update(userDnPatternEntity);
 	}
 	
-	 /**
-     * validates a role attribute key to create or save
-     */
-    private void validateUserDnPattern(UserDnPatternInfo userDnPatternInfo) throws Exception {
-    	if (StringUtils.isBlank(userDnPatternInfo.getName())){
-    		throw new LdapConfigurationServiceException("Name of new user dn pattern musst not be empty!");
-    	} 
-    }
+//	 /**
+//     * validates a role attribute key to create or save
+//     */
+//    private void validateUserDnPattern(UserDnPatternInfo userDnPatternInfo) throws Exception {
+//    	if (StringUtils.isBlank(userDnPatternInfo.getName())){
+//    		throw new LdapConfigurationServiceException("Name of new user dn pattern musst not be empty!");
+//    	} 
+//    }
 
 	/**
 	 * 
@@ -927,13 +873,7 @@ public class LdapConfigurationServiceImpl
 		
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
 		for (UserDnPattern userDnPatternEntity : userDnPatternEntities) {
-			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
-			userDnPatternInfo.setId(userDnPatternEntity.getId());
-			List<Long> ldapServerIds = new ArrayList<Long>();
-			for (LdapServer ldapServerEntity : userDnPatternEntity.getLdapServers()) {
-				ldapServerIds.add(ldapServerEntity.getId());
-			}
-			userDnPatternInfo.setLdapServerIds(ldapServerIds);
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);			
 			userDnPatternInfos.add(userDnPatternInfo);
 		}
 
@@ -951,15 +891,7 @@ public class LdapConfigurationServiceImpl
 		List<UserDnPatternInfo> userDnPatternInfos = new ArrayList<UserDnPatternInfo>();
 		
 		for (UserDnPattern userDnPatternEntity : userDnPatternEntities) {
-			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
-			userDnPatternInfo.setId(userDnPatternEntity.getId());
-			userDnPatternInfo.setName(userDnPatternEntity.getName());
-			List<Long> ldapServerIds = new ArrayList<Long>();
-			for (LdapServer entity : userDnPatternEntity.getLdapServers()) {
-				ldapServerIds.add(entity.getId());
-			}
-			userDnPatternInfo.setLdapServerIds(ldapServerIds);
-			
+			UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);			
 			userDnPatternInfos.add(userDnPatternInfo);
 		}
     	
@@ -979,19 +911,7 @@ public class LdapConfigurationServiceImpl
 			throw new LdapConfigurationServiceException("Attribute mapping not found in DB!");
 		}
 		
-		AttributeMappingInfo attributeMappingInfo = getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity); 
-		
-		List<Long> roleAttributeKeyIds = new ArrayList<Long>();
-		for (RoleAttributeKey roleAttributeKeyEntity : attributeMappingEntity.getRoleAttributeKeys()) {
-			roleAttributeKeyIds.add(roleAttributeKeyEntity.getId());
-		}
-		attributeMappingInfo.setRoleAttributeKeyIds(roleAttributeKeyIds);
-		
-		List<Long> authenticationDomainIds = new ArrayList<Long>();
-		for (AuthenticationDomain authenticationDomainEntity : attributeMappingEntity.getAuthenticationDomains()) {
-			authenticationDomainIds.add(authenticationDomainEntity.getId());
-		}
-		attributeMappingInfo.setAuthenticationDomainIds(authenticationDomainIds);
+		AttributeMappingInfo attributeMappingInfo = getAttributeMappingDao().toAttributeMappingInfo(attributeMappingEntity);	
 		
 		return attributeMappingInfo;
 	}
@@ -1011,12 +931,6 @@ public class LdapConfigurationServiceImpl
 		
 		LdapServerInfo ldapServerInfo = getLdapServerDao().toLdapServerInfo(ldapServerEntity);
 		
-		List<Long> userDnPatternIds = new ArrayList<Long>();
-		for (UserDnPattern userDnPatternEntity : ldapServerEntity.getUserDnPatterns()) {
-			userDnPatternIds.add(userDnPatternEntity.getId());
-		}
-		ldapServerInfo.setUserDnPatternIds(userDnPatternIds);
-		
 		return ldapServerInfo;
 	}
 
@@ -1035,12 +949,6 @@ public class LdapConfigurationServiceImpl
 		
 		RoleAttributeKeyInfo roleAttributeKeyInfo = getRoleAttributeKeyDao().toRoleAttributeKeyInfo(roleAttributeKeyEntity);
 		
-		List<Long> attributeMappingIds = new ArrayList<Long>();
-		for (AttributeMapping attributeMappingEntity : roleAttributeKeyEntity.getAttributeMappings()) {
-			attributeMappingIds.add(attributeMappingEntity.getId());
-		}
-		roleAttributeKeyInfo.setAttributeMappingIds(attributeMappingIds);
-		
 		return roleAttributeKeyInfo;
 	}
 
@@ -1058,12 +966,6 @@ public class LdapConfigurationServiceImpl
 		}
 		
 		UserDnPatternInfo userDnPatternInfo = getUserDnPatternDao().toUserDnPatternInfo(userDnPatternEntity);
-		
-		List<Long> ldapServerIds = new ArrayList<Long>();
-		for (LdapServer ldapServerEntity : userDnPatternEntity.getLdapServers()) {
-			ldapServerIds.add(ldapServerEntity.getId());
-		}
-		userDnPatternInfo.setLdapServerIds(ldapServerIds);
 		
 		return userDnPatternInfo;
 	}
@@ -1091,6 +993,37 @@ public class LdapConfigurationServiceImpl
 	}
 	
 	
+	 /**
+     * validates if an url is a valid url and protocol
+     * @param schemes	e.g. {"ldap"} {"http"}
+     * @param url
+     * @return boolean	
+     */
+    @Override
+    protected boolean handleIsValidURL(String[] schemes, String url) {
+//    	String[] schemes = {"ldap"};
+    	UrlValidator urlValidator = new UrlValidator(schemes);
+    	return urlValidator.isValid(url);
+    }
+    
+    @Override
+	protected boolean handleIsValidAttributeMappingName(
+			AttributeMappingInfo attributeMappingInfo) throws Exception {
+    	// check if role AttributeMappingInfo already exists
+		if (null != getAttributeMappingDao().findByName(attributeMappingInfo.getMappingName())) {
+			return false;
+		} else return true;
+	}
+
+	@Override
+	protected boolean handleIsValidAuthenticationDomainName(
+			AuthenticationDomainInfo authenticationDomainInfo) throws Exception {
+		// check if role AuthenticationDomainInfo already exists
+		if (null != getAuthenticationDomainDao().findByName(authenticationDomainInfo.getName())) {
+			return false;
+		} else return true;
+	}
+
 	
 	
 	

@@ -4,6 +4,11 @@
  * You can (and have to!) safely modify it by hand.
  */
 package org.openuss.security.ldap;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @see org.openuss.security.ldap.AuthenticationDomain
  */
@@ -29,10 +34,19 @@ public class AuthenticationDomainDaoImpl
     	
     	AuthenticationDomainInfo authenticationDomainInfo = super.toAuthenticationDomainInfo(entity);
     	
+//    	set AttributeMapping Id
     	if(entity.getAttributeMapping() != null) {
     		authenticationDomainInfo.setAttributeMappingId(entity.getAttributeMapping().getId());	
     	}
-    	    	
+    	 
+//    	set LdapServer Ids
+    	List<Long> ldapServerIds = new ArrayList<Long>();
+    	Set<LdapServer> ldapServerList = entity.getLdapServers();
+    	for (LdapServer ldapServer : ldapServerList) {
+    		ldapServerIds.add(ldapServer.getId());			
+		}
+    	authenticationDomainInfo.setLdapServerIds(ldapServerIds);
+    	
     	return authenticationDomainInfo;
     }
 
