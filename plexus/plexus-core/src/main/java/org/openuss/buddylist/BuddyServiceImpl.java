@@ -33,8 +33,9 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 			throws java.lang.Exception {
 		User user = getSecurityService().getCurrentUser();
 		// test wether userToAdd equals current user
-		if (user.getId().equals(userToAdd.getId()))
-			throw new Exception("You cannot add yourself");
+		if (user.getId().equals(userToAdd.getId())){
+			throw new BuddyApplicationException("You cannot add yourself");
+		}
 		BuddyList buddyList = getBuddyListDao().findByDomainIdentifier(
 				user.getId());
 		if (buddyList == null) {
@@ -42,8 +43,9 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 		}
 		// test wether user is already added
 		for (Buddy buddy : buddyList.getBuddies()) {
-			if (buddy.getUser().getId().equals(userToAdd.getId()))
-				throw new Exception("User is already added");
+			if (buddy.getUser().getId().equals(userToAdd.getId())){
+				throw new BuddyApplicationException("User is already added");
+			}
 		}
 		Buddy buddy = Buddy.Factory.newInstance();
 		buddy.setAuthorized(false);
@@ -78,10 +80,10 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 	 * @see org.openuss.buddylist.BuddyService#addTag(org.openuss.buddylist.BuddyInfo,
 	 *      java.lang.String)
 	 */
-	protected int handleAddTag(org.openuss.buddylist.BuddyInfo buddyInfo,
-			java.lang.String tagString) throws java.lang.Exception {
-		logger.debug("process add tag for tagString " + tagString);
-		tagString = tagString.trim().toLowerCase();
+	protected int handleAddTag(BuddyInfo buddyInfo,
+			String tagString2) throws java.lang.Exception {
+		logger.debug("process add tag for tagString " + tagString2);
+		String tagString = tagString2.trim().toLowerCase();
 		if (tagString.length() <= 2) {
 			return 0;
 		}
@@ -132,10 +134,9 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 	 */
 	protected void handleDeleteTag(org.openuss.buddylist.BuddyInfo buddyInfo,
 			java.lang.String tagString) throws java.lang.Exception {
-		tagString = tagString.toLowerCase();
 		Buddy buddy = getBuddyDao().load(buddyInfo.getId());
 		for (Tag tag : buddy.getTags()) {
-			if (tag.getTag().equals(tagString)) {
+			if (tag.getTag().equalsIgnoreCase(tagString)) {
 				// delete tag
 				buddy.getTags().remove(tag);
 				tag.getBuddies().remove(buddy);
@@ -147,7 +148,7 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 				return;
 			}
 		}
-		throw new Exception("Tag does not exist at user");
+		throw new BuddyApplicationException("Tag does not exist at user");
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 	}
 
 	@Override
-	protected List handleGetAllBuddysByTag(String tagString) throws Exception {
+	protected List handleGetAllBuddysByTag(String tagString) throws BuddyApplicationException {
 		List<BuddyInfo> results = new LinkedList<BuddyInfo>();
 		if (!this.getAllUsedTags().contains(tagString)) {
 			return results;
@@ -244,8 +245,9 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 				break;
 			}
 		}
-		if (tag == null)
-			throw new Exception("Tag not found");
+		if (tag == null){
+			throw new BuddyApplicationException("Tag not found");
+		}
 		for (BuddyInfo buddyCandidate : (List<BuddyInfo>) this.getBuddyList()) {
 			if (buddyCandidate.getTags().contains(tagString)) {
 				results.add(buddyCandidate);
@@ -255,41 +257,47 @@ public class BuddyServiceImpl extends org.openuss.buddylist.BuddyServiceBase {
 	}
 
 	@Override
-	protected boolean handleIsUserBuddy(User buddy) throws Exception {
+	protected boolean handleIsUserBuddy(User buddy) throws BuddyApplicationException {
 		User user = getSecurityService().getCurrentUser();
-		if (user == null)
-			throw new Exception("No current user");
+		if (user == null){
+			throw new BuddyApplicationException("No current user");
+		}
 		BuddyList buddylist = getBuddyListDao().findByDomainIdentifier(
 				user.getId());
-		if (buddylist == null || buddylist.getBuddies() == null)
+		if (buddylist == null || buddylist.getBuddies() == null){
 			return false;
+		}
 		for (Buddy b : buddylist.getBuddies()) {
-			if (b.getUser().equals(buddy))
+			if (b.getUser().equals(buddy)){
 				return true;
+			}
 		}
 		return false;
 	}
 
 	@Override
-	protected boolean handleIsUserBuddy(UserInfo userInfo) throws Exception {
+	protected boolean handleIsUserBuddy(UserInfo userInfo) throws BuddyApplicationException {
 		return this.isUserBuddy(userInfo.getId());
 	}
 
 	@Override
-	protected boolean handleIsUserBuddy(Long userId) throws Exception {
+	protected boolean handleIsUserBuddy(Long userId) throws BuddyApplicationException {
 		User user = getUserDao().load(userId);
-		if (user == null)
-			throw new Exception("User could not be found!");
+		if (user == null){
+			throw new BuddyApplicationException("User could not be found!");
+		}
 		return this.isUserBuddy(user);
 	}
 
 	@Override
-	protected BuddyInfo handleGetBuddy(Long buddyId) throws Exception {
+	protected BuddyInfo handleGetBuddy(Long buddyId) throws BuddyApplicationException {
 		BuddyInfo buddy = (BuddyInfo) getBuddyDao().load(
 				BuddyDao.TRANSFORM_BUDDYINFO, buddyId);
-		if (this.getBuddyList().contains(buddy))
+		if (this.getBuddyList().contains(buddy)){
 			return buddy;
-		else
-			throw new Exception("Not the buddy of the requesting user");
+		}
+		else{
+			throw new BuddyApplicationException("Not the buddy of the requesting user");
+		}
 	}
 }

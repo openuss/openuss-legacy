@@ -11,8 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
-import org.openuss.discussion.Topic;
-
 /**
  * @see org.openuss.calendar.Calendar
  */
@@ -77,8 +75,9 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 	public List getNaturalSerialAppointments() {
 		ArrayList apps = new ArrayList();
 		for (Appointment app : this.getOwnAppointments()) {
-			if (app instanceof SerialAppointment)
+			if (app instanceof SerialAppointment){
 				apps.add(app);
+			}
 		}
 		for (Appointment app : this.getLinkedAppointments()) {
 			if (app instanceof SerialAppointment)
@@ -197,11 +196,6 @@ public class CalendarImpl extends org.openuss.calendar.CalendarBase implements
 		
 		// calculate resulting single appointments
 		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
-			// TODO Logger!
-			System.out.println("Generate Appointment "
-					+ calculatedStart.getTime().toGMTString() + " to "
-					+ calculatedEnd.getTime().toGMTString());
-
 			// set appointment data
 
 			Appointment app = Appointment.Factory.newInstance();

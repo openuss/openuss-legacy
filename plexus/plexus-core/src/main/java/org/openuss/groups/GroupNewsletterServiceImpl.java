@@ -32,7 +32,7 @@ public class GroupNewsletterServiceImpl extends GroupNewsletterServiceBase {
 	/**
 	 * @see org.openuss.groups.GroupNewsletterService#getMails(org.openuss.groups.UserGroupInfo)
 	 */
-	protected List<MailInfo> handleGetMails(UserGroupInfo group) throws Exception {
+	protected List<MailInfo> handleGetMails(UserGroupInfo group){
 		NewsletterInfo newsletter = getNewsletter(group);
 		return getNewsletterService().getMails(newsletter, false);
 	}

@@ -17,7 +17,6 @@ public class CalendarDaoImpl
         org.openuss.calendar.Calendar sourceEntity,
         org.openuss.calendar.CalendarInfo targetVO)
     {
-        // @todo verify behavior of toCalendarInfo
         super.toCalendarInfo(sourceEntity, targetVO);
     }
 

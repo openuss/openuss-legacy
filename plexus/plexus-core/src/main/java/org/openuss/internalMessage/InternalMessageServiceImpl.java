@@ -5,9 +5,13 @@
  */
 package org.openuss.internalMessage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.openuss.security.User;
 
 /**
@@ -49,7 +53,7 @@ public class InternalMessageServiceImpl
      * @see org.openuss.internalMessage.InternalMessageService#setRead(org.openuss.internalMessage.InternalMessageInfo)
      */
     protected void handleSetRead(org.openuss.internalMessage.InternalMessageInfo messageInfo)
-        throws java.lang.Exception
+        throws InternalMessageServiceException
     {
     	User user = getSecurityService().getCurrentUser();
         InternalMessageCenter imCenter = getInternalMessageCenterDao().findByUser(user);
@@ -61,8 +65,9 @@ public class InternalMessageServiceImpl
         		break;
         	}
         }
-        if(messageStatus==null)
-        	throw new Exception("Message not found");
+        if(messageStatus==null){
+        	throw new InternalMessageServiceException("Message not found");
+        }
         messageStatus.setMessageRead(true);
         getMessageStatusDao().update(messageStatus);
         getInternalMessageDao().update(message);
@@ -140,17 +145,19 @@ public class InternalMessageServiceImpl
      * @see org.openuss.internalMessage.InternalMessageService#sendInternalMessage(org.openuss.internalMessage.InternalMessageInfo)
      */
     protected void handleSendInternalMessage(org.openuss.internalMessage.InternalMessageInfo messageInfo)
-        throws java.lang.Exception
+        throws InternalMessageServiceException
     {
     	InternalMessage message = InternalMessage.Factory.newInstance();
 //    	//replace here? better: Converter --> ask ingo
 //    	messageInfo.setContent(StringUtils.replace(messageInfo.getContent().trim(), "\n", "<br/>"));
     	message.setContent(messageInfo.getContent());
     	message.setSubject(messageInfo.getSubject());
-		if (messageInfo.getMessageDate() == null)
+		if (messageInfo.getMessageDate() == null){
 			message.setMessageDate(new Date());
-		else
+		}
+		else{
 			message.setMessageDate(messageInfo.getMessageDate());
+		}
 		InternalMessageCenter sender = null;
 		if (messageInfo.getSenderId() != null) {
 			sender = getInternalMessageCenterDao().findByUser(
@@ -168,11 +175,11 @@ public class InternalMessageServiceImpl
     	getInternalMessageDao().create(message);
     	message.setRecipients(new ArrayList<MessageStatus>());
     	if(messageInfo.getInternalMessageRecipientsInfos() == null || messageInfo.getInternalMessageRecipientsInfos().size() == 0){
-    		throw new Exception("No Recipients found");
+    		throw new InternalMessageServiceException("No Recipients found");
     	}
     	for(InternalMessageRecipientsInfo rec : messageInfo.getInternalMessageRecipientsInfos()){
     		if(rec.getRecipientId().equals(sender.getUser().getId())){
-    			throw new Exception("You cannot send a message to yourself");
+    			throw new InternalMessageServiceException("You cannot send a message to yourself");
     		}
     		MessageStatus messageStatus = MessageStatus.Factory.newInstance();
     		messageStatus.setDeleted(false);
@@ -192,7 +199,7 @@ public class InternalMessageServiceImpl
     }
 
 	@Override
-	protected int handleGetNumberOfUnreadMessages() throws Exception {
+	protected int handleGetNumberOfUnreadMessages() {
 		List<InternalMessageInfo> list = this.getAllReceivedInternalMessages();
 		int unreadMessages = 0;
 		for(InternalMessageInfo imInfo : list){

@@ -39,17 +39,13 @@ public class AppointmentTypeDaoImpl
      */
     private org.openuss.calendar.AppointmentType loadAppointmentTypeFromAppointmentTypeInfo(org.openuss.calendar.AppointmentTypeInfo appointmentTypeInfo)
     {
-        // @todo implement loadAppointmentTypeFromAppointmentTypeInfo
-        throw new java.lang.UnsupportedOperationException("org.openuss.calendar.loadAppointmentTypeFromAppointmentTypeInfo(org.openuss.calendar.AppointmentTypeInfo) not yet implemented.");
-
-        /* A typical implementation looks like this:
+    	//todo check if this works
         org.openuss.calendar.AppointmentType appointmentType = this.load(appointmentTypeInfo.getId());
         if (appointmentType == null)
         {
             appointmentType = org.openuss.calendar.AppointmentType.Factory.newInstance();
         }
         return appointmentType;
-        */
     }
 
     

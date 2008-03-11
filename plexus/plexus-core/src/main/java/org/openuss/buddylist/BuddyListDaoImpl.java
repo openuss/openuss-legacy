@@ -17,7 +17,6 @@ public class BuddyListDaoImpl
         org.openuss.buddylist.BuddyList sourceEntity,
         org.openuss.buddylist.BuddyListInfo targetVO)
     {
-        // @todo verify behavior of toBuddyListInfo
         super.toBuddyListInfo(sourceEntity, targetVO);
     }
 

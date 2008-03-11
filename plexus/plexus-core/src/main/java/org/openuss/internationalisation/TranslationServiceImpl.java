@@ -6,11 +6,8 @@
 package org.openuss.internationalisation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
-import net.sf.cglib.proxy.Factory;
 
 /**
  * @see org.openuss.internationalisation.TranslationService
@@ -95,11 +92,11 @@ public class TranslationServiceImpl extends
 		for (TranslationText textIt : transTexts) {
 			if (textIt.getLanguage() == lang) returnList.add(getTranslationTextDao().toTranslationTextInfo(textIt));
 		}
-		if (returnList.size() != 0) {
+		if (!returnList.isEmpty()) {
 			return returnList.get(0).getText();
 		} else {
 			// if no translation is available for the languageCode try english
-			if (languageCode != "en") {
+			if (languageCode.equals("en")) {
 				return this.getTranslation(domainIdentifier, subKey, "en");
 			// if the languageCode is english, throw an exception
 			} else {
@@ -138,7 +135,7 @@ public class TranslationServiceImpl extends
 
 	@Override
 	protected List handleGetTranslationTexts(String languageCode,
-			Long domainIdentifier) throws Exception {
+			Long domainIdentifier) {
 		Language lang = getLanguageDao().load(languageCode);
 		TranslationTextSearchCriteria criteria = new TranslationTextSearchCriteria(
 				domainIdentifier, null);
@@ -156,7 +153,7 @@ public class TranslationServiceImpl extends
     throws java.lang.Exception {
     	TranslationTextSearchCriteria criteria = new TranslationTextSearchCriteria(domainIdentifier, null);
     	List<TranslationText> transTexts = getTranslationTextDao().findByCriteria(criteria);
-    	if (transTexts.size() == 0) throw new TranslationApplicationException("Could not remove translations");
+    	if (transTexts.isEmpty()) throw new TranslationApplicationException("Could not remove translations");
     	for (TranslationText textIt : transTexts) {
     		// remove association between 
     		textIt.getLanguage().getTranslationTexts().remove(textIt);

@@ -5,7 +5,6 @@
  */
 package org.openuss.buddylist;
 
-import java.util.List;
 
 /**
  * @see org.openuss.buddylist.Buddy

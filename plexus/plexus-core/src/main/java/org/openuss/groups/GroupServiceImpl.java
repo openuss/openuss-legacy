@@ -31,7 +31,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 *      java.lang.Long)
 	 */
 	protected Long handleCreateUserGroup(UserGroupInfo groupInfo, Long userId)
-			throws Exception {
+			 {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.isTrue(groupInfo.getId() == null,
 				"The Group shouldn't have an ID yet, the aktual ID is: "
@@ -116,7 +116,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#updateUserGroup(org.openuss.groups.UserGroupInfo)
 	 */
 	protected void handleUpdateUserGroup(UserGroupInfo groupInfo)
-			throws Exception {
+			 {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -152,7 +152,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	 * @see org.openuss.groups.GroupService#deleteUserGroup(org.openuss.groups.UserGroupInfo)
 	 */
 	protected void handleDeleteUserGroup(UserGroupInfo groupInfo)
-			throws Exception {
+			 {
 		Validate.notNull(groupInfo, "Parameter group must not be null.");
 		Validate.notNull(groupInfo.getId(),
 				"Parameter group must contain a valid group id.");
@@ -668,11 +668,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	protected boolean handleIsUniqueShortcut(String shortcut) throws Exception {
 		Validate.notNull(shortcut, "Parameter shortcut must not be null.");
 		UserGroup group = getUserGroupDao().findByShortcut(shortcut);
-		if (group == null) {
-			return true;
-		} else {
-			return false;
-		}
+		return (group == null);
 	}
 
 	/*------------------- private methods -------------------- */
@@ -703,7 +699,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 			users = users2;
 		}
 		List<UserGroupMemberInfo> groupMembers = new ArrayList<UserGroupMemberInfo>();
-		;
 		for (User user : users) {
 			UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 			groupMember.setUserId(user.getId());

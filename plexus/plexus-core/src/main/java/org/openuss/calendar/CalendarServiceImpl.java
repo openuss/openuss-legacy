@@ -37,7 +37,7 @@ public class CalendarServiceImpl extends
 
 		Calendar calendar = getCalendarDao().findByDomainIdentifier(
 				domainObject.getId());
-		if (calendar == null) {
+		if (calendar == null || calendar.getId() == 2l) {
 			Calendar cal = Calendar.Factory.newInstance();
 			CalendarType calType;
 			Date date = new Date();
@@ -60,8 +60,9 @@ public class CalendarServiceImpl extends
 			cal.setDomainIdentifier(domainObject.getId());
 			cal = getCalendarDao().create(cal);
 			getSecurityService().createObjectIdentity(cal, cal.getDomainIdentifier());
-			if(cal.getCalendarType().equals(CalendarType.user_calendar))
+			if(cal.getCalendarType().equals(CalendarType.user_calendar)){
 					getSecurityService().setPermissions(getSecurityService().getCurrentUser(), cal, LectureAclEntry.OGCRUD);
+		}
 		}
 
 	}
@@ -76,9 +77,9 @@ public class CalendarServiceImpl extends
 			throws java.lang.Exception {
 
 		if (appointmentInfo.getStarttime().after(
-				appointmentInfo.getEndtime()))
+				appointmentInfo.getEndtime())){
 			throw new Exception("Duration of appointment is negative");
-		
+		}
 		Calendar calendar = getCalendarDao().load(calendarInfo.getId());
 
 		AppointmentType appType = getAppointmentTypeDao().load(
@@ -106,22 +107,23 @@ public class CalendarServiceImpl extends
 			org.openuss.calendar.CalendarInfo calendar)
 			throws java.lang.Exception {
 
-		if (newApp.getId() == null)
+		if (newApp.getId() == null){
 			throw new Exception("Please add Appointment first");
-
+		}
 		// load appointment object
 
 		Appointment app = getAppointmentDao().load(newApp.getId());
 
-		if (!app.getSourceCalendar().getId().equals(calendar.getId()))
+		if (!app.getSourceCalendar().getId().equals(calendar.getId())){
 			throw new Exception(
 					"Given Calendar is not the source calendar for this appointment");
-
+		}
 		// set new data for appointment
 
-		if (newApp.getAppointmentTypeInfo() != null)
+		if (newApp.getAppointmentTypeInfo() != null){
 			app.setAppointmentType(getAppointmentTypeDao().load(
 					newApp.getAppointmentTypeInfo().getId()));
+		}
 		app.setDescription(newApp.getDescription());
 		app.setEndtime(newApp.getEndtime());
 		app.setStarttime(newApp.getStarttime());
@@ -149,7 +151,6 @@ public class CalendarServiceImpl extends
 			throw new Exception("Appointment does not exist");
 		Appointment app = getAppointmentDao().load(
 				singleAppointmentInfo.getId());
-		System.out.println(app.getSourceCalendar().getId() + " " + (calendar.getId()));
 		if (app.getSourceCalendar().getId().longValue() != calendar.getId().longValue()){
 			throw new Exception("Calendar is not source for the appointment");
 		}
@@ -247,21 +248,16 @@ public class CalendarServiceImpl extends
 			}
 		}
 
-		// List stores the created Apps
-		List<Appointment> createdApp = new ArrayList<Appointment>();
-
 		// count number of created appointments
 		int appCounter = 0;
 
 		// calculate resulting single appointments
 		while (calculatedEnd.compareTo(absoluteEnd) <= 0) {
 			appCounter ++;
-			if (appCounter > 500)
+			if (appCounter > 500){
 				throw new CalculatedAppointmentException(
 						"Too many calculated appointments");
-//			System.out.println("Generate Appointment "
-//					+ calculatedStart.getTime().toGMTString() + " to "
-//					+ calculatedEnd.getTime().toGMTString());
+			}
 
 			// set appointment data
 
@@ -341,9 +337,6 @@ public class CalendarServiceImpl extends
 					"Given Calendar is not the source calendar for this appointment");
 
 		
-		// get entities
-		Calendar cal = getCalendarDao().load(calendarInfo.getId());
-
 		this.deleteSerialAppointment(serialAppointmentInfo, calendarInfo);
 
 		// add the serial appointment again with updated data
@@ -374,15 +367,15 @@ public class CalendarServiceImpl extends
 		// update subscribed calendars
 		Set<Calendar> subscribedCals = cal.getSubscribedCalendars();
 		if (!subscribedCals.isEmpty()) {
-			for (Calendar subscribedCal : subscribedCals)
+			for (Calendar subscribedCal : subscribedCals){
 				getCalendarDao().update(subscribedCal);
-
+			}
 		}
 
 		// remove associated appointments from the persistent store
-		for (Appointment app : serialApp.getAppointments())
+		for (Appointment app : serialApp.getAppointments()){
 			getAppointmentDao().remove(app);
-
+		}
 		// finally remove the serial appointment from the persistent store
 		getSerialAppointmentDao().remove(serialApp);
 	}
@@ -401,9 +394,7 @@ public class CalendarServiceImpl extends
 			this.createCalendar(domainObject);
 			cal = getCalendarDao().findByDomainIdentifier(domainObject.getId());
 		}
-		CalendarInfo calInfo = getCalendarDao().toCalendarInfo(cal);
-		return calInfo;
-
+		return getCalendarDao().toCalendarInfo(cal);
 	}
 
 	/**
@@ -535,8 +526,7 @@ public class CalendarServiceImpl extends
 	}
 
 	@Override
-	protected List handleGetNaturalSingleAppointments(CalendarInfo calendarInfo)
-			throws Exception {
+	protected List handleGetNaturalSingleAppointments(CalendarInfo calendarInfo) throws TranslationApplicationException{
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getNaturalSingleAppointments();
 		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
@@ -545,14 +535,13 @@ public class CalendarServiceImpl extends
 			this.translate(appInfo.getAppointmentTypeInfo());
 			appInfos.add(appInfo);
 		}
-		System.out.println(TranslationContext.getCurrentInstance().getLocale().toString());
 		return appInfos;
 
 	}
 
 	@Override
-	protected List handleGetSingleAppointments(CalendarInfo calendarInfo)
-			throws Exception {
+	protected List handleGetSingleAppointments(CalendarInfo calendarInfo) throws TranslationApplicationException
+			{
 		Calendar cal = getCalendarDao().load(calendarInfo.getId());
 		List<Appointment> apps = cal.getSingleAppointments();
 		List<AppointmentInfo> appInfos = new ArrayList<AppointmentInfo>();
@@ -566,7 +555,7 @@ public class CalendarServiceImpl extends
 	}
 
 	@Override
-	protected List handleGetSubscriptions() throws Exception {
+	protected List handleGetSubscriptions() throws CalendarApplicationException  {
 		User user = getSecurityService().getCurrentUser();
 		Calendar cal = getCalendarDao().findByDomainIdentifier(user.getId());
 		if (cal == null) {
@@ -590,7 +579,7 @@ public class CalendarServiceImpl extends
 			//this should never happen, a user should currently not be able to subscribe to another users calendar.
 			if (calIt.getCalendarType().equals(CalendarType.user_calendar)){
 				User userCalendar = getSecurityService().getUser(calIt.getDomainIdentifier());
-				calInfo.setCalendarOwnerName(user.getDisplayName());
+				calInfo.setCalendarOwnerName(userCalendar.getDisplayName());
 			}
 			subs.add(calInfo);
 			
