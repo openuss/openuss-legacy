@@ -41,8 +41,9 @@
 				<o:block label="#{msg['schedulehandler_model_selecteddate']}" styleClass="form_box">
 					<o:input entity="scheduleHandler.model" property="selectedDate" label=" " type="date" popupCalendar="false" />
 					<h:commandButton action="refresh" value="#{msg.select_date}" styleClass="button_edit"/>
+					<h:commandButton action="#{views$secured$calendar$usercalendar.settoday}" value="#{msg.select_today}" styleClass="button_edit"/>
    			 	</o:block>
-				<o:block label="#{msg['openuss4us_usercalendar']}" styleClass="content_box">
+				<o:block label="#{views$secured$calendar$usercalendar.calendarheader}" styleClass="content_box">
 					<ui:include src="/views/commons/calendar/calendar.xhtml" />
    			 	</o:block>
    			 	<o:block>

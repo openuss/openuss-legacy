@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.UserGroupInfo;
@@ -24,6 +26,22 @@ public class GroupsMainPage extends AbstractGroupsPage {
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;
 	private List<UserGroupInfo> groups;
+	
+	@Override
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+		addPageCrumb();
+	}
+
+	private void addPageCrumb() {
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setLink("");
+		crumb.setName(i18n("openuss4us_command_groups"));
+		crumb.setHint(i18n("openuss4us_command_groups"));
+		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.addCrumb(crumb);
+	}
 	
 	/* ----- private classes ----- */
 	

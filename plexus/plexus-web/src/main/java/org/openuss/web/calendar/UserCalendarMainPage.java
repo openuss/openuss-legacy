@@ -26,14 +26,27 @@ import org.openuss.web.Constants;
 @Bean(name = "views$secured$calendar$usercalendar", scope = Scope.REQUEST)
 @View
 public class UserCalendarMainPage extends AbstractCalendarPage {
-
+	
+	public String calendarheader;
+	
 	private static final Logger logger = Logger
 			.getLogger(UserCalendarMainPage.class);
 
 	@Prerender
 	public void prerender() throws Exception {
-		
 		super.prerender();
+		if (model.getMode() == 0) {
+			calendarheader = (i18n("openuss4us_calendar_daymode"));
+		}
+		if (model.getMode() == 1) {
+			calendarheader = (i18n("openuss4us_calendar_workweekmode"));
+		}
+		if (model.getMode() == 2) {
+			calendarheader = (i18n("openuss4us_calendar_weekmode"));
+		}
+		if (model.getMode() == 3) {
+			calendarheader = (i18n("openuss4us_calendar_monthmode"));
+		}
 		logger.debug("Starting prerender of usercalendar");
 		breadcrumbs.loadOpenuss4usCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
@@ -61,7 +74,10 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 		// Refresh the model for correct view
 		model.refresh();
 	}
-
+	public String startCalendar(){
+		model.setMode(3);
+		return Constants.OPENUSS4US_CALENDAR;
+	}
 	public void loadEntries(CalendarInfo calInfo) {
 		if (model == null)
 			return;
@@ -139,7 +155,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 
 	public String changeToWeekMode() {
 		if (model == null){
-			addError(i18n("calendar_mode_change_error"));
+			addError(i18n("openuss4us_calendar_mode_change_error"));
 		}
 		model.setMode(2);
 		return Constants.OPENUSS4US_CALENDAR;
@@ -147,7 +163,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 
 	public String changeToMonthMode() {
 		if (model == null){
-			addError(i18n("calendar_mode_change_error"));
+			addError(i18n("openuss4us_calendar_mode_change_error"));
 		}
 		model.setMode(3);
 		return Constants.OPENUSS4US_CALENDAR;
@@ -156,9 +172,20 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 	public ScheduleModel getModel() {
 		return model;
 	}
-
+	public void settoday(){
+		Date today = new Date(); 
+		model.setSelectedDate(today);
+		}
 	public void setModel(ScheduleModel model) {
 		this.model = model;
+	}
+
+	public String getCalendarheader() {
+		return calendarheader;
+	}
+
+	public void setCalendarheader(String calendarheader) {
+		this.calendarheader = calendarheader;
 	}
 
 }
