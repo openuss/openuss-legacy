@@ -798,4 +798,19 @@ public class CalendarServiceImpl extends
 		appTI.setName(getTranslationService().getTranslation(appTI.getId(), appTI.getName(), TranslationContext.getCurrentInstance().getLocale().toString()));
 	}
 
+	@Override
+	protected SerialAppointmentInfo handleGetAssigendSerialAppointment(
+			AppointmentInfo appointmentInfo) throws Exception {
+		Appointment app = getAppointmentDao().load(appointmentInfo.getId());
+		SerialAppointment serialApp = app.getSerialAppointment();
+		if (serialApp == null) {
+			throw new CalendarApplicationException(
+					"No serialappointment for this appointment");
+		} else {
+			SerialAppointmentInfo serialAppInfo = getSerialAppointmentDao()
+					.toSerialAppointmentInfo(serialApp);
+			return serialAppInfo;
+		}
+	}
+
 }

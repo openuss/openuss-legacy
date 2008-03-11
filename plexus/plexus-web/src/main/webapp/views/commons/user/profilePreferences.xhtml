@@ -45,7 +45,13 @@
 				<s:authorize ifAllGranted="ROLE_USER">
 					<br />
 					<br />
+					<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
+					<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
+					<br />
+					<o:input entity="user.profile" property="newsletterSelected" required="false"/>
+					<o:input entity="user.profile" property="discussionSelected" required="false" /> 
 					<o:input entity="user.profile" property="subscribeCalenderEntries"/>
+					<br />
 
 					<!-- visibility -->
 					<br />
