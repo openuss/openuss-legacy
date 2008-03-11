@@ -38,7 +38,8 @@
 						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="authenticationDomainId" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>					
-						
+						<h:selectOneListbox id="attribute_mapping_roleattributekey_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true">
+						</h:selectOneListbox>
 					</o:block>
 				</c:if>
 				<c:if test="#{empty ldapServerRegistration.allUserDnPatterns}">
