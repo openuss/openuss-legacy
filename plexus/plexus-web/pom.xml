@@ -35,6 +35,13 @@
 
 		<dependency>
 			<groupId>org.openuss.framework</groupId>
+			<artifactId>framework-webdav</artifactId>
+			<version>${pom.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openuss.framework</groupId>
 			<artifactId>framework-deployer</artifactId>
 			<version>${pom.version}</version>
 			<scope>provided</scope>

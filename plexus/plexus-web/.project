@@ -5,6 +5,7 @@
   <projects>
     <project>migration-core</project>
     <project>framework-deployer</project>
+    <project>framework-webdav</project>
     <project>theme-core</project>
     <project>framework-utilities</project>
     <project>framework-core</project>
