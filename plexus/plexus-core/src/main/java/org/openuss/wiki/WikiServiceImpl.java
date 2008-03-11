@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.documents.DocumentApplicationException;
@@ -32,6 +32,8 @@ import org.openuss.security.acl.LectureAclEntry;
  * 
  */
 public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
+	
+	private static final String IMPORT_IMAGE_STRING = "fileid=%s";
 
 	@Override
 	protected void handleDeleteWikiSite(Long wikiSiteId) throws Exception {
@@ -41,10 +43,9 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId)
-	throws Exception {
-		WikiSiteVersion version = getWikiSiteVersionDao().load(wikiSiteVersionId);
-		WikiSite site = version.getWikiSite();
+	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId) throws Exception {
+		final WikiSiteVersion version = getWikiSiteVersionDao().load(wikiSiteVersionId);
+		final WikiSite site = version.getWikiSite();
 		
 		getWikiSiteVersionDao().remove(version);
 		
@@ -64,6 +65,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		if (wikiSite != null) {
 			wikiSiteContent = handleGetNewestWikiSiteContent(wikiSite.getWikiSiteId());
 		}
+		
 		return wikiSiteContent;
 	}
 
@@ -75,7 +77,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	protected List handleFindWikiSiteVersionsByWikiSite(Long wikiSiteId) throws Exception {
 		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
 
-		WikiSite wikiSite = getWikiSiteDao().load(wikiSiteId);
+		final WikiSite wikiSite = getWikiSiteDao().load(wikiSiteId);
 		return getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, wikiSite);
 	}
 
@@ -217,6 +219,12 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		this.handleSaveImage(wikiSiteInfo.getDomainId(), image);
 	}
 	
+	/**
+	 * Saves an Image.
+	 * @param domainId ID of the Wiki.
+	 * @param image Image to be saved.
+	 * @throws DocumentApplicationException
+	 */
 	private void handleSaveImage(Long domainId, FileInfo image) throws DocumentApplicationException {
 		final WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(domainId, "index");
 		final FolderInfo folder = getDocumentService().getFolder(indexSite);
@@ -260,10 +268,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 			importWikiSites.add(importWikiSiteContent);
 		}
 		
-		final Map<Long, Long> imageImportMap = importWikiSiteImages(importDomainId, exportDomainId);
-		for (WikiSiteContentInfo importWikiSite : importWikiSites) {
-			updateWikiSiteImages(importWikiSite, imageImportMap);
-		}
+		importWikiSiteImages(importDomainId, importWikiSites, exportDomainId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -271,27 +276,27 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	protected void handleImportWikiVersions(Long importDomainId, Long exportDomainId) throws Exception {
 		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
 		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
-
-		final Map<Long, Long> imageImportMap = importWikiSiteImages(importDomainId, exportDomainId);
 		
 		deleteAllWikiSites(importDomainId);
 		
 		final List<WikiSiteInfo> exportWikiSites = findWikiSitesByDomainObject(exportDomainId);
+		final List<WikiSiteContentInfo> importWikiSites = new LinkedList<WikiSiteContentInfo>();
+		
 		for (WikiSiteInfo exportWikiSite : exportWikiSites) {
 			final List<WikiSiteInfo> exportWikiSiteVersions = findWikiSiteVersionsByWikiSite(exportWikiSite.getWikiSiteId());
 			for (WikiSiteInfo exportWikiSiteVersion : exportWikiSiteVersions) {
 				final WikiSiteContentInfo exportWikiSiteVersionContent = getWikiSiteContent(exportWikiSiteVersion.getId());
 				final WikiSiteContentInfo importWikiSiteContent = importWikiSiteContent(importDomainId, exportWikiSiteVersionContent);
-				updateWikiSiteImages(importWikiSiteContent, imageImportMap);
-				saveWikiSite(importWikiSiteContent);
+				importWikiSites.add(importWikiSiteContent);
 			}
 		}
 		
+		importWikiSiteImages(importDomainId, importWikiSites, exportDomainId);
 		
 	}
 
 	/**
-	 * Deletes all WikiSites that refer to a specific DomainObject. 
+	 * Deletes all WikiSites and corresponding Images that refer to a specific DomainObject. 
 	 * @param deleteDomainId ID of the specific DomainObject.
 	 */
 	@SuppressWarnings("unchecked")
@@ -304,8 +309,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	/**
 	 * Clones existing WikiSite and imports it to a specific DomainObject.
-	 * @param importDomainId ID of the specific DomainObject.
-	 * @param exportWikiSiteContent Exported WikiSite.
+	 * @param importDomainId ID of the specific import DomainObject.
+	 * @param exportWikiSiteContent Exported WikiSiteContentInfo.
 	 */
 	private WikiSiteContentInfo importWikiSiteContent(Long importDomainId, WikiSiteContentInfo exportWikiSiteContent) {
 		final WikiSiteContentInfo importWikiSiteContent = new WikiSiteContentInfo(exportWikiSiteContent);
@@ -320,40 +325,47 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	
 	/**
 	 * Clones existing Images and imports it to a specific DomainObject.
-	 * @param importDomainId ID of the specific DomainObject.
-	 * @param exportWikiSiteContent Exported WikiSite.
+	 * @param importDomainId ID of the specific import DomainObject.
+	 * @param importWikiSites List of all imported WikiSiteContentInfo objects.
+	 * @param exportDomainId ID of the specific export DomainObject.
 	 * @throws DocumentApplicationException
 	 */
 	@SuppressWarnings("unchecked")
-	private Map<Long, Long> importWikiSiteImages(Long importDomainId, Long exportDomainId) throws DocumentApplicationException {
+	private void importWikiSiteImages(Long importDomainId, List<WikiSiteContentInfo> importWikiSites, Long exportDomainId) throws DocumentApplicationException {
 		final Map<Long, Long> imageImportMap = new HashMap<Long, Long>();
 		
 		final List<FolderEntryInfo> imageFolderEntries = findImagesByDomainId(exportDomainId);
 		
-		for (FolderEntryInfo fileEntry : imageFolderEntries) {
-			FileInfo imageFile = getDocumentService().getFileEntry(fileEntry.getId(), true);
-			Long exportImageId = imageFile.getId();
+		for (FolderEntryInfo imageFolderEntry : imageFolderEntries) {
+			final FileInfo imageFile = getDocumentService().getFileEntry(imageFolderEntry.getId(), true);
+			final Long exportImageId = imageFile.getId();
 			imageFile.setId(null);
 			
 			handleSaveImage(importDomainId, imageFile);
-			Long importImageId = imageFile.getId();
+			final Long importImageId = imageFile.getId();
 			
 			imageImportMap.put(exportImageId, importImageId);
 		}
 		
-		return imageImportMap;
+		for (WikiSiteContentInfo importWikiSite : importWikiSites) {
+			updateWikiSiteImages(importWikiSite, imageImportMap);
+		}
 	}
 	
+	/**
+	 * Replaces old Image IDs of a imported WikiSiteContentInfo object by the Image IDs of the imported Images.
+	 * @param wikiSiteContent Imported WikiSiteContentInfo.
+	 * @param imageImportMap Map with the old Image ID as key and the new Image ID as corresponding value.
+	 */
 	private void updateWikiSiteImages(WikiSiteContentInfo wikiSiteContent, Map<Long, Long> imageImportMap) {
 		String newContent = wikiSiteContent.getText();
 		
 		final Set<Entry <Long, Long>> entrySet = imageImportMap.entrySet();
 		for (Entry<Long, Long> entry : entrySet) {
-			final String searchString = "fileid=" + entry.getKey();
-			final String replaceString = "fileid=" + entry.getValue();
+			final String searchString = String.format(IMPORT_IMAGE_STRING, entry.getKey());
+			final String replaceString = String.format(IMPORT_IMAGE_STRING, entry.getValue());
 			newContent = newContent.replaceAll(searchString, replaceString);
 		}
-		
 		wikiSiteContent.setText(newContent);
 		
 		saveWikiSiteUpdate(wikiSiteContent);
@@ -426,7 +438,6 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		final List<CourseInfo> assistantCourses = new LinkedList<CourseInfo>();
 
 		for (CourseInfo availableCourse : availableCourses) {
-			// FIXME: replace by group. don't know how...
 			final List<CourseMemberInfo> assistants = getCourseService().getAssistants(availableCourse);
 			for (CourseMemberInfo assistant : assistants) {
 				if (assistant.getUserId().equals(user.getId())) {
