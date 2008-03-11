@@ -52,6 +52,14 @@
 					styleClass="button_save" />
 			</o:block>
 		</c:if>
+		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status4}">
+			<o:block>
+				<h:commandButton value="#{msg['seminarpool_allocation_export']}"
+					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
+					title="#{msg['seminarpool_allocation_export']}"
+					styleClass="button_save" />
+			</o:block>
+		</c:if>
 	</h:form>
 	</s:acl>
 	</ui:define>
