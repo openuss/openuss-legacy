@@ -10,10 +10,10 @@
 	<s:authorize ifAllGranted="ROLE_USER">
 		<h:form id="openuss4usNavigationForm">
 			<t:panelNavigation2 id="openuss4us_navigation" styleClass="navigation" 
-				layout="list" itemClass="nav_item" openItemClass="open_item" 
+				layout="list" itemClass="nav_item" openItemClass="open_item"
 				activeItemClass="active_item" separatorClass="item_separator">
 				<t:commandNavigation2 value="#{msg['openuss4us_navigation_header']}" open="false">
-					<t:commandNavigation2 action="openuss4us_buddylist" activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml">
+					<t:commandNavigation2 action="openuss4us_buddylist" activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml,/views/secured/buddylist/usersearch.xhtml">
 						<h:outputText value="#{msg['openuss4us_command_buddylist']}" ></h:outputText>
 					</t:commandNavigation2>
 					<t:commandNavigation2 action="openuss4us_messagecenter" activeOnViewIds="/views/secured/internalMessages/messagecenter.xhtml,/views/secured/internalMessages/newinternalmessage.xhtml,/views/secured/internalMessages/readmessage.xhtml">

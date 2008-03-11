@@ -49,7 +49,6 @@ public class GroupMainPage extends AbstractGroupPage {
 			appointments = getCalendarService().getNaturalSerialAppointments(getCalendarInfo());
 		}
 		BreadCrumb newCrumb = new BreadCrumb();
-		// TODO - Breadcrumbs
 		newCrumb.setName(i18n("group_command_overview"));
 		newCrumb.setHint(i18n("group_command_overview"));
 		breadcrumbs.addCrumb(newCrumb);
