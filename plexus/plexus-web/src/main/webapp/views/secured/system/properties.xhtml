@@ -37,8 +37,8 @@
 					var="property"
 					value="#{propertyList.data}"
 					styleClass="table"
-					headerClass="tableHeader"
-					footerClass="tableFooter"
+					headerClass="table_header"
+					footerClass="table_footer"
 					rowClasses="odd, even"
 					columnClasses="links"
 					preserveDataModel="false"
@@ -68,7 +68,7 @@
 
 			<o:block>
 				<h:commandButton action="#{views$secured$system$properties.saveProperties}" value="#{msg.save}" title="#{msg.save_hint}" rendered="#{propertyList.editable}" styleClass="button_save"/>
-				<h:commandButton action="#{views$secured$system$properties.recreateLectureIndex}" value="Recreate Lecture Index" title="Recreate Lecture Index"  styleClass="button_big" immediate="true"/>
+				<h:commandButton action="#{views$secured$system$properties.recreateLectureIndex}" value="#{msg.admin_lectureindex_recreate}" title="#{msg.admin_lectureindex_recreate}"  styleClass="button_big" immediate="true"/>
 			</o:block>
 		</h:form>	
 	</ui:define>

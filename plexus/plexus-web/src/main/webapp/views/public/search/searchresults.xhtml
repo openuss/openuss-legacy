@@ -39,26 +39,26 @@
 					<o:link value="/views/public/university/university.faces" rendered="#{result.domainType == 'university'}">
 		    			<f:param name="university" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal search_result_details" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal search_result_score"/>
 		    		</o:link>
 		    		<o:link value="/views/public/department/department.faces" rendered="#{result.domainType == 'department'}">
 		    			<f:param name="department" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal search_result_details" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal search_result_score"/>
 		    		</o:link>
 		    		<o:link value="/views/public/institute/institute.faces" rendered="#{result.domainType == 'institute'}">
 		    			<f:param name="institute" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal search_result_details" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal search_result_score"/>
 		    		</o:link>
 		    		<o:link value="/views/secured/course/main.faces" rendered="#{result.domainType == 'course'}">
 		    			<f:param name="course" value="#{result.id}"/>
 					 	<h:outputText value="#{result.name}" styleClass="header_font_normal"/>
-						<h:outputText value="#{result.details}" styleClass="content_font_normal" escape="false"/>
-						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal"/>
+						<h:outputText value="#{result.details}" styleClass="content_font_normal search_result_details" escape="false"/>
+						<h:outputText value="#{msg.search_result_score}: #{result.formattedScore}" styleClass="content_font_normal search_result_score"/>
 		    		</o:link>
 	    		</div>
 			</t:column>
