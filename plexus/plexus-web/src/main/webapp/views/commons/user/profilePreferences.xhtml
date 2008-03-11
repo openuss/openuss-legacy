@@ -50,7 +50,9 @@
 					<!-- visibility -->
 					<br />
 					<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
-					<h:outputText value="#{msg.profile_visibility_explain}" styleClass="content_font_normal"/>
+					<p class="content_font_normal">
+					#{msg.profile_visibility_explain}
+					</p>
 					<o:input entity="user.profile" property="profileContactPublic"/>
 					<o:input entity="user.profile" property="telephonePublic"/>
 					<o:input entity="user.profile" property="addressPublic"/> 
