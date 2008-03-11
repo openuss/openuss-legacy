@@ -75,7 +75,7 @@ public class NewInternalMessagePage extends BasePage{
 		recipients.add(internalMessageRecipientsInfo);
 		internalMessageService.sendInternalMessage(internalMessageInfo);
 		addMessage(i18n("openuss4us_message_messagecenter_sendmessage"));
-		return Constants.LAST_VIEW;
+		return Constants.OUTCOME_BACKWARD;
 	}
 
 	public InternalMessageService getInternalMessageService() {

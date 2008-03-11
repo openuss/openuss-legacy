@@ -804,7 +804,6 @@ public class CalendarServiceImpl extends
 	
 	private void sortAppointmentInfoList(List<AppointmentInfo> list){
 		Collections.sort(list, new AppointmentInfoComparator());
-		System.out.println("-----------------------> sort");
 	}
 
     /**
