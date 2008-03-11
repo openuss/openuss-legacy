@@ -18,10 +18,10 @@ public class MimeType {
 	private static final Logger logger = Logger.getLogger(MimeType.class);
 	
 	private static final Properties mimeTypes = new Properties();
-
+	
 	static {
 		try {
-			mimeTypes.load(MimeType.class.getResourceAsStream("mimeTypes.properties"));
+			mimeTypes.load(MimeType.class.getResourceAsStream("../../../../resources/mimeTypes.properties"));
 		} catch (IOException ex) {
 			logger.error("IO exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
