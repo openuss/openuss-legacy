@@ -2144,6 +2144,22 @@ div .space_20above {
 
 
 
+/* ========= OPENUSS SEARCH RESULTS ========== */
+
+.search_result_details {
+	padding-left: 10px;
+}
+.search_result_details, .search_result_details * {
+	color: #AAAAAA !important;
+	font-size: 8pt !important;
+}
+.search_result_score {
+	margin: 10px 0px;
+	font-style: italic;
+}
+
+
+
 /* ========== OPTION / ACTION BOX ========== */
 
 .option_box .header_font_normal {
