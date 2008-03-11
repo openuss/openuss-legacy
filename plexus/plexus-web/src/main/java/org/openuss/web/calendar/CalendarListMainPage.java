@@ -64,11 +64,12 @@ public class CalendarListMainPage extends AbstractCalendarPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		//TODO correct breadcrumbs
+		breadcrumbs.loadOpenuss4usCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(contextPath() + calendarListBasePath);
-		newCrumb.setName(i18n("openuss4us_command_groups"));
-		newCrumb.setHint(i18n("openuss4us_command_groups"));
+		newCrumb.setLink(contextPath()
+				+ "/views/secured/calendar/usercalendar.faces");
+		newCrumb.setName(i18n("openuss4us_command_calendar"));
+		newCrumb.setHint(i18n("openuss4us_command_calendar"));
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	
