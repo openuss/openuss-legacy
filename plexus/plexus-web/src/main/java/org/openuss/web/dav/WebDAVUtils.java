@@ -3,6 +3,7 @@ package org.openuss.web.dav;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
@@ -193,7 +194,9 @@ public final class WebDAVUtils {
 		}
 		
 		// Main data stream
-		IOUtils.copyLarge(c.getInputStream(), response.getOutputStream());
+		OutputStream os = response.getOutputStream();
+		IOUtils.copyLarge(c.getInputStream(), os);
+		os.flush();
 	}
 	
 	/**
@@ -209,7 +212,7 @@ public final class WebDAVUtils {
 		ioc.setContentType(request.getHeader(WebDAVConstants.HEADER_CONTENT_TYPE));
 		ioc.setETag(null);
 		ioc.setModificationTime(new Timestamp(request.getDateHeader(WebDAVConstants.HEADER_LAST_MODIFIED)));
-		ioc.setInputStream(request.getInputStream());
+		ioc.setInputStream(new BufferedInputStream(request.getInputStream()));
 		
 		return ioc;
 	}

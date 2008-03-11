@@ -1,7 +1,11 @@
 package org.openuss.web.dav.backends;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.acegisecurity.acl.AclManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
@@ -17,7 +22,10 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.Folder;
 import org.openuss.documents.FolderDao;
 import org.openuss.documents.FolderEntry;
+import org.openuss.documents.FolderEntryDao;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.web.Constants;
 import org.openuss.web.dav.IOContextImpl;
 import org.openuss.web.dav.SimpleWebDAVResource;
@@ -37,7 +45,9 @@ import org.openuss.webdav.WebDAVStatusCodes;
 public class DocumentResource extends SimpleWebDAVResource {
 	private Logger logger = Logger.getLogger(DocumentResource.class);
 	protected DocumentService documentService;
+	protected AclManager aclManager;
 	protected FolderDao folderDao;
+	protected FolderEntryDao folderEntryDao;
 	
 	protected FolderEntry entry;
 	protected Collection<FolderEntry> subEntriesCache = null;
@@ -48,6 +58,9 @@ public class DocumentResource extends SimpleWebDAVResource {
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
 		folderDao = (FolderDao) getWAC().getBean("folderDao", FolderDao.class);
+		folderEntryDao = (FolderEntryDao) getWAC().getBean("folderEntryDao", FolderEntryDao.class);
+		aclManager = (AclManager) getWAC().getBean("aclManager", AclManager.class);
+		AcegiUtils.setAclManager(aclManager);
 	}
 	
 	/* (non-Javadoc)
@@ -83,18 +96,45 @@ public class DocumentResource extends SimpleWebDAVResource {
 	@Override
 	protected WebDAVResource createFileImpl(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		FolderInfo fi = folderDao.toFolderInfo((Folder)entry);
+		FolderInfo folderInfo = folderDao.toFolderInfo((Folder)entry);
+		
+		// The final input stream
+		InputStream is;
+
+		// Write to temp file
+		FileOutputStream fos;
+		try {
+			File tmpf = File.createTempFile("openuss", "webdav-documentresource");
+			
+			fos = new FileOutputStream(tmpf);
+		} catch (IOException ioe) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
+		}
+		is = ioc.getInputStream();
+
+		
+		// TODO Ask Ingo why Hibernate queries available()
+
 		
 		FileInfo newFileInfo = new FileInfo();
-		newFileInfo.setName(name);
 		newFileInfo.setFileName(name);
 		newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
+		newFileInfo.setContentType("text/plain"); // TODO ioc.getContentType()
+		//newFileInfo.setFileSize((int) ioc.getContentLength());
+		int t = 0;
+		try {
+			t = is.available();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		newFileInfo.setFileSize(t);
 		newFileInfo.setCreated(new Date());
-		newFileInfo.setInputStream(ioc.getInputStream());
-		//newFileInfo.setContentType(ioc.getContentType());
+		newFileInfo.setModified(new Date());
+		newFileInfo.setInputStream(is);
 		
 		try {
-			documentService.createFileEntry(newFileInfo, fi);
+			documentService.createFileEntry(newFileInfo, folderInfo);
 		} catch (DocumentApplicationException e) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
 		}
@@ -106,10 +146,20 @@ public class DocumentResource extends SimpleWebDAVResource {
 		return new DocumentResource(getContext(), path, childEntry);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.dav.SimpleWebDAVResource#deleteImpl()
+	 */
 	@Override
 	protected void deleteImpl() throws WebDAVResourceException {
-		// TODO Auto-generated method stub
-		
+		try {
+			FolderEntryInfo fei = folderEntryDao.toFolderEntryInfo(entry);
+			
+			Collection<FolderEntryInfo> entryInfosToDelete = new ArrayList<FolderEntryInfo>(1);
+			entryInfosToDelete.add(fei);
+			documentService.removeFolderEntries(entryInfosToDelete);
+		} catch (DocumentApplicationException e) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this);
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -202,7 +252,12 @@ public class DocumentResource extends SimpleWebDAVResource {
 	}
 
 	public boolean isReadable() {
-		// TODO Auto-generated method stub
+		/*if (isCollection()) {
+			FolderInfo folderI = documentService.getF(entry.getId(), false);
+		} else {
+			FileInfo fileI = documentService.getFileEntry(entry.getId(), false);
+		}
+		return AcegiUtils.hasPermission(fi, new Integer[] { LectureAclEntry.READ });*/
 		return true;
 	}
 

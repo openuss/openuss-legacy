@@ -18,7 +18,7 @@ public class WebDAVResourceException extends WebDAVHrefException {
 	 * @param res The resource that was worked on when the exception was raised.
 	 */
 	public WebDAVResourceException(int statusCode, WebDAVResource res) {
-		this(statusCode, res, null);
+		this(statusCode, res, (String) null);
 	}
 	
 	/**
@@ -38,6 +38,17 @@ public class WebDAVResourceException extends WebDAVHrefException {
 	 */
 	public WebDAVResourceException(int statusCode, WebDAVResource res, String message, Throwable cause) {
 		super(statusCode, message, cause);
+		
+		resource = res;
+	}
+	
+	/**
+	 * @param statusCode The WebDAV status code as defined in WebDAVStatusCodes. 
+	 * @param res The resource that was worked on when the exception was raised.
+	 * @param cause The causing exception
+	 */
+	public WebDAVResourceException(int statusCode, WebDAVResource res, Throwable cause) {
+		super(statusCode, cause.getMessage(), cause);
 		
 		resource = res;
 	}
