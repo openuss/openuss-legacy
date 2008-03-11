@@ -64,22 +64,27 @@
 					<f:validateLongRange minimum="#{seminarpoolRegistration.seminarpoolInfo.maxSeminarAllocations}"/>
 				</o:input>
 				<o:input
+					id="start_time"
 					label="#{msg.seminarpool_registration_start_time}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationStartTime"
 					maxlength="16"
-					required="true" />
+					required="true" >
+					<f:validator validatorId="dateBeforeNowValidator"/>
+				</o:input>
 				<o:input
+					id="end_time"
 					label="#{msg.seminarpool_registration_end_time}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationEndTime"
 					maxlength="16"
-					required="true" />
+					required="true" >
+				</o:input>					
 					
 				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
 					
 				<div id="descriptionTextField" class="content_iframe">
-					<fck:editor value="#{seminarpoolRegistration.seminarpoolInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+					<fck:editor value="#{seminarpoolRegistration.seminarpoolInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" maxlength="30000" />	 				
 				</div>
 					
 				<h:outputLabel for="accessType" value="#{msg.seminarpool_accesstype}" styleClass="field_label"/>
