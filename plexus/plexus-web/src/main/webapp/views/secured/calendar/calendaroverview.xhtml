@@ -222,12 +222,12 @@
 					title="#{msg.openuss4us_calendar_subscribe_hint}"
 					rendered="#{not views$secured$calendar$calendar.subscribed}"
 					action="#{views$secured$calendar$calendar.changeSubscription}"
-					styleClass="button" />
+					styleClass="button_big" />
 				<h:commandButton value="#{msg.openuss4us_calendar_subscribe_delete}"
 					title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
 					rendered="#{views$secured$calendar$calendar.subscribed}"
 					action="#{views$secured$calendar$calendar.changeSubscription}"
-					styleClass="button" />
+					styleClass="button_big" />
 			</c:if>
 		</o:block>
 	</h:form>
