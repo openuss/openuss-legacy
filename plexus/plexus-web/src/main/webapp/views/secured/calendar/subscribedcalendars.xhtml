@@ -60,6 +60,7 @@
 					
 					<h:commandLink
 						action="#{views$secured$calendar$subscribedcalendars.removeSubscription}"
+						onclick="if (!confirm('#{msg.openuss4us_calendar_subscribe_delete_confirm}')) return false"
 						title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
 						class="icon_deletesubscription" />
 				</plexus:column> </s:acl>

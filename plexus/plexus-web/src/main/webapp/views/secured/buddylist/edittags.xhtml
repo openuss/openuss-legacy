@@ -48,10 +48,10 @@
 					alt="#{msg.user_profile_no_image}"
 					title="#{msg.user_profile_no_image}"
 					rendered="#{empty buddy.userPicture}" /></div>
-				<plexus:dataTable label="#{msg.openuss4us_buddylist_current_tags}"
+				</div>
+				</o:block><plexus:dataTable label="#{msg.openuss4us_buddylist_current_tags}"
 					id="buddyTagsTable"
-					value="views$secured$buddylist$edittags.buddyTags" var="currentTag"
-					styleClass="content_font_normal">
+					value="views$secured$buddylist$edittags.buddyTags" var="currentTag">
 					<t:column>
 						<h:outputText value="#{currentTag} "
 							styleClass="content_font_normal" />
@@ -60,8 +60,7 @@
 						<h:commandLink value="#{msg.openuss4us_buddylist_delete_tag}"
 							action="#{views$secured$buddylist$edittags.deleteTag}" immediate="true"/>
 					</t:column>
-				</plexus:dataTable></div>
-				</o:block></h:form>
+				</plexus:dataTable></h:form>
 				<h:form id="openuss4us_buddylist_addtag">
 				<o:block><div styleClass="content_normal">
 				<o:input entity="views$secured$buddylist$edittags" property="newTag" id="input_tag"
