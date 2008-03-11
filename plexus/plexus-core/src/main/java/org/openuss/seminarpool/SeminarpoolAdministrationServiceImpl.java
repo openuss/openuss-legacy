@@ -606,8 +606,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 		for (SeminarUserRegistration sur : sp.getSeminarUserRegistration()) {
 			a = 0;
 			for (SeminarPriority sprio : sur.getSeminarPriority()) {
-				for (CourseGroup cg : sur.getSeminarPriority().iterator().next().getCourseSeminarPoolAllocation()
-						.getCourseGroup()) {
+				for (CourseGroup cg : sprio.getCourseSeminarPoolAllocation().getCourseGroup()){
 					table[c][0] = sprio.getSeminarUserRegistration().getUser()
 							.getId();
 					table[c][1] = cg.getId();
@@ -617,14 +616,14 @@ public class SeminarpoolAdministrationServiceImpl extends
 					a++;
 				}
 			}
-			for(int i = 0; i<sp.getPriorities()-sur.getSeminarPriority().size();i++){
+			/*for(int i = 0; i < subgroups - a;i++){
 				table[c][0] = sur.getUser()
 				.getId();
 				table[c][1] = Long.MAX_VALUE;
 				table[c][2] = -1;
 				c++;
 				a++;
-			}
+			}*/
 		}
 
 		// Sort table by groupId for each user
@@ -672,11 +671,11 @@ public class SeminarpoolAdministrationServiceImpl extends
 					value = 1.0;
 				}
 				for (c = 0; c < subgroups; c++) {
-					if(table[a*subgroups+c][2]==-1){
-						value=0.0;
-					}
+//					if(table[a*subgroups+c][2]==-1){
+//						value=0.0;
+//					}
 					sc1[b + c] = value;
-					value=1.0;
+					//value=1.0;
 				}
 			}
 			sc1[variables] = neededSeminars[a];
