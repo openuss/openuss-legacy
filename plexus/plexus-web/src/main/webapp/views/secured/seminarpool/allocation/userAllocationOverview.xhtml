@@ -34,6 +34,7 @@
 			<h:outputText value="#{msg.seminarpool_participants_step1_text}" escape="false"/>
 		</div>
 	</o:block>
+	<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 	<h:form id="genereteAllocation">
 		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status}">
 			<o:block>
@@ -52,6 +53,7 @@
 			</o:block>
 		</c:if>
 	</h:form>
+	</s:acl>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

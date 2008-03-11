@@ -68,7 +68,7 @@
 			</plexus:dataTable>
 		</h:form>
 		
-		
+	<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">	
 		<h:form id="seminarpool_condition_new_form">
 	  		<o:block label="#{msg['seminarpool_conditions_add_subheading']}" styleClass="form_box">
 				<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
@@ -95,7 +95,7 @@
 					styleClass="button_save" />
 			</o:block>	
 	 	</h:form> 
-
+	</s:acl>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

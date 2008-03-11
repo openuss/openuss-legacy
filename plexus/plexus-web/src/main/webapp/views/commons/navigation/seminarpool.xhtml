@@ -10,8 +10,6 @@
 	
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
-
-		
 		  <s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.READ}">
 		
 			<h:form id="seminarpoolNavigationForm">
@@ -35,13 +33,15 @@
 							>
 							<h:outputText value="#{msg['seminarpool_command_options_seminars']}" />
 						</t:commandNavigation2>
-						<s:authorize ifAllGranted="ROLE_USER">
+						
 							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 								<t:commandNavigation2
 									action="seminarpool_options_seminarpooladmins" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooladmins.xhtml">
 									<h:outputText value="#{msg['seminarpool_command_options_seminarpooladmins']}" />
-								</t:commandNavigation2>							
+								</t:commandNavigation2>
+							</s:acl>							
+							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.RU}">
 								<t:commandNavigation2 
 									action="seminarpool_options_members" 
 									activeOnViewIds="/views/secured/seminarpool/participants/seminarpoolParticipantsStep1.xhtml,/views/secured/seminarpool/participants/seminarpoolParticipantsStep2.xhtml">
@@ -84,13 +84,15 @@
 										<h:outputText value="#{msg['seminarpool_requirements_submenue_by_user']}" />
 									</t:commandNavigation2>
 								</t:commandNavigation2>
+								</s:acl>
+							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
+				
 								<t:commandNavigation2 
 									action="seminarpool_options_config" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooloptions.xhtml,/views/secured/seminarpool/seminarpoolremoveconfirmation.xhtml">
 									<h:outputText value="#{msg['seminarpool_command_options_config']}" />
 								</t:commandNavigation2>
 							</s:acl>
-						</s:authorize>
 						
 					</t:commandNavigation2>
 				</t:panelNavigation2>	

@@ -15,6 +15,7 @@ import org.apache.commons.lang.Validate;
 import org.openuss.foundation.DomainObject;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.Organisation;
 import org.openuss.lecture.University;
 import org.openuss.security.Group;
@@ -216,12 +217,13 @@ public class SeminarpoolAdministrationServiceImpl extends
 				.createObjectIdentity(courseAllocation, course);
 		for ( User member : seminarpool.getMembership().getMembers()) {
 			getSecurityService().setPermissions(member, courseAllocation, LectureAclEntry.OGCRUD);
+			getSecurityService().setPermissions(member, seminarpool, LectureAclEntry.RU);
+		}
+		for ( User member: course.getCourseType().getInstitute().getMembership().getMembers()) {
+			getSecurityService().setPermissions(member, seminarpool, LectureAclEntry.RU);
 		}
 
-		// getSecurityService().setPermissions(seminarpool ,courseAllocation ,
-		// LectureAclEntry.CRUD);
-
-		seminarpool.addCourseAllocation(courseAllocation);
+    	seminarpool.addCourseAllocation(courseAllocation);
 
 		return courseAllocationId;
 	}
