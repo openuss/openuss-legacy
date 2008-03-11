@@ -373,16 +373,17 @@
     	</managed-property>
     	<managed-property>
     		<property-name>compactWeekRowHeight</property-name>
-    		<value>180</value>
+    		<value>200</value>
     	</managed-property>
     	<managed-property>
     		<property-name>compactMonthRowHeight</property-name>
-    		<value>90</value>
+    		<value>100</value>
     	</managed-property>
-    	<managed-property>
+    	<!-- <managed-property>
     		<property-name>detailedRowHeight</property-name>
     		<value>20</value>
     	</managed-property>
+    	-->
     </managed-bean>
     
 

@@ -1,5 +1,6 @@
 package org.openuss.web.calendar;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -82,7 +83,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 					entry1.setStartTime(app.getStarttime());
 					entry1.setEndTime(app.getEndtime());
 					entry1.setDescription(app.getDescription());
-					entry1.setSubtitle(app.getDescription());
+					entry1.setSubtitle(toHourDate(app.getStarttime(),app.getEndtime()));
 					model.addEntry(entry1);
 					logger.debug("Appointment: - " + app.getSubject()
 							+ " - added!");
@@ -99,6 +100,28 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 		model.refresh();
 	}
 
+	private String toHourDate(Date startdate, Date enddate) {
+		int starthour = startdate.getHours();
+		int startminute = startdate.getMinutes();
+		int endhour = enddate.getHours();
+		int endminute = enddate.getMinutes();
+		String time = "";
+		time = time + starthour + ":";
+		if (startminute < 10){
+			time = time + "0" + startminute + " - ";
+		}else{
+			time = time + startminute + " - ";
+		}
+		time = time + endhour + ":";
+		if (endminute < 10){
+			time = time + "0" + endminute;
+		}else{
+			time = time + endminute;
+		}
+		return time;
+		
+	}
+	
 	public String changeToDayMode() {
 		if (model == null)
 			addError(i18n("calendar_mode_change_error"));
