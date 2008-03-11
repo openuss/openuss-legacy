@@ -85,7 +85,6 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 	public List<SelectItem> getAllUserDnPatterns() {
 
 		List<SelectItem> userDnPatternItems = new ArrayList<SelectItem>();
-
 		List<UserDnPatternInfo> userDnPatterns = ldapConfigurationService.getAllUserDnPatterns();
 		
 		for (UserDnPatternInfo userDnPattern : userDnPatterns) {

@@ -11,7 +11,6 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.AttributeMappingInfo;
-import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.lecture.AbstractLdapAttributeMappingsOverviewPage;
