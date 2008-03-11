@@ -145,6 +145,12 @@ public class WikiMainPage extends AbstractWikiPage {
 	 * @return Wiki Current Site Version Page.
 	 */
 	public String lockSite() {
+		if (this.siteVersionInfo == null || this.siteVersionInfo.getWikiSiteId() == null) {
+			LOGGER.error("Site version info incomplete!");
+			addError(i18n("wiki_error_siteinfo_not_found"));
+			return Constants.WIKI_MAIN_PAGE;
+		}
+		
 		final WikiSiteInfo wikiSiteInfo = this.wikiService.getWikiSite(this.siteVersionInfo.getWikiSiteId());
 		LOGGER.debug("Locking Site " + wikiSiteInfo.getName() + ".");
 		wikiSiteInfo.setReadOnly(true);
@@ -201,6 +207,12 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String markStable() {
 		LOGGER.debug("Marking Site " + siteVersionInfo.getName() + " stable.");
+		if (this.siteVersionInfo == null || this.siteVersionInfo.getDomainId() == null) {
+			LOGGER.error("Site version info incomplete!");
+			addError(i18n("wiki_error_siteinfo_not_found"));
+			return Constants.WIKI_MAIN_PAGE;
+		}
+		
 		siteVersionInfo.setStable(true);
 		wikiService.saveWikiSite(siteVersionInfo);
 		
