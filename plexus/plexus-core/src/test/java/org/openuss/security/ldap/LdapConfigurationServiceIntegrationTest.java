@@ -5,13 +5,11 @@
  */
 package org.openuss.security.ldap;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 /**
  * JUnit Test for Spring Hibernate LdapConfigurationService class.
@@ -1060,6 +1058,12 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 	public void setAttributeMappingDao(AttributeMappingDao attributeMappingDao) {
 		this.attributeMappingDao = attributeMappingDao;
 	}
+
+	public void setService(LdapConfigurationService service) {
+		this.service = service;
+	}
+	
+	
 	
 	
 	
