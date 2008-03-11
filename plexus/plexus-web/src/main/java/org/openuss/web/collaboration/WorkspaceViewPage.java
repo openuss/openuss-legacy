@@ -330,8 +330,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of FolderEntryInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override

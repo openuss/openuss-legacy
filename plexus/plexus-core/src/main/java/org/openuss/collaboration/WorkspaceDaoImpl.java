@@ -5,8 +5,6 @@
  */
 package org.openuss.collaboration;
 
-import java.util.List;
-
 /**
  * @author  Projektseminar WS 07/08, Team Collaboration
  * @see org.openuss.collaboration.Workspace

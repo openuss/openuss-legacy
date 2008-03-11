@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.User;
@@ -29,7 +28,7 @@ public class PaperSubmissionServiceImpl
     extends org.openuss.paperSubmission.PaperSubmissionServiceBase
 {
 
-	private static final Logger logger = Logger.getLogger(PaperSubmissionServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionServiceImpl.class);
 
 	@Override
 	protected void handleCreateExam(ExamInfo examInfo) throws Exception {
@@ -48,7 +47,7 @@ public class PaperSubmissionServiceImpl
     	getSecurityService().createObjectIdentity(examEntity, examInfo.getDomainId());
     	
     	if (examInfo.getAttachments() != null) {
-    		logger.debug("found " + examInfo.getAttachments().size()+" attachments.");
+    		LOGGER.debug("found " + examInfo.getAttachments().size()+" attachments.");
 			getDocumentService().diffSave(examEntity, examInfo.getAttachments());
 		}
 
@@ -56,8 +55,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected void handleCreatePaperSubmission(
-			PaperSubmissionInfo paperSubmissionInfo) throws Exception {
+	protected void handleCreatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) throws Exception {
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null.");
     	Validate.notNull(paperSubmissionInfo.getExamId(), "ExanId cannot be null.");
     	
@@ -114,9 +112,9 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of PaperSubmissionInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindPaperSubmissionsByExamAndUser(Long examId,
-			Long userId) throws Exception {
+	protected List handleFindPaperSubmissionsByExamAndUser(Long examId,	Long userId) throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
     	Validate.notNull(userId, "userId cannot be null");    	
    
@@ -139,6 +137,7 @@ public class PaperSubmissionServiceImpl
     	return submissions;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected ExamInfo handleGetExam(Long examId) throws Exception {
 		Validate.notNull(examId, "examId cannot be null.");
@@ -154,8 +153,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected PaperSubmissionInfo handleGetPaperSubmission(
-			Long paperSubmissionId) throws Exception {
+	protected PaperSubmissionInfo handleGetPaperSubmission(Long paperSubmissionId) throws Exception {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
 		
 		final PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
@@ -195,7 +193,7 @@ public class PaperSubmissionServiceImpl
 
 	@Override
 	protected void handleUpdateExam(ExamInfo examInfo) throws Exception {
-		logger.debug("Starting method handleUpdateExam");
+		LOGGER.debug("Starting method handleUpdateExam");
     	Validate.notNull(examInfo,"examInfo cannot be null");
     	Validate.notNull(examInfo.getId(),"Parameter examInfo must contain a valid id.");
     	
@@ -203,19 +201,18 @@ public class PaperSubmissionServiceImpl
     	final Exam examEntity = getExamDao().examInfoToEntity(examInfo);
     	
     	//update the exam
-    	logger.debug("Updating exam");
+    	LOGGER.debug("Updating exam");
     	getExamDao().update(examEntity);
     	
-    	logger.debug("Updating file attachments");
+    	LOGGER.debug("Updating file attachments");
     	getDocumentService().diffSave(examEntity, examInfo.getAttachments());
 		
 		getExamDao().toExamInfo(examEntity, examInfo);
 	}
 
 	@Override
-	protected PaperSubmissionInfo handleUpdatePaperSubmission(
-			PaperSubmissionInfo paperSubmissionInfo) throws Exception {
-		logger.debug("Starting method handleUpdatePaperSubmission");
+	protected PaperSubmissionInfo handleUpdatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) throws Exception {
+		LOGGER.debug("Starting method handleUpdatePaperSubmission");
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
 		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
 		
@@ -248,6 +245,7 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindExamsByDomainId(Long domainId) throws Exception {
 		Validate.notNull(domainId, "domainId cannot be null.");
@@ -258,9 +256,9 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindActiveExamsByDomainId(Long domainId)
-			throws Exception {
+	protected List handleFindActiveExamsByDomainId(Long domainId) throws Exception {
 		Validate.notNull(domainId, "courseId cannot be null.");
     	
 		//List of all exams of the domainId
@@ -279,6 +277,7 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindInactiveExamsByDomainId(Long domainId)
 			throws Exception {
@@ -301,6 +300,7 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of SubmissionInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleGetMembersAsPaperSubmissionsByExam(Long examId)
 			throws Exception {
@@ -359,9 +359,9 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of FileInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleGetPaperSubmissionFiles(Collection submissions)
-			throws Exception {
+	protected List handleGetPaperSubmissionFiles(Collection submissions) throws Exception {
 		Validate.notNull(submissions, "submissions cannot be null.");
 		final List<FileInfo> allFiles = new ArrayList<FileInfo>();
 		
@@ -384,6 +384,7 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of SubmissionInfo
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected List handleFindInTimePaperSubmissionsByExam(Long examId) throws Exception {
 		final List<PaperSubmissionInfo> allSubmissions = findPaperSubmissionsByExam(examId);

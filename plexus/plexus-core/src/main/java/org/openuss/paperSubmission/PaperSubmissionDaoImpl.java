@@ -5,14 +5,10 @@
  */
 package org.openuss.paperSubmission;
 
-import org.openuss.collaboration.Workspace;
-
-
 /**
  * @see org.openuss.paperSubmission.PaperSubmission
  */
-public class PaperSubmissionDaoImpl
-    extends org.openuss.paperSubmission.PaperSubmissionDaoBase
+public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSubmissionDaoBase
 {
     /**
      * @see org.openuss.paperSubmission.PaperSubmissionDao#toPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmission, org.openuss.paperSubmission.PaperSubmissionInfo)

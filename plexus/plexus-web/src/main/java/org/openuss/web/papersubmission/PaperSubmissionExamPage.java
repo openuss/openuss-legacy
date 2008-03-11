@@ -368,8 +368,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of ExamInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override
@@ -404,8 +403,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of ExamInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override

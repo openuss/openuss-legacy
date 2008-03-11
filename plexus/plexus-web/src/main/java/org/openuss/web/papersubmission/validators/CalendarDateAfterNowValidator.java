@@ -4,16 +4,12 @@ import java.util.Date;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.lecture.UniversityServiceException;
-import org.openuss.web.Constants;
 
 /**
  * Checks if the entered date is correct.

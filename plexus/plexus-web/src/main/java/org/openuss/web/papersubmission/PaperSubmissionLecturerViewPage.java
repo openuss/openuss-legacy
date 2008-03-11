@@ -192,8 +192,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of FolderEntryInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override

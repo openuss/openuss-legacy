@@ -356,7 +356,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	/**
 	 * Replaces old Image IDs of a imported WikiSiteContentInfo object by the Image IDs of the imported Images.
 	 * @param wikiSiteContent Imported WikiSiteContentInfo.
-	 * @param imageImportMap Map with the old Image ID as key and the new Image ID as corresponding value.
+	 * @param imageImportAllocations List of ImageImportAllocations.
 	 */
 	private void updateWikiSiteImages(WikiSiteContentInfo wikiSiteContent, List<ImageImportAllocation> imageImportAllocations) {
 		String newContent = wikiSiteContent.getText();

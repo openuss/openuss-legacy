@@ -363,8 +363,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of PaperSubmissionInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override
@@ -417,8 +416,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 		/**
 		 * Default property sort method
-		 * 
-		 * @param periods
+		 * @param list List of FolderEntryInfo objects.
 		 */
 		@SuppressWarnings("unchecked")
 		@Override
