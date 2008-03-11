@@ -61,7 +61,7 @@
 					size="10"
 					maxlength="2" 
 					required="true">
-					<f:validateLongRange minimum="#{seminarpoolRegistration.seminarpoolInfo.maxSeminarAllocations}"/>
+					<f:validateLongRange minimum="1" />
 				</o:input>
 				<o:input
 					id="start_time"
@@ -70,7 +70,6 @@
 					property="registrationStartTime"
 					maxlength="16"
 					required="true" >
-					<f:validator validatorId="dateBeforeNowValidator"/>
 				</o:input>
 				<o:input
 					id="end_time"

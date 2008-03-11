@@ -51,7 +51,7 @@ public class PrioritiesSeminarsValidator extends ValidatorBase {
 	}
 
 	//the foreign component_id on which the validation is based.
-	private String _for= null;
+	private String _for= "_id5:seminarpool_create_seminarpool:maxSeminarAllocations";
 
   // -------------------------------------------------------- ValidatorIF
 	public void validate(
@@ -67,7 +67,7 @@ public class PrioritiesSeminarsValidator extends ValidatorBase {
 		{
 		    return;
 		}
-
+		
         UIComponent foreignComp = uiComponent.getParent().findComponent(_for);
         if(foreignComp==null)
             throw new FacesException("Unable to find component '" + _for + "' (calling findComponent on component '" + uiComponent.getId() + "')");
