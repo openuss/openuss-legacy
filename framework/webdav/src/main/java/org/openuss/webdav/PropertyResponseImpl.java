@@ -1,15 +1,10 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openuss.webdav.PropertyResponse;
-import org.openuss.webdav.PropertyResponseNode;
-import org.openuss.webdav.WebDAVConstants;
-import org.openuss.webdav.WebDAVHrefException;
-import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

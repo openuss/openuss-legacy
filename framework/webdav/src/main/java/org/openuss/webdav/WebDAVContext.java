@@ -1,4 +1,4 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import org.openuss.documents.DocumentService;
 import org.springframework.web.context.WebApplicationContext;

@@ -1,4 +1,4 @@
-package org.openuss.web.dav.backends;
+package org.openuss.web.dav;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,8 +12,8 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
-import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.WebDAVConstants;
+import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 

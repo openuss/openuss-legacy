@@ -1,7 +1,5 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
-import org.openuss.webdav.WebDAVAnswer;
-import org.openuss.webdav.WebDAVConstants;
 
 /**
  * A simple, string-based WebDAVAnswer implementation.

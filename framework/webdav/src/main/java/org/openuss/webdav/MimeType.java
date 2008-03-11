@@ -1,13 +1,12 @@
 /**
  * 
  */
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.openuss.webdav.WebDAVConstants;
 
 /**
  * @author David Ullrich <lechuck@uni-muenster.de>

@@ -1,4 +1,4 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -6,10 +6,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.openuss.webdav.IOContext;
-import org.openuss.webdav.WebDAVPath;
-import org.openuss.webdav.WebDAVResource;
-import org.openuss.webdav.WebDAVResourceException;
 
 /**
  * A simple WebDAVResource that avoids collisions between identical entry names by appending an id.

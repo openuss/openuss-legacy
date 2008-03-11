@@ -1,8 +1,6 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import org.apache.commons.lang.StringUtils;
-import org.openuss.webdav.WebDAVPath;
-import org.openuss.webdav.WebDAVURLUTF8Encoder;
 
 /**
  * A WebDAVPath in OpenUSS.

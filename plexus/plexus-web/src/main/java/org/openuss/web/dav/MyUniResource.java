@@ -1,4 +1,4 @@
-package org.openuss.web.dav.backends;
+package org.openuss.web.dav;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,9 +17,9 @@ import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.web.Constants;
-import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
-import org.openuss.web.dav.WebDAVContext;
+import org.openuss.webdav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
+import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;

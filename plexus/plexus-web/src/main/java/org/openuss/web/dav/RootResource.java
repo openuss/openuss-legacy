@@ -1,4 +1,4 @@
-package org.openuss.web.dav.backends;
+package org.openuss.web.dav;
 
 import java.util.AbstractCollection; // various TODOs
 import java.util.Collections;
@@ -10,9 +10,9 @@ import java.util.Set;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.Constants;
-import org.openuss.web.dav.WebDAVContext;
-import org.openuss.web.dav.WebDAVPathImpl;
+import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
+import org.openuss.webdav.WebDAVPathImpl;
 import org.openuss.webdav.WebDAVResource;
 
 /**

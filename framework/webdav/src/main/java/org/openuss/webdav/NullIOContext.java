@@ -1,11 +1,9 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.io.InputStream;
 import java.sql.Timestamp;
 
 import org.apache.commons.io.input.NullInputStream;
-import org.openuss.webdav.IOContext;
-import org.openuss.webdav.WebDAVConstants;
 
 /**
  * A structure of file information with an empty InputStream and a context length of 0. 

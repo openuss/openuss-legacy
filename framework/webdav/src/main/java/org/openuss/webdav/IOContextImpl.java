@@ -1,9 +1,7 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.io.InputStream;
 import java.sql.Timestamp;
-
-import org.openuss.webdav.IOContext;
 
 /**
  * Implementation of {@link IOContext}.

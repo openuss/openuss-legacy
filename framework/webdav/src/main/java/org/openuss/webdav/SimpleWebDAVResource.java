@@ -1,4 +1,4 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -10,16 +10,6 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.apache.tools.ant.filters.StringInputStream;
-import org.openuss.webdav.IOContext;
-import org.openuss.webdav.MultiStatusResponse;
-import org.openuss.webdav.WebDAVConstants;
-import org.openuss.webdav.WebDAVException;
-import org.openuss.webdav.WebDAVHrefException;
-import org.openuss.webdav.WebDAVPath;
-import org.openuss.webdav.WebDAVPathException;
-import org.openuss.webdav.WebDAVResource;
-import org.openuss.webdav.WebDAVResourceException;
-import org.openuss.webdav.WebDAVStatusCodes;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

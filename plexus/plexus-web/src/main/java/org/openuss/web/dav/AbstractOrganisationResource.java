@@ -1,10 +1,10 @@
-package org.openuss.web.dav.backends;
+package org.openuss.web.dav;
 
 import java.io.IOException;
 
-import org.openuss.web.dav.CollisionAvoidingSimpleWebDAVResource;
-import org.openuss.web.dav.WebDAVContext;
+import org.openuss.webdav.CollisionAvoidingSimpleWebDAVResource;
 import org.openuss.webdav.IOContext;
+import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;

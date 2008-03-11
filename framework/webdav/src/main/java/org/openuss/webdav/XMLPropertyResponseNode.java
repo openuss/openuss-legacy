@@ -1,6 +1,5 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
-import org.openuss.webdav.PropertyResponseNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -1,50 +1,50 @@
-package org.openuss.web.dav.backends;
+package org.openuss.web.dav;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseService;
-import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.dav.WebDAVContext;
 import org.openuss.webdav.WebDAVConstants;
+import org.openuss.webdav.WebDAVContext;
 import org.openuss.webdav.WebDAVPath;
 import org.openuss.webdav.WebDAVResource;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * A WebDAVResource representing an OpenUSS institute.
+ * A backend resource that represents a UniversityResource.
  */
-public class InstituteResource extends AbstractOrganisationResource{
-	protected CourseService courseService;
+public class UniversityResource extends AbstractOrganisationResource {
+	protected DepartmentService departmentService;
 	/**
 	 * Cache for the organization unit info objects contained in this one.
 	 */
-	protected Collection<CourseInfo> childrenData = null;
-	protected final InstituteInfo info;
+	protected Collection<DepartmentInfo> childrenData = null;
+	protected final UniversityInfo info;
 	
-	public InstituteResource(WebDAVContext context, WebDAVPath path, InstituteInfo info) {
-		super(context, path, info.getId());
-		this.info = info;
+	public UniversityResource(WebDAVContext context, WebDAVPath path, UniversityInfo ui) {
+		super(context, path, ui.getId());
+		this.info = ui;
 		
-		courseService = (CourseService) getWAC().getBean(Constants.COURSE_SERVICE, CourseService.class);
+		departmentService = (DepartmentService) getWAC().getBean(Constants.DEPARTMENT_SERVICE, DepartmentService.class);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
 	 */
 	@Override
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
-		CourseInfo resInfo = null;
+		DepartmentInfo resInfo = null;
 		
 		if (id != ID_NONE) {
-			resInfo = courseService.findCourse(id);
+			resInfo = departmentService.findDepartment(id);
 		} else {
-			for (CourseInfo childData : getSubCourses()) {
-				if (name.equals(sanitizeName(CourseResource.getNameByData(childData)))) {
+			for (DepartmentInfo childData : getSubDepartments()) {
+				if (name.equals(sanitizeName(DepartmentResource.getNameByData(childData)))) {
 					resInfo = childData;
 					break;
 				}
@@ -52,7 +52,7 @@ public class InstituteResource extends AbstractOrganisationResource{
 		}
 		
 		if (resInfo != null) {
-			return new CourseResource(getContext(), path, resInfo);
+			return new DepartmentResource(getContext(), path, resInfo);
 		}
 		
 		return null;
@@ -64,11 +64,11 @@ public class InstituteResource extends AbstractOrganisationResource{
 	@Override
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long,String> resMap = new TreeMap<Long, String>();
-
-		for (CourseInfo info : getSubCourses()) {
-			resMap.put(info.getId(), CourseResource.getNameByData(info));
+		
+		for (DepartmentInfo di : getSubDepartments()) {
+			resMap.put(di.getId(), DepartmentResource.getNameByData(di));
 		}
-
+		
 		return resMap;
 	}
 
@@ -86,7 +86,7 @@ public class InstituteResource extends AbstractOrganisationResource{
 	}
 
 	/* (non-Javadoc)
-	 * @return Every user is allowed to see each institute, iff it is enabled.
+	 * @return Every user is allowed to see each university, iff it is enabled.
 	 * @see org.openuss.webdav.WebDAVResource#isReadable()
 	 */
 	public boolean isReadable() {
@@ -94,12 +94,12 @@ public class InstituteResource extends AbstractOrganisationResource{
 	}
 	
 	/**
-	 * @return All institutes in this department
+	 * @return All departments in this university
 	 */
 	@SuppressWarnings("unchecked")
-	protected Collection<CourseInfo> getSubCourses() {
+	protected Collection<DepartmentInfo> getSubDepartments() {
 		if (childrenData == null) {
-			childrenData = courseService.findCoursesByInstituteAndEnabled(getId(), true);
+			childrenData = departmentService.findDepartmentsByUniversityAndEnabled(getId(), true);
 		}
 		
 		return childrenData;
@@ -109,7 +109,7 @@ public class InstituteResource extends AbstractOrganisationResource{
 	 * @param info The info object of the organisation to represent.  
 	 * @return The (raw) name to use in the WebDAV context. 
 	 */
-	public static String getNameByData(InstituteInfo info) {
+	public static String getNameByData(UniversityInfo info) {
 		return info.getShortName();
 	}
 }

@@ -1,12 +1,8 @@
-package org.openuss.web.dav;
+package org.openuss.webdav;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openuss.webdav.MultiStatusAnswer;
-import org.openuss.webdav.MultiStatusResponse;
-import org.openuss.webdav.WebDAVConstants;
-import org.openuss.webdav.WebDAVStatusCodes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
