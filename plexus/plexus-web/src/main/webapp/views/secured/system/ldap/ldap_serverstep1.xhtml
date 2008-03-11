@@ -31,25 +31,19 @@
 						<o:input entity="ldapServerInfo" property="port" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="rootDn" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="managerDn" maxlength="250" required="false"/>
-						<o:input entity="ldapServerInfo" property="managerPassword" type="password" redisplay="false" required="false">
-						<f:validateLength minimum="5" /></o:input>					
-						<h:outputLabel value="#{msg.ldap_server_managerpassword_confirm}"
-						for="confirmPassword" styleClass="field_label" />
-						<h:inputSecret id="confirmPassword" styleClass="field" required="false" redisplay="false" disabled="#{user.centralUser}">
-						<t:validateEqual for="managerPassword" />
-						</h:inputSecret>						
-						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
-						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="description" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>	
+						<h:outputLabel value="#{msg.ldap_server_authenticationdomain_select}" for="ldapserver_authenticationdomain_listbox" styleClass="field_label" />
 						<h:selectOneListbox id="ldapserver_authenticationdomain_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true">
 						</h:selectOneListbox>
+						<h:outputLabel value="#{msg.ldap_server_userdnpattern_select}" for="ldapserver_userdnpattern_listbox" styleClass="field_label" />
 						<h:selectManyListbox id="ldapserver_userdnpattern_listbox" size="5" value="#{ldapServerInfo.userDnPatternIds}" required="true"
 							valueChangeListener="#{ldapServerRegistration.processValueChangeUserDnPattern}" styleClass="pulldown" >
   							<f:converter converterId="longConverter" />
   							<f:selectItems value="#{ldapServerRegistration.allUserDnPatterns}"/>
 						</h:selectManyListbox>
-						
+						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>
 						
 					</o:block>
