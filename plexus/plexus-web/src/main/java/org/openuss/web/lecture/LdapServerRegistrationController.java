@@ -3,6 +3,7 @@ package org.openuss.web.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -53,21 +54,13 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
 	}
 
-	/*
-	public List<SelectItem> getSupportedDepartmentTypes() {
-		localeItems = new ArrayList<SelectItem>();
 
-		SelectItem item1 = new SelectItem(DepartmentType.OFFICIAL, bundle.getString("departmenttype_official"));
-		SelectItem item2 = new SelectItem(DepartmentType.NONOFFICIAL, bundle.getString("departmenttype_non_offical"));
-
-		localeItems.add(item1);
-		localeItems.add(item2);
-
-		return localeItems;
-	}
 	
+	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
+		List selectedIds = (ArrayList) valueChangeEvent.getNewValue();
+		ldapServerInfo.setUserDnPatternIds(selectedIds);
+	}		
 	
-*/	
 	
 	public List<SelectItem> getAllAuthenticationDomains() {
 

@@ -302,7 +302,7 @@ public class LdapConfigurationServiceImpl
     	AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(domain.getAttributeMappingId());
     	
 //    	create AuthenticationDomain
-    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(attributeMappingEntity, domain.getName(), domain.getDescription());
+    	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(attributeMappingEntity, domain.getDescription(), domain.getName());
     	
 //    	save association AuthenticationDomain to AttributeMapping
     	attributeMappingEntity.getAuthenticationDomains().add(authDomainEntity);
