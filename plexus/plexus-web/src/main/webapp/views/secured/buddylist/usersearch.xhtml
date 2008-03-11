@@ -38,7 +38,7 @@
 	<ui:define name="content">
 		<h:form id="openuss4us_users" enctype="multipart/form-data">
 
-			<o:block label="#{msg.openuss4us_find_group_label}"
+			<o:block label="#{msg.openuss4us_find_user_label}"
 				styleClass="form_box">
 				<p class="content_font_normal"><o:input
 					entity="views$secured$buddylist$usersearch" property="username"
@@ -54,7 +54,7 @@
 
 			<c:if test="#{not empty views$secured$buddylist$usersearch.users}">
 				<plexus:dataTable id="users"
-					label="#{msg['openuss4us_group_list_header']}"
+					label="#{msg['openuss4us_user_list_header']}"
 					value="views$secured$buddylist$usersearch.data"
 					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
 					var="user" rows="20">
@@ -80,11 +80,11 @@
 					<plexus:column header="#{msg.commands_header}">
 						<plexus:command bean="#{views$secured$buddylist$usersearch}"
 							action="writeMessage" label=" "
-							title="#{msg['openuss4us_group_send_hint']}"
+							title="#{msg['openuss4us_user_send_hint']}"
 							styleClass="icon_sendmessage" />
 						<plexus:command bean="#{views$secured$buddylist$usersearch}"
 							action="addAsBuddy" label=" "
-							title="#{msg['openuss4us_group_send_hint']}"
+							title="#{msg['openuss4us_user_send_hint']}"
 							styleClass="icon_addbuddy" />
 					</plexus:column>
 
@@ -96,8 +96,8 @@
 			<o:block>
 				<h:commandButton id="getUserButton"
 					action="#{views$secured$buddylist$usersearch.findUser}"
-					value="#{msg.openuss4us_find_group}"
-					hint="#{msg.openuss4us_find_group}" styleClass="button_big" />
+					value="#{msg.openuss4us_find_user}"
+					hint="#{msg.openuss4us_find_user}" styleClass="button" />
 				<h:commandButton id="backButton" value="#{msg.back}"
 					action="view:backward" styleClass="button_back" immediate="true" />
 			</o:block>
