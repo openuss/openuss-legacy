@@ -33,8 +33,8 @@ public class RoleAttributeKeyDaoImpl
         RoleAttributeKeyInfo roleAttributeKeyInfo = super.toRoleAttributeKeyInfo(entity);    
         
 //      set AttributeMapping Ids
-        List<AttributeMapping> attributeMappingEntity = entity.getAttributeMappings();        
         List<Long> attributeMappingIds = new ArrayList<Long>();
+        List<AttributeMapping> attributeMappingEntity = entity.getAttributeMappings();
         for (AttributeMapping attributeMapping : attributeMappingEntity) {
         	attributeMappingIds.add(attributeMapping.getId());
 		}
