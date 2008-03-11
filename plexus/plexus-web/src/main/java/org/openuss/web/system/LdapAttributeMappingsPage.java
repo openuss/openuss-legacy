@@ -112,6 +112,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 			  }
 			}
 			catch (Exception e) {
+				addError(e.getMessage());
 				addMessage(i18n("message_ldap_attributemapping_cannot_be_removed"));
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			}		

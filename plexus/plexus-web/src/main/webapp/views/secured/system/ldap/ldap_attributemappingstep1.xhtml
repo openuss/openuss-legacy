@@ -33,7 +33,7 @@
 						<o:input entity="attributeMappingInfo" property="lastNameKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="emailKey" maxlength="250" required="true"/>
 						<o:input entity="attributeMappingInfo" property="groupRoleAttributeKey" maxlength="250" required="true"/>
-						<h:outputLabel value="#{msg.department_preferences_university}" for="universitySelect" styleClass="field_label" />
+						<h:outputLabel value="#{msg.ldap_attributemapping_roleattributekeys_select}" for="attribute_mapping_roleattributekey_listbox" styleClass="field_label" />
 						<h:selectManyListbox id="attribute_mapping_roleattributekey_listbox" size="7" value="#{attributeMappingInfo.roleAttributeKeyIds}" required="true"
 							valueChangeListener="#{ldapAttributeMappingRegistration.processValueChange}" styleClass="pulldown" >
   							<f:converter converterId="longConverter" />
