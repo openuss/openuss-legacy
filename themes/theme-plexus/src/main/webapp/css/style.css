@@ -640,22 +640,22 @@ p.search_type {
 
 #right .content_normal {
 	padding: 5px 5px 5px 10px;
-	border-style: dotted solid none solid;
+	border-style: solid solid none solid;
 	border-width: 1px;
 	background-color: #FFFFFF;
 	background-image: none;
-	border-top-color: #505050;
+	border-top-color: #AFAFAF;
 	border-right-color: #FFFFFF;
 	border-left-color: #AFAFAF;
 }
 
 #right .option_box .content_normal {
 	padding: 5px 5px 5px 10px;
-	border-style: dotted solid none solid;
+	border-style: solid solid none solid;
 	border-width: 1px;
 	background-color: #FFFFFF;
 	background-image: none;
-	border-top-color: #505050;
+	border-top-color: #5493D4;
 	border-right-color: #FFFFFF;
 	border-left-color: #AFAFAF;
 }
@@ -1080,11 +1080,9 @@ p.header_font_normal,span.header_font_normal {
 .content_normal {
 	padding: 0 0 3px 0;
 	margin: 0;
-	border-style: dotted solid none solid;
+	border-style: solid solid none solid;
 	border-width: 1px;
-	border-top-color: #505050;
-	border-right-color: #AFAFAF;
-	border-left-color: #AFAFAF;
+	border-color: #AFAFAF;
 }
 
 .warning_box .content_normal {

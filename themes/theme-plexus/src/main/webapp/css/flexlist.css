@@ -82,6 +82,18 @@
 	text-decoration: none !important;
 }
 
+/* Specific rules for department, institute and course flexlist */
+.flexListDepartments .header {
+	background:url(/theme-plexus/img/department_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+.flexListInstitutions .header {
+	background:url(/theme-plexus/img/institution_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+.flexListCourses .header {
+	background:url(/theme-plexus/img/course_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+
+
 /* Tabs CSS */
 
 #flexlist_tabs {}
