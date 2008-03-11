@@ -29,7 +29,7 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  			<h:form id="removeDepartmentConfirmation">
+  			<h:form id="removeAttributeMappingConfirmation">
   				<s:authorize ifAllGranted="ROLE_ADMIN">
 						<o:block label="#{msg.warning_attention_dataloss}- #{msg.ldap_attributemapping_remove_header}" styleClass="warning_box">
 			  				<p class="content_font_normal">
@@ -39,7 +39,7 @@
 							</p>
 						</o:block>
 						<o:block>
-							<h:commandButton value="${msg.remove}" action="#{views$secured$system$ldap$ldap_attributemapping.removeAttributeMapping}" styleClass="button_warning"/>
+							<h:commandButton value="${msg.remove}" action="#{views$secured$system$ldap$ldap_attributemappings.removeAttributeMapping}" styleClass="button_warning"/>
 							<h:commandButton value="${msg.cancel}" action="view:backward" styleClass="button_cancel" immediate="true"/>				
 						</o:block>
 				</s:authorize>

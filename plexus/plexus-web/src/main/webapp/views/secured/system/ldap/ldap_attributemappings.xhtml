@@ -53,16 +53,16 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
-								action = "selectAttributeMappingAndConfirmRemove"
-								styleClass="icon_remove"
-								label="#{msg.ldap_attributemapping_command_remove}"
-								title="#{msg.ldap_attributemapping_command_remove_hint}"/>
-							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
 								action = "selectAttributeMappingAndEdit"
 								styleClass="icon_edit"
 								label="#{msg.ldap_attributemapping_command_edit}"
-								title="#{msg.ldap_attributemapping_command_edit_hint}"/>	
+								title="#{msg.ldap_attributemapping_command_edit_hint}"/>
+							<plexus:command
+								bean = "#{views$secured$system$ldap$ldap_attributemappings}"
+								action = "selectAttributeMappingAndConfirmRemove"
+								styleClass="icon_remove"
+								label="#{msg.ldap_attributemapping_command_remove}"
+								title="#{msg.ldap_attributemapping_command_remove_hint}"/>									
 						</s:authorize>
 					</plexus:column>
 					

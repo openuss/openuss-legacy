@@ -11,7 +11,7 @@ import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
-import org.openuss.security.ldap.RoleAttributeKeyInfo;
+import org.openuss.web.Constants;
 
 /**
  * Validates uniqueness of MappingNames
@@ -24,15 +24,20 @@ public class AttributeMappingNameUniqueValidator extends BaseBean implements Val
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String attributeMappingName = (String) value;
-		AttributeMappingInfo attributeMappingInfo = new AttributeMappingInfo();
-	    attributeMappingInfo.setMappingName(attributeMappingName);
-		if (StringUtils.isNotEmpty(attributeMappingName)) {
-			LdapConfigurationService ldapConfigurationService = (LdapConfigurationService) getBean("ldapConfigurationService");
-			boolean unique = false;
-			if (!unique) {
-         		((UIInput)component).setValid(false);
-				addError(component.getClientId(context), i18n("error_userdnpattern_already_exists"), null);
-			}
-		}
+		AttributeMappingInfo container = new AttributeMappingInfo();
+	    container.setMappingName(attributeMappingName);
+	    AttributeMappingInfo attributeMappingInfo = (AttributeMappingInfo) getBean(Constants.ATTRIBUTEMAPPING_INFO);
+	    if (attributeMappingInfo.getMappingName().equals(attributeMappingName)) {
+	    	//Update of AttributeMapping -> Name can stay the same
+	    	((UIInput)component).setValid(true);
+	    }
+	    else if (StringUtils.isNotEmpty(attributeMappingName)) {
+	    		LdapConfigurationService ldapConfigurationService = (LdapConfigurationService) getBean("ldapConfigurationService");
+	    		boolean unique = ldapConfigurationService.isValidAttributeMappingName(container);
+	    		if (!unique) {
+	    			((UIInput)component).setValid(false);
+	    			addError(component.getClientId(context), i18n("error_attributemappingname_already_exists"), null);
+	    		}
+	    	 }		
 	}
 }
