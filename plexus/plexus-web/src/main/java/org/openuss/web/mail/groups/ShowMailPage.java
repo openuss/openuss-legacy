@@ -36,10 +36,10 @@ public class ShowMailPage extends AbstractGroupPage {
 	
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:27
-		
+		 // NOPMD by devopenuss on 11.03.08 14:43
 		if (mail==null){
 			addError(i18n("newsletter_mailaccess_impossible")); // NOPMD by devopenuss on 11.03.08 14:28
-			redirect(Constants.NEWSLETTER_MAIN);
+			redirect(Constants.NEWSLETTER_MAIN); // NOPMD by devopenuss on 11.03.08 14:43
 			return;
 		}			
 		if (mail.getId() == null) {
@@ -49,7 +49,7 @@ public class ShowMailPage extends AbstractGroupPage {
 		}
 		if (mail.getId()!=null){
 			MailInfo mi = new MailInfo();  // NOPMD by devopenuss on 11.03.08 14:28
-			mi.setId(mail.getId());
+			mi.setId(mail.getId()); // NOPMD by devopenuss on 11.03.08 14:43
 			mail = getGroupNewsletterService().getMail(mi);
 			if (mail==null){
 				addError(i18n("newsletter_mailaccess_impossible"));
