@@ -1100,18 +1100,13 @@
 			<navigation-case>
 					<from-outcome>ldap_servers</from-outcome>
 					<to-view-id>/views/secured/system/ldap/ldap_servers.xhtml</to-view-id>
-			</navigation-case>
-	
-			<navigation-case>
-					<from-outcome>ldap_server_registration_start</from-outcome>
-					<to-view-id>/views/secured/system/ldap/ldap_serverstart.xhtml</to-view-id>
-			</navigation-case>
+			</navigation-case>	
 			
 			<navigation-case>
 				<from-outcome>ldap_server_registration_step1</from-outcome>		
 				<to-view-id>/views/secured/system/ldap/ldap_serverstep1.xhtml</to-view-id>
 			</navigation-case>
-		
+					
 	</navigation-rule>
 	
 	<navigation-rule>

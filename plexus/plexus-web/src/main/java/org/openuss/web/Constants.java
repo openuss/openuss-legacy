@@ -133,7 +133,7 @@ public class Constants {
 	public static final String LDAP_SERVER_REGISTRATION_CONTROLLER = "ldapServerRegistration";
 	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
 	public static final String SERVER_INFO = "serverInfo";
-	public static final String LDAP_SERVER_PAGE = "ldap_server";
+	public static final String LDAP_SERVER_PAGE = "ldap_servers";
 	public static final String SERVER_CONFIRM_REMOVE_PAGE = "ldap_server_remove_confirmation";
 	// session Entity bean
 	public static final String SERVER = "server";

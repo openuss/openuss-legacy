@@ -53,7 +53,17 @@
   							<f:converter converterId="longConverter" />
   							<f:selectItems value="#{ldapServerRegistration.allUserDnPatterns}"/>
 						</h:selectManyListbox>
-						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>
+						<h:outputLabel for="ldapServerType" value="#{msg.ldap_server_types_headline}" styleClass="field_label"/>						
+						<h:selectOneMenu id="ldapServerType" 
+							layout="pageDirection" 
+							value="#{ldapServerInfo.ldapServerType}" 
+							valueChangeListener="#{ldapServerRegistration.processValueChangeLdapServerType}"						
+							immediate="true" 
+							styleClass="pulldown">
+							<f:converter converterId="ldapServerTypeConverter" />
+						<f:selectItems value="#{ldapServerRegistration.ldapServerTypes}"/>
+						</h:selectOneMenu>
+						
 						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>						

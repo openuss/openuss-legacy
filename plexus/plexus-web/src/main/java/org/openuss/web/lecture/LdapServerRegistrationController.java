@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.security.ldap.LdapServerInfo;
+import org.openuss.security.ldap.LdapServerType;
 import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.Constants;
 
@@ -34,13 +35,32 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 	public String start() {
 		logger.debug("start registration process");
 		
-		ldapServerInfo = new LdapServerInfo();
-		ldapServerInfo.setEnabled(true);
+		ldapServerInfo = new LdapServerInfo();		
 		setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
 		
 		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
 	}
 
+	
+	/**
+	 * Value Change Listener
+	 * 
+	 * @param event
+	 */
+	public void processValueChangeLdapServerType(ValueChangeEvent event) {
+		Object ldapServerType = event.getNewValue();
+		ldapServerInfo.setLdapServerType((LdapServerType) ldapServerType);
+	}
+	
+	
+	public List<SelectItem> getLdapServerTypes() {
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		items.add(new SelectItem(LdapServerType.ACTIVE_DIRECTORY, i18n("ldap_server_types_ms_active_directory")));
+		items.add(new SelectItem(LdapServerType.OTHER, i18n("ldap_server_types_other")));		
+		return items;
+	}
+	
+	
 	@SuppressWarnings( { "unchecked" })
 	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
 		List<Long> selectedIds = (ArrayList<Long>) valueChangeEvent.getNewValue();
