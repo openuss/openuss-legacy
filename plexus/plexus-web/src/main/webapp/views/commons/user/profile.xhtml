@@ -211,6 +211,11 @@
 						<h:outputText value="#{showuser.contact.interests}" />
 						<h:outputText value="" />
 					</c:if>
+					<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
+					<h:outputText value="#{msg.user_contact_portrait}:" />
+					<h:outputText value="#{showuser.profile.portrait}" escape="false" />
+					<h:outputText value="" />
+					</c:if>
 				</c:if>
 				<c:if test="#{(showuser.profile.profileUniPublic or views$secured$user$userprofile.buddy) and( 
 								not empty showuser.profile.studies or 
@@ -231,9 +236,7 @@
 					</c:if>
 				</c:if>
 
-				<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
-					<h:outputText value="#{showuser.profile.portrait}" escape="false" />
-				</c:if>
+				
 			</h:panelGrid>
 				
 		</div>
