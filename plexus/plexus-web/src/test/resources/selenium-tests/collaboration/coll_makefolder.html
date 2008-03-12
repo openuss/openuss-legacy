@@ -4,21 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>coll_makefolder</title>
+<title>ws_makefolder</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">coll_makefolder</td></tr>
+<tr><td rowspan="1" colspan="3">ws_makefolder</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
 	<td>/plexus-web/views/welcome.faces</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Willkommen bei OpenUSS!</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,11 +32,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>MeineUni</td>
-	<td></td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1005</td>
 	<td></td>
@@ -52,8 +42,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung - collab-Permanentes Angebot</td>
+	<td>clickAndWait</td>
+	<td>addWorkspace</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Collaboration 1</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveWorkspace</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
 	<td></td>
 </tr>
 <tr>
@@ -62,18 +67,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung - collab-Permanentes Angebot</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>newFolder</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung</td>
 	<td></td>
 </tr>
 <tr>
@@ -92,14 +87,54 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung - collab-Permanentes Angebot</td>
-	<td></td>
-</tr>
-<tr>
 	<td>assertText</td>
 	<td>//tbody[contains(@id, 'documentstable')]/tr/td[3]/a</td>
 	<td>Testordner</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=//tbody[contains(@id, 'documentstable')]/tr/td[7]/a[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>checkConfirmation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>remove</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cmd_collaboration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tbody[contains(@id, 'workspaces')]/tr[1]/td[2]/a[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>checkConfirmation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>remove</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -107,18 +142,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>OpenUSS Plexus</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>home</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Willkommen bei OpenUSS!</td>
 	<td></td>
 </tr>
 

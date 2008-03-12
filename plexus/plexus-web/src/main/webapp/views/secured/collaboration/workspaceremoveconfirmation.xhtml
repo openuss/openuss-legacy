@@ -41,7 +41,7 @@
 						<br/>
 					</p>
 					<p class="content_font_normal">
-	   					<h:selectBooleanCheckbox id="checkConfirmation"
+	   					<t:selectBooleanCheckbox id="checkConfirmation" forceId="true"
 	   						validator="#{views$secured$collaboration$removeconfirmation.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
@@ -52,8 +52,8 @@
 					
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" title="${msg.remove}" action="#{views$secured$collaboration$removeconfirmation.removeWorkspace}" styleClass="button_warning"/>
-					<h:commandButton value="${msg.cancel}" title="${msg.cancel_hint}" action="collaboration" styleClass="button_cancel" immediate="true"/>				
+					<t:commandButton id="remove" forceId="true" value="${msg.remove}" title="${msg.remove}" action="#{views$secured$collaboration$removeconfirmation.removeWorkspace}" styleClass="button_warning"/>
+					<t:commandButton id="cancel" forceId="true" value="${msg.cancel}" title="${msg.cancel_hint}" action="collaboration" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
 		</ui:define>

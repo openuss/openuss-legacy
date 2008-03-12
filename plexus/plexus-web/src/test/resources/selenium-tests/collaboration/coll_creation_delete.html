@@ -4,21 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost:8080/" />
-<title>coll_creation</title>
+<title>ws_create_delete</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">coll_creation</td></tr>
+<tr><td rowspan="1" colspan="3">ws_create_delete</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
 	<td>/plexus-web/views/welcome.faces</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Willkommen bei OpenUSS!</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,28 +32,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>MeineUni</td>
-	<td></td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1005</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>cmd_collaboration</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung - collab-Permanentes Angebot</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,8 +57,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>Veranstaltung - collab-Permanentes Angebot</td>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tbody[contains(@id, 'workspaces')]/tr[1]/td[2]/a[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>checkConfirmation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>remove</td>
 	<td></td>
 </tr>
 <tr>
@@ -92,18 +87,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTitle</td>
-	<td>OpenUSS Plexus</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>home</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTitle</td>
-	<td>Willkommen bei OpenUSS!</td>
 	<td></td>
 </tr>
 
