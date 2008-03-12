@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>_pre</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">_pre</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/plexus-web/views/welcome.faces</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Willkommen bei OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>MeineUni</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/plexus-web/views/public/institute/institute.faces?institute=15</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Institutionsseite - OpenUSS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cmd_inst_coursetype</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addCourseType</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Collaboration</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shortcut</td>
+	<td>collab</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>Test-Veranstaltung für Collaboration-Test</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>periodSelection</td>
+	<td>label=Permanentes Angebot</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveCourseType</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cmd_inst_courses</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPeriod</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>accessType</td>
+	<td>label=Geschlossen mit Kennwort</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>collaboration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Willkommen bei OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>register</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>checkAgree</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test@test.de</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>_id5:reg5Form:confirmPassword</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>firstName</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>lastName</td>
+	<td>Tester</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>address</td>
+	<td>Teststraße</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postcode</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>Testhausen</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[@id='_id5:_id7:_id8']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Welcome to OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>register</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>checkAgree</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>test2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test2@test.de</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>_id5:reg5Form:confirmPassword</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>firstName</td>
+	<td>Test2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>lastName</td>
+	<td>Tester</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>address</td>
+	<td>Teststraße</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postcode</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>Testhausen</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>continue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Welcome to OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>MeineUni</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>administration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Systemparameter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>adm_users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Systemparameter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>xpath=//tbody[contains(@id, 'users')]/tr[2]/td[5]/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>xpath=//tbody[contains(@id, 'users')]/tr[3]/td[5]/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Systemparameter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Willkommen bei OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>MyUni</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1005</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Course</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>course_password</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>apply</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Course</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/welcome.faces</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Welcome to OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Willkommen bei OpenUSS!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>test2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>MyUni</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1005</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Course</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>course_password</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>apply</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Course</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>OpenUSS Plexus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Willkommen bei OpenUSS!</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
