@@ -336,7 +336,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	protected void checkFreeName(String name) throws WebDAVResourceException {
 		if (hasChild(name)) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_CONFLICT, this, "Name \"" + name + "\" already mapped!");
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, this, "Name \"" + name + "\" already mapped!");
 		}
 	}
 		
@@ -545,7 +545,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @throws WebDAVResourceException If the specified size exceeds the limitations of this server.
 	 */
 	protected void checkFileSize(long size) throws WebDAVResourceException {
-		if (getContext().checkMaxFileSize(size)) {
+		if (! (getContext().checkMaxFileSize(size))) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_UNSUPPORTED_MEDIA_TYPE, this, "Maximum allowed file size is " + getContext().getMaxFileSize());
 		}
 	}

@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
-import org.openuss.documents.Folder;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
@@ -46,13 +45,14 @@ public class DocumentResource extends SimpleWebDAVResource {
 	
 	protected DocumentService documentService;
 	
-	protected DomainObject domainObj;
+	protected final DomainObject domainObj;
 	
-	protected FolderEntryInfo info;
+	protected final FolderEntryInfo info;
 	protected Collection<FolderEntryInfo> subEntriesCache = null;
 	
 	protected DocumentResource(WebDAVContext context, WebDAVPath path, DomainObject domainObj, FolderEntryInfo info) {
 		super(context, path);
+		this.domainObj = domainObj;
 		this.info = info;
 		
 		documentService = (DocumentService) getWAC().getBean(Constants.DOCUMENT_SERVICE, DocumentService.class);
@@ -104,45 +104,62 @@ public class DocumentResource extends SimpleWebDAVResource {
 		// The final input stream
 		InputStream is;
 		long len; // The size of the uploaded file
-		
-		// Write to temp file to correct bug in Hibernate.createBlob().
-		FileOutputStream fos;
-		try {
-			File tmpf = File.createTempFile("openuss", "webdav-documentresource");
-			
-			fos = new FileOutputStream(tmpf);
-			IOUtils.copyLarge(ioc.getInputStream(), fos);
-			fos.close();
-			
-			len = tmpf.length();
-			checkFileSize(len);
-			
-			is = new FileInputStream(tmpf);
-		} catch (IOException ioe) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
-		}
-		
-		// Construct fileInfo object
-		FileInfo newFileInfo = new FileInfo();
-		newFileInfo.setFileName(name);
-		newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
-		newFileInfo.setContentType(ioc.getContentType());
-		newFileInfo.setFileSize((int) len);
-		newFileInfo.setCreated(new Date());
-		newFileInfo.setModified(new Date());
-		newFileInfo.setInputStream(is);
-		
-		FolderInfo fi = folderEntryInfoToFolderInfo(info);
+		File tmpf = null;
+		WebDAVResource res;
 		
 		try {
-			documentService.createFileEntry(newFileInfo, fi);
-		} catch (DocumentApplicationException e) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
+			try {
+				// Write to temp file to correct bug in Hibernate.createBlob().
+				FileOutputStream fos;
+				
+				tmpf = File.createTempFile("openuss", "webdav-documentresource");
+				
+				fos = new FileOutputStream(tmpf);
+				IOUtils.copyLarge(ioc.getInputStream(), fos);
+				fos.close();
+				
+				len = tmpf.length();
+				checkFileSize(len);
+				
+				is = new FileInputStream(tmpf);
+			} catch (IOException ioe) {
+				throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
+			}
+			
+			// Construct fileInfo object
+			FileInfo newFileInfo = new FileInfo();
+			newFileInfo.setFileName(name);
+			newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
+			newFileInfo.setContentType(ioc.getContentType());
+			newFileInfo.setFileSize((int) len);
+			newFileInfo.setCreated(new Date());
+			newFileInfo.setModified(new Date());
+			newFileInfo.setInputStream(is);
+			
+			FolderInfo fi = folderEntryInfoToFolderInfo(info);
+			
+			try {
+				documentService.createFileEntry(newFileInfo, fi);
+			} catch (DocumentApplicationException e) {
+				throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
+			} finally {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// Catch silently
+				}
+			}
+			
+			subEntriesCache = null;
+			
+			res = getChild(name, getPath().concat(name).asResolved());
+		} finally {
+			if (tmpf != null) {
+				tmpf.delete();
+			}
 		}
 		
-		subEntriesCache = null;
-		
-		return getChild(name, getPath().concat(name).asResolved());
+		return res;
 	}
 
 	/* (non-Javadoc)
@@ -208,8 +225,12 @@ public class DocumentResource extends SimpleWebDAVResource {
 			}
 		}
 		
-		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETCONTENTLENGTH)) { 
-			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, String.valueOf(info.getFileSize()));
+		if ((!isCollection()) &&
+				((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_GETCONTENTLENGTH))) {
+			Integer fileSize = info.getFileSize();
+			String sizeStr = (fileSize != null) ? String.valueOf(fileSize) : null;
+			
+			resMap.put(WebDAVConstants.PROPERTY_GETCONTENTLENGTH, sizeStr);
 		}
 		if ((propNames == null) || propNames.contains(WebDAVConstants.PROPERTY_CREATIONDATE)) { 
 			resMap.put(WebDAVConstants.PROPERTY_CREATIONDATE, WebDAVUtils.dateToInternetString(info.getCreated()));
@@ -245,7 +266,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#isCollection()
 	 */
 	public boolean isCollection() {
-		return (info instanceof Folder);
+		return info.isFolder();
 	}
 
 	public boolean isReadable() {
@@ -275,7 +296,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 		
 		for (FolderEntryInfo fei : getSubEntries()) {
 			if (name.equals(getNameByFolderEntryInfo(fei))) {
-				return new DocumentResource(getContext(), path, domainObj, info);
+				return new DocumentResource(getContext(), path, domainObj, fei);
 			}
 		}
 			
@@ -369,6 +390,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 		
 		res.setCreated(fi.getCreated());
 		res.setDescription(fi.getDescription());
+		res.setFolder(true);
 		res.setId(fi.getId());
 		res.setModified(fi.getModified());
 		res.setName(fi.getName());

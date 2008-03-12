@@ -1,5 +1,6 @@
 package org.openuss.webdav;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.web.context.WebApplicationContext;
  * For use in WebDAVResources.
  */
 public class WebDAVContext {
+	Logger logger = Logger.getLogger(WebDAVContext.class);
 	/**
 	 * Special value of maxFileSize that allows every file size.
 	 */
@@ -40,6 +42,7 @@ public class WebDAVContext {
 	 * @return true iff uploading a file of size size is allowed.
 	 */
 	public boolean checkMaxFileSize(long size) {
+		logger.error("return true; " + size + " <= " + maxFileSize);
 		if (maxFileSize == NO_MAX_FILESIZE) {
 			return true;
 		}
@@ -47,6 +50,12 @@ public class WebDAVContext {
 			return true;
 		}
 		
-		return size <= maxFileSize;
+		if (size <= maxFileSize) {
+			logger.error("return true; " + size + " <= " + maxFileSize);
+			return true;
+		} else {
+			logger.error("return false;! " + size + " <= " + maxFileSize);
+			return false;
+		}
 	}
 }

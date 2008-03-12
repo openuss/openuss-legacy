@@ -130,14 +130,11 @@ public class WebDAVServlet extends HttpServlet {
 					
 					throw e;
 				}
-				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				String newFilename = path.asResolved().getFileName();
 				if (parentResource.hasChild(newFilename)){
-					if (!overwrite){
-						answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
-						printResponse(response, answer);
-						break;
-					}
+					answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
+					printResponse(response, answer);
+					break;
 				}
 				parentResource.createCollection(newFilename);
 				
