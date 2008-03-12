@@ -248,5 +248,8 @@
 	<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/openuss/framework/wtp-facelets-hack/3.0-SNAPSHOT/wtp-facelets-hack-3.0-SNAPSHOT.jar">
 		<dependency-type>uses</dependency-type>
 	</dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/openuss/framework/framework-webdav/3.0-SNAPSHOT/framework-webdav-3.0-SNAPSHOT.jar">
+		<dependency-type>uses</dependency-type>
+	</dependent-module>
     </wb-module>
 </project-modules>
