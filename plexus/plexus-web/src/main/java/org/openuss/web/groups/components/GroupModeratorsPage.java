@@ -147,7 +147,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 	}
 
 	public boolean isAspirants() {
-		return !(groupService.getAspirants(groupInfo).size() == 0);
+		return (groupService.getAspirants(groupInfo).size() == 0);
 	}
 
 	public void resetCachedData() {

@@ -64,39 +64,50 @@
 					<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
 					<h:outputText value="#{moderator.lastName}" />
 				</t:column>
-
 				<t:column>
+
 					<f:facet name="header">
 						<h:outputText value="#{msg['group_moderator_status']}" />
 					</f:facet>
-					<h:selectBooleanCheckbox value="#{moderator.moderator}"
-						valueChangeListener="#{views$secured$groups$components$groupmoderators.changedUserInfo}"
-						rendered="#{!moderator.creator}" />
-				</t:column>
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+						<h:selectBooleanCheckbox value="#{moderator.moderator}"
+							valueChangeListener="#{views$secured$groups$components$groupmoderators.changedUserInfo}"
+							rendered="#{!moderator.creator}" />
+					</s:acl>
+					<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.CRUD}">
+						<h:selectBooleanCheckbox value="#{moderator.moderator}"
+							disabled="true" />
+					</s:acl>
 
-				<plexus:column header="#{msg.commands_header}">
-					<plexus:command
-						bean="#{views$secured$groups$components$groupmoderators}"
-						action="removeMember" label="#{msg['openuss4us_group_remove']}"
-						title="#{msg['openuss4us_group_remove_hint']}"
-						styleClass="icon_remove" rendered="#{!moderator.creator}" />
-				</plexus:column>
+				</t:column>
+				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+					<plexus:column header="#{msg.commands_header}">
+						<plexus:command
+							bean="#{views$secured$groups$components$groupmoderators}"
+							action="removeMember" label="#{msg['openuss4us_group_remove']}"
+							title="#{msg['openuss4us_group_remove_hint']}"
+							styleClass="icon_remove" rendered="#{!moderator.creator}" />
+					</plexus:column>
+				</s:acl>
 
 			</plexus:dataTable>
+			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+				<o:block>
+					<h:commandButton value="#{msg.save}"
+						action="#{views$secured$groups$components$groupmoderators.save}"
+						styleClass="button" />
 
-			<o:block>
-				<h:commandButton value="#{msg.save}"
-					action="#{views$secured$groups$components$groupmoderators.save}"
-					styleClass="button" />
+					<h:commandButton value="#{msg.back}" action="view:backward"
+						styleClass="button_back" immediate="true" />
+				</o:block>
+			</s:acl>
+			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+				<c:if
+					test="#{not views$secured$groups$components$groupmoderators.aspirants}">
+					<ui:include src="groupaspiranttable.xhtml" />
+				</c:if>
+			</s:acl>
 
-				<h:commandButton value="#{msg.back}" action="view:backward"
-					styleClass="button_back" immediate="true" />
-			</o:block>
-
-			<c:if
-				test="#{views$secured$groups$components$groupmoderators.aspirants}">
-				<ui:include src="groupaspiranttable.xhtml" />
-			</c:if>
 
 		</h:form>
 	</ui:define>

@@ -52,15 +52,8 @@
 						rendered="#{groupInfo.calendar}">
 						<h:outputText value="#{msg['course_command_calendar']}" />
 					</t:commandNavigation2>
-					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
-						<t:commandNavigation2 action="group_options_moderators"
-							activeOnViewIds="/views/secured/groups/components/groupmoderators.xhtml">
-							<h:outputText
-								value="#{msg['openuss4us_group_command_options_moderators']}" />
-						</t:commandNavigation2>
-					</s:acl>
-					<t:commandNavigation2 action="group_options_members"
-						activeOnViewIds="/views/secured/groups/components/groupmembers.xhtml">
+					<t:commandNavigation2 action="group_options_moderators"
+						activeOnViewIds="/views/secured/groups/components/groupmoderators.xhtml">
 						<h:outputText
 							value="#{msg['openuss4us_group_command_options_participants']}" />
 					</t:commandNavigation2>

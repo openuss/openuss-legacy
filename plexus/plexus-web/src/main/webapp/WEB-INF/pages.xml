@@ -142,22 +142,12 @@
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
-	<page view-id="/views/secured/groups/components/groupmoderators*">
-		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.CRUD}"/>
-		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
 	<page view-id="/views/secured/groups/components/calendar*">
 		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 	
 	<page view-id="/views/secured/groups/components/chatmain*">
-		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
-		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
-	</page>
-	
-	<page view-id="/views/secured/groups/components/fslinstall*">
 		<securityConstraint domainObject="#{groupInfo}" permissions="#{ACL.READ}"/>
 		<parameter name="group" value="#{groupInfo.id}" converterId="javax.faces.Long"/>
 	</page>
