@@ -191,7 +191,7 @@ public class SeminarRegistrationController extends BasePage {
 			}
 			removeSessionBean(Constants.SEMINARPOOL_COURSE_SEMINARPOOL_ALLOCATION_INFO);
 			removeSessionBean(Constants.SEMINARPOOL_COURSE_GROUPS_COLLECTION);
-			addMessage(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_SEMINAR);			
+			addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_SEMINAR));			
 			return Constants.SEMINARPOOL_COURSE_ALLOCATION_FINISH;
 		}	
 	}
