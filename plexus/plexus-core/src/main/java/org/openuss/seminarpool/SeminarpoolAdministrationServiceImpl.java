@@ -284,36 +284,6 @@ public class SeminarpoolAdministrationServiceImpl extends
 	}
 
 	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#findSeminarpoolsByDepartment(java.lang.Long)
-	 */
-	protected java.util.List handleFindSeminarpoolsByDepartment(
-			java.lang.Long departmentId) throws java.lang.Exception {
-		// @todo implement protected java.util.List
-		// handleFindSeminarpoolsByDepartment(java.lang.Long departmentId)
-		return null;
-	}
-
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#findSeminarpoolsByInstitute(java.lang.Long)
-	 */
-	protected java.util.List handleFindSeminarpoolsByInstitute(
-			java.lang.Long instituteId) throws java.lang.Exception {
-		// @todo implement protected java.util.List
-		// handleFindSeminarpoolsByInstitute(java.lang.Long instituteId)
-		return null;
-	}
-
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#findSeminarpoolByDescription(java.lang.String)
-	 */
-	protected java.util.List handleFindSeminarpoolByDescription(
-			java.lang.String description) throws java.lang.Exception {
-		// @todo implement protected java.util.List
-		// handleFindSeminarpoolByDescription(java.lang.String description)
-		return null;
-	}
-
-	/**
 	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#findCoursesInSeminarpool(java.lang.Long)
 	 */
 	protected java.util.List handleFindCoursesInSeminarpool(
@@ -775,58 +745,6 @@ public class SeminarpoolAdministrationServiceImpl extends
 		return conflict;
 	}
 
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#moveUser(java.lang.Long,
-	 *      java.lang.Long, java.lang.Long, java.lang.Long)
-	 */
-	protected void handleMoveUser(java.lang.Long seminarpoolId,
-			java.lang.Long userId, java.lang.Long oldCourseId,
-			java.lang.Long newCourseId) throws java.lang.Exception {
-		// @todo implement protected void handleMoveUser(java.lang.Long
-		// seminarpoolId, java.lang.Long userId, java.lang.Long oldCourseId,
-		// java.lang.Long newCourseId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.seminarpool.SeminarpoolAdministrationService.handleMoveUser(java.lang.Long seminarpoolId, java.lang.Long userId, java.lang.Long oldCourseId, java.lang.Long newCourseId) Not implemented!");
-	}
-
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#addUserToAllocation(java.lang.Long,
-	 *      java.lang.Long, java.lang.Long)
-	 */
-	protected void handleAddUserToAllocation(java.lang.Long seminarpoolId,
-			java.lang.Long userId, java.lang.Long courseId)
-			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleAddUserToAllocation(java.lang.Long seminarpoolId,
-		// java.lang.Long userId, java.lang.Long courseId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.seminarpool.SeminarpoolAdministrationService.handleAddUserToAllocation(java.lang.Long seminarpoolId, java.lang.Long userId, java.lang.Long courseId) Not implemented!");
-	}
-
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#removeUserFromAllocation(java.lang.Long,
-	 *      java.lang.Long, java.lang.Long)
-	 */
-	protected void handleRemoveUserFromAllocation(java.lang.Long seminarpoolId,
-			java.lang.Long userId, java.lang.Long courseId)
-			throws java.lang.Exception {
-		// @todo implement protected void
-		// handleRemoveUserFromAllocation(java.lang.Long seminarpoolId,
-		// java.lang.Long userId, java.lang.Long courseId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.seminarpool.SeminarpoolAdministrationService.handleRemoveUserFromAllocation(java.lang.Long seminarpoolId, java.lang.Long userId, java.lang.Long courseId) Not implemented!");
-	}
-
-	/**
-	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#confirmAllocation(java.lang.Long)
-	 */
-	protected void handleConfirmAllocation(java.lang.Long seminarpoolId)
-			throws java.lang.Exception {
-		// @todo implement protected void handleConfirmAllocation(java.lang.Long
-		// seminarpoolId)
-		throw new java.lang.UnsupportedOperationException(
-				"org.openuss.seminarpool.SeminarpoolAdministrationService.handleConfirmAllocation(java.lang.Long seminarpoolId) Not implemented!");
-	}
 
 	@Override
 	protected Long handleAddConditionToSeminarpool(
@@ -1131,21 +1049,13 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected void handleRemoveSeminarPriorityById(Long priorityId)
 			throws Exception {
-		Validate
-				.notNull(priorityId,
-						"handleRemoveSeminarPriorityById ==> priorityId cannot be null");
-		SeminarPriority priorityEntity = getSeminarPriorityDao().load(
-				priorityId);
-		SeminarUserRegistration userRegistrationEntity = priorityEntity
-				.getSeminarUserRegistration();
-		userRegistrationEntity.removePriority(priorityEntity);
-		if (userRegistrationEntity.getSeminarPriority().size() == 0) {
-			userRegistrationEntity.getSeminarpool().removeRegistration(
-					userRegistrationEntity);
-			for (SeminarUserConditionValue conditionValue : userRegistrationEntity
-					.getSeminarUserConditionValue()) {
-				userRegistrationEntity.removeUserCondition(conditionValue);
-			}
+		Validate.notNull(priorityId,"handleRemoveSeminarPriorityById ==> priorityId cannot be null");
+		SeminarPriority priorityEntity = getSeminarPriorityDao().load(priorityId);
+		SeminarUserRegistration userRegistrationEntity = priorityEntity.getSeminarUserRegistration();
+		if (userRegistrationEntity.getSeminarPriority().size() > 1) {
+			userRegistrationEntity.removePriority(priorityEntity);
+		} else {
+			getSeminarpoolUserRegistrationService().removeUserRegistration(priorityEntity.getSeminarUserRegistration().getId());
 		}
 	}
 
@@ -1239,5 +1149,53 @@ public class SeminarpoolAdministrationServiceImpl extends
 			}
 		}
 		return courseAllocationList;
+	}
+
+	@Override
+	protected void handleAddUserToAllocation(Long userId, Long courseGroupId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleConfirmAllocation(Long seminarpoolId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected List handleFindSeminarpoolByDescription(String description)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindSeminarpoolsByDepartment(Long departmentId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List handleFindSeminarpoolsByInstitute(Long instituteId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void handleMoveUser(Long seminarpoolId, Long userId,
+			Long oldCourseId, Long newCourseId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleRemoveUserFromAllocation(Long userId,
+			Long courseGroupId) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }
