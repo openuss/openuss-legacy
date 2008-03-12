@@ -569,8 +569,8 @@ public class CalendarServiceImpl extends
 				calInfo.setCalendarOwnerName(course.getName() + " (" + course.getShortcut() +")");
 			}
 			if (calIt.getCalendarType().equals(CalendarType.group_calendar)){
-				UserGroupInfo group = getGroupService().getGroupInfo(calIt.getDomainIdentifier());
-				calInfo.setCalendarOwnerName(group.getName() +" (" + group.getShortcut()+")");
+//				UserGroupInfo group = getGroupService().getGroupInfo(calIt.getDomainIdentifier());
+//				calInfo.setCalendarOwnerName(group.getName() +" (" + group.getShortcut()+")");
 			}
 			//this should never happen, a user should currently not be able to subscribe to another users calendar.
 			if (calIt.getCalendarType().equals(CalendarType.user_calendar)){

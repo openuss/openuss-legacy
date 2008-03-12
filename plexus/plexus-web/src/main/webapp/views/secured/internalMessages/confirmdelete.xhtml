@@ -36,6 +36,16 @@
   		</ui:define>
   		<ui:define name="content">
 		<h:form id="read_internal_message" enctype="multipart/form-data">
+			
+			<o:block
+				label="#{msg.warning_attention}"
+				styleClass="warning_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_messagecenter_deletemessage}" styleClass="warning" /> <br />
+				</p>
+				
+			</o:block>
+			
 			<o:block label="#{msg.openuss4us_messagecenter_readmessage}">
 				<div class="content_font_normal">
 				<h:outputText
@@ -54,21 +64,17 @@
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
 					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" /><br/><br/>
 				</t:dataList>
-<o:block label="#{internalMessageInfo.subject}">
-<div class="content_font_normal">
+				
+
+				
+			<o:block label="#{internalMessageInfo.subject}">
+				<div class="content_font_normal">
 				<h:outputText
 					value="#{internalMessageInfo.content}"
 					styleClass="content_font_normal" escape="false" /></div></o:block></div>
 			</o:block>
 			
-			<o:block
-				label="#{msg.warning_attention}"
-				styleClass="warning_box">
-				<p class="content_font_normal"><h:outputText
-					value="#{msg.openuss4us_messagecenter_deletemessage}" styleClass="warning" /> <br />
-				</p>
-				
-			</o:block>
+
 			
 			
 			<o:block>

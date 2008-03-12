@@ -34,7 +34,8 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 	private static final Logger logger = Logger
 			.getLogger(SubscribedCalendarPage.class);
 	private static final String calendarBasePath = "/views/secured/calendar/calendar.faces";
-
+	private static final String subscribedCalendarsPath = "/views/secured/calendar/subscribedcalendars.faces";
+	
 	// Data-Provider serial appointments
 	private SubscribedCalendarsDataProvider data = new SubscribedCalendarsDataProvider();
 
@@ -68,11 +69,11 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		// TODO correct breadcrumbs
+		breadcrumbs.loadOpenuss4usCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath() + calendarBasePath);
-		newCrumb.setName(i18n("openuss4us_command_groups"));
-		newCrumb.setHint(i18n("openuss4us_command_groups"));
+		newCrumb.setName(i18n("openuss4us_command_calendar"));
+		newCrumb.setHint(i18n("openuss4us_command_calendar"));
 		breadcrumbs.addCrumb(newCrumb);
 	}
 
