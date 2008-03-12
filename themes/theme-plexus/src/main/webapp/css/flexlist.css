@@ -27,7 +27,7 @@
 
 .flexList .flexListItems {
 	margin: 0px;
-
+	padding: 0px;
 }
 
 .flexListItems li {
@@ -66,7 +66,8 @@
 
 .flexListItemRight {
 	float:right;
-	padding-right: 10px;
+	height:16px;
+	padding-right: 10px;	
 }
 
 .flexListItemLeft {
@@ -77,102 +78,94 @@
 	color: #5DBF00;
 }
 
-.flexListItemRight a .remove_bookmark {
-	background-image: url(../img/delete_button.png);
-	background-repeat: no-repeat;
-	padding: 0px 14px 3px 0px;
-}
-
-.flexListItemRight a:hover .remove_bookmark {
-	background-image: url(../img/delete_button_over.png);
-}
-
 .flexListItemRight a {
 	text-decoration: none !important;
 }
 
-.remove_bookmark .remove_bookmark_hidden {
-	display:none !important;	
+/* Specific rules for department, institute and course flexlist */
+.flexListDepartments .header {
+	background:url(/theme-plexus/img/department_small_flexlist.png) #5493d4 no-repeat center right;	
 }
-.flexListItemRight a .newsletter_subscribed {
-	background-image: url(../img/newsletter_subscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
+.flexListInstitutions .header {
+	background:url(/theme-plexus/img/institution_small_flexlist.png) #5493d4 no-repeat center right;	
 }
-.flexListItemRight a:hover .newsletter_subscribed {
-	background-image: url(../img/newsletter_unsubscribe.png);
+.flexListCourses .header {
+	background:url(/theme-plexus/img/course_small_flexlist.png) #5493d4 no-repeat center right;	
 }
-.flexListItemRight a .newsletter_notSubscribed {
-	background-image: url(../img/newsletter_notSubscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
-.flexListItemRight a:hover .newsletter_notSubscribed {
-	background-image: url(../img/newsletter_subscribe.png);
-}
-.flexListItemRight .newsletter_none {
-	background-image: url(../img/newsletter_none.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
-.flexListItemRight a .forum_subscribed {
-	background-image: url(../img/forum_subscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
-.flexListItemRight a:hover .forum_subscribed {
-	background-image: url(../img/forum_unsubscribe.png);
-}
-.flexListItemRight a .forum_notSubscribed {
-	background-image: url(../img/forum_notSubscribed.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
-.flexListItemRight a:hover .forum_notSubscribed {
-	background-image: url(../img/forum_subscribe.png);
-}
-.flexListItemRight .forum_none {
-	background-image: url(../img/forum_none.png);
-	background-repeat: no-repeat;
-	padding: 0px 5px 3px 0px;
-}
+
+
 /* Tabs CSS */
 
 #flexlist_tabs {}
 
 #flexlist_tabs .header_normal {
   padding: 0;
+  
   height: 28px;
-  background-image: url(../img/headline_grey_bg.jpg);
+  background-image: url(../img/headline_small_bg.jpg);
   background-repeat: repeat-x;
+  background-position: bottom;
 }
 
 #flexlist_tabs .header_normal_right_bg {
   float: right;
   width: 9px;
   height: 28px;
-  background-image: url(../img/headline_grey_right_bg.jpg) !important;
+  background-image: url(../img/headline_right_small_bg.jpg);
   background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 #flexlist_tabs .tabs {
 	float:left; 
 	font-size: 13px; 
-	margin-top: 1px;
 }
 
 .tabs #tab_selected {
 	font-size: 13px !important; 
 	float:left;  
-	height: 27px; 
+	height: 28px; 
 	background-color: white;
+	background-image: url(../img/headline_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	border-bottom:1px solid white;
+	padding-left:9px;
+	
+	
+}
+
+.tabs .tab_selected_right {
+	float:left;
+	background-image: url(../img/headline_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;
+	border-bottom:1px solid white;
+
 }
 
 .tabs .tab_deselected {
 	font-size: 13px !important; 
-	float:left; 
+	float:left;  
 	height: 27px; 
 	background-color: #F4F4F4;
+	background-image: url(../img/headline_grey_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	padding-left:9px;
+	cursor: pointer;
+	
+}
+
+.tabs .tab_deselected_right {
+	float:left;
+	background-image: url(../img/headline_grey_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;	
 }
 
 .tabs .tab_arrow_sel_right {
@@ -183,7 +176,11 @@
 }
 
 .tabs .tab_content {
-	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid #aeaeae;
+
+	height: 27px; 
+	
 }
 
 .tabs .tab_arrow {
