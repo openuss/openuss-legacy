@@ -1,8 +1,6 @@
 package org.openuss.web.security;
 
 import java.io.IOException;
-import java.security.ProviderException;
-import java.util.Random;
 
 import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.acegisecurity.AccountExpiredException;
 import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.CredentialsExpiredException;
@@ -21,7 +18,6 @@ import org.acegisecurity.LockedException;
 import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.ProviderNotFoundException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.WebAuthenticationDetails;
@@ -43,7 +39,6 @@ import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
-import org.openuss.security.UserContact;
 import org.openuss.security.UserImpl;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -103,8 +98,8 @@ public class AuthenticationController extends BasePage {
 		final HttpServletResponse response = getResponse();
 		final HttpSession session = getSession();
 		
-		// Important! Ensure that users cannot login using a username of a user profile of a centrally authenticated user. Therefore replace all delimiters.
-		username = username.replaceAll("\\"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"+","");
+		// Delete domain information from username, so that users can enter domain information during login 
+		username = username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
 
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
 
@@ -331,7 +326,7 @@ public class AuthenticationController extends BasePage {
 			centralUserData.setAuthenticationDomainId((Long) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get());
 			centralUserData.setAuthenticationDomainName((String) userDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY).get());
 			centralUserData.setUsername((String) userDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
-			centralUserData.setUsername(SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getAuthenticationDomainName()+SecurityConstants.USERNAME_DOMAIN_DELIMITER+centralUserData.getUsername());
+			centralUserData.setUsername(AuthenticationUtils.generateCentralUserLoginName(centralUserData.getAuthenticationDomainName(), centralUserData.getUsername()));
 			centralUserData.setFirstName((String) userDetails.getAttributes().get(AttributeMappingKeys.FIRSTNAME_KEY).get());
 			centralUserData.setLastName((String) userDetails.getAttributes().get(AttributeMappingKeys.LASTNAME_KEY).get());
 			centralUserData.setEmail((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());

@@ -27,6 +27,7 @@ import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.Roles;
+import org.openuss.security.SecurityConstants;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.beans.factory.InitializingBean;
@@ -111,7 +112,14 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (ldapAuthenticationProviders.size()==0)
 			throw new ProviderNotFoundException(messages.getMessage("ProviderManager.providerNotFound", "No LDAP authentication provider found.")); 
-
+		
+		//Delete domain information from username
+		String username = (String) authentication.getPrincipal();			
+		username = username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
+		UsernamePasswordAuthenticationToken modifiedAuthentication = new UsernamePasswordAuthenticationToken(username,authentication.getCredentials());
+		modifiedAuthentication.setDetails(authentication.getDetails());
+		authentication = modifiedAuthentication;
+		
 		Authentication authResponse = authenticationManager.authenticate(authentication);
 		
 		// Authentication successful

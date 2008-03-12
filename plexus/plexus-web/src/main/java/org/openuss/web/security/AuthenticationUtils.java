@@ -7,6 +7,7 @@ import org.acegisecurity.DisabledException;
 import org.acegisecurity.LockedException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
+import org.openuss.security.SecurityConstants;
 import org.openuss.security.User;
 
 public class AuthenticationUtils {
@@ -18,7 +19,11 @@ public class AuthenticationUtils {
 		if (user.isAccountExpired()) throw new AccountExpiredException("authentication_error_account_expired");		
 	}
 	
-
+	public static String generateCentralUserLoginName(String authenticationDomainName, String username) {
+		return SecurityConstants.USERNAME_DOMAIN_DELIMITER+SecurityConstants.USERNAME_DOMAIN_DELIMITER+authenticationDomainName+SecurityConstants.USERNAME_DOMAIN_DELIMITER+username;
+	}
+	
+	
 	/**
      * From Acegi-Framework:  
      * Creates a successful <code>Authentication</code> object.<p>Protected so subclasses can override.</p>

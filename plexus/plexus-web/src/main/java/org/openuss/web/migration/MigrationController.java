@@ -21,6 +21,8 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.AuthenticationProvider;
 import org.acegisecurity.providers.ProviderManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.dao.salt.ReflectionSaltSource;
+import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.WebAuthenticationDetails;
 import org.acegisecurity.ui.rememberme.RememberMeServices;
@@ -80,6 +82,12 @@ public class MigrationController extends BasePage {
 	@Property(value="#{migrationUtility}")
 	transient private MigrationUtility migrationUtility;
 
+	@Property(value="#{saltSource}")
+	transient private ReflectionSaltSource saltSource;
+
+	@Property(value="#{passwordEncoder}")
+	transient private Md5PasswordEncoder passwordEncoder;
+	
 	
 	Authentication oldCentralAuthentication;
 	
@@ -103,18 +111,15 @@ public class MigrationController extends BasePage {
 		 * 2. If no exception occurs, migrate user.
 		 * 3. Handle "local user"
 		 */		
-		
-		// Save central authentication object from SecurityContext, so that user can repeatedly try to enter a valid local login.
-		oldCentralAuthentication = SecurityContextHolder.getContext().getAuthentication();
-		
+				
 		// Try to login user
 		final HttpServletRequest request = getRequest();
 		final HttpServletResponse response = getResponse();
 		final HttpSession session = getSession();
 		
-		// Important! Ensure that users cannot login using a username of a user profile of a centrally authenticated user. Therefore replace all delimiters.
-		username = username.replaceAll("\\"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"+","");
-
+		// Delete domain information from username, if user had entered domain information during login 
+		username = username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
+		
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
 
 		authRequest.setDetails(new WebAuthenticationDetails(request));
@@ -157,8 +162,26 @@ public class MigrationController extends BasePage {
 					    * So we commented the following lines out, although they will work. Instead we revoke central authentication and redirect to activation request page.
 					    */
 					   
-					   /*
+					   
 					   User user = securityService.getUserByName(username);
+					   UserImpl principal = (UserImpl) user;
+					   UserDetails userDetails = principal;
+					   
+					   String presentedPassword = authRequest.getCredentials() == null ? "" : authRequest.getCredentials().toString();
+
+						if (passwordEncoder.isPasswordValid(userDetails.getPassword(), presentedPassword, saltSource.getSalt(userDetails))) {
+							//migrate user
+						}
+						else {
+							exceptionMessage = i18n("authentication_error_password_mismatch");
+						}
+					   
+					   
+					   
+					   
+					   
+					   
+					   /*
 					   user.setEnabled(true);
 					   UserImpl principal = (UserImpl) user;
 					   UserDetails userDetails = principal;
@@ -175,13 +198,15 @@ public class MigrationController extends BasePage {
 						   // setup user and userPreferences
 						   injectUserInformationIntoSession(auth);
 						   sessionTracker.logSessionCreated(getSession());
-						}
-						*/
+						}*/
+						
+						/*
 						final SecurityContext securityContext = SecurityContextHolder.getContext();
 						securityContext.setAuthentication(null);
 						exceptionMessage = i18n("authentication_error_account_disabled");
 						addError(exceptionMessage);
 						return Constants.USER_ACTIVATION_REQUEST_PAGE;
+						*/
 
 			} else if (ex instanceof LockedException) {
 				exceptionMessage = i18n("authentication_error_account_locked");
@@ -329,5 +354,17 @@ public class MigrationController extends BasePage {
 	}
 	public void setSessionTracker(OnlineSessionTracker sessionTracker) {
 		this.sessionTracker = sessionTracker;
+	}
+	public ReflectionSaltSource getSaltSource() {
+		return saltSource;
+	}
+	public void setSaltSource(ReflectionSaltSource saltSource) {
+		this.saltSource = saltSource;
+	}
+	public Md5PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+	public void setPasswordEncoder(Md5PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 	}	
 }

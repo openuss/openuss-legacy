@@ -44,7 +44,7 @@ public class PlexusBasicProcessingFilter extends ExtendedBasicProcessingFilter {
 			try {
 				String authenticationDomainName = ((String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY).get());
 				username = ((String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
-				username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+authenticationDomainName+SecurityConstants.USERNAME_DOMAIN_DELIMITER+username;				
+				username = AuthenticationUtils.generateCentralUserLoginName(authenticationDomainName, username);				
 			} catch (NamingException ne) {
 			    // do nothing
 			}

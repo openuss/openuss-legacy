@@ -22,6 +22,7 @@ import org.acegisecurity.providers.dao.cache.NullUserCache;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.Roles;
+import org.openuss.security.SecurityConstants;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.context.MessageSource;
@@ -299,7 +300,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 
 	//~ Tests for Active Directory Configuration ================================================================================================	
 
-	public void testSuccessfulAuthenticationViaActiveDirectoryServer() {
+	public void testSuccessfulAuthenticationViaActiveDirectoryServerWithoutDomainInformationWithinUsername() {
 		
 		// Provide valid username and password!
 		String username="";
@@ -379,6 +380,91 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		verify(ldapConfigurationService);
 	}
 
+	public void testSuccessfulAuthenticationViaActiveDirectoryServerWithDomainInformationWithinUsername() {
+		
+		// Provide valid username and password!
+		String username="";
+		String password="";
+		if ("".equals(username) || "".equals(password))
+			return;
+			   
+		String defaultRolePrefix="ROLE_";
+		
+		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
+		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
+		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
+		ldapServerConfiguration.setAuthenticationType("DIGEST-MD5");
+		ldapServerConfiguration.setEmailKey("mail");
+		ldapServerConfiguration.setFirstNameKey("givenName");
+		ldapServerConfiguration.setLastNameKey("sn");
+		ldapServerConfiguration.setLdapServerType(LdapServerType.ACTIVE_DIRECTORY);
+		ldapServerConfiguration.setPort(389);
+		ldapServerConfiguration.setProviderUrl("ldap://wwusv1.uni-muenster.de");
+		ldapServerConfiguration.setRoleAttributeKeys(new String[]{"memberOf"});
+		ldapServerConfiguration.setRootDn("dc=uni-muenster,dc=de");
+		ldapServerConfiguration.setUseConnectionPool(false);
+		ldapServerConfiguration.setUseLdapContext(true);
+		ldapServerConfiguration.setUserDnPatterns(new String[]{"cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de"});
+		ldapServerConfiguration.setUsernameKey("cn");
+		
+		ldapServerConfigurations.add(ldapServerConfiguration);
+		
+		String modifiedUsername = SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+				   				  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+				   				  ldapServerConfiguration.getAuthenticationDomainName()+
+				   				  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+				   				  username;
+		
+		LdapConfigurationService ldapConfigurationService = createStrictMock(LdapConfigurationService.class);
+		expect(ldapConfigurationService.getEnabledLdapServerConfigurations()).andReturn(ldapServerConfigurations);
+		replay(ldapConfigurationService);
+		
+		MessageSource messageSource = new StaticMessageSource();
+		UserCache userCache = new NullUserCache();
+		
+		ConfigurableLdapAuthenticationProviderImpl ldapAuthenticationProvider = new ConfigurableLdapAuthenticationProviderImpl();
+		
+		// Initialize provider since it implements InitializingBean interface
+		ldapAuthenticationProvider.setLdapConfigurationService(ldapConfigurationService);
+		ldapAuthenticationProvider.setMessageSource(messageSource);
+		ldapAuthenticationProvider.setUserCache(userCache);
+		try {
+			ldapAuthenticationProvider.afterPropertiesSet();
+		} catch (Exception e) {
+			fail();
+		}
+		
+		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);		
+		Authentication authRequest = new UsernamePasswordAuthenticationToken(modifiedUsername,password);
+		// Test
+		Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+		
+		LdapUserDetails ldapUserDetails = (LdapUserDetails) authResponse.getPrincipal();
+		
+		// Check defaultRole assignment
+		boolean defaultRoleContained = false;
+		for (GrantedAuthority grantedAuthority : ldapUserDetails.getAuthorities()) {
+			if (grantedAuthority.getAuthority().equals(defaultRolePrefix+Roles.LDAPUSER_NAME))
+				defaultRoleContained = true;
+		}
+		
+		String retrievedUsername = "";
+		Long retrievedAuthenticationDomainId=0L;
+		
+		try {
+			retrievedUsername = (String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get();
+			retrievedAuthenticationDomainId= (Long) ldapUserDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get();
+		} catch (NamingException e) {
+			fail();
+		}
+		
+		// Check domainid and username
+		
+		if (!retrievedUsername.equals(username) || !retrievedAuthenticationDomainId.equals(ldapServerConfiguration.getAuthenticationDomainId()) || !defaultRoleContained)
+			fail();
+		verify(ldapConfigurationService);
+	}	
 	public void testAuthenticationViaActiveDirectoryServerWithBadCredentials() {
 	
 		// Provide arbitrary username and password!
@@ -498,7 +584,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 	
 	//~ Tests for Non-Active Directory Configuration ================================================================================================	
 	
-	public void testSuccessfulAuthenticationViaNonActiveDirectoryServer() {
+	public void testSuccessfulAuthenticationViaNonActiveDirectoryServerWithoutDomainNameWithinUsername() {
 		
 		// Provide valid username and password!
 		String username="defaultuser";
@@ -577,6 +663,92 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 			fail();
 		verify(ldapConfigurationService);
 	}
+	
+	public void testSuccessfulAuthenticationViaNonActiveDirectoryServerWithDomainNameWithinUsername() {
+		
+		// Provide valid username and password!
+		String username="defaultuser";
+		String password="masterkey";
+		if ("".equals(username) || "".equals(password))
+			return;
+		
+		String defaultRolePrefix="ROLE_";
+		List<LdapServerConfiguration> ldapServerConfigurations = new Vector<LdapServerConfiguration>();
+		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
+		ldapServerConfiguration.setAuthenticationDomainId(42L);
+		ldapServerConfiguration.setAuthenticationDomainName("exampledomain");
+		ldapServerConfiguration.setAuthenticationType("SIMPLE");
+		ldapServerConfiguration.setEmailKey("mail");
+		ldapServerConfiguration.setFirstNameKey("givenName");
+		ldapServerConfiguration.setLastNameKey("sn");
+		ldapServerConfiguration.setLdapServerType(LdapServerType.OTHER);
+		ldapServerConfiguration.setPort(10389);
+		ldapServerConfiguration.setProviderUrl("ldap://localhost");
+		ldapServerConfiguration.setRoleAttributeKeys(new String[]{"memberOf"});
+		ldapServerConfiguration.setRootDn("dc=example,dc=com");
+		ldapServerConfiguration.setUseConnectionPool(false);
+		ldapServerConfiguration.setUseLdapContext(true);
+		ldapServerConfiguration.setUserDnPatterns(new String[]{"uid={0},ou=myunit"});
+		ldapServerConfiguration.setUsernameKey("uid");
+		
+		ldapServerConfigurations.add(ldapServerConfiguration);
+		
+		String modifiedUsername = SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+		   						  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+		   						  ldapServerConfiguration.getAuthenticationDomainName()+
+		   						  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
+		   						  username;
+		
+		LdapConfigurationService ldapConfigurationService = createStrictMock(LdapConfigurationService.class);
+		expect(ldapConfigurationService.getEnabledLdapServerConfigurations()).andReturn(ldapServerConfigurations);
+		replay(ldapConfigurationService);
+		
+		MessageSource messageSource = new StaticMessageSource();
+		UserCache userCache = new NullUserCache();
+		
+		ConfigurableLdapAuthenticationProviderImpl ldapAuthenticationProvider = new ConfigurableLdapAuthenticationProviderImpl();
+		
+		// Initialize provider since it implements InitializingBean interface
+		ldapAuthenticationProvider.setLdapConfigurationService(ldapConfigurationService);
+		ldapAuthenticationProvider.setMessageSource(messageSource);
+		ldapAuthenticationProvider.setUserCache(userCache);
+		try {
+			ldapAuthenticationProvider.afterPropertiesSet();
+		} catch (Exception e) {
+			fail();
+		}
+		
+		ldapAuthenticationProvider.setDefaultRole(Roles.LDAPUSER_NAME);
+		ldapAuthenticationProvider.setDefaultRolePrefix(defaultRolePrefix);	
+		Authentication authRequest = new UsernamePasswordAuthenticationToken(modifiedUsername,password);
+		// Test
+		Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+		
+		LdapUserDetails ldapUserDetails = (LdapUserDetails) authResponse.getPrincipal();
+		
+		// Check defaultRole assignment
+		boolean defaultRoleContained = false;
+		for (GrantedAuthority grantedAuthority : ldapUserDetails.getAuthorities()) {
+			if (grantedAuthority.getAuthority().equals(defaultRolePrefix+Roles.LDAPUSER_NAME))
+				defaultRoleContained = true;
+		}
+		
+		String retrievedUsername = "";
+		Long retrievedAuthenticationDomainId=0L;
+		
+		try {
+			retrievedUsername = (String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get();
+			retrievedAuthenticationDomainId= (Long) ldapUserDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINID_KEY).get();
+		} catch (NamingException e) {			
+			fail();
+		}
+		
+		// Check domainid and username
+		
+		if (!retrievedUsername.equals(username) || !retrievedAuthenticationDomainId.equals(ldapServerConfiguration.getAuthenticationDomainId()) || !defaultRoleContained)
+			fail();
+		verify(ldapConfigurationService);
+	}	
 
 	public void testAuthenticationViaNonActiveDirectoryServerWithBadCredentials() {
 		// Provide invalid username or password!
