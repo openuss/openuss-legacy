@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.system;
 
 import java.util.ArrayList;
 import java.util.Iterator;

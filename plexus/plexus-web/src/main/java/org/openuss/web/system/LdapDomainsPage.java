@@ -15,7 +15,6 @@ import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.lecture.AbstractLdapDomainsOverviewPage;
 
 /** 
  * Backing Bean for the view secured/system/departments.xhtml

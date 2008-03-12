@@ -13,7 +13,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.lecture.AbstractLdapAttributeMappingsOverviewPage;
 
 /** 
  * Backing Bean for attributeMappings overview page.

@@ -1,4 +1,4 @@
-package org.openuss.web.lecture;
+package org.openuss.web.system;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;

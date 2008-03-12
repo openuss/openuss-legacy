@@ -12,7 +12,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.lecture.AbstractLdapUserDnPatternsOverviewPage;
 
 /** 
  * Backing Bean for the view secured/system/departments.xhtml

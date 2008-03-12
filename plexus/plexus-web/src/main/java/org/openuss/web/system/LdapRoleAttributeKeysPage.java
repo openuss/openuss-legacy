@@ -12,7 +12,6 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.RoleAttributeKeyInfo;
 import org.openuss.web.Constants;
-import org.openuss.web.lecture.AbstractLdapRoleAttributeKeysOverviewPage;
 
 /** 
  * Backing Bean for the view secured/system/departments.xhtml
