@@ -684,7 +684,7 @@ public class MyUniPage extends BasePage {
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;
-		tabs.getAttributes().put("alternateLinkTitle", bundle.getString("flexlist_tabs_details"));
+		tabs.getAttributes().put("alternateLinkTitle", i18n("flexlist_tabs_details"));
 
 		loadValuesForTabs(tabs);
 	}

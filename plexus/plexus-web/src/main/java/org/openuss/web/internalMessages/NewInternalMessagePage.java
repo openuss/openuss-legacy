@@ -64,7 +64,7 @@ public class NewInternalMessagePage extends BasePage{
 	public String sendmessage() {
 		logger.debug("Send Message to " + profile.getId());
 		if(profile.getId().equals(securityService.getCurrentUser().getId())){
-			addMessage(i18n("openuss4us_message_messagecenter_addbuddy"));
+			addError(i18n("openuss4us_message_messagecenter_addbuddy"));
 			return Constants.OPENUSS4US_MESSAGECENTER_CREATE;
 		}
 		LinkedList<InternalMessageRecipientsInfo> recipients = new LinkedList<InternalMessageRecipientsInfo>(); 

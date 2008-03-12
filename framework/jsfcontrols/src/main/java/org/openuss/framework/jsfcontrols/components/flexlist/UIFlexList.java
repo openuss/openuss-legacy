@@ -15,14 +15,27 @@ public class UIFlexList extends UIOutput {
 	protected ResponseWriter writer;
 	protected ResourceBundle bundle;
 	
+	protected boolean expanded; //if expanded="false" dont expand the list
+	protected String styleClass;
+	
 	public void encodeBegin(FacesContext context) throws IOException {
 		writer = context.getResponseWriter();
 		ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
 		String locale = (String)binding.getValue(getFacesContext());
 		bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 		
+		String expandedAttribute = (String)getAttributes().get("expanded");
+		if (expandedAttribute == "true" || expandedAttribute == null) this.expanded = true;
+		else this.expanded = false;
+		
+		String styleClass = (String)getAttributes().get("styleClass");
+		if(styleClass!="")
+			styleClass = " " + styleClass;
+		else
+			styleClass = "";
+		
 		writer.startElement("div", this);
-			writer.writeAttribute("class", "flexList", null);
+			writer.writeAttribute("class", "flexList" + styleClass, null);
 			writeHeader();
 			writeContent();
 			
@@ -59,12 +72,13 @@ public class UIFlexList extends UIOutput {
 						
 						writer.startElement("img", this);
 							writer.writeAttribute("src", "/theme-plexus/img/collapsed_triangle_white.jpg", null);
-							writer.writeAttribute("style", "display: none;", null);
+							if (expanded) writer.writeAttribute("style", "display: none;", null);
 							writer.writeAttribute("id", "flexlist_arrow_collapsed" + this.getId(), null);
 						writer.endElement("img");
 						
 						writer.startElement("img", this);
 							writer.writeAttribute("src", "/theme-plexus/img/expanded_triangle_white.jpg", null);
+							if (!expanded) writer.writeAttribute("style", "display: none;", null);
 							writer.writeAttribute("id", "flexlist_arrow_expanded" + this.getId(), null);
 						writer.endElement("img");
 					
@@ -80,7 +94,8 @@ public class UIFlexList extends UIOutput {
 		
 		writer.startElement("div", this);
 		writer.writeAttribute("id", "flexlist_content" + this.getId(), null);
-		
+		if (!expanded) writer.writeAttribute("style", "display: none;", null);
+
 			// Render list of visible items
 			writer.startElement("ul", this);
 			writer.writeAttribute("class", "flexListItems", null);
@@ -183,10 +198,10 @@ public class UIFlexList extends UIOutput {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					
+					writer.writeAttribute("class", "remove_bookmark", null);
+					writer.writeAttribute("title", title, null);
 					writer.startElement("span", this);
-						writer.writeAttribute("class", "remove_bookmark", null);
-						writer.writeAttribute("title", title, null);
-						
+					writer.writeAttribute("title", title, null);
 					writer.endElement("span");
 				writer.endElement("a");
 			}

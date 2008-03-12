@@ -34,6 +34,7 @@ public final class JsfCoreLibrary extends AbstractTagLibrary {
         this.addTagHandler("isBoolean", IsBooleanHandler.class);
         this.addTagHandler("isText", IsTextHandler.class);
         this.addTagHandler("isDate", IsDateHandler.class);
+        this.addTagHandler("hasGlobalMessages", HasGlobalMessagesHandler.class);
         this.addTagHandler("setEntityBinding", SetEntityBindingHandler.class);
         this.addConverter("convertTimestamp", TimestampConverter.CONVERTER_ID, ConvertTimestampHandler.class);
 
