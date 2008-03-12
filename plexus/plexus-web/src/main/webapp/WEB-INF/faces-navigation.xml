@@ -639,11 +639,6 @@
 				<from-outcome>discussion_removethread</from-outcome>
 				<to-view-id>/views/secured/discussion/removethread.xhtml</to-view-id>				
 			</navigation-case>			
-
-			<navigation-case>
-				<from-outcome>wiki_edit</from-outcome>
-				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
-			</navigation-case>	
 			
 			<!--  Wiki  -->
 			<navigation-case>
