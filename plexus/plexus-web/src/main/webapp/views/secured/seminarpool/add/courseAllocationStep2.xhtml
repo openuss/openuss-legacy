@@ -40,8 +40,10 @@
 						entity="courseAllocationController" 
 						property="courseGroupCapacity" 
 						maxlength="100" 
-						required="true"/>
-						<br />
+						required="true">
+						<f:validateLongRange minimum="1" />
+					</o:input>
+					<br />
 					<h:commandButton action="#{courseAllocationController.addGroup}" value="#{msg.seminarpool_add_course_groups_time_add}" styleClass="button_continue"/>
 			   	</o:block>
 			   	<o:block>

@@ -87,7 +87,7 @@ public class SeminarRegistrationController extends BasePage {
 			courseGroupInfo.setIsTimeSet(false);
 			courseGroupInfo.setIsDefault(false);
 			courseGroupInfoList.add(courseGroupInfo);
-			addMessage(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP);
+			addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP));
 		} else {
 			addError(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NUMBER));
 		}
