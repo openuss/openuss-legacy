@@ -369,11 +369,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		@Override
 		protected void sort(List<PaperSubmissionInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
-			chain.addComparator(submissionComparator);
-						
-			if (StringUtils.isNotBlank(getSortColumn())) {
-				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
-			} else {
+			
+			if (StringUtils.isNotBlank(getSortColumn()) ) {
+				if(getSortColumn().equals("submissionStatus")){
+					chain.addComparator(submissionComparator);
+				}else{
+					chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
+				}
+			}else{
 				chain.addComparator(new PropertyComparator("displayName", true, isAscending()));
 			}
 			Collections.sort(list, chain);

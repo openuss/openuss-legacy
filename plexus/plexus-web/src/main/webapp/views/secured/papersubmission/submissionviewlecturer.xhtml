@@ -54,11 +54,14 @@
 				        
 	                    <t:column> 
 				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif"/>
+				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+								<h:graphicImage value="/images/filetypes/default.gif" 
+					                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
 				        </t:column>
 	               
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="name">#{msg.papersubmission_colheader_name}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="name">#{msg.documents_main_column_name}</plexus:commandSortHeader> 
 	                              				
             				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
 								<f:param value="#{bean.id}" name="fileid" />
@@ -68,19 +71,19 @@
 	                    
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="fileSize">#{msg.papersubmission_colheader_size}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="fileSize">#{msg.documents_main_column_size}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.sizeAsString}"/>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="created">#{msg.papersubmission_colheader_createdate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="created">#{msg.documents_main_column_create}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.created}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
 	                    </t:column>
 	                    
 	                    <t:column>
-	                        <plexus:commandSortHeader columnName="modified">#{msg.papersubmission_colheader_changedate}</plexus:commandSortHeader> 
+	                        <plexus:commandSortHeader columnName="modified">#{msg.documents_main_column_change}</plexus:commandSortHeader> 
 	                        <h:outputText value="#{bean.modified}">
 	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 	                        </h:outputText>
