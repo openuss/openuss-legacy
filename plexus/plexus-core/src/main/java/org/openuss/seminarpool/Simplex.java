@@ -11,7 +11,7 @@ package org.openuss.seminarpool;
 
 public class Simplex {
 	// Debug-Informationen auf der Konsole? Bei false "schweigt" die Bean...
-	static final boolean debugmode = true;
+	static final boolean debugmode = false;
 	// Klassenvariablen
     private double[][] matrix;
     private double[] targetvalues;

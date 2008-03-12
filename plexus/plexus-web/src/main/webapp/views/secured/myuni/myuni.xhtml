@@ -51,9 +51,11 @@
 				<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
 				</o:flexlist> 
 				<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}">
-				</o:courseflexlist>								 
+				</o:courseflexlist>
+				<c:if test="#{views$secured$myuni$myuni.countSeminarpoolsList}">								 
 				<o:flexlist binding="#{views$secured$myuni$myuni.seminarpoolsList}">
 				</o:flexlist> 
+				</c:if>
 				
  		<!--		<o:flexlist binding="#{views$secured$myuni$myuni.seminarpoolsList}">      
 				</o:flexlist>    

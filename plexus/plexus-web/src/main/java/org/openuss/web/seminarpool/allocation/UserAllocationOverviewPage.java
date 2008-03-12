@@ -80,7 +80,7 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		response.setContentType("application/txt");
 		response.setHeader("Content-Disposition", "attachment;filename=\""
 				+ fileName + "\"");
-		response.getOutputStream().println(generateCVSstring());
+		response.getWriter().println(generateCVSstring());
 		FacesContext.getCurrentInstance().responseComplete();
 	}
 	
@@ -88,11 +88,11 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		String cvs = "";
 		List<CourseSeminarpoolAllocationInfo> csaiList = new ArrayList<CourseSeminarpoolAllocationInfo>(seminarpoolAdministrationService.findCoursesInSeminarpool(seminarpoolInfo.getId()));
 		for(CourseSeminarpoolAllocationInfo csai : csaiList){
-			cvs += csai.getCourseName() + "\t\t\r\n";
+			cvs += csai.getCourseName() + "\t\t\t\r\n";
 			List<SeminarPlaceAllocationInfo> spaiList = new ArrayList<SeminarPlaceAllocationInfo>(seminarpoolAdministrationService.getAllocationsByCourse(csai.getCourseId(), csai.getSeminarpoolId()));
 			for(SeminarPlaceAllocationInfo spai : spaiList){
 				User user = this.securityService.getUser(spai.getUserId());
-				cvs += user.getFirstName() + "\t" + user.getLastName() + "\t" + user.getEmail() + "\r\n";
+				cvs += user.getFirstName() + "\t" + user.getLastName() + "\t" + user.getEmail() + "\t" + spai.getGroupName() + "\r\n";
 			}
 			cvs += "\r\n";
 		}

@@ -55,21 +55,19 @@ public class MyUniPage extends BasePage {
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
 
-	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
-	
+
 	@Property(value = "#{courseDao}")
 	protected CourseDao courseDao;
-	
-	@Property(value ="#{securityService}")
+
+	@Property(value = "#{securityService}")
 	protected SecurityService securityService;
-	
+
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
-		
+
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
-
 
 	private Long paramUniversity = null;
 	private Long paramRemoveDepartment = null;
@@ -82,7 +80,7 @@ public class MyUniPage extends BasePage {
 	private Long paramRemoveSeminarpool = null;
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
-	private UIFlexList seminarpoolsList;	
+	private UIFlexList seminarpoolsList;
 	private CourseUIFlexList coursesList;
 	private UITabs tabs;
 	private Desktop desktop;
@@ -102,9 +100,11 @@ public class MyUniPage extends BasePage {
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 	private static final String seminarpoolBasePath = "/views/secured/seminarpool/main.faces";
 
-	ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
+	ValueBinding binding = getFacesContext().getApplication()
+			.createValueBinding("#{visit.locale}");
 	String locale = (String) binding.getValue(getFacesContext());
-	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(locale));
+	ResourceBundle bundle = ResourceBundle.getBundle("resources", new Locale(
+			locale));
 
 	@Prerender
 	public void prerender() {
@@ -129,12 +129,15 @@ public class MyUniPage extends BasePage {
 		if (user != null) {
 			try {
 				if (desktopInfo == null) {
-					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktopInfo = desktopService2.findDesktopByUser(user.getId());
+					logger.error("No desktop found for user "
+							+ user.getUsername() + ". Create new one.");
+					desktopInfo = desktopService2.findDesktopByUser(user
+							.getId());
 
 				} else {
 					logger.debug("refreshing desktop data");
-					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
+					desktopInfo = desktopService2.findDesktop(desktopInfo
+							.getId());
 				}
 				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
 
@@ -154,7 +157,8 @@ public class MyUniPage extends BasePage {
 	 */
 	private void loadParams() {
 		logger.debug("Loading request parameters");
-		Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		Map<?, ?> params = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap();
 
 		try {
 			String stringParamUniversity = (String) params.get("university");
@@ -164,52 +168,63 @@ public class MyUniPage extends BasePage {
 		}
 
 		try {
-			String stringParamRemoveCourse = (String) params.get("remove_course");
+			String stringParamRemoveCourse = (String) params
+					.get("remove_course");
 			paramRemoveCourse = Long.valueOf(stringParamRemoveCourse);
 		} catch (Exception e) {
 			paramRemoveCourse = null;
 		}
 
 		try {
-			String stringParamRemoveDepartment = (String) params.get("remove_department");
+			String stringParamRemoveDepartment = (String) params
+					.get("remove_department");
 			paramRemoveDepartment = Long.valueOf(stringParamRemoveDepartment);
 		} catch (Exception e) {
 			paramRemoveDepartment = null;
 		}
 
 		try {
-			String stringParamRemoveInstitute = (String) params.get("remove_institute");
+			String stringParamRemoveInstitute = (String) params
+					.get("remove_institute");
 			paramRemoveInstitute = Long.valueOf(stringParamRemoveInstitute);
 		} catch (Exception e) {
 			paramRemoveInstitute = null;
 		}
 		try {
-			String stringParamSubscribeNewsletter = (String) params.get("subscribe_newsletter");
-			paramSubscribeNewsletter = Long.valueOf(stringParamSubscribeNewsletter);
+			String stringParamSubscribeNewsletter = (String) params
+					.get("subscribe_newsletter");
+			paramSubscribeNewsletter = Long
+					.valueOf(stringParamSubscribeNewsletter);
 		} catch (Exception e) {
 			paramSubscribeNewsletter = null;
 		}
 		try {
-			String stringParamUnsubscribeNewsletter = (String) params.get("unsubscribe_newsletter");
-			paramUnsubscribeNewsletter = Long.valueOf(stringParamUnsubscribeNewsletter);
+			String stringParamUnsubscribeNewsletter = (String) params
+					.get("unsubscribe_newsletter");
+			paramUnsubscribeNewsletter = Long
+					.valueOf(stringParamUnsubscribeNewsletter);
 		} catch (Exception e) {
 			paramUnsubscribeNewsletter = null;
 		}
 		try {
-			String stringParamSubscribeForum = (String) params.get("subscribe_forum");
+			String stringParamSubscribeForum = (String) params
+					.get("subscribe_forum");
 			paramSubscribeForum = Long.valueOf(stringParamSubscribeForum);
 		} catch (Exception e) {
 			paramSubscribeForum = null;
 		}
 		try {
-			String stringParamUnsubscribeForum = (String) params.get("unsubscribe_forum");
+			String stringParamUnsubscribeForum = (String) params
+					.get("unsubscribe_forum");
 			paramUnsubscribeForum = Long.valueOf(stringParamUnsubscribeForum);
 		} catch (Exception e) {
 			paramUnsubscribeForum = null;
 		}
 		try {
-			String stringRemoveBookmarkSeminarpool = (String) params.get("remove_seminarpool");
-			paramRemoveSeminarpool = Long.valueOf(stringRemoveBookmarkSeminarpool);
+			String stringRemoveBookmarkSeminarpool = (String) params
+					.get("remove_seminarpool");
+			paramRemoveSeminarpool = Long
+					.valueOf(stringRemoveBookmarkSeminarpool);
 		} catch (Exception e) {
 			paramUnsubscribeForum = null;
 		}
@@ -224,7 +239,8 @@ public class MyUniPage extends BasePage {
 
 			// Get the desktop id
 			try {
-				DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
+				DesktopInfo desktopInfo = desktopService2
+						.findDesktopByUser(user.getId());
 				desktopId = desktopInfo.getId();
 			} catch (Exception e) {
 				logger.error(e);
@@ -234,7 +250,8 @@ public class MyUniPage extends BasePage {
 				// Remove department bookmark
 				if (paramRemoveDepartment != null) {
 					try {
-						desktopService2.unlinkDepartment(desktopId, paramRemoveDepartment);
+						desktopService2.unlinkDepartment(desktopId,
+								paramRemoveDepartment);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -243,7 +260,8 @@ public class MyUniPage extends BasePage {
 				// Remove institute bookmark
 				if (paramRemoveInstitute != null) {
 					try {
-						desktopService2.unlinkInstitute(desktopId, paramRemoveInstitute);
+						desktopService2.unlinkInstitute(desktopId,
+								paramRemoveInstitute);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -252,7 +270,8 @@ public class MyUniPage extends BasePage {
 				// Remove course bookmark
 				if (paramRemoveCourse != null) {
 					try {
-						desktopService2.unlinkCourse(desktopInfo.getId(), paramRemoveCourse);
+						desktopService2.unlinkCourse(desktopInfo.getId(),
+								paramRemoveCourse);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -260,7 +279,8 @@ public class MyUniPage extends BasePage {
 				// Remove course bookmark
 				if (paramRemoveSeminarpool != null) {
 					try {
-						desktopService2.unlinkSeminarpool(desktopInfo.getId(), paramRemoveSeminarpool);
+						desktopService2.unlinkSeminarpool(desktopInfo.getId(),
+								paramRemoveSeminarpool);
 					} catch (Exception e) {
 						logger.error(e);
 					}
@@ -268,26 +288,31 @@ public class MyUniPage extends BasePage {
 			}
 		}
 	}
+
 	/*
 	 * Handles newsletter and forum subscriptions
 	 */
-	private void handleSubscriptions(){
+	private void handleSubscriptions() {
 		User user = getSecurityService().getCurrentUser();
-		if (paramSubscribeNewsletter != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
+		if (paramSubscribeNewsletter != null) {
+			CourseInfo ci = getCourseDao().toCourseInfo(
+					getCourseDao().load(paramSubscribeNewsletter));
 			getCourseNewsletterService().subscribe(ci, user);
 		}
-		if (paramUnsubscribeNewsletter != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
+		if (paramUnsubscribeNewsletter != null) {
+			CourseInfo ci = getCourseDao().toCourseInfo(
+					getCourseDao().load(paramUnsubscribeNewsletter));
 			getCourseNewsletterService().unsubscribe(ci, user);
 		}
-		if (paramSubscribeForum != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
+		if (paramSubscribeForum != null) {
+			CourseInfo ci = getCourseDao().toCourseInfo(
+					getCourseDao().load(paramSubscribeForum));
 			ForumInfo forum = getDiscussionService().getForum(ci);
 			getDiscussionService().addForumWatch(forum);
 		}
-		if (paramUnsubscribeForum != null){
-			CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeForum));
+		if (paramUnsubscribeForum != null) {
+			CourseInfo ci = getCourseDao().toCourseInfo(
+					getCourseDao().load(paramUnsubscribeForum));
 			ForumInfo forum = getDiscussionService().getForum(ci);
 			getDiscussionService().removeForumWatch(forum);
 		}
@@ -309,7 +334,8 @@ public class MyUniPage extends BasePage {
 		logger.debug("Preparing MyUni data");
 		if (myUniData == null) {
 			try {
-				myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
+				myUniData = (Map<Long, MyUniInfo>) desktopService2
+						.getMyUniInfo(user.getId());
 			} catch (Exception e) {
 				logger.error(e);
 			}
@@ -339,7 +365,8 @@ public class MyUniPage extends BasePage {
 	}
 
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
-		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
+		if (departmentListDataLoaded == false && prerenderCalled == true
+				&& departmentsList != null) {
 			logger.debug("Loading data for departments flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -349,17 +376,18 @@ public class MyUniPage extends BasePage {
 
 			// Put data in the component's attributes
 			if (universityId != null && myUniData != null) {
-				departmentsList.getAttributes().put("visibleItems", getDepartmentListItems(universityId));
+				departmentsList.getAttributes().put("visibleItems",
+						getDepartmentListItems(universityId));
 
 				// Make sure this isn't executed twice
 				departmentListDataLoaded = true;
 			}
 		}
 	}
-	
 
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
-		if (instituteListDataLoaded == false && prerenderCalled == true && institutesList != null) {
+		if (instituteListDataLoaded == false && prerenderCalled == true
+				&& institutesList != null) {
 			logger.debug("Loading data for institutes flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -369,17 +397,20 @@ public class MyUniPage extends BasePage {
 
 			// Put data in the component's attributes
 			if (universityId != null && myUniData != null) {
-				institutesList.getAttributes().put("visibleItems", getVisibleInstituteListItems(universityId));
-				institutesList.getAttributes().put("hiddenItems", getHiddenInstituteListItems(universityId));
+				institutesList.getAttributes().put("visibleItems",
+						getVisibleInstituteListItems(universityId));
+				institutesList.getAttributes().put("hiddenItems",
+						getHiddenInstituteListItems(universityId));
 
 				// Make sure this isn't executed twice
 				instituteListDataLoaded = true;
 			}
 		}
 	}
-	
+
 	private void loadValuesForSeminarpoolList(UIFlexList seminarpoolsList) {
-		if (seminarpoolListDataLoaded == false && prerenderCalled == true && seminarpoolsList != null) {
+		if (seminarpoolListDataLoaded == false && prerenderCalled == true
+				&& seminarpoolsList != null) {
 			logger.debug("Loading data for seminarpools flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -389,7 +420,8 @@ public class MyUniPage extends BasePage {
 
 			// Put data in the component's attributes
 			if (universityId != null && myUniData != null) {
-				seminarpoolsList.getAttributes().put("visibleItems", getSeminarpoolListItems(universityId));
+				seminarpoolsList.getAttributes().put("visibleItems",
+						getSeminarpoolListItems(universityId));
 
 				// Make sure this isn't executed twice
 				seminarpoolListDataLoaded = true;
@@ -398,7 +430,8 @@ public class MyUniPage extends BasePage {
 	}
 
 	private void loadValuesForCourseList(CourseUIFlexList coursesList) {
-		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
+		if (courseListDataLoaded == false && prerenderCalled == true
+				&& coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
 			// Make sure myUni-Data is loaded
 			prepareData();
@@ -408,8 +441,10 @@ public class MyUniPage extends BasePage {
 
 			// Put data in the component's attributes
 			if (universityId != null && myUniData != null) {
-				coursesList.getAttributes().put("visibleItems", getVisibleCourseListItems(universityId));
-				coursesList.getAttributes().put("hiddenItems", getHiddenCourseListItems(universityId));
+				coursesList.getAttributes().put("visibleItems",
+						getVisibleCourseListItems(universityId));
+				coursesList.getAttributes().put("hiddenItems",
+						getHiddenCourseListItems(universityId));
 
 				// Make sure this isn't executed twice
 				courseListDataLoaded = true;
@@ -439,11 +474,16 @@ public class MyUniPage extends BasePage {
 					if (universityInfo != null) {
 						newItem = new ListItemDAO();
 						newItem.setTitle(universityInfo.getName());
-						newItem.setUrl(contextPath()+myUniBasePath + "?university=" + universityInfo.getId().toString());
+						newItem.setUrl(contextPath() + myUniBasePath
+								+ "?university="
+								+ universityInfo.getId().toString());
 
-						if (universityId != null && universityId.longValue() == universityInfo.getId().longValue()) {
+						if (universityId != null
+								&& universityId.longValue() == universityInfo
+										.getId().longValue()) {
 							currentItem = newItem;
-							currentItem.setUrl(contextPath() + universityBasePath + universityId);
+							currentItem.setUrl(contextPath()
+									+ universityBasePath + universityId);
 						} else
 							items.add(newItem);
 					}
@@ -470,15 +510,19 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniDepartmentInfo> departmentCollection = myUniInfo.getDepartments();
+				Collection<MyUniDepartmentInfo> departmentCollection = myUniInfo
+						.getDepartments();
 
 				for (MyUniDepartmentInfo departmentInfo : departmentCollection) {
 					newItem = new ListItemDAO();
 					newItem.setTitle(departmentInfo.getName());
-					newItem.setUrl(contextPath()+departmentsBasePath + "?department=" + departmentInfo.getId());
+					newItem.setUrl(contextPath() + departmentsBasePath
+							+ "?department=" + departmentInfo.getId());
 					if (departmentInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
-								+ "&remove_department=" + departmentInfo.getId());
+						newItem.setRemoveBookmarkUrl(contextPath()
+								+ myUniBasePath + "?university=" + universityId
+								+ "&remove_department="
+								+ departmentInfo.getId());
 
 					listItems.add(newItem);
 				}
@@ -487,10 +531,10 @@ public class MyUniPage extends BasePage {
 
 		return listItems;
 	}
-	
+
 	/*
 	 * Returns a list of ListItemDAOs that contain the information to be shown
-	 * by the departments flexlist
+	 * by the seminarpoools flexlist
 	 */
 	private List<ListItemDAO> getSeminarpoolListItems(Long universityId) {
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
@@ -498,15 +542,19 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo.getMySeminarpoolInfo();
+				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo
+						.getMySeminarpoolInfo();
 
 				for (MyUniSeminarpoolInfo seminarpoolInfo : seminarpoolCollection) {
 					newItem = new ListItemDAO();
 					newItem.setTitle(seminarpoolInfo.getName());
-					newItem.setUrl(contextPath()+seminarpoolBasePath + "?seminarpool=" + seminarpoolInfo.getId());
+					newItem.setUrl(contextPath() + seminarpoolBasePath
+							+ "?seminarpool=" + seminarpoolInfo.getId());
 					if (seminarpoolInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
-								+ "&remove_seminarpool=" + seminarpoolInfo.getId());
+						newItem.setRemoveBookmarkUrl(contextPath()
+								+ myUniBasePath + "?university=" + universityId
+								+ "&remove_seminarpool="
+								+ seminarpoolInfo.getId());
 
 					listItems.add(newItem);
 				}
@@ -515,6 +563,7 @@ public class MyUniPage extends BasePage {
 
 		return listItems;
 	}
+
 	/*
 	 * Returns a list of ListItemDAOs that contain the information to be shown
 	 * by the institutes flexlist
@@ -526,22 +575,33 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo.getCurrentInstitutes();
+				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo
+						.getCurrentInstitutes();
 
 				for (MyUniInstituteInfo instituteInfo : instituteCollection) {
 					newItem = new ListItemDAO();
 					newItem.setTitle(instituteInfo.getName());
-					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
-					Integer numberOfCurrentCourses = instituteInfo.getNumberOfCurrentCourses();
-					if (numberOfCurrentCourses != null && numberOfCurrentCourses > 0)
+					newItem.setUrl(contextPath() + institutesBasePath
+							+ "?institute=" + instituteInfo.getId());
+					Integer numberOfCurrentCourses = instituteInfo
+							.getNumberOfCurrentCourses();
+					if (numberOfCurrentCourses != null
+							&& numberOfCurrentCourses > 0)
 						if (numberOfCurrentCourses.equals(1))
-							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " "
-									+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING_SINGULAR"));
+							newItem
+									.setMetaInformation(numberOfCurrentCourses
+											.toString()
+											+ " "
+											+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING_SINGULAR"));
 						else
-							newItem.setMetaInformation(numberOfCurrentCourses.toString() + " "
-									+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
+							newItem
+									.setMetaInformation(numberOfCurrentCourses
+											.toString()
+											+ " "
+											+ i18n("MYUNI_INSITUTE_COURSECOUNT_STRING"));
 					if (instituteInfo.isBookmarked())
-						newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId
+						newItem.setRemoveBookmarkUrl(contextPath()
+								+ myUniBasePath + "?university=" + universityId
 								+ "&remove_institute=" + instituteInfo.getId());
 
 					listItems.add(newItem);
@@ -563,14 +623,18 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo.getPastInstitutes();
+				Collection<MyUniInstituteInfo> instituteCollection = myUniInfo
+						.getPastInstitutes();
 
 				for (MyUniInstituteInfo instituteInfo : instituteCollection) {
 					newItem = new ListItemDAO();
 					newItem.setTitle(instituteInfo.getName());
-					newItem.setUrl(contextPath()+institutesBasePath + "?institute=" + instituteInfo.getId());
+					newItem.setUrl(contextPath() + institutesBasePath
+							+ "?institute=" + instituteInfo.getId());
 					if (instituteInfo.isBookmarked()) {
-						newItem.setRemoveBookmarkUrl(myUniBasePath + "?university=" + universityId	+ "&remove_institute=" + instituteInfo.getId());
+						newItem.setRemoveBookmarkUrl(myUniBasePath
+								+ "?university=" + universityId
+								+ "&remove_institute=" + instituteInfo.getId());
 					}
 					listItems.add(newItem);
 				}
@@ -591,30 +655,45 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getCurrentCourses();
+				Collection<MyUniCourseInfo> courseCollection = myUniInfo
+						.getCurrentCourses();
 
 				for (MyUniCourseInfo courseInfo : courseCollection) {
-					
+
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
-					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
-					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
+					newItem.setUrl(contextPath() + coursesBasePath + "?course="
 							+ courseInfo.getId());
-					//Newsletter subscribe-status
-					Boolean newsletterSubscribed = courseInfo.getNewsletterSubscribed();
+					newItem.setRemoveBookmarkUrl(contextPath() + myUniBasePath
+							+ "?university=" + universityId + "&remove_course="
+							+ courseInfo.getId());
+					// Newsletter subscribe-status
+					Boolean newsletterSubscribed = courseInfo
+							.getNewsletterSubscribed();
 					newItem.setNewsletterSubscribed(newsletterSubscribed);
-					if ( newsletterSubscribed != null){
-						newItem.setNewsletterActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
-							+ (newsletterSubscribed ? "&unsubscribe_newsletter=" : "&subscribe_newsletter=") + courseInfo.getId() );
+					if (newsletterSubscribed != null) {
+						newItem
+								.setNewsletterActionUrl(contextPath()
+										+ myUniBasePath
+										+ "?university="
+										+ universityId
+										+ (newsletterSubscribed ? "&unsubscribe_newsletter="
+												: "&subscribe_newsletter=")
+										+ courseInfo.getId());
 					}
-					//Forum subscribe-status
+					// Forum subscribe-status
 					Boolean forumSubscribed = courseInfo.getForumSubscribed();
 					newItem.setForumSubscribed(forumSubscribed);
-					if ( forumSubscribed != null){
-						newItem.setForumActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
-							+ (forumSubscribed ? "&unsubscribe_forum=" : "&subscribe_forum=") + courseInfo.getId() );
+					if (forumSubscribed != null) {
+						newItem.setForumActionUrl(contextPath()
+								+ myUniBasePath
+								+ "?university="
+								+ universityId
+								+ (forumSubscribed ? "&unsubscribe_forum="
+										: "&subscribe_forum=")
+								+ courseInfo.getId());
 					}
-					
+
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
@@ -635,30 +714,45 @@ public class MyUniPage extends BasePage {
 			MyUniInfo myUniInfo = myUniData.get(universityId);
 			if (myUniInfo != null) {
 				ListItemDAO newItem;
-				Collection<MyUniCourseInfo> courseCollection = myUniInfo.getPastCourses();
+				Collection<MyUniCourseInfo> courseCollection = myUniInfo
+						.getPastCourses();
 
 				for (MyUniCourseInfo courseInfo : courseCollection) {
-					
+
 					newItem = new ListItemDAO();
 					newItem.setTitle(courseInfo.getName());
-					newItem.setUrl(contextPath()+coursesBasePath + "?course=" + courseInfo.getId());
-					newItem.setRemoveBookmarkUrl(contextPath()+myUniBasePath + "?university=" + universityId + "&remove_course="
+					newItem.setUrl(contextPath() + coursesBasePath + "?course="
 							+ courseInfo.getId());
-					//Newsletter subscribe-status
-					Boolean newsletterSubscribed = courseInfo.getNewsletterSubscribed();
+					newItem.setRemoveBookmarkUrl(contextPath() + myUniBasePath
+							+ "?university=" + universityId + "&remove_course="
+							+ courseInfo.getId());
+					// Newsletter subscribe-status
+					Boolean newsletterSubscribed = courseInfo
+							.getNewsletterSubscribed();
 					newItem.setNewsletterSubscribed(newsletterSubscribed);
-					if ( newsletterSubscribed != null){
-						newItem.setNewsletterActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
-							+ (newsletterSubscribed ? "&unsubscribe_newsletter=" : "&subscribe_newsletter=") + courseInfo.getId() );
+					if (newsletterSubscribed != null) {
+						newItem
+								.setNewsletterActionUrl(contextPath()
+										+ myUniBasePath
+										+ "?university="
+										+ universityId
+										+ (newsletterSubscribed ? "&unsubscribe_newsletter="
+												: "&subscribe_newsletter=")
+										+ courseInfo.getId());
 					}
-					//Forum subscribe-status
+					// Forum subscribe-status
 					Boolean forumSubscribed = courseInfo.getForumSubscribed();
 					newItem.setForumSubscribed(forumSubscribed);
-					if ( forumSubscribed != null){
-						newItem.setForumActionUrl(contextPath() + myUniBasePath + "?university=" + universityId
-							+ (forumSubscribed ? "&unsubscribe_forum=" : "&subscribe_forum=") + courseInfo.getId() );
+					if (forumSubscribed != null) {
+						newItem.setForumActionUrl(contextPath()
+								+ myUniBasePath
+								+ "?university="
+								+ universityId
+								+ (forumSubscribed ? "&unsubscribe_forum="
+										: "&subscribe_forum=")
+								+ courseInfo.getId());
 					}
-					
+
 					newItem.setMetaInformation(courseInfo.getPeriod());
 					listItems.add(newItem);
 				}
@@ -687,7 +781,8 @@ public class MyUniPage extends BasePage {
 				MyUniInfo firstUni = iterator.next();
 
 				if (firstUni != null) {
-					MyUniUniversityInfo uniInfo = firstUni.getMyUniUniversityInfo();
+					MyUniUniversityInfo uniInfo = firstUni
+							.getMyUniUniversityInfo();
 					if (uniInfo != null)
 						return uniInfo.getId();
 				}
@@ -704,17 +799,18 @@ public class MyUniPage extends BasePage {
 	public void setDepartmentsList(UIFlexList departmentsList) {
 		logger.debug("Setting departments flexlist component");
 		this.departmentsList = departmentsList;
-		departmentsList.getAttributes().put("title", bundle.getString("flexlist_departments"));
-		departmentsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_departments"));
-		departmentsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_departments"));
+		departmentsList.getAttributes().put("title",
+				bundle.getString("flexlist_departments"));
+		departmentsList.getAttributes().put("showButtonTitle",
+				bundle.getString("flexlist_more_departments"));
+		departmentsList.getAttributes().put("hideButtonTitle",
+				bundle.getString("flexlist_less_departments"));
 		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
 				bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForDepartmentList(departmentsList);
 	}
-	
-
 
 	public UIFlexList getInstitutesList() {
 		return institutesList;
@@ -723,26 +819,51 @@ public class MyUniPage extends BasePage {
 	public void setInstitutesList(UIFlexList institutesList) {
 		logger.debug("Setting institutes flexlist component");
 		this.institutesList = institutesList;
-		institutesList.getAttributes().put("title", bundle.getString("flexlist_institutes"));
-		institutesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_institutes"));
-		institutesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_institutes"));
-		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	bundle.getString("flexlist_remove_bookmark"));
+		institutesList.getAttributes().put("title",
+				bundle.getString("flexlist_institutes"));
+		institutesList.getAttributes().put("showButtonTitle",
+				bundle.getString("flexlist_more_institutes"));
+		institutesList.getAttributes().put("hideButtonTitle",
+				bundle.getString("flexlist_less_institutes"));
+		institutesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
+				bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForInstituteList(institutesList);
 	}
-	
+
 	public UIFlexList getSeminarpoolsList() {
 		return seminarpoolsList;
+	}
+
+	public boolean getCountSeminarpoolsList() {
+		boolean returnboolean = false;
+		Long universityId = chooseUniversity();
+		if (myUniData != null && universityId != null) {
+			MyUniInfo myUniInfo = myUniData.get(universityId);
+			if (myUniInfo != null) {
+				Collection<MyUniSeminarpoolInfo> seminarpoolCollection = myUniInfo
+						.getMySeminarpoolInfo();
+				if (seminarpoolCollection.size() > 0){
+					returnboolean=true;
+				}
+			}	
+		}
+		return returnboolean;
 	}
 
 	public void setSeminarpoolsList(UIFlexList seminarpoolsList) {
 		logger.debug("Setting seminarpools flexlist component");
 		this.seminarpoolsList = seminarpoolsList;
-		seminarpoolsList.getAttributes().put("title", bundle.getString("flexlist_seminarpools"));
-		seminarpoolsList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_items"));
-		seminarpoolsList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_items"));
-		seminarpoolsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",	bundle.getString("flexlist_remove_bookmark"));
+		seminarpoolsList.getAttributes().put("title",
+				bundle.getString("flexlist_seminarpools"));
+		seminarpoolsList.getAttributes().put("showButtonTitle",
+				bundle.getString("flexlist_more_items"));
+		seminarpoolsList.getAttributes().put("hideButtonTitle",
+				bundle.getString("flexlist_less_items"));
+		seminarpoolsList.getAttributes().put(
+				"alternateRemoveBookmarkLinkTitle",
+				bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForSeminarpoolList(seminarpoolsList);
@@ -755,10 +876,14 @@ public class MyUniPage extends BasePage {
 	public void setCoursesList(CourseUIFlexList coursesList) {
 		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
-		coursesList.getAttributes().put("title", bundle.getString("flexlist_courses"));
-		coursesList.getAttributes().put("showButtonTitle", bundle.getString("flexlist_more_courses"));
-		coursesList.getAttributes().put("hideButtonTitle", bundle.getString("flexlist_less_courses"));
-		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle", 	bundle.getString("flexlist_remove_bookmark"));
+		coursesList.getAttributes().put("title",
+				bundle.getString("flexlist_courses"));
+		coursesList.getAttributes().put("showButtonTitle",
+				bundle.getString("flexlist_more_courses"));
+		coursesList.getAttributes().put("hideButtonTitle",
+				bundle.getString("flexlist_less_courses"));
+		coursesList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
+				bundle.getString("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForCourseList(coursesList);
@@ -771,12 +896,11 @@ public class MyUniPage extends BasePage {
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;
-		tabs.getAttributes().put("alternateLinkTitle", bundle.getString("flexlist_tabs_details"));
+		tabs.getAttributes().put("alternateLinkTitle",
+				bundle.getString("flexlist_tabs_details"));
 
 		loadValuesForTabs(tabs);
 	}
-
-
 
 	public CourseService getCourseService() {
 		return courseService;
@@ -785,7 +909,7 @@ public class MyUniPage extends BasePage {
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
 	}
-	
+
 	public DiscussionService getDiscussionService() {
 		return discussionService;
 	}

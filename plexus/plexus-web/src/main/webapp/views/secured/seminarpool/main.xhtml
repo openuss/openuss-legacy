@@ -34,6 +34,11 @@
 	<ui:define name="content" styleClass="footer_normal">
 			<o:block>
 				<p class="header_font_normal">
+					<h:outputText value="#{phaseController.phase}" />
+				</p>
+			</o:block>
+			<o:block>
+				<p class="header_font_normal">
 					<h:outputText value="#{seminarpoolInfo.name} (#{seminarpoolInfo.shortcut})"/>
 				</p>
 				<div class="content_font_normal">
