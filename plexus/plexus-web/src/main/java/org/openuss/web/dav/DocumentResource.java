@@ -130,7 +130,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 			FileInfo newFileInfo = new FileInfo();
 			newFileInfo.setFileName(name);
 			newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
-			newFileInfo.setContentType(ioc.getContentType());
+			newFileInfo.setContentType("text/plain"); // ioc.getContentType());
 			newFileInfo.setFileSize((int) len);
 			newFileInfo.setCreated(new Date());
 			newFileInfo.setModified(new Date());
