@@ -26,9 +26,12 @@
 			<!--  and not empty ldapServerRegistration.allAuthenticationDomains -->
 				  <c:if test="#{not empty ldapServerRegistration.allUserDnPatterns}">
 					<o:block label="#{msg.ldap_ldapserver_registration_step1_headline}" styleClass="form_box">
-						<o:input entity="ldapServerInfo" property="providerUrl" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="providerUrl" maxlength="250" required="true">
+							<f:validator validatorId="providerUrlValidator" />
+						</o:input>
 						<o:input entity="ldapServerInfo" property="port" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="rootDn" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="authenticationType" maxlength="250" required="true"/>						
 						<o:input entity="ldapServerInfo" property="managerDn" maxlength="250" required="false"/>						
 						<o:input entity="ldapServerInfo" property="managerPassword" required="false" type="password" redisplay="false"/>
 						<h:outputLabel value="#{msg.ldap_server_managerpassword_confirm}" for="confirmPassword" styleClass="field_label" />
@@ -50,6 +53,7 @@
   							<f:converter converterId="longConverter" />
   							<f:selectItems value="#{ldapServerRegistration.allUserDnPatterns}"/>
 						</h:selectManyListbox>
+						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>						
@@ -65,11 +69,11 @@
 						<h:outputLabel value="#{msg.error_ldap_domain_empty}" for="descriptionEditor" styleClass="field_error" />
 					</o:block>
 				</c:if>
-					<o:block>
+					<o:block>					
 		  				<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
-						<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button" rendered="#{empty ldapServerInfo.providerUrl and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
-		  				<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.save}" styleClass="button" rendered="#{not empty ldapServerInfo.providerUrl and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>		  				
-		  			</o:block>
+						<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button" rendered="#{empty ldapServerInfo.id and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
+						<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.save}" styleClass="button" rendered="#{not empty ldapServerInfo.id and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
+					</o:block>
 	  		</h:form>
   		</ui:define>
 	</ui:composition>

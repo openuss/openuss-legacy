@@ -9,10 +9,8 @@ import javax.faces.validator.ValidatorException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerInfo;
-import org.openuss.web.Constants;
 
 /**
  * Validates ProviderUrl.
@@ -32,7 +30,7 @@ public class ProviderUrlValidator extends BaseBean implements Validator {
 	    	boolean valid = ldapConfigurationService.isValidURL(new String[]{"ldap", "ldaps"}, providerUrl);
 	    	if (!valid) {
 	    			((UIInput)component).setValid(false);
-	    			addError(component.getClientId(context), i18n("error_provider_url_is_invalid"), null);
+	    			addError(component.getClientId(context), i18n("error_provider_url_invalid"), null);
 	    	}
 	    }
 	}
