@@ -1,11 +1,13 @@
 package org.openuss.web.collaboration;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
@@ -128,6 +130,12 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		LOGGER.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
 		if (!files.isEmpty()) {
+			//Storing the zip file name into the session 
+			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
+			String fileName = this.workspaceInfo.getName();
+			System.out.println(fileName);
+			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
+			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);
