@@ -19,7 +19,7 @@ public class PhaseController extends AbstractSeminarpoolPage{
 	public boolean getStatusBeforeEqualsRegistrationComplete(){
 		return (seminarpoolInfo.getSeminarpoolStatus().getValue() <= SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
 	}
-	public boolean getStatusAfterPrepartion() {
+	public boolean getStatusAfterPreparations() {
 		return (seminarpoolInfo.getSeminarpoolStatus().getValue()>0);
 	}
 	
