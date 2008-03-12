@@ -26,7 +26,6 @@ import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
 		private SeminarCourseRegistrationsOverviewPage dataCourseTypes = new SeminarCourseRegistrationsOverviewPage();
 		
-		private boolean status;
 		
 		/** course type info */
 		@Property(value="#{"+Constants.SEMINARPOOL_COURSE_ALLOCATION_INFO+"}")
@@ -85,13 +84,5 @@ import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 		public void setCourseSeminarpoolAllocationInfo(
 				CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo) {
 			this.courseSeminarpoolAllocationInfo = courseSeminarpoolAllocationInfo;
-		}
-		
-		public boolean getStatus() {
-			return (seminarpoolInfo.getSeminarpoolStatus().getValue() <= SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
-		}
-		
-		public void setStatus(boolean status) {
-			this.status = status;
-		}
+		}	
 	}

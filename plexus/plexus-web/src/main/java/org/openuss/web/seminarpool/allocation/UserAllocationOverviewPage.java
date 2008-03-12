@@ -35,9 +35,6 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	@Property(value = "#{seminarpoolAllocationService}")
 	protected SeminarpoolAllocationService seminarpoolAllocationService;
 
-	private boolean status;
-	private boolean status2;
-	private boolean status3;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -105,32 +102,14 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		return cvs;
 	}
 
-	public boolean getStatus() {
-		return (seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
+
+	public SeminarpoolAllocationService getSeminarpoolAllocationService() {
+		return seminarpoolAllocationService;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public boolean getStatus2() {
-		return (seminarpoolInfo.getSeminarpoolStatus().getValue() > 2);
-	}
-
-	public void setStatus2(boolean status2) {
-		this.status2 = status2;
-	}
-
-	public boolean getStatus3() {
-		return (seminarpoolInfo.getSeminarpoolStatus().getValue() == 3);
-	}
-
-	public void setStatus3(boolean status3) {
-		this.status3 = status3;
-	}
-
-	public boolean getStatus4() {
-		return (seminarpoolInfo.getSeminarpoolStatus().getValue() >= 3);
+	public void setSeminarpoolAllocationService(
+			SeminarpoolAllocationService seminarpoolAllocationService) {
+		this.seminarpoolAllocationService = seminarpoolAllocationService;
 	}
 
 }

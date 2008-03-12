@@ -46,7 +46,7 @@
 					<b><h:outputText value="#{bean.priority}"/></b>
 			</t:column>
 			<plexus:column header="#{msg.commands_header}">
-			<c:if test="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2.status}">
+			<c:if test="#{phaseController.statusBeforeEqualsRegistrationComplete}">
 				<plexus:command   
 					bean="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2}"
 					action="removeParticipant"

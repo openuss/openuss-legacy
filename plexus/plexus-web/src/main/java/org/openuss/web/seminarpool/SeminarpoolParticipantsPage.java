@@ -58,7 +58,6 @@ public class SeminarpoolParticipantsPage extends BasePage {
 
 	private String username;
 	
-	private boolean status;
 
 	private List<GroupItem> seminarpoolGroups;
 	
@@ -230,12 +229,6 @@ public class SeminarpoolParticipantsPage extends BasePage {
 	public void setSeminarpoolAdministrationService(
 			SeminarpoolAdministrationService seminarpoolAdministrationService) {
 		this.seminarpoolAdministrationService = seminarpoolAdministrationService;
-	}
-	public boolean getStatus() {
-		return (seminarpoolInfo.getSeminarpoolStatus().getValue() < SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE.getValue());
-	}
-	public void setStatus(boolean status) {
-		this.status = status;
 	}
 
 

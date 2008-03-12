@@ -20,7 +20,7 @@
 							activeOnViewIds="/views/secured/seminarpool/main.xhtml" >
 							<h:outputText value="#{msg['seminarpool_command_options_overview']}" />
 						</t:commandNavigation2>
-						<c:if test="#{seminarpoolUserRegistration.status}">
+						<c:if test="#{phaseController.statusAfterPrepartions}">
 						<t:commandNavigation2 
 							action="#{seminarpoolUserRegistration.start}" 
 							activeOnViewIds="/views/secured/seminarpool/userRegistration/seminarpooluserregistration.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step2.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step3.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep1.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep2.xhtml,/views/secured/seminarpool/userRegistration/removeUserRegistrationStep1.xhtml" >
@@ -55,7 +55,7 @@
 										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationOverview.xhtml">
 										<h:outputText value="#{msg['seminarpool_submenue1']}" />
 									</t:commandNavigation2>
-									<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status2}">								
+									<c:if test="#{phaseController.statusAfterRegistrationComplete}">								
 									<t:commandNavigation2 
 										action="seminarpool_options_allocations_user"
 										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationByUser.xhtml,/views/secured/seminarpool/allocation/userAllocationByUserStep2.xhtml">

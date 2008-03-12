@@ -36,7 +36,7 @@
 	</o:block>
 	<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 	<h:form id="genereteAllocation">
-		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status}">
+		<c:if test="#{phaseController.statusRegistrationComplete}">
 			<o:block>
 				<h:commandButton value="#{msg['seminarpool_allocation_generate']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.generateAllocation}"
@@ -44,7 +44,7 @@
 					styleClass="button" />
 			</o:block>
 		</c:if>
-		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status3}">
+		<c:if test="#{phaseController.statusReview}">
 			<o:block>
 				<h:commandButton value="#{msg['seminarpool_allocation_complete']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.completeAllocation}"
@@ -52,7 +52,7 @@
 					styleClass="button" />
 			</o:block>
 		</c:if>
-		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status4}">
+		<c:if test="#{phaseController.statusAfterReview}">
 			<o:block>
 				<h:commandButton value="#{msg['seminarpool_allocation_export']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
