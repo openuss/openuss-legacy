@@ -16,13 +16,21 @@ public class SimpleWebDAVAnswer implements WebDAVAnswer {
 	protected String message;
 	
 	/**
+	 * @param statusCode The HTTP status code of this message.
+	 */
+	public SimpleWebDAVAnswer(int statusCode) {
+		this(statusCode, null);
+	}
+	
+	/**
 	 * Constructor.
 	 * 
 	 * @param statusCode The HTTP status code of this message.
 	 * @param message A human-readable message.
 	 */
-	public SimpleWebDAVAnswer(int statusCode) {
+	public SimpleWebDAVAnswer(int statusCode, String message) {
 		this.statusCode = statusCode;
+		this.message = message;
 	}
 		
 	/* (non-Javadoc)

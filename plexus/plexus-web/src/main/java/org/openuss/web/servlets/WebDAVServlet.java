@@ -50,11 +50,18 @@ public class WebDAVServlet extends HttpServlet {
 	// servlet initialization parameter names
 	private static final String INIT_PARAMETER_RESOURCE_PATH_PREFIX = "resource-path-prefix";
 	private static final String INIT_PARAMETER_MAX_FILE_SIZE = "max-file-size";
+	private static final String INIT_PARAMETER_KILLBIT = "killbit";
+	
+	private static final String KILLBIT_ENABLED = "on";
 
 	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
 
+	/**
+	 * If set, disable WebDAV
+	 */
+	private boolean killBit;
 	
  	private String resourcePathPrefix;
  	private WebDAVContext davContext;
@@ -63,6 +70,12 @@ public class WebDAVServlet extends HttpServlet {
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  	 */
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+ 		if (killBit) {
+ 			WebDAVAnswer a = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "WebDAV is disabled.");
+ 			printResponse(response, a);
+ 			return;
+ 		}
+ 		
  		try	{
  			String destination;
 	 		WebDAVPath destinationPath;
@@ -385,11 +398,17 @@ public class WebDAVServlet extends HttpServlet {
 		
 		super.init();
 
+		killBit = KILLBIT_ENABLED.equals(getInitParameter(INIT_PARAMETER_KILLBIT));
+		if (killBit) {
+			logger.warn("WebDAV killbit activated");
+		}
+		
 		// read resource path prefix from configuration and store it in the context
 		resourcePathPrefix = this.getServletContext().getContextPath() + getInitParameter(INIT_PARAMETER_RESOURCE_PATH_PREFIX);
 		if (resourcePathPrefix == null) {
 			throw new ServletException("resource path prefix not set");
 		}
+		
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		String maxFileSizeStr = getInitParameter(INIT_PARAMETER_MAX_FILE_SIZE);
 		long maxFileSize = (maxFileSizeStr == null) ? WebDAVContext.NO_MAX_FILESIZE :
