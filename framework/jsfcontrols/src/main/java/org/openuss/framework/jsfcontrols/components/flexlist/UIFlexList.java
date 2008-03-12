@@ -183,12 +183,6 @@ public class UIFlexList extends UIOutput {
 	protected void writeFlexListItemRight(ListItemDAO listItem) throws IOException {
 		writer.startElement("div", this);
 		writer.writeAttribute("class", "flexListItemRight", null);
-			//write meta information
-			String metaInfo = listItem.getMetaInformation();
-			if(metaInfo != null) {
-				writer.write( metaInfo);
-			}
-			
 			// Show the "remove bookmark link" if the url is set
 			String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
 			String title;
@@ -198,7 +192,7 @@ public class UIFlexList extends UIOutput {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					
-					writer.writeAttribute("class", "remove_bookmark", null);
+					writer.writeAttribute("class", "icon_bookmark_remove", null);
 					writer.writeAttribute("title", title, null);
 					writer.startElement("span", this);
 					writer.writeAttribute("title", title, null);
@@ -206,6 +200,14 @@ public class UIFlexList extends UIOutput {
 				writer.endElement("a");
 			}
 		
+		writer.endElement("div");
+		writer.startElement("div", this);
+		writer.writeAttribute("class", "flexListItemRight", null);
+			//write meta information
+			String metaInfo = listItem.getMetaInformation();
+			if(metaInfo != null) {
+				writer.write( metaInfo);
+			}
 		writer.endElement("div");
 	}
 	private void writeFooter()  throws IOException {

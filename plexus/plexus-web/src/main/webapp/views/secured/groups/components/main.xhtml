@@ -93,11 +93,19 @@
 				<!-- check if access type is AccessType.CLOSED -->
 				<c:if test="#{groupInfo.accessType.value == 1}">
 					<c:if test="#{views$secured$groups$components$main.aspirant}">
-						<o:block label="#{msg.group_main_access}" styleClass="form_box">
-							<p class="content_font_normal"><h:outputText
-								value="#{msg['group_access_aspirant_wait']}"
-								styleClass="content_font_normal" /></p>
-						</o:block>
+						<h:form>
+							<o:block label="#{msg.group_main_access}" styleClass="form_box">
+								<p class="content_font_normal"><h:outputText
+									value="#{msg['group_access_aspirant_wait']}"
+									styleClass="content_font_normal" /></p>
+							</o:block>
+							<o:block>
+								<h:commandButton
+									action="#{views$secured$groups$components$main.rejectAspirant}"
+									value="#{msg['message_group_reject_aspirant_button']}"
+									hint="#{msg['message_group_reject_aspirant_button']}" styleClass="button_big" />
+							</o:block>
+						</h:form>
 					</c:if>
 					<c:if test="#{!views$secured$groups$components$main.aspirant}">
 						<h:form id="group_main_apply_form">
@@ -110,7 +118,7 @@
 								<h:commandButton
 									action="#{views$secured$groups$components$main.applyAsAspirant}"
 									value="#{msg['group_main_aspirant']}"
-									hint="#{msg['group_main_aspirant']}" styleClass="button" />
+									hint="#{msg['group_main_aspirant']}" styleClass="button_big" />
 							</o:block>
 						</h:form>
 					</c:if>
@@ -147,19 +155,20 @@
 			</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
-		<c:if test="#{groupInfo.calendar}">
-			<o:block label="#{msg.openuss4us_calendar_appointments}"
-				styleClass="teaser_blue_right">
-				<h:form id="news_tables">
-					<c:if
-						test="#{empty views$secured$groups$components$main.appointments}">
-						<p class="content_font_normal"><h:outputText
-							value="#{msg.group_no_appointments}" styleClass="news_title" /></p>
-					</c:if>
-					<ui:include
-						src="/views/secured/groups/components/calendarshortoverview.xhtml" />
-				</h:form>
-			</o:block></c:if>
+			<c:if test="#{groupInfo.calendar}">
+				<o:block label="#{msg.openuss4us_calendar_appointments}"
+					styleClass="teaser_blue_right">
+					<h:form id="news_tables">
+						<c:if
+							test="#{empty views$secured$groups$components$main.appointments}">
+							<p class="content_font_normal"><h:outputText
+								value="#{msg.group_no_appointments}" styleClass="news_title" /></p>
+						</c:if>
+						<ui:include
+							src="/views/secured/groups/components/calendarshortoverview.xhtml" />
+					</h:form>
+				</o:block>
+			</c:if>
 			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
 				<h:form id="news_tables">
 					<c:if

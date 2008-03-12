@@ -6,12 +6,6 @@ public class CourseUIFlexList extends UIFlexList {
 	protected void writeFlexListItemRight(ListItemDAO listItem) throws IOException {
 		writer.startElement("div", this);
 		writer.writeAttribute("class", "flexListItemRight", null);
-			//write meta information
-			String metaInfo = listItem.getMetaInformation();
-			if(metaInfo != null) {
-				writer.write( metaInfo);
-			}
-			
 			
 			//Render newsletter status
 			Boolean subscribed = listItem.getNewsletterSubscribed();
@@ -94,7 +88,7 @@ public class CourseUIFlexList extends UIFlexList {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					
-					writer.writeAttribute("class", "remove_bookmark", null);
+					writer.writeAttribute("class", "icon_bookmark_remove", null);
 					writer.writeAttribute("title", title, null);
 					//writer.write("&nbsp;");
 					writer.startElement("span", this);
@@ -103,6 +97,14 @@ public class CourseUIFlexList extends UIFlexList {
 				writer.endElement("a");
 			}
 		
+		writer.endElement("div");
+		writer.startElement("div", this);
+		writer.writeAttribute("class", "flexListItemRight", null);
+			//write meta information
+			String metaInfo = listItem.getMetaInformation();
+			if(metaInfo != null) {
+				writer.write( metaInfo);
+			}
 		writer.endElement("div");
 	}
 }

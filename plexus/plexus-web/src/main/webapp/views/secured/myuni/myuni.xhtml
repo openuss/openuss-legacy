@@ -46,11 +46,11 @@
 			<div class="content_box"><o:flexlist_tabs
 				binding="#{views$secured$myuni$myuni.tabs}">
 			</o:flexlist_tabs>
-			<div class="content_normal"><o:flexlist
-				binding="#{views$secured$myuni$myuni.departmentsList}">
-			</o:flexlist> <o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
-			</o:flexlist> <o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}">
-			</o:courseflexlist></div>
+			<div class="content_normal">
+				<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}" /> 
+				<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}" /> 
+				<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}" />
+				</div>
 			<div class="footer_normal">
 
 			<div class="footer_normal_left_bg" />
@@ -66,13 +66,13 @@
 			<div class="header_normal_right_bg" />
 			<div class="header_normal">
 			<p class="header_font_normal">#{msg.openuss4us_usergroups}</p>
-			
+
 			</div>
 			</div>
 
-			<div class="content_normal"><o:groupflexlist
-				binding="#{views$secured$myuni$myuni.groupsList}">
-			</o:groupflexlist></div>
+			<div class="content_normal">
+				<o:groupflexlist binding="#{views$secured$myuni$myuni.groupsList}" />
+			</div>
 
 			<div class="footer_normal">
 			<div class="footer_normal_left_bg" />
@@ -82,11 +82,6 @@
 		</c:if>
 		<h:form>
 			<o:block>
-
-				<h:commandButton styleClass="button_big"
-					action="#{views$secured$groups$groups.createGroup}"
-					value="#{msg['openuss4us_groups_button_create']}"
-					title="#{msg['openuss4us_groups_button_create']}" immediate="false" />
 				<h:commandButton styleClass="button_big"
 					action="#{views$secured$groups$groups.joinGroup}"
 					value="#{msg['openuss4us_groups_button_join']}"

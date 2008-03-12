@@ -79,6 +79,13 @@ public class GroupMainPage extends AbstractGroupPage {
 		return Constants.SUCCESS;
 	}
 	
+	public String rejectAspirant() throws GroupApplicationException{
+		logger.debug("reject aspirant");
+		groupService.rejectAspirant(groupInfo, user.getId());
+		addMessage(i18n("message_group_reject_aspirant"));
+		return Constants.SUCCESS;
+	}
+	
 	public String apply() throws GroupApplicationException, CalendarApplicationException {
 		logger.debug("group entry applied");
 		groupService.addMember(groupInfo, user.getId());
