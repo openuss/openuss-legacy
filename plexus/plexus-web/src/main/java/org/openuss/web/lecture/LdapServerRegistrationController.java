@@ -8,12 +8,18 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.lecture.LectureException;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
+import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerInfo;
 import org.openuss.security.ldap.LdapServerType;
 import org.openuss.security.ldap.UserDnPatternInfo;
+import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
 /**
@@ -27,10 +33,18 @@ import org.openuss.web.Constants;
 
 @Bean(name = Constants.LDAP_SERVER_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
 @View
-public class LdapServerRegistrationController extends AbstractLdapServerPage {
+public class LdapServerRegistrationController extends BasePage {
 
 	
 	private static final Logger logger = Logger.getLogger(LdapServerRegistrationController.class);
+	
+	
+	@Property(value = "#{ldapServerInfo}")
+	protected LdapServerInfo ldapServerInfo;
+
+	@Property(value = "#{ldapConfigurationService}")
+	protected LdapConfigurationService ldapConfigurationService;
+	
 	
 	public String start() {
 		logger.debug("start registration process");
@@ -41,6 +55,48 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
 	}
 
+	
+	/**
+	 * Refreshing ldapServer VO
+	 * 
+	 * @throws Exception
+	 */
+	@Preprocess
+	public void preprocess() throws Exception {
+		super.preprocess();
+		logger.debug("preprocess - refreshing ldapServer session object");
+		if (ldapServerInfo != null) {
+			if (ldapServerInfo.getId() != null) {
+				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
+			} else {
+				ldapServerInfo = (LdapServerInfo) getSessionBean(Constants.SERVER_INFO);
+			}
+		}
+
+		setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
+	}
+
+	
+	@Prerender
+	public void prerender() throws LectureException {
+		logger.debug("prerender - refreshing ldapServer session object");
+		refreshLdapServer();
+		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {		
+			addError(i18n("message_ldap_ldapserver_no_ldapserver_selected"));
+			redirect(Constants.DESKTOP);
+		}
+	}
+
+	
+	private void refreshLdapServer() {
+		if (ldapServerInfo != null) {
+			if (ldapServerInfo.getId() != null) {
+				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
+				setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
+			}
+		}
+	}
+	
 	
 	/**
 	 * Value Change Listener
@@ -72,6 +128,7 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 		ldapServerInfo.setAuthenticationDomainId(selectedId);
 	}	
 	
+	
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllAuthenticationDomains() {
 
@@ -85,6 +142,7 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 	
 		return domainItems;
 	}
+	
 
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getAllUserDnPatterns() {
@@ -99,6 +157,7 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 		return userDnPatternItems;
 	}	
 	
+	
 	public String register() {
 //		create LdapServer
 		ldapConfigurationService.createLdapServer(ldapServerInfo);
@@ -106,11 +165,32 @@ public class LdapServerRegistrationController extends AbstractLdapServerPage {
 		return Constants.LDAP_SERVER_PAGE;
 	}	
 	
+	
 	public String save() {		
 //		update LdapServer
 		ldapConfigurationService.saveLdapServer(ldapServerInfo);
 		
 		return Constants.LDAP_SERVER_PAGE;
+	}
+	
+	
+	public LdapServerInfo getLdapServerInfo() {
+		return ldapServerInfo;
+	}
+	
+
+	public void setLdapServerInfo(LdapServerInfo ldapServerInfo) {
+		this.ldapServerInfo = ldapServerInfo;
+	}
+
+	
+	public LdapConfigurationService getLdapConfigurationService() {
+		return ldapConfigurationService;
+	}
+
+	public void setLdapConfigurationService(
+			LdapConfigurationService ldapConfigurationService) {
+		this.ldapConfigurationService = ldapConfigurationService;
 	}
 
 }

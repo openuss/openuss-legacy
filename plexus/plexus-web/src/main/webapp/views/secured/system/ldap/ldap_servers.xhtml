@@ -36,33 +36,34 @@
 	   			</o:block>  	
 				
 				<plexus:dataTable 
-					id="department" 
+					id="ldapServer" 
 					label="#{msg.ldap_serverconfiguration_header}" 
 					value="views$secured$system$ldap$ldap_servers.ldapServerTable" 
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 					rows="15">
-					<t:column>
-						<plexus:commandSortHeader columnName="name">
+					<t:column forceId="true">
+						<plexus:commandSortHeader columnName="providerUrl">
 							#{msg['ldap_server_name']}
 						</plexus:commandSortHeader>
-				        <h:commandLink action="#{views$secured$system$ldap$ldap_servers.selectLdapServer}" styleClass="command">
-							<h:outputText value="#{bean.providerUrl}"/>
-						</h:commandLink> 
-					</t:column>
-					
-			
+				        <h:outputText value="#{bean.providerUrl}"/>						 
+					</t:column>					
 					<plexus:column header="#{msg.commands_header}">
-						<s:authorize ifAllGranted="ROLE_ADMIN">
+						<s:authorize ifAllGranted="ROLE_ADMIN">							
+							<plexus:command
+								bean = "#{views$secured$system$ldap$ldap_servers}"
+								action = "selectLdapServerAndEdit"
+								styleClass="icon_edit"
+								label="#{msg.ldap_ldapserver_command_edit}"
+								title="#{msg.ldap_ldapserver_command_edit_hint}"/>								
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_servers}"
 								action = "selectLdapServerAndConfirmRemove"
 								styleClass="icon_remove"
-								label="#{msg.department_command_remove}"
-								title="#{msg.department_command_remove_hint}"/>
+								label="#{msg.ldap_ldapserver_command_remove}"
+								title="#{msg.ldap_ldapserver_command_remove_hint}"/>
 						</s:authorize>
-					</plexus:column>
-					
+					</plexus:column>										
 				</plexus:dataTable>
 				
 				<s:authorize ifAllGranted="ROLE_ADMIN">

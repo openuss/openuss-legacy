@@ -1,10 +1,6 @@
 package org.openuss.web.system;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -17,7 +13,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerInfo;
-import org.openuss.security.ldap.LdapServerType;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
@@ -114,8 +109,7 @@ public class LdapServersPage extends BasePage {
 	public String selectLdapServerAndConfirmRemove() {
 		setSessionBean(Constants.SERVER_INFO, currentLdapServer());
 		
-//		TODO change constant
-		return Constants.ATTRIBUTEMAPPING_CONFIRM_REMOVE_PAGE;
+		return Constants.SERVER_CONFIRM_REMOVE_PAGE;
 	}
 	
 		
