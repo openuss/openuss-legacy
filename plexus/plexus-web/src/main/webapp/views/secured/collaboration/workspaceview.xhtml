@@ -22,8 +22,6 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-	    <s:acl domainObject="#{workspaceInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
-
   		<ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}"/></ui:define>
  		
  		<ui:define name="navigation">
@@ -31,6 +29,8 @@
 		</ui:define>
 		
   		<ui:define name="content">
+  			<s:acl domainObject="#{workspaceInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
+  			
   			<h:form id="workspace">
  	  			<ui:include src="workspaceentriestable.xhtml"/> 
  	  			

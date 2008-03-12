@@ -130,6 +130,7 @@ public class WorkspaceServiceImpl extends
 				workspace.getUser().add(user);
 				getSecurityService().setPermissions(user, workspace, LectureAclEntry.WORKSPACE_PARTICIPANT);
 			} else {
+				getSecurityService().removePermission(user, workspace);
 				getSecurityService().setPermissions(user, workspace, LectureAclEntry.NOTHING);
 			}
 		} 
