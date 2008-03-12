@@ -14,7 +14,7 @@ import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.web.Constants;
 
 /**
- * Validates uniqueness of MappingNames
+ * Validates uniqueness of attributeMappingNames
  * 
  * @author Peter Schuh
  *
@@ -24,8 +24,8 @@ public class AttributeMappingNameUniqueValidator extends BaseBean implements Val
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String attributeMappingName = (String) value;
-		AttributeMappingInfo container = new AttributeMappingInfo();
-	    container.setMappingName(attributeMappingName);
+		AttributeMappingInfo dto = new AttributeMappingInfo();
+	    dto.setMappingName(attributeMappingName);
 	    AttributeMappingInfo attributeMappingInfo = (AttributeMappingInfo) getBean(Constants.ATTRIBUTEMAPPING_INFO);
 	    if (attributeMappingInfo.getMappingName()!=null && attributeMappingInfo.getMappingName().equals(attributeMappingName)) {
 	    	//Update of AttributeMapping -> Name can stay the same
@@ -33,7 +33,7 @@ public class AttributeMappingNameUniqueValidator extends BaseBean implements Val
 	    }
 	    else if (StringUtils.isNotEmpty(attributeMappingName)) {
 	    		LdapConfigurationService ldapConfigurationService = (LdapConfigurationService) getBean("ldapConfigurationService");
-	    		boolean unique = ldapConfigurationService.isValidAttributeMappingName(container);
+	    		boolean unique = ldapConfigurationService.isValidAttributeMappingName(dto);
 	    		if (!unique) {
 	    			((UIInput)component).setValid(false);
 	    			addError(component.getClientId(context), i18n("error_attributemappingname_already_exists"), null);

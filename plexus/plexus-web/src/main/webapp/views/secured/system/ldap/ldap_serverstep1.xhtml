@@ -62,7 +62,7 @@
 					<o:block>
 						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
 						<c:if test="#{not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}">
-							<h:commandButton value="${msg.forward}" action="#{ldapServerRegistration.register}" styleClass="button_continue" />
+							<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button_continue" />
 		  				</c:if>		  				
 		  			</o:block>
 	  		</h:form>
