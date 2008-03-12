@@ -42,4 +42,8 @@ public class PhaseController extends AbstractSeminarpoolPage{
 	public boolean getStatusAfterReview() {
 		return (seminarpoolInfo.getSeminarpoolStatus().getValue() >= 3);
 	}
+	
+	public boolean getStatusConfirmedPhase() {
+		return (seminarpoolInfo.getSeminarpoolStatus().getValue() == 4);
+	}
 }

@@ -29,39 +29,58 @@
 	</ui:define>
 
 	<ui:define name="content" styleClass="footer_normal">
-	<o:block label="#{msg.seminarpool_participants_header}">
-		<div class="content_font_normal"> 
-			<h:outputText value="#{msg.seminarpool_participants_step1_text}" escape="false"/>
-		</div>
-	</o:block>
-	<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
-	<h:form id="genereteAllocation">
-		<c:if test="#{phaseController.statusRegistrationComplete}">
-			<o:block>
-				<h:commandButton value="#{msg['seminarpool_allocation_generate']}"
-					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.generateAllocation}"
-					title="#{msg['seminarpool_allocation_generate']}"
-					styleClass="button" />
-			</o:block>
-		</c:if>
-		<c:if test="#{phaseController.statusReview}">
-			<o:block>
-				<h:commandButton value="#{msg['seminarpool_allocation_complete']}"
-					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.completeAllocation}"
-					title="#{msg['seminarpool_allocation_complete']}"
-					styleClass="button" />
-			</o:block>
-		</c:if>
-		<c:if test="#{phaseController.statusAfterReview}">
-			<o:block>
-				<h:commandButton value="#{msg['seminarpool_allocation_export']}"
-					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
-					title="#{msg['seminarpool_allocation_export']}"
-					styleClass="button" />
-			</o:block>
-		</c:if>
-	</h:form>
-	</s:acl>
+	
+		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
+			<h:form id="genereteAllocation">	
+				<c:if test="#{phaseController.statusBeforeRegistrationComplete}">
+					<o:block label="#{msg.seminarpool_allocation_overview_header}">
+						<div class="content_font_normal"> 
+							<h:outputText value="#{msg.seminarpool_allocation_overview_text_registration}" escape="false"/>
+						</div>
+					</o:block>
+				</c:if>
+				<c:if test="#{phaseController.statusRegistrationComplete}">
+					<o:block label="#{msg.seminarpool_allocation_overview_header}">
+						<div class="content_font_normal"> 
+							<h:outputText value="#{msg.seminarpool_allocation_overview_text_generate}" escape="false"/>
+						<br/><br/>
+						<h:commandButton value="#{msg['seminarpool_allocation_generate']}"
+							actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.generateAllocation}"
+							title="#{msg['seminarpool_allocation_generate']}"
+							styleClass="button" />
+						</div>
+					</o:block>
+				</c:if>
+				<c:if test="#{phaseController.statusReview}">
+					<o:block label="#{msg.seminarpool_allocation_overview_header}">
+						<div class="content_font_normal"> 
+							<h:outputText value="#{msg.seminarpool_allocation_overview_text_complete}" escape="false"/>
+						<br/><br/>
+						<h:commandButton value="#{msg['seminarpool_allocation_complete']}"
+							actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.completeAllocation}"
+							title="#{msg['seminarpool_allocation_complete']}"
+							styleClass="button" />
+						<h:commandButton value="#{msg['seminarpool_allocation_export']}"
+							actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
+							title="#{msg['seminarpool_allocation_export']}"
+							styleClass="button" />
+						</div>
+					</o:block>
+				</c:if>
+				<c:if test="#{phaseController.statusConfirmedPhase}">
+					<o:block label="#{msg.seminarpool_allocation_overview_header}">
+						<div class="content_font_normal"> 
+							<h:outputText value="#{msg.seminarpool_allocation_overview_text_export}" escape="false"/>
+						<br/><br/>
+						<h:commandButton value="#{msg['seminarpool_allocation_export']}"
+							actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
+							title="#{msg['seminarpool_allocation_export']}"
+							styleClass="button" />
+						</div>
+					</o:block>
+				</c:if>
+			</h:form>
+		</s:acl>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->
