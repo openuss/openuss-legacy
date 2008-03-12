@@ -89,7 +89,12 @@
 						</c:if>
 					</div>
 				</h:panelGroup>
-				<h:outputText value="" />
+				<h:panelGroup>
+				<c:if test="#{views$secured$user$userprofile.ownProfile}">
+				<p class="content_font_normal">
+				#{msg.user_profile_text}
+				</p></c:if>
+				</h:panelGroup>
 				<h:outputText value="" />
 		
 			
@@ -111,31 +116,31 @@
 
 				<c:if test="#{showuser.profile.addressPublic or views$secured$user$userprofile.buddy}">
 					<c:if test="#{not empty showuser.contact.address}">
-						<h:outputText value="#{msg.user_contact_address}:" /> 
-						<h:outputText value="#{showuser.contact.address}" />
+						<h:outputText value="#{msg.user_contact_address}:" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/> 
+						<h:outputText value="#{showuser.contact.address}" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.postcode}">
-						<h:outputText value="#{msg.user_contact_postcode}:" />
-						<h:outputText value="#{showuser.contact.postcode}" />
+						<h:outputText value="#{msg.user_contact_postcode}:" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.postcode}" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.city}">
-						<h:outputText value="#{msg.user_contact_city}:" />
-						<h:outputText value="#{showuser.contact.city}" />
+						<h:outputText value="#{msg.user_contact_city}:" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.city}" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.country}">
-						<h:outputText value="#{msg.user_contact_country}:" />
-						<h:outputText value="#{showuser.contact.country}" />
+						<h:outputText value="#{msg.user_contact_country}:" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.country}" styleClass="#{((not showuser.profile.addressPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 				</c:if> 
 		
 				<c:if test="#{showuser.profile.emailPublic or views$secured$user$userprofile.buddy}">
-					<h:outputText value="#{msg.user_email}: " />
+					<h:outputText value="#{msg.user_email}: " styleClass="#{((not showuser.profile.emailPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					<h:outputLink value="mailto://#{showuser.email}" styleClass="email">
-						<h:outputText value="#{showuser.email}" />
+						<h:outputText value="#{showuser.email}" styleClass="#{((not showuser.profile.emailPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					</h:outputLink>
 					<h:outputText value="" />
 				</c:if> 
@@ -146,21 +151,21 @@
 								not empty showuser.contact.msn)}">
 					
 					<c:if test="#{not empty showuser.contact.skype}">
-						<h:outputText value="#{msg.user_contact_skype}: " />
+						<h:outputText value="#{msg.user_contact_skype}: " styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputLink value="skype:#{showuser.contact.skype}" styleClass="email">
 							<h:graphicImage value="http://mystatus.skype.com/smallicon/#{showuser.contact.skype}" />
-							<h:outputText value=" #{showuser.contact.skype}" />
+							<h:outputText value=" #{showuser.contact.skype}" styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						</h:outputLink>
 						<h:outputText value="" />
 					</c:if> 
 					<c:if test="#{not empty showuser.contact.icq}">
-						<h:outputText value="#{msg.user_contact_icq}:" />
-						<h:outputText value="#{showuser.contact.icq}" />
+						<h:outputText value="#{msg.user_contact_icq}:" styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.icq}" styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if> 
 					<c:if test="#{not empty showuser.contact.msn}">
-						<h:outputText value="#{msg.user_contact_msn}:" />
-						<h:outputText value="#{showuser.contact.msn}" />
+						<h:outputText value="#{msg.user_contact_msn}:" styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.msn}" styleClass="#{((not showuser.profile.profileContactPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if> 
 				</c:if>
@@ -169,13 +174,13 @@
 							not empty showuser.contact.telephone or 
 							not empty showuser.contact.mobile)}">
 					<c:if test="#{not empty showuser.contact.telephone}">
-						<h:outputText value="#{msg.user_contact_telephone}:" />
-						<h:outputText value="#{showuser.contact.telephone}" />
+						<h:outputText value="#{msg.user_contact_telephone}:" styleClass="#{((not showuser.profile.telephonePublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.telephone}" styleClass="#{((not showuser.profile.telephonePublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.mobile}">
-						<h:outputText value="#{msg.user_contact_mobile}:" />
-						<h:outputText value="#{showuser.contact.mobile}" />
+						<h:outputText value="#{msg.user_contact_mobile}:" styleClass="#{((not showuser.profile.telephonePublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.mobile}" styleClass="#{((not showuser.profile.telephonePublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 				</c:if>
@@ -190,30 +195,30 @@
 					<h:outputText value=""/>
 					<h:outputText value="" />
 					<c:if test="#{not empty showuser.contact.birthday}">
-						<h:outputText value="#{msg.user_contact_birthday}: " />
-						<h:outputText value="#{showuser.contact.birthday}">
+						<h:outputText value="#{msg.user_contact_birthday}: " styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.birthday}" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}">
 							<f:convertDateTime pattern="dd.MM.yyyy" />
 						</h:outputText>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.searching}">
-						<h:outputText value="#{msg.user_contact_searching}:" />
-						<h:outputText value="#{showuser.contact.searching}" />
+						<h:outputText value="#{msg.user_contact_searching}:" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.searching}" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.providing}">
-						<h:outputText value="#{msg.user_contact_providing}:" />
-					 	<h:outputText value="#{showuser.contact.providing}" />
+						<h:outputText value="#{msg.user_contact_providing}:" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+					 	<h:outputText value="#{showuser.contact.providing}" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					 	<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.contact.interests}">
-						<h:outputText value="#{msg.user_contact_interests}:" />
-						<h:outputText value="#{showuser.contact.interests}" />
+						<h:outputText value="#{msg.user_contact_interests}:" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.contact.interests}" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
-					<h:outputText value="#{msg.user_contact_portrait}:" />
-					<h:outputText value="#{showuser.profile.portrait}" escape="false" />
+					<h:outputText value="#{msg.user_contact_portrait}:" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+					<h:outputText value="#{showuser.profile.portrait}" escape="false" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					<h:outputText value="" />
 					</c:if>
 				</c:if>
@@ -225,13 +230,13 @@
 					<h:outputText value="" />
 					<h:outputText value="" />	
 					<c:if test="#{not empty showuser.profile.studies}">
-						<h:outputText value="#{msg.user_profile_studies}:" />
-						<h:outputText value="#{showuser.profile.studies}" />
+						<h:outputText value="#{msg.user_profile_studies}:" styleClass="#{((not showuser.profile.profileUniPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.profile.studies}" styleClass="#{((not showuser.profile.profileUniPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 					<c:if test="#{not empty showuser.profile.ageGroup}">
-						<h:outputText value="#{msg.user_profile_agegroup}:" />
-						<h:outputText value="#{showuser.profile.ageGroup}" />
+						<h:outputText value="#{msg.user_profile_agegroup}:" styleClass="#{((not showuser.profile.profileUniPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
+						<h:outputText value="#{showuser.profile.ageGroup}" styleClass="#{((not showuser.profile.profileUniPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
 				</c:if>

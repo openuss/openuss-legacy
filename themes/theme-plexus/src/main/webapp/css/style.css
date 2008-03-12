@@ -2658,3 +2658,11 @@ ul.action_list li.calendar_listmode a span{
   background-image:url(../img/buttons/bookmark_remove_icon.png);
 }
 
+/* Profile settings */
+span.profile-not-visible {
+	color: grey;
+	font-style: italic;
+}
+span.profile-visible {
+	color: black;
+}
