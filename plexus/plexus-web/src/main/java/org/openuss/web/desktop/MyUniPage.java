@@ -439,8 +439,6 @@ public class MyUniPage extends BasePage {
 	private void loadValuesForTabs(UITabs tabs) {
 		if (tabDataLoaded == false && prerenderCalled == true && tabs != null) {
 			logger.debug("Loading data for MyUni-Tabs");
-			// Make sure myUni-Data is loaded
-			prepareData();
 
 			// Get the current university id
 			Long universityId = chooseUniversity();
@@ -466,10 +464,10 @@ public class MyUniPage extends BasePage {
 								&& universityId.longValue() == universityInfo
 										.getId().longValue()) {
 							currentItem = newItem;
-							currentItem.setUrl(contextPath()
-									+ universityBasePath + universityId);
-						} else
-							items.add(newItem);
+							newItem.setUrl(contextPath() + universityBasePath
+									+ universityId);
+						}
+						items.add(newItem);
 					}
 				}
 

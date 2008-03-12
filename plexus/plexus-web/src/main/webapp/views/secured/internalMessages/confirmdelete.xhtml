@@ -46,36 +46,42 @@
 				
 			</o:block>
 			
-			<o:block label="#{msg.openuss4us_messagecenter_readmessage}">
-				<div class="content_font_normal">
+			<o:block label="#{internalMessageInfo.subject}" styleClass="content_box">
+			<h:panelGrid columns="2">
+				<h:panelGroup>
 				<h:outputText
 					value="#{msg.openuss4us_messagecenter_sender}" styleClass="header_font_normal" /><br />
 				<h:outputText value="#{internalMessageInfo.senderDisplayName}"
 					styleClass="content_font_normal" /><br />
+					</h:panelGroup>
+					<h:panelGroup>
 				<h:outputText value="#{msg.openuss4us_messagecenter_recipient}" styleClass="header_font_normal" /><br/>
 
 
 				<t:dataList 
 					id="recipients"  
 					var="rec"
-					label="TODO Recipients"
+					label="#{msg.openuss4us_messagecenter_recipient}"
 					value="#{internalMessageInfo.internalMessageRecipientsInfos}"
 					rendered="#{not empty internalMessageInfo.internalMessageRecipientsInfos}"
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
-					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" /><br/><br/>
-				</t:dataList>
-				
-
-				
-			<o:block label="#{internalMessageInfo.subject}">
-				<div class="content_font_normal">
-				<h:outputText
-					value="#{internalMessageInfo.content}"
-					styleClass="content_font_normal" escape="false" /></div></o:block></div>
+					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" />
+				</t:dataList></h:panelGroup>
+				 <f:facet name="footer">
+						<h:panelGroup styleClass="content_font_normal">
+							<h:outputText value="#{msg.openuss4us_messagecenter_sentdate}: "/>
+							<h:outputText value="#{internalMessageInfo.messageDate}">
+								<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+							</h:outputText>
+						</h:panelGroup>
+					</f:facet>
+				</h:panelGrid>
 			</o:block>
-			
-
-			
+			<o:block styleClass="empty_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{internalMessageInfo.content}"
+					escape="false" /></p>
+			</o:block>
 			
 			<o:block>
 				<h:commandButton id="reallydelete" action="#{views$secured$internalMessages$readmessage.delete}"

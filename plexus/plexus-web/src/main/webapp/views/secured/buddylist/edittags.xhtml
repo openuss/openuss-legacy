@@ -63,7 +63,7 @@
 				</plexus:dataTable></h:form>
 				<h:form id="openuss4us_buddylist_addtag">
 				<o:block><div styleClass="content_normal">
-				<o:input entity="views$secured$buddylist$edittags" property="newTag" id="input_tag"
+				<o:input entity="views$secured$buddylist$edittags" property="newTag" forceId="true"
 					label="#{msg.openuss4us_buddylist_command_tag_add}" styleClass="field" required="true">
 					<f:validateLength minimum="3" />
 					<f:converter converterId="xssFilter"/>
@@ -79,7 +79,7 @@
 					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
 					
 						<a href="#"
-							onClick="javascript:document.getElementById('_id6:openuss4us_buddylist_addtag:newTag').value='#{aUsedTag}'">#{aUsedTag}</a>
+							onClick="javascript:document.getElementById('newTag').value='#{aUsedTag}'">#{aUsedTag}</a>
 					<h:outputText value="," rendered="#{index + 1 lt rowCount}"/>
 				
 				</t:dataList></span>
