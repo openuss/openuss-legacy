@@ -19,7 +19,7 @@
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
-
+ 
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
@@ -36,94 +36,94 @@
 				<o:block styleClass="option_box" label="#{msg.options}">
 					<ul class="action_list">
 						<li class="wiki_create_new">
-							<h:commandLink value="" action="wiki_create_new_site" title="#{msg.wiki_main_button_new_site_title}" ><span />#{msg.wiki_main_button_new_site}</h:commandLink>
+							<t:commandLink id="wiki_create_new" forceId="true" value="" action="wiki_create_new_site" title="#{msg.wiki_main_button_new_site_title}" ><span />#{msg.wiki_main_button_new_site}</t:commandLink>
 						</li>
 					
 						<li class="wiki_overview">
-							<h:commandLink 
+							<t:commandLink id="wiki_overview" forceId="true"
 								value=""
 								action="wiki_overview"
-								title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</h:commandLink>
+								title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</t:commandLink>
 						</li>
 					
 						<c:if test="${wiki_current_site_version.deleted}">
 							<li class="wiki_versions">
-								<h:commandLink
+								<t:commandLink id="wiki_version" forceId="true"
 									value=""
 									action="wiki_version"
 									immediate="true" 
-									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</h:commandLink>
+									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</t:commandLink>
 							</li>
 							<li class="wiki_recover">
-								<h:commandLink 
+								<t:commandLink id="wiki_recover" forceId="true"
 									value="" 
 									action="#{views$secured$wiki$wikimain.recoverSite}"
-									title="#{msg.wiki_overview_recover_site_title}"><span />#{msg.wiki_overview_recover_site}</h:commandLink>
+									title="#{msg.wiki_overview_recover_site_title}"><span />#{msg.wiki_overview_recover_site}</t:commandLink>
 							</li>
 						</c:if>
 						
 						<c:if test="${(not wiki_current_site_version.deleted) and (not empty wiki_current_site_version.text)}">
 							<li class="wiki_versions">
-			                    <h:commandLink
+			                    <t:commandLink id="wiki_versions" forceId="true"
 									value=""
 									action="wiki_version"
 									immediate="true"
-									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</h:commandLink>
+									title="#{msg.wiki_main_button_version_title}"><span />#{msg.wiki_main_button_version}</t:commandLink>
 							</li>
 							
 							<c:if test="${views$secured$wiki$wikimain.hasStableVersion}">
 								<li class="wiki_last_stable">
-									<h:commandLink
+									<t:commandLink id="wiki_last_stable" forceId="true"
 										value=""
 										action="#{views$secured$wiki$wikimain.showStable}" 
 										immediate="true" 
-										title="#{msg.wiki_main_button_showStable_title}"><span />#{msg.wiki_main_button_showStable}</h:commandLink>
+										title="#{msg.wiki_main_button_showStable_title}"><span />#{msg.wiki_main_button_showStable}</t:commandLink>
 								</li>
 							</c:if>
 							
 							<li class="wiki_print_preview">
-								<h:commandLink
+								<t:commandLink id="wiki_print_preview" forceId="true"
 			                    	value="" 
 		                            immediate="true"
 		                            onclick="window.open('wikiprintpreview.faces');"
-		                            title="#{msg.wiki_main_button_preview_title}"><span />#{msg.wiki_main_button_preview}</h:commandLink>
+		                            title="#{msg.wiki_main_button_preview_title}"><span />#{msg.wiki_main_button_preview}</t:commandLink>
 	                       	</li>
 	                       	
 	                    	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 	                    		<c:if test="${not wiki_current_site_version.readOnly}">
 	                    			<li class="wiki_lock">
-		                    			<h:commandLink 
+		                    			<t:commandLink id="wiki_lock" forceId="true" 
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.lockSite}"
 		                        			immediate="true"
-		                        			title="#{msg.wiki_overview_lock_site_title}"><span />${msg.wiki_overview_lock_site}</h:commandLink>
+		                        			title="#{msg.wiki_overview_lock_site_title}"><span />${msg.wiki_overview_lock_site}</t:commandLink>
 	                        		</li>
 	                        	</c:if>
 	                    		<c:if test="${wiki_current_site_version.readOnly}">
 	                    			<li class="wiki_unlock">
-	                    				<h:commandLink 
+	                    				<t:commandLink id="wiki_unlock" forceId="true"
 		                        			value="" 
 		                        			action="#{views$secured$wiki$wikimain.unlockSite}" 
 		                        			immediate="true"
-		                        			title="#{msg.wiki_overview_unlock_site_title}"><span />#{msg.wiki_overview_unlock_site}</h:commandLink>
+		                        			title="#{msg.wiki_overview_unlock_site_title}"><span />#{msg.wiki_overview_unlock_site}</t:commandLink>
 	                        		</li>
 	                        	</c:if>
 	                        	<c:if test="${not wiki_current_site_version.stable}">
 									<li class="wiki_mark_stable">
-										<h:commandLink
+										<t:commandLink id="wiki_stable" forceId="true"
 											value=""
 											action="#{views$secured$wiki$wikimain.markStable}" 
 											immediate="true"
-											title="#{msg.wiki_main_button_markStable_title}"><span />#{msg.wiki_main_button_markStable}</h:commandLink>
+											title="#{msg.wiki_main_button_markStable_title}"><span />#{msg.wiki_main_button_markStable}</t:commandLink>
 									</li>
 								</c:if>
 								<c:if test="${wiki_current_site_version.stable}">
 									<li class="wiki_unmark_stable">
-										<h:commandLink
+										<t:commandLink id="wiki_unstable" forceId="true"
 											value=""
 											action="#{views$secured$wiki$wikimain.unmarkStable}" 
 											immediate="true"
-											title="#{msg.wiki_main_button_unmarkStable_title}"><span />#{msg.wiki_main_button_unmarkStable}</h:commandLink>
+											title="#{msg.wiki_main_button_unmarkStable_title}"><span />#{msg.wiki_main_button_unmarkStable}</t:commandLink>
 									</li>
 								</c:if>
 							</s:acl>
@@ -131,10 +131,10 @@
 				
 						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 							<li class="wiki_import">
-								<h:commandLink 
+								<t:commandLink id="wiki_import" forceId="true"
 									value="" 
 									action="#{views$secured$wiki$wikimain.showImportPage}" 
-									title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</h:commandLink>
+									title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</t:commandLink>
 							</li>
 						</s:acl>
 					</ul>
@@ -172,11 +172,11 @@
 							</p>
 		  				</o:block>
 		  				<o:block>
-		  					<h:commandButton 
+		  					<t:commandButton id="create" forceId="true"
 								value="#{msg.wiki_edit_button_create}" 
 								action="#{views$secured$wiki$wikiedit.create}"
 								styleClass="button"/>
-							<h:commandButton 
+							<t:commandButton id="cancel" forceId="true"
 								value="${msg.wiki_edit_button_cancel}" 
 								action="#{views$secured$wiki$wikiedit.cancelCreate}" 
 								styleClass="button"/>
@@ -200,7 +200,7 @@
 		                                  
 		                <o:block>
 		                	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
-		                		<h:commandButton 
+		                		<t:commandButton id="edit" forceId="true" 
 		                        	value="#{msg.wiki_main_button_edit}" 
 		                        	action="wiki_edit" 
 		                        	immediate="true" 
@@ -209,7 +209,7 @@
 		                    </s:acl>
 
 	                    	<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
-	                    		<h:commandButton 
+	                    		<t:commandButton id="edit" forceId="true"
 	                        		value="#{msg.wiki_main_button_edit}" 
 	                        		action="wiki_edit" 
 	                        		immediate="true" 

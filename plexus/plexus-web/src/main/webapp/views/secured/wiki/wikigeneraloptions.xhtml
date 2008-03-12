@@ -14,19 +14,19 @@
 		<o:block styleClass="option_box" label="#{msg.options}">
 			<ul class="action_list">
 				<li class="wiki_create_new">
-					<h:commandLink value="" action="wiki_create_new_site" title="#{msg.wiki_main_button_new_site_title}" ><span />#{msg.wiki_main_button_new_site}</h:commandLink>
+					<t:commandLink id="wiki_create_new" forceId="true" value="" action="wiki_create_new_site" title="#{msg.wiki_main_button_new_site_title}" ><span />#{msg.wiki_main_button_new_site}</t:commandLink>
 				</li>
 			
 				<li class="wiki_overview">
-					<h:commandLink 
+					<t:commandLink id="wiki_overview" forceId="true" 
 						value="" 
 						action="wiki_overview"
-						title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</h:commandLink>
+						title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</t:commandLink>
 				</li>
 				
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<li class="wiki_import">
-						<h:commandLink value="" action="#{views$secured$wiki$wikimain.showImportPage}" title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</h:commandLink>
+						<t:commandLink id="wiki_import" forceId="true" value="" action="#{views$secured$wiki$wikimain.showImportPage}" title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</t:commandLink>
 					</li>
 				</s:acl>
 			</ul>

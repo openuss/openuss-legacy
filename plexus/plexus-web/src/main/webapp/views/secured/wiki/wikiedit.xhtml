@@ -40,16 +40,18 @@
 							<f:converter converterId="xssFilter"/>
 						</fck:editor>	 				
 					</div>
-					<o:input entity="wiki_current_site_version" property="note" maxlength="100" />
+					<o:input id="node" forceId="true" entity="wiki_current_site_version" property="note" maxlength="100" />
 				</o:block>
 				
 				<o:block>
-				    <h:commandButton 
+				    <t:commandButton
+				    	id="save" forceId="true" 
 						value="#{msg['wiki_edit_button_save']}" 
 						action="#{views$secured$wiki$wikiedit.save}" 
 						title="#{msg.save}"
 						styleClass="button"/>
-					<h:commandButton 
+					<t:commandButton
+						id="cancel" forceId="true" 
 						value="${msg.wiki_edit_button_cancel}" 
 						action="course_wiki" 
 						immediate="true" 

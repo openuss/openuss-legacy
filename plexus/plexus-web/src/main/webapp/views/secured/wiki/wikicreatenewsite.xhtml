@@ -36,8 +36,8 @@
 				<h:form id="wikiCreateNewSiteForm">
 			        <o:block label="#{msg.wiki_new_site_headline}" styleClass="form_box">
 			        	<h:outputLabel value="#{msg.wiki_new_site_name}" for="newSiteText" styleClass="field_label" />
-			        	<h:inputText id="newSiteText" value="#{views$secured$wiki$wikicreatenewsite.createNewSiteName}" styleClass="field_inline" required="true" maxlength="100" />
-			            <h:commandButton id="createNewSite" action="#{views$secured$wiki$wikicreatenewsite.createNewSite}" value="#{msg.wiki_new_site_create}" title="#{msg.wiki_new_site_create_hint}" styleClass="button_save" />
+			        	<t:inputText id="name" forceId="true" value="#{views$secured$wiki$wikicreatenewsite.createNewSiteName}" styleClass="field_inline" required="true" maxlength="100" />
+			            <t:commandButton id="create" forceId="true" action="#{views$secured$wiki$wikicreatenewsite.createNewSite}" value="#{msg.wiki_new_site_create}" title="#{msg.wiki_new_site_create_hint}" styleClass="button_save" />
 			        </o:block>
 			    </h:form>
 			</ui:define>	
