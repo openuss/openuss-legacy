@@ -8,17 +8,17 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:s="http://www.openuss.org/jsf-security">
-      
+                 
     <plexus:dataTable 
     	id="documentstable" 
-    	label="#{msg.documents_main_header} #{documents_current_folder.name}" 
+    	label="#{msg.documents_main_header}: #{documents_current_folder.name}" 
     	value="views$secured$documents$documents.data" 
     	columnClasses=" col_min_center, col_min_center,col_max_left, col_filesize, col_date, col_date, col_commands"
     	var="entry" 
     	rows="20"
     	infoText="#{msg.table_info_text_documents}">  
-      
-		<t:column>
+    
+      <t:column>
 			<f:facet name="header">
 				<h:selectBooleanCheckbox 
 					immediate="true" 
