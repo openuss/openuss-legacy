@@ -37,20 +37,17 @@
 		</t:column>
 		<t:column styleClass="col_max_left">
 			<plexus:commandSortHeader columnName="subject"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>  
-			<span class="messagecenter_header"><h:commandLink value="#{inboxMessage.subject}" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
-			</h:commandLink></span>
-			<br />
+		
 			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
+			<h:outputText value="#{inboxMessage.subject}"
+				styleClass="messagecenter_header" /><br />
 			<h:outputText value="#{fn:substring(inboxMessage.content, 0, 100)}..."
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) gt 100}" />
-			</h:commandLink>
-			<h:commandLink value="" action= "#{views$secured$internalMessages$messagecenter.readReceivedMessage}">
 			<h:outputText value="#{inboxMessage.content}"
 				syleClass="content_font_normal"
 				rendered="#{fn:length(inboxMessage.content) le 100}" />
 			</h:commandLink>
-			
 			
 		</t:column>
 		<t:column styleClass="col_post_date">
