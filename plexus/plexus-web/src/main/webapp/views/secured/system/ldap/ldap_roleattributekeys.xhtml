@@ -41,7 +41,7 @@
 					value="views$secured$system$ldap$ldap_roleattributekeys.roleAttributeKeys" 
 					var="bean" 
 					rows="15">
-					<t:column>
+					<t:column forceId="true">
 						<plexus:commandSortHeader columnName="name">
 							#{msg['ldap_roleattributekey_name']}
 						</plexus:commandSortHeader>
@@ -53,16 +53,16 @@
 						<s:authorize ifAllGranted="ROLE_ADMIN">
 							<plexus:command
 								bean = "#{views$secured$system$ldap$ldap_roleattributekeys}"
-								action = "selectRoleAttributeKeyAndConfirmRemove"
-								styleClass="icon_remove"
-								label="#{msg.ldap_roleattributekey_command_remove}"
-								title="#{msg.ldap_roleattributekey_command_remove_hint}"/>
-							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_roleattributekeys}"
 								action = "selectRoleAttributeKeyAndEdit"
 								styleClass="icon_edit"
 								label="#{msg.ldap_roleattributekey_command_edit}"
 								title="#{msg.ldap_roleattributekey_command_edit_hint}"/>
+							<plexus:command
+								bean = "#{views$secured$system$ldap$ldap_roleattributekeys}"
+								action = "selectRoleAttributeKeyAndConfirmRemove"
+								styleClass="icon_remove"
+								label="#{msg.ldap_roleattributekey_command_remove}"
+								title="#{msg.ldap_roleattributekey_command_remove_hint}"/>
 						</s:authorize>
 					</plexus:column>
 					
