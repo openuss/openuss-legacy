@@ -202,6 +202,10 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		return seminarpoolInfo.getPriorities();
 	}
 	
+	public int getMaxNeededSeminars(){
+		return seminarpoolInfo.getMaxSeminarAllocations();
+	}
+	
 	public int getCountConditions(){
 		List<SeminarConditionInfo> seminarconditions = this.seminarpoolAdministrationService.findConditionBySeminarpool(seminarpoolInfo.getId());
 		return seminarconditions.size();

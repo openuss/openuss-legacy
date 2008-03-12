@@ -41,7 +41,7 @@
 				<h:commandButton value="#{msg['seminarpool_allocation_generate']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.generateAllocation}"
 					title="#{msg['seminarpool_allocation_generate']}"
-					styleClass="button_save" />
+					styleClass="button" />
 			</o:block>
 		</c:if>
 		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status3}">
@@ -49,7 +49,7 @@
 				<h:commandButton value="#{msg['seminarpool_allocation_complete']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.completeAllocation}"
 					title="#{msg['seminarpool_allocation_complete']}"
-					styleClass="button_save" />
+					styleClass="button" />
 			</o:block>
 		</c:if>
 		<c:if test="#{views$secured$seminarpool$allocation$userAllocationOverview.status4}">
@@ -57,7 +57,7 @@
 				<h:commandButton value="#{msg['seminarpool_allocation_export']}"
 					actionListener="#{views$secured$seminarpool$allocation$userAllocationOverview.exportAllocation}"
 					title="#{msg['seminarpool_allocation_export']}"
-					styleClass="button_save" />
+					styleClass="button" />
 			</o:block>
 		</c:if>
 	</h:form>

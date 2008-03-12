@@ -37,22 +37,32 @@
 				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
 				<t:saveState value="#{seminarUserRegistrationInfo}" id="seminarUserRegistrationInfo"/>
   				
-			   <o:block label="#{msg.seminarpool_entrance_limitation}">
-			   	<t:dataList 
+			   
+			   <t:dataList 
 						id="conditions"  
 						var="conditions"
 						value="#{seminarpoolUserRegistration.conditionList}"
 						layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
-						<h:selectBooleanCheckbox id="field#{index}" rendered="#{conditions.fieldType.value==3}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==3}" />
-						<h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" /><h:outputText id="field#{conditions.id}" value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==2}" />
-						<br />
-						<h:inputText rendered="#{conditions.fieldType.value==1}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" /><h:inputTextarea rendered="#{conditions.fieldType.value==2}" required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
-						<br />
+					   <o:block label="#{msg.seminarpool_entrance_limitation} #{index+1}">
+											    
+					    <div class="content_font_normal">
+							
+							<h:selectBooleanCheckbox rendered="#{conditions.fieldType.value==3}" 
+										 required="true" />
+							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==3}" />
+							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==2}" />
+							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" />
+							<br />
+							<h:inputText rendered="#{conditions.fieldType.value==1}" 
+										 required="true" />
+							<h:inputTextarea rendered="#{conditions.fieldType.value==2}" 
+							                 required="true" class="field" />
+						</div>
+						</o:block>		
 				</t:dataList>
-			   </o:block>
 			   
 			   	<o:block>				
-			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
+			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true" />
 					<h:commandButton action="#{seminarpoolUserRegistration.create}" value="#{msg.seminarpool_create_button}" styleClass="button_continue"/>
 					<h:messages/>
 		  		</o:block>
