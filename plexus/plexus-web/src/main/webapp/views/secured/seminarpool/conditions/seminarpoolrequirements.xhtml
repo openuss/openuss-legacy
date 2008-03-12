@@ -30,13 +30,12 @@
 	</ui:define>
 
 	<ui:define name="content" styleClass="footer_normal">
-			
-		
+	
 		<h:form id="seminarpool_conditions">
 		    <plexus:dataTable 
 		    	id="conditionsTable" 
 		    	label="#{msg.seminarpool_conditions_subheading}" 
-		    	value="views$secured$seminarpool$seminarpoolrequirements.conditionsTable" 
+		    	value="views$secured$seminarpool$conditions$seminarpoolrequirements.conditionsTable" 
 		    	columnClasses="col_max_left, col_max_left, col_commands"
 		    	var="bean" 
 		    	rows="20">  
@@ -59,7 +58,7 @@
 			
 				<plexus:column header="#{msg.commands_header}">
 					<plexus:command
-						bean="#{views$secured$seminarpool$seminarpoolrequirements}"
+						bean="#{views$secured$seminarpool$conditions$seminarpoolrequirements}"
 						action="removeCondition"
 						label="#{msg.seminarpool_condition_command_remove}"
 						title="#{msg.seminarpool_condition_command_remove_hint}"
@@ -74,8 +73,8 @@
 				<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
 				<h:selectOneMenu id="conditionType" 
 					layout="pageDirection" 
-					value="#{views$secured$seminarpool$seminarpoolrequirements.seminarConditionInfo.fieldType}" 
-					valueChangeListener="#{views$secured$seminarpool$seminarpoolrequirements.processConditionTypeChanged}"
+					value="#{views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo.fieldType}" 
+					valueChangeListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.processConditionTypeChanged}"
 					styleClass="pulldown">
 					<f:converter converterId="seminarpoolConditionTypeConverter" />
 					<f:selectItems value="#{seminarpoolRegistration.conditionTypes}"/>
@@ -83,14 +82,14 @@
 				<h:message for="conditionType" styleClass="field_error"/>	
 	 			<o:input 
 						label="#{msg.seminarpool_field_description}"
-						entity="views$secured$seminarpool$seminarpoolrequirements.seminarConditionInfo" 
+						entity="views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo" 
 						property="conditionDescription" 
 						type="textarea"
 						maxlength="950"
 						required="true"/>
 				<h:commandButton
 					value="#{msg['seminarpool_conditions_command_add']}"
-					actionListener="#{views$secured$seminarpool$seminarpoolrequirements.addCondition}"
+					actionListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.addCondition}"
 					title="#{msg['seminarpool_conditions_command_add_hint']}"
 					styleClass="button_save" />
 			</o:block>	

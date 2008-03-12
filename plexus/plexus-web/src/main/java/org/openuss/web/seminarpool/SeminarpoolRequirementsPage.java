@@ -34,7 +34,7 @@ import org.openuss.web.Constants;
  * 
  * @author PS-Seminarplatzvergabe
  */
-@Bean(name = "views$secured$seminarpool$seminarpoolrequirements", scope = Scope.REQUEST)
+@Bean(name = "views$secured$seminarpool$conditions$seminarpoolrequirements", scope = Scope.REQUEST)
 @View
 public class SeminarpoolRequirementsPage extends AbstractSeminarpoolPage {
 
