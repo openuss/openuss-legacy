@@ -112,7 +112,7 @@ public class SeminarRegistrationStep1Page extends BasePage{
 			InstituteInfo instituteInfo = getInstituteService().findInstitute(courseInfo.getInstituteId());
 			DepartmentInfo departmentInfo = getDepartmentService().findDepartment(instituteInfo.getDepartmentId());
 			UniversityInfo universityInfo = getUniversityService().findUniversity(departmentInfo.getUniversityId());
-			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversity(universityInfo.getId()));
+			List<SeminarpoolInfo> seminarpoolList = new ArrayList<SeminarpoolInfo>(getSeminarpoolAdministrationService().findSeminarpoolsByUniversityAndStatus(universityInfo.getId(),SeminarpoolStatus.PREPARATIONPHASE));
 			sort(seminarpoolList);
 			dataPage = new DataPage<SeminarpoolInfo>(seminarpoolList.size(), 0, seminarpoolList);
 		}
