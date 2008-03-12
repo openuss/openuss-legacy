@@ -13,6 +13,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
 import org.openuss.security.ldap.LdapConfigurationService;
@@ -21,6 +22,7 @@ import org.openuss.security.ldap.LdapServerType;
 import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * Backing bean for the ldap_server registration. Is responsible starting the
@@ -78,15 +80,42 @@ public class LdapServerRegistrationController extends BasePage {
 
 	
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws LectureException {		
 		logger.debug("prerender - refreshing ldapServer session object");
 		refreshLdapServer();
 		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {		
 			addError(i18n("message_ldap_ldapserver_no_ldapserver_selected"));
-			redirect(Constants.DESKTOP);
+			redirect(Constants.LDAP_SERVER_PAGE);
 		}
 	}
 
+	
+	/**
+	 * Adds an additional BreadCrumb.
+	 */
+	 private void addBreadCrumbs() {		 	
+		 breadcrumbs.loadAdministrationCrumbs();
+		 
+		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
+		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);
+		 myBreadCrumb.setName(i18n("ldap_index"));
+		 myBreadCrumb.setHint(i18n("ldap_index"));
+		 breadcrumbs.addCrumb(myBreadCrumb);
+		 
+		 myBreadCrumb = new BreadCrumb();
+		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_LDAPSERVER);
+		 myBreadCrumb.setName(i18n("ldap_ldapserver_registration_step1"));
+		 myBreadCrumb.setHint(i18n("ldap_ldapserver_registration_step1"));	 
+		 breadcrumbs.addCrumb(myBreadCrumb);
+		 
+		 myBreadCrumb = new BreadCrumb();
+		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_LDAPSERVERSTEP_ONE);
+		 myBreadCrumb.setName(i18n("ldap_server"));
+		 myBreadCrumb.setHint(i18n("ldap_server"));	 
+		 breadcrumbs.addCrumb(myBreadCrumb);
+		 
+	 }
+	
 	
 	private void refreshLdapServer() {
 		if (ldapServerInfo != null) {
@@ -117,7 +146,7 @@ public class LdapServerRegistrationController extends BasePage {
 	}
 	
 	
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
 		List<Long> selectedIds = (ArrayList<Long>) valueChangeEvent.getNewValue();
 		ldapServerInfo.setUserDnPatternIds(selectedIds);
@@ -129,7 +158,7 @@ public class LdapServerRegistrationController extends BasePage {
 	}	
 	
 	
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public List<SelectItem> getAllAuthenticationDomains() {
 
 		List<SelectItem> domainItems = new ArrayList<SelectItem>();
@@ -144,7 +173,7 @@ public class LdapServerRegistrationController extends BasePage {
 	}
 	
 
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public List<SelectItem> getAllUserDnPatterns() {
 
 		List<SelectItem> userDnPatternItems = new ArrayList<SelectItem>();

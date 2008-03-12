@@ -154,9 +154,8 @@ public class LdapServersPage extends BasePage {
 				if (ldapServerList != null) {
 					logger.info("Size:"+ldapServerList.size());
 				}
-				
-//				TODO sort ldapServerList
-//				sort(ldapServerList);
+
+				sort(ldapServerList);
 				dataPage = new DataPage<LdapServerInfo>(ldapServerList.size(),0,ldapServerList);
 			}
 			

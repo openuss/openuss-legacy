@@ -51,14 +51,14 @@
 					<plexus:column header="#{msg.commands_header}">
 						<s:authorize ifAllGranted="ROLE_ADMIN">							
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_servers}"
-								action = "selectLdapServerAndEdit"
+								bean="#{views$secured$system$ldap$ldap_servers}"
+								action="selectLdapServerAndEdit"
 								styleClass="icon_edit"
 								label="#{msg.ldap_server_command_edit}"
 								title="#{msg.ldap_server_command_edit_hint}"/>								
 							<plexus:command
-								bean = "#{views$secured$system$ldap$ldap_servers}"
-								action = "selectLdapServerAndConfirmRemove"
+								bean="#{views$secured$system$ldap$ldap_servers}"
+								action="selectLdapServerAndConfirmRemove"
 								styleClass="icon_remove"
 								label="#{msg.ldap_server_command_remove}"
 								title="#{msg.ldap_server_command_remove_hint}"/>

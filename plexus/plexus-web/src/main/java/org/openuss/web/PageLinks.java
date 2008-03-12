@@ -54,6 +54,7 @@ public class PageLinks{
 	public static final String ADMIN_LDAP_AUTHENTICATIONDOMAIN = "/views/secured/system/ldap/ldap_domains.faces";
 	public static final String ADMIN_LDAP_USERDNPATTERN = "/views/secured/system/ldap/ldap_userdnpatterns.faces";
 	public static final String ADMIN_LDAP_LDAPSERVER = "/views/secured/system/ldap/ldap_servers.faces";
+	public static final String ADMIN_LDAP_LDAPSERVERSTEP_ONE = "/views/secured/system/ldap/ldap_serverstep1.faces";
 	
 	
 	

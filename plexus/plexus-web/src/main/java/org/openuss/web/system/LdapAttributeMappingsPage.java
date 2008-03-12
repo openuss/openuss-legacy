@@ -1,7 +1,6 @@
 package org.openuss.web.system;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
