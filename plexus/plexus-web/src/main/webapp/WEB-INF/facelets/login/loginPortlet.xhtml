@@ -27,7 +27,7 @@
 		   			<t:inputSecret id="j_password" forceId="true" value="#{authenticationController.password}" title="${msg['login_password_hint']}" required="true" styleClass="field"/>
 		   			<h:message id="fieldError" for="j_password" styleClass="field_error" showDetail="true" showSummary="false" />
 		   		
-			    	<h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
+			    	<t:commandButton id="loginButton" forceId="true" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
 		    	</h:form>
 				<h:form id="loginPortletRegister">
 					<ul class="int">

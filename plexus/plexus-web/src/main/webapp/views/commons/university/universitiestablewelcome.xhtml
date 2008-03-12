@@ -10,7 +10,7 @@
       xmlns:c="http://java.sun.com/jstl/core">
 
 	<plexus:dataTable 
-		id="university" 
+		id="university" forceId="true" 
 		label="#{msg.universityList_header}"
 		value="views$public$university$universitieswelcome.universitiesWelcome" 
 		var="bean" 
@@ -19,12 +19,12 @@
 		infoText="#{msg.table_info_text_universities}">
 		
 		<t:column>
-	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
+	        <t:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
 				<h:graphicImage rendered="${not empty bean.imageId}"
 								value="/files?fileid=#{bean.imageId}"
 								title="#{msg.logo} #{bean.name}"
 								style="height:40px; display:block;"/>
-			</h:commandLink>	
+			</t:commandLink>	
 		</t:column>
 	
 		<t:column>

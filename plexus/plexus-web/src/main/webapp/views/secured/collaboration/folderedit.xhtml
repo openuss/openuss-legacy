@@ -37,17 +37,19 @@
 				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label"/>
 				<ui:include src="pathinfo.xhtml" />
 				
-				<o:input entity="collaboration_selected_folder" property="name" required="true" maxlength="100"/>
-				<o:input entity="collaboration_selected_folder" property="description" type="textarea"/>
+				<o:input id="name" forceId="true" entity="collaboration_selected_folder" property="name" required="true" maxlength="100"/>
+				<o:input id="description" forceId="true" entity="collaboration_selected_folder" property="description" type="textarea"/>
 			</o:block>
 
 			<o:block>
-				<h:commandButton 
+				<t:commandButton 
+					id="save" forceId="true"
 					action="#{views$secured$collaboration$workspacefolderedit.save}"
 					value="#{msg['newfolder_button_save']}"
 					title="#{msg['newfolder_button_save']}"
 					styleClass="button_save" />
-				<h:commandButton 
+				<t:commandButton
+					id="cancel" forceId="true"
 					action="workspaceview"
 					value="#{msg['newfolder_button_cancel']}" 
 					styleClass="button_cancel"

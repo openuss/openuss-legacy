@@ -31,6 +31,8 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+		<s:acl domainObject="#{workspaceInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
+	
 		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}" styleClass="form_box">
 				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label" />

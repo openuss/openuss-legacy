@@ -17,35 +17,38 @@
 				<t:panelNavigation2 id="institute_navigation" styleClass="navigation"
 					layout="list" itemClass="nav_item" openItemClass="open_item"
 					activeItemClass="active_item" separatorClass="item_separator">
-					<t:commandNavigation2 value="#{msg['institute_navigation_header']}">
-						<t:commandNavigation2 action="institute" activeOnViewIds="/views/public/institute/institute.xhtml">
+					<t:commandNavigation2 value="#{msg['institute_navigation_header']}" id="cmd_inst_header" forceId="true">
+						<t:commandNavigation2 id="cmd_inst_institute" forceId="true" action="institute" activeOnViewIds="/views/public/institute/institute.xhtml">
 							<h:outputText value="#{msg['institute_profile']}" ></h:outputText>
 						</t:commandNavigation2>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_NEWS}">
-							<t:commandNavigation2 action="institute_news"
+							<t:commandNavigation2 id="cmd_inst_news" forceId="true" action="institute_news"
 								activeOnViewIds="/views/secured/lecture/news.xhtml">
 								<h:outputText value="#{msg['institute_command_news']}"></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}">
-							 <t:commandNavigation2 action="institute_coursetypes"
+							 <t:commandNavigation2 id="cmd_inst_coursetype" forceId="true" action="institute_coursetypes"
 								activeOnViewIds="/views/secured/lecture/institutecoursetypes.xhtml">
 								<h:outputText value="#{msg['institute_command_coursetypes']}"></h:outputText>
 							</t:commandNavigation2>
-							 <t:commandNavigation2 action="institute_courses"
+							 <t:commandNavigation2 id="cmd_inst_courses" forceId="true" action="institute_courses"
 								activeOnViewIds="/views/secured/lecture/institutecourses.xhtml">
 								<h:outputText value="#{msg['institute_command_courses']}"></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2
+								id="cmd_inst_authorisations" forceId="true"
 								value="#{msg['institute_command_authorisations']}"
 								action="institute_members">
 								<t:commandNavigation2 action="institute_members"
+									id="cmd_inst_members" forceId="true"
 									activeOnViewIds="/views/secured/lecture/auth/institutemembers.xhtml">
 									<h:outputText value="#{msg['institute_command_members']}"></h:outputText>
 								</t:commandNavigation2>
 								<t:commandNavigation2 action="institute_aspirants"
+								    id="cmd_inst_aspirants" forceId="true"
 									activeOnViewIds="/views/secured/lecture/auth/aspirants.xhtml">
 									<h:outputText value="#{msg['institute_command_aspirants']}"></h:outputText>
 								</t:commandNavigation2>
@@ -53,6 +56,7 @@
 						</s:acl>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2 action="institute_data"
+							    id="cmd_inst_options" forceId="true"
 								activeOnViewIds="/views/secured/lecture/instituteoptions.xhtml">
 								<h:outputText value="#{msg['institute_command_settings']}"></h:outputText>
 							</t:commandNavigation2>

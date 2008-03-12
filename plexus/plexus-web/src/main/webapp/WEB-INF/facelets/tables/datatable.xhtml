@@ -24,6 +24,9 @@
 	<c:if test="${empty rendered}">
 		<c:set var="rendered" value="true"/>
 	</c:if>
+	<c:if test="${empty forceId}">
+		<c:set var="forceId" value="false"/>
+	</c:if>
       
     <oc:setValueBinding var="data" bean="${value}" property="data"/>  
     <oc:setValueBinding var="binding" bean="${value}" property="table"/>  
@@ -34,7 +37,7 @@
     <c:if test="${rendered}">
 	    <o:block label="${label}">
 	    	<div class="table_scroll">
-				<t:dataTable id="${id}" 
+				<t:dataTable id="#{id}" forceId="#{forceId}" 
 					value="${data}"
 					binding="#{binding}"
 					styleClass="table"

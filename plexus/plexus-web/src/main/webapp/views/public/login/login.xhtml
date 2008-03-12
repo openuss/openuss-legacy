@@ -13,11 +13,11 @@
 		<ui:define name="content">
 	   		<h:form id="loginPortletLogin" styleClass="form_box">
 	   			<o:block label="#{msg.login_headline}">
-		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true"/>
-		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password"/>
+		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true" forceId="true"/>
+		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password" forceId="true"/>
 		   		</o:block>
 		   		<o:block>
-			    	<h:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login"/>
+			    	<t:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login" forceId="true"/>
 			    </o:block>	
 		   	</h:form>
 		 </ui:define>

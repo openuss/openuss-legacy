@@ -17,14 +17,14 @@
 				<f:param value="#{user.lastName}"/>
 			</h:outputFormat>
 			&#160;|&#160;
-			<h:commandLink action="user_profile" value="#{msg.user_portlet_command_profile}"/>
+			<t:commandLink action="user_profile" value="#{msg.user_portlet_command_profile}"/>
 			&#160;|&#160;
-			<h:commandLink id="logout" action="#{authenticationController.logout}" value="#{msg.user_portlet_command_logout}"/>
+			<t:commandLink id="logout" forceId="true" action="#{authenticationController.logout}" value="#{msg.user_portlet_command_logout}"/>
 		</h:form>
 	</s:authorize>
 	<s:authorize ifNotGranted="ROLE_USER">
 		<h:form id="userportletLogin">
-			<h:commandLink id="login" action="login" value="#{msg.user_portlet_command_login}"/> 
+			<t:commandLink id="login" forceId="true" action="login" value="#{msg.user_portlet_command_login}"/> 
 		</h:form>
 	</s:authorize>
 	

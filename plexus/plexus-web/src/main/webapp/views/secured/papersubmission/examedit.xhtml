@@ -13,7 +13,7 @@
       
     <h:form id="paperForm" enctype="multipart/form-data">
         <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
-            <o:input label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
+            <o:input id="name" forceId="true" label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
             
             <h:outputText value="#{msg.papersubmission_exam_edit_description}" styleClass="field_label" />
                     <div class="content_iframe">
@@ -29,7 +29,7 @@
 								var="attachment" 
 								value="#{sessionScope.examInfo.attachments}" 
 								binding="${views$secured$papersubmission$examlist.attachmentList}">
-						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
+						  		<t:commandButton id="attachmentDelete" forceId="true" value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 									action="#{views$secured$papersubmission$examlist.removeAttachment}"
 									immediate="true" styleClass="button_remove" />
 						  		&#160;
@@ -48,27 +48,28 @@
 					</f:subview>
 	
 					<t:inputFileUpload 
-						id="attachmentUpload" 
+						id="attachmentUpload" forceId="true"
 						storage="file" 
 						accept="*"
 						immediate="true" styleClass="uploadField">
 						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 					</t:inputFileUpload>
 					
-					<h:commandButton value="#{msg.papersubmission_exam_edit_add_attachment}"
+					<t:commandButton id="addAttachment" forceId="true" 
+						value="#{msg.papersubmission_exam_edit_add_attachment}"
 						action="#{views$secured$papersubmission$examlist.addAttachment}"
 						title="#{msg.papersubmission_exam_edit_add_attachment}"
 						immediate="true"
 						styleClass="button_add"/> 					
 					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
 					
-            <o:input label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full">
+            <o:input id="deadline" forceId="true" label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full">
             	<f:validator  validatorId="calendarDateAfterNowValidator"/>
             </o:input>
         </o:block> 
         <o:block>   
-            <h:commandButton id="savePaper"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
-            <h:commandButton id="cancelPaper" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
+            <t:commandButton id="savePaper" forceId="true"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+            <t:commandButton id="cancelPaper" forceId="true" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>

@@ -55,8 +55,8 @@
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<c:if test="#{!views$secured$papersubmission$examlist.editing}">	
 						<o:block>
-							<h:commandButton 
-							    id="addExam"
+							<t:commandButton 
+							    id="addExam" forceId="true"
 								action="#{views$secured$papersubmission$examlist.addExam}" 
 								value="#{msg.papersubmission_exam_command_add}" 
 								title="#{msg.papersubmission_exam_command_add_hint}"

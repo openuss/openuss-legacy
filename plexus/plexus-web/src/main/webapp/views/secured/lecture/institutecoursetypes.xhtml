@@ -47,8 +47,8 @@
 				<ui:include src="coursetypestable.xhtml"/>
 				<c:if test="#{!views$secured$lecture$institutecoursetypes.editing}">	
 					<o:block>
-						<h:commandButton 
-						    id="addCourseType"
+						<t:commandButton 
+						    id="addCourseType" forceId="true"
 							action="#{views$secured$lecture$institutecoursetypes.addCourseType}" 
 							value="#{msg.coursetype_command_add}" 
 							title="#{msg.coursetype_command_add_hint}"

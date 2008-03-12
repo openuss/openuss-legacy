@@ -22,9 +22,8 @@
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
-	    <!--  TODO: change to right permission -->
-		<!--s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/-->
-
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error" />
+		
   		<ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}"/></ui:define>
  		
  		<ui:define name="navigation">
@@ -46,8 +45,8 @@
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 			 		<c:if test="#{!views$secured$collaboration$main.editing}">	
 						<o:block>
-							<h:commandButton 
-							    id="addWorkspace"
+							<t:commandButton 
+							    id="addWorkspace" forceId="true"
 								action="#{views$secured$collaboration$main.addWorkspace}" 
 								value="#{msg.collaboration_command_add_workspace}" 
 								title="#{msg.collaboration_command_add_workspace_hint}"

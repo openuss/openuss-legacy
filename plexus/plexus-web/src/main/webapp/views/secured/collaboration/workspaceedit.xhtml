@@ -7,12 +7,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:c="http://java.sun.com/jstl/core"    
+      xmlns:s="http://www.openuss.org/jsf-security"      
+	  xmlns:c="http://java.sun.com/jstl/core"    
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
     <h:form id="workspaceForm">
         <o:block label="#{msg.collaboration_workspace_header}" styleClass="form_box">
-            <o:input entity="workspaceInfo" property="name" required="true" maxlength="100"/>
+            <o:input id="name" forceId="true" entity="workspaceInfo" property="name" required="true" maxlength="100"/>
         </o:block>
           <plexus:dataTable 
 	        id="memberstable" 
@@ -51,8 +52,8 @@
    	    </plexus:dataTable>
    	    
         <o:block>   
-            <h:commandButton id="saveWorkspace"   action="#{views$secured$collaboration$main.saveWorkspace}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
-            <h:commandButton id="cancelWorkspace" action="#{views$secured$collaboration$main.cancelWorkspace}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
+            <t:commandButton id="saveWorkspace"   forceId="true" action="#{views$secured$collaboration$main.saveWorkspace}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+            <t:commandButton id="cancelWorkspace" forceId="true" action="#{views$secured$collaboration$main.cancelWorkspace}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
         </o:block>
     </h:form>
 </ui:composition>

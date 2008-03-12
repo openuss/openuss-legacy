@@ -38,6 +38,9 @@
 	<c:if test="${empty popupCalendar}">
 		<c:set var="popupCalendar" value="true"/>
 	</c:if>
+	<c:if test="${empty forceId}">
+		<c:set var="forceId" value="false"/>
+	</c:if>
 	<oc:setEntityBinding var="value" entity="${entity}" property="${property}"/>
 	<oc:isDate id="value">
 		<h:outputLabel id="${property}Label" value="${label}" for="${property}"	styleClass="${styleClass}_label" />
@@ -50,20 +53,22 @@
   			timeZone="${timeZone}"
   			popupCalendar="${popupCalendar}"
   			type="${type}"
-  			lang="${lang}">
+  			lang="${lang}"
+  			forceId="${forceId}">
   			<ui:insert/>
 		</t:inputDate>
 		<h:message id="${property}Error" for="${property}" styleClass="${styleClass}_error" showDetail="true" showSummary="false" />
 	</oc:isDate>	
 	<oc:isBoolean id="value">
 		<label class="${styleClass}_label">
-			<h:selectBooleanCheckbox 
+			<t:selectBooleanCheckbox 
 				id="${property}" 
 				value="#{value}" 
 				required="${required}" 
 				disabled="${disabled}"
 				title="${title}"
-				styleClass="${styleClass}CheckBox"/>
+				styleClass="${styleClass}CheckBox"
+				forceId="${forceId}"/>
 			${label}
 		</label>
 		<h:message id="${property}Error" for="${property}" styleClass="${styleClass}_error" showDetail="true" showSummary="false" />
@@ -72,7 +77,7 @@
 		<h:outputLabel id="${property}Label" value="${label}" for="${property}"	styleClass="${styleClass}_label" />
 		<c:choose>
 			<c:when test="${type == 'password'}">
-				<h:inputSecret 
+				<t:inputSecret 
 					id="${property}"
 					value="${value}"
 					required="${required}" 
@@ -81,39 +86,27 @@
 					redisplay="${redisplay}"
 					size="${size}"
 					maxlength="${maxlength}"
-					title="${title}">
+					title="${title}"
+					forceId="${forceId}">
 					<ui:insert />
-				</h:inputSecret>
+				</t:inputSecret>
 			</c:when>
 			<c:when test="${type == 'textarea'}">
-				<h:inputTextarea 
+				<t:inputTextarea 
 					id="${property}" 
 					value="${value}"
 					required="${required}" 
 					styleClass="${styleClass}" 
 					maxlength="${maxlength}"
 					disabled="${disabled}"
-					title="${title}">
+					title="${title}"
+					forceId="${forceId}">
 					<ui:insert />
-				</h:inputTextarea>
+				</t:inputTextarea>
 			</c:when>
 			<c:otherwise>
 				<c:if test="#{empty binding}">
-					<h:inputText 
-						id="${property}" 
-						value="${value}"
-						required="${required}"
-						styleClass="${styleClass}" 
-						disabled="${disabled}"
-						maxlength="${maxlength}"
-						size="${size}"
-						rendered="${rendered}"
-						title="${title}">
-						<ui:insert />
-					</h:inputText>
-				</c:if>
-				<c:if test="#{!empty binding}">
-					<h:inputText 
+					<t:inputText 
 						id="${property}" 
 						value="${value}"
 						required="${required}"
@@ -123,9 +116,25 @@
 						size="${size}"
 						rendered="${rendered}"
 						title="${title}"
-						binding="${binding}">
+						forceId="${forceId}">
 						<ui:insert />
-					</h:inputText>
+					</t:inputText>
+				</c:if>
+				<c:if test="#{!empty binding}">
+					<t:inputText 
+						id="${property}" 
+						value="${value}"
+						required="${required}"
+						styleClass="${styleClass}" 
+						disabled="${disabled}"
+						maxlength="${maxlength}"
+						size="${size}"
+						rendered="${rendered}"
+						title="${title}"
+						binding="${binding}"
+						forceId="${forceId}">
+						<ui:insert />
+					</t:inputText>
 				</c:if>
 			</c:otherwise>
 		</c:choose>

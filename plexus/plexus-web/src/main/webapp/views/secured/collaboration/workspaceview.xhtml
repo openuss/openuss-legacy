@@ -18,7 +18,7 @@
 		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
-
+  
 	<body>      
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
@@ -35,32 +35,32 @@
  	  			<ui:include src="workspaceentriestable.xhtml"/> 
  	  			
  	  			<o:block rendered="#{!views$secured$collaboration$workspaceview.moveMode}">
-					<h:commandButton 
-					    id="download"
+					<t:commandButton 
+					    id="download" forceId="true"
 						action="#{views$secured$collaboration$workspaceview.download}" 
 						value="#{msg.documents_main_button_download}" 
 						title="#{msg.documents_main_button_download}"
 						styleClass="button_add"/>
-					<h:commandButton 
-					    id="newFile"
+					<t:commandButton 
+					    id="newFile" forceId="true"
 						action="#{views$secured$collaboration$workspaceview.newFile}" 
 						value="#{msg.documents_main_button_newfile}" 
 						title="#{msg.documents_main_button_newfile}"
 						styleClass="button_add"/>
-					<h:commandButton 
-					    id="addZip"
+					<t:commandButton 
+					    id="addZip" forceId="true"
 						action="collaboration_add_zip" 
 						value="#{msg.documents_main_button_zip}" 
 						title="#{msg.documents_main_button_zip}"
 						styleClass="button_add"/>
-					<h:commandButton 
-					    id="newFolder"
+					<t:commandButton 
+					    id="newFolder" forceId="true"
 						action="#{views$secured$collaboration$workspaceview.newFolder}" 
 						value="#{msg.documents_main_button_newfolder}" 
 						title="#{msg.documents_main_button_newfolder}"
 						styleClass="button_add"/>
-					<h:commandButton 
-					    id="delete"
+					<t:commandButton 
+					    id="delete" forceId="true"
 						action="#{views$secured$collaboration$workspaceview.delete}" 
 						value="#{msg.documents_main_button_delete}" 
 						title="#{msg.documents_main_button_delete}"

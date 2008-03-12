@@ -10,7 +10,7 @@
       xmlns:c="http://java.sun.com/jstl/core">
       
      <plexus:dataTable   
-        id="activeexams" 
+        id="activeexams" forceId="true"
         label="#{msg['papersubmission_activeexamstable_header']}" 
         value="views$secured$papersubmission$examlist.dataActiveExams" 
         columnClasses="col_max_left, col_date, col_commands"
