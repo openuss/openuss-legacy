@@ -33,7 +33,7 @@
 		   				<h:outputText value="${msg.user_registration1_Text}" escape="false" styleClass="content_font_normal"/>
 	   				</div>
 	   				<label class="field_label">
-   					<h:selectBooleanCheckbox id="checkAgree" 
+   					<t:selectBooleanCheckbox id="checkAgree" forceId="true"
    						value="#{registrationData.userAgreementAccepted}" 
    						validator="#{registrationData.validateAcception}"
    						styleClass="fieldCheckBox" 
@@ -43,7 +43,7 @@
 	   				<h:message for="checkAgree" styleClass="field_error"/>
 	   			</o:block>
 	   			<o:block>
-					<h:commandButton value="${msg.forward}" action="step2" styleClass="button_continue"/>
+					<t:commandButton id="continue" forceId="true" value="${msg.forward}" action="step2" styleClass="button_continue"/>
 		  		</o:block>
 	  		</h:form>
   		</ui:define>

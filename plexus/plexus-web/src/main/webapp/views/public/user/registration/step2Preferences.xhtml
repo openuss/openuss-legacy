@@ -30,7 +30,7 @@
 	   				<ui:include src="/views/commons/user/profileData.xhtml" />
 		  		</o:block>
   	  			<o:block>
-					<h:commandButton value="${msg.forward}" action="#{views$public$user$registration$startProcess.lastStepRegistration}" styleClass="button_continue"/>
+					<t:commandButton id="continue" forceId="true" value="${msg.forward}" action="#{views$public$user$registration$startProcess.lastStepRegistration}" styleClass="button_continue"/>
 		  		</o:block>		  		
 	  		</h:form>
   		</ui:define>

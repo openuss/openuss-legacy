@@ -32,10 +32,10 @@
 				<h:form id="loginPortletRegister">
 					<ul class="int">
 						<li>
-							<h:commandLink value="${msg.register_link}" action="register_user" immediate="true"/>
+							<t:commandLink id="register" forceId="true" value="${msg.register_link}" action="register_user" immediate="true"/>
 						</li>
 						<li>
-							<h:commandLink value="${msg.password_send_link}" action="forgot_password" immediate="true"/>
+							<t:commandLink id="forgot_pwd" forceId="true" value="${msg.password_send_link}" action="forgot_password" immediate="true"/>
 						</li>
 					</ul>
 		   		</h:form>

@@ -60,15 +60,15 @@
 								<h:outputLabel for="course_password"
 									value="#{msg.course_main_access_password}"
 									styleClass="field_label" />
-								<h:inputSecret id="course_password"
+								<t:inputSecret id="course_password" forceId="true"
 									value="#{views$secured$course$main.password}"
 									styleClass="field" validator="#{views$secured$course$main.validatePassword}" required="true">
-								</h:inputSecret> 
+								</t:inputSecret> 
 								<h:message for="course_password" styleClass="field_error" showDetail="true" showSummary="false"/>
 							</o:block>
 		
 							<o:block>
-								<h:commandButton action="#{views$secured$course$main.applyWithPassword}"
+								<t:commandButton id="apply" forceId="true" action="#{views$secured$course$main.applyWithPassword}"
 									value ="#{msg['course_main_access']}"
 									title="#{msg['course_main_access']}" styleClass="button" />
 							</o:block>

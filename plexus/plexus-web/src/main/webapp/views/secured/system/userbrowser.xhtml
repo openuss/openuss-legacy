@@ -103,8 +103,8 @@
 				</plexus:column>
 			</plexus:dataTable>
 			<o:block>
-					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$system$userbrowser.saveUsers}" styleClass="button_save"/>
-					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="admin_institutes" styleClass="button_cancel" immediate="true"/>
+					<t:commandButton id="save" forceId="true" value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$system$userbrowser.saveUsers}" styleClass="button_save"/>
+					<t:commandButton id="cancel" forceId="true" value="${msg.reset}" title="#{msg.reset_hint}" action="admin_institutes" styleClass="button_cancel" immediate="true"/>
 			</o:block>			
 		</h:form>
 	</ui:define>

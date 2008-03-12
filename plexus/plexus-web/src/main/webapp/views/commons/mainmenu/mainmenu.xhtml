@@ -21,7 +21,7 @@
 			</li>
 			<s:authorize ifAllGranted="ROLE_ADMIN">
 				<li class="main_nav_admin">
-					<h:commandLink action="administration" value="#{msg['mainmenu_command_administration']}" />
+					<t:commandLink id="administration" forceId="true" action="administration" value="#{msg['mainmenu_command_administration']}" />
 				</li>
 			</s:authorize>
 		</ul>
