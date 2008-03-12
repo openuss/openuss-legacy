@@ -1,5 +1,7 @@
 package org.openuss.web.groups;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -7,7 +9,11 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.desktop.MyUniDepartmentInfo;
+import org.openuss.desktop.MyUniInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
+import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.UserGroupInfo;
@@ -23,6 +29,12 @@ public class GroupsMainPage extends AbstractGroupsPage {
 	
 	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
 
+	private UIFlexList groupsList;
+	
+	private boolean groupsListDataLoaded;
+	
+	private static final String groupBasePath = "/views/secured/groups/components/main.faces?group=";
+	
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;
 	private List<UserGroupInfo> groups;
@@ -120,4 +132,63 @@ public class GroupsMainPage extends AbstractGroupsPage {
 		this.data = data;
 	}
 
+	/* ----- groups flexlist ----- */
+	
+	public UIFlexList getGroupsList() {
+		return groupsList;
+	}
+	
+	public void setGroupsList(UIFlexList groupsList) {
+		logger.debug("Setting groups flexlist component");
+		this.groupsList = groupsList;
+		groupsList.getAttributes().put("title", i18n("flexlist_departments"));
+		groupsList.getAttributes().put("showButtonTitle", i18n("flexlist_more_departments"));
+		groupsList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_departments"));
+
+		// Load values into the component
+		loadValuesForGroupsList(groupsList);
+	}
+	
+	private void loadValuesForGroupsList(UIFlexList groupsList) {
+//		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
+			logger.debug("Loading data for groups flexlist");
+			// Make sure myUni-Data is loaded
+//			prepareData();
+
+			// Get the current university id
+//			Long universityId = chooseUniversity();
+
+			// Put data in the component's attributes
+//			if (universityId != null && myUniData != null) {
+				groupsList.getAttributes().put("visibleItems", getGroupsListItems());
+
+				// Make sure this isn't executed twice
+				groupsListDataLoaded = true;
+		}
+//	}
+//	}
+	/*
+	 * Returns a list of ListItemDAOs that contain the information to be shown
+	 * by the departments flexlist
+	 */
+	private List<ListItemDAO> getGroupsListItems() {
+		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+	
+//		if (myUniData != null) {
+//			MyUniInfo myUniInfo = myUniData.get(universityId);
+//			if (myUniInfo != null) {
+				ListItemDAO newItem;
+				List<UserGroupInfo> groupInfos = getGroups();
+	
+				for (UserGroupInfo groupInfo : groupInfos) {
+					newItem = new ListItemDAO();
+					newItem.setTitle(groupInfo.getName());
+					newItem.setUrl(contextPath()+ groupBasePath + groupInfo.getId());	
+					listItems.add(newItem);
+				}
+//			}
+//		}
+	
+		return listItems;
+		}
 }

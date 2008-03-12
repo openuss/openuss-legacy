@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -25,6 +26,9 @@ import org.openuss.security.acl.LectureAclEntry;
  * 
  */
 public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
+	
+	private static final Logger logger = Logger
+	.getLogger(GroupServiceImpl.class);
 
 	/**
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
@@ -455,6 +459,9 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
+		for(User user:users){
+			logger.debug("List<User>: " + user.getId() + " - " + user.getUsername());
+		}
 		return userListToUserGroupMemberInfoList(users, group, group
 				.getModeratorsGroup());
 	}
@@ -665,14 +672,14 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 	}
 
 	private List<UserGroupMemberInfo> userListToUserGroupMemberInfoList(
-			List<User> users, UserGroup group, Group secGroups) {
-		Validate.notNull(users, "Parameter users must not be null.");
+			List<User> userList, UserGroup group, Group secGroups) {
+		Validate.notNull(userList, "Parameter users must not be null.");
 		Validate.notNull(group, "Parameter group must not be null.");
 
-		List<User> users2 = new ArrayList<User>();
-		if ((users.size() > 0) && (secGroups != null)) {
-			for (User user : users) {
-				List<Authority> authorities = secGroups.getMembers();
+		List<User> users2 = new ArrayList<User>();	
+		if ((userList.size() > 0) && (secGroups != null)) {
+			List<Authority> authorities = secGroups.getMembers();
+			for (User user : userList) {
 				for (Authority authority : authorities) {
 					if (user.getId().compareTo(authority.getId()) == 0) {
 						users2.add(user);
@@ -680,11 +687,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				}
 
 			}
-			users = users2;
+			userList = users2;
 		}
 		List<UserGroupMemberInfo> groupMembers = new ArrayList<UserGroupMemberInfo>();
-		UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
-		for (User user : users) {
+		for (User user : userList) {
+			UserGroupMemberInfo groupMember = new UserGroupMemberInfo();
 			groupMember.setUserId(user.getId());
 			groupMember.setUsername(user.getUsername());
 			groupMember.setFirstName(user.getFirstName());

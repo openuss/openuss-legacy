@@ -59,14 +59,29 @@
 			</div>
 		</div>
 	</c:if>
+		<div class="content_box">
+			<div class="header_normal">
+				<div class="header_normal_left_bg" />			
+				<div class="header_normal_right_bg" />
+				<h:outputText value="TEST" styleClass="content_font_header" />
+			</div>
+			<div class="content_normal">
+			<o:flexlist binding="#{views$secured$groups$groups.groupsList}">
+			</o:flexlist>	
+			</div>
+			<div class="footer_normal">
+				<div class="footer_normal_left_bg" />
+				<div class="footer_normal_right_bg" />
+			</div>
+		</div>		
 	<c:if test="#{views$secured$myuni$myuni.data}">
 		<o:block>	
 			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">	
 				<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false"/>
 			</c:if>
-		</o:block>
+		</o:block>	
 	</c:if>
-		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
+	<ui:include src="/views/commons/sidebar/newsbox.xhtml" />	
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

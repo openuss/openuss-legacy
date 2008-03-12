@@ -25,14 +25,15 @@ import org.openuss.web.Constants;
  */
 @Bean(name = "views$secured$groups$components$groupmoderators", scope = Scope.REQUEST)
 @View
-public class GroupModeratorsPage extends AbstractGroupPage { // NOPMD by devopenuss on 11.03.08 14:26
+public class GroupModeratorsPage extends AbstractGroupPage {
 
 	private static final Logger logger = Logger
 			.getLogger(GroupModeratorsPage.class);
 
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupMemberInfo> page;
-	private Set<UserGroupMemberInfo> changedUsers = new HashSet<UserGroupMemberInfo>(); // NOPMD by devopenuss on 11.03.08 14:26
+	private Set<UserGroupMemberInfo> changedUsers = new HashSet<UserGroupMemberInfo>();
+	List<UserGroupMemberInfo> members;
 
 	/* ----- private classes ----- */
 
@@ -46,8 +47,7 @@ public class GroupModeratorsPage extends AbstractGroupPage { // NOPMD by devopen
 				int pageSize) {
 			if (page == null) {
 				logger.debug("fetching group list");
-				List<UserGroupMemberInfo> members = groupService
-						.getAllMembers(groupInfo);
+				members = groupService.getAllMembers(groupInfo);
 				for (UserGroupMemberInfo member : members) {
 					if (member.getUserId().compareTo(user.getId()) == 0
 							|| (groupService.isCreator(groupInfo, member
@@ -68,7 +68,7 @@ public class GroupModeratorsPage extends AbstractGroupPage { // NOPMD by devopen
 
 	@Prerender
 	@Override
-	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:25
+	public void prerender() throws Exception {
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("group_command_moderator"));
@@ -83,11 +83,11 @@ public class GroupModeratorsPage extends AbstractGroupPage { // NOPMD by devopen
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
-	public String save() { // NOPMD by devopenuss on 11.03.08 14:25
-		boolean newMod = false; // NOPMD by devopenuss on 11.03.08 14:25
+	public String save() {
+		boolean newMod = false;
 		for (UserGroupMemberInfo userInfo : changedUsers) {
 			if (userInfo.isModerator()) {
-				newMod = true; // NOPMD by devopenuss on 11.03.08 14:25
+				newMod = true;
 			}
 		}
 		if (groupService.getModerators(groupInfo).size() == 1) {
