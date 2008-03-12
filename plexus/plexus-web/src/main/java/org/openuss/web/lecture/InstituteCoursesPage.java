@@ -36,12 +36,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
 
 	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
-
-	private List<SelectItem> institutePeriodItems;
-	
-	private List<PeriodInfo> institutePeriodsActive;
-	
-	private List<PeriodInfo> institutePeriodsPassive;
 	
 	private List<SelectItem> instituteCourseTypeItems;
 	
@@ -273,57 +267,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 	public void setDataCourses(LocalDataModelCourses dataCourses) {
 		this.dataCourses = dataCourses;
-	}
-
-	/**
-	 * Gets all periods of the institute.
-	 * 
-	 * @return outcome
-	 */
-	@SuppressWarnings( { "unchecked" })
-	public List<SelectItem> getAllPeriodsOfInstitute() {
-
-		institutePeriodItems = new ArrayList<SelectItem>();
-
-		if (instituteInfo != null) {
-			Long departmentId = instituteInfo.getDepartmentId();
-			departmentInfo = departmentService.findDepartment(departmentId);
-			Long universityId = departmentInfo.getUniversityId();
-			universityInfo = universityService.findUniversity(universityId);
-			// gets all periods of the institute (resp. the university)
-			institutePeriodsActive = universityService.findPeriodsByUniversityAndActivation(universityId, true);
-			institutePeriodsPassive = universityService.findPeriodsByUniversityAndActivation(universityId, false);
-
-			Iterator<PeriodInfo> iterActive = institutePeriodsActive.iterator();
-			PeriodInfo periodInfoActive;
-
-			if (iterActive.hasNext()) {
-				SelectItem item = new SelectItem(Constants.PERIODS_ACTIVE, i18n("periods_active"));
-				institutePeriodItems.add(item);
-			}
-
-			while (iterActive.hasNext()) {
-				periodInfoActive = iterActive.next();
-				SelectItem item = new SelectItem(periodInfoActive.getId(), periodInfoActive.getName());
-				institutePeriodItems.add(item);
-			}
-
-			Iterator<PeriodInfo> iterPassive = institutePeriodsPassive.iterator();
-			PeriodInfo periodInfoPassive;
-
-			if (iterPassive.hasNext()) {
-				SelectItem item = new SelectItem(Constants.PERIODS_PASSIVE, i18n("periods_passive"));
-				institutePeriodItems.add(item);
-			}
-
-			while (iterPassive.hasNext()) {
-				periodInfoPassive = iterPassive.next();
-				SelectItem item = new SelectItem(periodInfoPassive.getId(), periodInfoPassive.getName());
-				institutePeriodItems.add(item);
-			}
-		}
-
-		return institutePeriodItems;
 	}
 
 	/**

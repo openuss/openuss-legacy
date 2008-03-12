@@ -1,10 +1,18 @@
 package org.openuss.web.lecture;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
+import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -83,6 +91,10 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
 
+	private List<SelectItem> institutePeriodItems;
+	private List<PeriodInfo> institutePeriodsActive;
+	private List<PeriodInfo> institutePeriodsPassive;
+	
 	/**
 	 * Refreshing institute entity
 	 * 
@@ -126,6 +138,56 @@ public abstract class AbstractLecturePage extends BasePage {
 			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);}
 	}
 	
+	/**
+	 * Gets all periods of the institute.
+	 * 
+	 * @return outcome
+	 */
+	@SuppressWarnings( { "unchecked" })
+	public List<SelectItem> getAllPeriodsOfInstitute() {
+
+		institutePeriodItems = new ArrayList<SelectItem>();
+
+		if (instituteInfo != null) {
+			Long departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			Long universityId = departmentInfo.getUniversityId();
+			universityInfo = universityService.findUniversity(universityId);
+			// gets all periods of the institute (resp. the university)
+			institutePeriodsActive = universityService.findPeriodsByUniversityAndActivation(universityId, true);
+			institutePeriodsPassive = universityService.findPeriodsByUniversityAndActivation(universityId, false);
+
+			Iterator<PeriodInfo> iterActive = institutePeriodsActive.iterator();
+			PeriodInfo periodInfoActive;
+
+			if (iterActive.hasNext()) {
+				SelectItem item = new SelectItem(Constants.PERIODS_ACTIVE, i18n("periods_active"));
+				institutePeriodItems.add(item);
+			}
+
+			while (iterActive.hasNext()) {
+				periodInfoActive = iterActive.next();
+				SelectItem item = new SelectItem(periodInfoActive.getId(), periodInfoActive.getName());
+				institutePeriodItems.add(item);
+			}
+
+			Iterator<PeriodInfo> iterPassive = institutePeriodsPassive.iterator();
+			PeriodInfo periodInfoPassive;
+
+			if (iterPassive.hasNext()) {
+				SelectItem item = new SelectItem(Constants.PERIODS_PASSIVE, i18n("periods_passive"));
+				institutePeriodItems.add(item);
+			}
+
+			while (iterPassive.hasNext()) {
+				periodInfoPassive = iterPassive.next();
+				SelectItem item = new SelectItem(periodInfoPassive.getId(), periodInfoPassive.getName());
+				institutePeriodItems.add(item);
+			}
+		}
+
+		return institutePeriodItems;
+	}
 
 	public Institute getInstitute() {
 		return institute;
@@ -215,7 +277,7 @@ public abstract class AbstractLecturePage extends BasePage {
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
 	}
-
+	
 	public CourseInfo getCourseInfo() {
 		return courseInfo;
 	}

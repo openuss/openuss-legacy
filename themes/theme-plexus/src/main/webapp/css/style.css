@@ -1581,6 +1581,7 @@ td .remove_shortcut_button:hover {
 .button_disabled {
 	background-image: url(../img/button_180_disabled.png);
 	color: #A1A1A1;
+	cursor: default;
 }
 
 table {
@@ -2150,7 +2151,7 @@ div .space_20above {
 	padding-left: 10px;
 }
 .search_result_details, .search_result_details * {
-	color: #AAAAAA !important;
+	color: #A1A1A1 !important;
 	font-size: 8pt !important;
 }
 .search_result_score {

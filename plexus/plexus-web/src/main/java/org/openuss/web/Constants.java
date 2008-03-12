@@ -82,6 +82,8 @@ public class Constants {
 	public static final String UNIVERSITY_PERIOD_ADD_PAGE = "university_period_add";
 	public static final String UNIVERSITY_PERIOD_REMOVE_PAGE = "university_period_remove";
 	public static final Long   PERIODS_ACTIVE = -117L;
+	public static final Long   PERIODS_CHOOSE_PERIOD = -100L;
+	public static final String PERIODS_CHOOSE_PERIOD_TEXT = "periods_choose_period_text";
 	public static final Long   PERIODS_PASSIVE = -118L;
 	
 	// department navigation outcomes and combobox long constants
