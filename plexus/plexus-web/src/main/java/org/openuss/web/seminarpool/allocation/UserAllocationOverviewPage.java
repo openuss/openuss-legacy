@@ -47,8 +47,7 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	}
 
 	public String generateAllocation(ActionEvent event) {
-		this.seminarpoolAllocationService
-				.generateAllocation(seminarpoolInfo.getId());
+		this.seminarpoolAllocationService.generateAllocation(seminarpoolInfo.getId());
 		addMessage(i18n("seminarpool_allocation_sucessfull"));
 		return "";
 	}

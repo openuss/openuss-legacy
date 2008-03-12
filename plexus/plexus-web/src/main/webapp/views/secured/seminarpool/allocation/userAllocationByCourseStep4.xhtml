@@ -28,40 +28,36 @@
 		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
 	</ui:define>
 	<ui:define name="content" styleClass="footer_normal">
+		<o:block label="#{msg.seminarpool_participants_header}">
+		<div class="content_font_normal"> 
+			<h:outputText value="#{msg.seminarpool_allocation_by_user_step1_text}" escape="false"/>
+		</div>
+		</o:block>
 		<h:form id="allocationByCourse">
 			<plexus:dataTable   
 		     	id="courseTypes" 
 		     	label="#{msg['seminarpool_allocation_by_course_groups_table_header']}" 
-		     	value="views$secured$seminarpool$allocation$userAllocationByCourseStep2.dataCourseTypes" 
-		     	columnClasses="col_max_left, col_max_left, col_commands"
+		     	value="views$secured$seminarpool$allocation$userAllocationByCourseStep4.dataCourseTypes" 
+		     	columnClasses="col_max_left, col_commands"
 		     	var="bean" 
 		     	rows="20">    
 				<t:column>
-					<plexus:commandSortHeader columnName="lastName">#{msg.seminarpool_allocation_by_course_step2_username}</plexus:commandSortHeader> 
-					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
+					<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep4.selectUser}">
+				
+						<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_course_step2_username}</plexus:commandSortHeader> 
+						<b><h:outputText value="#{bean.name}"/></b>
+					</h:commandLink>
 				</t:column>
 				<t:column>
-					<plexus:commandSortHeader columnName="groupName">#{msg.seminarpool_allocation_by_course_step2_groupname}</plexus:commandSortHeader> 
-					<b><h:outputText value="#{bean.groupName}"/></b>
+					<plexus:commandSortHeader columnName="capacity">#{msg.seminarpool_allocation_by_course_step2_groupname}</plexus:commandSortHeader> 
+					<b><h:outputText value="#{bean.capacity}"/></b>
 				</t:column>	
-				<plexus:column header="#{msg.commands_header}">
-				<plexus:command   
-					bean="#{views$secured$seminarpool$allocation$userAllocationByCourseStep2}"
-					action="removeAllocation"
-					onclick="if (!confirm('#{msg.seminarpool_allocation_by_course_step2_remove_user_confirmation}')) return false"
-					label="#{msg.seminarpool_allocation_by_course_step2_remove_user}"
-					hint="#{msg.seminarpool_allocation_by_course_step2_remove_user}"
-					styleClass="icon_remove">
-				</plexus:command>
-			</plexus:column>		
 			</plexus:dataTable>
-		</h:form>
-		<h:form id="addParticipantStep2">	
 		<o:block>
 			<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
-			<h:commandButton action="seminarpool_options_allocations_course_step3" value="#{msg.seminarpool_allocation_by_course_add_user}" styleClass="button_cancel"/>
-		</o:block>
-	</h:form>				
+		</o:block>	
+		</h:form>
+		
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

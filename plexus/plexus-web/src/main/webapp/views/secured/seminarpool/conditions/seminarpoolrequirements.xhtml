@@ -60,6 +60,7 @@
 					<plexus:command
 						bean="#{views$secured$seminarpool$conditions$seminarpoolrequirements}"
 						action="removeCondition"
+						onclick="if (!confirm('#{msg.seminarpool_allocation_by_course_step2_remove_user_confirmation}')) return false"
 						label="#{msg.seminarpool_condition_command_remove}"
 						title="#{msg.seminarpool_condition_command_remove_hint}"
 						styleClass="icon_remove" />

@@ -34,22 +34,25 @@
 			<h:outputText value="#{msg.seminarpool_allocation_by_user_step1_text}" escape="false"/>
 		</div>
 	</o:block>
-	<h:form id="participantsformStep1">
+	<h:form id="participantsformStep3">
 		<plexus:dataTable   
 	     	id="userAllocations" 
 	     	label="#{msg['seminarpool_allocation_by_user_groups_table_header']}" 
-	     	value="views$secured$seminarpool$allocation$userAllocationByUser.dataCourseTypes" 
+	     	value="views$secured$seminarpool$allocation$userAllocationByCourseStep3.dataCourseTypes" 
 	     	columnClasses="col_max_left"
 	     	var="bean" 
 	     	rows="20">    
 			<t:column>
 				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_user_step1_username}</plexus:commandSortHeader> 
-				<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByUser.selectUser}">
+				<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep3.selectUser}">
 					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
 				</h:commandLink>
 			</t:column>
 		</plexus:dataTable>
-	</h:form>	
+		<o:block>
+			<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
+		</o:block>	
+	</h:form>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

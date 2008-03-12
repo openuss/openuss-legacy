@@ -49,7 +49,7 @@ public class UserAllocationByCourseStep2Page extends AbstractSeminarpoolPage {
 	}
 	
 	public String removeAllocation(){
-		
+		seminarpoolAdministrationService.removeUserFromAllocation(dataCourseTypes.getRowData().getUserId(), dataCourseTypes.getRowData().getGroupId());
 		return Constants.SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP2;
 	}
 	

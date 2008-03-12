@@ -34,11 +34,9 @@ public class CourseGroupImpl
 		if(user != null){
 			getUser().remove(user);
 		}
-		if ( user.getCourseGroup().contains(user) ){
+		if ( user.getCourseGroup().contains(this) ){
 			user.getCourseGroup().remove(this);
 		}
-		
-		
 	}
 
 	@Override
