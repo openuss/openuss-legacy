@@ -18,6 +18,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.hibernate.mapping.Collection;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
@@ -112,6 +113,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 	public String startEditProcess() {
 		logger.debug("Starts the edit process");
 		seminarUserConditionValueList = seminarpoolUserRegistrationService.findConditionValuesByUserAndSeminarpool(seminarUserRegistrationInfo.getUserId(), seminarUserRegistrationInfo.getSeminarpoolId());
+		setSessionBean("seminarUserConditionValueList", seminarUserConditionValueList);
 		return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP2_PAGE;
 	}
 	
@@ -150,7 +152,9 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		seminarUserRegistrationInfo.setSeminarPriorityList(seminarPriorityList);
 		seminarUserRegistrationInfo.setSeminarpoolId(seminarpoolInfo.getId());
 		seminarUserRegistrationInfo.setUserId(user.getId());
-		seminarpoolUserRegistrationService.editUserRegistration(seminarUserRegistrationInfo, null);
+		List<SeminarUserConditionValueInfo> value = (List<SeminarUserConditionValueInfo>)getSessionBean("seminarUserConditionValueList");
+		
+		seminarpoolUserRegistrationService.editUserRegistration(seminarUserRegistrationInfo, value );
 		return Constants.SEMINARPOOL_USER_REGISTRATION_EDIT_STEP1_PAGE;
 	}
 

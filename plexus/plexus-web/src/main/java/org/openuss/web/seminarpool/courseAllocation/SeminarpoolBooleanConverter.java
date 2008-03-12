@@ -13,7 +13,12 @@ import org.openuss.web.Constants;
 public class SeminarpoolBooleanConverter extends BaseBean  implements Converter {
 
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) throws ConverterException {												
-		return null;
+		if (arg2.equals("true")) {
+			return Boolean.TRUE;
+		} else if ( arg2.equals("false") ){
+			return Boolean.FALSE;
+		}
+		return Boolean.FALSE;
 	}
 
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) throws ConverterException {											

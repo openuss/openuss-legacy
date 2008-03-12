@@ -28,6 +28,11 @@ public class SeminarUserConditionValueDaoImpl
         if ( sourceEntity.getSeminarUserRegistration() != null ) {
         	targetVO.setSeminarUserRegistrationId(sourceEntity.getSeminarUserRegistration().getId());
         }
+		if ( Boolean.FALSE.toString().equals(sourceEntity.getConditionValue()) ){
+			targetVO.setConditionValueBoolean(Boolean.FALSE);
+		} else if ( Boolean.TRUE.toString().equals(sourceEntity.getConditionValue())){
+			targetVO.setConditionValueBoolean(Boolean.TRUE);
+		}
     }
 
 
@@ -89,6 +94,9 @@ public class SeminarUserConditionValueDaoImpl
         }
         if ( sourceVO.getSeminarUserRegistrationId() != null ){
         	targetEntity.setSeminarUserRegistration(getSeminarUserRegistrationDao().load(sourceVO.getSeminarUserRegistrationId()));
+        }
+        if ( sourceVO.getConditionValueBoolean() != null ){
+        	targetEntity.setConditionValue(sourceVO.getConditionValueBoolean().toString());
         }
     }
 

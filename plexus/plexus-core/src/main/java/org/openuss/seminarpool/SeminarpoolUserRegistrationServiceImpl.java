@@ -105,12 +105,10 @@ public class SeminarpoolUserRegistrationServiceImpl
 		targetEntity.getSeminarPriority().clear();
 		targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(seminarUserRegistrationInfo);
 		if ( userConditions != null ) {
-			Collection<SeminarUserConditionValue> userConditionValueEntityList = new ArrayList<SeminarUserConditionValue>();
 			for (SeminarUserConditionValueInfo seminarUserConditionInfo : (Collection<SeminarUserConditionValueInfo>)userConditions){
 				SeminarUserConditionValue conditionValueEntity = getSeminarUserConditionValueDao().seminarUserConditionValueInfoToEntity(seminarUserConditionInfo);
-				userConditionValueEntityList.add(conditionValueEntity);
+				getSeminarUserConditionValueDao().update(conditionValueEntity);
 			}
-			targetEntity.setSeminarUserConditionValue(userConditionValueEntityList);
 		}
 		getSeminarUserRegistrationDao().update(targetEntity);
 	}
