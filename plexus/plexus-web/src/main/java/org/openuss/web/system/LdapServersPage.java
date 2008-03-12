@@ -2,32 +2,48 @@ package org.openuss.web.system;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.apache.tools.ant.taskdefs.Sync.MyCopy;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerInfo;
+import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
-import org.openuss.web.lecture.AbstractLdapServersOverviewPage;
+import org.openuss.web.lecture.LdapServerRegistrationController;
 
 /** 
- * Backing Bean for the view ssecured/system/ldap/ldap_servers.faces
+ * Backing Bean for the view secured/system/ldap/ldap_servers.faces
  * 
- * 
- *
+ * @author Juergen de Braaf
+ * @author Christian Grelle
+ * @author Peter Schuh
  */
 @Bean(name = "views$secured$system$ldap$ldap_servers", scope = Scope.REQUEST)
 @View
-
-public class LdapServersPage extends AbstractLdapServersOverviewPage{
+public class LdapServersPage extends BasePage {
+	
+	protected static final Logger logger = Logger.getLogger(LdapServersPage.class);
+	
+	private LdapServerTable ldapServerTable = new LdapServerTable();
+	
+	@Property(value = "#{"+Constants.LDAP_SERVER_REGISTRATION_CONTROLLER+"}")
+	protected LdapServerRegistrationController ldapServerRegistrationController;
+	
+	@Property(value = "#{ldapConfigurationService}")
+	protected LdapConfigurationService ldapConfigurationService;
+	
+	
 	
 	@Prerender
 	public void prerender() {
-		try {
-			super.prerender();
+		try {			
 			addBreadCrumbs();
 		} catch (Exception e) {			
 		}		
@@ -51,50 +67,102 @@ public class LdapServersPage extends AbstractLdapServersOverviewPage{
 		 myBreadCrumb.setHint(i18n("ldap_server"));	 
 		 breadcrumbs.addCrumb(myBreadCrumb);
 	 }
-
-	
-	public DataPage<LdapServerInfo> fetchDataPage(int startRow, int pageSize) {
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch servers data page at " + startRow + ", "+ pageSize+" sorted by "+ldapServers.getSortColumn());
-			}
-			List<LdapServerInfo> serverList = ldapConfigurationService.getAllLdapServers();
-			
-
-			if (serverList != null) {
-				logger.info("Size:"+serverList.size());
-			}
-			
-			/*sort(roleAttributeKeyList);*/
-			dataPage = new DataPage<LdapServerInfo>(serverList.size(),0,serverList);
-		}
-		
-		/*
-		 public DataPage<RoleAttributeKeyInfo> fetchDataPage(int startRow, int pageSize) {
-		if (dataPage == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("fetch roleattributekeys data page at " + startRow + ", "+ pageSize+" sorted by "+roleAttributeKeys.getSortColumn());
-			}
-			List<DepartmentInfo> officialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.OFFICIAL));
-			List<DepartmentInfo> nonOfficialDepartmentList = new ArrayList<DepartmentInfo>(departmentService.findDepartmentsByType(DepartmentType.NONOFFICIAL));
-			
-			List<DepartmentInfo> departmentList = new ArrayList<DepartmentInfo>();
-			for(DepartmentInfo departmentInfo : officialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
-			for(DepartmentInfo departmentInfo : nonOfficialDepartmentList){
-				departmentList.add(departmentInfo);
-			}
-
-			logger.info("Departments:"+departmentList);
-			if (departmentList != null) {
-				logger.info("Size:"+departmentList.size());
-			}
-			
-			sort(departmentList);
-			dataPage = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
-		}
-		 */
-		return dataPage;
+	 
+	public LdapConfigurationService getLdapConfigurationService() {
+		return ldapConfigurationService;
 	}
-}
+
+	public void setLdapConfigurationService(LdapConfigurationService ldapConfigurationService) {
+		this.ldapConfigurationService = ldapConfigurationService;
+	}
+	 
+	public LdapServerRegistrationController getLdapServerRegistrationController() {
+		return ldapServerRegistrationController;
+	}
+
+	public void setLdapServerRegistrationController(
+			LdapServerRegistrationController ldapServerRegistrationController) {
+		this.ldapServerRegistrationController = ldapServerRegistrationController;
+	}
+
+	protected LdapServerInfo currentLdapServer() {
+			LdapServerInfo ldapServerInfo = ldapServerTable.getRowData();
+			return ldapServerInfo;
+	}
+
+	 /**
+	  * Store the selected LdapServer into session scope and go to LdapServer main page.
+	  * 
+	  * @return Outcome
+	  */
+	public String selectLdapServerAndEdit() {			
+		setSessionBean(Constants.SERVER_INFO, currentLdapServer());			
+			
+		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
+	}
+	 
+	/**
+	 * Store the selected LdapServer into session scope and go to LdapServer remove confirmation page.
+	 * 
+	 * @return Outcome
+	 */
+	public String selectLdapServerAndConfirmRemove() {
+		setSessionBean(Constants.SERVER_INFO, currentLdapServer());
+		
+//		TODO change constant
+		return Constants.ATTRIBUTEMAPPING_CONFIRM_REMOVE_PAGE;
+	}
+	
+		
+	public String removeLdapServer() throws Exception {
+		try {			
+			logger.debug("Starting method removeLdapServer");
+			LdapServerInfo currentLdapServer = (LdapServerInfo) getSessionBean(Constants.SERVER_INFO);
+			
+//			delete LdapServer				
+			ldapConfigurationService.deleteLdapServer(currentLdapServer);
+
+			setSessionBean(Constants.SERVER_INFO, null);
+			return Constants.LDAP_SERVER_PAGE;			
+		}
+		catch (Exception e) {
+			addError(e.getMessage());
+			addMessage(i18n("message_ldap_ldapserver_cannot_be_removed"));
+			return Constants.LDAP_SERVER_PAGE;
+		}
+	}
+		
+		
+	public LdapServerTable getLdapServerTable() {
+			return ldapServerTable;
+	}		
+			
+	
+	protected class LdapServerTable extends AbstractPagedTable<LdapServerInfo> {
+		
+		private DataPage<LdapServerInfo> dataPage;		
+	
+		@SuppressWarnings( { "unchecked" })
+		@Override
+		public DataPage<LdapServerInfo> getDataPage(int startRow, int pageSize) {
+			if (dataPage == null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("fetch ldapServers data page at " + startRow + ", "+ pageSize+" sorted by "+ldapServerTable.getSortColumn());
+				}
+				List<LdapServerInfo> ldapServerList = ldapConfigurationService.getAllLdapServers();
+			
+				logger.info("LdapServers:"+ldapServerList);
+				if (ldapServerList != null) {
+					logger.info("Size:"+ldapServerList.size());
+				}
+				
+//				TODO sort ldapServerList
+//				sort(ldapServerList);
+				dataPage = new DataPage<LdapServerInfo>(ldapServerList.size(),0,ldapServerList);
+			}
+			
+			return dataPage;
+		}
+	}//end class LdapServerTable
+		
+}//end class LdapServersPage

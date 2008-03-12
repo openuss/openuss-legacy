@@ -39,7 +39,7 @@ public abstract class AbstractLdapServerPage extends BasePage {
 		logger.debug("preprocess - refreshing ldapServer session object");
 		if (ldapServerInfo != null) {
 			if (ldapServerInfo.getId() != null) {
-				//ldapServerInfo = LdapConfigurationService.getLdapServer(ldapServerInfo.getId());
+				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
 			} else {
 				ldapServerInfo = (LdapServerInfo) getSessionBean(Constants.SERVER_INFO);
 			}
@@ -52,9 +52,8 @@ public abstract class AbstractLdapServerPage extends BasePage {
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing ldapServer session object");
 		refreshLdapServer();
-		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {
-			//TODO: CHRISTIAN: WRONG MESSAGE!!!
-			addError(i18n("message_error_no_department_selected"));
+		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {		
+			addError(i18n("message_ldap_ldapserver_no_ldapserver_selected"));
 			redirect(Constants.DESKTOP);
 		}
 	}
@@ -62,7 +61,7 @@ public abstract class AbstractLdapServerPage extends BasePage {
 	private void refreshLdapServer() {
 		if (ldapServerInfo != null) {
 			if (ldapServerInfo.getId() != null) {
-				//ldapServerInfo = LdapConfigurationService.getLdapServer(ldapServerInfo.getId());
+				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
 				setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
 			}
 		}

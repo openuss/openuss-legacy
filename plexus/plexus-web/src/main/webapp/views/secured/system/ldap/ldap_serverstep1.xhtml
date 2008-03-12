@@ -29,7 +29,13 @@
 						<o:input entity="ldapServerInfo" property="providerUrl" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="port" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="rootDn" maxlength="250" required="true"/>
-						<o:input entity="ldapServerInfo" property="managerDn" maxlength="250" required="false"/>
+						<o:input entity="ldapServerInfo" property="managerDn" maxlength="250" required="false"/>						
+						<o:input entity="ldapServerInfo" property="managerPassword" required="false" type="password" redisplay="false"/>
+						<h:outputLabel value="#{msg.ldap_server_managerpassword_confirm}" for="confirmPassword" styleClass="field_label" />
+						<h:inputSecret id="confirmPassword" styleClass="field" required="false" redisplay="false">
+							<t:validateEqual for="managerPassword" />
+						</h:inputSecret>
+						<h:message for="confirmPassword" styleClass="field_error"/>
 						<o:input entity="ldapServerInfo" property="description" maxlength="250" required="true"/>
 						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>	
 						<h:outputLabel value="#{msg.ldap_server_authenticationdomain_select}" for="ldapserver_authenticationdomain_listbox" styleClass="field_label" />
@@ -40,7 +46,7 @@
 						</h:selectOneListbox>
 						<h:outputLabel value="#{msg.ldap_server_userdnpattern_select}" for="ldapserver_userdnpattern_listbox" styleClass="field_label" />
 						<h:selectManyListbox id="ldapserver_userdnpattern_listbox" size="5" value="#{ldapServerInfo.userDnPatternIds}" required="true"
-							valueChangeListener="#{ldapServerRegistration.processValueChangeUserDnPattern}" styleClass="pulldown" >
+							valueChangeListener="#{ldapServerRegistration.processValueChangeUserDnPattern}" styleClass="pulldown">
   							<f:converter converterId="longConverter" />
   							<f:selectItems value="#{ldapServerRegistration.allUserDnPatterns}"/>
 						</h:selectManyListbox>
@@ -60,10 +66,9 @@
 					</o:block>
 				</c:if>
 					<o:block>
-						<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
-						<c:if test="#{not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}">
-							<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button_continue" />
-		  				</c:if>		  				
+		  				<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
+						<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button" rendered="#{empty ldapServerInfo.providerUrl and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
+		  				<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.save}" styleClass="button" rendered="#{not empty ldapServerInfo.providerUrl and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>		  				
 		  			</o:block>
 	  		</h:form>
   		</ui:define>
