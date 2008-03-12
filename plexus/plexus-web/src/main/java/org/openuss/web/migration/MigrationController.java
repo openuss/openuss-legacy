@@ -1,9 +1,12 @@
 package org.openuss.web.migration;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -60,9 +63,6 @@ public class MigrationController extends BasePage {
 
 	@Property(value = "#{securityService}")
 	transient private SecurityService securityService;
-
-	@Property(value = "#{messageService}")
-	transient private MessageService messageService;
 
 	@Property(value = "#{systemService}")
 	transient private SystemService systemService;
@@ -157,57 +157,39 @@ public class MigrationController extends BasePage {
 				exceptionMessage = i18n("authentication_error_password_expired");
 			} else if (ex instanceof DisabledException) {
 					   /* Although centrally authenticated users automatically switch to enabled state (and their profile can be migrated),
-					    * we cannot do this here, due to the Acegi framework checks enabled status BEFORE checking for valid password.
+					    * we cannot do this, due to the Acegi framework checks the enabled status BEFORE checking for a valid password.
 					    * Without checking the password ANY disabled profile could be hijacked by ANY authenticated central user, who has no profile yet.
-					    * So we commented the following lines out, although they will work. Instead we revoke central authentication and redirect to activation request page.
+					    * So we have to check the password on our own. Alternatively we could revoke central authentication and redirect to activation request page.
 					    */
 					   
-					   
 					   User user = securityService.getUserByName(username);
-					   UserImpl principal = (UserImpl) user;
-					   UserDetails userDetails = principal;
 					   
 					   String presentedPassword = authRequest.getCredentials() == null ? "" : authRequest.getCredentials().toString();
 
-						if (passwordEncoder.isPasswordValid(userDetails.getPassword(), presentedPassword, saltSource.getSalt(userDetails))) {
-							//migrate user
+						if (passwordEncoder.isPasswordValid(((UserImpl)user).getPassword(), presentedPassword, saltSource.getSalt((UserImpl)user))) {
+							   user.setEnabled(true);
+							   UserImpl principal = (UserImpl) user;
+							   UserDetails userDetails = principal;
+							   auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
+							   user = migrationUtility.migrate(user, auth);
+							   // Set session bean here, so that i18n gets correct locale for user.
+							   setSessionBean(Constants.USER_SESSION_KEY, user);
+							   exceptionMessage = i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName());					   
+							   
+							   // Handle local user
+							   // Initialize the security context
+							   final SecurityContext securityContext = SecurityContextHolder.getContext();
+							   securityContext.setAuthentication(auth);
+							   session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
+							   rememberMeServices.loginSuccess(request, response, auth);
+							   // setup user and userPreferences
+							   injectUserInformationIntoSession(auth);
+							   sessionTracker.logSessionCreated(getSession());								
 						}
 						else {
 							exceptionMessage = i18n("authentication_error_password_mismatch");
 						}
-					   
-					   
-					   
-					   
-					   
-					   
-					   /*
-					   user.setEnabled(true);
-					   UserImpl principal = (UserImpl) user;
-					   UserDetails userDetails = principal;
-					   auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);
-					   user = migrationUtility.migrate(user, auth);
-					   exceptionMessage = i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName());					   
-					   // Handle local user
-					   if (auth.getPrincipal() instanceof User) {
-						   // Initialize the security context
-						   final SecurityContext securityContext = SecurityContextHolder.getContext();
-						   securityContext.setAuthentication(auth);
-						   session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-						   rememberMeServices.loginSuccess(request, response, auth);
-						   // setup user and userPreferences
-						   injectUserInformationIntoSession(auth);
-						   sessionTracker.logSessionCreated(getSession());
-						}*/
 						
-						/*
-						final SecurityContext securityContext = SecurityContextHolder.getContext();
-						securityContext.setAuthentication(null);
-						exceptionMessage = i18n("authentication_error_account_disabled");
-						addError(exceptionMessage);
-						return Constants.USER_ACTIVATION_REQUEST_PAGE;
-						*/
-
 			} else if (ex instanceof LockedException) {
 				exceptionMessage = i18n("authentication_error_account_locked");
 			} else if (ex instanceof AccountExpiredException) {
@@ -274,8 +256,7 @@ public class MigrationController extends BasePage {
 				logger.error(e);
 			}
 		}
-	}
-		
+	}	
 	
 	//~ Getters and Setters =============================================================
  
@@ -309,14 +290,6 @@ public class MigrationController extends BasePage {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
-	}
-
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
-	public void setMessageService(MessageService messageService) {
-		this.messageService = messageService;
 	}
 
 	public SystemService getSystemService() {

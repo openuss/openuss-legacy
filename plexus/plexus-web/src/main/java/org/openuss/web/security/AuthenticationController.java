@@ -164,8 +164,7 @@ public class AuthenticationController extends BasePage {
 						// Initialize the security context
 						final SecurityContext securityContext = SecurityContextHolder.getContext();
 						securityContext.setAuthentication(auth);
-						session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
-						sessionTracker.logSessionCreated(getSession());						
+						session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);						
 						return Constants.MIGRATION_PAGE;			
 					}
 				}

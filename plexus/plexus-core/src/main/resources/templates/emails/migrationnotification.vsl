@@ -1,0 +1,25 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Migration Assistant</font></h3>
+			Congratulations!
+		</p>
+		<p>	 
+			After you had entered your login information for domain <i>${domainname}</i>, your OpenUSS account was migrated successfully.<br/>
+			As from now you must sign on with username <i>${username}</i> and password for domain <i>${domainname}</i>.<br/>
+			For the future all e-mail conversation will be sent to this e-mail address.
+		</p>
+		<p>			
+			If you are facing errors signing on with the above mentioned login, please contact the <a href="mailto:openuss@e-learning.uni-muenster.de">Servicecenter E-Learning</a>
+		</p>
+		<p>
+			Thank you for using OpenUSS!
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are neither monitored nor answered.</small>			
+		</p>
+		
+	</body>
+</html>
+
+
