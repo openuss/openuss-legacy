@@ -304,6 +304,11 @@ public class LdapConfigurationServiceImpl
 //    	create AuthenticationDomain
     	AuthenticationDomain authDomainEntity = getAuthenticationDomainDao().create(attributeMappingEntity, domain.getDescription(), domain.getName());
     	
+    	if(!StringUtils.isBlank(domain.getChangePasswordUrl())) {
+    		authDomainEntity.setChangePasswordUrl(domain.getChangePasswordUrl());
+    		getAuthenticationDomainDao().update(authDomainEntity);
+    	}
+    		
 //    	save association AuthenticationDomain to AttributeMapping
     	attributeMappingEntity.getAuthenticationDomains().add(authDomainEntity);
 
