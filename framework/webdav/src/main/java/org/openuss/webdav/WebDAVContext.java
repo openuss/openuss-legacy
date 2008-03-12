@@ -1,6 +1,5 @@
 package org.openuss.webdav;
 
-import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 
 /**

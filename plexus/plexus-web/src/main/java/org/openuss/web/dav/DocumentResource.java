@@ -16,14 +16,12 @@ import java.util.TreeMap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
-import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.web.Constants;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.IOContextImpl;
@@ -41,8 +39,6 @@ import org.openuss.webdav.WebDAVUtils;
  * A WebDAV resource in the org.openuss.document system.
  */
 public class DocumentResource extends SimpleWebDAVResource {
-	private Logger logger = Logger.getLogger(DocumentResource.class);
-	
 	protected DocumentService documentService;
 	
 	protected final DomainObject domainObj;
@@ -101,60 +97,41 @@ public class DocumentResource extends SimpleWebDAVResource {
 	@Override
 	protected WebDAVResource createFileImpl(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		// The final input stream
-		InputStream is;
 		long len; // The size of the uploaded file
+		InputStream is = null;
 		File tmpf = null;
 		WebDAVResource res;
-		
+
 		try {
-			try {
-				// Write to temp file to correct bug in Hibernate.createBlob().
-				FileOutputStream fos;
+			// Write to temp file to correct bug in Hibernate.createBlob().
+			tmpf = writeToTmpFile(ioc.getInputStream());
+			
+			len = tmpf.length();
+			checkFileSize(len);
 				
-				tmpf = File.createTempFile("openuss", "webdav-documentresource");
-				
-				fos = new FileOutputStream(tmpf);
-				IOUtils.copyLarge(ioc.getInputStream(), fos);
-				fos.close();
-				
-				len = tmpf.length();
-				checkFileSize(len);
-				
-				is = new FileInputStream(tmpf);
-			} catch (IOException ioe) {
-				throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
-			}
+			is = new FileInputStream(tmpf); // TODO bug
 			
 			// Construct fileInfo object
-			FileInfo newFileInfo = new FileInfo();
-			newFileInfo.setFileName(name);
-			newFileInfo.setDescription(WebDAVPathImpl.stripExtension(name));
-			String contentType = ioc.getContentType();
-			newFileInfo.setContentType(contentType); // );
-			newFileInfo.setFileSize((int) len);
-			newFileInfo.setCreated(new Date());
-			newFileInfo.setModified(new Date());
-			newFileInfo.setInputStream(is);
+			FileInfo newFileInfo = createNewFileInfo(name, ioc, is, len);
 			
 			FolderInfo fi = folderEntryInfoToFolderInfo(info);
+			documentService.createFileEntry(newFileInfo, fi);
 			
-			try {
-				documentService.createFileEntry(newFileInfo, fi);
-			} catch (DocumentApplicationException e) {
-				throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new folder: " + e.getMessage());
-			} finally {
+			subEntriesCache = null;
+			
+			res = getChild(name, getPath().concat(name).asResolved());
+		} catch (IOException ioe) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when caching the input");
+		} catch (DocumentApplicationException e) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when creating a new file: " + e.getMessage());
+		} finally {
+			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
 					// Catch silently
 				}
 			}
-			
-			subEntriesCache = null;
-			
-			res = getChild(name, getPath().concat(name).asResolved());
-		} finally {
 			if (tmpf != null) {
 				tmpf.delete();
 			}
@@ -249,17 +226,40 @@ public class DocumentResource extends SimpleWebDAVResource {
 	@Override
 	protected void writeContentImpl(IOContext ioc)
 			throws WebDAVResourceException {
+		
 		FileInfo fi = documentService.getFileEntry(info.getId(), false);
-		
-		fi.setContentType(ioc.getContentType());
-		fi.setInputStream(ioc.getInputStream());
-		
-		// TODO checkme, do something!
+		long len; // The size of the uploaded file
+		InputStream is = null;
+		File tmpf = null;
+
 		try {
+			// Write to temp file to correct bug in Hibernate.createBlob().
+			tmpf = writeToTmpFile(ioc.getInputStream());
+				
+			len = tmpf.length();
+			checkFileSize(len);
+				
+			is = new FileInputStream(tmpf);
+			fi.setInputStream(is);
+			fi.setFileSize((int) len); 
+			fi.setModified(new Date());
+			
 			documentService.saveFileEntry(fi);
+		} catch (IOException ioe) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, ioe);
 		} catch (DocumentApplicationException e) {
-			logger.error("");
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this);
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when writing to a file: " + e.getMessage());
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// Catch silently
+				}
+			}
+			if (tmpf != null) {
+				tmpf.delete();
+			}
 		}
 	}
 
@@ -398,5 +398,66 @@ public class DocumentResource extends SimpleWebDAVResource {
 		res.setPath(fi.getPath());
 		
 		return res;
+	}
+	
+	/**
+	 * Writes the complete data of an input stream to a temporary file.
+	 * 
+	 * @param is The input stream to read.
+	 * @return The temporary file.
+	 * @throws IOException On writing errors.
+	 */
+	private static File writeToTmpFile(InputStream is) throws IOException {
+		File f = null;
+		FileOutputStream fos = null;
+		
+		try {
+			f = File.createTempFile("openuss", "webdav-documentresource");
+			
+			fos = new FileOutputStream(f);
+			IOUtils.copyLarge(is, fos);
+		} finally {
+			if (fos != null) {
+				fos.close();
+			}
+		}
+
+		return f;
+	}
+	
+	/**
+	 * @param name The name of the new file to create.
+	 * @param ioc The IOContext that is used to determine all the other properties.
+	 * @param is The input stream to read the data from.
+	 * @param len The number of bytes available in the InputStream. This is needed for the database and ignored otherwise.
+	 * @return A new dummy file info.
+	 */
+	private static FileInfo createNewFileInfo(String name, IOContext ioc, InputStream is, long len) {
+		FileInfo res = new FileInfo();
+		
+		res.setFileName(name);
+		res.setDescription(WebDAVPathImpl.stripExtension(name));
+		res.setContentType(sanitizeContentType(ioc.getContentType()));
+		
+		res.setInputStream(is);
+		res.setFileSize((int) len);
+		
+		Date now = new Date();
+		res.setCreated(now);
+		res.setModified(now);
+		
+		return res;
+	}
+	
+	/**
+	 * @param contentType The inputted content type.
+	 * @return A valid content type.
+	 */
+	private static String sanitizeContentType(String contentType) {
+		if ((contentType == null) || contentType.equals("")) {
+			return WebDAVConstants.MIMETYPE_DEFAULT;
+		} else {
+			return contentType;
+		}
 	}
 }

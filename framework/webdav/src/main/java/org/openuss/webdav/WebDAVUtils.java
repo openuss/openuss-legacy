@@ -205,7 +205,7 @@ public final class WebDAVUtils {
 		IOContextImpl ioc = new IOContextImpl();
 		
 		ioc.setContentLanguage(request.getHeader(WebDAVConstants.HEADER_CONTENT_LANGUAGE));
-		ioc.setContentLength(request.getIntHeader(WebDAVConstants.HEADER_CONTENT_LENGTH));
+		ioc.setContentLength(request.getContentLength());
 		ioc.setContentType(request.getHeader(WebDAVConstants.HEADER_CONTENT_TYPE));
 		ioc.setETag(null);
 		ioc.setModificationTime(new Timestamp(request.getDateHeader(WebDAVConstants.HEADER_LAST_MODIFIED)));
