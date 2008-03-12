@@ -26,9 +26,6 @@ import org.openuss.security.acl.LectureAclEntry;
  * 
  */
 public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
-	
-	private static final Logger logger = Logger
-	.getLogger(GroupServiceImpl.class);
 
 	/**
 	 * @see org.openuss.groups.GroupService#createUserGroup(org.openuss.groups.UserGroupInfo,
@@ -459,9 +456,6 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Membership membership = group.getMembership();
 
 		List<User> users = membership.getMembers();
-		for(User user:users){
-			logger.debug("List<User>: " + user.getId() + " - " + user.getUsername());
-		}
 		return userListToUserGroupMemberInfoList(users, group, group
 				.getModeratorsGroup());
 	}

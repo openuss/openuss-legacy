@@ -27,10 +27,11 @@
 <f:loadBundle basename="resources" var="msg" />
 <ui:composition template="/views/layout/layout.xhtml">
 	<ui:define name="header">
-			<link type="application/rss+xml" title="RSS-Global" rel="alternate" href="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/rss/public/global.xml"/>
-		</ui:define>
+		<link type="application/rss+xml" title="RSS-Global" rel="alternate"
+			href="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/rss/public/global.xml" />
+	</ui:define>
 	<ui:define name="title">
-		<h:outputText value="#{msg.desktop_command_myuni}"/>
+		<h:outputText value="#{msg.desktop_command_myuni}" />
 	</ui:define>
 	<ui:define name="navigation">
 		<ui:include src="/views/commons/navigation/desktop.xhtml" />
@@ -41,47 +42,63 @@
 		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
 	</ui:define>
 	<ui:define name="content">
-	<c:if test="#{not views$secured$myuni$myuni.data}">
-		<div class="content_box">
-			<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}">
+		<c:if test="#{not views$secured$myuni$myuni.data}">
+			<div class="content_box"><o:flexlist_tabs
+				binding="#{views$secured$myuni$myuni.tabs}">
 			</o:flexlist_tabs>
-			<div class="content_normal">
-				<o:flexlist binding="#{views$secured$myuni$myuni.departmentsList}">
-				</o:flexlist> 
-				<o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
-				</o:flexlist> 
-				<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}">
-				</o:courseflexlist>
-			</div>
+			<div class="content_normal"><o:flexlist
+				binding="#{views$secured$myuni$myuni.departmentsList}">
+			</o:flexlist> <o:flexlist binding="#{views$secured$myuni$myuni.institutesList}">
+			</o:flexlist> <o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}">
+			</o:courseflexlist></div>
 			<div class="footer_normal">
-				<div class="footer_normal_left_bg" />
-				<div class="footer_normal_right_bg" />
+
+			<div class="footer_normal_left_bg" />
+			<div class="footer_normal_right_bg" />
+
 			</div>
-		</div>
-	</c:if>
-		<div class="content_box">
+			</div>
+		</c:if>
+		<c:if test="#{not views$secured$myuni$myuni.groupData}">
+			<div class="content_box">
 			<div class="header_normal">
-				<div class="header_normal_left_bg" />			
-				<div class="header_normal_right_bg" />
-				<h:outputText value="TEST" styleClass="content_font_header" />
-			</div>
-			<div class="content_normal">
-			<o:flexlist binding="#{views$secured$groups$groups.groupsList}">
-			</o:flexlist>	
-			</div>
+			<div class="header_normal_left_bg" />
+			<div class="header_normal_right_bg" />
+			<h:outputText value="#{msg.openuss4us_usergroups}"
+				styleClass="content_font_header" /></div>
+
+			<div class="content_normal"><o:groupflexlist
+				binding="#{views$secured$myuni$myuni.groupsList}">
+			</o:groupflexlist></div>
+
 			<div class="footer_normal">
-				<div class="footer_normal_left_bg" />
-				<div class="footer_normal_right_bg" />
+			<div class="footer_normal_left_bg" />
+			<div class="footer_normal_right_bg" />
 			</div>
-		</div>		
-	<c:if test="#{views$secured$myuni$myuni.data}">
-		<o:block>	
-			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">	
-				<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false"/>
-			</c:if>
-		</o:block>	
-	</c:if>
-	<ui:include src="/views/commons/sidebar/newsbox.xhtml" />	
+			</div>
+		</c:if>
+		<h:form>
+			<o:block>
+
+				<h:commandButton styleClass="button_big"
+					action="#{views$secured$groups$groups.createGroup}"
+					value="#{msg['openuss4us_groups_button_create']}"
+					title="#{msg['openuss4us_groups_button_create']}" immediate="false" />
+				<h:commandButton styleClass="button_big"
+					action="#{views$secured$groups$groups.joinGroup}"
+					value="#{msg['openuss4us_groups_button_join']}"
+					title="#{msg['openuss4us_groups_button_join']}" immediate="false" />
+			</o:block>
+		</h:form>
+		<c:if test="#{views$secured$myuni$myuni.data}">
+			<o:block>
+				<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
+					<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}"
+						escape="false" />
+				</c:if>
+			</o:block>
+		</c:if>
+		<ui:include src="/views/commons/sidebar/newsbox.xhtml" />
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

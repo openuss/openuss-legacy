@@ -14,8 +14,29 @@ public class ListItemDAO implements Serializable {
 	private String newsletterActionUrl;
 	private Boolean forumSubscribed;
 	private String forumActionUrl;
+	private Boolean calendarSubscribed;
+	private String calendarActionUrl;
+	private String leaveGroupUrl;
 	
 	
+	public Boolean getCalendarSubscribed() {
+		return calendarSubscribed;
+	}
+	public void setCalendarSubscribed(Boolean calendarSubscribed) {
+		this.calendarSubscribed = calendarSubscribed;
+	}
+	public String getCalendarActionUrl() {
+		return calendarActionUrl;
+	}
+	public void setCalendarActionUrl(String calendarActionUrl) {
+		this.calendarActionUrl = calendarActionUrl;
+	}
+	public String getLeaveGroupUrl() {
+		return leaveGroupUrl;
+	}
+	public void setLeaveGroupUrl(String leaveGroupUrl) {
+		this.leaveGroupUrl = leaveGroupUrl;
+	}
 	public String getMetaInformation() {
 		return metaInformation;
 	}

@@ -14,11 +14,16 @@
     		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
     	</component>
     </tag>
-
 	<tag>
     	<tag-name>courseflexlist</tag-name>
     	<component>
     		<component-type>org.openuss.framework.jsfcontrols.components.courseflexlist</component-type>
+    	</component>
+    </tag>
+    	<tag>
+    	<tag-name>groupflexlist</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.groupflexlist</component-type>
     	</component>
     </tag>
 
