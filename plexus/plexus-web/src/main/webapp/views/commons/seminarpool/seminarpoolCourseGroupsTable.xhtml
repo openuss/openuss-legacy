@@ -11,14 +11,14 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf"
 	xmlns:fck="http://www.fck-faces.org/fck-faces">
-					<o:block label="#{msg.seminarpool_add_course_groups}">
+				<o:block label="#{msg.seminarpool_add_course_groups}">
 					<div class="content_font_normal"> 
 						<h:outputText value="#{msg.seminarpool_add_course_groups_text}" escape="false"/>
 			   		</div>
 			   	</o:block>
 				<plexus:dataTable 
 					id="coursegroups" 
-					label="#{msg.seminarpool_add_course_groups_add_header}" 
+					label="#{msg.seminarpool_add_course_groups}" 
 					value="views$commons$seminarpool$seminarpoolCourseGroupsTable.courseGroupOverview" 
 					var="bean" 
 					columnClasses="col_max_left, col_max_left, col_max_left, col_commands"
