@@ -147,6 +147,7 @@
 			</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+		<c:if test="#{groupInfo.calendar}">
 			<o:block label="#{msg.openuss4us_calendar_appointments}"
 				styleClass="teaser_blue_right">
 				<h:form id="news_tables">
@@ -158,7 +159,7 @@
 					<ui:include
 						src="/views/secured/groups/components/calendarshortoverview.xhtml" />
 				</h:form>
-			</o:block>
+			</o:block></c:if>
 			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
 				<h:form id="news_tables">
 					<c:if

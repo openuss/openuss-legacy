@@ -11,24 +11,34 @@
 	<div id="navigation_box">
 		<ui:include	src="/views/commons/navigation/default.xhtml" /> 
 		<s:authorize ifAllGranted="ROLE_USER">
-			<h:form id="navigationDesktop">
-				<t:panelNavigation2 id="desktop" styleClass="navigation"
-					layout="list" itemClass="nav_item" openItemClass="open_item"
-					activeItemClass="active_item" separatorClass="item_separator">
-					<t:commandNavigation2 value="#{msg.desktop_navigation_header}"
-						open="true">
+		<h:form id="navigationDesktop">
+			<t:panelNavigation2 id="desktop" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg.desktop_navigation_header}"
+					open="true">
 					<t:commandNavigation2 value="#{msg.mainmenu_command_home}"
 						action="home" activeOnViewIds="/views/welcome.xhtml" />
-					<s:authorize ifAllGranted="ROLE_USER">
-						<t:commandNavigation2 value="#{msg.desktop_command_myuni}"
-							activeOnViewIds="/views/secured/myuni/myuni.xhtml"
-							action="desktop" />
-					</s:authorize>
+					<t:commandNavigation2 value="#{msg.desktop_command_myuni}"
+						activeOnViewIds="/views/secured/myuni/myuni.xhtml"
+						action="desktop" />
+					<t:commandNavigation2 action="openuss4us_buddylist"
+						activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml,/views/secured/buddylist/usersearch.xhtml">
+						<h:outputText value="#{msg['openuss4us_command_buddylist']}"></h:outputText>
 					</t:commandNavigation2>
-				</t:panelNavigation2>
-			</h:form>
+					<t:commandNavigation2 action="openuss4us_messagecenter"
+						activeOnViewIds="/views/secured/internalMessages/messagecenter.xhtml,/views/secured/internalMessages/newinternalmessage.xhtml,/views/secured/internalMessages/readmessage.xhtml">
+						<h:outputText value="#{msg['openuss4us_command_messagecenter']}"></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2
+						action="#{views$secured$calendar$usercalendar.startCalendar}"
+						activeOnViewIds="/views/secured/calendar/usercalendar.xhtml,/views/secured/calendar/calendar.xhtml,/views/secured/calendar/usercalendarsettings.xhtml,/views/secured/calendar/calendarlist.xhtml,/views/secured/calendar/subscribedcalendars.xhtml">
+						<h:outputText value="#{msg['openuss4us_command_calendar']}"></h:outputText>
+					</t:commandNavigation2>
+				</t:commandNavigation2>
+			</t:panelNavigation2>
+		</h:form>
 		<ui:include src="/views/commons/navigation/profile.xhtml" />
-		<ui:include src="/views/commons/navigation/openuss4us.xhtml" />
 		</s:authorize> 
 	</div>
 </ui:composition>

@@ -131,6 +131,7 @@
 			</s:acl>
 		</s:authorize>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
+					<c:if test="#{courseInfo.calendar}">
 			<o:block label="#{msg.openuss4us_calendar_appointments}"
 				styleClass="teaser_blue_right">
 				<h:form id="news_tables">
@@ -140,9 +141,10 @@
 							value="#{msg.course_no_appointments}" styleClass="news_title" /></p>
 					</c:if>
 					<ui:include
-						src="/views/secured/course/calendarshortoverview.xhtml" />
+						src="/views/secured/course/calendarshortoverview.xhtml"/>
 				</h:form>
 			</o:block>
+						</c:if>
 			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
 				<h:form id="news_tables">
 					<c:if test="#{empty views$secured$course$coursenews.currentNews}">
