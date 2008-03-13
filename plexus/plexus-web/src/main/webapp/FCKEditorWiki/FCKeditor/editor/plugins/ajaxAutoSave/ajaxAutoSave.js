@@ -112,7 +112,8 @@ AxpObject.prototype.feedback = function (errorNumber, errorData)
 					if (hours < 11) { hours = "0" + hours; }
 					if (mins < 11) { mins = "0" + mins; }
 						this.setMessage(this.FCKLang.ajaxAutoSaveSaveCompleted + " " + hours + ":" + mins );
-						this.ResetIsDirty();
+						//this.ResetIsDirty();
+						this.setIsDirty();
 						if (this.FCKConfig.showDialog)
 						{
 							this.getDialogCancelButton(parent.document.getElementById('btnOk').parentNode).value = this.FCKLang.DlgBtnOK;
@@ -143,6 +144,9 @@ AxpObject.prototype.feedback = function (errorNumber, errorData)
 			setTimeout(this.resetToolbarButton, 5000);
 		}
 	}
+	
+	// restart timer (for session ping; disable when activating draft save)
+	setTimeout("ajaxAutoSaveToolbarCommand.prototype.Execute();", FCKConfig.ajaxAutoSaveRefreshTime * 1000);
 }
 
 

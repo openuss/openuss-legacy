@@ -9,14 +9,13 @@
  * 		Paul Moers (http://www.saulmade.nl/FCKeditor/FCKPlugins.php)
  */
 
-FCKLang.ajaxAutoSaveDialogTitle		= 'AutoSave: Save Draft';
-FCKLang.ajaxAutoSaveButtonTitle		= 'Save Draft (AutoSave Activated)';
-FCKLang.ajaxAutoSaveNoChanges		= 'AutoSave: Document Unchanged';
-FCKLang.ajaxAutoSaveSaveCompleted	= 'AutoSave: Draft Saved at';
+FCKLang.ajaxAutoSaveDialogTitle		= 'Session Keepalive: send ping';
+FCKLang.ajaxAutoSaveButtonTitle		= 'Session Keepalive (avtivated)';
+FCKLang.ajaxAutoSaveNoChanges		= 'Session Keepalive: Document Unchanged';
+FCKLang.ajaxAutoSaveSaveCompleted	= 'Session Keepalive: Ping sent at';
 
 FCKLang.ajaxAutoSaveBeforeUpdate	= 'You have not saved your document yet.  If you continue, your work will not be saved.';
-
-FCKLang.ajaxAutoSaveBeforeUpdateDraft	= 'A draft has been saved your document, but has not yet been published.  If you continue, you can choose to edit your draft at a later date.';
+FCKLang.ajaxAutoSaveBeforeUpdateDraft	= 'You have not saved your document yet.  If you continue, your work will not be saved.';
 
 FCKLang.ajaxAutoSaveTargetURL	 	= 'Target URL';
 FCKLang.ajaxAutoSaveResponseText	= 'Response text';

@@ -9,14 +9,13 @@
  * 		Paul Moers (http://www.saulmade.nl/FCKeditor/FCKPlugins.php)
  */
 
-FCKLang.ajaxAutoSaveDialogTitle		= 'AutoSave: Speichere Entwurf';
-FCKLang.ajaxAutoSaveButtonTitle		= 'Speichere Entwurf (AutoSave Aktiviert)';
-FCKLang.ajaxAutoSaveNoChanges		= 'AutoSave: Dokument ungeaendert';
-FCKLang.ajaxAutoSaveSaveCompleted	= 'AutoSave: Entwurf gespeichert um';
+FCKLang.ajaxAutoSaveDialogTitle		= 'Session aufrechterhalten: Sende Lebenszeichen';
+FCKLang.ajaxAutoSaveButtonTitle		= 'Session aufrechterhalten (aktiviert)';
+FCKLang.ajaxAutoSaveNoChanges		= 'Session aufrechterhalten: Dokument ungeaendert';
+FCKLang.ajaxAutoSaveSaveCompleted	= 'Session aufrechterhalten: Letztes Lebenszeichen um';
 
 FCKLang.ajaxAutoSaveBeforeUpdate	= 'Sie haben ihr Dokument noch nicht gespeichert. Wenn Sie fortfahren wird Ihr Dokument nicht gespeichert';
-
-FCKLang.ajaxAutoSaveBeforeUpdateDraft	= 'Ein Entwurf wurde gespeichert, aber noch nicht veroeffentlicht. Wenn Sie fortfahren wird Ihr entwurf verworfen!';
+FCKLang.ajaxAutoSaveBeforeUpdateDraft	= 'Sie haben ihr Dokument noch nicht gespeichert. Wenn Sie fortfahren wird Ihr Dokument nicht gespeichert';
 
 FCKLang.ajaxAutoSaveTargetURL	 	= 'Target URL';
 FCKLang.ajaxAutoSaveResponseText	= 'Response text';
