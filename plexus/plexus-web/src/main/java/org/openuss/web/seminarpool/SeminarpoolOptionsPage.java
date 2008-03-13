@@ -16,6 +16,7 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.seminarpool.SeminarpoolAccessType;
+import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.Constants;
 
 
@@ -55,7 +56,18 @@ public class SeminarpoolOptionsPage extends AbstractSeminarpoolPage {
 		// save actual seminarpool data
 		seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
 		addMessage(i18n("seminarpool_message_command_save_succeed"));
-
+		//Check phase
+		if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.PREPARATIONPHASE){
+			if(seminarpoolInfo.getRegistrationStartTime().getTime()< System.currentTimeMillis() && System.currentTimeMillis() < seminarpoolInfo.getRegistrationEndTime().getTime()){
+				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONPHASE);
+				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
+			}
+		}
+		else if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE && System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
+	
+				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
+				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
+		}
 		return Constants.SUCCESS;
 	}
 	
