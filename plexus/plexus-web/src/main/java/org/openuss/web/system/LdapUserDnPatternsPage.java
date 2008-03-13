@@ -87,12 +87,12 @@ public class LdapUserDnPatternsPage extends AbstractLdapUserDnPatternsOverviewPa
 				setSessionBean(Constants.USERDNPATTERN_INFO, null);
 				return Constants.LDAP_USERDNPATTERN_PAGE;
 			} else {
-				addMessage(i18n("message_ldap_userdnpattern_still_in_use_cannot_be_removed"));
+				addError(i18n("message_ldap_userdnpattern_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_USERDNPATTERN_PAGE;
 			  }
 			}
 			catch (Exception e) {
-				addMessage(i18n("message_ldap_userdnpattern_cannot_be_removed"));
+				addError(i18n("message_ldap_userdnpattern_cannot_be_removed"));
 				return Constants.LDAP_USERDNPATTERN_PAGE;
 			}
 	}

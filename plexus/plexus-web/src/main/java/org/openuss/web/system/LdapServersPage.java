@@ -124,9 +124,8 @@ public class LdapServersPage extends BasePage {
 			setSessionBean(Constants.SERVER_INFO, null);
 			return Constants.LDAP_SERVER_PAGE;			
 		}
-		catch (Exception e) {
-			addError(e.getMessage());
-			addMessage(i18n("message_ldap_ldapserver_cannot_be_removed"));
+		catch (Exception e) {			
+			addError(i18n("message_ldap_ldapserver_cannot_be_removed"));
 			return Constants.LDAP_SERVER_PAGE;
 		}
 	}

@@ -1,12 +1,9 @@
 package org.openuss.web.migration;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,7 +37,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
-import org.openuss.messaging.MessageService;
 import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -132,7 +128,7 @@ public class MigrationController extends BasePage {
 			// Successful authentication -> Migrate user profile
 			migrationUtility.migrate((User)auth.getPrincipal(), auth);
 			
-			addError(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
+			addMessage(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
 			// Handle local user
 			if (auth.getPrincipal() instanceof User) {
 				// Initialize the security context
@@ -150,6 +146,7 @@ public class MigrationController extends BasePage {
 		} catch (Exception ex) {
 			// Authentication failed
 			String exceptionMessage = null;
+			String migrationMessage = null;
 			
 			if (ex instanceof UsernameNotFoundException) {
 				exceptionMessage = i18n("authentication_error_account_notfound");				
@@ -174,7 +171,8 @@ public class MigrationController extends BasePage {
 							   user = migrationUtility.migrate(user, auth);
 							   // Set session bean here, so that i18n gets correct locale for user.
 							   setSessionBean(Constants.USER_SESSION_KEY, user);
-							   exceptionMessage = i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName());					   
+							   
+							   migrationMessage=i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName());
 							   
 							   // Handle local user
 							   // Initialize the security context
@@ -184,7 +182,7 @@ public class MigrationController extends BasePage {
 							   rememberMeServices.loginSuccess(request, response, auth);
 							   // setup user and userPreferences
 							   injectUserInformationIntoSession(auth);
-							   sessionTracker.logSessionCreated(getSession());								
+							   sessionTracker.logSessionCreated(getSession());							   
 						}
 						else {
 							exceptionMessage = i18n("authentication_error_password_mismatch");
@@ -201,8 +199,13 @@ public class MigrationController extends BasePage {
 			} else {
 				exceptionMessage = ex.getMessage();
 			}
-			addError(exceptionMessage);	
-			logger.trace("authentication with OpenUSS credentials failed ", ex);			
+			// Set messages for next page
+			if (exceptionMessage!=null) {
+				logger.trace("authentication with OpenUSS credentials failed ", ex);
+				addError(exceptionMessage);	
+			}else if (migrationMessage!=null) {
+					 addMessage(migrationMessage);
+		    }						
 		}
 		if (auth==null)
 			return Constants.MIGRATION_PAGE;

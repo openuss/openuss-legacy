@@ -1,7 +1,6 @@
 package org.openuss.web.system;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -10,9 +9,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.security.ldap.AttributeMappingInfo;
 import org.openuss.security.ldap.AuthenticationDomainInfo;
-import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
@@ -102,13 +99,13 @@ public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 				setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, null);
 				return Constants.LDAP_DOMAIN_PAGE;
 			} else {
-				addMessage(i18n("message_ldap_authenticationdomain_still_in_use_cannot_be_removed"));
+				addError(i18n("message_ldap_authenticationdomain_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_DOMAIN_PAGE;
 			  }
 			}
 			catch (Exception e) {
 				addError(e.getMessage());
-				addMessage(i18n("message_ldap_authenticationdomain_cannot_be_removed"));
+				addError(i18n("message_ldap_authenticationdomain_cannot_be_removed"));
 				return Constants.LDAP_DOMAIN_PAGE;
 			}		
 	}	

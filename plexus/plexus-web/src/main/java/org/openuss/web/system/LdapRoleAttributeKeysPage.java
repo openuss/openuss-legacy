@@ -68,12 +68,12 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapRoleAttributeKeysOver
 				addMessage(i18n("message_ldap_roleattributekey_removed"));
 				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 			} else {
-				addMessage(i18n("message_ldap_roleattributekey_still_in_use_cannot_be_removed"));
+				addError(i18n("message_ldap_roleattributekey_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 			  }
 			}
 			catch (Exception e) {
-				addMessage(i18n("message_ldap_roleattributekey_cannot_be_removed"));
+				addError(i18n("message_ldap_roleattributekey_cannot_be_removed"));
 				return Constants.LDAP_ROLEATTRIBUTEKEY_PAGE;
 			}
 	}

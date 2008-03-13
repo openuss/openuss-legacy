@@ -154,7 +154,7 @@ public class AuthenticationController extends BasePage {
 						user = migrationUtility.migrate(user, auth);
 						// Set session bean here, so that i18n gets correct locale for user.
 						setSessionBean(Constants.USER_SESSION_KEY, user);
-						addError(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
+						addMessage(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
 					}
 					else {
 						/* OpenUSS profile not found. Central user has to migrate manually or do an abbreviated registration.

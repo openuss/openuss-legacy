@@ -97,13 +97,13 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 				setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, null);
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			} else {
-				addMessage(i18n("message_ldap_attributemapping_still_in_use_cannot_be_removed"));
+				addError(i18n("message_ldap_attributemapping_still_in_use_cannot_be_removed"));
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			  }
 			}
 			catch (Exception e) {
 				addError(e.getMessage());
-				addMessage(i18n("message_ldap_attributemapping_cannot_be_removed"));
+				addError(i18n("message_ldap_attributemapping_cannot_be_removed"));
 				return Constants.LDAP_ATTRIBUTEMAPPING_PAGE;
 			}		
 	}
