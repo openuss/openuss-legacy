@@ -222,7 +222,6 @@ public class UIFlexList extends UIOutput {
 					writer.writeAttribute("class", "flexListItemLeft", null);
 					writer.startElement("a", this);
 						writer.writeAttribute("href", "javascript:void(0)", null);
-						writer.writeAttribute("style", "color: #5493D4;", null);
 						String javascript = "" +
 						"Element.toggle('show_hidden_items" + this.getId() + "'); " +
 						"Element.toggle('hide_hidden_items" + this.getId() + "'); " +

@@ -45,6 +45,10 @@
 	padding: 5px 0px 5px 0px;
 }
 
+.flexListBottom li .flexListItemLeft {
+	font-style: italic;	
+}
+
 .flexList .header {
 	background-color: #5493D4;
 	color: white;
@@ -65,9 +69,9 @@
 }
 
 .flexListItemRight {
-	float:right;
-	height:16px;
-	padding-right: 10px;	
+	float: right;
+	height: 16px;
+	padding-right: 23px;	
 }
 
 .flexListItemLeft {
