@@ -41,6 +41,7 @@ if (window.document.location.href.match(/Wiki/)) {
     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
+    FCKConfig.BodyId = 'wiki_editor';
     
     //----------------------------------------------------
 	// ajaxAutoSave plugin 
