@@ -43,7 +43,7 @@
 	     	var="bean" 
 	     	rows="20">    
 			<t:column>
-				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_user_step1_username}</plexus:commandSortHeader> 
+				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_user_name}</plexus:commandSortHeader> 
 				<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByUser.selectUser}">
 					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
 				</h:commandLink>

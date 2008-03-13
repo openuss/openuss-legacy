@@ -28,9 +28,9 @@
 		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
 	</ui:define>
 	<ui:define name="content" styleClass="footer_normal">
-		<o:block label="#{msg.seminarpool_participants_header}">
+		<o:block label="#{msg.seminarpool_allocation_by_course_step4_header}">
 		<div class="content_font_normal"> 
-			<h:outputText value="#{msg.seminarpool_allocation_by_user_step1_text}" escape="false"/>
+			<h:outputText value="#{msg.seminarpool_allocation_by_course_step4_text}" escape="false"/>
 		</div>
 		</o:block>
 		<h:form id="allocationByCourse">
@@ -44,12 +44,12 @@
 				<t:column>
 					<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep4.selectUser}">
 				
-						<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_course_step2_username}</plexus:commandSortHeader> 
+						<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_user_name}</plexus:commandSortHeader> 
 						<b><h:outputText value="#{bean.name}"/></b>
 					</h:commandLink>
 				</t:column>
 				<t:column>
-					<plexus:commandSortHeader columnName="capacity">#{msg.seminarpool_allocation_by_course_step2_groupname}</plexus:commandSortHeader> 
+					<plexus:commandSortHeader columnName="capacity">#{msg.seminarpool_allocation_group_name}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.capacity}"/></b>
 				</t:column>	
 			</plexus:dataTable>

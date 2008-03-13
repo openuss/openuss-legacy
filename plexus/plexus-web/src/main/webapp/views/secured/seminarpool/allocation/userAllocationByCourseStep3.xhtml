@@ -29,9 +29,9 @@
 	</ui:define>
 
 	<ui:define name="content" styleClass="footer_normal">
-	<o:block label="#{msg.seminarpool_participants_header}">
+	<o:block label="#{msg.seminarpool_allocation_by_course_step3_header}">
 		<div class="content_font_normal"> 
-			<h:outputText value="#{msg.seminarpool_allocation_by_user_step1_text}" escape="false"/>
+			<h:outputText value="#{msg.seminarpool_allocation_by_course_step3_text}" escape="false"/>
 		</div>
 	</o:block>
 	<h:form id="participantsformStep3">
@@ -43,7 +43,7 @@
 	     	var="bean" 
 	     	rows="20">    
 			<t:column>
-				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_by_user_step1_username}</plexus:commandSortHeader> 
+				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_user_name}</plexus:commandSortHeader> 
 				<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep3.selectUser}">
 					<b><h:outputText value="#{bean.firstName} #{bean.lastName}"/></b>
 				</h:commandLink>

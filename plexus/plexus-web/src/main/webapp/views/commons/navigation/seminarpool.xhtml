@@ -49,22 +49,22 @@
 								</t:commandNavigation2>
 								<t:commandNavigation2 
 									action="seminarpool_options_allocations_overview"
-									value="#{msg['seminarpool_mainmenue']}"> 
+									value="#{msg['seminarpool_allocation_mainmenue']}"> 
 									<t:commandNavigation2 
 										action="seminarpool_options_allocations_overview"
 										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationOverview.xhtml">
-										<h:outputText value="#{msg['seminarpool_submenue1']}" />
+										<h:outputText value="#{msg['seminarpool_allocation_submenue1']}" />
 									</t:commandNavigation2>
 									<c:if test="#{phaseController.statusAfterRegistrationComplete}">								
-									<t:commandNavigation2 
-										action="seminarpool_options_allocations_user"
-										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationByUser.xhtml,/views/secured/seminarpool/allocation/userAllocationByUserStep2.xhtml">
-										<h:outputText value="#{msg['seminarpool_submenue3']}" />
-									</t:commandNavigation2>
 									<t:commandNavigation2
 										action="seminarpool_options_allocations_course" 
 										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationByCourse.xhtml,/views/secured/seminarpool/allocation/userAllocationByCourseStep2.xhtml,/views/secured/seminarpool/allocation/userAllocationByCourseStep3.xhtml,/views/secured/seminarpool/allocation/userAllocationByCourseStep4.xhtml">
-										<h:outputText value="#{msg['seminarpool_submenue2']}" />
+										<h:outputText value="#{msg['seminarpool_allocation_submenue2']}" />
+									</t:commandNavigation2>
+									<t:commandNavigation2 
+										action="seminarpool_options_allocations_user"
+										activeOnViewIds="/views/secured/seminarpool/allocation/userAllocationByUser.xhtml,/views/secured/seminarpool/allocation/userAllocationByUserStep2.xhtml">
+										<h:outputText value="#{msg['seminarpool_allocation_submenue3']}" />
 									</t:commandNavigation2>
 								</c:if>
 									
