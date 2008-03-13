@@ -252,7 +252,12 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		if (nextRes == null) {
 			// Cannot find sub-element
-			throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);
+			if (nextPath.isResolved()) {
+				throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);				
+			} else {
+				// Intermediary resource not found
+				throw new WebDAVPathException(WebDAVStatusCodes.SC_CONFLICT, nextPath);
+			}
 		}
 		
 		if (! nextRes.isReadable()) {
@@ -260,6 +265,13 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		return nextRes.resolvePath(nextPath);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#resolvePathElem(java.lang.String)
+	 */
+	public WebDAVResource resolvePathElem(String elem) throws WebDAVHrefException {
+		return resolvePath(getPath().concat(elem));
 	}
 	
 	/**
@@ -548,5 +560,12 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		if (! (getContext().checkMaxFileSize(size))) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_UNSUPPORTED_MEDIA_TYPE, this, "Maximum allowed file size is " + getContext().getMaxFileSize());
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#getName()
+	 */
+	public String getName() {
+		return getPath().getFileName();
 	}
 }

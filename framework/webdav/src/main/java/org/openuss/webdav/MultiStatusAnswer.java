@@ -30,4 +30,9 @@ public interface MultiStatusAnswer extends WebDAVAnswer {
 	 * @param description The description to set.
 	 */
 	public void setDescription(String description);
+	
+	/**
+	 * @return The number of responses
+	 */
+	public int getResponseCount();
 }

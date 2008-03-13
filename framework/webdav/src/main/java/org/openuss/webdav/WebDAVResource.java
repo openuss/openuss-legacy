@@ -18,10 +18,15 @@ import org.w3c.dom.Document;
  */
 public interface WebDAVResource {
 	/**
-	 * The original path of this resource, including the name of this particular resource.
+	 * @return The original path of this resource, including the name of this particular resource.
 	 */
 	public WebDAVPath getPath();
 
+	/**
+	 * @return The file name of this resource
+	 */
+	public String getName();
+	
 	/**
 	 * Resolves a resource in this directory. 
 	 * 
@@ -30,6 +35,16 @@ public interface WebDAVResource {
 	 * @throws WebDAVResourceException typically with a "404 Not Found" if the path can't be fully resolved. 
 	 */
 	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVHrefException;
+	
+	/**
+	 * Resolve a single path element
+	 * 
+	 * @param pathElem The name of the child resource to resolve.
+	 * @return A WebDAVResource like resolvePath(getPath().concat(pathElem)
+	 * @throws WebDAVHrefException
+	 * @see {@link #resolvePath(WebDAVPath)}
+	 */
+	public WebDAVResource resolvePathElem(String pathElem)  throws WebDAVHrefException;
 	
 	/**
 	 * Obtain information about this object.

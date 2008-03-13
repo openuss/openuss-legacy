@@ -24,6 +24,26 @@ public class SimpleStatusResponse implements MultiStatusResponse{
 		this.href = href;
 		this.statusCode = statusCode;
 	}
+	
+	/**
+	 * Constructor with a WebDAVPath objecet.
+	 * 
+	 * @param path The path to store.
+	 * @param statusCode The HTTP status code of this response 
+	 */
+	public SimpleStatusResponse(WebDAVPath path, int statusCode) {
+		this(path.toClientString(), statusCode);
+	}
+	
+	/**
+	 * Constructor with a WebDAVResource objecet.
+	 * 
+	 * @param resource The described resource
+	 * @param statusCode The HTTP status code of this response 
+	 */
+	public SimpleStatusResponse(WebDAVResource res, int statusCode) {
+		this(res.getPath(), statusCode);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.MultiStatusResponse#addToXML(org.w3c.dom.Element)

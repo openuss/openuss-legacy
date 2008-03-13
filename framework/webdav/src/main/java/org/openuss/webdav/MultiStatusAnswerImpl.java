@@ -91,4 +91,11 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	public int getStatusCode() {
 		return WebDAVStatusCodes.SC_MULTI_STATUS;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.MultiStatusAnswer#getResponseCount()
+	 */
+	public int getResponseCount() {
+		return responses.size();
+	}
 }

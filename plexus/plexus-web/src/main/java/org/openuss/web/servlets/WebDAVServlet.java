@@ -25,6 +25,7 @@ import org.openuss.webdav.WebDAVException;
 import org.openuss.webdav.WebDAVHrefException;
 import org.openuss.webdav.WebDAVMethods;
 import org.openuss.webdav.WebDAVPath;
+import org.openuss.webdav.WebDAVPathException;
 import org.openuss.webdav.WebDAVPathImpl;
 import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
@@ -93,38 +94,25 @@ public class WebDAVServlet extends HttpServlet {
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
 			
-			WebDAVResource root = getRoot(davContext);
-			
 			switch(code) {
 			case WebDAVMethods.DAV_OPTIONS:
 				publishOptions(response); 
 				break;
 			case WebDAVMethods.DAV_HEAD:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
+				resource = getRoot().resolvePath(path);
 				IOContext context = resource.readContent();
 				NullIOContext nullContext = new NullIOContext(context);
 				WebDAVUtils.writeToClient(response, nullContext);
 				break;
 			case WebDAVMethods.DAV_GET:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
+				resource = getRoot().resolvePath(path);
 				WebDAVUtils.writeToClient(response, resource.readContent());
-				break;
-			case WebDAVMethods.DAV_COPY:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
-				destination = request.getHeader(WebDAVConstants.HEADER_DESTINATION);
-				destinationPath = WebDAVPathImpl.parse(resourcePathPrefix, destination);
-				overwrite = WebDAVUtils.readOverwriteHeader(request);
-				depth = WebDAVUtils.readDepthHeader(request);
-				recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
-				answer = copy(resource, destinationPath, davContext, recursive, overwrite);
-				printResponse(response, answer);
 				break;
 			case WebDAVMethods.DAV_DELETE:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
+				resource = getRoot().resolvePath(path);
 				resource.delete();
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_OK);
 				printResponse(response, answer);
@@ -132,17 +120,8 @@ public class WebDAVServlet extends HttpServlet {
 			case WebDAVMethods.DAV_MKCOL:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
 				parentPath = path.getParent();
-				try {
-					parentResource = root.resolvePath(parentPath);
-				} catch (WebDAVException e) {
-					// If an intermediate resource can not be found, reset status code to Conflict
-					// See RFC 4918 9.3.1 for details
-					if (e.getStatusCode() == WebDAVStatusCodes.SC_NOT_FOUND) {
-						e.setStatusCode(WebDAVStatusCodes.SC_CONFLICT);
-					}
-					
-					throw e;
-				}
+				parentResource = getRoot().resolvePath(parentPath);
+				
 				String newFilename = path.asResolved().getFileName();
 				if (parentResource.hasChild(newFilename)){
 					answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
@@ -154,16 +133,12 @@ public class WebDAVServlet extends HttpServlet {
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
 				printResponse(response, answer);
 				break;
+			case WebDAVMethods.DAV_COPY:
+				answer = copy(request, false);
+				printResponse(response, answer);
+				break;
 			case WebDAVMethods.DAV_MOVE:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
-				destination = request.getHeader(WebDAVConstants.HEADER_DESTINATION);
-				destinationPath = WebDAVPathImpl.parse(resourcePathPrefix, destination);
-				overwrite = WebDAVUtils.readOverwriteHeader(request);
-				depth = WebDAVUtils.readDepthHeader(request);
-				recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
-				answer = copy(resource, destinationPath, davContext, recursive, overwrite);
-				resource.delete();
+				answer = copy(request, true);
 				printResponse(response, answer);
 				break;
 			case WebDAVMethods.DAV_POST:
@@ -173,7 +148,7 @@ public class WebDAVServlet extends HttpServlet {
 			case WebDAVMethods.DAV_PUT:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
 				parentPath = path.getParent();
-				parentResource = root.resolvePath(parentPath);
+				parentResource = getRoot().resolvePath(parentPath);
 				overwrite = WebDAVUtils.readOverwriteHeader(request);
 				String fileName = path.asResolved().getFileName();
 				IOContext ioc = WebDAVUtils.getClientInputContext(request);
@@ -201,7 +176,7 @@ public class WebDAVServlet extends HttpServlet {
 				break;
 			case WebDAVMethods.DAV_PROPFIND:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
+				resource = getRoot().resolvePath(path);
 				doc = WebDAVUtils.getRequestDocument(request);
 				depth = WebDAVUtils.readDepthHeader(request);
 				answer = propFind(resource, doc, depth);
@@ -209,7 +184,7 @@ public class WebDAVServlet extends HttpServlet {
 				break;
 			case WebDAVMethods.DAV_PROPPATCH:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = root.resolvePath(path);
+				resource = getRoot().resolvePath(path);
 				doc = WebDAVUtils.getRequestDocument(request);
 				depth = WebDAVUtils.readDepthHeader(request);
 				answer = propPatch(resource, doc, depth);
@@ -223,7 +198,7 @@ public class WebDAVServlet extends HttpServlet {
 			logger.debug(ioe);
 		}
  	}
- 	
+
  	/**
  	 * Handles method PROPPATCH as demanded in RFC2518.
  	 * @param resource the resource with the properties
@@ -327,69 +302,131 @@ public class WebDAVServlet extends HttpServlet {
  	}
  	
  	/**
- 	 * Handles method COPY as demanded in RFC2518.
- 	 * @param src the source resource
- 	 * @param dst the destination resource
- 	 * @param recursive true iff depth is INFINITY
- 	 * @param overwrite true iff overwrite is allowed
- 	 * @return the MultiStatusAnswer object
+ 	 * Handle a COPY or MOVE request.
+ 	 * 
+ 	 * @param request The request of the client
+ 	 * @param move Iff set, the original resource should be deleted after successfully copying.
+ 	 * @throws WebDAVException On grave errors
  	 */
- 	public MultiStatusAnswer copy(WebDAVResource src, WebDAVPath dst, WebDAVContext context, boolean recursive, boolean overwrite){
- 		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		WebDAVResource parentResource = getRoot(context);
- 		copy(src, parentResource, recursive, overwrite, answer);
- 		return answer;
- 	}
+ 	protected MultiStatusAnswer copy(HttpServletRequest request, boolean move) throws WebDAVException {
+ 		RootResource root = getRoot();
+ 		
+ 		WebDAVPath srcPath = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+ 		WebDAVResource srcRes = root.resolvePath(srcPath);
+ 		
+ 		String dstStr = request.getHeader(WebDAVConstants.HEADER_DESTINATION);
+ 		if (dstStr == null) {
+ 			throw new WebDAVException(WebDAVStatusCodes.SC_BAD_REQUEST, "Destination header missing");
+ 		}
+		WebDAVPath dstPath = WebDAVPathImpl.parse(resourcePathPrefix, dstStr);
+		WebDAVPath dstParentPath = dstPath.getParent();
+		WebDAVResource dstParent;
+		try {
+			dstParent = root.resolvePath(dstParentPath);
+		} catch (WebDAVException e) {
+			if (e.getStatusCode() == WebDAVStatusCodes.SC_NOT_FOUND) {
+				e.setStatusCode(WebDAVStatusCodes.SC_CONFLICT);
+			}
+			
+			throw e;
+		}
+		
+		String name = dstPath.asResolved().getFileName();
+		
+		// Read options
+		boolean overwrite = WebDAVUtils.readOverwriteHeader(request);
+		boolean recursive;
+		if (move) {
+			int depth = WebDAVUtils.readDepthHeader(request);
+			recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
+		} else {
+			recursive = true;
+		}
+		
+		// Resolve resources
+		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
+		boolean copyRes = copy(srcRes, dstParent, name, recursive, overwrite, answer);
+		
+		if (copyRes && move) {
+			srcRes.delete();
+		}
+		
+		return answer;
+	}
  	
  	/**
- 	 * help method for {@link #copy(WebDAVResource, WebDAVPath, boolean, boolean)} for recursive COPY
+ 	 * Helper method for {@link #copy(WebDAVResource, WebDAVPath, boolean, boolean)} for recursive COPY
  	 * @param src the source resource
- 	 * @param dst the parent of the destination resource
+ 	 * @param dstParent the parent of the destination resource
+ 	 * @param name The name of the resource to create as a child of dstParent
+ 	 * @param overwrite Iff set, existing resources are overwritten.
  	 * @param recursive true iff depth is INFINITY
- 	 * @param overwrite true iff overwrite is allowed
- 	 * @param answer the MultiStatusAnswer object
+ 	 * @param answer the MultiStatusAnswer answer object.
+ 	 * @param true Iff all resources could be copied
  	 */
- 	protected void copy(WebDAVResource src, WebDAVResource parentDst, boolean recursive, boolean overwrite, MultiStatusAnswer answer){
+ 	protected boolean copy(WebDAVResource src, WebDAVResource dstParent, String dstName,
+ 							boolean recursive, boolean overwrite, MultiStatusAnswer answer){
+ 		boolean res = true;
+ 		
  		try {
- 			String filename = src.getPath().getFileName();
- 			WebDAVPath destinationPath = parentDst.getPath().concat(filename);
-			if (overwrite){
-				if (parentDst.hasChild(filename)) {
-					parentDst.resolvePath(destinationPath).delete();
-				}
-			} else {
-				MultiStatusResponse msr = new SimpleStatusResponse(destinationPath.toClientString(), WebDAVStatusCodes.SC_PRECONDITION_FAILED); 
- 	 			answer.addResponse(msr); 
- 	 			return;
-			}
+ 			WebDAVResource dstRes = null;
  			
- 			if (src.isCollection()) {
- 				parentDst.createCollection(filename);
- 				MultiStatusResponse msr = new SimpleStatusResponse(destinationPath.toClientString(), WebDAVStatusCodes.SC_CREATED); 
- 	 			answer.addResponse(msr); 
+ 			if (dstParent.hasChild(dstName)) {
+ 				if (!overwrite) {
+ 					throw new WebDAVPathException(
+ 							WebDAVStatusCodes.SC_PRECONDITION_FAILED,
+ 							dstParent.getPath().concat(dstName).asResolved());
+ 				}
+ 				
+ 				dstRes = dstParent.resolvePathElem(dstName);
+ 			}
+ 			
+ 	 		if (src.isCollection()) {
+ 	 			MultiStatusResponse msr;
+ 	 			
+ 	 			if (dstRes == null) {
+ 	 				dstRes = dstParent.createCollection(dstName);
+ 	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_CREATED);
+ 	 			} else {
+ 	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_NO_CONTENT);
+ 	 			}
+ 	 			answer.addResponse(msr);
+ 	 				
  				if (recursive){
-					Set<WebDAVResource> resources = src.getChildren();
-					for (WebDAVResource resource : resources){
-						copy(resource, parentDst.resolvePath(destinationPath), recursive, overwrite, answer);
+					for (WebDAVResource cr : src.getChildren()){
+						res &= copy(cr, dstRes, cr.getName(), recursive, overwrite, answer);
 					}
  				}
-			} else {
+			} else { // this is a file
+				int statusCode;
+				if (dstRes != null) {
+					dstRes.delete();
+					statusCode = WebDAVStatusCodes.SC_NO_CONTENT; 
+				} else {
+					statusCode = WebDAVStatusCodes.SC_CREATED;
+				}
+				
  				IOContext context = src.readContent();
- 				parentDst.createFile(filename, context);
+ 				dstRes = dstParent.createFile(dstName, context);
  				
- 				MultiStatusResponse msr = new SimpleStatusResponse(destinationPath.toClientString(), WebDAVStatusCodes.SC_CREATED); 
+ 				MultiStatusResponse msr = new SimpleStatusResponse(dstRes, statusCode);
  	 			answer.addResponse(msr);
- 	 			return;
  			}		
- 		}
- 		catch(WebDAVHrefException exDAV){
+ 		} catch(WebDAVHrefException exDAV){
  			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(exDAV.getHref(), exDAV.getStatusCode()); 
  			answer.addResponse(exceptionResponse);
+ 			
+ 			res = false;
+ 		} catch(IOException exIO){
+ 			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(src, WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR); 
+ 			answer.addResponse(exceptionResponse);
+ 			
+ 			res = false;
  		}
- 		catch(IOException exIO){
- 			logger.info("error while copying", exIO);
- 		}
+ 		
+ 		return res;
  	}
+ 	
 	/* (non-Javadoc)
 	 * @see javax.servlet.GenericServlet#init()
 	 */
@@ -422,8 +459,8 @@ public class WebDAVServlet extends HttpServlet {
 	/**
 	 * @return The root resource
 	 */
-	protected WebDAVResource getRoot(WebDAVContext context) {
-		return RootResource.getRoot(context, resourcePathPrefix);
+	protected RootResource getRoot() {
+		return RootResource.getRoot(davContext, resourcePathPrefix);
 	}
 	
 	/**

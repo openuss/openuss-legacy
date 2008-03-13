@@ -1,5 +1,7 @@
 package org.openuss.webdav;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -11,6 +13,10 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * Serialization version id.
 	 */
 	private static final long serialVersionUID = -1217812515953264658L;
+	/**
+	 * Pattern that matches the start of an URL
+	 */
+	protected static final Pattern PATTERN_STARTURL = Pattern.compile("https?://[^/]+");
 	/**
 	 * A prefix to the already resolved path.
 	 */
@@ -63,6 +69,10 @@ public class WebDAVPathImpl implements WebDAVPath {
 			if (prefix.equals(clientInput + PATH_SEP)) {
 				clientInput += PATH_SEP;
 			} else {
+				// Check whether the clientInput just starts with a server specification
+				
+				
+				
 				throw new IllegalArgumentException("Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
 			}
 		}
