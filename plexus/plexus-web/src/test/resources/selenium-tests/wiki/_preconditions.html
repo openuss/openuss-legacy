@@ -4,86 +4,106 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>wiki_delete</title>
+<title>preconditions</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">wiki_delete</td></tr>
+<tr><td rowspan="1" colspan="3">preconditions</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/plexus-web/views/secured/wiki/wikimain.faces?versionId=1016</td>
+	<td>http://localhost:8080/plexus-web/views/welcome.faces</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/public/institute/institute.faces?institute=15</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:_id119:_id127</td>
+	<td>cmd_inst_coursetype</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@id='_id7:wikiOverviewTableView:discussionstable:2:_id122']/span</td>
+	<td>addCourseType</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>_id5:removeSiteConfirmation:checkConfirmation</td>
+	<td>type</td>
+	<td>name</td>
+	<td>Wiki</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shortcut</td>
+	<td>wiki</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>Test für Wiki</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveCourseType</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id5:removeSiteConfirmation:_id66</td>
+	<td>cmd_inst_courses</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>periodSelection</td>
+	<td>label=WS 07/08</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPeriod</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>wiki</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:mainWikiForm:_id109</td>
+	<td>save</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:editWikiForm:_id104</td>
+	<td>cmd_wiki</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@id='_id6:_id123:_id131']/span</td>
+	<td>logout</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@id='_id7:wikiOverviewTableView:discussionstable:1:_id122']/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>_id5:removeSiteConfirmation:checkConfirmation</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id5:removeSiteConfirmation:_id66</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//a[@id='_id6:_id123:_id131']/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//a[@id='_id7:wikiOverviewTableView:discussionstable:0:_id122']/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>_id5:removeSiteConfirmation:checkConfirmation</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id5:removeSiteConfirmation:_id66</td>
+	<td>home</td>
 	<td></td>
 </tr>
 

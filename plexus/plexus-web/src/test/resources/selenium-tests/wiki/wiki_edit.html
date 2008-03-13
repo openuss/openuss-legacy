@@ -4,66 +4,71 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>wiki_edit</title>
+<title>edit</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">wiki_edit</td></tr>
+<tr><td rowspan="1" colspan="3">edit</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/plexus-web/views/secured/wiki/wikimain.faces?page=wiki+new+site</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id121:_id126</td>
+	<td>/plexus-web/views/welcome.faces</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>_id6:wikiCreateNewSiteForm:newSiteText</td>
-	<td>new wiki site</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:wikiCreateNewSiteForm:createNewSite</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1004</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:editWikiForm:_id103</td>
+	<td>cmd_wiki</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:mainWikiForm:_id109</td>
+	<td>edit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>_id6:editWikiForm:note</td>
-	<td>edited</td>
+	<td>xpath=//textarea[contains(@id, 'editWikiForm')]</td>
+	<td>&lt;h1&gt;Wiki&lt;/h1&gt;<br />&lt;p&gt;edited&lt;/p&gt;<br /><br />&lt;p&gt;Ein &lt;strong&gt;Wiki&lt;/strong&gt; (&lt;a href=&quot;http://de.wikipedia.org/wiki/Hawaiische_Sprache&quot;&gt;Hawaiisch&lt;/a&gt; f&amp;uuml;r &amp;bdquo;schnell&amp;ldquo;&lt;sup&gt;&lt;a href=&quot;http://de.wikipedia.org/wiki/Wiki#_note-0&quot;&gt;[1]&lt;/a&gt;&lt;/sup&gt;), seltener auch &lt;em&gt;WikiWiki&lt;/em&gt; und &lt;em&gt;WikiWeb&lt;/em&gt; genannt, ist eine Sammlung von &lt;a href=&quot;http://de.wikipedia.org/wiki/Webseite&quot;&gt;Webseiten&lt;/a&gt;, die von den Benutzern nicht nur gelesen, sondern auch direkt &lt;a href=&quot;http://de.wikipedia.org/wiki/Online&quot;&gt;online&lt;/a&gt; ge&amp;auml;ndert werden k&amp;ouml;nnen. Wikis erm&amp;ouml;glichen es verschiedenen Autoren, gemeinschaftlich an Texten zu arbeiten.&lt;/p&gt;<br /><br />&lt;p&gt;Wesentlich bei der meisten &lt;a href=&quot;http://de.wikipedia.org/wiki/Wiki-Software&quot;&gt;Wiki-Software&lt;/a&gt;, darunter das in der &lt;a href=&quot;http://de.wikipedia.org/wiki/Wikipedia&quot;&gt;Wikipedia&lt;/a&gt; selbst eingesetzte &lt;a href=&quot;http://de.wikipedia.org/wiki/MediaWiki&quot;&gt;MediaWiki&lt;/a&gt;, ist die &lt;a href=&quot;http://de.wikipedia.org/wiki/Versionsverwaltung&quot;&gt;Versionsverwaltung&lt;/a&gt;, die es den Benutzern im Fall von Fehlern oder &lt;a href=&quot;http://de.wikipedia.org/wiki/Vandalismus&quot;&gt;Vandalismus&lt;/a&gt; erlaubt, eine fr&amp;uuml;here Version einer Seite wiederherzustellen. Wie bei &lt;a href=&quot;http://de.wikipedia.org/wiki/Hypertext&quot;&gt;Hypertexten&lt;/a&gt; &amp;uuml;blich, sind die einzelnen Seiten eines Wikis durch Querverweise (&lt;a href=&quot;http://de.wikipedia.org/wiki/Hyperlink&quot;&gt;Hyperlinks&lt;/a&gt;) miteinander verbunden; zur Vernetzung von verschiedenen Wikis dient das Konzept der InterWiki-Verweise.&lt;/p&gt;<br /><br />&lt;p&gt;Wikis geh&amp;ouml;ren zu den &lt;a href=&quot;http://de.wikipedia.org/wiki/Content-Management-System&quot;&gt;Content-Management-Systemen&lt;/a&gt;, setzen aber auf die Philosophie des offenen Zugriffs, im Unterschied zu teils genau geregelten &lt;a href=&quot;http://de.wikipedia.org/wiki/Arbeitsablauf&quot;&gt;Arbeitsabl&amp;auml;ufen&lt;/a&gt; (workflow) von Redaktionssystemen.&lt;sup&gt;&lt;a href=&quot;http://de.wikipedia.org/wiki/Wiki#_note-1&quot;&gt;[2]&lt;/a&gt;&lt;/sup&gt; Mit &amp;bdquo;offenem Zugriff&amp;ldquo; ist aber nicht gemeint, dass zwangsl&amp;auml;ufig jedes Wiki f&amp;uuml;r alle lesbar oder schreibbar sein m&amp;uuml;sste, es kann sehr wohl Berechtigungen oder Beschr&amp;auml;nkungen f&amp;uuml;r bestimmte Benutzergruppen geben (vgl. &lt;a href=&quot;http://de.wikipedia.org/wiki/Wiki#Typen&quot;&gt;Typen&lt;/a&gt;).&lt;/p&gt;<br /><br />&lt;p&gt;Die &amp;Auml;nderbarkeit der Seiten durch jedermann setzt eine urspr&amp;uuml;ngliche &lt;a href=&quot;http://de.wikipedia.org/wiki/Idee&quot;&gt;Idee&lt;/a&gt; des &lt;a href=&quot;http://de.wikipedia.org/wiki/World_Wide_Web&quot;&gt;World Wide Web&lt;/a&gt; erstmals konsequent um und erf&amp;uuml;llt weiterhin eine wesentliche Anforderung an &lt;a href=&quot;http://de.wikipedia.org/wiki/Soziale_Software&quot;&gt;soziale Software&lt;/a&gt;.&lt;/p&gt;</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>_id6:editWikiForm:_id104</td>
+	<td>click</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:_id123:_id135</td>
+	<td>logout</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:mainWikiForm:documentstable:0:_id113</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:courseNavigationForm:course_navigation:_id48</td>
+	<td>home</td>
 	<td></td>
 </tr>
 

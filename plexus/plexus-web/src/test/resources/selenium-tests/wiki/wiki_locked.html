@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://localhost:8080/" />
-<title>newsite+delete</title>
+<link rel="selenium.base" href="" />
+<title>locked</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">newsite+delete</td></tr>
+<tr><td rowspan="1" colspan="3">locked</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -43,32 +43,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>wiki_create_new</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name</td>
-	<td>Test</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>create</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>note</td>
-	<td>Test</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>xpath=//textarea[contains(@id, 'textEditor')]</td>
-	<td>&lt;h1&gt;Test&lt;/h1&gt;</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>save</td>
+	<td>wiki_lock</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,23 +52,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>wiki_overview</td>
+	<td>assertElementPresent</td>
+	<td>xpath=//form[contains(@id, 'mainWikiForm')]//span[@class='content_font_normal']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>xpath=//tbody[contains(@id, 'discussionstable')]/tr[2]/td[2]/a[3]</td>
+	<td>wiki_unlock</td>
 	<td></td>
 </tr>
 <tr>
-	<td>check</td>
-	<td>checkConfirmation</td>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>remove</td>
+	<td>assertElementNotPresent</td>
+	<td>xpath=//form[contains(@id, 'mainWikiForm')]//span[@class='content_font_normal']</td>
 	<td></td>
 </tr>
 <tr>

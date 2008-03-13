@@ -4,96 +4,81 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>wiki_stable</title>
+<title>stable</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">wiki_stable</td></tr>
+<tr><td rowspan="1" colspan="3">stable</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>/plexus-web/views/secured/wiki/wikimain.faces?page=wiki+to+import</td>
+	<td>/plexus-web/views/welcome.faces</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/plexus-web/views/secured/course/main.faces?course=1004</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:_id119:_id127</td>
+	<td>cmd_wiki</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id7:wikiOverviewTableView:discussionstable:1:_id105</td>
+	<td>wiki_stable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//form[contains(@id, 'mainWikiForm')]//span[@class='content_font_normal']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:_id119:_id143</td>
+	<td>wiki_unstable</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>xpath=//div[@id='messages']//span[@class='info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>xpath=//form[contains(@id, 'mainWikiForm')]//span[@class='content_font_normal']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:mainWikiForm:_id114</td>
+	<td>logout</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>_id6:editWikiForm:_id104</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id123:_id131</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id7:courseNavigationForm:course_navigation:_id49</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id119:_id131</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id163:_id171</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id7:courseNavigationForm:course_navigation:_id49</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id119:_id143</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id128:_id140</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:courseNavigationForm:course_navigation:_id48</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id124:_id132</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id7:wikiOverviewTableView:discussionstable:1:_id105</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>_id6:_id119:_id135</td>
+	<td>home</td>
 	<td></td>
 </tr>
 
