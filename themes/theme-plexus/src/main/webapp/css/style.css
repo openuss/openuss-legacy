@@ -207,12 +207,9 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 
 #left .content_normal {
 	padding: 5px 5px 5px 10px;
-	border-style: dotted solid none solid;
-	border-width: 1px;
+	border: none;
 	background: #ECECEC;
-	border-top-color: #505050;
-	border-right-color: #ECECEC;
-	border-left-color: #ECECEC;
+	border-top: solid 1px #AFAFAF;
 }
 
 #left p.content_font_normal, #left span.content_font_normal  {
