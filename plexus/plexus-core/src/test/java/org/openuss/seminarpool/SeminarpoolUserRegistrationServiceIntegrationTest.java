@@ -6,7 +6,6 @@
 package org.openuss.seminarpool;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.openuss.security.User;

@@ -9,14 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.Validate;
-import org.openuss.foundation.DomainObject;
-import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseMember;
-import org.openuss.lecture.Organisation;
 import org.openuss.lecture.University;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;

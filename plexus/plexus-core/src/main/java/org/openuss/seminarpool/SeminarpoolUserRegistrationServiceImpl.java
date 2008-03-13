@@ -8,14 +8,11 @@ package org.openuss.seminarpool;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.desktop.DesktopInfo;
-import org.openuss.newsletter.MailDetail;
-import org.openuss.newsletter.NewsletterInfo;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
