@@ -465,6 +465,18 @@
 			<param-name>max-file-size</param-name>
 			<param-value>52428800</param-value><!-- 50 MiB -->
 		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>read-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow recursive requests -->
+			<param-value>-2</param-value>
+		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>write-limit</param-name>
+			<!-- -1: No limit -->
+			<param-value>100</param-value>
+		</init-param>
 		<!-- Uncomment the following to disable WebDAV -->
 		<!-- <init-param>
 			<param-name>killbit</param-name>

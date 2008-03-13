@@ -2,6 +2,8 @@ package org.openuss.web.servlets;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -52,9 +54,20 @@ public class WebDAVServlet extends HttpServlet {
 	private static final String INIT_PARAMETER_RESOURCE_PATH_PREFIX = "resource-path-prefix";
 	private static final String INIT_PARAMETER_MAX_FILE_SIZE = "max-file-size";
 	private static final String INIT_PARAMETER_KILLBIT = "killbit";
+	private static final String INIT_PARAMETER_WRITE_LIMIT = "write-limit";
+	private static final String INIT_PARAMETER_READ_LIMIT = "read-limit";
 	
+	// value constants
 	private static final String KILLBIT_ENABLED = "on";
-
+	/**
+	 * Do not limit the particular resource
+	 */
+	private static final int NO_LIMIT = -1;
+	/**
+	 * Do not limit the particular resource, but do not allow recursive requests at all (makes sense only for PROPFIND)
+	 */
+	private static final int NO_RECURSIVE = -2;
+		
 	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
 	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
@@ -63,6 +76,10 @@ public class WebDAVServlet extends HttpServlet {
 	 * If set, disable WebDAV
 	 */
 	private boolean killBit;
+	
+	// Limit the number of reading and writing requests in one call
+	private int readLimit; 
+	private int writeLimit;
 	
  	private String resourcePathPrefix;
  	private WebDAVContext davContext;
@@ -73,23 +90,19 @@ public class WebDAVServlet extends HttpServlet {
  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
  		if (killBit) {
  			WebDAVAnswer a = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "WebDAV is disabled.");
- 			printResponse(response, a);
+ 			printAnswer(response, a);
  			return;
  		}
  		
  		try	{
- 			String destination;
-	 		WebDAVPath destinationPath;
+
 	 		WebDAVPath parentPath;
 			WebDAVResource parentResource;
  			String method = request.getMethod();
 			int code = WebDAVMethods.getMethodCode(method);
 			boolean overwrite;
-			boolean recursive;
-			int depth;
 			WebDAVPath path;
 			WebDAVResource resource;
-			Document doc;
 			WebDAVAnswer answer;
 			
 			logger.debug("WebDAVServlet was called with " + method + " method");
@@ -115,7 +128,7 @@ public class WebDAVServlet extends HttpServlet {
 				resource = getRoot().resolvePath(path);
 				resource.delete();
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_OK);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_MKCOL:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
@@ -125,25 +138,25 @@ public class WebDAVServlet extends HttpServlet {
 				String newFilename = path.asResolved().getFileName();
 				if (parentResource.hasChild(newFilename)){
 					answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
-					printResponse(response, answer);
+					printAnswer(response, answer);
 					break;
 				}
 				parentResource.createCollection(newFilename);
 				
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_COPY:
 				answer = copy(request, false);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_MOVE:
 				answer = copy(request, true);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_POST:
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_PUT:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
@@ -156,7 +169,7 @@ public class WebDAVServlet extends HttpServlet {
 				if (parentResource.hasChild(fileName)){
 					if (!overwrite){
 						answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
-						printResponse(response, answer);
+						printAnswer(response, answer);
 						break;
 					} else {
 						resource = parentResource.resolvePath(parentPath.asResolved().concat(fileName));
@@ -172,44 +185,42 @@ public class WebDAVServlet extends HttpServlet {
 				}
 				
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
-				printResponse(response, answer);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_PROPFIND:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = getRoot().resolvePath(path);
-				doc = WebDAVUtils.getRequestDocument(request);
-				depth = WebDAVUtils.readDepthHeader(request);
-				answer = propFind(resource, doc, depth);
-				printResponse(response, answer);
+				answer = propFind(request);
+				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_PROPPATCH:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = getRoot().resolvePath(path);
-				doc = WebDAVUtils.getRequestDocument(request);
-				depth = WebDAVUtils.readDepthHeader(request);
-				answer = propPatch(resource, doc, depth);
-				printResponse(response, answer);
+				answer = propPatch(request);
+				printAnswer(response, answer);
 				break;
 			}
 		} catch(WebDAVException ex){
 			logger.debug("Outputting WebDAVException", ex);
-			printResponse(response, ex);
+			printAnswer(response, ex);
 		} catch(IOException ioe) {
 			logger.debug(ioe);
 		}
  	}
 
  	/**
- 	 * Handles method PROPPATCH as demanded in RFC2518.
- 	 * @param resource the resource with the properties
- 	 * @param doc the request document
- 	 * @param depth the depth of the request
+ 	 * Handles a PROPPATCH request.
+ 	 * @param request The client's format. 
  	 * @return an MultiStatusAnswer object
- 	 * @throws WebDAVResourceException On errors when changing the top resource.
+ 	 * @throws WebDAVException On errors when changing the top resource or reaching the limit.
  	 */
- 	public static MultiStatusAnswer propPatch(WebDAVResource resource, Document doc, int depth) throws WebDAVResourceException{
+ 	protected MultiStatusAnswer propPatch(HttpServletRequest request) throws WebDAVException, IOException{
+ 		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource resource = getRoot().resolvePath(path);
+		Document reqDoc = WebDAVUtils.getRequestDocument(request);
+		int depth = WebDAVUtils.readDepthHeader(request);
+		
  		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		propPatch(resource, doc, answer, depth);
+ 		
+ 		Counter counter = new Counter(writeLimit);
+ 		propPatch(resource, reqDoc, answer, depth, counter);
+ 		
  		return answer;
 	}
  	
@@ -219,9 +230,12 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param doc the request document
  	 * @param answer the MultiStatusAnswer object
  	 * @param recursive true iff depth is INFINITY
- 	 * @throws WebDAVResourceException On errors when changing the top resource.
+ 	 * @param counter The limitation enforcement facility.
+ 	 * @throws WebDAVException When reaching a limit
  	 */
- 	protected static void propPatch(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth) throws WebDAVResourceException{
+ 	protected static void propPatch(WebDAVResource resource, Document doc, MultiStatusAnswer answer, int depth, Counter counter) throws WebDAVException{
+ 		counter.check();
+ 		
  		MultiStatusResponse response = resource.updateProperties(doc);
 		answer.addResponse(response);
 		
@@ -231,27 +245,40 @@ public class WebDAVServlet extends HttpServlet {
 	 			if (children != null) {
 	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
 	 				for (WebDAVResource c : children) {
-	 					propPatch(c, doc, answer, newDepth);	
+	 					propPatch(c, doc, answer, newDepth, counter);	
 	 				}
 	 			}
 	 		}
  		} catch (WebDAVHrefException ex){
- 			// Log, but ignore otherwise
- 			logger.error("Error in PROPPATCH", ex);
+ 			answer.addResponse(ex.toStatusResponse());
  		}
  	}
 
-	/**
- 	 * Handles method PROPFIND as demanded in RFC2518.
- 	 * @param resource the resource with the properties
- 	 * @param reqDoc the request document
- 	 * @param depth the depth of the request
- 	 * @return an MultiStatusAnswer object
-	 * @throws WebDAVResourceException On errors when listing the top resource.
+ 	/**
+ 	 * Handle a PROPFIND request
+ 	 * 
+ 	 * @param request The request
+ 	 * @return An answer detailling all the results
+ 	 * @throws IOException On reading errors
+ 	 * @throws WebDAVException 
  	 */
- 	public static MultiStatusAnswer propFind(WebDAVResource resource, Document reqDoc, int depth) throws WebDAVResourceException{
- 		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
- 		propFind(resource, reqDoc, answer, depth);
+ 	protected WebDAVAnswer propFind(HttpServletRequest request) throws IOException, WebDAVException {
+ 		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource resource = getRoot().resolvePath(path);
+		Document reqDoc = WebDAVUtils.getRequestDocument(request);
+		
+		// Read and check depth
+		int depth = WebDAVUtils.readDepthHeader(request);
+		if ((readLimit == NO_RECURSIVE) && (depth == WebDAVConstants.DEPTH_INFINITY)) {
+			throw new WebDAVException(WebDAVStatusCodes.SC_FORBIDDEN, "Infinite depth requests are forbidden");
+		}
+		
+		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
+ 		try {
+			propFind(resource, reqDoc, answer, depth, new Counter(readLimit));
+		} catch (WebDAVException e) {
+			logger.warn("Reached PROPFIND reading limit", e);
+		}
  		return answer;
  	}
  	
@@ -261,38 +288,42 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param reqDoc the request document
  	 * @param answer the MultiStatusAnswer object
  	 * @param depth The value of the Depth header.
- 	 * @throws WebDAVResourceException On errors when getting the information of this resource
+ 	 * @param counter The limitation enforcement facility.
+ 	 * @return The number of all handled requests until now.
+ 	 * @throws WebDAVException If a limit was reached.
  	 */
- 	protected static void propFind(WebDAVResource resource, Document reqDoc, MultiStatusAnswer answer, int depth) throws WebDAVResourceException {
+ 	protected static void propFind(WebDAVResource resource, Document reqDoc, MultiStatusAnswer answer, int depth, Counter counter) throws WebDAVException {
+ 		counter.check();
+ 		
  		MultiStatusResponse response = resource.getProperties(reqDoc);
 		answer.addResponse(response);
 		
- 		try {
-	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
+ 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
+ 			try {
 	 			Set<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
 	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
 	 				for (WebDAVResource c : children) {
-	 					propFind(c, reqDoc, answer, newDepth);	
+	 					propFind(c, reqDoc, answer, newDepth, counter);	
 	 				}
 	 			}
+	 		} catch (WebDAVHrefException ex){
+	 			answer.addResponse(ex.toStatusResponse());
 	 		}
- 		} catch (WebDAVHrefException ex){
- 			// Log, but ignore otherwise
- 			logger.error("Error in PROPFIND", ex);
  		}
  	}
- 	
- 	/**
+
+	/**
  	 * Updates the response object by the given answer object and prints it
  	 * @param response the response object
  	 * @param answer the SimpleWebDAVAnswer object
  	 * @throws IOException
  	 */
- 	public static void printResponse(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
+ 	public static void printAnswer(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
  		String msg = answer.getMessage();
  		response.setStatus(answer.getStatusCode());
- 		response.setContentType(answer.getContentType());
+ 		String contentType = answer.getContentType();
+ 		response.setContentType(contentType);
  		
  		Writer w = response.getWriter();
  		if (msg != null) {
@@ -310,6 +341,7 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	protected MultiStatusAnswer copy(HttpServletRequest request, boolean move) throws WebDAVException {
  		RootResource root = getRoot();
+ 		Set<WebDAVResource> affectedResources = new HashSet<WebDAVResource>();
  		
  		WebDAVPath srcPath = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
  		WebDAVResource srcRes = root.resolvePath(srcPath);
@@ -330,6 +362,7 @@ public class WebDAVServlet extends HttpServlet {
 			
 			throw e;
 		}
+		checkCopy(dstParent, affectedResources);
 		
 		String name = dstPath.asResolved().getFileName();
 		
@@ -345,7 +378,7 @@ public class WebDAVServlet extends HttpServlet {
 		
 		// Resolve resources
 		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
-		boolean copyRes = copy(srcRes, dstParent, name, recursive, overwrite, answer);
+		boolean copyRes = copy(srcRes, dstParent, name, recursive, overwrite, answer, affectedResources);
 		
 		if (copyRes && move) {
 			srcRes.delete();
@@ -353,8 +386,8 @@ public class WebDAVServlet extends HttpServlet {
 		
 		return answer;
 	}
- 	
- 	/**
+
+	/**
  	 * Helper method for {@link #copy(WebDAVResource, WebDAVPath, boolean, boolean)} for recursive COPY
  	 * @param src the source resource
  	 * @param dstParent the parent of the destination resource
@@ -362,13 +395,17 @@ public class WebDAVServlet extends HttpServlet {
  	 * @param overwrite Iff set, existing resources are overwritten.
  	 * @param recursive true iff depth is INFINITY
  	 * @param answer the MultiStatusAnswer answer object.
+ 	 * @param affectedResources A set of already touched resources to prevent infinite loops
  	 * @param true Iff all resources could be copied
  	 */
  	protected boolean copy(WebDAVResource src, WebDAVResource dstParent, String dstName,
- 							boolean recursive, boolean overwrite, MultiStatusAnswer answer){
+ 							boolean recursive, boolean overwrite, MultiStatusAnswer answer,
+ 							Set<WebDAVResource> affectedResources) {
  		boolean res = true;
  		
  		try {
+ 	 		checkCopy(src, affectedResources);
+ 	 		
  			WebDAVResource dstRes = null;
  			
  			if (dstParent.hasChild(dstName)) {
@@ -379,6 +416,7 @@ public class WebDAVServlet extends HttpServlet {
  				}
  				
  				dstRes = dstParent.resolvePathElem(dstName);
+ 	 			checkCopy(dstRes, affectedResources);
  			}
  			
  	 		if (src.isCollection()) {
@@ -394,7 +432,7 @@ public class WebDAVServlet extends HttpServlet {
  	 				
  				if (recursive){
 					for (WebDAVResource cr : src.getChildren()){
-						res &= copy(cr, dstRes, cr.getName(), recursive, overwrite, answer);
+						res &= copy(cr, dstRes, cr.getName(), recursive, overwrite, answer, affectedResources);
 					}
  				}
 			} else { // this is a file
@@ -413,9 +451,11 @@ public class WebDAVServlet extends HttpServlet {
  	 			answer.addResponse(msr);
  			}		
  		} catch(WebDAVHrefException exDAV){
- 			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(exDAV.getHref(), exDAV.getStatusCode()); 
- 			answer.addResponse(exceptionResponse);
+ 			answer.addResponse(exDAV.toStatusResponse());
  			
+ 			res = false;
+ 		} catch (WebDAVException e) {
+ 			// Limit reached / catastrohpic error
  			res = false;
  		} catch(IOException exIO){
  			MultiStatusResponse exceptionResponse = new SimpleStatusResponse(src, WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR); 
@@ -434,7 +474,8 @@ public class WebDAVServlet extends HttpServlet {
 		logger.info("init() started.");
 		
 		super.init();
-
+		
+		// Kill bit to disable WebDAV
 		killBit = KILLBIT_ENABLED.equals(getInitParameter(INIT_PARAMETER_KILLBIT));
 		if (killBit) {
 			logger.warn("WebDAV killbit activated");
@@ -445,6 +486,12 @@ public class WebDAVServlet extends HttpServlet {
 		if (resourcePathPrefix == null) {
 			throw new ServletException("resource path prefix not set");
 		}
+		
+		// Limits for reading and writing collections
+		String wlStr = getInitParameter(INIT_PARAMETER_WRITE_LIMIT);
+		writeLimit = (wlStr == null) ? NO_LIMIT : Integer.valueOf(wlStr);
+		String rlStr = getInitParameter(INIT_PARAMETER_READ_LIMIT);
+		readLimit = (rlStr == null) ? NO_LIMIT : Integer.valueOf(rlStr);
 		
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		String maxFileSizeStr = getInitParameter(INIT_PARAMETER_MAX_FILE_SIZE);
@@ -473,5 +520,59 @@ public class WebDAVServlet extends HttpServlet {
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", WebDAVConstants.HEADER_DAV);
 		response.setStatus(WebDAVStatusCodes.SC_OK);
+	}
+	
+	/**
+	 * Checks whether to copy further elements
+	 * 
+	 * @param res The resource that is handled.
+	 * @param affectedResources The resources already handled
+	 * @throws WebDAVException When the limit is reached or an already handled resource was touched.
+	 */
+	private void checkCopy(WebDAVResource res,
+			Set<WebDAVResource> affectedResources) throws WebDAVException {
+		
+		if (affectedResources.contains(res)) {
+			throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Recursive copy found");
+		}
+		affectedResources.add(res);
+		
+		if ((writeLimit != NO_LIMIT) && (affectedResources.size() > writeLimit)) {
+			throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Write limit reached");
+		}
+	}
+ 	
+ 	
+	/**
+	 * Helper class to enforce limits.
+	 */
+	protected class Counter {
+		protected long limit;
+		protected long count;
+		
+		public Counter(long limit) {
+			this.limit = limit;
+			this.count = 0;
+		}
+		
+		/**
+		 * Checks another requests.
+		 * 
+		 * @throws WebDAVException Iff the limit is reached
+		 */
+		public void check() throws WebDAVException {
+			count++;
+			if ((limit == NO_LIMIT) || (limit == NO_RECURSIVE)) {
+				return;
+			}
+			
+			if (count > limit) {
+				throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Read limit exceeded");
+			}
+		}
+		
+		public long getCount() {
+			return this.count;
+		}
 	}
 }

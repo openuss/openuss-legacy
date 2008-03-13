@@ -151,4 +151,20 @@ public interface WebDAVResource {
 	 * @return true if the current user may delete this resource.
 	 */
 	public boolean isDeletable();
+	
+	/**
+	 * This MUST be overwritten to ensure prevention of copying trees in itself.
+	 * 
+	 * @param o The object to compare with.
+	 * @return See the general contract of {@link Object#equals(Object)}.
+	 */
+	public boolean equals(Object o);
+	
+	/**
+	 * This MUST be overwritten to ensure prevention of copying trees in itself.
+	 * 
+	 * @param o The object to compare with.
+	 * @return See the general contract of {@link Object#equals(Object)}.
+	 */
+	public boolean equals(WebDAVResource resource);
 }

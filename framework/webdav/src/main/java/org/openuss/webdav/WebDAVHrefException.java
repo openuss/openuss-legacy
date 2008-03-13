@@ -22,4 +22,12 @@ public abstract class WebDAVHrefException extends WebDAVException {
 	public String getHref() {
 		return getPath().toClientString();
 	}
+	
+	/**
+	 * @return A status response representing this exception
+	 */
+	public MultiStatusResponse toStatusResponse() {
+		return new SimpleStatusResponse(getHref(), getStatusCode());
+		
+	}
 }

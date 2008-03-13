@@ -238,4 +238,26 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 		
 		return name;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof WebDAVResource) {
+			return ((CollisionAvoidingSimpleWebDAVResource) o).getId() == getId();
+		} else {
+			return false;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#equals(org.openuss.webdav.WebDAVResource)
+	 */
+	public boolean equals(WebDAVResource res) {
+		if (res instanceof CollisionAvoidingSimpleWebDAVResource) {
+			return ((CollisionAvoidingSimpleWebDAVResource) res).getId() == getId();
+		} else {
+			return false;
+		}
+	}
 }

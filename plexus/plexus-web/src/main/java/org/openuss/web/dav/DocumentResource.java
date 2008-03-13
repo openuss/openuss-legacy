@@ -111,7 +111,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 			len = tmpf.length();
 			checkFileSize(len);
 				
-			is = new FileInputStream(tmpf); // TODO bug
+			is = new FileInputStream(tmpf);
 			
 			// Construct fileInfo object
 			FileInfo newFileInfo = createNewFileInfo(name, ioc, is, len);
@@ -357,6 +357,30 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 */
 	public static String getNameByFolderEntryInfo(FolderEntryInfo fei) {
 		return fei.getFileName();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof WebDAVResource) {
+			return equals((WebDAVResource) o);
+		} else {
+			return false;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#equals(org.openuss.webdav.WebDAVResource)
+	 */
+	public boolean equals(WebDAVResource res) {
+		if (res instanceof DocumentResource) {
+			DocumentResource other = (DocumentResource) res;
+			
+			return domainObj.equals(other.domainObj) && info.equals(other.info);
+		} else {
+			return false;
+		}
 	}
 	
 	/**
