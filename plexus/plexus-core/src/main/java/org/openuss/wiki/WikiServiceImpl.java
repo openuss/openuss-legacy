@@ -36,14 +36,14 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	private static final String IMPORT_IMAGE_TEMPLATE_REPLACE = "<img$1src=\"$2%s\\?fileid=%s\"$3/>";
 
 	@Override
-	protected void handleDeleteWikiSite(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected void handleDeleteWikiSite(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 
 		getWikiSiteDao().remove(wikiSiteId);
 	}
 
 	@Override
-	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId) throws Exception {
+	protected void handleDeleteWikiSiteVersion(Long wikiSiteVersionId) {
 		final WikiSiteVersion version = getWikiSiteVersionDao().load(wikiSiteVersionId);
 		final WikiSite site = version.getWikiSite();
 		
@@ -56,14 +56,16 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected WikiSiteContentInfo handleFindWikiSiteContentByDomainObjectAndName(Long domainId, String siteName) throws Exception {
+	protected WikiSiteContentInfo handleFindWikiSiteContentByDomainObjectAndName(Long domainId, String siteName) {
 		Validate.notNull(domainId, "Parameter domainId must not be null!");
 		Validate.notNull(siteName, "Parameter siteName must not be null!");
 
 		final WikiSiteInfo wikiSite = (WikiSiteInfo) getWikiSiteDao().findByDomainIdAndName(WikiSiteDao.TRANSFORM_WIKISITEINFO, domainId, siteName);
-		WikiSiteContentInfo wikiSiteContent = null;
+		WikiSiteContentInfo wikiSiteContent;
 		if (wikiSite != null) {
 			wikiSiteContent = handleGetNewestWikiSiteContent(wikiSite.getWikiSiteId());
+		} else {
+			wikiSiteContent = null;
 		}
 		
 		return wikiSiteContent;
@@ -72,28 +74,27 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	/** 
 	 * @return List of WikiSiteInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindWikiSiteVersionsByWikiSite(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected List handleFindWikiSiteVersionsByWikiSite(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 
 		final WikiSite wikiSite = getWikiSiteDao().load(wikiSiteId);
 		return getWikiSiteVersionDao().findByWikiSite(WikiSiteVersionDao.TRANSFORM_WIKISITEINFO, wikiSite);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindWikiSitesByDomainObject(Long domainId) throws Exception {
+	protected List handleFindWikiSitesByDomainObject(Long domainId) {
 		Validate.notNull(domainId, "Parameter domainId must not be null!");
 
-		final List<WikiSiteInfo> result = getWikiSiteDao().findByDomainId(WikiSiteDao.TRANSFORM_WIKISITEINFO, domainId);
-		return result;
+		return getWikiSiteDao().findByDomainId(WikiSiteDao.TRANSFORM_WIKISITEINFO, domainId);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected WikiSiteContentInfo handleGetNewestWikiSiteContent(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected WikiSiteContentInfo handleGetNewestWikiSiteContent(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 		final WikiSite site = getWikiSiteDao().load(wikiSiteId);
 		Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
 
@@ -108,19 +109,19 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected WikiSiteInfo handleGetWikiSite(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected WikiSiteInfo handleGetWikiSite(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 		return (WikiSiteInfo)getWikiSiteDao().load(WikiSiteDao.TRANSFORM_WIKISITEINFO, wikiSiteId);
 	}
 
 	@Override
-	protected WikiSiteContentInfo handleGetWikiSiteContent(Long wikiSiteVersionId) throws Exception {
-		Validate.notNull(wikiSiteVersionId, "Parameter wikiSiteId must not be null!");
+	protected WikiSiteContentInfo handleGetWikiSiteContent(Long wikiSiteVersionId) {
+		Validate.notNull(wikiSiteVersionId, "Parameter wikiSiteId must not be null!"); // NOPMD
 		return (WikiSiteContentInfo)getWikiSiteVersionDao().load(WikiSiteVersionDao.TRANSFORM_WIKISITECONTENTINFO, wikiSiteVersionId);
 	}
 
 	@Override
-	protected void handleSaveWikiSite(WikiSiteInfo wikiSiteInfo) throws Exception {
+	protected void handleSaveWikiSite(WikiSiteInfo wikiSiteInfo) {
 		Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
 		Validate.notNull(wikiSiteInfo.getWikiSiteId(), "getWikiSiteId cannot be null.");
 
@@ -131,7 +132,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected void handleSaveWikiSite(WikiSiteContentInfo wikiSiteContentInfo) throws Exception {
+	protected void handleSaveWikiSite(WikiSiteContentInfo wikiSiteContentInfo) {
 		Validate.notNull(wikiSiteContentInfo, "Parameter wikiSiteContentInfo cannot be null.");
 		Validate.notNull(wikiSiteContentInfo.getDomainId(), "getDomainId cannot be null.");
 
@@ -146,10 +147,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 * Creates a WikiSite.
 	 * @param wikiSiteContentInfo Info-Object with the information for the WikiSite
 	 */
-	private void saveWikiSiteCreate(WikiSiteContentInfo wikiSiteContentInfo) {
-		WikiSite wikiSite = null;
-
-		wikiSite = getWikiSiteDao().findByDomainIdAndName(wikiSiteContentInfo.getDomainId(), wikiSiteContentInfo.getName());
+	private void saveWikiSiteCreate(WikiSiteContentInfo wikiSiteContentInfo) { // NOPMD
+		WikiSite wikiSite = getWikiSiteDao().findByDomainIdAndName(wikiSiteContentInfo.getDomainId(), wikiSiteContentInfo.getName());
 		if (wikiSite != null){
 			wikiSiteContentInfo.setWikiSiteId(wikiSite.getId());
 		}
@@ -196,7 +195,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected void handleDeleteImage(Long fileId) throws Exception {
+	protected void handleDeleteImage(Long fileId) throws DocumentApplicationException {
 		Validate.notNull(fileId, "Parameter fileId cannot be null.");
 
 		getDocumentService().removeFolderEntry(fileId);
@@ -204,7 +203,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindImagesByDomainId(Long domainId) throws Exception {
+	protected List handleFindImagesByDomainId(Long domainId) {
 		Validate.notNull(domainId, "Parameter domainId cannot be null.");
 
 		final WikiSite indexSite = getWikiSiteDao().findByDomainIdAndName(domainId, "index");
@@ -212,7 +211,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 
 	@Override
-	protected void handleSaveImage(final WikiSiteInfo wikiSiteInfo, final FileInfo image) throws Exception {
+	protected void handleSaveImage(final WikiSiteInfo wikiSiteInfo, final FileInfo image) throws DocumentApplicationException {
 		Validate.notNull(wikiSiteInfo, "Parameter wikiSiteInfo cannot be null.");
 		Validate.notNull(image, "Parameter image cannot be null.");
 
@@ -236,8 +235,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected WikiSiteContentInfo handleGetNewestStableWikiSiteContent(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected WikiSiteContentInfo handleGetNewestStableWikiSiteContent(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 		final WikiSite site = getWikiSiteDao().load(wikiSiteId);
 		Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
 
@@ -253,7 +252,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleImportWikiSites(Long importDomainId, Long exportDomainId) throws Exception {
+	protected void handleImportWikiSites(Long importDomainId, Long exportDomainId) throws DocumentApplicationException {
 		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
 		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
 
@@ -273,7 +272,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleImportWikiVersions(Long importDomainId, Long exportDomainId) throws Exception {
+	protected void handleImportWikiVersions(Long importDomainId, Long exportDomainId) throws DocumentApplicationException {
 		Validate.notNull(importDomainId, "Parameter importDomainId must not be null!");
 		Validate.notNull(exportDomainId, "Parameter exportDomainId must not be null!");
 		
@@ -332,7 +331,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 */
 	@SuppressWarnings("unchecked")
 	private void importWikiSiteImages(Long importDomainId, List<WikiSiteContentInfo> importWikiSites, Long exportDomainId) throws DocumentApplicationException {
-		final List<ImageImportAllocation> imageImportAllocations = new LinkedList<ImageImportAllocation>();
+		final List<ImageImportAllocation> imageImportAllocations = new LinkedList<ImageImportAllocation>(); // NOPMD
 		
 		final List<FolderEntryInfo> imageFolderEntries = findImagesByDomainId(exportDomainId);
 		
@@ -344,7 +343,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 			handleSaveImage(importDomainId, imageFile);
 			final Long importImageId = imageFile.getId();
 			
-			final ImageImportAllocation imageImportAllocation = new ImageImportAllocation(importImageId, exportImageId, imageFile.getFileName());
+			final ImageImportAllocation imageImportAllocation = new ImageImportAllocation(importImageId, exportImageId, imageFile.getFileName()); // NOPMD
 			imageImportAllocations.add(imageImportAllocation);
 		}
 		
@@ -376,8 +375,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected WikiSiteInfo handleGetNewestWikiSite(Long wikiSiteId) throws Exception {
-		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!");
+	protected WikiSiteInfo handleGetNewestWikiSite(Long wikiSiteId) {
+		Validate.notNull(wikiSiteId, "Parameter wikiSiteId must not be null!"); // NOPMD
 		final WikiSite site = getWikiSiteDao().load(wikiSiteId);
 		Validate.notNull(site, "No wikiSite found for wikiSiteId:" + wikiSiteId);
 
@@ -386,14 +385,13 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		if (list.isEmpty()) {
 			return null;
 		} else {
-			final WikiSiteInfo wikiSite = list.get(0);
-			return wikiSite;
+			return list.get(0);
 		}		
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindAllExportableWikiCoursesByInstituteAndUser(InstituteInfo institute, UserInfo user, CourseInfo importCourse) throws Exception {
+	protected List handleFindAllExportableWikiCoursesByInstituteAndUser(InstituteInfo institute, UserInfo user, CourseInfo importCourse) {
 		Validate.notNull(institute, "Parameter institute must not be null!");
 		Validate.notNull(institute.getId(), "Parameter institute.getId() must not be null!");
 

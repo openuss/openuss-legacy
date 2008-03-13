@@ -35,15 +35,11 @@ public class WikiSiteVersionDaoImpl  extends org.openuss.wiki.WikiSiteVersionDao
      * a new, blank entity is created
      */
     private org.openuss.wiki.WikiSiteVersion loadWikiSiteVersionFromWikiSiteContentInfo(org.openuss.wiki.WikiSiteContentInfo wikiSiteContentInfo) {
-        WikiSiteVersion wikiSiteVersion = null;
-        
         if (wikiSiteContentInfo.getId() != null) {
-        	wikiSiteVersion = this.load(wikiSiteContentInfo.getId());
+        	return this.load(wikiSiteContentInfo.getId());
         } else {
-            wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
+        	return org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
         }
-        
-        return wikiSiteVersion;
     }
     
     /**
@@ -101,15 +97,11 @@ public class WikiSiteVersionDaoImpl  extends org.openuss.wiki.WikiSiteVersionDao
      * a new, blank entity is created
      */
     private org.openuss.wiki.WikiSiteVersion loadWikiSiteVersionFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo wikiSiteInfo) {
-    	org.openuss.wiki.WikiSiteVersion wikiSiteVersion = null;
-    	
     	if (wikiSiteInfo.getId() != null) {
-    		wikiSiteVersion = this.load(wikiSiteInfo.getId());
+    		return this.load(wikiSiteInfo.getId());
     	} else {
-            wikiSiteVersion = org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
+    		return org.openuss.wiki.WikiSiteVersion.Factory.newInstance();
         }
-    	
-        return wikiSiteVersion;
     }
 
     
@@ -135,7 +127,7 @@ public class WikiSiteVersionDaoImpl  extends org.openuss.wiki.WikiSiteVersionDao
         	targetEntity.setNote(sourceVO.getNote());
         }
     	
-        if (copyIfNull || sourceVO.isStable() != false) {
+        if (copyIfNull || sourceVO.isStable()) {
             targetEntity.setStable(sourceVO.isStable());
         }
     }

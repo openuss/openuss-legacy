@@ -3,7 +3,7 @@
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
  */
-package org.openuss.paperSubmission;
+package org.openuss.paperSubmission; // NOPMD
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -31,18 +32,16 @@ public class PaperSubmissionServiceImpl
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionServiceImpl.class);
 
 	@Override
-	protected void handleCreateExam(ExamInfo examInfo) throws Exception {
+	protected void handleCreateExam(ExamInfo examInfo) {
 		Validate.notNull(examInfo, "examInfo cannot be null.");
     	Validate.notNull(examInfo.getDomainId(), "domainId cannot be null.");
     	
-    	//Transform VO to Entity
     	final Exam examEntity = getExamDao().examInfoToEntity(examInfo);
     	Validate.notNull(examEntity, "examInfoEntity cannot be null.");
     	
     	getExamDao().create(examEntity);
     	Validate.notNull(examEntity, "examEntity cannot be null");
     	
-		// Update input parameter for aspects to get the right domain objects.    	
     	examInfo.setId(examEntity.getId());
     	getSecurityService().createObjectIdentity(examEntity, examInfo.getDomainId());
     	
@@ -55,11 +54,10 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected void handleCreatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) throws Exception {
+	protected void handleCreatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) {
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null.");
     	Validate.notNull(paperSubmissionInfo.getExamId(), "ExanId cannot be null.");
     	
-    	//Transform to entity
     	final PaperSubmission paperSubmissionEntity = getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionEntity cannot be null.");
     	
@@ -73,12 +71,10 @@ public class PaperSubmissionServiceImpl
     	getPaperSubmissionDao().create(paperSubmissionEntity);
     	Validate.notNull(paperSubmissionEntity, "paperSubmissionId cannot be null");
     	
-		// Update input parameter for aspects to get the right domain objects.
     	paperSubmissionInfo.setId(paperSubmissionEntity.getId());
 
     	getExamDao().update(exam);
     	
-		// add object identity to security
     	getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
     	
 	}
@@ -86,11 +82,10 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of PaperSubmissionInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindPaperSubmissionsByExam(Long examId)
-			throws Exception {
-		Validate.notNull(examId, "examId cannot be null.");
+	protected List handleFindPaperSubmissionsByExam(Long examId) {
+		Validate.notNull(examId, "examId cannot be null."); // NOPMD
     	final Exam exam = getExamDao().load(examId);
     	
     	final List<PaperSubmissionInfo> submissions = getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
@@ -112,16 +107,16 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of PaperSubmissionInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindPaperSubmissionsByExamAndUser(Long examId,	Long userId) throws Exception {
-		Validate.notNull(examId, "examId cannot be null.");
+	protected List handleFindPaperSubmissionsByExamAndUser(Long examId,	Long userId) {
+		Validate.notNull(examId, "examId cannot be null."); // NOPMD
     	Validate.notNull(userId, "userId cannot be null");    	
    
     	final User user = getUserDao().load(userId);
     	final Exam exam = getExamDao().load(examId);
     	
-    	final List<PaperSubmissionInfo> submissions = getPaperSubmissionDao().findByExamAndUser(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam, user);;
+    	final List<PaperSubmissionInfo> submissions = getPaperSubmissionDao().findByExamAndUser(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam, user);
     	
     	for(PaperSubmissionInfo submission : submissions){
     		submission.setFirstName(user.getFirstName());
@@ -137,10 +132,10 @@ public class PaperSubmissionServiceImpl
     	return submissions;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected ExamInfo handleGetExam(Long examId) throws Exception {
-		Validate.notNull(examId, "examId cannot be null.");
+	protected ExamInfo handleGetExam(Long examId) {
+		Validate.notNull(examId, "examId cannot be null."); // NOPMD
 		
 		final ExamInfo examInfo = (ExamInfo) getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
 		if (examInfo == null) {
@@ -153,7 +148,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected PaperSubmissionInfo handleGetPaperSubmission(Long paperSubmissionId) throws Exception {
+	protected PaperSubmissionInfo handleGetPaperSubmission(Long paperSubmissionId) {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
 		
 		final PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
@@ -177,7 +172,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected void handleRemoveExam(Long examId) throws Exception {
+	protected void handleRemoveExam(Long examId) throws DocumentApplicationException {
     	Validate.notNull(examId, "examId cannot be null.");
 
     	final Exam examEntity = getExamDao().load(examId);
@@ -192,15 +187,13 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected void handleUpdateExam(ExamInfo examInfo) throws Exception {
+	protected void handleUpdateExam(ExamInfo examInfo) {
 		LOGGER.debug("Starting method handleUpdateExam");
     	Validate.notNull(examInfo,"examInfo cannot be null");
     	Validate.notNull(examInfo.getId(),"Parameter examInfo must contain a valid id.");
     	
-    	//transform VO to an entity
     	final Exam examEntity = getExamDao().examInfoToEntity(examInfo);
     	
-    	//update the exam
     	LOGGER.debug("Updating exam");
     	getExamDao().update(examEntity);
     	
@@ -211,7 +204,7 @@ public class PaperSubmissionServiceImpl
 	}
 
 	@Override
-	protected PaperSubmissionInfo handleUpdatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) throws Exception {
+	protected PaperSubmissionInfo handleUpdatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) {
 		LOGGER.debug("Starting method handleUpdatePaperSubmission");
 		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
 		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
@@ -231,10 +224,8 @@ public class PaperSubmissionServiceImpl
 			
 		}else{
 			//PaperSubmission is still in time and will be updated
-			//Transfor VO to an entity
 			final PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
 			
-			//update the PaperSubmission
 			getPaperSubmissionDao().update(paperSubmissionEntity);
 			
 			return paperSubmissionInfo;
@@ -245,9 +236,9 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindExamsByDomainId(Long domainId) throws Exception {
+	protected List handleFindExamsByDomainId(Long domainId) {
 		Validate.notNull(domainId, "domainId cannot be null.");
     	
       	return getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
@@ -256,19 +247,20 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindActiveExamsByDomainId(Long domainId) throws Exception {
+	protected List handleFindActiveExamsByDomainId(Long domainId) {
 		Validate.notNull(domainId, "courseId cannot be null.");
-    	
-		//List of all exams of the domainId
+
+		// FIXME could be better done with HQL statement.
 		final List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	
-		//Filtering the active exams
 		final List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
+		Date now = new Date(); // NOPMD
     	for (ExamInfo exam : exams){
-    		if (exam.getDeadline().after(new Date()))
+    		if (exam.getDeadline().after(now)) {
     			activeExams.add(exam);
+    		}
     	}
     	
     	return activeExams;
@@ -277,20 +269,20 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of ExamInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindInactiveExamsByDomainId(Long domainId)
-			throws Exception {
+	protected List handleFindInactiveExamsByDomainId(Long domainId) {
 		Validate.notNull(domainId, "domainId cannot be null.");
     	
-		//List of all exams of the domainId
-    	final List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
+		// FIXME could be better done with HQL statement.
+		final List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	
-    	//Filtering the inactive exams
     	final List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
+    	Date now = new Date(); // NOPMD
     	for (ExamInfo exam : exams){
-    		if (exam.getDeadline().before(new Date()))
+    		if (exam.getDeadline().before(now)) {
     			inactiveExams.add(exam);
+    		}
     	}
     	
     	return inactiveExams;
@@ -300,36 +292,35 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of SubmissionInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleGetMembersAsPaperSubmissionsByExam(Long examId)
-			throws Exception {
-		Validate.notNull(examId, "examId cannot be null.");
+	protected List handleGetMembersAsPaperSubmissionsByExam(Long examId) { // NOPMD
+		Validate.notNull(examId, "examId cannot be null."); // NOPMD
 		
 		final Exam exam = getExamDao().load(examId);
     	
 		final List<PaperSubmissionInfo> allSubmissions = new ArrayList();
-    	final List<PaperSubmissionInfo> submissions = findPaperSubmissionsByExam(exam.getId());
+    	final List<PaperSubmissionInfo> submissions = findPaperSubmissionsByExam(exam.getId()); // NOPMD
     	
     	final List<UserInfo> members = loadCourseMembers(exam.getDomainId());
     	
     	//A list of PaperSubmissions is created, whereas for each Member of the course at least one and at most two PaperSubmissionInfos a created
     	for(UserInfo member : members){
-    		boolean submitted = false;
+    		boolean submitted = false; // NOPMD
     		
     		for(PaperSubmissionInfo submission : submissions){
     			if(member.getId().equals(submission.getUserId())){
-    				final PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    				final PaperSubmissionInfo paper = new PaperSubmissionInfo(); // NOPMD
     				paper.setUserId(member.getId());
     				paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
     	    		paper.setId(submission.getId());
     				paper.setSubmissionStatus(submission.getSubmissionStatus());
     				allSubmissions.add(paper);
- 					submitted=true;
+ 					submitted = true; // NOPMD
     			}
     		}
-    		if(submitted==false){
-    			final PaperSubmissionInfo paper = new PaperSubmissionInfo();
+    		if (!submitted){
+    			final PaperSubmissionInfo paper = new PaperSubmissionInfo(); // NOPMD
     			paper.setUserId(member.getId());
           		paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
     			paper.setSubmissionStatus(SubmissionStatus.NOT_SUBMITTED);
@@ -342,7 +333,7 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of UserInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	private List<UserInfo> loadCourseMembers(long domainId) {
 		// FIXME: extremely dirty!!! There must be an easier way
 		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
@@ -359,14 +350,14 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of FileInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleGetPaperSubmissionFiles(Collection submissions) throws Exception {
+	protected List handleGetPaperSubmissionFiles(Collection submissions) {
 		Validate.notNull(submissions, "submissions cannot be null.");
 		final List<FileInfo> allFiles = new ArrayList<FileInfo>();
 		
 		for(PaperSubmissionInfo submission: (Collection<PaperSubmissionInfo>)submissions){
-			final List<FileInfo> filesOfSubmission = new ArrayList<FileInfo>();
+			final List<FileInfo> filesOfSubmission = new ArrayList<FileInfo>(); // NOPMD 
 			
 			final FolderInfo folder = getDocumentService().getFolder(submission); 
 			final List<FolderEntryInfo> files = getDocumentService().getFolderEntries(submission, folder);
@@ -385,9 +376,9 @@ public class PaperSubmissionServiceImpl
 	/** 
 	 * @return List of SubmissionInfo
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD
 	@Override
-	protected List handleFindInTimePaperSubmissionsByExam(Long examId) throws Exception {
+	protected List handleFindInTimePaperSubmissionsByExam(Long examId) {
 		final List<PaperSubmissionInfo> allSubmissions = findPaperSubmissionsByExam(examId);
 		final List<PaperSubmissionInfo> inTimeSubmissions = new ArrayList<PaperSubmissionInfo>();
 		

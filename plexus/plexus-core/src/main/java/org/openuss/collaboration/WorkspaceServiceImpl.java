@@ -34,19 +34,15 @@ public class WorkspaceServiceImpl extends
 		Validate.notNull(workspaceInfo, "WorkspaceInfo cannot be null.");
 		Validate.notNull(workspaceInfo.getDomainId(), "domainId cannot be null.");
 		
-		// Transform VO to entity
 		Workspace workspaceEntity = this.getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		Validate.notNull(workspaceEntity, "Cannot transform workspaceInfo to entity.");
 
-		// Save Entity
 		this.getWorkspaceDao().create(workspaceEntity);
 		Validate.notNull(workspaceEntity, "Id of workspace cannot be null.");
 		
-		// Update input parameter for aspects to get the right domain objects. 
 		workspaceInfo.setId(workspaceEntity.getId());
 		
 		getSecurityService().createObjectIdentity(workspaceEntity, new DefaultDomainObject(workspaceInfo.getDomainId()));
-		// set OWN, GRANT, CRUD
 		getSecurityService().setPermissions(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), workspaceEntity, LectureAclEntry.OGCRUD);
 	}
 
@@ -97,9 +93,7 @@ public class WorkspaceServiceImpl extends
 		Validate.notNull(workspaceInfo, "Parameter workspaceInfo must not be null.");
 		Validate.notNull(workspaceInfo.getId(), "Parameter workspaceInfo must contain a valid course id.");
 
-		// Transform VO to Entity
 		Workspace workspaceEntity = getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
-		// Update Course
 		getWorkspaceDao().update(workspaceEntity);
 	}
 

@@ -3,7 +3,7 @@
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
  */
-package org.openuss.paperSubmission;
+package org.openuss.paperSubmission; // NOPMD
 /**
  * @see org.openuss.paperSubmission.Exam
  */
@@ -21,17 +21,6 @@ public class ExamDaoImpl
         super.toExamInfo(sourceEntity, targetVO);
     }
 
-
-    /**
-     * @see org.openuss.paperSubmission.ExamDao#toExamInfo(org.openuss.paperSubmission.Exam)
-     */
-    public org.openuss.paperSubmission.ExamInfo toExamInfo(final org.openuss.paperSubmission.Exam entity)
-    {
-        // @todo verify behavior of toExamInfo
-        return super.toExamInfo(entity);
-    }
-
-
     /**
      * Retrieves the entity object that is associated with the specified value object
      * from the object store. If no such entity object exists in the object store,
@@ -39,17 +28,11 @@ public class ExamDaoImpl
      */
     private org.openuss.paperSubmission.Exam loadExamFromExamInfo(org.openuss.paperSubmission.ExamInfo examInfo)
     {
-        // @todo implement loadExamFromExamInfo
-        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadExamFromExamInfo(org.openuss.paperSubmission.ExamInfo) not yet implemented.");
-
-    	Exam exam = null;
-
         if (examInfo.getId() != null){
-        	exam = this.load(examInfo.getId());
-        }else{
-        	exam = Exam.Factory.newInstance();
+        	return this.load(examInfo.getId());
+        } else {
+        	return Exam.Factory.newInstance();
         }
-        return exam;        
     }
 
     

@@ -3,7 +3,7 @@
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
  */
-package org.openuss.paperSubmission;
+package org.openuss.paperSubmission; // NOPMD
 
 /**
  * @see org.openuss.paperSubmission.PaperSubmission
@@ -46,17 +46,11 @@ public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSub
      */
     private org.openuss.paperSubmission.PaperSubmission loadPaperSubmissionFromPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo)
     {
-        // @todo implement loadPaperSubmissionFromPaperSubmissionInfo
-        //throw new java.lang.UnsupportedOperationException("org.openuss.paperSubmission.loadPaperSubmissionFromPaperSubmissionInfo(org.openuss.paperSubmission.PaperSubmissionInfo) not yet implemented.");
-
-        PaperSubmission paperSubmission = null;
-        
         if (paperSubmissionInfo.getId() != null){
-        	paperSubmission = this.load(paperSubmissionInfo.getId());
-        }else{
-        	paperSubmission = PaperSubmission.Factory.newInstance();
+        	return this.load(paperSubmissionInfo.getId());
+        } else {
+        	return PaperSubmission.Factory.newInstance();
         }        
-        return paperSubmission;
     }
 
     

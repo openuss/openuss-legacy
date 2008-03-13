@@ -21,28 +21,17 @@ public class WikiSiteDaoImpl extends org.openuss.wiki.WikiSiteDaoBase {
         targetVO.setWikiSiteId(sourceEntity.getId());
     }
 
-
-    /**
-     * @see org.openuss.wiki.WikiSiteDao#toWikiSiteInfo(org.openuss.wiki.WikiSite)
-     */
-    public org.openuss.wiki.WikiSiteInfo toWikiSiteInfo(final org.openuss.wiki.WikiSite entity) {
-        return super.toWikiSiteInfo(entity);
-    }
-
-
     /**
      * Retrieves the entity object that is associated with the specified value object
      * from the object store. If no such entity object exists in the object store,
      * a new, blank entity is created
      */
     private org.openuss.wiki.WikiSite loadWikiSiteFromWikiSiteInfo(org.openuss.wiki.WikiSiteInfo wikiSiteInfo) {
-        WikiSite wikiSite = null;
         if (wikiSiteInfo.getId() == null) {
-        	wikiSite = org.openuss.wiki.WikiSite.Factory.newInstance();
+        	return org.openuss.wiki.WikiSite.Factory.newInstance();
         } else {
-            wikiSite = this.load(wikiSiteInfo.getId());
+        	return this.load(wikiSiteInfo.getId());
         }
-        return wikiSite;
     }
 
     

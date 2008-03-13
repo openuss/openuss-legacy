@@ -11,7 +11,7 @@ import org.openuss.commands.DomainCommand;
  */
 public class InstituteActivationCommand extends AbstractDomainCommand implements DomainCommand{
 
-	private static Logger logger = Logger.getLogger(InstituteActivationCommand.class);
+	private static final Logger logger = Logger.getLogger(InstituteActivationCommand.class);
 	
 	private InstituteDao instituteDao;
 
