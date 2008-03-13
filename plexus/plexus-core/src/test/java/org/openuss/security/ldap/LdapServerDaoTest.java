@@ -119,14 +119,14 @@ public class LdapServerDaoTest extends LdapServerDaoTestBase {
 		assertNull(authenticationDomain.getId());
 		assertNull(attributeMapping.getId());
 		
-		roleAttributeKey = roleAttributeKeyDao.create(roleAttributeKey);
-		roleAttributeKey2 = roleAttributeKeyDao.create(roleAttributeKey2);
+
+
 		
 		attributeMapping = attributeMappingDao.create(attributeMapping);
 		authenticationDomain = authenticationDomainDao.create(authenticationDomain);
 		
-		userDnPattern = userDnPatternDao.create(userDnPattern);
-		userDnPattern2 = userDnPatternDao.create(userDnPattern2);
+
+
 		
 		ldapServer = ldapServerDao.create(ldapServer);
 		

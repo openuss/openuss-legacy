@@ -424,7 +424,9 @@ public class LdapConfigurationServiceImpl
 		ldapServer = forceServerLoad(ldapServer);
 		authDomain = forceDomainLoad(authDomain);
 
-		if (checkDomainContainsServer(ldapServer, authDomain)) throw new LdapConfigurationServiceException("Domain already contains server!");
+		if (checkDomainContainsServer(ldapServer, authDomain)) {
+			throw new LdapConfigurationServiceException("Domain already contains server!");
+		}
 		
 		ldapServer.setAuthenticationDomain(authDomain);
 		authDomain.getLdapServers().add(ldapServer);
@@ -451,11 +453,7 @@ public class LdapConfigurationServiceImpl
 
 	private boolean checkDomainContainsServer(LdapServer server, AuthenticationDomain domain) {
 		Set<LdapServer> servers = domain.getLdapServers();
-		if (servers.contains(server)) {			
-			return true;
-		} else { 
-			return false; 
-		}
+		return servers.contains(server);
 	}
 
     /**
@@ -477,7 +475,9 @@ public class LdapConfigurationServiceImpl
 		ldapServer = forceServerLoad(ldapServer);
 		authDomain = forceDomainLoad(authDomain);
 
-		if (!checkDomainContainsServer(ldapServer, authDomain)) throw new LdapConfigurationServiceException("Server not contained in domain!");
+		if (!checkDomainContainsServer(ldapServer, authDomain)) {
+			throw new LdapConfigurationServiceException("Server not contained in domain!");
+		}
 	
 		authDomain.getLdapServers().remove(ldapServer);
 		ldapServer.setAuthenticationDomain(null);
@@ -651,7 +651,9 @@ public class LdapConfigurationServiceImpl
 			// mapping does not contain any role attribute key anymore also delte attribute mapping
 			if (mapping.getRoleAttributeKeys().isEmpty()) {
 				handleDeleteAttributeMapping(getAttributeMappingDao().toAttributeMappingInfo(mapping));
-			} else getAttributeMappingDao().update(mapping);
+			} else {
+				getAttributeMappingDao().update(mapping);
+			}
 		}
 		
     	getRoleAttributeKeyDao().remove(roleAttributeKey.getId());
@@ -702,7 +704,9 @@ public class LdapConfigurationServiceImpl
 		AttributeMapping attributeMappingEntity = getAttributeMappingDao().load(attributeMappingInfo.getId());
 		RoleAttributeKey roleAttributeKeyEntity = getRoleAttributeKeyDao().load(roleAttributeKeyInfo.getId());
 		
-		if(attributeMappingEntity == null || roleAttributeKeyEntity == null) return;
+		if(attributeMappingEntity == null || roleAttributeKeyEntity == null) {
+			return;
+		}
 		
 		// check if attribute mapping contains role attribute key
 		if (( attributeMappingEntity.getRoleAttributeKeys().contains(roleAttributeKeyEntity)) &&
@@ -741,7 +745,9 @@ public class LdapConfigurationServiceImpl
 					roleAttributeKeyInfos.add(roleAttributeKeyInfo);
 				}
 		    	return roleAttributeKeyInfos;
-			} else return new ArrayList<RoleAttributeKeyInfo>();
+			} else {
+				return new ArrayList<RoleAttributeKeyInfo>();
+			}
     }
 
 
@@ -833,7 +839,9 @@ public class LdapConfigurationServiceImpl
 		LdapServer ldapServerEntity = getLdapServerDao().load(ldapServerInfo.getId());
 		
 //		return if null
-		if(userDnPatternEntity == null || ldapServerEntity == null) return;
+		if(userDnPatternEntity == null || ldapServerEntity == null) {
+			return;
+		}
 		
 		userDnPatternEntity.getLdapServers().remove(ldapServerEntity);
 		ldapServerEntity.getUserDnPatterns().remove(userDnPatternEntity);
@@ -983,7 +991,9 @@ public class LdapConfigurationServiceImpl
 		// check if role attribute key already exists
 		if (null != getRoleAttributeKeyDao().findByName(roleAttributeKey.getName())) {
 			return false;
-		} else return true;
+		} else {
+			return true;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -994,7 +1004,9 @@ public class LdapConfigurationServiceImpl
 		// check if role attribute key already exists
 		if (null != getUserDnPatternDao().findByName(userDnPattern.getName())) {
 			return false;
-		} else return true;
+		} else {
+			return true;
+		}
 	}
 	
 	
@@ -1017,7 +1029,9 @@ public class LdapConfigurationServiceImpl
     	// check if role AttributeMappingInfo already exists
 		if (null != getAttributeMappingDao().findByName(attributeMappingInfo.getMappingName())) {
 			return false;
-		} else return true;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
