@@ -2387,6 +2387,10 @@ a:hover {
     text-decoration:none;
 }
 
+#wiki_editor {
+	min-width:400px;
+}
+
 .wiki_content a {
 	text-decoration: underline !important;
 }
