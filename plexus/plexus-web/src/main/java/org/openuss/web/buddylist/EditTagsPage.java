@@ -18,6 +18,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.User;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 
 /**
  * 
@@ -61,10 +62,9 @@ public class EditTagsPage extends BasePage {
 
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("openuss4us_command_buddylist"));
 		crumb.setHint(i18n("openuss4us_command_buddylist"));
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();
 		breadcrumbs.addCrumb(crumb);
 	}
 

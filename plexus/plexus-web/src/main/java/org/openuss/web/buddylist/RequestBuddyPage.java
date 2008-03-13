@@ -43,12 +43,16 @@ public class RequestBuddyPage extends BasePage {
 
 		
 	private void addPageCrumb() {
+		breadcrumbs.loadBaseCrumbs();
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
+		crumb.setLink(Constants.OPENUSS4US_BUDDYLIST);
 		crumb.setName(i18n("openuss4us_command_buddylist"));
 		crumb.setHint(i18n("openuss4us_command_buddylist"));
-		breadcrumbs.loadOpenuss4usCrumbs();
 		breadcrumbs.addCrumb(crumb);
+		BreadCrumb crumb2 = new BreadCrumb();
+		crumb2.setName(i18n("openuss4us_command_buddylist_request"));
+		crumb2.setHint(i18n("openuss4us_command_buddylist_request"));
+		breadcrumbs.addCrumb(crumb2);
 	}	
 
 	private class RequesttableDataProvider extends AbstractPagedTable<BuddyInfo> {

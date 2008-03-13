@@ -72,7 +72,7 @@ public class ReadInternalMessagePage extends BasePage {
 		crumb.setLink("");
 		crumb.setName(i18n("openuss4us_command_messagecenter"));
 		crumb.setHint(i18n("openuss4us_command_messagecenter"));
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();
 		breadcrumbs.addCrumb(crumb);
 	}
 	

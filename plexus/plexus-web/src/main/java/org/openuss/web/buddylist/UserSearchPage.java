@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.internalMessage.InternalMessageInfo;
@@ -52,6 +54,18 @@ public class UserSearchPage extends BasePage {
 
 	/* ----- business logic ----- */
 
+	@Override
+	@Prerender
+	public void prerender() throws Exception{
+		super.prerender();
+		
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("openuss4us_user_search"));
+		crumb.setHint(i18n("openuss4us_user_search"));
+		breadcrumbs.loadBaseCrumbs();
+		breadcrumbs.addCrumb(crumb);
+	}
+	
 	public String linkProfile() {
 		User profile = User.Factory.newInstance();
 		profile.setId(this.data.getRowData().getId());

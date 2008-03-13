@@ -21,13 +21,7 @@ public class AbstractGroupsPage extends BasePage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by devopenuss on 11.03.08 14:22
 		super.prerender();
-		setSessionBean(Constants.GROUP_INFO, null);
-		BreadCrumb newCrumb = new BreadCrumb();
-		newCrumb.setLink(PageLinks.GROUPS_MAIN);
-		newCrumb.setName(i18n("openuss4us_command_groups"));
-		newCrumb.setHint(i18n("openuss4us_command_groups"));	
-		breadcrumbs.loadOpenuss4usCrumbs();
-		breadcrumbs.addCrumb(newCrumb);
+		breadcrumbs.loadBaseCrumbs();
 	}
 
 	public GroupService getGroupService() {

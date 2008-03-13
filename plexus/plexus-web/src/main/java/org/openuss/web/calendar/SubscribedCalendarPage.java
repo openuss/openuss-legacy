@@ -69,7 +69,7 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath() + calendarBasePath);
 		newCrumb.setName(i18n("openuss4us_command_calendar"));

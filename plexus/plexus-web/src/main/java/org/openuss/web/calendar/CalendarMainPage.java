@@ -92,7 +92,7 @@ public class CalendarMainPage extends AbstractCalendarPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath()
 				+ "/views/secured/calendar/usercalendar.faces");

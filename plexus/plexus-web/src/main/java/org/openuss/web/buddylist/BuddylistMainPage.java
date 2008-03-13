@@ -56,10 +56,9 @@ public class BuddylistMainPage extends BasePage {
 
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink("");
 		crumb.setName(i18n("openuss4us_command_buddylist"));
 		crumb.setHint(i18n("openuss4us_command_buddylist"));
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();
 		breadcrumbs.addCrumb(crumb);
 	}	
 

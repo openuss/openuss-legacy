@@ -32,9 +32,6 @@ private static final Logger logger = Logger.getLogger(DeleteBuddyPage.class);
 	public void setBuddyInfo(BuddyInfo buddyInfo) {
 		this.buddyInfo = buddyInfo;
 	}
-
-	
-	
 	
 	public String deleteBuddy() {
 		buddyService.deleteBuddy(buddyInfo);

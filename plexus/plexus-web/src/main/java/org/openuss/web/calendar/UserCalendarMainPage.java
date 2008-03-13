@@ -48,7 +48,7 @@ public class UserCalendarMainPage extends AbstractCalendarPage {
 			calendarheader = (i18n("openuss4us_calendar_monthmode"));
 		}
 		logger.debug("Starting prerender of usercalendar");
-		breadcrumbs.loadOpenuss4usCrumbs();
+		breadcrumbs.loadBaseCrumbs();;
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setLink(contextPath()
 				+ "/views/secured/calendar/usercalendar.faces");

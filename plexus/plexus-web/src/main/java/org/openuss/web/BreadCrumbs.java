@@ -439,20 +439,6 @@ public class BreadCrumbs extends BaseBean {
 		return crumbs;
 	}
 	
-	// OpenUSS4US Crumb Generation
-	
-	private List<BreadCrumb> getOpenuss4usCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		assert crumbs != null;
-
-		BreadCrumb openuss4usCrumb = new BreadCrumb();
-		openuss4usCrumb.setName(i18n("openuss4us_navigation_header"));
-		openuss4usCrumb.setHint(i18n("openuss4us_navigation_header"));
-
-		crumbs.add(openuss4usCrumb);
-		return crumbs;
-	}	
-
 	// Extended Search Crumb Generation
 
 	private List<BreadCrumb> getExtendedSearchCrumbs() {
@@ -553,10 +539,6 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getProfileCrumbs());
 	}
 
-	public void loadOpenuss4usCrumbs() {
-		setCrumbs(getOpenuss4usCrumbs());
-	}	
-	
 	public void loadExtendedSearchCrumbs() {
 		setCrumbs(getExtendedSearchCrumbs());
 	}
@@ -647,9 +629,35 @@ public class BreadCrumbs extends BaseBean {
 		}
 	}
 
-	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
-		// TODO Thomas: Implement !
+	public void loadGroupCrumbs() {
+		setCrumbs(getBaseCrumbs());
 		
 	}
+	
+	private List<BreadCrumb> getGroupCrumbs(UserGroupInfo groupInfo) {
+		List<BreadCrumb> crumbs = getBaseCrumbs();
+		assert crumbs != null;
+		
+		//  group crumb
+		BreadCrumb groupCrumb = new BreadCrumb();
+		groupCrumb.setName(groupInfo.getShortcut());
+		groupCrumb.setHint(groupInfo.getName());
+		groupCrumb.setLink(PageLinks.GROUP_PAGE);
+		groupCrumb.addParameter("group",groupInfo.getId());
+		crumbs.add(groupCrumb);
+
+		return crumbs;
+	}
+	
+	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
+		setCrumbs(getGroupCrumbs(groupInfo));
+		
+	}
+	
+	public void loadBaseCrumbs(){
+		setCrumbs(getBaseCrumbs());
+	}
+	
+	
 
 }

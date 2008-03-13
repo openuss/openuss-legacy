@@ -50,30 +50,12 @@ public class AbstractGroupPage extends BasePage {
 			redirect(Constants.OUTCOME_BACKWARD);
 			return;
 		} else {
-			addGroupCrumb();
 			calendarInfo = calendarService.getCalendar(groupInfo);
 			setSessionBean(Constants.CALENDAR_INFO, calendarInfo);
 			setSessionBean(Constants.GROUP_INFO, groupInfo);
 		}
-		setSessionBean(Constants.COURSE_INFO, null);
-	}
-
-	private void addGroupCrumb() {
-		breadcrumbs.loadOpenuss4usCrumbs();
-		// all groups crumb
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setName(i18n("openuss4us_command_groups"));
-		crumb.setHint(i18n("openuss4us_command_groups"));
-		crumb.setLink(PageLinks.GROUPS_MAIN);
-		crumb.addParameter("group",groupInfo.getId());
-		breadcrumbs.addCrumb(crumb);
-		// special group crumb
-		BreadCrumb crumb2 = new BreadCrumb();
-		crumb2.setName(groupInfo.getShortcut());
-		crumb2.setHint(groupInfo.getName());
-		crumb2.setLink(PageLinks.GROUP_PAGE);
-		crumb2.addParameter("group",groupInfo.getId());
-		breadcrumbs.addCrumb(crumb2);
+		breadcrumbs.loadGroupCrumbs(groupInfo);
+		
 	}
 
 	public boolean isMember() {
