@@ -98,7 +98,7 @@ public class SerialAppointmentCreatePage extends AbstractCalendarPage {
 			// group calendar
 			return Constants.GROUP_CALENDAR;
 		}
-		return Constants.CALENDAR_HOME;
+		return Constants.OUTCOME_BACKWARD;
 	}
 
 	public List<SelectItem> getAppointTypes() {

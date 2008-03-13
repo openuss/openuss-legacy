@@ -38,7 +38,7 @@
 	</ui:define>
 	<ui:define name="content">
 		<h:form id="delete_appointment">
-		<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.DELETE}">
+		<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.ASSIST}">
 			<o:block
 				label="#{msg.warning_attention}"
 				styleClass="warning_box">
@@ -47,7 +47,7 @@
 				</p>
 			</o:block>
 			</s:acl>
-			<s:acl domainObject="#{appointmentInfo.calendarId}" hasNotPermission="#{ACL.DELETE}">
+			<s:acl domainObject="#{appointmentInfo.calendarId}" hasNotPermission="#{ACL.ASSIST}">
 			<o:block
 				label="#{msg.warning_attention}"
 				styleClass="warning_box">
