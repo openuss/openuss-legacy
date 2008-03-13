@@ -162,7 +162,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private static class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<FolderEntryInfo> page;
