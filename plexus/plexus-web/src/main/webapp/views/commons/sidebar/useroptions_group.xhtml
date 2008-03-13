@@ -28,7 +28,8 @@
 						</c:if>
 					</c:if>
 					<li>
-			  			<h:commandLink action="#{views$secured$groups$components$main.leaveGroup}">
+			  			<h:commandLink action="#{views$secured$groups$components$main.leaveGroup}"
+			  			onclick="if (!confirm('#{msg.openuss4us_group_me__delete_confirm}')) return false">
 							<h:outputText value="#{msg.openuss4us_groups_button_leave}"/>
 						</h:commandLink>
 					</li>

@@ -83,7 +83,7 @@
 					<plexus:column header="#{msg.commands_header}">
 						<plexus:command
 							bean="#{views$secured$groups$components$groupmoderators}"
-							onclick="if (!confirm('#{msg.openuss4us_grouop_user__delete_confirm}')) return false"
+							onclick="if (!confirm('#{msg.openuss4us_group_user__delete_confirm}')) return false"
 							action="removeMember" label="#{msg['openuss4us_group_remove']}"
 							title="#{msg['openuss4us_group_remove_hint']}"
 							styleClass="icon_remove" rendered="#{!moderator.creator}" />
