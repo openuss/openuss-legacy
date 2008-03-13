@@ -221,6 +221,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	float: left;
 	width: 0;
 	height: 0;
+	line-height: 1pt;
 }
 
 #left .footer_normal_right_bg {

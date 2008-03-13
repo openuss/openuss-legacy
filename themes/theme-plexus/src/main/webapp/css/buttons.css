@@ -547,16 +547,15 @@ a.icon_recover span {
   background-position: top right;
 }
 
-
-a.newsletter_subscribed span {
+.flexListItemRight a.newsletter_subscribed span {
   background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
 }
 
-a.newsletter_notSubscribed span {
+.flexListItemRight a.newsletter_notSubscribed span {
   background-image: url(../img/buttons/newsletter_subscribe_icon.png);
 }
 
-span.newsletter_none {
+.flexListItemRight span.newsletter_none {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
   font-size: 0pt;
@@ -569,7 +568,7 @@ span.newsletter_none {
   width: 16px;
 }
 
-span.newsletter_none span {
+.flexListItemRight span.newsletter_none span {
   background-position: left top;
   background-image: url(../img/buttons/newsletter_none_icon.png);
   background-repeat: no-repeat;
@@ -578,15 +577,15 @@ span.newsletter_none span {
   width: 16px;
 }
 
-a.forum_subscribed span {
+.flexListItemRight a.forum_subscribed span {
   background-image: url(../img/buttons/forum_unsubscribe_icon.png);
 }
 
-a.forum_notSubscribed span {
+.flexListItemRight a.forum_notSubscribed span {
   background-image: url(../img/buttons/forum_subscribe_icon.png);
 }
 
-span.forum_none {
+.flexListItemRight span.forum_none {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
   font-size: 0pt;
@@ -599,7 +598,7 @@ span.forum_none {
   width: 16px;
 }
 
-span.forum_none span {
+.flexListItemRight span.forum_none span {
   background-position: left top;
   background-image: url(../img/buttons/forum_none_icon.png);
   background-repeat: no-repeat;
@@ -608,7 +607,7 @@ span.forum_none span {
   width: 16px;
 }
 
-a.remove_bookmark span {
+.flexListItemRight a.remove_bookmark span {
   background-image: url(../img/buttons/bookmark_remove_icon.png);
 }
 
@@ -631,7 +630,6 @@ ul.action_list li a {
   vertical-align:middle;
   height:16px;
   padding:0;
-  position: relative;
   cursor: pointer;
 }
 
@@ -640,19 +638,16 @@ ul.action_list li a:focus, ul.action_list li a:hover {
 }
 
 ul.action_list li a:focus span, ul.action_list li a:hover span {
-  background-position: center right;
+  background-position: right top;
 }
 
 ul.action_list li a span {
-  display:block; 
-  background-position: center left;
+  background-position: left top;
   background-repeat: no-repeat;
-  padding: 0 16px 0 0;
   margin: 0 4px 0 -20px;
   height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
+  width: 16px;
+  position: absolute;    
 }
 
 ul.action_list li.newsletter_subscribe a span{
