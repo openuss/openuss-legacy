@@ -119,7 +119,8 @@
 						value="#{msg.openuss4us_calendar_location}: #{appointmentInfo.location}" /></p>
 				</c:if>
 			</o:block>
-
+			
+			<div id="appointmentbox">
 			<plexus:dataTable id="singleAppointmentTable"
 				value="views$secured$calendar$viewappointmentdetails.data"
 				var="singleAppointment" rows="20"
@@ -128,7 +129,7 @@
 				<t:column styleClass="col_max_left">
 					<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
 					<h:outputText value="#{singleAppointment.subject}"
-						styleClass="header_font_normal" />
+						styleClass="appointmentheader" />
 					<o:microformatCalendar appointmentInfo="#{singleAppointment}"/>
 				</t:column>
 				<t:column styleClass="col_max_left">
@@ -137,10 +138,9 @@
 						<f:convertDateTime pattern="E, dd.MM.yyyy" />
 					</h:outputText>
 				</t:column>
-				<t:column styleClass="col_max_left">
+				<t:column styleClass="col_min_left">
 					<plexus:commandSortHeader columnName="takingPlace">#{msg.openuss4us_calendar_taking_place}</plexus:commandSortHeader>
-					<h:selectBooleanCheckbox value="#{singleAppointment.takingPlace}"
-						disabled="true" />
+					<img src="#{theme.imagesPath}/icons/status#{singleAppointment.takingPlace ? 1 : 0}.png"/>
 				</t:column>
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
 					hasPermission="#{ACL.UPDATE}">
@@ -161,7 +161,7 @@
 					</t:column>
 				</s:acl>
 			</plexus:dataTable>
-
+			</div>
 
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
