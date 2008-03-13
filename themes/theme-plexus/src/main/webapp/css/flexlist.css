@@ -104,7 +104,6 @@
 
 #flexlist_tabs .header_normal {
   padding: 0;
-  
   height: 28px;
   background-image: url(../img/headline_small_bg.jpg);
   background-repeat: repeat-x;
@@ -118,6 +117,7 @@
   background-image: url(../img/headline_right_small_bg.jpg);
   background-repeat: no-repeat;
   background-position: bottom;
+  border:none;
 }
 
 #flexlist_tabs .tabs {
@@ -182,9 +182,6 @@
 .tabs .tab_content {
 	padding-top: 5px;
 	border-top: 1px solid #aeaeae;
-
-	height: 27px; 
-	
 }
 
 .tabs .tab_arrow {
