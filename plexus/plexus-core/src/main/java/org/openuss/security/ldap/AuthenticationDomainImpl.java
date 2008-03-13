@@ -30,4 +30,14 @@ public class AuthenticationDomainImpl
     	}
     }
 
+	@Override
+	public void setName(String name) {
+//		not allowed to overwrite AuthenticationDomain name 
+		if (getName() == null) { 
+			super.setName(name);			
+		} 		
+	}
+    
+    
+
 }

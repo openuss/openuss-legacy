@@ -24,8 +24,13 @@
   		<ui:define name="content">
 			<h:form id="reg1Form">
 				<c:if test="#{not empty ldapDomainRegistration.allAttributeMappings}">
-					<o:block label="#{msg.ldap_domain_registration_step1_headline}" styleClass="form_box">						
-						<o:input entity="authenticationDomainInfo" property="name" maxlength="250" required="true"/>
+					<o:block label="#{msg.ldap_domain_registration_step1_headline}" styleClass="form_box">	
+						<c:if test="#{not empty authenticationDomainInfo.name}">					 					
+							<o:input entity="authenticationDomainInfo" property="name" maxlength="250" required="true" disabled="true"/>
+						</c:if>
+						<c:if test="#{empty authenticationDomainInfo.name}">					 					
+							<o:input entity="authenticationDomainInfo" property="name" maxlength="250" required="true"/>
+						</c:if>
 						<o:input entity="authenticationDomainInfo" property="changePasswordUrl" maxlength="250" required="false"/>						
 						<h:outputLabel value="#{msg.ldap_authenticationdomain_attributemapping_select}" for="attribute_mapping_select" styleClass="field_label"/>
 						<h:selectOneListbox id="attribute_mapping_select" size="1" value="#{authenticationDomainInfo.attributeMappingId}" required="true" 
