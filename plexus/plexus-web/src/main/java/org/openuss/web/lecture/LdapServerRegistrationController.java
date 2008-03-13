@@ -35,6 +35,7 @@ import org.openuss.web.PageLinks;
 
 @Bean(name = Constants.LDAP_SERVER_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
 @View
+
 public class LdapServerRegistrationController extends BasePage {
 
 	
