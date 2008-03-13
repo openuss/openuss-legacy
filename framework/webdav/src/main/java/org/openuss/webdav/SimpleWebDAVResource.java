@@ -586,4 +586,9 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			return false;
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public abstract int hashCode();
 }

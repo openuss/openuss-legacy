@@ -82,7 +82,7 @@ public class WebDAVServlet extends HttpServlet {
 	private int writeLimit;
 	
  	private String resourcePathPrefix;
- 	private WebDAVContext davContext;
+ 	private transient WebDAVContext davContext;
 	
  	/* (non-Javadoc)
  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -341,7 +341,7 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	protected MultiStatusAnswer copy(HttpServletRequest request, boolean move) throws WebDAVException {
  		RootResource root = getRoot();
- 		Set<WebDAVResource> affectedResources = new HashSet<WebDAVResource>();
+ 		CopyChecker cc = new CopyChecker(writeLimit);
  		
  		WebDAVPath srcPath = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
  		WebDAVResource srcRes = root.resolvePath(srcPath);
@@ -362,7 +362,7 @@ public class WebDAVServlet extends HttpServlet {
 			
 			throw e;
 		}
-		checkCopy(dstParent, affectedResources);
+		cc.check(dstParent);
 		
 		String name = dstPath.asResolved().getFileName();
 		
@@ -378,7 +378,7 @@ public class WebDAVServlet extends HttpServlet {
 		
 		// Resolve resources
 		MultiStatusAnswer answer = new MultiStatusAnswerImpl();
-		boolean copyRes = copy(srcRes, dstParent, name, recursive, overwrite, answer, affectedResources);
+		boolean copyRes = copy(srcRes, dstParent, name, recursive, overwrite, answer, cc);
 		
 		if (copyRes && move) {
 			srcRes.delete();
@@ -417,11 +417,11 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	protected boolean copy(WebDAVResource src, WebDAVResource dstParent, String dstName,
  							boolean recursive, boolean overwrite, MultiStatusAnswer answer,
- 							Set<WebDAVResource> affectedResources) {
+ 							CopyChecker copyChecker) {
  		boolean res = true;
  		
  		try {
- 	 		checkCopy(src, affectedResources);
+ 	 		copyChecker.check(src);
  	 		
  			WebDAVResource dstRes = null;
  			
@@ -433,7 +433,7 @@ public class WebDAVServlet extends HttpServlet {
  				}
  				
  				dstRes = dstParent.resolvePathElem(dstName);
- 	 			checkCopy(dstRes, affectedResources);
+ 	 			copyChecker.check(dstRes);
  			}
  			
  	 		if (src.isCollection()) {
@@ -441,23 +441,25 @@ public class WebDAVServlet extends HttpServlet {
  	 			
  	 			if (dstRes == null) {
  	 				dstRes = dstParent.createCollection(dstName);
+ 	 				copyChecker.check(dstRes);
  	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_CREATED);
  	 			} else {
  	 				if (!dstRes.isCollection()) {
  	 					dstRes.delete();
- 	 				}
- 	 				
- 	 				if (!dstRes.isWritable()) {
- 	 					throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, dstRes);
- 	 				}
- 	 				
+ 	 					dstRes = dstParent.createCollection(dstName);
+ 	 	 				copyChecker.check(dstRes);
+ 	 				} 
+				
  	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_NO_CONTENT);
  	 			}
+ 				if (!dstRes.isWritable()) {
+ 					throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, dstRes);
+ 				}
  	 			answer.addResponse(msr);
  	 				
  				if (recursive){
 					for (WebDAVResource cr : src.getChildren()){
-						res &= copy(cr, dstRes, cr.getName(), recursive, overwrite, answer, affectedResources);
+						res &= copy(cr, dstRes, cr.getName(), recursive, overwrite, answer, copyChecker);
 					}
  				}
 			} else { // this is a file
@@ -469,7 +471,7 @@ public class WebDAVServlet extends HttpServlet {
 					statusCode = WebDAVStatusCodes.SC_CREATED;
 				}
 				
- 				IOContext context = src.readContent();
+				IOContext context = src.readContent();
  				dstRes = dstParent.createFile(dstName, context);
  				
  				MultiStatusResponse msr = new SimpleStatusResponse(dstRes, statusCode);
@@ -548,30 +550,9 @@ public class WebDAVServlet extends HttpServlet {
 	}
 	
 	/**
-	 * Checks whether to copy further elements
-	 * 
-	 * @param res The resource that is handled.
-	 * @param affectedResources The resources already handled
-	 * @throws WebDAVException When the limit is reached or an already handled resource was touched.
-	 */
-	private void checkCopy(WebDAVResource res,
-			Set<WebDAVResource> affectedResources) throws WebDAVException {
-		
-		if (affectedResources.contains(res)) {
-			throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Recursive copy found");
-		}
-		affectedResources.add(res);
-		
-		if ((writeLimit != NO_LIMIT) && (affectedResources.size() > writeLimit)) {
-			throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Write limit reached");
-		}
-	}
- 	
- 	
-	/**
 	 * Helper class to enforce limits.
 	 */
-	protected class Counter {
+	protected static class Counter {
 		protected long limit;
 		protected long count;
 		
@@ -599,5 +580,43 @@ public class WebDAVServlet extends HttpServlet {
 		public long getCount() {
 			return this.count;
 		}
+	}
+	
+	/**
+	 * A class that prevents infinite recursive copying by
+	 * <ul>
+	 * <li>limiting the number of copy actions</li>
+	 * <li>Storing all already touched resources</li>
+	 * </ul>
+	 */
+	protected static class CopyChecker {
+		protected Set<WebDAVResource> affectedResources;
+		protected int limit;
+		
+		public CopyChecker(int limit) {
+			this.limit = limit;
+			affectedResources = new HashSet<WebDAVResource>();
+		}
+		
+		/**
+		 * Helper class that checks whether to copy further elements.
+		 * The caller must ensure this gets called only once per input value.
+		 * 
+		 * @param wdr The resource that is handled.
+		 * @param affectedResources The resources already handled
+		 * @throws WebDAVException When the limit is reached or an already handled resource was touched.
+		 */
+		public void check(WebDAVResource wdr) throws WebDAVException {
+			if (! affectedResources.add(wdr)) {
+				logger.info("Found a copy in itself " + wdr);
+				throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Recursive copy found");
+			}
+			
+			if ((limit != NO_LIMIT) && (affectedResources.size() > limit)) {
+				logger.info("WebDAV client reached write limit while working on " + wdr);
+				throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Copy limit reached");
+			}
+		}
+		
 	}
 }

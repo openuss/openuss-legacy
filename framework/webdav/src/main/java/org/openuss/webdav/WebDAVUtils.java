@@ -53,18 +53,7 @@ public final class WebDAVUtils {
 	
 	private final static String DATEFORMAT_RFC1123_PATTERN = "EEE, dd MMM yyyy HH:mm:ss zzz";
 	private final static String DATEFORMAT_INTERNET_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-	protected final static DateFormat rfc1123DateFormat;
-	protected final static DateFormat internetDateFormat;
-	static {
-		TimeZone gmtTz = TimeZone.getTimeZone("GMT");
-		rfc1123DateFormat = new SimpleDateFormat(DATEFORMAT_RFC1123_PATTERN, Locale.US);
-		rfc1123DateFormat.setTimeZone(gmtTz);
-		
-		internetDateFormat = new SimpleDateFormat(DATEFORMAT_INTERNET_PATTERN, Locale.US);
-		internetDateFormat.setTimeZone(gmtTz);
-	}
-	
-
+	private final static TimeZone gmtTz = TimeZone.getTimeZone("GMT");
 	
 	/* HTTP */
 	
@@ -333,7 +322,17 @@ public final class WebDAVUtils {
 	 * @return A WebDAV-compatible string representing the date as defined by RFC2616 3.3.1
 	 */
 	public static String dateToRFC1123String(Date d) {
-		return rfc1123DateFormat.format(d);		
+		return getRFC1123DateFormat().format(d);		
+	}
+	
+	/**
+	 * @return A DateFormat suitable to format dates as specified by RFC 2616 3.3.1
+	 */
+	public static DateFormat getRFC1123DateFormat() {
+		DateFormat res = new SimpleDateFormat(DATEFORMAT_RFC1123_PATTERN, Locale.US);
+		res.setTimeZone(gmtTz);
+		
+		return res;
 	}
 	
 	/**
@@ -343,7 +342,17 @@ public final class WebDAVUtils {
 	 * @return A string representing d as defined in RFC 3339 5.6 (date-time)
 	 */
 	public static String dateToInternetString(Date d) {
-		return internetDateFormat.format(d);
+		return getInternetDateFormat().format(d);
+	}
+	
+	/**
+	 * @return A DateFormat suitable to format dates as specified by RFC 3339 5.6 (ABNF date-time)
+	 */
+	public static DateFormat getInternetDateFormat() {
+		DateFormat res = new SimpleDateFormat(DATEFORMAT_INTERNET_PATTERN, Locale.US);
+		res.setTimeZone(gmtTz);
+		
+		return res;
 	}
 	
 	/**

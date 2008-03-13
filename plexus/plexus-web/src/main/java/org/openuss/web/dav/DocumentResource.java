@@ -360,14 +360,15 @@ public class DocumentResource extends SimpleWebDAVResource {
 	}
 	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see java.lang.Object#hashCode()
 	 */
-	public boolean equals(Object o) {
-		if (o instanceof WebDAVResource) {
-			return equals((WebDAVResource) o);
-		} else {
-			return false;
-		}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (domainObj.getId() ^ (domainObj.getId() >>> 32));
+		result = prime * result + (int) (info.getId() ^ (info.getId() >>> 32));
+		return result;
 	}
 	
 	/* (non-Javadoc)
@@ -377,10 +378,18 @@ public class DocumentResource extends SimpleWebDAVResource {
 		if (res instanceof DocumentResource) {
 			DocumentResource other = (DocumentResource) res;
 			
-			return domainObj.equals(other.domainObj) && info.equals(other.info);
+			return (domainObj.getId().longValue() == other.domainObj.getId().longValue())
+					&& (info.getId().longValue() == other.info.getId().longValue());
 		} else {
 			return false;
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.SimpleWebDAVResource#toString()
+	 */
+	public String toString() {
+		return super.toString() + " (domainid = " + domainObj.getId() + ", infoid=" + info.getId();
 	}
 	
 	/**

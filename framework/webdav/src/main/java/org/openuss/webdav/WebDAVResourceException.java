@@ -11,7 +11,7 @@ public class WebDAVResourceException extends WebDAVHrefException {
 	/**
 	 * The resource that was worked on when the exception was raised.
 	 */
-	protected WebDAVResource resource;
+	protected transient WebDAVResource resource;
 	
 	/**
 	 * @param statusCode The WebDAV status code as defined in WebDAVStatusCodes. 
