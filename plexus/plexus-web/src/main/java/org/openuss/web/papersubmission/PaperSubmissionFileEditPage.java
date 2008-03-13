@@ -55,31 +55,26 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	}
 	
 	private void addPageCrumb() {
-		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
-		crumb.setName(i18n("papersubmission_paperlist_header"));
-		crumb.setHint(i18n("papersubmission_paperlist_header"));
+		BreadCrumb crumb = new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM,
+				i18n("papersubmission_paperlist_header"),
+				i18n("papersubmission_paperlist_header"));
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
 		
-		crumb = new BreadCrumb();
-		crumb.setName(examInfo.getName());
-		crumb.setHint(examInfo.getName());
-		
-		if(courseInfo != null && courseInfo.getId() != null 
-				&& examInfo != null && examInfo.getId() != null){
+		if (examInfo != null && examInfo.getId() != null) {
+			crumb = new BreadCrumb(examInfo.getName(), examInfo.getName());
 			
-			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-			crumb.addParameter("course",courseInfo.getId());
-			crumb.addParameter("exam",examInfo.getId());
+			if(courseInfo != null && courseInfo.getId() != null){
+				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+				crumb.addParameter("course",courseInfo.getId());
+				crumb.addParameter("exam",examInfo.getId());
+			}
+			
+			breadcrumbs.addCrumb(crumb);
 		}
 		
-		breadcrumbs.addCrumb(crumb);
-		
-		crumb = new BreadCrumb();
-		crumb.setName(i18n("documents_file"));
-		crumb.setHint(i18n("documents_file"));
+		crumb = new BreadCrumb(i18n("documents_file"), i18n("documents_file"));
 		breadcrumbs.addCrumb(crumb);
 	}
 

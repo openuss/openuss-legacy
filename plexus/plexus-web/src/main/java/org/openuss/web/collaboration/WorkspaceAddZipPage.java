@@ -60,7 +60,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	 * @return success
 	 * @throws DocumentApplicationException
 	 */
-	public String unzip() throws DocumentApplicationException{
+	public String unzip() throws DocumentApplicationException{ // NOPMD by Administrator on 13.03.08 16:07
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 
 		File zipFile = document.getFile(); 
@@ -78,7 +78,9 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 				addMessage(i18n("message_extract_files_successfully", infos.size()));
 			} finally{
 				unpacker.closeQuitly();
-				zipFile.delete();
+				if (!zipFile.delete()) {
+					LOGGER.error("Unable to delete zip file " + zipFile.getAbsolutePath());
+				}
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {

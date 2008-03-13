@@ -66,32 +66,26 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		
 		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, i18n("papersubmission_paperlist_header"), i18n("papersubmission_paperlist_header")));
 
-		if (this.examInfo != null) {
+		if (this.examInfo != null && this.examInfo.getId() != null &&
+				courseInfo != null && courseInfo.getId() != null) {
 			//specific exam crumb
 			BreadCrumb crumb = new BreadCrumb(this.examInfo.getName());
 			
-			if(courseInfo != null && courseInfo.getId() != null 
-					&& this.examInfo != null && this.examInfo.getId() != null){
-				
-				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
-				crumb.addParameter("course", courseInfo.getId());
-				crumb.addParameter("exam", this.examInfo.getId());
-			}
+			crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
+			crumb.addParameter("course", courseInfo.getId());
+			crumb.addParameter("exam", this.examInfo.getId());
 			breadcrumbs.addCrumb(crumb);
 			
-			//crumb of a specific submission
-			crumb = new BreadCrumb(paperSubmissionInfo.getDisplayName());
-			
-			if(courseInfo != null && courseInfo.getId() != null 
-					&& this.examInfo != null && this.examInfo.getId() != null
-					&& paperSubmissionInfo != null && paperSubmissionInfo.getId() != null){
+			if (paperSubmissionInfo != null && paperSubmissionInfo.getId() != null){
+				//crumb of a specific submission
+				crumb = new BreadCrumb(paperSubmissionInfo.getDisplayName());
 				
 				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 				crumb.addParameter("course", courseInfo.getId());
 				crumb.addParameter("exam", this.examInfo.getId());
 				crumb.addParameter("paper", paperSubmissionInfo.getId());
+				breadcrumbs.addCrumb(crumb);
 			}
-			breadcrumbs.addCrumb(crumb);
 		}
 	}
 	
@@ -168,7 +162,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 
 	/////// Inner classes ////////////////////////////////////////////////////
 	
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
+	private static class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<FolderEntryInfo> page;

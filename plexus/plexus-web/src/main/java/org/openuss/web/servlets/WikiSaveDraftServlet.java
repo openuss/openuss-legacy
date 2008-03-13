@@ -23,7 +23,7 @@ public class WikiSaveDraftServlet extends HttpServlet {
 	private static final long serialVersionUID = 5078393540079721424L;
 	
 	private static final Logger logger = Logger.getLogger(WikiSaveDraftServlet.class);
-
+	
 	@Override
 	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp)
 			throws ServletException, IOException {

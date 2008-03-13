@@ -92,7 +92,9 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 				checkSubmissionStatus(paperSubmissionInfo);
 			} finally {
 				unpacker.closeQuitly();
-				zipFile.delete();
+				if (!zipFile.delete()) {
+					LOGGER.error("Unable to delete zip file " + zipFile.getAbsolutePath());
+				}
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
 		} catch (IOException e) {

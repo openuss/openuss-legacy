@@ -206,12 +206,13 @@ public class WikiMainPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String markStable() {
-		LOGGER.debug("Marking Site " + siteVersionInfo.getName() + " stable.");
 		if (this.siteVersionInfo == null || this.siteVersionInfo.getDomainId() == null) {
 			LOGGER.error("Site version info incomplete!");
 			addError(i18n("wiki_error_siteinfo_not_found"));
 			return Constants.WIKI_MAIN_PAGE;
 		}
+		
+		LOGGER.debug("Marking Site " + siteVersionInfo.getName() + " stable.");
 		
 		siteVersionInfo.setStable(true);
 		wikiService.saveWikiSite(siteVersionInfo);
