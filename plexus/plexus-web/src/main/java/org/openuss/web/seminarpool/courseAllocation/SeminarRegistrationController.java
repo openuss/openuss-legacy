@@ -105,7 +105,7 @@ public class SeminarRegistrationController extends BasePage {
 			courseGroupInfo.setId(seminarpoolAdministrationService.addCourseGroup(courseGroupInfo));
 			courseGroupInfoList.add(courseGroupInfo);
 			setSessionBean("SEMINARPOOL_COURSE_GROUPS_COLLECTION", courseGroupInfoList);
-			addMessage(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP);
+			addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP));
 		} else {
 			addError(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ERROR_NUMBER));
 		}
@@ -128,7 +128,7 @@ public class SeminarRegistrationController extends BasePage {
 		courseGroupInfoList.get(groupIndex).getCourseSchedule().add(courseScheduleInfo);
 		courseGroupInfoList.get(groupIndex).setIsTimeSet(true);
 		setSessionBean("SEMINARPOOL_COURSE_GROUPS_COLLECTION", courseGroupInfoList);
-		addMessage(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP_SCHEDULE);
+		addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP_SCHEDULE));
 		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3;
 	}
 	
@@ -151,7 +151,7 @@ public class SeminarRegistrationController extends BasePage {
 		courseScheduleInfo.setId(seminarpoolAdministrationService.addCourseSchedule(courseScheduleInfo));
 		courseGroupInfoList.get(groupIndex).getCourseSchedule().add(courseScheduleInfo);
 		setSessionBean("SEMINARPOOL_COURSE_GROUPS_COLLECTION", courseGroupInfoList);
-		addMessage(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP_SCHEDULE);
+		addMessage(i18n(Constants.SEMINARPOOL_COURSE_ALLOCATION_MESSAGE_ADD_GROUP_SCHEDULE));
 		return Constants.SEMINARPOOL_COURSE_ALLOCATION_STEP3;
 	}
 	
