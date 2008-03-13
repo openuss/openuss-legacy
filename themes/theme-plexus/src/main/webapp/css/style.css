@@ -603,6 +603,10 @@ p.search_type {
 	background-repeat: no-repeat;
 }
 
+#right .option_box .content_box .header_normal a, #right .option_box .content_box .header_normal a:hover {
+	text-decoration: none;	
+}
+
 #right .header_normal_right_bg {
 	float: right;
 	width: 0;
@@ -1141,12 +1145,10 @@ p.header_font_normal,span.header_font_normal {
 }
 
 .form_box .content_normal {
-	border-style: dotted solid none solid;
+	border-style: solid solid none solid;
 	border-width: 1px;
 	background: #F4F4F4;
-	border-top-color: #505050;
-	border-right-color: #AFAFAF;
-	border-left-color: #AFAFAF;
+	border-color: #AFAFAF;
 }
 
 .empty_box .content_normal {
