@@ -10,9 +10,9 @@ package org.openuss.seminarpool;
  */
 
 public class Simplex {
-	// Debug-Informationen auf der Konsole? Bei false "schweigt" die Bean...
+
 	static final boolean debugmode = false;
-	// Klassenvariablen
+	
     private double[][] matrix;
     private double[] targetvalues;
     private double[] endfunction;
@@ -505,7 +505,7 @@ public class Simplex {
     }
     
     /**
-     * Hilfsfunktion für die Berechnung der Gamma-Werte
+     * Auxiliary Function for calculating the gamma values
      * @param gammacolumn
      */
     private void insertGammaTable(int gammacolumn)
@@ -546,9 +546,9 @@ public class Simplex {
     }
     
     /**
-     * Die "f durch x"-Werte berechnen
+     * calculates the "f diveded by x"-values
      */
-    private void calculatefDividedByxValues(int wahl)
+    private void calculatefDividedByxValues(int choise)
     {
     	pivotrow = -1;
     	for (int a = 0; a < sideconditions; a++)
@@ -585,20 +585,20 @@ public class Simplex {
     	}
     	fdevidedbyxcalculated = true;
     	
-    	// eventuell verbesserbar?
+    	
     	try {
-	    	if (equalgammavalues && wahl >= 1)
+	    	if (equalgammavalues && choise >= 1)
 	    	{
-	    		if (fdevidedbyxvalues[pivotrow] < targetvalues[gammasequence[wahl - 1]] / matrix[gammasequence[wahl - 1]][pivotrow])
+	    		if (fdevidedbyxvalues[pivotrow] < targetvalues[gammasequence[choise - 1]] / matrix[gammasequence[choise - 1]][pivotrow])
 	             {
-	    			pivotcolumn = gammasequence[wahl - 1];
-	    			if (debugmode) {System.out.println("PivotSpalte verbessert (" + (wahl - 1) + ")!");}
+	    			pivotcolumn = gammasequence[choise - 1];
+	    			if (debugmode) {System.out.println("PivotSpalte verbessert (" + (choise - 1) + ")!");}
 	             }
 	    		
-		    	if (gammavalues[gammasequence[wahl - 1]] == gammavalues[gammasequence[wahl - 2]])
+		    	if (gammavalues[gammasequence[choise - 1]] == gammavalues[gammasequence[choise - 2]])
 		    	{
 		    		equalgammavalues = true;
-		    		calculatefDividedByxValues(wahl - 1);
+		    		calculatefDividedByxValues(choise - 1);
 		    	} else {
 		    		equalgammavalues = false;
 		    	}
@@ -609,7 +609,7 @@ public class Simplex {
     }
     
     /**
-     * Eine ganze Zeile durch einen Wert teilen
+     * devides the entire row by a value
      */
     private void devideRow()
     {
@@ -622,7 +622,7 @@ public class Simplex {
     }
     
     /**
-     * Einzelne Zeilen anpassen
+     * change specific row
      * @param row
      */
     private void changerow(int row)
@@ -637,7 +637,7 @@ public class Simplex {
     }
     
     /**
-     * Die eigentliche Berechnung durchführen
+     * calculates the simplex itself
      */
     private void calculateSimplex()
     {
@@ -867,24 +867,5 @@ public class Simplex {
     	out += "\t| \t\n";
     	
     	System.out.println(out);
-    }
-    public static void main(String args[]){
-    	Simplex s = new Simplex(2,2,true);
-    	double [] d = {1,2};
-    	double [] f = {1,2,5};
-    	try {
-			s.newEF(d);
-			s.newSC(f,"<=");
-			s.newSC(f, ">=");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			s.getResult();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 }
