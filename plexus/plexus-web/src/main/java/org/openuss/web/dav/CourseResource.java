@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.FolderDao;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -21,7 +20,6 @@ import org.openuss.webdav.WebDAVResource;
  */
 public class CourseResource extends AbstractOrganisationResource{
 	protected DocumentService documentService;
-	protected FolderDao folderDao;
 	/**
 	 * pro forma id for the materials backend.
 	 */
@@ -49,7 +47,6 @@ public class CourseResource extends AbstractOrganisationResource{
 				return getMaterialsBackend(path);
 			}
 		}
-		
 		
 		return null;
 	}

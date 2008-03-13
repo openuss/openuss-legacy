@@ -18,6 +18,8 @@ import org.openuss.webdav.MultiStatusAnswerImpl;
 import org.openuss.webdav.MultiStatusResponse;
 import org.openuss.webdav.MultiStatusStatusResponse;
 import org.openuss.webdav.NullIOContext;
+import org.openuss.webdav.PropertyResponse;
+import org.openuss.webdav.PropertyResponseImpl;
 import org.openuss.webdav.SimpleStatusResponse;
 import org.openuss.webdav.SimpleWebDAVAnswer;
 import org.openuss.webdav.WebDAVAnswer;
@@ -33,9 +35,11 @@ import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.openuss.webdav.WebDAVUtils;
+import org.openuss.webdav.XMLPropertyResponseNode;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * This is the entry point for WebDAV requests.
@@ -304,7 +308,12 @@ public class WebDAVServlet extends HttpServlet {
 	 					propFind(c, reqDoc, answer, newDepth, counter);	
 	 				}
 	 			}
-	 		} catch (WebDAVHrefException ex){
+	 		} catch (WebDAVResourceException ex){
+	 			// Allow users to view the name and collection state of empty collections
+	 			if (ex.getStatusCode() == WebDAVStatusCodes.SC_FORBIDDEN) {
+	 				answer.addResponse(generateRestrictedProperties(ex.getResource()));
+	 			}
+	 			
 	 			answer.addResponse(ex.toStatusResponse());
 	 		}
  		}
@@ -544,6 +553,29 @@ public class WebDAVServlet extends HttpServlet {
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", WebDAVConstants.HEADER_DAV);
 		response.setStatus(WebDAVStatusCodes.SC_OK);
+	}
+	
+	/**
+	 * @param resource The resource to describe
+	 * @return Information about a restricted set of properties of the resource that can be presented to users that are not allowed to read it.
+	 */
+	protected static PropertyResponse generateRestrictedProperties(
+			WebDAVResource resource) {
+		
+		PropertyResponseImpl pr = new PropertyResponseImpl(resource.getPath().toClientString(), "This is a restricted view of this resource.");
+		
+		// Add just the resourcetype property
+		Document tmpDoc = WebDAVUtils.newDocument();
+		Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESOURCETYPE);
+		if (resource.isCollection()) {
+			Element collectionNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
+			propElem.appendChild(collectionNode);
+		}
+		XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
+		pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
+
+		
+		return pr;
 	}
 	
 	/**

@@ -267,8 +267,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			
 			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESOURCETYPE);
 			if (isCollection()) {
-				Element collectioNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
-				propElem.appendChild(collectioNode);
+				Element collectionNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
+				propElem.appendChild(collectionNode);
 			}
 			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
 			pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
@@ -587,7 +587,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	protected String sanitizeName(String input) {
 		return input;
 	}
-
 
 
 	/* (non-Javadoc)
