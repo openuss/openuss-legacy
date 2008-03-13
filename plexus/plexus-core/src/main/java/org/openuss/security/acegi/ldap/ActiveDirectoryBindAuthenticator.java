@@ -16,7 +16,6 @@
 package org.openuss.security.acegi.ldap;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.ldap.InitialDirContextFactory;
@@ -25,7 +24,6 @@ import org.acegisecurity.providers.ldap.authenticator.AbstractLdapAuthenticator;
 import org.acegisecurity.providers.ldap.authenticator.BindAuthenticator;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
-import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

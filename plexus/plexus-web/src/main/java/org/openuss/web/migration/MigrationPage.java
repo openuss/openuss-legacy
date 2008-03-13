@@ -33,7 +33,6 @@ public class MigrationPage extends BasePage {
 	 */
 	 private void addBreadCrumbs() {
 		 breadcrumbs.setCrumbs(null);
-		 List<BreadCrumb> crumbs = breadcrumbs.getCrumbs();
 	
 		 final BreadCrumb migrationBreadCrumb = new BreadCrumb();
 		 migrationBreadCrumb.setLink(PageLinks.MIGRATION_PAGE);

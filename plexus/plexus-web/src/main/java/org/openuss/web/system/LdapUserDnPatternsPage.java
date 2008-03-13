@@ -1,5 +1,6 @@
 package org.openuss.web.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
@@ -137,7 +138,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapUserDnPatternsOverviewPa
 
 				if (userDnPatternList != null) {
 					logger.info("Size:"+userDnPatternList.size());
-				}
+				} else userDnPatternList = new ArrayList<UserDnPatternInfo>();
 				
 				sort(userDnPatternList);
 				dataPage = new DataPage<UserDnPatternInfo>(userDnPatternList.size(),0,userDnPatternList);

@@ -27,7 +27,7 @@ public class DeleteDomainNameFromUsernameConverter implements Converter {
     public String getAsString(FacesContext context, UIComponent component, Object obj) {
     	if (obj instanceof String) {
     		String str = (String)obj;
-    		return str!=null ? str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1): null;
+    		return str.substring(str.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
     	}
         return null;
     }

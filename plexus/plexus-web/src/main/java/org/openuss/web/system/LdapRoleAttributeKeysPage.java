@@ -1,7 +1,6 @@
 package org.openuss.web.system;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
@@ -115,7 +114,7 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapRoleAttributeKeysOver
 				logger.info("RoleAttributeKeys:"+roleAttributeKeyList);
 				if (roleAttributeKeyList != null) {
 					logger.info("Size:"+roleAttributeKeyList.size());
-				}
+				} else roleAttributeKeyList = new ArrayList<RoleAttributeKeyInfo>();
 				
 				sort(roleAttributeKeyList);
 				dataPage = new DataPage<RoleAttributeKeyInfo>(roleAttributeKeyList.size(),0,roleAttributeKeyList);

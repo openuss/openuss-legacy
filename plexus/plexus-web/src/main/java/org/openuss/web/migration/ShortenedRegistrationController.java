@@ -70,7 +70,6 @@ public class ShortenedRegistrationController extends BasePage {
 	//~ Reduced registration processing for centrally authenticated user ===========
 	
 	public String register() throws RegistrationException{
-		final HttpSession session = getSession();
 		User user = generateEnabledUserProfile();
 		
 		//create user

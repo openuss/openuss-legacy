@@ -52,7 +52,7 @@ public class ActiveDirectoryLdapTemplateTest extends TestCase {
         }
 		// Do the test
 		ActiveDirectoryLdapTemplate activeDirectoryLdapTemplate = new ActiveDirectoryLdapTemplate(dirContextFactory);
-		Object user = activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
+		activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
 		verify(mapper);
 		verify(ctx);
 		verify(dirContextFactory);
@@ -83,7 +83,7 @@ public class ActiveDirectoryLdapTemplateTest extends TestCase {
         }
 		// Do the test
 		ActiveDirectoryLdapTemplate activeDirectoryLdapTemplate = new ActiveDirectoryLdapTemplate(dirContextFactory);
-		Object user = activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
+		activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
 		verify(mapper);
 		verify(ctx);
 		verify(dirContextFactory);
@@ -114,7 +114,7 @@ public class ActiveDirectoryLdapTemplateTest extends TestCase {
         }
 		// Do the test
 		ActiveDirectoryLdapTemplate activeDirectoryLdapTemplate = new ActiveDirectoryLdapTemplate(dirContextFactory);
-		Object user = activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
+		activeDirectoryLdapTemplate.retrieveEntry(fullDn, mapper, null);
 		verify(mapper);
 		verify(ctx);
 		verify(dirContextFactory);

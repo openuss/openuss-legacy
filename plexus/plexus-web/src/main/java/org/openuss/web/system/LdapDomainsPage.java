@@ -1,5 +1,6 @@
 package org.openuss.web.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
@@ -136,7 +137,7 @@ public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 
 				if (domainList != null) {
 					logger.info("Size:"+domainList.size());
-				}
+				} else domainList = new ArrayList<AuthenticationDomainInfo>();
 				
 				sort(domainList);
 				dataPage = new DataPage<AuthenticationDomainInfo>(domainList.size(),0,domainList);

@@ -100,7 +100,6 @@ public class ExtendedBasicProcessingFilter implements Filter, InitializingBean {
         }
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String header = httpRequest.getHeader("Authorization");
 

@@ -5,18 +5,16 @@
  */
 package org.openuss.security.ldap;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.UrlValidator;
+import org.apache.log4j.Logger;
 import org.openuss.security.acegi.ldap.LdapServerConfiguration;
 
 /**
@@ -455,7 +453,9 @@ public class LdapConfigurationServiceImpl
 		Set<LdapServer> servers = domain.getLdapServers();
 		if (servers.contains(server)) {			
 			return true;
-		} else return false;
+		} else { 
+			return false; 
+		}
 	}
 
     /**

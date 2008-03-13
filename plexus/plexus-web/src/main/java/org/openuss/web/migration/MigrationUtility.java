@@ -39,8 +39,8 @@ public class MigrationUtility extends BaseBean{
 
 	public User migrate(User user, Authentication auth) {
 		//Put authentication into SecurityContext, so that SecurityService can find it.
-		SecurityContext sc = SecurityContextHolder.getContext();
-		sc.setAuthentication(auth);
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		securityContext.setAuthentication(auth);
 		// Generate random password, so that account is likely not to be used for login.
 		Random random = new Random();		
 		String password = String.valueOf(random.nextLong())+String.valueOf(random.nextLong());

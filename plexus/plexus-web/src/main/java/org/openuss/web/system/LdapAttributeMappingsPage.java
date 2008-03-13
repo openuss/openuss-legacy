@@ -1,5 +1,6 @@
 package org.openuss.web.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
@@ -130,7 +131,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOver
 				logger.info("AttributeMappings:"+attributeMappingList);
 				if (attributeMappingList != null) {
 					logger.info("Size:"+attributeMappingList.size());
-				}
+				} else attributeMappingList = new ArrayList<AttributeMappingInfo>();
 				
 				sort(attributeMappingList);
 				dataPage = new DataPage<AttributeMappingInfo>(attributeMappingList.size(),0,attributeMappingList);

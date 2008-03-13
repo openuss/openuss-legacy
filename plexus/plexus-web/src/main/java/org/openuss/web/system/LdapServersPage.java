@@ -1,5 +1,6 @@
 package org.openuss.web.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -152,7 +153,7 @@ public class LdapServersPage extends BasePage {
 				logger.info("LdapServers:"+ldapServerList);
 				if (ldapServerList != null) {
 					logger.info("Size:"+ldapServerList.size());
-				}
+				} else ldapServerList = new ArrayList<LdapServerInfo>();
 
 				sort(ldapServerList);
 				dataPage = new DataPage<LdapServerInfo>(ldapServerList.size(),0,ldapServerList);

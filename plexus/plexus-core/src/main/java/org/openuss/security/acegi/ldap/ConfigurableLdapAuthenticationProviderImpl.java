@@ -63,7 +63,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected MessageSourceAccessor messages = AcegiMessageSource.getAccessor();
 	protected MessageSource messageSource;
 	protected UserCache userCache;
-	protected Vector<LdapAuthenticationProvider> ldapAuthenticationProviders = new Vector<LdapAuthenticationProvider>();
+	protected List<LdapAuthenticationProvider> ldapAuthenticationProviders = new Vector<LdapAuthenticationProvider>();
 	protected List<LdapServerConfiguration> ldapServerConfigurations = null;
 
 	
