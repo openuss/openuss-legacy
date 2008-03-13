@@ -41,7 +41,7 @@
 						<br/>
 					</p>
 					<p class="content_font_normal">
-	   					<h:selectBooleanCheckbox id="checkConfirmation"
+	   					<t:selectBooleanCheckbox id="checkConfirmation" forceId="true"
 	   						validator="#{views$secured$wiki$wikiremovesite.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
@@ -52,8 +52,8 @@
 					
 				</o:block>
 				<o:block>
-					<h:commandButton value="${msg.remove}" action="#{views$secured$wiki$wikiremovesite.removeSite}" styleClass="button_warning"/>
-					<h:commandButton value="${msg.cancel}" action="course_wiki" styleClass="button_cancel" immediate="true"/>				
+					<t:commandButton id="remove" forceId="true" value="${msg.remove}" action="#{views$secured$wiki$wikiremovesite.removeSite}" styleClass="button_warning"/>
+					<t:commandButton id="cancel" forceId="true" value="${msg.cancel}" action="course_wiki" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>
 		</ui:define>
