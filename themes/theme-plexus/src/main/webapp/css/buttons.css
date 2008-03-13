@@ -519,7 +519,7 @@ a.icon_recover span {
 /*MyUni Icons*/
 
 .myuni_time_period {
-  float:left;	
+  	
 }
 
 .flexListItemRight a {
@@ -531,7 +531,6 @@ a.icon_recover span {
   margin: 0 0 0 5px;
   overflow: hidden;
   position: relative;
-  white-space: nowrap;
   width: 16px;
   cursor: pointer;  
 }
@@ -540,8 +539,6 @@ a.icon_recover span {
   background-position: left top;
   background-repeat: no-repeat;
   height: 16px;
-  top: 0;
-  left: 0;
   position:absolute;
   width: 16px;  
 }
