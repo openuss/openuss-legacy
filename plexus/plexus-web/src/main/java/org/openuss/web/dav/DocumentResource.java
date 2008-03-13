@@ -22,6 +22,8 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.IOContextImpl;
@@ -271,19 +273,11 @@ public class DocumentResource extends SimpleWebDAVResource {
 	}
 
 	public boolean isReadable() {
-		/*if (isCollection()) {
-			FolderInfo folderI = documentService.getF(entry.getId(), false);
-		} else {
-			FileInfo fileI = documentService.getFileEntry(entry.getId(), false);
-		}
-		return AcegiUtils.hasPermission(fi, new Integer[] { LectureAclEntry.READ });*/
-		// TODO FIXME
-		return true;
+		return AcegiUtils.hasPermission(info, new Integer[] { LectureAclEntry.READ });
 	}
 
 	public boolean isWritable() {
-		// TODO Auto-generated method stub
-		return true;
+		return AcegiUtils.hasPermission(info, new Integer[] { LectureAclEntry.ASSIST });
 	}
 
 	/* (non-Javadoc)
