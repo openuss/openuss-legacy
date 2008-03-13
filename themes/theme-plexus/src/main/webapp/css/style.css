@@ -2199,53 +2199,65 @@ div .space_20above {
 #messages .content_box .header_normal .header_font_normal, .status_box .content_box .header_normal .header_font_normal {
 	padding-left: 40px !important;
 }
-#messages .content_box .header_normal, .status_box .content_box .header_normal {
-	padding: 0;
-	margin: 0;
-	height: 7px;
-	background-repeat: repeat-x;
-}
 #messages .content_box .header_normal .header_normal_left_bg, .status_box .content_box .header_normal .header_normal_left_bg {
+	margin: 0px;
+	padding: 0px;
 	float: left;
 	width: 8px;
 	height: 7px;
 	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+#messages .content_box .header_normal, .status_box .content_box .header_normal {
+	margin: 0px;
+	padding: 0px;
+	height: 7px;
+	background-repeat: repeat-x;
+	background-position: center bottom;
 }
 #messages .content_box .header_normal .header_normal_right_bg, .status_box .content_box .header_normal .header_normal_right_bg {
+	margin: 0px;
+	padding: 0px;
 	float: right;
 	width: 8px;
 	height: 7px;
 	background-repeat: no-repeat;
+	background-position: center bottom;
 }
 #messages .content_box .content_normal, .status_box .content_box .content_normal {
-	margin: 0;
+	margin: 0px;
 	padding: 5px 5px 5px 40px;
-	border-width: 0 1px 0 1px;
+	border-width: 0px 1px 0px 1px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
 	min-height: 23px;
 	vertical-align: bottom;
 	font-weight:bold;
 }
-#messages .content_box .footer_normal, .status_box .content_box .footer_normal {
-	margin-top: 0;
-	padding: 0;
-	height: 7px;
-	background-repeat: repeat-x;
-}
 #messages .content_box .footer_normal .footer_normal_left_bg, .status_box .content_box .footer_normal .footer_normal_left_bg {
-	margin-top: 0;
+	margin: 0px;
+	padding: 0px;
 	float: left;
 	width: 8px;
 	height: 7px;
 	background-repeat: no-repeat;
+	background-position: center top;
+}
+#messages .content_box .footer_normal, .status_box .content_box .footer_normal {
+	margin: 0px;
+	padding: 0px;
+	height: 7px;
+	background-repeat: repeat-x;
+	background-position: center top;
 }
 #messages .content_box .footer_normal .footer_normal_right_bg, .status_box .content_box .footer_normal .footer_normal_right_bg {
-	margin-top: 0;
+	margin: 0px;
+	padding: 0px;
 	float: right;
 	width: 8px;
 	height: 7px;
 	background-repeat: no-repeat;
+	background-position: center top;
 }
 
 .warning_box .content_box .content_normal ul.file-list, .warning_box .content_box .content_normal ul.coursetype-list {
