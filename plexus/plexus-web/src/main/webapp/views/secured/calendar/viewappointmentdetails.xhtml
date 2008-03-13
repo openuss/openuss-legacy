@@ -143,7 +143,7 @@
 					<img src="#{theme.imagesPath}/icons/status#{singleAppointment.takingPlace ? 1 : 0}.png"/>
 				</t:column>
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
-					hasPermission="#{ACL.UPDATE}">
+					hasPermission="#{ACL.ASSIST}">
 					<t:column styleClass="col_commands">
 						<f:facet name="header">
 							#{msg.commands_header}
@@ -167,13 +167,13 @@
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
-					hasPermission="#{ACL.UPDATE}">
+					hasPermission="#{ACL.ASSIST}">
 					<h:commandButton action="delete_appointment"
 						value="#{msg.openuss4us_calendar_button_delete}"
 						styleClass="button_back" />
 				</s:acl>
 				<s:acl domainObject="#{appointmentInfo.calendarId}"
-					hasPermission="#{ACL.UPDATE}">
+					hasPermission="#{ACL.ASSIST}">
 					<h:commandButton
 						action="#{views$secured$calendar$viewappointmentdetails.update}"
 						value="#{msg.openuss4us_calendar_button_update_appointment}"

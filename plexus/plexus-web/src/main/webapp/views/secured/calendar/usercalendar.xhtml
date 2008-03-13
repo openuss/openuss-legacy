@@ -9,8 +9,8 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:news="http://www.openuss.org/news/jsf"
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
-      
+      xmlns:fck="http://www.fck-faces.org/fck-faces"
+      xmlns:s="http://www.openuss.org/jsf-security">      
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>
@@ -47,6 +47,7 @@
 					<ui:include src="/views/commons/calendar/calendar.xhtml" />
    			 	</o:block>
    			 	<o:block>
+					<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.ASSIST}">
 					<h:commandButton 
 						value="#{msg.openuss4us_calendar_button_create_single_appointment}" 
 						title="#{msg.openuss4us_calendar_button_create_single_appointment}" 
@@ -57,11 +58,7 @@
 						title="#{msg.openuss4us_calendar_button_create_serial_appointment}" 
 						action="calendar_create_serial_appointment" 
 						styleClass="button_big" />
-					<h:commandButton 
-						value="#{msg.openuss4us_calendar_button_view_subscriptions}" 
-						title="#{msg.openuss4us_calendar_button_view_subscriptions}" 
-						action="openuss4us_calendar_edit_subscriptions" 
-						styleClass="button_big" /> 
+					</s:acl>
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

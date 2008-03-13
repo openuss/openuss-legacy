@@ -9,7 +9,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:news="http://www.openuss.org/news/jsf"
-	xmlns:fck="http://www.fck-faces.org/fck-faces">
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+    xmlns:s="http://www.openuss.org/jsf-security">
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -89,9 +90,11 @@
 			<o:block>
 				<h:commandButton action="view:backward" value="#{msg.back}"
 					styleClass="button_back" immediate="true" />
+				<s:acl domainObject="#{appointmentInfo.calendarId}" hasPermission="#{ACL.ASSIST}">
 				<h:commandButton
 					action="#{views$secured$calendar$createserialappointment.save}"
 					value="#{msg.save}" styleClass="button" />
+				</s:acl>
 			</o:block>
 		</h:form>
 	</ui:define>

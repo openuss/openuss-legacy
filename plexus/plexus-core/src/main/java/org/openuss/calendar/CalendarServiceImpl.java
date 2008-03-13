@@ -63,7 +63,7 @@ public class CalendarServiceImpl extends
 			cal = getCalendarDao().create(cal);
 			getSecurityService().createObjectIdentity(cal, cal.getDomainIdentifier());
 			if(cal.getCalendarType().equals(CalendarType.user_calendar)){
-					getSecurityService().setPermissions(getSecurityService().getCurrentUser(), cal, LectureAclEntry.OGCRUD);
+					getSecurityService().setPermissions(getSecurityService().getCurrentUser(), cal, LectureAclEntry.ASSIST);
 		}
 		}
 
