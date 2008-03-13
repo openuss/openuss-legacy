@@ -61,7 +61,6 @@
 		 					<f:selectItems value="#{seminarpoolUserRegistration.allSeminars}"/>
 						</h:selectOneListbox>				
 					</c:forEach>
-					<h:messages/>
 				</o:block>
 			   
 			   	<t:dataList 
@@ -73,10 +72,12 @@
 											    
 					    <div class="content_font_normal">
 							
-							<h:selectBooleanCheckbox rendered="#{conditions.seminarConditionType.value==3}" 
-										 required="true" 
-										 value="#{conditions.conditionValueBoolean}"
-										 />
+							<h:selectBooleanCheckbox 
+								rendered="#{conditions.seminarConditionType.value==3}" 
+								required="true" 
+								value="#{conditions.conditionValueBoolean}"
+								validator="#{seminarpoolUserRegistration.validateAcception}"
+								/>
 							<h:outputText value="#{conditions.seminarConditionDescription}" rendered="#{conditions.seminarConditionType.value==3}" />
 							<h:outputText value="#{conditions.seminarConditionDescription}" rendered="#{conditions.seminarConditionType.value==2}" />
 							<h:outputText value="#{conditions.seminarConditionDescription}" rendered="#{conditions.seminarConditionType.value==1}" />

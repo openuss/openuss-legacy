@@ -28,8 +28,8 @@ public class SeminarpoolRequirementsByUserStep2Page extends
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("seminarpool_requirements_breadcrumb_step2") + userInfo.getUsername());
-		crumb.setHint(i18n("seminarpool_requirements_breadcrumb_step2") + userInfo.getUsername());
+		crumb.setName(i18n("seminarpool_requirements_breadcrumb_step2", userInfo.getUsername()));
+		crumb.setHint(i18n("seminarpool_requirements_breadcrumb_step2", userInfo.getUsername()));
 		breadcrumbs.addCrumb(crumb);
 		seminarUserConditionValueList = seminarpoolUserRegistrationService.findConditionValuesByUserAndSeminarpool(userInfo.getId(), seminarpoolInfo.getId());
 	}

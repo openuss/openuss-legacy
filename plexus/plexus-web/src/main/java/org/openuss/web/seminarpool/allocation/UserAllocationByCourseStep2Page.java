@@ -43,8 +43,10 @@ public class UserAllocationByCourseStep2Page extends AbstractSeminarpoolPage {
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("seminarpool_allocation_breadcrumb_course_step1"));
-		crumb.setHint(i18n("seminarpool_allocation_breadcrumb_course_step1"));
+		crumb.setName(i18n("seminarpool_allocation_breadcrumb_course_step2", 
+				courseSeminarpoolAllocationInfo.getCourseName()));
+		crumb.setHint(i18n("seminarpool_allocation_breadcrumb_course_step2",
+				courseSeminarpoolAllocationInfo.getCourseName()));
 		breadcrumbs.addCrumb(crumb);
 	}
 	

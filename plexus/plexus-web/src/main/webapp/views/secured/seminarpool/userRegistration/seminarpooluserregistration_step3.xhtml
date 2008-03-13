@@ -15,60 +15,76 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><ui:insert name="title" /></title>
-	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
-	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
 </head>
 <body>
 <!-- text above will be ignored -->
 <ui:composition template="/views/layout/dialog.xhtml">
-		<ui:define name="title">
-			<h:outputText value="#{msg['seminarpool_main_title']}" />
-		</ui:define>
-		<ui:define name="navigation">
-			<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
-		</ui:define>
-  		<ui:define name="content">
-  		  	<o:block label="#{msg.seminarpool_user_registration_step3_headline}">
-				<div class="content_font_normal"> 
-					<h:outputText value="#{msg.seminarpool_user_registration_step3_text}" escape="false"/>
-				</div>
+	<ui:define name="title">
+		<h:outputText value="#{msg['seminarpool_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/seminarpool.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<o:block label="#{msg.seminarpool_user_registration_step3_headline}">
+			<div class="content_font_normal"><h:outputText
+				value="#{msg.seminarpool_user_registration_step3_text}"
+				escape="false" /></div>
+		</o:block>
+		<h:form id="seminarpool_user_registration_form2">
+			<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState" />
+			<t:saveState value="#{seminarUserRegistrationInfo}"
+				id="seminarUserRegistrationInfo" />
+
+
+			<t:dataList id="conditions" var="conditions"
+				value="#{seminarpoolUserRegistration.conditionList}"
+				layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+				<o:block label="#{msg.seminarpool_entrance_limitation} #{index+1}">
+
+					<div class="content_font_normal">
+						<h:selectBooleanCheckbox
+							rendered="#{conditions.fieldType.value==3}" 
+							required="true"
+							validator="#{seminarpoolUserRegistration.validateAcception}"
+							valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
+						<h:outputText 
+							value="#{conditions.conditionDescription}"
+							rendered="#{conditions.fieldType.value==3}" /> 
+						<h:outputText
+							value="#{conditions.conditionDescription}"
+							rendered="#{conditions.fieldType.value==2}" /> 
+						<h:outputText
+							value="#{conditions.conditionDescription}"
+							rendered="#{conditions.fieldType.value==1}" /> 
+						<br />
+						<h:inputText 
+							rendered="#{conditions.fieldType.value==1}"
+							required="true"
+							valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
+						<h:inputTextarea 
+							rendered="#{conditions.fieldType.value==2}"
+							required="true" class="field"
+							valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
+					</div>
+				</o:block>
+			</t:dataList>
+
+			<o:block>
+				<h:commandButton action="view:backward" value="#{msg.back}"
+					styleClass="button_cancel" immediate="true" />
+				<h:commandButton action="#{seminarpoolUserRegistration.create}"
+					value="#{msg.seminarpool_create_button}"
+					styleClass="button_continue" />
+				<h:messages />
 			</o:block>
-  			<h:form id="seminarpool_user_registration_form2">
-				<t:saveState value="#{seminarpoolInfo}" id="seminarpoolState"/>
-				<t:saveState value="#{seminarUserRegistrationInfo}" id="seminarUserRegistrationInfo"/>
-  				
-			   
-			   <t:dataList 
-						id="conditions"  
-						var="conditions"
-						value="#{seminarpoolUserRegistration.conditionList}"
-						layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
-					   <o:block label="#{msg.seminarpool_entrance_limitation} #{index+1}">
-											    
-					    <div class="content_font_normal">
-							
-							<h:selectBooleanCheckbox rendered="#{conditions.fieldType.value==3}" 
-										 required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
-							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==3}" />
-							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==2}" />
-							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" />
-							<br />
-							<h:inputText rendered="#{conditions.fieldType.value==1}" 
-										 required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
-							<h:inputTextarea rendered="#{conditions.fieldType.value==2}" 
-							                 required="true" class="field" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
-						</div>
-						</o:block>		
-				</t:dataList>
-			   
-			   	<o:block>				
-			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true" />
-					<h:commandButton action="#{seminarpoolUserRegistration.create}" value="#{msg.seminarpool_create_button}" styleClass="button_continue"/>
-					<h:messages/>
-		  		</o:block>
-		  	</h:form>
-  		</ui:define>
-	</ui:composition>
+		</h:form>
+	</ui:define>
+</ui:composition>
 <!-- text above will be ignored -->
 </body>
 </html>

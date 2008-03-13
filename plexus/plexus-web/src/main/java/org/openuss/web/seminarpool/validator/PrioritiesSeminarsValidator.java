@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+ *
 package org.openuss.web.seminarpool.validator;
 
 import javax.faces.FacesException;
@@ -23,28 +23,30 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.validator.ValidatorBase;
 import org.apache.shale.tiger.register.FacesValidator;
+import org.openuss.framework.web.jsf.controller.BaseBean;
 
 
 /**
  * @author mwessendorf (latest modification by $Author: paulsp $) modiefied by PS-Team Seminarplaceallocation
  * @version $Revision: 491777 $ $Date: 2007-01-02 12:27:11 +0100 (Di, 02 Jän 2007) $
- */
+ *
 @FacesValidator(value = "prioritiesSeminarsValidator")
-public class PrioritiesSeminarsValidator extends ValidatorBase {
+public class PrioritiesSeminarsValidator extends BaseBean implements Validator {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
-	 */
+	 *
 	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.Equal";
 
 	/**
 	 * <p>The message identifier of the {@link FacesMessage} to be created if
 	 * the equal_for check fails.</p>
-	 */
+	 *
 	public static final String EQUAL_MESSAGE_ID = "org.apache.myfaces.Equal.INVALID";
 
 	public PrioritiesSeminarsValidator(){
@@ -105,15 +107,15 @@ public class PrioritiesSeminarsValidator extends ValidatorBase {
 
 	/**
 	 * @return the foreign component_id, on which a value should be validated
-	 */
+	 *
 	public String getFor() {
 		return _for;
 	}
 
 	/**
 	 * @param string the foreign component_id, on which a value should be validated
-	 */
+	 *
 	public void setFor(String string) {
 		_for = string;
 	}
-}
+} */

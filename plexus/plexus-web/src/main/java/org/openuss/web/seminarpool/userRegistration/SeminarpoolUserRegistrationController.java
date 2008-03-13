@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -175,8 +178,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		}
 		else{
 			this.getSeminarpoolUserRegistrationService().editUserRegistration(seminarUserRegistrationInfo, seminarUserConditionValueList);
-		}
-		
+		}	
 		return Constants.SEMINARPOOL_MAIN;
 	}
 	
@@ -191,8 +193,7 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 			for (CourseSeminarpoolAllocationInfo seminar: seminarlist) {
 				seminarItems.add(new SelectItem(seminar.getId(),seminar.getCourseName()));
 			}
-		}
-		
+		}		
 		return seminarItems;
 	}
 	
@@ -241,9 +242,22 @@ public class SeminarpoolUserRegistrationController extends BasePage {
 		SeminarUserConditionValueInfo suci = new SeminarUserConditionValueInfo();
 		suci.setConditionValue(event.getNewValue().toString());
 		suci.setSeminarConditionId(seminarconditions.get(index).getId());
-		seminarUserConditionValueList.add(suci);
-		
-		
+		seminarUserConditionValueList.add(suci);	
+	}
+	
+	/**
+	 * Validator to check wether the user has accepted the condition or not.
+	 * @param context
+	 * @param toValidate
+	 * @param value
+	 */
+	public void validateAcception(FacesContext context, UIComponent toValidate, Object value) {
+		boolean accept = (Boolean) value;
+		if (!accept) {
+			((UIInput)toValidate).setValid(false);
+//			addError(toValidate.getClientId(context), i18n("seminarpool_requirements_not_accepted_error"), null);
+			addError(i18n("seminarpool_requirements_not_accepted_error"));
+		}
 	}
 
 	public SeminarpoolInfo getSeminarpoolInfo() {
