@@ -167,4 +167,11 @@ public interface WebDAVResource {
 	 * @return See the general contract of {@link Object#equals(Object)}.
 	 */
 	public boolean equals(WebDAVResource resource);
+	
+	/**
+	 * This must not return Object.hashCode()!
+	 * 
+	 * @return See the general contract of {@link Object#hashCode()}.
+	 */
+	public int hashCode();
 }

@@ -566,4 +566,24 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	public String getName() {
 		return getPath().getFileName();
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getClass().getName() + ": " + getPath().getPrefix();
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof WebDAVResource) {
+			return equals((WebDAVResource) o);
+		} else {
+			return false;
+		}
+	}
 }

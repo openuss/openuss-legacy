@@ -240,17 +240,6 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	}
 	
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o) {
-		if (o instanceof WebDAVResource) {
-			return ((CollisionAvoidingSimpleWebDAVResource) o).getId() == getId();
-		} else {
-			return false;
-		}
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#equals(org.openuss.webdav.WebDAVResource)
 	 */
 	public boolean equals(WebDAVResource res) {
@@ -259,5 +248,17 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 		} else {
 			return false;
 		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
 	}
 }
