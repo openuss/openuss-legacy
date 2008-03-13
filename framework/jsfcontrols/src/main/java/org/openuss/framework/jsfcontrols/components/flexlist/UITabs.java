@@ -61,7 +61,7 @@ public class UITabs extends UIOutput {
 				
 				String title = listItem.getTitle();
 				if(title != null)
-					writer.write(title);
+					writer.write(title + " ");
 				
 				String url = listItem.getUrl();
 				if(url != null && url != "")
@@ -72,7 +72,7 @@ public class UITabs extends UIOutput {
 						writer.writeAttribute("style", "size: small; color: #5493D4;", null);
 						writer.writeAttribute("href", url, null);
 						
-						writer.write(" (");
+						writer.write("(");
 						String linkTitle;
 						try {
 							linkTitle = (String)this.getAttributes().get("alternateLinkTitle");

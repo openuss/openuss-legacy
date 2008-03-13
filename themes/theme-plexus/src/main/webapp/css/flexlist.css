@@ -71,11 +71,13 @@
 .flexListItemRight {
 	float: right;
 	height: 16px;
-	padding-right: 23px;	
+	padding-right: 23px;
+	display:inline;
 }
 
 .flexListItemLeft {
 	padding-left: 18px;
+	display:inline;
 }
 
 .flexList .highlight {

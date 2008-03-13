@@ -8,10 +8,13 @@ public class CourseUIFlexList extends UIFlexList {
 		writer.writeAttribute("class", "flexListItemRight", null);
 			//write meta information
 			String metaInfo = listItem.getMetaInformation();
-			if(metaInfo != null) {
-				writer.write( metaInfo);
-			}
 			
+			if(metaInfo != null) {
+				writer.startElement("span", this);
+				writer.writeAttribute("class", "myuni_time_period", null);
+				writer.write( metaInfo);
+				writer.endElement("span");				
+			}
 			
 			//Render newsletter status
 			Boolean subscribed = listItem.getNewsletterSubscribed();
@@ -101,8 +104,8 @@ public class CourseUIFlexList extends UIFlexList {
 					writer.writeAttribute("title", title, null);
 					writer.endElement("span");
 				writer.endElement("a");
-			}
-		
+			}		
+			
 		writer.endElement("div");
 	}
 }

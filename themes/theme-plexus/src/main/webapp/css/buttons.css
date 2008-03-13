@@ -518,7 +518,11 @@ a.icon_recover span {
 
 /*MyUni Icons*/
 
-a.newsletter_subscribed {
+.myuni_time_period {
+  float:left;	
+}
+
+.flexListItemRight a {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
   font-size: 0pt;
@@ -529,53 +533,30 @@ a.newsletter_subscribed {
   position: relative;
   white-space: nowrap;
   width: 16px;
-  cursor: pointer;
+  cursor: pointer;  
 }
 
-a.newsletter_subscribed span {
+.flexListItemRight a span {
   background-position: left top;
-  background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
   background-repeat: no-repeat;
-  display: inline;
   height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
+  top: 0;
+  left: 0;
+  position:absolute;
+  width: 16px;  
 }
 
-a.newsletter_subscribed:focus span, a.newsletter_subscribed:hover span {
+.flexListItemRight a:focus span, .flexListItemRight a:hover span {
   background-position: top right;
 }
 
-a.newsletter_notSubscribed {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-  cursor: pointer;
+
+a.newsletter_subscribed span {
+  background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
 }
 
 a.newsletter_notSubscribed span {
-  background-position: left top;
   background-image: url(../img/buttons/newsletter_subscribe_icon.png);
-  background-repeat: no-repeat;
-  display: inline;
-  height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
-}
-
-a.newsletter_notSubscribed:focus span, a.newsletter_notSubscribed:hover span {
-  background-position: top right;
 }
 
 span.newsletter_none {
@@ -595,72 +576,17 @@ span.newsletter_none span {
   background-position: left top;
   background-image: url(../img/buttons/newsletter_none_icon.png);
   background-repeat: no-repeat;
-  display: inline;
   height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
+  display: block;
   width: 16px;
-}
-
-a.forum_subscribed {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-  cursor: pointer;
 }
 
 a.forum_subscribed span {
-  background-position: left top;
   background-image: url(../img/buttons/forum_unsubscribe_icon.png);
-  background-repeat: no-repeat;
-  display: inline;
-  height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
-}
-
-a.forum_subscribed:focus span, a.forum_subscribed:hover span {
-  background-position: top right;
-}
-
-a.forum_notSubscribed {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-  cursor: pointer;
 }
 
 a.forum_notSubscribed span {
-  background-position: left top;
   background-image: url(../img/buttons/forum_subscribe_icon.png);
-  background-repeat: no-repeat;
-  display: inline;
-  height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
-}
-
-a.forum_notSubscribed:focus span, a.forum_notSubscribed:hover span {
-  background-position: top right;
 }
 
 span.forum_none {
@@ -680,42 +606,13 @@ span.forum_none span {
   background-position: left top;
   background-image: url(../img/buttons/forum_none_icon.png);
   background-repeat: no-repeat;
-  display: inline;
   height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
+  display: block;
   width: 16px;
-}
-
-a.remove_bookmark {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  margin: 0 0 0 5px;
-  padding: 0 16px 0 0;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-  cursor: pointer;
 }
 
 a.remove_bookmark span {
-  background-position: top left;
   background-image: url(../img/buttons/bookmark_remove_icon.png);
-  background-repeat: no-repeat;
-  display: inline;
-  height: 16px;
-  left: 0pt;
-  position: absolute;
-  top: 0pt;
-  width: 16px;
-}
-
-a.remove_bookmark:focus span, a.remove_bookmark:hover span {
-  background-position: top right;
 }
 
 /*Actionbox*/
