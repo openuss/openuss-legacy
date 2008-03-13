@@ -55,7 +55,7 @@
 						<f:converter converterId="seminarpoolConditionTypeConverter" />
 					</h:outputText>
 				</t:column>
-			
+			<c:if test="#{phaseController.statusBeforeEqualsRegistrationComplete}">
 				<plexus:column header="#{msg.commands_header}">
 					<plexus:command
 						bean="#{views$secured$seminarpool$conditions$seminarpoolrequirements}"
@@ -65,38 +65,40 @@
 						title="#{msg.seminarpool_condition_command_remove_hint}"
 						styleClass="icon_remove" />
 				</plexus:column>
+			</c:if>
 			</plexus:dataTable>
 		</h:form>
-		
-	<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">	
-		<h:form id="seminarpool_condition_new_form">
-	  		<o:block label="#{msg['seminarpool_conditions_add_subheading']}" styleClass="form_box">
-				<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
-				<h:selectOneMenu id="conditionType" 
-					layout="pageDirection" 
-					value="#{views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo.fieldType}" 
-					valueChangeListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.processConditionTypeChanged}"
-					styleClass="pulldown">
-					<f:converter converterId="seminarpoolConditionTypeConverter" />
-					<f:selectItems value="#{seminarpoolRegistration.conditionTypes}"/>
-				</h:selectOneMenu>
-				<h:message for="conditionType" styleClass="field_error"/>	
-	 			<o:input 
-						label="#{msg.seminarpool_field_description}"
-						entity="views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo" 
-						property="conditionDescription" 
-						type="textarea"
-						maxlength="950"
-						required="true"/>
-					<br/>
-				<h:commandButton
-					value="#{msg['seminarpool_conditions_command_add']}"
-					actionListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.addCondition}"
-					title="#{msg['seminarpool_conditions_command_add_hint']}"
-					styleClass="button_save" />
-			</o:block>	
-	 	</h:form> 
-	</s:acl>
+	<c:if test="#{phaseController.statusBeforeEqualsRegistrationComplete}">
+		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">	
+			<h:form id="seminarpool_condition_new_form">
+		  		<o:block label="#{msg['seminarpool_conditions_add_subheading']}" styleClass="form_box">
+					<h:outputLabel for="conditionType" value="#{msg.seminarpool_field_type}" styleClass="field_label"/>
+					<h:selectOneMenu id="conditionType" 
+						layout="pageDirection" 
+						value="#{views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo.fieldType}" 
+						valueChangeListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.processConditionTypeChanged}"
+						styleClass="pulldown">
+						<f:converter converterId="seminarpoolConditionTypeConverter" />
+						<f:selectItems value="#{seminarpoolRegistration.conditionTypes}"/>
+					</h:selectOneMenu>
+					<h:message for="conditionType" styleClass="field_error"/>	
+		 			<o:input 
+							label="#{msg.seminarpool_field_description}"
+							entity="views$secured$seminarpool$conditions$seminarpoolrequirements.seminarConditionInfo" 
+							property="conditionDescription" 
+							type="textarea"
+							maxlength="950"
+							required="true"/>
+						<br/>
+					<h:commandButton
+						value="#{msg['seminarpool_conditions_command_add']}"
+						actionListener="#{views$secured$seminarpool$conditions$seminarpoolrequirements.addCondition}"
+						title="#{msg['seminarpool_conditions_command_add_hint']}"
+						styleClass="button_save" />
+				</o:block>	
+		 	</h:form> 
+		</s:acl>
+	</c:if>
 	</ui:define>
 </ui:composition>
 <!-- text above will be ignored -->

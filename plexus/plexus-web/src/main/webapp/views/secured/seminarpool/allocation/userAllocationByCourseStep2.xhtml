@@ -44,22 +44,26 @@
 					<plexus:commandSortHeader columnName="groupName">#{msg.seminarpool_allocation_group_name}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.groupName}"/></b>
 				</t:column>	
-				<plexus:column header="#{msg.commands_header}">
-				<plexus:command   
-					bean="#{views$secured$seminarpool$allocation$userAllocationByCourseStep2}"
-					action="removeAllocation"
-					onclick="if (!confirm('#{msg.seminarpool_allocation_by_course_step2_remove_user_confirmation}')) return false"
-					label="#{msg['seminarpool_allocation_by_course_step2_remove_user']}"
-					title="#{msg['seminarpool_allocation_by_course_step2_remove_user']}"
-					styleClass="icon_remove">
-				</plexus:command>
-			</plexus:column>		
+				<c:if test="#{not phaseController.statusConfirmedPhase}">
+					<plexus:column header="#{msg.commands_header}">
+						<plexus:command   
+							bean="#{views$secured$seminarpool$allocation$userAllocationByCourseStep2}"
+							action="removeAllocation"
+							onclick="if (!confirm('#{msg.seminarpool_allocation_by_course_step2_remove_user_confirmation}')) return false"
+							label="#{msg['seminarpool_allocation_by_course_step2_remove_user']}"
+							title="#{msg['seminarpool_allocation_by_course_step2_remove_user']}"
+							styleClass="icon_remove">
+						</plexus:command>
+					</plexus:column>
+				</c:if>		
 			</plexus:dataTable>
 		</h:form>
 		<h:form id="addParticipantStep2">	
 		<o:block>
 			<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
-			<h:commandButton action="seminarpool_options_allocations_course_step3" value="#{msg.seminarpool_allocation_by_course_add_user}" styleClass="button"/>
+			<c:if test="#{not phaseController.statusConfirmedPhase}">
+				<h:commandButton action="seminarpool_options_allocations_course_step3" value="#{msg.seminarpool_allocation_by_course_add_user}" styleClass="button"/>
+			</c:if>
 		</o:block>
 	</h:form>				
 	</ui:define>

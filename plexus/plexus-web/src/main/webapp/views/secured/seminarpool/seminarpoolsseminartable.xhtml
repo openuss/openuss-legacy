@@ -34,6 +34,7 @@
 				</h:outputText></b>
 			</t:column>
 			</s:acl>
+	<c:if test="#{not phaseController.statusConfirmedPhase}">
 		<plexus:column header="#{msg.commands_header}">
 			 
 			<plexus:command 
@@ -72,7 +73,7 @@
 			</plexus:command>
 		
 		</plexus:column>
-		
+	</c:if>	
 	</plexus:dataTable>
 	
 	

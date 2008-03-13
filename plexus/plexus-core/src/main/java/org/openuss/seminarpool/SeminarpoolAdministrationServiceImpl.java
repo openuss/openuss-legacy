@@ -876,7 +876,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 	}
 
 	@Override
-	protected void handleAddUserToAllocation(Long userId, Long courseGroupId)
+	protected boolean handleAddUserToAllocation(Long userId, Long courseGroupId)
 			throws Exception {
 		Validate.notNull(userId,	"handleRemoveUserFromAllocation ==> userId cannot be null");
 		Validate.notNull(courseGroupId,	"handleRemoveUserFromAllocation ==> courseGroupId cannot be null");
@@ -884,9 +884,14 @@ public class SeminarpoolAdministrationServiceImpl extends
 		CourseGroup courseGroup = getCourseGroupDao().load(courseGroupId);
 		Validate.notNull(user,	"handleRemoveUserFromAllocation ==> user cannot be loaded");
 		Validate.notNull(courseGroup,	"handleRemoveUserFromAllocation ==> courseGroup cannot be loaded");
-		courseGroup.addUser(user);	
-		getCourseGroupDao().update(courseGroup);
-		getUserDao().update(user);
+		if ( !courseGroup.getUser().contains(user) ) {
+			courseGroup.addUser(user);	
+			getCourseGroupDao().update(courseGroup);
+			getUserDao().update(user);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

@@ -329,6 +329,8 @@ public class Constants {
 	
 	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP1 = "seminarpool_options_allocations_course";
 	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP2 = "seminarpool_options_allocations_course_step2";
+	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_USER_ADDED = "seminarpool_allocation_by_course_add_user_message";
+	public static final String SEMINARPOOL_ALLOCATIONS_BY_COURSE_ERROR_USER_DOUPLE = "seminarpool_allocation_by_course_add_user_error";
 
 	public static final String SEMINARPOOL_ALLOCATIONS_BY_USER_STEP1 = "seminarpool_options_allocations_user";
 	public static final String SEMINARPOOL_ALLOCATIONS_BY_USER_STEP2 = "seminarpool_options_allocations_user_step2";

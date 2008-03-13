@@ -336,7 +336,7 @@ public class SeminarpoolAllocationServiceImpl extends
 
 	private void identifyAllocatedCourses(){
 		// Identify allocated courses
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.length-1; i++) {
 			if (result[i][0] <= variables && result[i][1] == 1.0) {
 				CourseGroup cg = getCourseGroupDao().load(
 						table[(int) result[i][0] - 1][1]);

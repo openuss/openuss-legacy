@@ -48,7 +48,11 @@ public class UserAllocationByCourseStep4Page extends AbstractSeminarpoolPage {
 	
 	public String selectUser(){
 		UserInfo userInfo = (UserInfo)getSessionBean(Constants.SEMINARPOOL_ALLOCATIONS_SELECTED_USER_INFO);
-		seminarpoolAdministrationService.addUserToAllocation(userInfo.getId(), dataCourseTypes.getRowData().getId() );
+		if (seminarpoolAdministrationService.addUserToAllocation(userInfo.getId(), dataCourseTypes.getRowData().getId() ) ){
+			addMessage(i18n(Constants.SEMINARPOOL_ALLOCATIONS_BY_COURSE_USER_ADDED));
+		} else {
+			addError(i18n(Constants.SEMINARPOOL_ALLOCATIONS_BY_COURSE_ERROR_USER_DOUPLE));
+		}
 		return Constants.SEMINARPOOL_ALLOCATIONS_BY_COURSE_STEP2;
 	}
 	

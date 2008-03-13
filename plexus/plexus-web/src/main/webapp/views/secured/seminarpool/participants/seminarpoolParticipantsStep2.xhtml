@@ -45,18 +45,18 @@
 				<plexus:commandSortHeader columnName="priority">#{msg.seminarpool_participants_priority}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.priority}"/></b>
 			</t:column>
-			<plexus:column header="#{msg.commands_header}">
 			<c:if test="#{phaseController.statusBeforeEqualsRegistrationComplete}">
-				<plexus:command   
-					bean="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2}"
-					action="removeParticipant"
-					onclick="if (!confirm('#{msg.seminarpool_participants_command_remove_confirmation}')) return false"
-					label="#{msg.seminarpool_participants_command_remove}"
-					hint="#{msg.seminarpool_participants_command_remove_hint}"
-					styleClass="icon_remove">
-				</plexus:command>
+				<plexus:column header="#{msg.commands_header}">
+					<plexus:command   
+						bean="#{views$secured$seminarpool$participants$seminarpoolParticipantsStep2}"
+						action="removeParticipant"
+						onclick="if (!confirm('#{msg.seminarpool_participants_command_remove_confirmation}')) return false"
+						label="#{msg.seminarpool_participants_command_remove}"
+						hint="#{msg.seminarpool_participants_command_remove_hint}"
+						styleClass="icon_remove">
+					</plexus:command>
+				</plexus:column>
 			</c:if>
-			</plexus:column>
 		</plexus:dataTable>
 		<o:block>
 	   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
