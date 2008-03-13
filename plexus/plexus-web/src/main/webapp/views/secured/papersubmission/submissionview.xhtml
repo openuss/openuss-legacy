@@ -91,7 +91,7 @@
             <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 	            <h:form id="submissionsTableView">
 	                 
-	                <o:block label="#{msg.papersubmission_exam_edit_description}" styleClass="form_box">
+	                <o:block label="#{msg.papersubmission_exam_edit_description}" styleClass="form_box" rendered="#{!(empty examInfo.attachments)}">
 	                   <div class="content_font_normal">
                             <h:outputText value="#{examInfo.description}" escape="false"/>
                         </div>
@@ -255,12 +255,13 @@
 						</plexus:dataTable> 
 					                
 		                <o:block>
-		                    <h:commandButton 
-						    id="download"
-							action="#{views$secured$papersubmission$submissionview.download}" 
-							value="#{msg.documents_main_button_download}" 
-							title="#{msg.documents_main_button_download}"
-							styleClass="button_add"/>
+		                    
+							<h:commandButton 
+	                        id="addFile"
+	                        action="#{views$secured$papersubmission$submissionview.addFile}" 
+	                        value="#{msg.documents_main_button_newfile}" 
+	                        title="#{msg.papersubmission_command_addfile_hint}"
+	                        styleClass="button_add"/> 
 							
 							<h:commandButton 
 						    id="addZip"
@@ -270,11 +271,11 @@
 							styleClass="button_add"/>
 							
 		                    <h:commandButton 
-	                        id="addFile"
-	                        action="#{views$secured$papersubmission$submissionview.addFile}" 
-	                        value="#{msg.documents_main_button_newfile}" 
-	                        title="#{msg.papersubmission_command_addfile_hint}"
-	                        styleClass="button_add"/> 
+						    id="download"
+							action="#{views$secured$papersubmission$submissionview.download}" 
+							value="#{msg.documents_main_button_download}" 
+							title="#{msg.documents_main_button_download}"
+							styleClass="button_add"/>
 		                        
 		                    <h:commandButton 
 						    id="delete"

@@ -122,9 +122,10 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
 		if (!files.isEmpty()) {
+			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 			//Storing the zip file name into the session 
 			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy_HH.mm", Locale.GERMAN);
-			String fileName = examInfo.getName() + "_" + paperSubmissionInfo.getFirstName() + "_" + dateFormat.format(new Date());
+			String fileName = examInfo.getName() + "_" + paperSubmissionInfo.getFirstName() + "_" + paperSubmissionInfo.getLastName() + "_" + dateFormat.format(new Date());
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);

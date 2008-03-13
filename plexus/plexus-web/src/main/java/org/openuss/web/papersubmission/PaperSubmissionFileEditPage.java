@@ -3,6 +3,7 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.component.UIInput;
 
@@ -16,7 +17,9 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.paperSubmission.SubmissionStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
@@ -89,7 +92,14 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
 				return Constants.FAILURE;
 			}
-		} else if (isExistingFile()) {
+		} else if (isFileExistingInNewSubmission()) {
+			selectedFile.setId(null);		
+			if(!saveNewFile()){
+				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
+				return Constants.FAILURE;
+			}
+			
+		}else if(isExistingFile()){
 			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 			if (document != null) {
 				documentToSelectedFile(document);
@@ -108,6 +118,15 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		
 		removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
+	}
+	
+	private boolean isFileExistingInNewSubmission(){
+		DefaultDomainObject domainObject = new DefaultDomainObject(paperSubmissionInfo.getId());
+		if(isExistingFile() && paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME) 
+				&& !getDocumentService().getFileEntries(domainObject).contains(selectedFile))
+			return true;
+		else
+			return false;
 	}
 	
 	

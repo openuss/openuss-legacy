@@ -35,11 +35,17 @@
 						  		&#160;
 								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
 									<f:param value="#{attachment.id}" name="fileid" />
-									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+									<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+									<h:graphicImage value="/images/filetypes/default.gif" 
+						                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
 							  		#{attachment.fileName} 
 							  	</o:link> 
 								<f:subview rendered="#{empty attachment.id}">
-									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+									<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+									<h:graphicImage value="/images/filetypes/default.gif" 
+						                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
 							  		#{attachment.fileName} 
 							  	</f:subview> 
 								<br/>	

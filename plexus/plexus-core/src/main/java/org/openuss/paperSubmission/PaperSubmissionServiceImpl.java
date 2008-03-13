@@ -375,6 +375,7 @@ public class PaperSubmissionServiceImpl
 			for(FileInfo file : filesOfSubmission){
 				String path = submission.getFirstName()+"_"+submission.getLastName();
 				file.setPath(path);
+				file.setAbsoluteName(path + "/" + file.getFileName());
 			}
 			allFiles.addAll(filesOfSubmission);
 		}
