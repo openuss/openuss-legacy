@@ -240,6 +240,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#resolvePath(org.openuss.webdav.WebDAVPath)
 	 */
 	public WebDAVResource resolvePath(WebDAVPath path) throws WebDAVHrefException {
+		checkReadable();
+		
 		String nextName = path.getNextName();
 		
 		// Is resolved
@@ -258,10 +260,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 				// Intermediary resource not found
 				throw new WebDAVPathException(WebDAVStatusCodes.SC_CONFLICT, nextPath);
 			}
-		}
-		
-		if (! nextRes.isReadable()) {
-			throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, nextRes);
 		}
 		
 		return nextRes.resolvePath(nextPath);
