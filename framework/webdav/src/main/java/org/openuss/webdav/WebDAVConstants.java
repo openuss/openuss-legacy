@@ -26,8 +26,10 @@ public class WebDAVConstants {
 	public final static String MIMETYPE_HTML = "text/html";
 	public final static String MIMETYPE_ENCODING_SEP = "; charset="; 
 	
-	// Charsets
-	public final static Charset PREFERRED_CHARSET = Charset.forName("UTF-8");
+	/**
+	 * The preferred WebDAV charset
+	 */
+	public final static Charset CHARSET = Charset.forName("UTF-8");
 	
 	// header names
 	public final static String HEADER_AUTHORIZATION = "Authorization";

@@ -2,6 +2,7 @@ package org.openuss.webdav;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -460,12 +461,12 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		}
 		
 		String docStr = WebDAVUtils.documentToString(doc);
-		byte[] bar = docStr.getBytes(WebDAVConstants.PREFERRED_CHARSET);
+		byte[] bar = docStr.getBytes(WebDAVConstants.CHARSET);
 		ByteArrayInputStream bais = new ByteArrayInputStream(bar);
 		
 		IOContextImpl ioc = new IOContextImpl();
 		ioc.setContentType(WebDAVConstants.MIMETYPE_HTML +
-					WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.PREFERRED_CHARSET.name());
+					WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.CHARSET.name());
 		ioc.setInputStream(bais);
 		
 		return ioc;

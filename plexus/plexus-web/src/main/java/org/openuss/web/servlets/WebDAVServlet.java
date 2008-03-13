@@ -1,7 +1,8 @@
 package org.openuss.web.servlets;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -328,14 +329,19 @@ public class WebDAVServlet extends HttpServlet {
  	public static void printAnswer(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
  		String msg = answer.getMessage();
  		response.setStatus(answer.getStatusCode());
- 		String contentType = answer.getContentType();
- 		response.setContentType(contentType);
  		
- 		Writer w = response.getWriter();
  		if (msg != null) {
- 			w.write(msg);
+ 	 		String contentType = answer.getContentType();
+ 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.CHARSET.name());
  		}
- 		w.close();
+ 		
+ 		OutputStream os = response.getOutputStream();
+ 		if (msg != null) {
+ 			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.CHARSET);
+ 			osw.write(msg);
+ 			osw.close();
+ 		}
+ 		os.close();
  	}
  	
  	/**
