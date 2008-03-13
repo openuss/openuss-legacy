@@ -93,7 +93,8 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 				return Constants.FAILURE;
 			}
 		} else if (isFileExistingInNewSubmission()) {
-			selectedFile.setId(null);		
+			selectedFile.setId(null);
+			selectedFile.setModified(paperSubmissionInfo.getDeliverDate());
 			if(!saveNewFile()){
 				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
 				return Constants.FAILURE;
