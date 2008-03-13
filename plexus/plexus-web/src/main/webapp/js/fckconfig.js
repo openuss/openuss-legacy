@@ -24,6 +24,10 @@ FCKConfig.FlashUpload = false;
 FCKConfig.ImageUpload = false;
 FCKConfig.LinkBrowser = false;
 
+FCKConfig.LinkDlgHideTarget = true;
+FCKConfig.LinkUpload = false;
+FCKConfig.LinkDlgHideAdvanced = true;
+
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
