@@ -125,7 +125,7 @@
 			<plexus:column header="#{msg.commands_header}"
 				styleClass="col_commands">
 				
-				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
 					<br />
 					<h:commandLink
 					action="#{views$secured$calendar$calendar.deleteSerialAppointment}"
@@ -197,7 +197,7 @@
 			<plexus:column header="#{msg.commands_header}"
 				styleClass="col_commands">
 							
-				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
 					<h:commandLink
 					action="#{views$secured$calendar$calendar.deleteSingleAppointment}"
 					title="#{msg.openuss4us_calendar_button_delete}"
@@ -207,7 +207,7 @@
 		</plexus:dataTable>
 		</div>
 		<o:block>
-			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.UPDATE}">
+			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
 				<h:commandButton
 					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
 					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
