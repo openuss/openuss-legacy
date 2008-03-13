@@ -16,13 +16,12 @@ import org.openuss.security.UserCriteria;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.groups.GroupsMainPage;
 
 @Bean(name = "views$secured$buddylist$usersearch", scope = Scope.REQUEST)
 @View
 public class UserSearchPage extends BasePage {
 
-	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
+	private static final Logger logger = Logger.getLogger(UserSearchPage.class);
 
 	@Property(value = "#{securityService}")
 	private SecurityService securityService;

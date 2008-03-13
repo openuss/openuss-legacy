@@ -894,6 +894,14 @@ public class MyUniPage extends BasePage {
 	public boolean getGroupData() {
 		return (groupService.getGroupsByUser(user.getId()).size() == 0);
 	}
+	
+	public String createGroup() {
+		return Constants.OPENUSS4US_GROUPS_CREATE;
+	}
+	
+	public String joinGroup() {
+		return Constants.OPENUSS4US_GROUPS_JOIN;
+	}
 
 	/* ----- getter and setter ----- */
 

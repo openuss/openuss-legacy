@@ -27,6 +27,11 @@
 								<span /> #{msg['openuss4us_calendar_subscribe_hint']} </h:commandLink></li>
 						</c:if>
 					</c:if>
+					<li>
+			  			<h:commandLink action="#{views$secured$groups$components$main.leaveGroup}">
+							<h:outputText value="#{msg.openuss4us_groups_button_leave}"/>
+						</h:commandLink>
+					</li>
 				</ul>
 			</o:block>
 		</h:form>

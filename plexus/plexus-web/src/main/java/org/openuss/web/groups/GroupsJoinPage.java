@@ -23,7 +23,7 @@ import org.openuss.web.Constants;
 @View
 public class GroupsJoinPage extends AbstractGroupsPage {
 
-	private static final Logger logger = Logger.getLogger(GroupsMainPage.class);
+	private static final Logger logger = Logger.getLogger(GroupsJoinPage.class);
 
 	private GroupsDataProvider data = new GroupsDataProvider();
 	private DataPage<UserGroupInfo> page;

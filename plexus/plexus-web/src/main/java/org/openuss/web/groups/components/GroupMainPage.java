@@ -17,6 +17,7 @@ import org.openuss.calendar.AppointmentInfo;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.groups.GroupApplicationException;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.groups.UserGroupMemberInfo;
 import org.openuss.web.Constants;
 
@@ -98,6 +99,23 @@ public class GroupMainPage extends AbstractGroupPage {
 
 	public boolean isAspirant() {
 		return groupService.isAspirant(groupInfo, user.getId());
+	}
+	
+	public String leaveGroup() {
+		logger.debug("member leave group");
+		if((groupService.getModerators(groupInfo).size() == 1) && groupService.isModerator(groupInfo, user.getId())){
+			if (groupService.getAllMembers(groupInfo).size() == 1){
+				groupService.deleteUserGroup(groupInfo);
+				addMessage(i18n("message_group_deleted", groupInfo.getName()));	
+			} else {
+				addError(i18n("group_last_moderator_error"));
+				return Constants.SUCCESS;
+			}		
+		} else {
+			groupService.removeMember(groupInfo, user.getId());
+			addMessage(i18n("message_group_left", groupInfo.getName()));
+		}	
+		return Constants.DESKTOP;
 	}
 	
 	/* ----- getter and setter ----- */

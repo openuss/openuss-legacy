@@ -118,11 +118,7 @@ public class GroupModeratorsPage extends AbstractGroupPage {
 			}
 		}
 		resetCachedData();
-		if (groupService.isModerator(groupInfo, user.getId())) {
-			return Constants.GROUP_MODERATOR_PAGE;
-		} else {
-			return Constants.GROUP_PAGE;
-		}
+		return Constants.GROUP_PAGE;
 	}
 
 	public String removeMember() {
