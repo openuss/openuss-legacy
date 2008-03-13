@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.University;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -38,11 +39,14 @@ public class SeminarpoolAdministrationServiceImpl extends
 		Validate.notNull(seminarpoolInfo, "The Seminarpool cannot be null");
 		Validate.notNull(userId, "The User must have a valid ID");
 		User user = getSecurityService().getUser(userId);
-		Validate.notNull(user, "No valid User found corresponding to the ID " + userId);
-		Validate.isTrue(seminarpoolInfo.getId() == null, "The Seminarpool shouldn't have an ID yet");
+		Validate.notNull(user, "No valid User found corresponding to the ID "
+				+ userId);
+		Validate.isTrue(seminarpoolInfo.getId() == null,
+				"The Seminarpool shouldn't have an ID yet");
 		seminarpoolInfo.setId(null);
 		// Transform ValueObject into Entity
-		Seminarpool seminarpoolEntity = this.getSeminarpoolDao().seminarpoolInfoToEntity(seminarpoolInfo);
+		Seminarpool seminarpoolEntity = this.getSeminarpoolDao()
+				.seminarpoolInfoToEntity(seminarpoolInfo);
 
 		// Create a default Membership for the Seminarpool
 		Membership membership = Membership.Factory.newInstance();
@@ -50,7 +54,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		// Create the Seminarpool
 		getSeminarpoolDao().create(seminarpoolEntity);
-		Validate.notNull(seminarpoolEntity.getId(),"SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
+		Validate.notNull(seminarpoolEntity.getId(),
+				"SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
 		seminarpoolInfo.setId(seminarpoolEntity.getId());
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
@@ -58,23 +63,28 @@ public class SeminarpoolAdministrationServiceImpl extends
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
 		Group group = this.getGroupDao().groupItemToEntity(admins);
-		group = this.getMembershipService().createGroup(seminarpoolEntity.getMembership(), group);
-		
-		Validate.notNull(group.getId(),"MembershipService.handleCreateGroup - Group couldn't be created");
+		group = this.getMembershipService().createGroup(
+				seminarpoolEntity.getMembership(), group);
+
+		Validate
+				.notNull(group.getId(),
+						"MembershipService.handleCreateGroup - Group couldn't be created");
 		// Security
 		getSecurityService().createObjectIdentity(seminarpoolEntity, null);
-		getSecurityService().setPermissions(group, seminarpoolEntity, LectureAclEntry.OGCRUD);
+		getSecurityService().setPermissions(group, seminarpoolEntity,
+				LectureAclEntry.OGCRUD);
 
 		group.addMember(user);
 		// Add Owner to Members and the group of Administrators
 		getMembershipService().addMember(membership, user);
 		getSecurityService().addAuthorityToGroup(user, group);
 		if (seminarpoolInfo.getAccessType().equals(SeminarpoolAccessType.OPEN)) {
-			getSecurityService().setPermissions(Roles.USER, seminarpoolEntity, LectureAclEntry.COURSE_PARTICIPANT);
+			getSecurityService().setPermissions(Roles.USER, seminarpoolEntity,
+					LectureAclEntry.COURSE_PARTICIPANT);
 		}
 		return seminarpoolEntity.getId();
 	}
-	
+
 	/**
 	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#updateSeminarpool(org.openuss.seminarpool.SeminarpoolInfo)
 	 */
@@ -129,7 +139,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 		this.getMembershipService()
 				.addMember(seminarpool.getMembership(), user);
 		for (Group group : seminarpool.getMembership().getGroups()) {
-				getSecurityService().addAuthorityToGroup(user, group);
+			getSecurityService().addAuthorityToGroup(user, group);
 		}
 
 	}
@@ -199,15 +209,19 @@ public class SeminarpoolAdministrationServiceImpl extends
 		// Set Security
 		this.getSecurityService()
 				.createObjectIdentity(courseAllocation, course);
-		for ( User member : seminarpool.getMembership().getMembers()) {
-			getSecurityService().setPermissions(member, courseAllocation, LectureAclEntry.OGCRUD);
-			getSecurityService().setPermissions(member, seminarpool, LectureAclEntry.RU);
+		for (User member : seminarpool.getMembership().getMembers()) {
+			getSecurityService().setPermissions(member, courseAllocation,
+					LectureAclEntry.OGCRUD);
+			getSecurityService().setPermissions(member, seminarpool,
+					LectureAclEntry.RU);
 		}
-		for ( User member: course.getCourseType().getInstitute().getMembership().getMembers()) {
-			getSecurityService().setPermissions(member, seminarpool, LectureAclEntry.RU);
+		for (User member : course.getCourseType().getInstitute()
+				.getMembership().getMembers()) {
+			getSecurityService().setPermissions(member, seminarpool,
+					LectureAclEntry.RU);
 		}
 
-    	seminarpool.addCourseAllocation(courseAllocation);
+		seminarpool.addCourseAllocation(courseAllocation);
 
 		return courseAllocationId;
 	}
@@ -286,11 +300,15 @@ public class SeminarpoolAdministrationServiceImpl extends
 		for (CourseSeminarpoolAllocation courseAllocation : courseAllocations) {
 			// only if the course is accepted or if the user is the owner the
 			// course or is seminarpool admin
-			if ( getSecurityService().hasPermission(courseAllocation, new Integer[] { LectureAclEntry.GCRUD }) 
-					|| getSecurityService().hasPermission(seminarpoolEntity, new Integer[] { LectureAclEntry.GCRUD })) {
-				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+			if (getSecurityService().hasPermission(courseAllocation,
+					new Integer[] { LectureAclEntry.GCRUD })
+					|| getSecurityService().hasPermission(seminarpoolEntity,
+							new Integer[] { LectureAclEntry.GCRUD })) {
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao()
+						.toCourseSeminarpoolAllocationInfo(courseAllocation));
 			} else if (courseAllocation.isAccepted()) {
-				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao()
+						.toCourseSeminarpoolAllocationInfo(courseAllocation));
 			}
 		}
 		return courseAllocationList;
@@ -467,9 +485,6 @@ public class SeminarpoolAdministrationServiceImpl extends
 						seminarpoolEntity), seminarpoolId, courseId);
 	}
 
-
-
-
 	@Override
 	protected Long handleAddConditionToSeminarpool(
 			SeminarConditionInfo seminarConditionInfo) throws Exception {
@@ -521,8 +536,29 @@ public class SeminarpoolAdministrationServiceImpl extends
 	protected List handleFindSeminarpoolsByDepartmentAndStatus(
 			Long departmentId, SeminarpoolStatus seminarpoolStatus)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Validate
+				.notNull(departmentId,
+						"handleFindSeminarpoolsByDepartmentAndStatus ==> departmentId cannot be null");
+
+		Long universityId = this.getDepartmentService().findDepartment(departmentId).getUniversityId();
+		
+		List<SeminarpoolInfo> seminarpoolInfoList = this.findSeminarpoolsByUniversityAndStatus(universityId, seminarpoolStatus);
+		List<SeminarpoolInfo> seminarpoolInfoList2 = new ArrayList<SeminarpoolInfo>();
+		for (SeminarpoolInfo seminarpoolInfo : seminarpoolInfoList) {
+			List<CourseSeminarpoolAllocationInfo> csaiList = this.findCoursesInSeminarpool(seminarpoolInfo.getId());
+			boolean courseInDepartment = false;
+			for(CourseSeminarpoolAllocationInfo csai : csaiList){
+				this.getCourseService().findCourse(csai.getCourseId());
+				if(this.getInstituteService().findInstitute(this.getCourseService().findCourse(csai.getCourseId()).getInstituteId()).getDepartmentId() == departmentId){
+					courseInDepartment=true;
+				}
+			}
+			if(courseInDepartment){
+				seminarpoolInfoList2.add(seminarpoolInfo);
+			}
+		}
+		return seminarpoolInfoList2;
 	}
 
 	@Override
@@ -773,13 +809,18 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected void handleRemoveSeminarPriorityById(Long priorityId)
 			throws Exception {
-		Validate.notNull(priorityId,"handleRemoveSeminarPriorityById ==> priorityId cannot be null");
-		SeminarPriority priorityEntity = getSeminarPriorityDao().load(priorityId);
-		SeminarUserRegistration userRegistrationEntity = priorityEntity.getSeminarUserRegistration();
+		Validate
+				.notNull(priorityId,
+						"handleRemoveSeminarPriorityById ==> priorityId cannot be null");
+		SeminarPriority priorityEntity = getSeminarPriorityDao().load(
+				priorityId);
+		SeminarUserRegistration userRegistrationEntity = priorityEntity
+				.getSeminarUserRegistration();
 		if (userRegistrationEntity.getSeminarPriority().size() > 1) {
 			userRegistrationEntity.removePriority(priorityEntity);
 		} else {
-			getSeminarpoolUserRegistrationService().removeUserRegistration(priorityEntity.getSeminarUserRegistration().getId());
+			getSeminarpoolUserRegistrationService().removeUserRegistration(
+					priorityEntity.getSeminarUserRegistration().getId());
 		}
 	}
 
@@ -843,7 +884,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 				.notNull(courseSeminarpoolAllocationInfo,
 						"handleDeactivateSeminar ==> courseSeminarpoolAllocation cannot be null");
 		Validate
-				.notNull(courseSeminarpoolAllocationInfo.getId(),
+				.notNull(
+						courseSeminarpoolAllocationInfo.getId(),
 						"handleDeactivateSeminar ==> courseSeminarpoolAllocation.getId() cannot be null");
 		CourseSeminarpoolAllocation courseAllocationEntity = getCourseSeminarpoolAllocationDao()
 				.load(courseSeminarpoolAllocationInfo.getId());
@@ -858,18 +900,22 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected List handleFindAcceptedCoursesInSeminarpool(Long seminarpoolId)
 			throws Exception {
-		Validate.notNull(seminarpoolId,	"handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
+		Validate
+				.notNull(seminarpoolId,
+						"handleFindCoursesInSeminarpool ==> seminarpoolId cannot be null");
 		Seminarpool seminarpoolEntity = getSeminarpoolDao().load(seminarpoolId);
 		// SeminarpoolInfo seminarpoolInfo =
 		// getSeminarpoolDao().toSeminarpoolInfo(seminarpoolEntity);
-		Validate.notNull(seminarpoolEntity,"handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
+		Validate.notNull(seminarpoolEntity,
+				"handleFindCoursesInSeminarpool ==> Cannot load Seminarpool");
 		Collection<CourseSeminarpoolAllocation> courseAllocations = seminarpoolEntity
 				.getCourseSeminarpoolAllocation();
 		List<CourseSeminarpoolAllocationInfo> courseAllocationList = new ArrayList<CourseSeminarpoolAllocationInfo>();
 		for (CourseSeminarpoolAllocation courseAllocation : courseAllocations) {
-			// only if the course is accepted 
-			if ( courseAllocation.isAccepted() ) {
-				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+			// only if the course is accepted
+			if (courseAllocation.isAccepted()) {
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao()
+						.toCourseSeminarpoolAllocationInfo(courseAllocation));
 			}
 		}
 		return courseAllocationList;
@@ -878,14 +924,20 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected boolean handleAddUserToAllocation(Long userId, Long courseGroupId)
 			throws Exception {
-		Validate.notNull(userId,	"handleRemoveUserFromAllocation ==> userId cannot be null");
-		Validate.notNull(courseGroupId,	"handleRemoveUserFromAllocation ==> courseGroupId cannot be null");
-		User user =  getUserDao().load(userId);
+		Validate.notNull(userId,
+				"handleRemoveUserFromAllocation ==> userId cannot be null");
+		Validate
+				.notNull(courseGroupId,
+						"handleRemoveUserFromAllocation ==> courseGroupId cannot be null");
+		User user = getUserDao().load(userId);
 		CourseGroup courseGroup = getCourseGroupDao().load(courseGroupId);
-		Validate.notNull(user,	"handleRemoveUserFromAllocation ==> user cannot be loaded");
-		Validate.notNull(courseGroup,	"handleRemoveUserFromAllocation ==> courseGroup cannot be loaded");
-		if ( !courseGroup.getUser().contains(user) ) {
-			courseGroup.addUser(user);	
+		Validate.notNull(user,
+				"handleRemoveUserFromAllocation ==> user cannot be loaded");
+		Validate
+				.notNull(courseGroup,
+						"handleRemoveUserFromAllocation ==> courseGroup cannot be loaded");
+		if (!courseGroup.getUser().contains(user)) {
+			courseGroup.addUser(user);
 			getCourseGroupDao().update(courseGroup);
 			getUserDao().update(user);
 			return true;
@@ -897,7 +949,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 	@Override
 	protected void handleConfirmAllocation(Long seminarpoolId) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -925,18 +977,24 @@ public class SeminarpoolAdministrationServiceImpl extends
 	protected void handleMoveUser(Long seminarpoolId, Long userId,
 			Long oldCourseId, Long newCourseId) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void handleRemoveUserFromAllocation(Long userId,
 			Long courseGroupId) throws Exception {
-		Validate.notNull(userId,	"handleRemoveUserFromAllocation ==> userId cannot be null");
-		Validate.notNull(courseGroupId,	"handleRemoveUserFromAllocation ==> courseGroupId cannot be null");
-		User user =  getUserDao().load(userId);
+		Validate.notNull(userId,
+				"handleRemoveUserFromAllocation ==> userId cannot be null");
+		Validate
+				.notNull(courseGroupId,
+						"handleRemoveUserFromAllocation ==> courseGroupId cannot be null");
+		User user = getUserDao().load(userId);
 		CourseGroup courseGroup = getCourseGroupDao().load(courseGroupId);
-		Validate.notNull(user,	"handleRemoveUserFromAllocation ==> user cannot be loaded");
-		Validate.notNull(courseGroup,	"handleRemoveUserFromAllocation ==> courseGroup cannot be loaded");
+		Validate.notNull(user,
+				"handleRemoveUserFromAllocation ==> user cannot be loaded");
+		Validate
+				.notNull(courseGroup,
+						"handleRemoveUserFromAllocation ==> courseGroup cannot be loaded");
 		courseGroup.removeUser(user);
 		getCourseGroupDao().update(courseGroup);
 		getUserDao().update(user);

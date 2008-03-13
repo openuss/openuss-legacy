@@ -11,7 +11,7 @@ package org.openuss.seminarpool;
 
 public class Simplex {
 
-	static final boolean debugmode = true;
+	static final boolean debugmode = false;
 	
     private double[][] matrix;
     private double[] targetvalues;
