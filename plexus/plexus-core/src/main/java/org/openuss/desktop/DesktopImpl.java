@@ -72,12 +72,12 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 
 	@Override
 	public void linkSeminarpool(Seminarpool seminarpool) {
-		getSeminarpool().add(seminarpool);
+		getSeminarpools().add(seminarpool);
 	}
 
 	@Override
 	public void unlinkSeminarpool(Seminarpool seminarpool) {
-		getSeminarpool().remove(seminarpool);
+		getSeminarpools().remove(seminarpool);
 	}
 
 }

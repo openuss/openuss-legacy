@@ -78,6 +78,16 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 						courseType);
 	}
 
+	@Override
+	@SuppressWarnings( { "unchecked" })
+	public java.util.Collection findBySeminarpool(final int transform, final Seminarpool seminarpool) {
+		return this
+				.findBySeminarpool(
+						transform,
+						"select d from org.openuss.desktop.Desktop as d, org.openuss.seminarpool.Seminarpool s where s=:seminarpool and s in elements(d.seminarpools)",
+						seminarpool);
+	}
+	
 	/**
 	 * @see org.openuss.desktop.DesktopDao#toDesktopInfo(org.openuss.desktop.Desktop, org.openuss.desktop.DesktopInfo)
 	 */
@@ -123,7 +133,7 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 		
 		// Seminapools
 		targetVO.setSeminarpoolInfos(new ArrayList(sourceEntity.getCourses().size()));
-		for (Seminarpool seminarpool : sourceEntity.getSeminarpool()) {
+		for (Seminarpool seminarpool : sourceEntity.getSeminarpools()) {
 			if (seminarpool != null)
 				targetVO.getSeminarpoolInfos().add(this.getSeminarpoolDao().toSeminarpoolInfo(seminarpool));
 		}
@@ -220,10 +230,10 @@ public class DesktopDaoImpl extends DesktopDaoBase {
 		
 		// Seminarpools
 		if (copyIfNull && (sourceVO.getSeminarpoolInfos() != null)) {
-			targetEntity.getSeminarpool().clear();
+			targetEntity.getSeminarpools().clear();
 			Iterator iter2 = sourceVO.getSeminarpoolInfos().iterator();
 			while (iter2.hasNext()) {
-				targetEntity.getSeminarpool().add(this.getSeminarpoolDao().load(((Seminarpool) iter2.next()).getId()));
+				targetEntity.getSeminarpools().add(this.getSeminarpoolDao().load(((Seminarpool) iter2.next()).getId()));
 			}
 		}
 

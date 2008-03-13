@@ -662,7 +662,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 			List<Course> courseBookmarks = desktop.getCourses();
 			List<Institute> instituteBookmarks = desktop.getInstitutes();
 			List<Department> departmentBookmarks = desktop.getDepartments();
-			Set<Seminarpool> seminarpoolBookmarks = desktop.getSeminarpool();
+			Collection<Seminarpool> seminarpoolBookmarks = desktop.getSeminarpools();
  
 			if (courseBookmarks != null) {
 				// Process each course bookmark
@@ -1322,7 +1322,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Validate.notNull(desktop, "No Desktop found corresponding to the desktopId " + desktopId);
 		Validate.notNull(seminarpoolId, "seminarpoolId cannot be null!");
 		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
-		return desktop.getSeminarpool().contains(seminarpool);
+		return desktop.getSeminarpools().contains(seminarpool);
 	}
 
 	@Override
@@ -1336,8 +1336,8 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
 		Validate.notNull(seminarpool, "No Institute found corresponding to the seminarpoolId "	+ seminarpoolId);
 
-		if (!desktop.getSeminarpool().contains(seminarpool)) {
-			desktop.getSeminarpool().add(seminarpool);
+		if (!desktop.getSeminarpools().contains(seminarpool)) {
+			desktop.getSeminarpools().add(seminarpool);
 		}	}
 
 	@Override
@@ -1349,6 +1349,20 @@ public class DesktopService2Impl extends DesktopService2Base {
 		Validate.notNull(seminarpoolId, "DesktopService2.handleUnlinkCourse - courseId cannot be null!");
 		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
 		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the courseId " + seminarpoolId);
-		desktop.getSeminarpool().remove(seminarpool);	
+		desktop.getSeminarpools().remove(seminarpool);	
 		}
+
+	@Override
+	@SuppressWarnings( { "unchecked" })
+	protected void handleUnlinkAllFromSeminarpool(Long seminarpoolId)
+			throws Exception {
+		
+		Validate.notNull(seminarpoolId, "DesktopService2.handleUnlinkAllFromSeminarpool - seminarpoolId cannot be null!");
+		Seminarpool seminarpool = this.getSeminarpoolDao().load(seminarpoolId);
+		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the courseId " + seminarpoolId);
+		Collection<Desktop> desktops = getDesktopDao().findBySeminarpool(seminarpool);
+		for (Desktop desktop : desktops) {
+			desktop.getSeminarpools().remove(seminarpool);
+		}
+	}
 }

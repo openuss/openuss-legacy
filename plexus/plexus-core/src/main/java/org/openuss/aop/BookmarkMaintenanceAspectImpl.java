@@ -16,6 +16,7 @@ import org.openuss.lecture.OrganisationDao;
 import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
+import org.openuss.seminarpool.SeminarpoolInfo;
 
 public class BookmarkMaintenanceAspectImpl {
 
@@ -188,6 +189,43 @@ public class BookmarkMaintenanceAspectImpl {
 		}
 
 		logger.debug("----------> End method deleteBookmarksOfCourses <----------");
+	}
+	
+	public void bookmarkSeminarpool(SeminarpoolInfo seminarpoolInfo, Long userId) {
+		logger.debug("----------> BEGIN method bookmarkSeminarpool <----------");
+
+		Validate.notNull(seminarpoolInfo, "The seminarpoolInfo cannot be null.");
+		Validate.notNull(userId, "The userId cannot be null.");
+
+		try {
+			// Get DesktopInfo
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId);
+			// Link Seminarpool
+			desktopService2.linkSeminarpool(desktopInfo.getId(), seminarpoolInfo.getId());
+		} catch (DesktopException de) {
+			logger.error(de.getMessage());
+		}
+
+		logger.debug("----------> End method bookmarkSeminarpool <----------");
+	}
+
+	/**
+	 * Delete bookmarks of the given department from all users.
+	 * 
+	 * @param departmentId
+	 */
+	public void deleteBookmarksOfSeminarpool(Long seminarpoolId) {
+		logger.debug("----------> BEGIN method deleteBookmarksOfSeminarpool <----------");
+
+		Validate.notNull(seminarpoolId, "The seminarpoolId cannot be null.");
+
+		try {
+			desktopService2.unlinkAllFromSeminarpool(seminarpoolId);
+		} catch (DesktopException de) {
+			logger.error(de.getMessage());
+		}
+
+		logger.debug("----------> End method deleteBookmarksOfSeminarpool <----------");
 	}
 	
 	public DesktopService2 getDesktopService() {

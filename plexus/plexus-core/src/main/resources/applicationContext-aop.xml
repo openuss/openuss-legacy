@@ -80,6 +80,9 @@
 		<aop:pointcut id="CourseServiceSetStatusPointcut"
 			expression="execution(* org..CourseServiceBase.setCourseStatus(java.lang.Long, boolean)) and args(courseId, status)" />
 
+		<aop:pointcut id="SeminarpoolDeleteBookmarkPointcut"
+			expression="execution(* org..SeminarpoolAdministrationServiceBase.removeSeminarpool(java.lang.Long)) and args(seminarpoolId)" />
+
         <!-- Additional pointcuts for Discussion Search -->
         
 		<aop:pointcut id="DiscussionServiceCreatePointcut"
@@ -186,6 +189,9 @@
 			<aop:before method="bookmarkOrganisation"
 				pointcut-ref="OrganisationServiceAddMemberPointcut"
 				arg-names="organisationId, userId" />
+			<aop:before method="deleteBookmarksOfSeminarpool"
+				pointcut-ref="SeminarpoolDeleteBookmarkPointcut"
+				arg-names="seminarpoolId" />
 		</aop:aspect>
 		
 		<aop:aspect id="removeInstituteCodesAspect"
