@@ -34,7 +34,9 @@
 		<ui:include src="/views/commons/navigation/groups.xhtml" />
 	</ui:define>
 	<ui:define name="sidebar">
-		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+			<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		</s:acl>
 		<ui:include src="/views/commons/sidebar/default.xhtml" />
 	</ui:define>
 
