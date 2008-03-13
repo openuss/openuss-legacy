@@ -30,7 +30,7 @@
 
 	<ui:define name="content" styleClass="footer_normal">
 	
-		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
+		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.RU}">
 			<h:form id="genereteAllocation">	
 				<c:if test="#{phaseController.statusBeforeRegistrationComplete}">
 					<o:block label="#{msg.seminarpool_allocation_overview_header}">

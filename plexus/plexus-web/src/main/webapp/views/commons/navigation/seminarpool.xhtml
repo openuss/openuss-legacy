@@ -10,7 +10,7 @@
 	
 	
 	<ui:include src="/views/commons/navigation/desktop.xhtml" />
-		  <s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.READ}">
+		<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.READ}">
 		
 			<h:form id="seminarpoolNavigationForm">
 				<t:panelNavigation2 id="seminarpool_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
@@ -20,27 +20,28 @@
 							activeOnViewIds="/views/secured/seminarpool/main.xhtml" >
 							<h:outputText value="#{msg['seminarpool_command_options_overview']}" />
 						</t:commandNavigation2>
-						<c:if test="#{phaseController.statusAfterPreparations}">
-						<t:commandNavigation2 
-							action="#{seminarpoolUserRegistration.start}" 
-							activeOnViewIds="/views/secured/seminarpool/userRegistration/seminarpooluserregistration.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step2.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step3.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep1.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep2.xhtml,/views/secured/seminarpool/userRegistration/removeUserRegistrationStep1.xhtml" >
-							<h:outputText value="#{msg['seminarpool_command_options_registration']}" />
-						</t:commandNavigation2>
-						</c:if>
+						<s:acl domainObject="#{seminarpoolInfo}" hasNotPermission="#{ACL.RU}">
+							<c:if test="#{phaseController.statusAfterPreparations}">
+								<t:commandNavigation2 
+									action="#{seminarpoolUserRegistration.start}" 
+									activeOnViewIds="/views/secured/seminarpool/userRegistration/seminarpooluserregistration.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step2.xhtml,/views/secured/seminarpool/userRegistration/seminarpooluserregistration_step3.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep1.xhtml,/views/secured/seminarpool/userRegistration/seminarpoolUserRegistrationEditStep2.xhtml,/views/secured/seminarpool/userRegistration/removeUserRegistrationStep1.xhtml" >
+									<h:outputText value="#{msg['seminarpool_command_options_registration']}" />
+								</t:commandNavigation2>
+							</c:if>
+						</s:acl>						
 						<t:commandNavigation2 
 							action="seminarpool_options_seminars" 
 							activeOnViewIds="/views/secured/seminarpool/seminarpoolseminars.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseGroups.xhtml,/views/secured/seminarpool/edit/courseAllocationCourseSchedules.xhtml"
 							>
 							<h:outputText value="#{msg['seminarpool_command_options_seminars']}" />
 						</t:commandNavigation2>
-						
 							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
 								<t:commandNavigation2
 									action="seminarpool_options_seminarpooladmins" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooladmins.xhtml">
 									<h:outputText value="#{msg['seminarpool_command_options_seminarpooladmins']}" />
 								</t:commandNavigation2>
-							</s:acl>							
+							</s:acl>
 							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.RU}">
 								<t:commandNavigation2 
 									action="seminarpool_options_members" 
@@ -67,9 +68,10 @@
 										<h:outputText value="#{msg['seminarpool_allocation_submenue3']}" />
 									</t:commandNavigation2>
 								</c:if>
-									
 								</t:commandNavigation2>
-								
+							</s:acl>
+							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.RU}">
+															
 								<t:commandNavigation2 
 									action="seminarpool_options_requirements" 
 									value="#{msg['seminarpool_command_options_requirements']}">
@@ -84,16 +86,14 @@
 										<h:outputText value="#{msg['seminarpool_requirements_submenue_by_user']}" />
 									</t:commandNavigation2>
 								</t:commandNavigation2>
-								</s:acl>
+							</s:acl>
 							<s:acl domainObject="#{seminarpoolInfo}" hasPermission="#{ACL.GCRUD}">
-				
 								<t:commandNavigation2 
 									action="seminarpool_options_config" 
 									activeOnViewIds="/views/secured/seminarpool/seminarpooloptions.xhtml,/views/secured/seminarpool/seminarpoolremoveconfirmation.xhtml">
 									<h:outputText value="#{msg['seminarpool_command_options_config']}" />
 								</t:commandNavigation2>
 							</s:acl>
-						
 					</t:commandNavigation2>
 				</t:panelNavigation2>	
 			</h:form>

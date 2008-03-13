@@ -38,16 +38,11 @@ public class SeminarpoolAdministrationServiceImpl extends
 		Validate.notNull(seminarpoolInfo, "The Seminarpool cannot be null");
 		Validate.notNull(userId, "The User must have a valid ID");
 		User user = getSecurityService().getUser(userId);
-		Validate.notNull(user, "No valid User found corresponding to the ID "
-				+ userId);
-		Validate.isTrue(seminarpoolInfo.getId() == null,
-				"The Seminarpool shouldn't have an ID yet");
-
+		Validate.notNull(user, "No valid User found corresponding to the ID " + userId);
+		Validate.isTrue(seminarpoolInfo.getId() == null, "The Seminarpool shouldn't have an ID yet");
 		seminarpoolInfo.setId(null);
-
 		// Transform ValueObject into Entity
-		Seminarpool seminarpoolEntity = this.getSeminarpoolDao()
-				.seminarpoolInfoToEntity(seminarpoolInfo);
+		Seminarpool seminarpoolEntity = this.getSeminarpoolDao().seminarpoolInfoToEntity(seminarpoolInfo);
 
 		// Create a default Membership for the Seminarpool
 		Membership membership = Membership.Factory.newInstance();
@@ -55,31 +50,25 @@ public class SeminarpoolAdministrationServiceImpl extends
 
 		// Create the Seminarpool
 		getSeminarpoolDao().create(seminarpoolEntity);
-		Validate.notNull(seminarpoolEntity.getId(),
-				"SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
-
+		Validate.notNull(seminarpoolEntity.getId(),"SeminarpoolDao.handleCreate - Couldn't create Seminarpool");
 		seminarpoolInfo.setId(seminarpoolEntity.getId());
-
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("SEMINARPOOL_" + seminarpoolEntity.getId() + "_ADMINS");
 		admins.setLabel("autogroup_administrator_label");
 		admins.setGroupType(GroupType.ADMINISTRATOR);
 		Group group = this.getGroupDao().groupItemToEntity(admins);
-		group.addMember(user);
-		group = this.getMembershipService().createGroup(
-				seminarpoolEntity.getMembership(), group);
-		Validate
-				.notNull(group.getId(),
-						"MembershipService.handleCreateGroup - Group couldn't be created");
+		group = this.getMembershipService().createGroup(seminarpoolEntity.getMembership(), group);
+		
+		Validate.notNull(group.getId(),"MembershipService.handleCreateGroup - Group couldn't be created");
 		// Security
-		getSecurityService().createObjectIdentity(seminarpoolEntity,
-				seminarpoolEntity.getUniversity());
-		getSecurityService().setPermissions(group, seminarpoolEntity,
-				LectureAclEntry.OGCRUD);
+		getSecurityService().createObjectIdentity(seminarpoolEntity, null);
+		getSecurityService().setPermissions(group, seminarpoolEntity, LectureAclEntry.OGCRUD);
 
+		group.addMember(user);
 		// Add Owner to Members and the group of Administrators
 		getMembershipService().addMember(membership, user);
+		getSecurityService().addAuthorityToGroup(user, group);
 		if (seminarpoolInfo.getAccessType().equals(SeminarpoolAccessType.OPEN)) {
 			getSecurityService().setPermissions(Roles.USER, seminarpoolEntity, LectureAclEntry.COURSE_PARTICIPANT);
 		}
@@ -299,6 +288,8 @@ public class SeminarpoolAdministrationServiceImpl extends
 			// course or is seminarpool admin
 			if ( getSecurityService().hasPermission(courseAllocation, new Integer[] { LectureAclEntry.GCRUD }) 
 					|| getSecurityService().hasPermission(seminarpoolEntity, new Integer[] { LectureAclEntry.GCRUD })) {
+				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
+			} else if (courseAllocation.isAccepted()) {
 				courseAllocationList.add(getCourseSeminarpoolAllocationDao().toCourseSeminarpoolAllocationInfo(courseAllocation));
 			}
 		}
