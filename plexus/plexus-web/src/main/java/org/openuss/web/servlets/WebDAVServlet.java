@@ -2,7 +2,6 @@ package org.openuss.web.servlets;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +16,7 @@ import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusAnswer;
 import org.openuss.webdav.MultiStatusAnswerImpl;
 import org.openuss.webdav.MultiStatusResponse;
+import org.openuss.webdav.MultiStatusStatusResponse;
 import org.openuss.webdav.NullIOContext;
 import org.openuss.webdav.SimpleStatusResponse;
 import org.openuss.webdav.SimpleWebDAVAnswer;
@@ -384,6 +384,23 @@ public class WebDAVServlet extends HttpServlet {
 			srcRes.delete();
 		}
 		
+		// Set correct status code
+		if (copyRes) {
+			int commonCode = WebDAVStatusCodes.SC_CREATED;
+			
+			for (MultiStatusResponse msr : answer.getResponses()) {
+				if (msr instanceof MultiStatusStatusResponse) {
+					int thisCode = ((MultiStatusStatusResponse) msr).getStatusCode();
+					if (thisCode != WebDAVStatusCodes.SC_CREATED) {
+						commonCode = thisCode;
+						break;
+					}
+				}
+			}
+			
+			throw new WebDAVException(commonCode);
+		}
+		
 		return answer;
 	}
 
@@ -426,6 +443,14 @@ public class WebDAVServlet extends HttpServlet {
  	 				dstRes = dstParent.createCollection(dstName);
  	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_CREATED);
  	 			} else {
+ 	 				if (!dstRes.isCollection()) {
+ 	 					dstRes.delete();
+ 	 				}
+ 	 				
+ 	 				if (!dstRes.isWritable()) {
+ 	 					throw new WebDAVResourceException(WebDAVStatusCodes.SC_FORBIDDEN, dstRes);
+ 	 				}
+ 	 				
  	 				msr = new SimpleStatusResponse(dstRes, WebDAVStatusCodes.SC_NO_CONTENT);
  	 			}
  	 			answer.addResponse(msr);

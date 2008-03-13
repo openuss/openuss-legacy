@@ -3,7 +3,7 @@ package org.openuss.webdav;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class SimpleStatusResponse implements MultiStatusResponse{
+public class SimpleStatusResponse implements MultiStatusStatusResponse{
 	
 	/**
 	 * The (absolute or relative) path to the resource that is represented in this response. 
@@ -71,6 +71,13 @@ public class SimpleStatusResponse implements MultiStatusResponse{
 	 */
 	public String getHref() {
 		return href;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.MultiStatusStatusResponse#getStatusCode()
+	 */
+	public int getStatusCode() {
+		return statusCode;
 	}
 
 }
