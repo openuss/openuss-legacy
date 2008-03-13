@@ -52,10 +52,10 @@ if (window.document.location.href.match(/Wiki/)) {
 	FCKConfig.ajaxAutoSaveTargetUrl = '/plexus-web/fckfaces/FCKeditor/editor/savedraft' ;
 	
 	// Enable / Disable Plugin onBeforeUpdate Action 
-	FCKConfig.ajaxAutoSaveBeforeUpdateEnabled = true ;
+	FCKConfig.ajaxAutoSaveBeforeUpdateEnabled = true;
 	
 	// RefreshTime
-	FCKConfig.ajaxAutoSaveRefreshTime = 30 ;
+	FCKConfig.ajaxAutoSaveRefreshTime = 120 ; // 120 = 2 min
 	
 	// Sensitivity to key strokes
 	FCKConfig.ajaxAutoSaveSensitivity = 2 ;
