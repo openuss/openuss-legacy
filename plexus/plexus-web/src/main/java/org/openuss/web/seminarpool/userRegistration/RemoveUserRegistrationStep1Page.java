@@ -18,8 +18,10 @@ public class RemoveUserRegistrationStep1Page extends
 		super.prerender();
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
-		crumb.setName(i18n("seminarpool_participants_breadcrump_step2") + " - " + i18n("seminarpool_userregistration_remove_hint"));
-		crumb.setHint(i18n("seminarpool_participants_breadcrump_step2") + " - " + i18n("seminarpool_userregistration_remove_hint"));
+		crumb.setName(i18n("seminarpool_participants_breadcrump_step2") + " - " + 
+				i18n("seminarpool_userregistration_remove_hint"));
+		crumb.setHint(i18n("seminarpool_participants_breadcrump_step2") + " - " + 
+				i18n("seminarpool_userregistration_remove_hint"));
 		breadcrumbs.addCrumb(crumb);
 	}
 }
