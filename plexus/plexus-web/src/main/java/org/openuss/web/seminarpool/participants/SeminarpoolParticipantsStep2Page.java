@@ -14,7 +14,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPriorityDetailInfo;
-import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.Constants;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 

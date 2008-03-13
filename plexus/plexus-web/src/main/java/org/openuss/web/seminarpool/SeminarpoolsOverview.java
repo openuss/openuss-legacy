@@ -9,15 +9,12 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
-import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -35,10 +32,6 @@ public class SeminarpoolsOverview extends BasePage {
 	@Property(value = "#{seminarpoolAdministrationService}")
 	private SeminarpoolAdministrationService seminarpoolAdministrationService;
 
-
-	@Prerender
-	public void prerender() throws Exception {
-	}
 
 	/**
 	 * Store the selected institute into session scope and go to institute main
@@ -70,7 +63,7 @@ public class SeminarpoolsOverview extends BasePage {
 
 	public String shortcutSeminarpool() throws DesktopException {
 		logger.debug("Starting method shortcutInstitute");
-		SeminarpoolInfo seminarpoolInfo = currentSeminarpool();
+		//SeminarpoolInfo seminarpoolInfo = currentSeminarpool();
 		// desktopService.linkInstitute(desktop, currentSeminarpool);
 		//desktopService2.linkInstitute(desktopInfo.getId(), currentSeminarpool.getId());
 
@@ -131,7 +124,7 @@ public class SeminarpoolsOverview extends BasePage {
 						+ seminarpoolOverview.getSortColumn());
 			}
 
-			UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
+			//UniversityInfo universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
 			// get all institutes. Does not depend whether it is enabled or
 			// disabled
 			List<SeminarpoolInfo> seminarpoolList = getSeminarpoolAdministrationService().getAllSeminarpools();

@@ -47,11 +47,10 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
 			}
 		}
-		else if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE){
-			if(System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
+		else if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE && System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
+	
 				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
 				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
-			}
 		}
 	}
 	

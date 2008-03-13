@@ -3,8 +3,6 @@ package org.openuss.web.seminarpool;
 
 import java.util.List;
 
-import javax.faces.event.ActionEvent;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -13,21 +11,17 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
-import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.security.GroupItem;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
-import org.openuss.seminarpool.SeminarpoolStatus;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -92,11 +86,9 @@ public class SeminarpoolParticipantsPage extends BasePage {
 
 	private void refreshSeminarpool() {
 		logger.debug("Starting method refresh seminarpool");
-		if (seminarpoolInfo != null) {
-			if (seminarpoolInfo.getId() != null) {
+		if (seminarpoolInfo != null && seminarpoolInfo.getId() != null) {
 				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
 				setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-			}
 		}
 	}
 	
@@ -147,10 +139,12 @@ public class SeminarpoolParticipantsPage extends BasePage {
 				return Constants.SUCCESS;
 		  }
 		  		  
-		  if(! StringUtils.equals(member.getUsername(),user.getUsername()))
+		  if(! StringUtils.equals(member.getUsername(),user.getUsername())){
 			  return Constants.SEMINARPOOL;
-		  else
+		  }
+		  else{
 			   return Constants.SUCCESS;
+		  }
 		
 	}
 

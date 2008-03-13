@@ -1,8 +1,5 @@
 package org.openuss.web.seminarpool.allocation;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +19,6 @@ import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPlaceAllocationInfo;
 import org.openuss.seminarpool.SeminarpoolAllocationService;
 import org.openuss.seminarpool.SeminarpoolStatus;
-import org.openuss.seminarpool.SeminarpoolUserRegistrationService;
 import org.openuss.web.seminarpool.AbstractSeminarpoolPage;
 
 @Bean(name = "views$secured$seminarpool$allocation$userAllocationOverview", scope = Scope.REQUEST)
@@ -69,7 +65,7 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		try {
 			this.generateCVSfile();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return "";
 	}

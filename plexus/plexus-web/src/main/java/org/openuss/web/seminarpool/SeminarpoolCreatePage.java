@@ -1,44 +1,36 @@
 package org.openuss.web.seminarpool;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.framework.web.xss.HtmlInputFilter;
-import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
-import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
-import org.openuss.web.BasePage;
-import org.openuss.web.Constants;
-
-import org.openuss.security.UserInfo;
 import org.openuss.seminarpool.ConditionType;
 import org.openuss.seminarpool.SeminarConditionInfo;
 import org.openuss.seminarpool.SeminarpoolAccessType;
 import org.openuss.seminarpool.SeminarpoolAdministrationService;
 import org.openuss.seminarpool.SeminarpoolInfo;
 import org.openuss.seminarpool.SeminarpoolStatus;
+import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * Seminarpool Create Page Controller
@@ -140,8 +132,9 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	 */
 	public String toStep2() {
 		logger.debug("go to step 2 of seminarpool registration process");
-		if(seminarpoolInfo.getMaxSeminarAllocations() <= seminarpoolInfo.getPriorities())
+		if(seminarpoolInfo.getMaxSeminarAllocations() <= seminarpoolInfo.getPriorities()){
 			return "seminarpool_create_step2";
+		}
 		else {
 			this.addError(i18n("seminarpool_allocations_priorities_error"));
 			return "";
@@ -207,9 +200,7 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 		return "";	  
 	}
 	
-	public void showCondition(ActionEvent event) {
-		
-	}
+	
 
 // ACCESS-TYPE-SELECTION
 	/**
@@ -303,11 +294,9 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 	
 	private void refreshSeminarpool() {
 		logger.debug("Starting method refresh seminarpool");
-		if (seminarpoolInfo != null) {
-			if (seminarpoolInfo.getId() != null) {
+		if (seminarpoolInfo != null && seminarpoolInfo.getId() != null) {
 				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
 				setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-			}
 		}
 	}
 	
@@ -321,8 +310,9 @@ private static final Logger logger = Logger.getLogger(SeminarpoolCreatePage.clas
 
 		@Override
 		public DataPage<SeminarConditionInfo> getDataPage(int startRow, int pageSize) {
-			if(conditionsList == null)
+			if(conditionsList == null){
 				conditionsList = new ArrayList<SeminarConditionInfo>();
+			}
 //FIXME 			sort(conditionsList);
 			return new DataPage<SeminarConditionInfo>(conditionsList.size(), 0, conditionsList);
 		}

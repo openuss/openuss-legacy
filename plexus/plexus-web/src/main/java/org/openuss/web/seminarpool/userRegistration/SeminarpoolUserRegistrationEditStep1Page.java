@@ -11,7 +11,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.seminarpool.SeminarPrioritiesInfo;
 import org.openuss.seminarpool.SeminarPriorityDetailInfo;
 import org.openuss.seminarpool.SeminarUserRegistrationInfo;
 import org.openuss.web.Constants;

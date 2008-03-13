@@ -59,11 +59,9 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 
 	private void refreshSeminarpool() {
 		logger.debug("Starting method refresh seminarpool");
-		if (seminarpoolInfo != null) {
-			if (seminarpoolInfo.getId() != null) {
+		if (seminarpoolInfo != null && seminarpoolInfo.getId() != null) {
 				seminarpoolInfo = seminarpoolAdministrationService.findSeminarpool(seminarpoolInfo.getId());
 				setSessionBean(Constants.SEMINARPOOL_INFO, seminarpoolInfo);
-			}
 		}
 	}
 

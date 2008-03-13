@@ -2,7 +2,6 @@ package org.openuss.web.seminarpool;
 
 
 
-import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;

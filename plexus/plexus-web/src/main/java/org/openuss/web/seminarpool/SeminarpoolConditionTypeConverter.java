@@ -7,7 +7,6 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.shale.tiger.register.FacesConverter;
 import org.openuss.framework.web.jsf.controller.BaseBean;
-import org.openuss.groups.GroupAccessType;
 import org.openuss.seminarpool.ConditionType;
 import org.openuss.web.Constants;
 
