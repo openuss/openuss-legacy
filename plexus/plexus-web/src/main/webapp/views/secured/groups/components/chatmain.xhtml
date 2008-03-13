@@ -60,7 +60,7 @@
 					<plexus:commandSortHeader columnName="messages">#{msg['chat_rooms_messages']}</plexus:commandSortHeader>
 					<h:outputText value="#{room.messages}" />
 				</t:column>
-				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
+				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
 					<plexus:column header="#{msg.commands_header}">
 						<plexus:command bean="#{views$secured$groups$components$chatmain}"
 							action="deleteRoom" label="#{msg['chat_rooms_delete']}"

@@ -54,33 +54,31 @@
 					value="#{msg.documents_main_button_download}"
 					title="#{msg.documents_main_button_download}"
 					styleClass="button_add" />
-				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-					<h:commandButton id="addZip" action="group_documents_add_zip"
-						value="#{msg.documents_main_button_zip}"
-						title="#{msg.documents_main_button_zip}" styleClass="button_add" />
-					<h:commandButton id="newFile"
-						action="#{views$secured$documents$groups$documents.newFile}"
-						value="#{msg.documents_main_button_newfile}"
-						title="#{msg.documents_main_button_newfile}"
-						styleClass="button_add" />
-					<h:commandButton id="newFolder"
-						action="#{views$secured$documents$groups$documents.newFolder}"
-						value="#{msg.documents_main_button_newfolder}"
-						title="#{msg.documents_main_button_newfolder}"
-						styleClass="button_add" />
-				</s:acl>
-				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
+				<h:commandButton id="addZip" action="group_documents_add_zip"
+					value="#{msg.documents_main_button_zip}"
+					title="#{msg.documents_main_button_zip}" styleClass="button_add" />
+				<h:commandButton id="newFile"
+					action="#{views$secured$documents$groups$documents.newFile}"
+					value="#{msg.documents_main_button_newfile}"
+					title="#{msg.documents_main_button_newfile}"
+					styleClass="button_add" />
+				<h:commandButton id="newFolder"
+					action="#{views$secured$documents$groups$documents.newFolder}"
+					value="#{msg.documents_main_button_newfolder}"
+					title="#{msg.documents_main_button_newfolder}"
+					styleClass="button_add" />
+				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
 					<h:commandButton id="delete"
 						action="#{views$secured$documents$groups$documents.delete}"
 						value="#{msg.documents_main_button_delete}"
 						title="#{msg.documents_main_button_delete}"
 						styleClass="button_add" />
 				</s:acl>
-				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
-					<h:commandButton id="move" value="#{msg['documents_move']}"
-						action="#{views$secured$documents$groups$documents.switchToMoveMode}"
-						styleClass="button_add" />
-				</s:acl>
+
+				<h:commandButton id="move" value="#{msg['documents_move']}"
+					action="#{views$secured$documents$groups$documents.switchToMoveMode}"
+					styleClass="button_add" />
+
 			</o:block>
 			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
 				<o:block
