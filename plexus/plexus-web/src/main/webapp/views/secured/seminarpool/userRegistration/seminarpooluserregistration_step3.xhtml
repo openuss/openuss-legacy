@@ -48,15 +48,15 @@
 					    <div class="content_font_normal">
 							
 							<h:selectBooleanCheckbox rendered="#{conditions.fieldType.value==3}" 
-										 required="true" />
+										 required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
 							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==3}" />
 							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==2}" />
 							<h:outputText value="#{conditions.conditionDescription}" rendered="#{conditions.fieldType.value==1}" />
 							<br />
 							<h:inputText rendered="#{conditions.fieldType.value==1}" 
-										 required="true" />
+										 required="true" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
 							<h:inputTextarea rendered="#{conditions.fieldType.value==2}" 
-							                 required="true" class="field" />
+							                 required="true" class="field" valueChangeListener="#{seminarpoolUserRegistration.processChanged}" />
 						</div>
 						</o:block>		
 				</t:dataList>

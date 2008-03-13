@@ -126,8 +126,7 @@ public class SeminarpoolSeminarsPage extends AbstractSeminarpoolPage {
 				int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseSeminarpoolAllocationInfo> courseTypes = new ArrayList<CourseSeminarpoolAllocationInfo>(
-						seminarpoolAdministrationService
-								.findCoursesInSeminarpool(seminarpoolInfo
+						seminarpoolAdministrationService.findCoursesInSeminarpool(seminarpoolInfo
 										.getId()));
 				sort(courseTypes);
 				page = new DataPage<CourseSeminarpoolAllocationInfo>(
