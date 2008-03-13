@@ -109,8 +109,9 @@ public interface WebDAVResource {
 	/**
 	 * @param name The name of the child.
 	 * @return true iff resolvePath(name) would return a WebDAVResource.
+	 * @throws WebDAVResourceException If the current user is not allowed to check that.
 	 */
-	public boolean hasChild(String name);
+	public boolean hasChild(String name) throws WebDAVResourceException;
 	
 	/**
 	 * Deletes this resource.

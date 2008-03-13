@@ -49,6 +49,12 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 		this.id = id;
 	}
 	
+	/**
+	 * @return The id of this resource or ID_PRELIMINARY if it does not yet exist.
+	 */
+	public long getId() {
+		return id;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(java.lang.String, org.openuss.webdav.WebDAVPath)
@@ -67,9 +73,9 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	protected abstract WebDAVResource getChild(long id, String sname, WebDAVPath path);
 
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#getChildren()
+	 * @see org.openuss.webdav.SimpleWebDAVResource#getChildrenImpl()
 	 */
-	public Set<WebDAVResource> getChildren() {
+	protected Set<WebDAVResource> getChildrenImpl() throws WebDAVResourceException {
 		Map<Long, String> rawChildNames = getRawChildNames();
 		
 		if (rawChildNames == null) {
@@ -105,9 +111,7 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 				continue;
 			}
 			
-			if (childRes.isReadable()) {
-				res.add(childRes);
-			}
+			res.add(childRes);
 		}
 		
 		return res;
@@ -122,37 +126,16 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	protected abstract Map<Long,String> getRawChildNames();
 
 	/* (non-Javadoc)
-	 * 
-	 * @see org.openuss.webdav.WebDAVResource#createCollection()
-	 */
-	public WebDAVResource createCollection(String name) throws WebDAVResourceException {
-		name = sanitizeName(name);
-		
-		return super.createCollection(name);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#createFile(java.lang.String, org.openuss.webdav.IOContext)
-	 */
-	public WebDAVResource createFile(String name, IOContext ioc)
-			throws WebDAVResourceException {
-		name = sanitizeName(name);
-		
-		return super.createFile(name, ioc);
-	}
-	
-	/**
-	 * @return The id of this resource or ID_PRELIMINARY if it does not yet exist.
-	 */
-	public long getId() {
-		return id;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
 	 */
-	public boolean hasChild(String name) {
-		return getRawChildNames().containsValue(name);
+	protected boolean hasChildImpl(String name) {
+		for (String cn : getRawChildNames().values()) {
+			if (sanitizeName(cn).equals(name)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/**
@@ -249,7 +232,6 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 			return false;
 		}
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

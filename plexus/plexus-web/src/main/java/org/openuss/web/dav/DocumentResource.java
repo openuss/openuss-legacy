@@ -302,7 +302,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChildren()
 	 */
 	@Override
-	public Set<WebDAVResource> getChildren() {
+	public Set<WebDAVResource> getChildrenImpl() throws WebDAVResourceException {
 		if (!isCollection()) {
 			return null;
 		}
@@ -313,10 +313,6 @@ public class DocumentResource extends SimpleWebDAVResource {
 			WebDAVPath nextPath = path.concat(getNameByFolderEntryInfo(fei)).asResolved();
 			WebDAVResource c = new DocumentResource(getContext(), nextPath, domainObj, fei);
 			
-			if (!c.isReadable()) {
-				continue;
-			}
-			
 			res.add(c);
 		}
 		
@@ -326,7 +322,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#hasChild(java.lang.String)
 	 */
-	public boolean hasChild(String name) {
+	protected boolean hasChildImpl(String name) throws WebDAVResourceException {
 		if (!isCollection()) {
 			return false;
 		}

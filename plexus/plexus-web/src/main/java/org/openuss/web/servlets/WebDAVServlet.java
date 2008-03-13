@@ -95,7 +95,6 @@ public class WebDAVServlet extends HttpServlet {
  		}
  		
  		try	{
-
 	 		WebDAVPath parentPath;
 			WebDAVResource parentResource;
  			String method = request.getMethod();
@@ -154,10 +153,6 @@ public class WebDAVServlet extends HttpServlet {
 				answer = copy(request, true);
 				printAnswer(response, answer);
 				break;
-			case WebDAVMethods.DAV_POST:
-				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
-				printAnswer(response, answer);
-				break;
 			case WebDAVMethods.DAV_PUT:
 				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
 				parentPath = path.getParent();
@@ -195,6 +190,8 @@ public class WebDAVServlet extends HttpServlet {
 				answer = propPatch(request);
 				printAnswer(response, answer);
 				break;
+			default:
+				throw new WebDAVException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
 			}
 		} catch(WebDAVException ex){
 			logger.debug("Outputting WebDAVException", ex);
