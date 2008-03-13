@@ -21,7 +21,7 @@ public class MimeType {
 	
 	static {
 		try {
-			mimeTypes.load(MimeType.class.getResourceAsStream("../../../../resources/mimeTypes.properties"));
+			mimeTypes.load(MimeType.class.getResourceAsStream("../../../mimeTypes.properties"));
 		} catch (IOException ex) {
 			logger.error("IO exception occurred.");
 			logger.error("Exception: " + ex.getMessage());
@@ -33,17 +33,21 @@ public class MimeType {
 	 * @param name The name whose suffix is used to lookup mime type.
 	 * @return The associated mime type or the default mime type;
 	 */
-	public static String getMimeType(String name) {
+	public static String getMimeTypeByName(String name) {
+		String ext = WebDAVPathImpl.getExtension(name);
+		
+		return getMimeTypeByExt(ext);
+	}
+	
+	/**
+	 * @param ext The extension
+	 * @return The MIME type associated with the specified extension
+	 */
+	public static String getMimeTypeByExt(String ext) {
 		String mimeType = null;
-
-		if (name != null) {
-			// retrieve resource type from name
-			int position = name.lastIndexOf(".");
-
-			if (position != -1) {
-				// convert suffix of name to lower case and search for mime type
-				mimeType = mimeTypes.getProperty(name.substring(position).toLowerCase());
-			}
+		
+		if (ext != null) {
+			mimeType = mimeTypes.getProperty(ext.toLowerCase());
 		}
 
 		if (mimeType == null) {

@@ -593,7 +593,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @see org.openuss.webdav.WebDAVResource#getContentType()
 	 */
 	public String getContentType() {
-		return isCollection() ? WebDAVConstants.MIMETYPE_DIRECTORY : MimeType.getMimeType(getPath().getFileExt());
+		return isCollection() ? WebDAVConstants.MIMETYPE_DIRECTORY : MimeType.getMimeTypeByExt(getPath().getFileExt());
 	}
 
 	/* (non-Javadoc)

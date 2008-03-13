@@ -366,13 +366,39 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * Get the base name of a file without the extension.
 	 * 
 	 * @param fileName The full file name (without directory components)
-	 * @return The name without the extension. For example, an input of "test.a.txt" yields "txt". If no extension is present, "" is returned.
+	 * @return The name without the extension. For example, an input of "test.a.txt" yields "test.a".
+	 * 			If no extension is present or the input was null, the full file name is returned.
 	 */
 	public static String stripExtension(String fileName) {
+		if (fileName == null) {
+			return null;
+		}
+		
 		int dotPos = fileName.lastIndexOf(FILEEXT_SEP);
 		
 		if (dotPos < 0) {
-			return "";
+			return fileName;
+		} else {
+			return fileName.substring(0, dotPos);
+		}
+	}
+	
+	/**
+	 * Get the extension of a file nime.
+	 * 
+	 * @param fileName The full file name (without directory components)
+	 * @return The name without the extension. For example, an input of "test.a.txt" yields "txt".
+	 * 			If no extension is present or the input was null, null is returned.
+	 */
+	public static String getExtension(String fileName) {
+		if (fileName == null) {
+			return null;
+		}
+		
+		int dotPos = fileName.lastIndexOf(FILEEXT_SEP);
+		
+		if (dotPos < 0) {
+			return null;
 		} else {
 			return fileName.substring(dotPos + FILEEXT_SEP.length());
 		}
