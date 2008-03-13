@@ -26,7 +26,7 @@
 				<c:if test="#{not empty ldapDomainRegistration.allAttributeMappings}">
 					<o:block label="#{msg.ldap_domain_registration_step1_headline}" styleClass="form_box">								
 						<o:input entity="authenticationDomainInfo" property="name" maxlength="250" required="true" disabled="#{not empty authenticationDomainInfo.name}"/>				
-						<o:input entity="authenticationDomainInfo" property="changePasswordUrl" maxlength="250" required="false"
+						<o:input entity="authenticationDomainInfo" property="changePasswordUrl" maxlength="250" required="false">
 							<f:validator validatorId="changePasswordUrlValidator" />
 						</o:input>						
 						<h:outputLabel value="#{msg.ldap_authenticationdomain_attributemapping_select}" for="attribute_mapping_select" styleClass="field_label"/>
