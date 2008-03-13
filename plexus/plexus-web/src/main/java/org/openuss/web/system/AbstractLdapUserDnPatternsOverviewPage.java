@@ -16,7 +16,8 @@ import org.openuss.web.Constants;
  * 
  * Abstract class which can be used to derive backing beans for userDnPatterns
  * overview views
- * 
+ * @author Christian Grelle
+ * @author Peter Schuh
  * 
  */
 public abstract class AbstractLdapUserDnPatternsOverviewPage extends BasePage {

@@ -11,7 +11,8 @@ import org.openuss.web.Constants;
 
 /**
  * Abstract AttribtuteMapping Page
- * 
+ * @author Christian Grelle
+ * @author Peter Schuh
  */
 public abstract class AbstractLdapAttributeMappingPage extends BasePage {
 

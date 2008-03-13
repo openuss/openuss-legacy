@@ -16,7 +16,8 @@ import org.openuss.web.PageLinks;
 
 /** 
  * Backing Bean for the view secured/system/departments.xhtml
- * 
+ * @author Christian Grelle
+ * @author Peter Schuh
  * 
  *
  */
