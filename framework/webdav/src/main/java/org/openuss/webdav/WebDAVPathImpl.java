@@ -1,5 +1,6 @@
 package org.openuss.webdav;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +17,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	/**
 	 * Pattern that matches the start of an URL
 	 */
-	protected static final Pattern PATTERN_STARTURL = Pattern.compile("https?://[^/]+");
+	protected static final Pattern STARTURL_PATTERN = Pattern.compile("^http(s)?://[^/]+");
 	/**
 	 * A prefix to the already resolved path.
 	 */
@@ -56,25 +57,36 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @param prefix The prefix as determined by the environment.
 	 * @param clientInput The complete requested path as specified and encoded by the WebDAV client.
 	 * @return A WebDAVPath element representing the client request address.
-	 * @throws IllegalArgumentException If the decoded client specification does not start with prefix. 
+	 * @throws WebDAVException If the decoded client specification does not start with prefix. 
 	 */
-	public static WebDAVPathImpl parse(String prefix, String clientInput) throws IllegalArgumentException {
+	public static WebDAVPathImpl parse(String prefix, String clientInput) throws WebDAVException {
 		if (!prefix.endsWith(PATH_SEP)) {
 			prefix = prefix + PATH_SEP;
 		}
 		
 		clientInput = WebDAVURLUTF8Encoder.decode(clientInput);
 		
+		boolean alteredCorrect = true; // clientInput is correct or made so
 		if (!clientInput.startsWith(prefix)) {
 			if (prefix.equals(clientInput + PATH_SEP)) {
 				clientInput += PATH_SEP;
 			} else {
 				// Check whether the clientInput just starts with a server specification
-				
-				
-				
-				throw new IllegalArgumentException("Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
+				Matcher m = STARTURL_PATTERN.matcher(clientInput);
+				if (m.find()) {
+					clientInput = clientInput.substring(m.end());
+					
+					if (!clientInput.startsWith(prefix)) {
+						alteredCorrect = false;
+					}
+				} else {
+					alteredCorrect = false;
+				}
 			}
+		}
+		if (!alteredCorrect) {
+			throw new WebDAVException(WebDAVStatusCodes.SC_BAD_REQUEST,
+					"Client-supplied path \"" + clientInput + "\" does not start with prefix \"" + prefix + "\"");
 		}
 		
 		clientInput = clientInput.substring(prefix.length());

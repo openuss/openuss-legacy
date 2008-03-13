@@ -309,6 +309,10 @@ public class DocumentResource extends SimpleWebDAVResource {
 	 */
 	@Override
 	public Set<WebDAVResource> getChildren() {
+		if (!isCollection()) {
+			return null;
+		}
+		
 		Set<WebDAVResource> res = new HashSet<WebDAVResource>();
 		
 		for (FolderEntryInfo fei : getSubEntries()) {
