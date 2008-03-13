@@ -34,7 +34,7 @@ import org.springframework.beans.support.PropertyComparator;
 
 @Bean(name = "views$secured$papersubmission$submissionviewlecturer", scope = Scope.REQUEST)
 @View
-public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage {
+public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage { 
 	
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionViewPage.class);
 	
@@ -49,7 +49,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {		
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 13:05
 		super.prerender();
 		
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
@@ -61,7 +61,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	/** Adds additional breadcrumbs to the course-crumbs.
 	 * 
 	 */
-	private void addPageCrumbs() {
+	private void addPageCrumbs() { // NOPMD by Administrator on 13.03.08 12:57
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		
 		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, i18n("papersubmission_paperlist_header"), i18n("papersubmission_paperlist_header")));
@@ -108,7 +108,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		return selected;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private List<FolderEntryInfo> loadFileEntries() {
 		if (entries == null) {
 			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
@@ -117,7 +117,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		return entries;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	public String download() throws IOException{
 		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
@@ -174,7 +174,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		private DataPage<FolderEntryInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:01
 		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							
@@ -195,7 +195,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		 * Default property sort method
 		 * @param list List of FolderEntryInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

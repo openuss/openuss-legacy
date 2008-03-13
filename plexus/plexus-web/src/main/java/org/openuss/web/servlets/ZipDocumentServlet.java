@@ -47,6 +47,7 @@ public class ZipDocumentServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		List<FileInfo> files = (List<FileInfo>) request.getSession().getAttribute(Constants.DOCUMENTS_SELECTED_FILEENTRIES);

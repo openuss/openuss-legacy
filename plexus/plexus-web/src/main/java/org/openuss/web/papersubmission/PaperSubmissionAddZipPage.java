@@ -33,7 +33,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:56
 		super.prerender();
 		addPageCrumb();
 	}
@@ -61,7 +61,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		}
 	}	
 	
-	public String unzip() throws DocumentApplicationException{
+	public String unzip() throws DocumentApplicationException{ // NOPMD by Administrator on 13.03.08 12:56
 		LOGGER.debug("new document saved");
 		
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);

@@ -28,7 +28,7 @@ public class WikiEditLinksPage extends AbstractWikiPage {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
 		
 		final List<WikiSiteInfo> sites = wikiService.findWikiSitesByDomainObject(this.courseInfo.getId());
@@ -36,7 +36,7 @@ public class WikiEditLinksPage extends AbstractWikiPage {
 		wikiSites = new ArrayList<SelectItem>(sites.size());
 		
 		for (WikiSiteInfo site : sites) {
-			wikiSites.add(new SelectItem(site.getName(), readablePageName(site.getName())));
+			wikiSites.add(new SelectItem(site.getName(), readablePageName(site.getName()))); // NOPMD by Administrator on 13.03.08 12:58
 		}
 		
 		wikiSites.add(new SelectItem(Constants.WIKI_NEW_TAG, i18n(Constants.WIKI_EDIT_LINKS_NEWPAGE)));

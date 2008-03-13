@@ -51,8 +51,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws Exception {
+	@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 12:59
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:56
 		super.prerender();
 		
 		addPageCrumbs();
@@ -354,7 +354,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		private DataPage<ExamInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 12:59
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
@@ -370,7 +370,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		 * Default property sort method
 		 * @param list List of ExamInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 12:59
 		@Override
 		protected void sort(List<ExamInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
@@ -390,7 +390,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		private DataPage<ExamInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 12:59
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
@@ -405,7 +405,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		 * Default property sort method
 		 * @param list List of ExamInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 12:59
 		@Override
 		protected void sort(List<ExamInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

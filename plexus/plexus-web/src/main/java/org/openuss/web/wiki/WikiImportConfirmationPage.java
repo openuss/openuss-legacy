@@ -30,7 +30,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
 		
 		addBreadCrumbs();
@@ -71,7 +71,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String importWiki() {
-		final Long selectedCourseId = (Long) getSessionBean(Constants.WIKI_IMPORT_COURSE);
+		final Long selectedCourseId = (Long) getSessionBean(Constants.WIKI_IMPORT_COURSE); // NOPMD by Administrator on 13.03.08 12:58
 		final String importType = (String) getSessionBean(Constants.WIKI_IMPORT_TYPE);
 		
 		if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES.equals(importType)) {

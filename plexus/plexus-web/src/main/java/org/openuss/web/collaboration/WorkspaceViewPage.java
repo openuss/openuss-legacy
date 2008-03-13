@@ -1,13 +1,11 @@
 package org.openuss.web.collaboration;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
@@ -70,7 +68,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @throws Exception 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:55
 		super.prerender();
 		
 		if (currentFolder == null && workspaceInfo == null) {
@@ -100,9 +98,9 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		
 		for(FolderInfo folder : getCurrentPath()) {
 			if (folder.isRoot()) {
-				crumb = new BreadCrumb(workspaceInfo.getName());
+				crumb = new BreadCrumb(workspaceInfo.getName()); // NOPMD by Administrator on 13.03.08 13:03
 			} else {
-				crumb = new BreadCrumb(folder.getName(), folder.getDescription());
+				crumb = new BreadCrumb(folder.getName(), folder.getDescription()); // NOPMD by Administrator on 13.03.08 13:03
 			}
 			crumb.setLink(PageLinks.COLLABORATION_WORKSPACE);
 			crumb.addParameter("workspace",workspaceInfo.getId());
@@ -111,7 +109,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	private List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(workspaceInfo, currentFolder);
@@ -125,7 +123,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return success
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	public String download() throws IOException {
 		LOGGER.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
@@ -133,7 +131,6 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			//Storing the zip file name into the session 
 			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 			String fileName = this.workspaceInfo.getName();
-			System.out.println(fileName);
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -277,7 +274,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * 
 	 * @return List of all subfolders
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
 			//get Folder List from Document Service
@@ -286,7 +283,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					StringBuilder depth = new StringBuilder();
+					StringBuilder depth = new StringBuilder(); // NOPMD by Administrator on 13.03.08 13:03
 					//check depth
 					List path = super.documentService.getFolderPath(info);
 					for(int i = 0; i < path.size(); i++) {
@@ -294,9 +291,9 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 					}
 					//@TODO implement check wether element is root. Change name if so.
 					depth.append(info.getName() == null ? "Root" : info.getName());
-					folderList.add(new SelectItem(info, depth.toString()));
+					folderList.add(new SelectItem(info, depth.toString())); // NOPMD by Administrator on 13.03.08 13:03
 				} else {
-					SelectItem item = new SelectItem("--");
+					SelectItem item = new SelectItem("--"); // NOPMD by Administrator on 13.03.08 13:03
 					item.setDisabled(true);
 					folderList.add(item);
 				}
@@ -340,7 +337,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		 * Default property sort method
 		 * @param list List of FolderEntryInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

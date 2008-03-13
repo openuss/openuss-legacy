@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.security.Authority;
@@ -29,8 +30,7 @@ public class WorkspaceServiceImpl extends
 	private static final Logger logger = Logger.getLogger(WorkspaceServiceImpl.class);
 
 	@Override
-	protected void handleCreateWorkspace(WorkspaceInfo workspaceInfo)
-			throws Exception {
+	protected void handleCreateWorkspace(WorkspaceInfo workspaceInfo) {
 		Validate.notNull(workspaceInfo, "WorkspaceInfo cannot be null.");
 		Validate.notNull(workspaceInfo.getDomainId(), "domainId cannot be null.");
 		
@@ -50,10 +50,9 @@ public class WorkspaceServiceImpl extends
 		getSecurityService().setPermissions(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), workspaceEntity, LectureAclEntry.OGCRUD);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
-	protected List handleFindWorkspaceMembers(Long workspaceId)
-			throws Exception {
+	protected List handleFindWorkspaceMembers(Long workspaceId) { 
 		Validate.notNull(workspaceId, "workspaceId cannot be null.");
 		Workspace workspace = this.getWorkspaceDao().load(workspaceId);
 		Validate.notNull(workspace, "No workspace could be found with the workspaceId " + workspaceId);
@@ -66,22 +65,21 @@ public class WorkspaceServiceImpl extends
 		return members;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
-	protected List handleFindWorkspacesByDomain(Long domainId) throws Exception {
+	protected List handleFindWorkspacesByDomain(Long domainId) {
 		Validate.notNull(domainId, "domainId cannot be null.");
 		return this.getWorkspaceDao().findByDomainId(WorkspaceDao.TRANSFORM_WORKSPACEINFO, domainId);
 	}
 
 	@Override
-	protected WorkspaceInfo handleGetWorkspace(Long workspaceId)
-			throws Exception {
+	protected WorkspaceInfo handleGetWorkspace(Long workspaceId) {
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null!");
 		return (WorkspaceInfo)getWorkspaceDao().load(WorkspaceDao.TRANSFORM_WORKSPACEINFO, workspaceId);
 	}
 
 	@Override
-	protected void handleRemoveWorkspace(Long workspaceId) throws Exception {
+	protected void handleRemoveWorkspace(Long workspaceId) throws DocumentApplicationException {
 		Validate.notNull(workspaceId, "workspaceId cannot be null.");
 		
 		Workspace workspaceEntity = getWorkspaceDao().load(workspaceId);
@@ -94,8 +92,7 @@ public class WorkspaceServiceImpl extends
 	}
 
 	@Override
-	protected void handleUpdateWorkspace(WorkspaceInfo workspaceInfo)
-			throws Exception {
+	protected void handleUpdateWorkspace(WorkspaceInfo workspaceInfo) {
 		logger.debug("Starting method handleUpdateWorkspace");
 		Validate.notNull(workspaceInfo, "Parameter workspaceInfo must not be null.");
 		Validate.notNull(workspaceInfo.getId(), "Parameter workspaceInfo must contain a valid course id.");
@@ -106,10 +103,9 @@ public class WorkspaceServiceImpl extends
 		getWorkspaceDao().update(workspaceEntity);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
-	protected void handleUpdateWorkspaceMembers(List userIds, Long workspaceId)
-			throws Exception {
+	protected void handleUpdateWorkspaceMembers(List userIds, Long workspaceId) {
 		logger.debug("Starting method handleUpdateWorkspaceMembers");
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null.");
 		Validate.notNull(userIds, "Parameter userId must not be null.");
@@ -138,10 +134,10 @@ public class WorkspaceServiceImpl extends
 		getWorkspaceDao().update(workspace);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
 	protected List handleFindWorkspacesByDomainAndUser(Long domainId,
-			UserInfo user) throws Exception {
+			UserInfo user) {
 		Validate.notNull(domainId, "domainId cannot be null.");
 		Validate.notNull(user, "userId cannot be null.");
 		

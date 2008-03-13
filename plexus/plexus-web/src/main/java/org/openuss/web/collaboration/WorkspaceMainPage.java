@@ -52,8 +52,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws Exception {
+	@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:54
 		super.prerender();
 		
 		memberSelection.processSwitch();
@@ -106,8 +106,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	@SuppressWarnings("unchecked")
-	public String editWorkspace() throws LectureException {
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
+	public String editWorkspace() throws LectureException { // NOPMD by Administrator on 13.03.08 12:55
 		workspaceInfo = currentWorkspace();
 		if (workspaceInfo == null) {
 			return Constants.FAILURE;
@@ -125,7 +125,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 				// get mapped users
 				List<UserInfo> members = loadCourseMembers();
 				
-				List<Long> wsMemberIds = getWorkspaceMemberIds();
+				List<Long> wsMemberIds = getWorkspaceMemberIds(); // NOPMD by Administrator on 13.03.08 12:55
 				
 				Map<UserInfo, Boolean> map = new HashMap<UserInfo, Boolean>(members.size());
 				for (UserInfo member : members) {
@@ -144,8 +144,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * 
 	 * @return outcome
 	 */
-	@SuppressWarnings("unchecked")
-	public String saveWorkspace() throws DesktopException, LectureException {
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
+	public String saveWorkspace() throws DesktopException, LectureException { // NOPMD by Administrator on 13.03.08 12:55
 		LOGGER.debug("Starting method saveWorkspace()");
 		boolean create;
 		if (workspaceInfo.getId() == null) {
@@ -278,7 +278,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	private List<UserInfo> loadCourseMembers() {
 		// FIXME: extremely dirty!!! There must be an easier way
 		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
@@ -292,7 +292,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		return courseMembers;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	private List<Long> getWorkspaceMemberIds() {
 		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
 		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
@@ -311,7 +311,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		private DataPage<WorkspaceInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), 
@@ -330,7 +330,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		private DataPage<WorkspaceInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
@@ -349,7 +349,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		private DataPage<UserInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" })
+		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<UserInfo> courseMembers = loadCourseMembers();

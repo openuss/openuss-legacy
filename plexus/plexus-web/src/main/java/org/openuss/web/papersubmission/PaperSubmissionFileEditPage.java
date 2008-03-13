@@ -3,7 +3,6 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.component.UIInput;
 
@@ -40,7 +39,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	private UIInput fileUpload;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 13:00
 		super.prerender();
 		
 		if (!isPostBack()) {
@@ -84,19 +83,19 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
-	public String save() throws DocumentApplicationException, IOException{
+	public String save() throws DocumentApplicationException, IOException{ // NOPMD by Administrator on 13.03.08 12:56
 		LOGGER.debug("saving file");
 		paperSubmissionInfo = loadPaperSubmission();
 		if (isNewFile()) {
 			if (!saveNewFile()) {
-				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
+				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required")); // NOPMD by Administrator on 13.03.08 13:01
 				return Constants.FAILURE;
 			}
 		} else if (isFileExistingInNewSubmission()) {
 			selectedFile.setId(null);
 			selectedFile.setModified(paperSubmissionInfo.getDeliverDate());
 			if(!saveNewFile()){
-				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
+				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required")); // NOPMD by Administrator on 13.03.08 13:01
 				return Constants.FAILURE;
 			}
 			
@@ -123,11 +122,8 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	
 	private boolean isFileExistingInNewSubmission(){
 		DefaultDomainObject domainObject = new DefaultDomainObject(paperSubmissionInfo.getId());
-		if(isExistingFile() && paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME) 
-				&& !getDocumentService().getFileEntries(domainObject).contains(selectedFile))
-			return true;
-		else
-			return false;
+		return (isExistingFile() && paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME) 
+				&& !getDocumentService().getFileEntries(domainObject).contains(selectedFile));
 	}
 	
 	

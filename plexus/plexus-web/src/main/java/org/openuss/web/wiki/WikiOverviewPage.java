@@ -24,7 +24,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:59
 		super.prerender();
 		
 		addBreadCrumbs();

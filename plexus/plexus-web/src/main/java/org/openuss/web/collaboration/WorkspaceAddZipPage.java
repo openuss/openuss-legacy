@@ -38,7 +38,7 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:53
 		super.prerender();
 		if (file != null && file.getCreated() == null) {
 			LOGGER.debug("reseting date");

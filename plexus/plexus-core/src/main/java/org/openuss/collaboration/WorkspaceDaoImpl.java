@@ -22,16 +22,6 @@ public class WorkspaceDaoImpl
         super.toWorkspaceInfo(sourceEntity, targetVO);
     }
 
-
-    /**
-     * @see org.openuss.collaboration.WorkspaceDao#toWorkspaceInfo(org.openuss.collaboration.Workspace)
-     */
-    public org.openuss.collaboration.WorkspaceInfo toWorkspaceInfo(final org.openuss.collaboration.Workspace entity)
-    {
-        return super.toWorkspaceInfo(entity);
-    }
-
-
     /**
      * Retrieves the entity object that is associated with the specified value object
      * from the object store. If no such entity object exists in the object store,
@@ -42,7 +32,7 @@ public class WorkspaceDaoImpl
      */
     private org.openuss.collaboration.Workspace loadWorkspaceFromWorkspaceInfo(org.openuss.collaboration.WorkspaceInfo workspaceInfo)
     {
-        Workspace workspace = null;
+        Workspace workspace;
         if (workspaceInfo.getId() != null) {
         	workspace = this.load(workspaceInfo.getId());
         } else {

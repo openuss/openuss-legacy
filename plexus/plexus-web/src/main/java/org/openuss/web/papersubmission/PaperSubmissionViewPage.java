@@ -58,7 +58,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:57
 		super.prerender();
 		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
 			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
@@ -70,7 +70,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
 		final List<PaperSubmissionInfo> paperInfos;
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
@@ -129,7 +129,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return selected;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private List<FolderEntryInfo> loadFileEntries() {
 		if (entries == null) {
 			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
@@ -138,7 +138,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return entries;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	public String download () throws IOException{
 		LOGGER.debug("downloading documents");
 		List<FolderEntryInfo> files = documentService.allFileEntries(selectedEntries());
@@ -154,7 +154,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			getFacesContext().responseComplete();
 			paperSelection.getMap().clear();
 		} else {
-			addError(i18n("messages_error_no_documents_selected"));
+			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:02
 		}
 		return Constants.SUCCESS;
 	}
@@ -168,7 +168,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	public String downloadAllSubmissions () throws IOException{
 		LOGGER.debug("Downloading all Submissions.");
 		
@@ -178,7 +178,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	public String downloadInTimeSubmissions () throws IOException{
 		LOGGER.debug("Downloading all in time Submissions.");
 		
@@ -188,12 +188,12 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private void processDownloadSubmissions(List<PaperSubmissionInfo> submissions) throws IOException {
 		List<FileInfo> files = paperSubmissionService.getPaperSubmissionFiles(submissions);
 		for(FileInfo file : files){
 			if(examInfo.getDeadline().before(file.getModified())){
-				StringBuilder path = new StringBuilder(file.getPath());
+				StringBuilder path = new StringBuilder(file.getPath()); // NOPMD by Administrator on 13.03.08 12:57
 				path.append(i18n("papersubmission_zip_foldername_notintime"));
 				file.setPath(path.toString());
 				path.append("/").append(file.getFileName());
@@ -211,7 +211,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			getFacesContext().responseComplete();
 			paperSelection.getMap().clear();
 		} else {
-			addError(i18n("messages_error_no_documents_selected"));
+			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:01
 		}
 	}
 	
@@ -226,7 +226,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return selected;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private List<PaperSubmissionInfo> loadSubmissions(){
 		if(submissions == null && examInfo != null && examInfo.getId() != null){
 			submissions = paperSubmissionService.findPaperSubmissionsByExam(examInfo.getId());
@@ -244,7 +244,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 
 	public String delete() {
 		if ((paperSubmissionInfo == null) || (paperSubmissionInfo.getId() == null)) {
-			addError(i18n("messages_error_no_documents_selected"));
+			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:01
 			return Constants.SUCCESS;
 		}
 		
@@ -255,7 +255,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			paperSelection.getMap().clear();
 			return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
 		} else {
-			addError(i18n("messages_error_no_documents_selected"));
+			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:01
 		}
 		return Constants.SUCCESS;
 	}
@@ -349,7 +349,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		private DataPage<PaperSubmissionInfo> page;
 
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 		public DataPage<PaperSubmissionInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				
@@ -365,7 +365,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		 * Default property sort method
 		 * @param list List of PaperSubmissionInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 		@Override
 		protected void sort(List<PaperSubmissionInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
@@ -421,7 +421,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		 * Default property sort method
 		 * @param list List of FolderEntryInfo objects.
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();

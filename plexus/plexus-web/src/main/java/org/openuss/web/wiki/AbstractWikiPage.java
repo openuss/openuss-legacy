@@ -38,7 +38,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	private final DateFormat dateFormat = new SimpleDateFormat();
 	
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		if (!checkSession()) {
 			return;
 		}

@@ -42,7 +42,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	protected FolderInfo currentFolder;
 	
 	@Override
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:53
 		if (courseInfo == null || courseInfo.getId() == null) {
 			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
