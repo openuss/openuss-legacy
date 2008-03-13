@@ -47,7 +47,7 @@
 					<h:commandButton action="#{courseAllocationController.addGroup}" value="#{msg.seminarpool_add_course_groups_time_add}" styleClass="button_continue"/>
 			   	</o:block>
 			   	<o:block>
-			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel"/>
+			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true"/>
 					<h:commandButton action="#{courseAllocationController.addSeminar}" value="#{msg.seminarpool_add_course_add_seminar}" styleClass="button_continue" immediate="true"/>
 		  		</o:block>
 				

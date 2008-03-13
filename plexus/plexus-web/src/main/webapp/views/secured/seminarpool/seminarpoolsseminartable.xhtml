@@ -54,8 +54,8 @@
 						bean = "#{views$secured$seminarpool$seminarpoolseminartable}"
 						action = "activateSeminar"
 						styleClass="icon_public"
-						label="#{msg.seminar_command_disable}"
-						title="#{msg.seminar_command_disable_hint}"
+						label="#{msg.seminar_command_enable}"
+						title="#{msg.seminar_command_enable_hint}"
 						rendered="#{not bean.accepted}">
 				</plexus:command>
 			 </s:acl>
@@ -63,12 +63,10 @@
 						bean = "#{views$secured$seminarpool$seminarpoolseminartable}"
 						action = "deactivateSeminar"
 						styleClass="icon_hide"
-						label="#{msg.seminar_command_enable}"
-						title="#{msg.seminar_command_enable_hint}"
+						label="#{msg.seminar_command_disable}"
+						title="#{msg.seminar_command_disable_hint}"
 						rendered="#{bean.accepted==true}">
 				</plexus:command>
-		
-
 				
 			<plexus:command   
 				bean="#{views$secured$seminarpool$seminarpoolseminartable}"
