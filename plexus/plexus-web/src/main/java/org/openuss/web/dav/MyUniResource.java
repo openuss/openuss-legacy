@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
@@ -32,7 +31,6 @@ import org.openuss.webdav.WebDAVStatusCodes;
  * Resource implementing a WebDAV view of MyUni.
  */
 public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
-	private Logger logger = Logger.getLogger(MyUniResource.class);
 	protected SecurityService securityService;
 	protected DesktopService2 desktopService;
 	protected DepartmentService departmentService;
@@ -141,8 +139,6 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 			String name = CourseResource.getNameByData(info);
 			childNames.put(info.getId(), name);
 		}
-		
-		logger.error(childNames.size() + " entries");
 		
 		return childNames;
 	}
