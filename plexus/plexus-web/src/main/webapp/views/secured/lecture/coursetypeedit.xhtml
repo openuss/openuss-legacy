@@ -12,16 +12,16 @@
       
 	<h:form id="courseTypeForm">
 		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
-			<o:input id="name" forceId="true" entity="courseTypeInfo" property="name" required="true" maxlength="100" />
-			<o:input id="shortcut" forceId="true" entity="courseTypeInfo" property="shortcut" required="true" maxlength="30">
+			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100" />
+			<o:input entity="courseTypeInfo" property="shortcut" required="true" maxlength="30">
 				<f:validator validatorId="filenameValidator"/>			
 			</o:input>
-			<o:input id="description" forceId="true" entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
+			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea"/>
 			<br />
 			<h:outputText value="#{msg.coursetype_instantiate_info}" styleClass="content_font_normal"/>
    			<h:outputLabel value="#{msg.institute_period_selection}" for="periodSelection" styleClass="field_label"/>
-			<t:selectOneMenu 
-				id="periodSelection" forceId="true"
+			<h:selectOneMenu 
+				id="periodSelection" 
 				layout="pageDirection"  
 				value="#{periodInfo.id}"
 				valueChangeListener="#{views$secured$lecture$institutecoursetypes.processInstantiateBooleanChanged}"
@@ -30,18 +30,18 @@
 				immediate="true" 
 				styleClass="pulldown">
 			    <f:selectItems value="#{views$secured$lecture$institutecoursetypes.allPeriodsOfInstitute}"/>
-			</t:selectOneMenu>
+			</h:selectOneMenu>
 		</o:block>
 		<o:block>
 			<h:outputText value="#{msg.coursetype_save_info}" styleClass="content_font_normal" />
 			<br />
 			<c:if test="#{!views$secured$lecture$institutecoursetypes.instantiate}">
-				<t:commandButton id="saveCourseTypeAndGoToSettings" forceId="true" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big button_disabled"  disabled="true"/>
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big button_disabled"  disabled="true"/>
 			</c:if>
 			<c:if test="#{views$secured$lecture$institutecoursetypes.instantiate}">
-				<t:commandButton id="saveCourseTypeAndGoToSettings" forceId="true" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big" />
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big" />
 			</c:if>
-			<t:commandButton id="saveCourseType" forceId="true" action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save_only}" styleClass="button_save" />
+			<h:commandButton id="saveCourseType" action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save_only}" styleClass="button_save" />
 		</o:block>
 	</h:form>
 </ui:composition>

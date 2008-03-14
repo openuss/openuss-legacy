@@ -4,7 +4,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,9 +43,8 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	private Boolean editing = false;
 
 	/** period selection and instantiation of a course type */
-	private Boolean instantiate = false;
+	private Boolean instantiate = true;
 	
-	/** selectOneListbox component for adding the error message */
 	private UIComponent component;
 	
 	/** course type info */
@@ -69,22 +67,6 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		breadcrumbs.addCrumb(crumb);
 	}
-	
-	private List<SelectItem> institutePeriodItemsWithChooseText;
-	
-	/**
-	 * Gets all periods of the institute.
-	 * Overwrites the super one in order to add the selection text.
-	 * 
-	 * @return outcome
-	 */
-	@SuppressWarnings( { "unchecked" })
-	public List<SelectItem> getAllPeriodsOfInstitute() {
-		institutePeriodItemsWithChooseText = new ArrayList<SelectItem>();
-		institutePeriodItemsWithChooseText.add(new SelectItem(Constants.PERIODS_CHOOSE_PERIOD, i18n(Constants.PERIODS_CHOOSE_PERIOD_TEXT)));
-		institutePeriodItemsWithChooseText.addAll(super.getAllPeriodsOfInstitute());
-		return institutePeriodItemsWithChooseText;
-	}
 
 	/**
 	 * Creates a new CourseTypeInfo object and sets it into session scope
@@ -97,7 +79,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.SUCCESS;
 	}
-	
+
 	/**
 	 * Set selected courseType into session scope
 	 * 
@@ -124,15 +106,9 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	
 	public void processInstantiateBooleanChanged(ValueChangeEvent event) {
 		logger.debug("InstantiateBooleanChanged() processed");
-		Long periodId = (Long) event.getNewValue();
-		// logger.debug(periodId == Constants.PERIODS_ACTIVE); output: false (even if periodId and Constants.PERIODS_ACTIVE are both -117.) 
-		logger.debug(periodId.compareTo(Constants.PERIODS_CHOOSE_PERIOD));
-		if((periodId.compareTo(Constants.PERIODS_CHOOSE_PERIOD)== 0) || (periodId.compareTo(Constants.PERIODS_ACTIVE) == 0) || (periodId.compareTo(Constants.PERIODS_PASSIVE) == 0)) {
-			this.setInstantiate(false);
-		} else {
-			this.setInstantiate(true);
-			//setSessionBean(Constants.PERIOD_INFO, periodInfo);
-		}
+		//final Long periodId = (Long) event.getNewValue();
+		//periodInfo = universityService.findPeriod(periodId);
+		//setSessionBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
 	/**
@@ -143,17 +119,21 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	 */
 	public String saveCourseType() throws DesktopException, LectureException {
 		logger.debug("Starting method saveCourseType()");
-		if(instantiate && (periodInfo.getId().longValue() == Constants.PERIODS_ACTIVE || periodInfo.getId().longValue() == Constants.PERIODS_PASSIVE)) {
-			((UIInput) component).setValid(false);
-			addError(component.getClientId(FacesContext.getCurrentInstance()), i18n("error_choose_a_valid_period"),null);
+		if(instantiate && ((periodInfo.getId().longValue() == Constants.PERIODS_ACTIVE) || (periodInfo.getId().longValue() == Constants.PERIODS_PASSIVE))) {
+			//((UIInput) component).setValid(false);
+			//addError(component.getClientId(FacesContext.getCurrentInstance()), i18n("error_choose_a_valid_period"),null);
+			//addError("periodSelection", i18n("error_choose_a_valid_period"),null);
+			addError(i18n("error_choose_a_valid_period"),null);
 			return Constants.FAILURE;
 		} else {
 			if (courseTypeInfo.getId() == null) {
+				
 				courseTypeInfo.setInstituteId(instituteInfo.getId());
 				courseTypeService.create(courseTypeInfo);
-				if(instantiate) {
+				
+				if(instantiate)
 					addCourse();
-				}
+				
 				addMessage(i18n("institute_message_add_coursetype_succeed"));
 				courseTypeInfo = null;
 				editing = false;
@@ -170,14 +150,9 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	}
 	
 	public String saveCourseTypeAndGoToSettings() throws DesktopException, LectureException {
-		if(instantiate && ((periodInfo.getId().longValue() == Constants.PERIODS_ACTIVE) || (periodInfo.getId().longValue() == Constants.PERIODS_PASSIVE))) {
-			((UIInput) component).setValid(false);
-			addError(component.getClientId(FacesContext.getCurrentInstance()), i18n("error_choose_a_valid_period"),null);
-			return Constants.FAILURE;
-		} else {
-			this.saveCourseType();
-			return Constants.COURSE_OPTIONS_PAGE;
-		}
+		instantiate = true;
+		this.saveCourseType();
+		return Constants.COURSE_OPTIONS_PAGE;
 	}
 	
 	public String addCourse() throws DesktopException {
