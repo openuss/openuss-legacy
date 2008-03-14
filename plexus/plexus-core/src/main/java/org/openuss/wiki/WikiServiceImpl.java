@@ -405,10 +405,10 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		availableCourses.remove(importCourse);
 		
 		if (userIsInstituteMember(institute, user)) {
-			return availableCourses;
+			return removeNoWiki(availableCourses);
 		}
 		
-		return findAssistantCourses(availableCourses, user);
+		return removeNoWiki(findAssistantCourses(availableCourses, user));
 	}
 	
 	/**
@@ -448,6 +448,24 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		}
 		
 		return assistantCourses;
+	}
+	
+	/**
+	 * Revoves all Courses that dont have a wiki
+	 * @param availableCourses List of courses to check
+	 * @return List of courses that have a wiki
+	 */
+	private List<CourseInfo> removeNoWiki(List<CourseInfo> availableCourses){
+		final List<CourseInfo> coursesWithWiki = new LinkedList<CourseInfo>();
+		
+		for (CourseInfo availableCourse : availableCourses) {
+			WikiSiteContentInfo version = this.findWikiSiteContentByDomainObjectAndName(availableCourse.getId(), "index");
+			if(version != null){
+				coursesWithWiki.add(availableCourse);
+			}
+		}
+		
+		return coursesWithWiki;
 	}
 	
 	/**
