@@ -30,62 +30,62 @@
         
         <ui:define name="content">
     
-				<s:authorize ifAllGranted="ROLE_USER">
-					<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
-						<!-- check if access type is AccessType.CLOSED -->
-						<c:if test="#{courseInfo.accessType.value == 2}">
+			<s:authorize ifAllGranted="ROLE_USER">
+				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
+					<!-- check if access type is AccessType.CLOSED -->
+					<c:if test="#{courseInfo.accessType.value == 2}">
+						<o:block label="#{msg.course_main_access}" styleClass="status_box">
+							<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
+						</o:block>
+					</c:if>
+				
+					<!-- check if access type is AccessType.PASSWORD -->
+					<c:if test="#{courseInfo.accessType.value == 3}">
+						<h:form id="course_main_apply_password_form">
+							<o:block label="#{msg.course_main_access}" styleClass="form_box">
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.course_main_access_passtext}"/>
+								</p> 
+								<h:outputLabel for="course_password"
+									value="#{msg.course_main_access_password}"
+									styleClass="field_label" />
+								<h:inputSecret id="course_password"
+									value="#{views$secured$course$main.password}"
+									styleClass="field" validator="#{views$secured$course$main.validatePassword}" required="true">
+								</h:inputSecret> 
+								<h:message for="course_password" styleClass="field_error" showDetail="true" showSummary="false"/>
+							</o:block>
+			
+							<o:block>
+								<h:commandButton action="#{views$secured$course$main.applyWithPassword}"
+									value ="#{msg['course_main_access']}"
+									title="#{msg['course_main_access']}" styleClass="button" />
+							</o:block>
+						</h:form>
+					</c:if>
+		
+					<!-- check if access type is AccessType.APPLICATION -->
+					<c:if test="#{courseInfo.accessType.value == 4}">
+						<c:if test="#{views$secured$course$main.aspirant}">
 							<o:block label="#{msg.course_main_access}" styleClass="status_box">
-								<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
+								<h:outputText value="#{msg.course_main_access_application_running }" styleClass="content_font_normal"/>
 							</o:block>
 						</c:if>
-					
-						<!-- check if access type is AccessType.PASSWORD -->
-						<c:if test="#{courseInfo.accessType.value == 3}">
-							<h:form id="course_main_apply_password_form">
-								<o:block label="#{msg.course_main_access}" styleClass="form_box">
-									<p class="content_font_normal">
-										<h:outputText value="#{msg.course_main_access_passtext}"/>
-									</p> 
-									<h:outputLabel for="course_password"
-										value="#{msg.course_main_access_password}"
-										styleClass="field_label" />
-									<h:inputSecret id="course_password"
-										value="#{views$secured$course$main.password}"
-										styleClass="field" validator="#{views$secured$course$main.validatePassword}" required="true">
-									</h:inputSecret> 
-									<h:message for="course_password" styleClass="field_error" showDetail="true" showSummary="false"/>
+						<c:if test="#{!views$secured$course$main.aspirant}">
+							<h:form id="course_main_apply_form">
+								<o:block label="#{msg.course_main_access}" styleClass="status_box">
+									<h:outputText value="#{msg.course_main_access_applytext}" styleClass="content_font_normal"/>
 								</o:block>
-			
 								<o:block>
-									<h:commandButton action="#{views$secured$course$main.applyWithPassword}"
-										value ="#{msg['course_main_access']}"
-										title="#{msg['course_main_access']}" styleClass="button" />
+									<h:commandButton action="#{views$secured$course$main.apply}"
+										value="#{msg['course_main_access_applybutton']}"
+										title="#{msg['course_main_access_applybutton']}"
+										styleClass="button" />
 								</o:block>
 							</h:form>
 						</c:if>
-		
-						<!-- check if access type is AccessType.APPLICATION -->
-						<c:if test="#{courseInfo.accessType.value == 4}">
-							<c:if test="#{views$secured$course$main.aspirant}">
-								<o:block label="#{msg.course_main_access}" styleClass="status_box">
-									<h:outputText value="#{msg.course_main_access_application_running }" styleClass="content_font_normal"/>
-								</o:block>
-							</c:if>
-							<c:if test="#{!views$secured$course$main.aspirant}">
-								<h:form id="course_main_apply_form">
-									<o:block label="#{msg.course_main_access}" styleClass="status_box">
-										<h:outputText value="#{msg.course_main_access_applytext}" styleClass="content_font_normal"/>
-									</o:block>
-									<o:block>
-										<h:commandButton action="#{views$secured$course$main.apply}"
-											value="#{msg['course_main_access_applybutton']}"
-											title="#{msg['course_main_access_applybutton']}"
-											styleClass="button" />
-									</o:block>
-								</h:form>
-							</c:if>
-						</c:if> 
-					</s:acl>
+					</c:if> 
+				</s:acl>
 			</s:authorize>
         
             <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
@@ -106,7 +106,10 @@
 									value="#{sessionScope.examInfo.attachments}" >
 									<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
 										<f:param value="#{attachment.id}" name="fileid" />
-										<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+										<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+										<h:graphicImage value="/images/filetypes/default.gif" 
+							                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
 								  		#{attachment.fileName} 
 								  	</o:link> 
 									<br/>	
@@ -114,180 +117,8 @@
 							</div>
 						</o:block>	
 					</f:subview>
-					
-	                
-	                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}"> 
-	                    <!-- Assitant-view -->
-		                <plexus:dataTable   
-					        id="submissions" 
-					        label="#{msg['papersubmission_submissionstable_header']}" 
-					        value="views$secured$papersubmission$submissionview.dataSubmissions" 
-					        columnClasses="col_min_center, col_min_center, col_max_center, col_min_left"
-					        var="bean" 
-					        rows="7">
-					        
-					        <t:column>
-					            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
-					        </t:column>
-					        
-					        <plexus:column header="#{msg.documents_main_column_type}"> 
-								<h:graphicImage value="/images/filetypes/folder.gif" />
-							</plexus:column>
-					   
-					        <t:column>
-					        	<plexus:commandSortHeader columnName="displayName"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
-					            <h:commandLink action="#{views$secured$papersubmission$submissionview.selectSubmission}" styleClass="command">
-										<h:outputText value="#{bean.displayName}"/>
-								</h:commandLink>
-					            
-					        </t:column>
-					        
-					       
-					        <t:column>
-					        	<plexus:commandSortHeader columnName="submissionStatus">#{msg.papersubmission_colheader_status}</plexus:commandSortHeader> 
-					            <h:graphicImage value="/images/papersubmission/status#{bean.submissionStatus}.png"/>
-					            <h:outputText value="&#160;#{msg.papersubmission_submission_status_ok}" rendered="#{bean.submissionStatus.value == 1}"/>
-								<h:outputText value="&#160;#{msg.papersubmission_submission_status_late}" rendered="#{bean.submissionStatus. value == 2}"/>
-								<h:outputText value="&#160;#{msg.papersubmission_submission_status_missing}" rendered="#{bean.submissionStatus.value == 3}"/>
-					        </t:column>
-					        
-					    			      
-					        
-					    </plexus:dataTable>
-					
-						<o:block>
-		                    <h:commandButton 
-		                        id="downloadFile"
-		                        action="#{views$secured$papersubmission$submissionview.downloadSubmission}" 
-		                        value="#{msg.papersubmission_command_download}" 
-		                        title="#{msg.papersubmission_command_download_hint}"
-		                        styleClass="button_big"/> 
-		                    <h:commandButton 
-		                        id="downloadAllFiles"
-		                        action="#{views$secured$papersubmission$submissionview.downloadAllSubmissions}" 
-		                        value="#{msg.papersubmission_command_download_all}" 
-		                        title="#{msg.papersubmission_command_download_all_hint}"
-		                        styleClass="button_big"/>
-		                    <h:commandButton 
-		                        id="downloadInTimeFiles"
-		                        action="#{views$secured$papersubmission$submissionview.downloadInTimeSubmissions}" 
-		                        value="#{msg.papersubmission_command_download_in_time}" 
-		                        title="#{msg.papersubmission_command_download_in_time_hint}"
-		                        styleClass="button_big"/>
-		                </o:block>
-	                   
-	                </s:acl>
-	                
-	                <s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
-		                <!-- Student-view -->
-		                <plexus:dataTable   
-		                    id="submissionfiles" 
-		                    label="#{msg['papersubmission_submissionfilestable_header']}" 
-		                    value="views$secured$papersubmission$submissionview.dataSubmissionFiles" 
-		                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date, col_commands"
-		                    var="bean" 
-		                    rows="7">  
-		                    
-		                    <t:column>
-					            <f:facet name="header">
-					                <h:selectBooleanCheckbox 
-					                    immediate="true" 
-					                    onchange="this.form.submit();" 
-					                    onclick="this.form.submit();" 
-					                    value="#{papersubmission_submission_selection.state}" 
-					                    valueChangeListener="#{papersubmission_submission_selection.switchSelection}"/>
-					            </f:facet>
-					            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/> 
-					        </t:column> 
-					        
-		                    <t:column> 
-					            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
-					            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
-								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
-								<h:graphicImage value="/images/filetypes/default.gif" 
-					                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
-					        </t:column>
-		               
-		                    <t:column>
-		                        <plexus:commandSortHeader columnName="name">#{msg.documents_main_column_name}</plexus:commandSortHeader> 
-		                              				
-	            				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
-									<f:param value="#{bean.id}" name="fileid" />
-									<h:outputText value="#{bean.name}"/>
-								</o:link>
-		                    </t:column>
-		                    
-		                    
-		                    
-		                    <t:column>
-		                        <plexus:commandSortHeader columnName="fileSize">#{msg.documents_main_column_size}</plexus:commandSortHeader> 
-		                        <h:outputText value="#{bean.sizeAsString}"/>
-		                    </t:column>
-		                    
-		                    <t:column>
-		                        <plexus:commandSortHeader columnName="created">#{msg.documents_main_column_create}</plexus:commandSortHeader> 
-		                        <h:outputText value="#{bean.created}">
-		                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
-		                        </h:outputText>
-		                    </t:column>
-		                    
-		                    <t:column>
-		                        <plexus:commandSortHeader columnName="modified">#{msg.documents_main_column_change}</plexus:commandSortHeader> 
-		                        <h:outputText value="#{bean.modified}">
-		                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
-		                        </h:outputText>
-		                    </t:column>
-		                    
-							<plexus:column header="#{msg.documents_main_column_actions}">
-								<plexus:command 
-								    bean="#{views$secured$papersubmission$submissionview}"
-									action="editFolderEntry" 
-									label="#{msg.documents_main_button_change}" 
-									title="#{msg.documents_main_button_change}"
-									styleClass="icon_edit"/>
-								<plexus:command 
-								    bean="#{views$secured$papersubmission$submissionview}"
-									action="selectFileAndConfirmRemove" 
-									label="#{msg.documents_main_button_change}" 
-									title="#{msg.documents_main_button_change}"
-									styleClass="icon_remove"/>
-							</plexus:column>
-						</plexus:dataTable> 
-					                
-		                <o:block>
-		                    
-							<h:commandButton 
-	                        id="addFile"
-	                        action="#{views$secured$papersubmission$submissionview.addFile}" 
-	                        value="#{msg.documents_main_button_newfile}" 
-	                        title="#{msg.papersubmission_command_addfile_hint}"
-	                        styleClass="button_add"/> 
-							
-							<h:commandButton 
-						    id="addZip"
-							action="papersubmission_add_zip" 
-							value="#{msg.documents_main_button_zip}" 
-							title="#{msg.documents_main_button_zip}"
-							styleClass="button_add"/>
-							
-		                    <h:commandButton 
-						    id="download"
-							action="#{views$secured$papersubmission$submissionview.download}" 
-							value="#{msg.documents_main_button_download}" 
-							title="#{msg.documents_main_button_download}"
-							styleClass="button_add"/>
-		                        
-		                    <h:commandButton 
-						    id="delete"
-							action="#{views$secured$papersubmission$submissionview.delete}" 
-							value="#{msg.documents_main_button_delete}" 
-							styleClass="button_add"/>
-		                        
-		                    
-		                </o:block>   
-		                
-		            </s:acl>
-	            </h:form>
+					<ui:include src="/views/secured/papersubmission/submissionviewtable.xhtml" />
+				</h:form>
             </s:acl>	        
         </ui:define>
     </ui:composition>
