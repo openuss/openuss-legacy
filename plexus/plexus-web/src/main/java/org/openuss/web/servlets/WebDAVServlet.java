@@ -62,9 +62,8 @@ public class WebDAVServlet extends HttpServlet {
 	private static final String INIT_PARAMETER_KILLBIT = "killbit";
 	private static final String INIT_PARAMETER_WRITE_LIMIT = "write-limit";
 	private static final String INIT_PARAMETER_READ_LIMIT = "read-limit";
+	private static final String INIT_PARAMETER_EVADE_UMLAUTS = "evade-umlauts";
 	
-	// value constants
-	private static final String KILLBIT_ENABLED = "on";
 	/**
 	 * Do not limit the particular resource
 	 */
@@ -516,7 +515,7 @@ public class WebDAVServlet extends HttpServlet {
 		super.init();
 		
 		// Kill bit to disable WebDAV
-		killBit = KILLBIT_ENABLED.equals(getInitParameter(INIT_PARAMETER_KILLBIT));
+		killBit = Boolean.parseBoolean(getInitParameter(INIT_PARAMETER_KILLBIT));
 		if (killBit) {
 			logger.warn("WebDAV killbit activated");
 		}
@@ -539,7 +538,9 @@ public class WebDAVServlet extends HttpServlet {
 		
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		
-		davContext = new OpenUSSWebDAVContext(wac, maxFileSize);
+		boolean evadeUmlautsFlag = Boolean.parseBoolean(getInitParameter(INIT_PARAMETER_EVADE_UMLAUTS));
+		
+		davContext = new OpenUSSWebDAVContext(wac, maxFileSize, evadeUmlautsFlag);
 		
 		logger.info("ResourcePathPrefix: " + resourcePathPrefix);   
         logger.info(" init() done.");

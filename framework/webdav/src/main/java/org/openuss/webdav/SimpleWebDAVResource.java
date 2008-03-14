@@ -83,7 +83,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		return resolvePathImpl(path);
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#resolvePathElem(java.lang.String)
 	 */
@@ -337,8 +336,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		return pr;
 	}
-
-
+	
 	/**
 	 * @see WebDAVResource#resolvePath(WebDAVPath)
 	 */
@@ -359,7 +357,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 				throw new WebDAVPathException(WebDAVStatusCodes.SC_NOT_FOUND, nextPath);				
 			} else {
 				// Intermediary resource not found
-				throw new WebDAVPathException(WebDAVStatusCodes.SC_CONFLICT, nextPath);
+				throw new WebDAVPathException(WebDAVStatusCodes.SC_CONFLICT, nextPath.asFinalPath());
 			}
 		}
 		
@@ -581,11 +579,16 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	/**
 	 * Perform a transformation on a name that is going to be created/checked.
 	 * 
-	 * @param input The input
+	 * @param origName The original name supplied by the backend
 	 * @return The sanitized version
 	 */
-	protected String sanitizeName(String input) {
-		return input;
+	protected String sanitizeName(String origName) {
+		if (origName.equals("")) {
+			return "_";
+		}
+		origName = getContext().evadeUmlauts(origName);
+		
+		return origName;
 	}
 
 

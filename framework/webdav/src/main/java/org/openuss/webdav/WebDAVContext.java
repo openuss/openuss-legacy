@@ -27,6 +27,18 @@ public interface WebDAVContext {
 	 * @return The locale used by the current user.
 	 */
 	public Locale getCurLocale();
+
+	/**
+	 * @return Whether umlauts should be converted to surrogate characters if possible
+	 */
+	public boolean shouldEvadeUmlauts();
+	
+	/**
+	 * @param in The yet-unescaped String
+	 * @return A possibly cleared string that uses surrogate character sequences for umlauts.
+	 * 			in if !shouldEvadeUmlauts().
+	 */
+	public String evadeUmlauts(String in);
 	
 	/**
 	 * Checks whether an upload of a specified size is allowed.
@@ -35,6 +47,7 @@ public interface WebDAVContext {
 	 * @return true iff uploading a file of size size is allowed.
 	 */
 	public boolean checkMaxFileSize(long size);
+	
 	/**
 	 * Simple internationalization function
 	 * 

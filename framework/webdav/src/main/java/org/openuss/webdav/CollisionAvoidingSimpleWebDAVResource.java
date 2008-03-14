@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  * Furthermore, it reformats names so that they do not lead to special characters in common clients.  
  */
 public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAVResource {
-	private static Logger logger = Logger.getLogger(CollisionAvoidingSimpleWebDAVResource.class);
+	private static final Logger logger = Logger.getLogger(CollisionAvoidingSimpleWebDAVResource.class);
 	/**
 	 * Unspecified id (Wasn't contained in the original query).
 	 */
@@ -197,9 +197,7 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	 * @return The sanitized name or a string equal to origName if no sanitization was necessary.
 	 */
 	protected String sanitizeName(String origName) { 
-		if (origName.equals("")) {
-			return INVALID_CHAR_REPLACEMENT;
-		}
+		origName = super.sanitizeName(origName);
 		
 		origName = origName.replaceAll(INVALID_CHAR_REGEX, INVALID_CHAR_REPLACEMENT);
 			

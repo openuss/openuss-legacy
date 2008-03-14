@@ -20,14 +20,17 @@ public class OpenUSSWebDAVContext implements WebDAVContext {
 	public static final long NO_MAX_FILESIZE = -1;
 	protected WebApplicationContext wac;
 	protected SecurityService securityService;
+	
 	/**
 	 * The maximum allowed file size for uploads.
 	 */
 	protected long maxFileSize;
+	protected boolean evadeUmlautsFlag;
 	
-	public OpenUSSWebDAVContext(WebApplicationContext wac, long maxFileSize) {
+	public OpenUSSWebDAVContext(WebApplicationContext wac, long maxFileSize, boolean evadeUmlautsFlag) {
 		this.wac = wac;
 		this.maxFileSize = maxFileSize;
+		this.evadeUmlautsFlag = evadeUmlautsFlag;
 		
 		securityService = (SecurityService) getWAC().getBean(Constants.SECURITY_SERVICE);
 	}
@@ -112,5 +115,32 @@ public class OpenUSSWebDAVContext implements WebDAVContext {
 	 */
 	protected User getCurrentUser() {
 		return securityService.getCurrentUser();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVContext#evadeUmlauts(java.lang.String)
+	 */
+	public String evadeUmlauts(String in) {
+		if (!shouldEvadeUmlauts()) {
+			return in;
+		}
+		
+		// Replace common special chars
+		in = in.replace("\u00E4", "ae");
+		in = in.replace("\u00C4", "Ae");
+		in = in.replace("\u00FC", "ue");
+		in = in.replace("\u00DC", "Ue");
+		in = in.replace("\u00F6", "oe");
+		in = in.replace("\u00D6", "Oe");
+		in = in.replace("\u00DF", "ss");
+		
+		return in;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVContext#shouldEvadeUmlauts()
+	 */
+	public boolean shouldEvadeUmlauts() {
+		return evadeUmlautsFlag;
 	}
 }
