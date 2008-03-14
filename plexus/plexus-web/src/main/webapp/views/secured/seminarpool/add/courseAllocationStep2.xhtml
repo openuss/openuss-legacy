@@ -30,13 +30,15 @@
   			<h:outputText value="#{msg.university_maintitle}"/>
   		</ui:define>
   		<ui:define name="content">
-		<h:form id="registration">
+		<h:form id="group_table">
 
 				<ui:include src="/views/commons/seminarpool/seminarpoolCourseGroupsTable.xhtml"/>
-				
+		</h:form>
+		<h:form id="add_new_group">		
 				<o:block label="#{msg.seminarpool_course_groups_add_new}">
 					<o:input 
 						label="#{msg.seminarpool_add_course_groups_add_capacity}"
+						title="#{msg['seminarpool_add_course_groups_add_capacity']}"
 						entity="courseAllocationController" 
 						property="courseGroupCapacity" 
 						maxlength="100" 
@@ -49,8 +51,7 @@
 			   	<o:block>
 			   		<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_cancel" immediate="true"/>
 					<h:commandButton action="#{courseAllocationController.addSeminar}" value="#{msg.seminarpool_add_course_add_seminar}" styleClass="button_continue" immediate="true"/>
-		  		</o:block>
-				
+		  		</o:block>			
 		</h:form>
 		</ui:define>
 	</ui:composition>

@@ -24,8 +24,7 @@
 					size="1" 
 					styleClass="pulldown" 
 					value="#{seminarpoolRegistration.seminarpoolInfo.universityId}"
-					valueChangeListener="#{seminarpoolRegistration.processUniversitySelectChanged}"
-					
+					valueChangeListener="#{seminarpoolRegistration.processUniversitySelectChanged}"	
 					required="true">
  					<f:selectItems value="#{seminarpoolRegistration.allUniversities}"/>
  					<f:validator validatorId="universityDepartmentSelectValidator"/>
@@ -33,12 +32,14 @@
 				
 				<o:input 
 					label="#{msg.seminarpool_name}"
+					title="#{msg['seminarpool_name']}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="name" 
 					maxlength="100" 
 					required="true"/>
 				<o:input 
 					label="#{msg.seminarpool_shortcut}"
+					title="#{msg['seminarpool_shortcut']}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="shortcut" 
 					maxlength="50" 
@@ -46,6 +47,7 @@
 									
 				<o:input 
 					label="#{msg.seminarpool_max_seminar_allocations}"
+					title="#{msg['seminarpool_max_seminar_allocations']}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="maxSeminarAllocations" 
 					maxlength="2"
@@ -56,6 +58,7 @@
 				<o:input 
 					id="priorities_field"
 					label="#{msg.seminarpool_priorities}"
+					title="#{msg['seminarpool_priorities']}"
 					entity="seminarpoolRegistration.seminarpoolInfo" 
 					property="priorities"
 					size="10"
@@ -66,6 +69,7 @@
 				<o:input
 					id="start_time"
 					label="#{msg.seminarpool_registration_start_time}"
+					title="#{msg['seminarpool_registration_start_time']}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationStartTime"
 					maxlength="16"
@@ -74,6 +78,7 @@
 				<o:input
 					id="end_time"
 					label="#{msg.seminarpool_registration_end_time}"
+					title="#{msg['seminarpool_registration_end_time']}"
 					entity="seminarpoolRegistration.seminarpoolInfo"
 					property="registrationEndTime"
 					maxlength="16"
@@ -101,6 +106,7 @@
 				<c:if test="#{seminarpoolRegistration.seminarpoolInfo.accessType.value == 1}">	
 	 				<o:input 
 	 					label="#{msg.seminarpool_password}"
+	 					title="#{msg['seminarpool_password']}"
 	 					entity="seminarpoolRegistration.seminarpoolInfo" 
 	 					property="password" 
 	 					maxlength="50"

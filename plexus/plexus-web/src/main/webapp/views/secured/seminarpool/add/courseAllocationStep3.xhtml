@@ -32,17 +32,19 @@
   		<ui:define name="content">
   			<h:form id="courseScheduleTable">
 
-							<ui:include src="/views/commons/seminarpool/seminarpoolCourseScheduleTable.xhtml"/>
+						<ui:include src="/views/commons/seminarpool/seminarpoolCourseScheduleTable.xhtml"/>
 							<o:block label="#{msg.seminarpool_add_course_allocation_add_time}">
 								<o:input
-									label="#{msg.seminarpool_registration_start_time}"
+									label="#{msg.seminarpool_add_course_allocation_group_start_time}"
+									title="#{msg['seminarpool_add_course_allocation_group_start_time']}"
 									entity="courseAllocationController"
 									property="startTime"
 									maxlength="16"
 									type="short_time"
 									/>
 								<o:input
-									label="#{msg.seminarpool_registration_end_time}"
+									label="#{msg.seminarpool_add_course_allocation_group_end_time}"
+									title="#{msg['seminarpool_add_course_allocation_group_end_time']}"
 									entity="courseAllocationController"
 									property="endTime"
 									maxlength="16"

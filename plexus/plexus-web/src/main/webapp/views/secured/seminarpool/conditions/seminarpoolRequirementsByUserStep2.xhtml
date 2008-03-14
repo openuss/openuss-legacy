@@ -31,6 +31,11 @@
 
 	<ui:define name="content" styleClass="footer_normal">
 	   <h:form id="requirements">
+			<o:block rendered="#{empty views$secured$seminarpool$conditions$seminarpoolRequirementsByUserStep2.seminarUserConditionValueList}">
+				<div class="content_font_normal"> 
+					<h:outputText value="#{msg.seminarpool_requirements_by_user_step2_list_empty_text}"/>
+				</div>
+			</o:block>
 		<t:dataList 
 			id="condition"  
 			var="condition"
@@ -46,8 +51,7 @@
 						<f:converter converterId="seminarpoolBooleanConverter" />
 					</h:outputText>
 					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==1}"/>
-					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==2}"/>
-					
+					<h:outputText value="#{condition.conditionValue}" rendered="#{condition.seminarConditionType.value==2}"/>		
 			 </p>
 			</o:block>
 		</t:dataList>

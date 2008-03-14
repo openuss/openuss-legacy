@@ -36,8 +36,12 @@
 		<h:form id="newAdminsForm">
 			<o:block label="#{msg['seminarpool_admins_members_add_subheading']}"
 				styleClass="form_box">
-				<o:input entity="views$secured$seminarpool$seminarpooladmins"
-					property="username" required="true" label="#{msg['user_username']}">
+				<o:input 
+					entity="views$secured$seminarpool$seminarpooladmins"
+					property="username" 
+					required="true" 
+					title="#{msg['user_username']}"
+					label="#{msg['user_username']}">
 					<f:validator validatorId="usernameExistValidator" />
 				</o:input>
 				<br/>

@@ -45,6 +45,7 @@
 				<h:message for="conditionType" styleClass="field_error"/>	
 	 			<o:input 
 						label="#{msg.seminarpool_field_description}"
+						title="#{msg['seminarpool_field_description']}"
 						entity="seminarpoolRegistration.seminarConditionInfo" 
 						property="conditionDescription" 
 						type="textarea"
@@ -55,8 +56,16 @@
 			</o:block>	
 		
 			<o:block>
-				<h:commandButton value="#{msg.back}" action="seminarpool_create_step1" styleClass="button_back" immediate="true" />
-				<h:commandButton value="#{msg.seminarpool_create_button}" action="#{seminarpoolRegistration.create}" styleClass="button_continue" immediate="true" />
+				<h:commandButton 
+					value="#{msg.back}" 
+					action="seminarpool_create_step1" 
+					styleClass="button_back" 
+					immediate="true" />
+				<h:commandButton 
+					value="#{msg.seminarpool_create_button}" 
+					action="#{seminarpoolRegistration.create}" 
+					styleClass="button_continue" 
+					immediate="true" />
 			</o:block>	
 		</h:form> 
 	</ui:define>
