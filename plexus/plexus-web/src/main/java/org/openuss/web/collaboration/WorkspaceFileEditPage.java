@@ -54,6 +54,9 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		final BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("documents_file"));
@@ -62,7 +65,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 	}
 
 	/**
-	 * Saves the edited fileentry
+	 * Saves the edited FileEntry.
 	 * 
 	 * @return COLLABORATION_WORKSPACE_PAGE
 	 * @throws DocumentApplicationException
@@ -112,6 +115,11 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		}
 	}
 	
+	/**
+	 * Converts an UploadedDocument to FileInfo selectedFile. 
+	 * @param document UploadedDocument to convert.
+	 * @throws IOException
+	 */
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
 		LOGGER.debug("source is "+document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
@@ -133,23 +141,34 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		selectedFile.setInputStream(document.getInputStream());
 	}
 
+	/**
+	 * Return if a File is selected or not.
+	 * @return <code>true</code> if a File is selected, otherwise <code>false</false>. 
+	 */
 	private boolean isExistingFile() {
 		return selectedFile != null && selectedFile.getId() != null;
 	}
 
+	/**
+	 * Return if a File is new or not.
+	 * @return <code>true</code> if a File is new, otherwise <code>false</false>. 
+	 */
 	private boolean isNewFile() {
 		return selectedFile != null && selectedFile.getId() == null;
 	}
 
-	
+	/**
+	 * Returns extension of a filename.
+	 * @param fileName Filename to check.
+	 * @return Extension of the filename.
+	 */
 	private String extension(String fileName) {
 		if (fileName != null) {
-			return fileName.substring(fileName.lastIndexOf('.')+1).trim();
+			return fileName.substring(fileName.lastIndexOf('.') +1).trim();
 		} else {
 			return "";
 		}
 	}
-
 
 	public FileInfo getSelectedFile() {
 		return selectedFile;

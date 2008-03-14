@@ -84,8 +84,8 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		addPageCrumbs();
 	}
 
-	/** Adds an additional breadcrumb to the course-crumbs.
-	 * 
+	/** 
+	 * Adds an additional breadcrumb to the course-crumbs.
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
@@ -118,7 +118,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Downloads the selected documents
+	 * Downloads the selected documents.
 	 * 
 	 * @return success
 	 * @throws IOException
@@ -126,11 +126,11 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	public String download() throws IOException {
 		LOGGER.debug("downloading documents");
-		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		final List<FileInfo> files = documentService.allFileEntries(selectedEntries());
+		
 		if (!files.isEmpty()) {
-			//Storing the zip file name into the session 
 			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
-			String fileName = this.workspaceInfo.getName();
+			final String fileName = this.workspaceInfo.getName();
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
 			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
@@ -141,6 +141,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
+		
 		return Constants.SUCCESS;
 	}
 
@@ -150,7 +151,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * @return success
 	 */
 	public String delete() {
-		List<FolderEntryInfo> entries = selectedEntries();
+		final List<FolderEntryInfo> entries = selectedEntries();
 		if (!entries.isEmpty()) {
 			LOGGER.debug("deleting documents:");
 			setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, entries);
@@ -159,24 +160,23 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
+		
 		return Constants.SUCCESS;
 	}
 	
 	/**
 	 * Moves selected FolderEntries to target
-	 * Uses documentService.moveFolderEntries();
+	 * Uses documentService.moveFolderEntries();.
 	 * @return success
 	 * @throws DocumentApplicationException 
 	 */
-	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
-		//documentService.moveFolderEntries(workspaceInfo, targetFolder, selectedEntries() ); FIXME
-		// TODO success message
+	public String moveFolderEntriesToTarget() throws DocumentApplicationException {
 		addMessage(i18n("documents_move_files"));
 		return Constants.COLLABORATION_MAIN_PAGE;
 	}
 
 	/**
-	 * Creates a new folder
+	 * Creates a new Folder.
 	 * @return COLLABORATION_EDIT_FOLDER_PAGE
 	 */
 	public String newFolder() {
@@ -186,7 +186,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 
 	/**
-	 * Creates a new file
+	 * Creates a new File.
 	 * @return COLLABORATION_EDIT_FILEENTRY_PAGE
 	 */
 	public String newFile() {
@@ -202,7 +202,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 */
 	public String editFolderEntry() {
 		LOGGER.debug("editing folder entry");
-		FolderEntryInfo entry = data.getRowData();
+		final FolderEntryInfo entry = data.getRowData();
 		if (entry.isFolder()) {
 			FolderInfo selectedFolder = documentService.getFolder(entry);
 			setSessionBean(Constants.COLLABORATION_SELECTED_FOLDER, selectedFolder);
@@ -220,7 +220,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 	
 	private List<FolderEntryInfo> selectedEntries() {
-		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFolderEntries());
+		final List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFolderEntries());
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
 				return entrySelection.isSelected(object);
@@ -231,7 +231,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Store the selected FolderEntry into session scope and go to workspace
+	 * Store the selected FolderEntry into session scope and go to Workspace
 	 * remove confirmation page. 
 	 * 
 	 * @return outcome
@@ -245,12 +245,11 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 		return Constants.COLLABORATION_REMOVE_FOLDERENTRY_PAGE;
 	}
-	
-	//// getter/setter methods /////////////////////////////////////////////////
 
 	public DocumentDataProvider getData() {
 		return data;
 	}
+	
 	public void setData(DocumentDataProvider data) {
 		this.data = data;
 	}
@@ -258,6 +257,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public FolderEntrySelection getEntrySelection() {
 		return entrySelection;
 	}
+	
 	public void setEntrySelection(FolderEntrySelection selectedEntries) {
 		this.entrySelection = selectedEntries;
 	}
@@ -265,6 +265,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public FolderInfo getTargetFolder() {
 		return targetFolder;
 	}
+	
 	public void setTargetFolder(FolderInfo targetFolder) {
 		this.targetFolder = targetFolder;
 	}
@@ -277,19 +278,17 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
-			//get Folder List from Document Service
-			//List<FolderInfo> allFolderInfos= super.documentService.getAllSubfolders(workspaceInfo);
-			List<FolderInfo> allFolderInfos= super.documentService.getFolderEntries(workspaceInfo, documentService.getFolder(workspaceInfo)); //FIXME
+			List<FolderInfo> allFolderInfos = super.documentService.getFolderEntries(workspaceInfo, documentService.getFolder(workspaceInfo));
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					StringBuilder depth = new StringBuilder(); // NOPMD by Administrator on 13.03.08 13:03
-					//check depth
-					List path = super.documentService.getFolderPath(info);
+					final StringBuilder depth = new StringBuilder(); // NOPMD by Administrator on 13.03.08 13:03
+					
+					final List path = super.documentService.getFolderPath(info);
 					for(int i = 0; i < path.size(); i++) {
 						depth.append("> ");
 					}
-					//@TODO implement check wether element is root. Change name if so.
+					
 					depth.append(info.getName() == null ? "Root" : info.getName());
 					folderList.add(new SelectItem(info, depth.toString())); // NOPMD by Administrator on 13.03.08 13:03
 				} else {
@@ -301,6 +300,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		}
 		return folderList;
 	}
+	
 	public void setFolderList(List<SelectItem> folderList) {
 		this.folderList = folderList;
 	}
@@ -308,14 +308,13 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public boolean isMoveMode() {
 		return moveMode;
 	}
+	
 	public void setMoveMode(boolean moveMode) {
 		this.moveMode = moveMode;
 	}
-	
-	/////// Inner classes ////////////////////////////////////////////////////
 
 	/**
-	 * Dataprovider for the datatable which lists the folders/files
+	 * DataProvider for the datatable which lists the Folders or Files.
 	 */
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
@@ -326,7 +325,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		@Override
 		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<FolderEntryInfo> entries = loadFolderEntries();
+				final List<FolderEntryInfo> entries = loadFolderEntries();
 				sort(entries);
 				page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
 			}
@@ -334,13 +333,13 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		}
 
 		/**
-		 * Default property sort method
+		 * Default property sort method.
 		 * @param list List of FolderEntryInfo objects.
 		 */
 		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
-			ComparatorChain chain = new ComparatorChain();
+			final ComparatorChain chain = new ComparatorChain();
 			if (isAscending()) {
 				chain.addComparator(folderComparator);
 			} else {
@@ -352,6 +351,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			} else {
 				chain.addComparator(new PropertyComparator("name", true, isAscending()));
 			}
+			
 			Collections.sort(list, chain);
 		}
 

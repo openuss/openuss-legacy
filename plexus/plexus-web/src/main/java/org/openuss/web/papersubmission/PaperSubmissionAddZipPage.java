@@ -20,6 +20,11 @@ import org.openuss.web.documents.ZipFileUnpacker;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
+/**
+ * Backing Bean for submissionaddzip.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$submissionaddzip", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
@@ -38,6 +43,9 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, 
 				i18n("papersubmission_paperlist_header"), 
@@ -61,6 +69,11 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		}
 	}	
 	
+	/**
+	 * Unzips a ZIP archive.
+	 * @return Success or failure message.
+	 * @throws DocumentApplicationException
+	 */
 	public String unzip() throws DocumentApplicationException{ // NOPMD by Administrator on 13.03.08 12:56
 		LOGGER.debug("new document saved");
 		
@@ -98,9 +111,14 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}
+		
 		return Constants.SUCCESS;
 	}
 
+	/**
+	 * Injects the Release Date.
+	 * @param infos List of to inject Release Dates. 
+	 */
 	private void injectReleaseDate(List<FileInfo> infos) {
 		if (file != null && file.getCreated() != null) {
 			LOGGER.debug("injecting release date "+file.getCreated());

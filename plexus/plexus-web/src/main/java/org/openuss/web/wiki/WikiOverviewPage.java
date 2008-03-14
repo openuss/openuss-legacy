@@ -30,7 +30,9 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		addBreadCrumbs();
 	}
 	
-	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addBreadCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		

@@ -42,20 +42,17 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		if (this.examInfo != null && this.examInfo.getId() != null) {
 			this.examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
-		
-		
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected PaperSubmissionInfo loadPaperSubmission(){
-		
+	protected PaperSubmissionInfo loadPaperSubmission() {
 		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 				
 		final List<PaperSubmissionInfo> paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
 		if (paperInfos.isEmpty()){
 			//Create a submission, if the user doesn't have any
-			PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
+			final PaperSubmissionInfo SubmissionInfo = new PaperSubmissionInfo();
 			SubmissionInfo.setExamId(examInfo.getId());
 			SubmissionInfo.setUserId(user.getId());
 			paperSubmissionService.createPaperSubmission(SubmissionInfo);
@@ -84,6 +81,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public DocumentService getDocumentService() {
 		return documentService;
 	}
+	
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
 	}
@@ -92,19 +90,22 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		return paperSubmissionService;
 	}
 
-	public void setPaperSubmissionService(
-			PaperSubmissionService paperSubmissionService) {
+	public void setPaperSubmissionService(PaperSubmissionService paperSubmissionService) {
 		this.paperSubmissionService = paperSubmissionService;
 	}
+	
 	public ExamInfo getExamInfo() {
 		return examInfo;
 	}
+	
 	public void setExamInfo(ExamInfo examInfo) {
 		this.examInfo = examInfo;
 	}
+	
 	public PaperSubmissionInfo getPaperSubmissionInfo() {
 		return paperSubmissionInfo;
 	}
+	
 	public void setPaperSubmissionInfo(PaperSubmissionInfo paperSubmissionInfo) {
 		this.paperSubmissionInfo = paperSubmissionInfo;
 	}
@@ -112,6 +113,7 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	public SecurityService getSecurityService() {
 		return securityService;
 	}
+	
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
 	}

@@ -33,6 +33,9 @@ public class WorkspaceFolderEditPage extends AbstractCollaborationPage{
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("document_folder_edit_header"));

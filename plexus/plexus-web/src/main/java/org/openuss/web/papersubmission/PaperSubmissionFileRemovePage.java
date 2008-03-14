@@ -18,6 +18,11 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 
+/**
+ * Backing Bean for submissionfileremove.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$submissionfileremove", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
@@ -33,6 +38,9 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM,
 				i18n("papersubmission_paperlist_header"),

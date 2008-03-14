@@ -1,6 +1,5 @@
 package org.openuss.web.papersubmission;
 
-
 import java.io.IOException;
 import java.util.Date;
 
@@ -24,6 +23,11 @@ import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
 import org.openuss.web.upload.UploadedDocument;
 
+/**
+ * Backing Bean for submissionfileedit.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$submissionfileedit", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
@@ -54,6 +58,9 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM,
 				i18n("papersubmission_paperlist_header"),
@@ -78,6 +85,12 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
+	/**
+	 * Saves a PaperSubmission.
+	 * @return PaperSubmission Overview Page.
+	 * @throws DocumentApplicationException
+	 * @throws IOException
+	 */
 	public String save() throws DocumentApplicationException, IOException{ // NOPMD by Administrator on 13.03.08 12:56
 		LOGGER.debug("saving file");
 		paperSubmissionInfo = loadPaperSubmission();
@@ -114,14 +127,22 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
+	/**
+	 * Checks if a new File is existing in a new PaperSubmission.
+	 * @return <code>true</code> if the new File is existing in a new PaperSubmission, otherwise <code>false</code>.
+	 */
 	private boolean isFileExistingInNewSubmission(){
 		DefaultDomainObject domainObject = new DefaultDomainObject(paperSubmissionInfo.getId());
 		return (isExistingFile() && paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.NOT_IN_TIME) 
 				&& !getDocumentService().getFileEntries(domainObject).contains(selectedFile));
 	}
 	
-	
-	
+	/**
+	 * Saves a new File.
+	 * @return <code>true</code> if the new File was uploaded, otherwise <code>false</code>.
+	 * @throws IOException
+	 * @throws DocumentApplicationException
+	 */	
 	private boolean saveNewFile() throws IOException, DocumentApplicationException {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (document != null) {
@@ -136,13 +157,18 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		}
 	}
 
+	/**
+	 * Converts UploadedDocument to FileInfo selectedFile.
+	 * @param document UploadedDocument File.
+	 * @throws IOException
+	 */
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
 		LOGGER.debug("source is " + document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
 			selectedFile.setFileName(document.getFileName());
 		} else {
-			String fname = selectedFile.getFileName();
-			StringBuilder fileName = new StringBuilder(fname);
+			final String fname = selectedFile.getFileName();
+			final StringBuilder fileName = new StringBuilder(fname);
 			
 			String extension = extension(document.getFileName());			
 			if (!StringUtils.equals(extension(fname), extension)) {
@@ -157,15 +183,27 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		selectedFile.setInputStream(document.getInputStream());
 	}
 
+	/**
+	 * Return if a File is selected or not.
+	 * @return <code>true</code> if a File is selected, otherwise <code>false</false>. 
+	 */
 	private boolean isExistingFile() {
 		return selectedFile != null && selectedFile.getId() != null;
 	}
 
+	/**
+	 * Return if a File is new or not.
+	 * @return <code>true</code> if a File is new, otherwise <code>false</false>. 
+	 */
 	private boolean isNewFile() {
 		return selectedFile != null && selectedFile.getId() == null;
 	}
 
-	
+	/**
+	 * Returns extension of a filename.
+	 * @param fileName Filename to check.
+	 * @return Extension of the filename.
+	 */
 	private String extension(String fileName) {
 		if (fileName != null) {
 			return fileName.substring(fileName.lastIndexOf('.')+1).trim();

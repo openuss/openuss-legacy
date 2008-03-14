@@ -47,6 +47,9 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("document_addzip_header"));
@@ -61,9 +64,9 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 	 * @throws DocumentApplicationException
 	 */
 	public String unzip() throws DocumentApplicationException{ // NOPMD by Administrator on 13.03.08 16:07
-		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
+		final UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 
-		File zipFile = document.getFile(); 
+		final File zipFile = document.getFile(); 
 		ZipFileUnpacker unpacker;
 		try {
 			unpacker = new ZipFileUnpacker(zipFile);
@@ -88,13 +91,14 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 			addError(i18n("message_error_zip_file_unpacking"));
 			return Constants.FAILURE;
 		}
+		
 		return Constants.SUCCESS;
 	}
 
 	private void injectReleaseDateAndPermissions(List<FileInfo> infos) {
 		if (file != null && file.getCreated() != null) {
-			LOGGER.debug("injecting release date "+file.getCreated());
-			for(FileInfo fileInfo : infos) {
+			LOGGER.debug("injecting release date " + file.getCreated());
+			for (FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
 				fileInfo.setModified(file.getCreated());
 			}

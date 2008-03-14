@@ -38,6 +38,9 @@ public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {
 		addPageCrumb();
 	}
 	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("documents_remove_header"));

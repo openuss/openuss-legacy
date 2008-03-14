@@ -31,8 +31,6 @@ public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSub
      */
     public org.openuss.paperSubmission.PaperSubmissionInfo toPaperSubmissionInfo(final org.openuss.paperSubmission.PaperSubmission entity)
     {
-        // @todo verify behavior of toPaperSubmissionInfo
-        //return super.toPaperSubmissionInfo(entity);
         final org.openuss.paperSubmission.PaperSubmissionInfo target = new org.openuss.paperSubmission.PaperSubmissionInfo();
         this.toPaperSubmissionInfo(entity, target);
         return target;
@@ -59,7 +57,6 @@ public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSub
      */
     public org.openuss.paperSubmission.PaperSubmission paperSubmissionInfoToEntity(org.openuss.paperSubmission.PaperSubmissionInfo paperSubmissionInfo)
     {
-        // @todo verify behavior of paperSubmissionInfoToEntity
         org.openuss.paperSubmission.PaperSubmission entity = this.loadPaperSubmissionFromPaperSubmissionInfo(paperSubmissionInfo);
         this.paperSubmissionInfoToEntity(paperSubmissionInfo, entity, true);
         return entity;
@@ -74,7 +71,6 @@ public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSub
         org.openuss.paperSubmission.PaperSubmission targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of paperSubmissionInfoToEntity
         super.paperSubmissionInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

@@ -35,6 +35,11 @@ import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.springframework.beans.support.PropertyComparator;
 
+/**
+ * Backing Bean for submissionview.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$submissionview", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
@@ -301,7 +306,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		return this.dataSubmissions.getRowData();
 	}
 	
-	//// getter/setter methods ////////////////////////////////////////////////
 	public LocalDataModelSubmissions getDataSubmissions() {
 		return this.dataSubmissions;
 	}
@@ -341,8 +345,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		this.submissions = submissions;
 	}
 	
-	/////// Inner classes ////////////////////////////////////////////////////
-	
 	private class LocalDataModelSubmissions extends AbstractPagedTable<PaperSubmissionInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
@@ -371,29 +373,27 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			ComparatorChain chain = new ComparatorChain();
 			
 			if (StringUtils.isNotBlank(getSortColumn()) ) {
-				if(getSortColumn().equals("submissionStatus")){
+				if (getSortColumn().equals("submissionStatus")) {
 					chain.addComparator(submissionComparator);
-				}else{
+				} else {
 					chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
 				}
-			}else{
+			} else {
 				chain.addComparator(new PropertyComparator("displayName", true, isAscending()));
 			}
 			Collections.sort(list, chain);
 		}
 		private final Comparator<PaperSubmissionInfo> submissionComparator = new Comparator<PaperSubmissionInfo>() {
 			public int compare(PaperSubmissionInfo info1, PaperSubmissionInfo info2) {
-				if(isAscending()){
+				if (isAscending()) {
 					return info1.getSubmissionStatus().compareTo(info2.getSubmissionStatus());
-				} else{
+				} else {
 					return info2.getSubmissionStatus().compareTo(info1.getSubmissionStatus());
 				}
 			}
 			
 		};	
 	}
-	
-	
 	
 	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
@@ -438,6 +438,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			}
 			Collections.sort(list, chain);
 		}
+		
 		private final Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
 			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {

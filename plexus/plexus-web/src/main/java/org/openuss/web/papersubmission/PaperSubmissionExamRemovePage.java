@@ -12,10 +12,10 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 
-
-/** Controller for the examremove.xhtml view.
- * 
+/**
+ * Backing Bean for examremove.xhtml.
  * @author Projektseminar WS 07/08, Team Collaboration
+ *
  */
 @Bean(name = "views$secured$papersubmission$examremove", scope = Scope.REQUEST)
 @View

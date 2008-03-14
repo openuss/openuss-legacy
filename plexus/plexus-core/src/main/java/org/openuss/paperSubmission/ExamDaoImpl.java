@@ -17,7 +17,6 @@ public class ExamDaoImpl
         org.openuss.paperSubmission.Exam sourceEntity,
         org.openuss.paperSubmission.ExamInfo targetVO)
     {
-        // @todo verify behavior of toExamInfo
         super.toExamInfo(sourceEntity, targetVO);
     }
 
@@ -41,7 +40,6 @@ public class ExamDaoImpl
      */
     public org.openuss.paperSubmission.Exam examInfoToEntity(org.openuss.paperSubmission.ExamInfo examInfo)
     {
-        // @todo verify behavior of examInfoToEntity
         org.openuss.paperSubmission.Exam entity = this.loadExamFromExamInfo(examInfo);
         this.examInfoToEntity(examInfo, entity, true);
         return entity;
@@ -56,7 +54,6 @@ public class ExamDaoImpl
         org.openuss.paperSubmission.Exam targetEntity,
         boolean copyIfNull)
     {
-        // @todo verify behavior of examInfoToEntity
         super.examInfoToEntity(sourceVO, targetEntity, copyIfNull);
     }
 

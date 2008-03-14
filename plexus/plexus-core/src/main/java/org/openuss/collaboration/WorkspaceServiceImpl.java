@@ -23,17 +23,16 @@ import org.openuss.security.acl.LectureAclEntry;
  * @author  Projektseminar WS 07/08, Team Collaboration
  * @see org.openuss.collaboration.WorkspaceService
  */
-public class WorkspaceServiceImpl extends
-		org.openuss.collaboration.WorkspaceServiceBase {
+public class WorkspaceServiceImpl extends org.openuss.collaboration.WorkspaceServiceBase {
 	
-	private static final Logger logger = Logger.getLogger(WorkspaceServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(WorkspaceServiceImpl.class);
 
 	@Override
 	protected void handleCreateWorkspace(WorkspaceInfo workspaceInfo) {
 		Validate.notNull(workspaceInfo, "WorkspaceInfo cannot be null.");
 		Validate.notNull(workspaceInfo.getDomainId(), "domainId cannot be null.");
 		
-		Workspace workspaceEntity = this.getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
+		final Workspace workspaceEntity = this.getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		Validate.notNull(workspaceEntity, "Cannot transform workspaceInfo to entity.");
 
 		this.getWorkspaceDao().create(workspaceEntity);
@@ -49,11 +48,11 @@ public class WorkspaceServiceImpl extends
 	@Override
 	protected List handleFindWorkspaceMembers(Long workspaceId) { 
 		Validate.notNull(workspaceId, "workspaceId cannot be null.");
-		Workspace workspace = this.getWorkspaceDao().load(workspaceId);
+		final Workspace workspace = this.getWorkspaceDao().load(workspaceId);
 		Validate.notNull(workspace, "No workspace could be found with the workspaceId " + workspaceId);
 		
-		Collection<User> users = workspace.getUser();
-		List<UserInfo> members = new ArrayList<UserInfo>(users.size());
+		final Collection<User> users = workspace.getUser();
+		final List<UserInfo> members = new ArrayList<UserInfo>(users.size());
 		for (User u : users) {
 			members.add(this.getUserDao().toUserInfo(u));
 		}
@@ -77,10 +76,10 @@ public class WorkspaceServiceImpl extends
 	protected void handleRemoveWorkspace(Long workspaceId) throws DocumentApplicationException {
 		Validate.notNull(workspaceId, "workspaceId cannot be null.");
 		
-		Workspace workspaceEntity = getWorkspaceDao().load(workspaceId);
-		WorkspaceInfo workspaceInfo = getWorkspaceDao().toWorkspaceInfo(workspaceEntity);
+		final Workspace workspaceEntity = getWorkspaceDao().load(workspaceId);
+		final WorkspaceInfo workspaceInfo = getWorkspaceDao().toWorkspaceInfo(workspaceEntity);
 		
-		FolderInfo folderEntry = getDocumentService().getFolder(workspaceInfo);
+		final FolderInfo folderEntry = getDocumentService().getFolder(workspaceInfo);
 		getDocumentService().removeFolderEntry(folderEntry.getId());
 		
 		getWorkspaceDao().remove(workspaceEntity);
@@ -88,32 +87,31 @@ public class WorkspaceServiceImpl extends
 
 	@Override
 	protected void handleUpdateWorkspace(WorkspaceInfo workspaceInfo) {
-		logger.debug("Starting method handleUpdateWorkspace");
+		LOGGER.debug("Starting method handleUpdateWorkspace");
 		Validate.notNull(workspaceInfo, "Parameter workspaceInfo must not be null.");
 		Validate.notNull(workspaceInfo.getId(), "Parameter workspaceInfo must contain a valid course id.");
 
-		Workspace workspaceEntity = getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
+		final Workspace workspaceEntity = getWorkspaceDao().workspaceInfoToEntity(workspaceInfo);
 		getWorkspaceDao().update(workspaceEntity);
 	}
 
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
 	protected void handleUpdateWorkspaceMembers(List userIds, Long workspaceId) {
-		logger.debug("Starting method handleUpdateWorkspaceMembers");
+		LOGGER.debug("Starting method handleUpdateWorkspaceMembers");
 		Validate.notNull(workspaceId, "Parameter workspaceId must not be null.");
 		Validate.notNull(userIds, "Parameter userId must not be null.");
 
-		Workspace workspace = getWorkspaceDao().load(workspaceId);
+		final Workspace workspace = getWorkspaceDao().load(workspaceId);
 		
-		// FIXME: extremely dirty!!! There must be an easier way
-		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + workspace.getDomainId() + "_PARTICIPANTS");
+		final Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + workspace.getDomainId() + "_PARTICIPANTS");
 		
-		List<Authority> members = group.getMembers();
+		final List<Authority> members = group.getMembers();
 		
 		workspace.getUser().clear();
 
 		for (Authority auth : members) {
-			User user = getSecurityService().getUserObject(auth.getId());
+			final User user = getSecurityService().getUserObject(auth.getId());
 			
 			if (user != null && userIds.contains(user.getId())) {
 				workspace.getUser().add(user);
@@ -129,13 +127,12 @@ public class WorkspaceServiceImpl extends
 
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:11
 	@Override
-	protected List handleFindWorkspacesByDomainAndUser(Long domainId,
-			UserInfo user) {
+	protected List handleFindWorkspacesByDomainAndUser(Long domainId, UserInfo user) {
 		Validate.notNull(domainId, "domainId cannot be null.");
 		Validate.notNull(user, "userId cannot be null.");
 		
-		List<Workspace> workspaces = getWorkspaceDao().findByDomainId(domainId);
-		List<WorkspaceInfo> workspaceInfos = new ArrayList<WorkspaceInfo>(workspaces.size());
+		final List<Workspace> workspaces = getWorkspaceDao().findByDomainId(domainId);
+		final List<WorkspaceInfo> workspaceInfos = new ArrayList<WorkspaceInfo>(workspaces.size());
 		for (Workspace ws : workspaces) {
 			if (ws.getUser().contains(user)) {
 				workspaceInfos.add(getWorkspaceDao().toWorkspaceInfo(ws));

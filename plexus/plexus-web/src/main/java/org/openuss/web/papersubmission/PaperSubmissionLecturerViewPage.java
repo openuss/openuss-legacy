@@ -32,6 +32,11 @@ import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.springframework.beans.support.PropertyComparator;
 
+/**
+ * Backing Bean for submissionviewlecturer.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$submissionviewlecturer", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage { 
@@ -133,7 +138,6 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		return Constants.SUCCESS;
 	}
 	
-	//// getter/setter methods ////////////////////////////////////////////////
 	public void setDataSubmissionFiles(
 			LocalDataModelSubmissionFiles dataSubmissionFiles) {
 		this.dataFiles = dataSubmissionFiles;
@@ -159,8 +163,6 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 			PaperSubmissionFileSelection paperFileSelection) {
 		this.paperFileSelection = paperFileSelection;
 	}
-
-	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
 		private static final long serialVersionUID = -6289875618529435428L;

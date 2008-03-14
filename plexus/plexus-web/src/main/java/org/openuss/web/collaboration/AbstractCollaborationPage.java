@@ -14,7 +14,7 @@ import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
 /**
- * Abstract Page for all Workspace-Pages
+ * Abstract Page for all Workspace-Pages.
  * 
  * @author  Projektseminar WS 07/08, Team Collaboration
  */
@@ -56,6 +56,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
 	}
+	
 	public void setWorkspaceInfo(WorkspaceInfo workspaceInfo) {
 		this.workspaceInfo = workspaceInfo;
 	}
@@ -63,6 +64,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	public WorkspaceService getWorkspaceService() {
 		return workspaceService;
 	}
+	
 	public void setWorkspaceService(WorkspaceService workspaceService) {
 		this.workspaceService = workspaceService;
 	}
@@ -70,6 +72,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	public DocumentService getDocumentService() {
 		return documentService;
 	}
+	
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
 	}
@@ -77,6 +80,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	public FolderInfo getCurrentFolder() {
 		return currentFolder;
 	}
+	
 	public void setCurrentFolder(FolderInfo currentFolder) {
 		this.currentFolder = currentFolder;
 	}
@@ -103,6 +107,7 @@ public class AbstractCollaborationPage extends AbstractCoursePage {
 	public SecurityService getSecurityService() {
 		return securityService;
 	}
+	
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
 	}

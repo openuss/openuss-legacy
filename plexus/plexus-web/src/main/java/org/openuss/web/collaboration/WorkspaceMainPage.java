@@ -61,8 +61,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		addPageCrumbs();
 	}
 
-	/** Adds an additional breadcrumb to the course-crumbs.
-	 * 
+	/** 
+	 * Adds an additional breadcrumb to the course-crumbs.
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
@@ -74,7 +74,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 	
-	/** Open collaboration main page and remove folder/workspace info from session.
+	/**
+	 * Open collaboration main page and remove Folder or Workspace info from session.
 	 * 
 	 * @return Constants.COLLABORATION_MAIN_PAGE
 	 */
@@ -90,7 +91,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	
 	/**
 	 * Creates a new WorkspaceInfo object and sets it into session scope
-	 * 
+
 	 * @return outcome
 	 */
 	public String addWorkspace() {
@@ -101,7 +102,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Set selected workspace into session scope
+	 * Set selected Workspace into session scope
 	 * 
 	 * @return outcome
 	 * @throws LectureException
@@ -122,7 +123,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			editing = true;
 			
 			if (this.workspaceInfo.getId() != null) {
-				// get mapped users
 				List<UserInfo> members = loadCourseMembers();
 				
 				List<Long> wsMemberIds = getWorkspaceMemberIds(); // NOPMD by Administrator on 13.03.08 12:55
@@ -139,8 +139,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Saves new workspace or updates changes to workspace and removes current
-	 * workspace selection from session scope.
+	 * Saves new Workspace or updates changes to Workspace and removes current
+	 * Workspace selection from session scope.
 	 * 
 	 * @return outcome
 	 */
@@ -160,7 +160,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			create = false;
 		}
 		
-		// store mapping
 		List<UserInfo> courseMembers = loadCourseMembers();
 		List<Long> memberIds = new ArrayList<Long>(courseMembers.size());
 		for (UserInfo member : courseMembers) {
@@ -184,7 +183,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Cancels editing or adding of current workspace
+	 * Cancels editing or adding of current Workspace.
 	 * 
 	 * @return outcome
 	 */
@@ -197,7 +196,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}
 	
 	/**
-	 * Store the selected workspace into session scope and go to workspace
+	 * Store the selected Workspace into session scope and go to Workspace.
 	 * remove confirmation page. 
 	 * 
 	 * @return outcome
@@ -226,8 +225,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 
 		return Constants.COLLABORATION_WORKSPACE_PAGE;
 	}
-	
-	//// getter/setter methods ////////////////////////////////////////////////
 
 	private WorkspaceInfo currentWorkspace() {
 		return this.dataWorkspaces.getRowData();
@@ -274,17 +271,17 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		}
 		return dataCourseMembers;
 	}
+	
 	public void setDataCourseMembers(LocalDataModelCourseMembers dataCourseMembers) {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
 
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	private List<UserInfo> loadCourseMembers() {
-		// FIXME: extremely dirty!!! There must be an easier way
-		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
+		final Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
 		
-		List<Authority> members = group.getMembers();
-		List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
+		final List<Authority> members = group.getMembers();
+		final List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
 		for (Authority auth : members) {
 			courseMembers.add(getSecurityService().getUser(auth.getId()));
 		}
@@ -294,8 +291,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	private List<Long> getWorkspaceMemberIds() {
-		List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
-		List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
+		final List<UserInfo> wsMembers = this.workspaceService.findWorkspaceMembers(this.workspaceInfo.getId());
+		final List<Long> wsMemberIds = new ArrayList<Long>(wsMembers.size());
 		for (UserInfo ui : wsMembers) {
 			wsMemberIds.add(ui.getId());
 		}
@@ -303,9 +300,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		return wsMemberIds;
 	}
 	
-	/////// Inner classes ////////////////////////////////////////////////////
-	
 	private class LocalDataModelMappedWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
+		
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<WorkspaceInfo> page;
@@ -314,17 +310,18 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), 
-								user));
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), user));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
 			}
+			
 			return page;
 		}
 	}
 	
 	private class LocalDataModelWorkspaces extends AbstractPagedTable<WorkspaceInfo> {
+		
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<WorkspaceInfo> page;
@@ -333,8 +330,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService
-						.findWorkspacesByDomain(courseInfo.getId()));
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomain(courseInfo.getId()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);

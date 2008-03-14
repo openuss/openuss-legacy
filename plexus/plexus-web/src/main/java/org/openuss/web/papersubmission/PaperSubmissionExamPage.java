@@ -28,7 +28,12 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
 import org.springframework.beans.support.PropertyComparator;
-              
+
+/**
+ * Backing Bean for examlist.xhtml.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @Bean(name = "views$secured$papersubmission$examlist", scope = Scope.REQUEST)
 @View
 public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
@@ -66,8 +71,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		}
 	}
 
-	/** Adds an additional breadcrumb to the course-crumbs.
-	 * 
+	/** 
+	 * Adds an additional breadcrumb to the course-crumbs.
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
@@ -101,15 +106,14 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		examInfo = currentActiveExam();
 		if (examInfo == null) {
 			return Constants.FAILURE;
-		}else if (examInfo.getId()!=null){
+		} else if (examInfo.getId()!=null) {
 			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		
 		if (examInfo == null) {
-			//TODO change message name
 			addWarning(i18n("papersubmission_error_exam_not_found"));
 			return Constants.FAILURE;
-
 		} else {
 			LOGGER.debug("selected examInfo " + examInfo.getName());
 			editing = true;
@@ -132,10 +136,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		}
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
-			//TODO change message name
 			addWarning(i18n("papersubmission_error_exam_not_found"));
 			return Constants.FAILURE;
-
 		} else {
 			LOGGER.debug("selected examInfo " + examInfo.getName());
 			editing = true;
@@ -190,7 +192,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String selectActiveExamAndConfirmRemove() {
 		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
-		ExamInfo currentExam = currentActiveExam();
+		final ExamInfo currentExam = currentActiveExam();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
@@ -206,7 +208,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String selectInactiveExamAndConfirmRemove() {
 		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
-		ExamInfo currentExam = currentInactiveExam();
+		final ExamInfo currentExam = currentInactiveExam();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
@@ -216,7 +218,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	
 	public String selectActiveExam(){
 		LOGGER.debug("Starting method selectExam");
-		ExamInfo currentExam = currentActiveExam();
+		final ExamInfo currentExam = currentActiveExam();
 		LOGGER.debug("Returning to method selectExam");
 		LOGGER.debug(currentExam.getId());
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
@@ -247,7 +249,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		if (examInfo.getAttachments() == null) {
 			examInfo.setAttachments(new ArrayList<FileInfo>());
 		}
-		FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
+		
+		final FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
 		if (fileInfo != null && !examInfo.getAttachments().contains(fileInfo)) {
 			if (validFileName(fileInfo.getFileName())) {
 				examInfo.getAttachments().add(fileInfo);
@@ -267,8 +270,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		}
 		return true;
 	}
-	
-	//// getter/setter methods ////////////////////////////////////////////////
 
 	private ExamInfo currentActiveExam() {
 		ExamInfo exam = this.dataActiveExams.getRowData();
@@ -329,7 +330,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public void setUploadFileManager(UploadFileManager uploadFileManager) {
 		this.uploadFileManager = uploadFileManager;
 	}
-	
 
 	public LocalDataModelActiveExams getDataActiveExams() {
 		return dataActiveExams;
@@ -337,8 +337,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public void setDataActiveExams(LocalDataModelActiveExams dataActiveExams) {
 		this.dataActiveExams = dataActiveExams;
 	}
-	
-	/////// Inner classes ////////////////////////////////////////////////////
 	
 	private class LocalDataModelActiveExams extends AbstractPagedTable<ExamInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
@@ -351,7 +349,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 			if (page == null) {
 				
 				List<ExamInfo> activeExams = paperSubmissionService.findActiveExamsByDomainId(courseInfo.getId());
-				//setSortColumn("deadline");
 				sort(activeExams);
 				page = new DataPage<ExamInfo>(activeExams.size(), 0, activeExams);
 			}

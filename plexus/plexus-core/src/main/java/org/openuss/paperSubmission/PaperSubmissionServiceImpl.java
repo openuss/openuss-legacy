@@ -44,15 +44,14 @@ public class PaperSubmissionServiceImpl
     	Validate.notNull(examEntity, "examEntity cannot be null");
     	
     	examInfo.setId(examEntity.getId());
-    	getSecurityService().createObjectIdentity(examEntity, null);//examInfo.getDomainId());
+    	getSecurityService().createObjectIdentity(examEntity, null);
     	
     	if (examInfo.getAttachments() != null) {
-    		LOGGER.debug("found " + examInfo.getAttachments().size()+" attachments.");
+    		LOGGER.debug("found " + examInfo.getAttachments().size() + " attachments.");
 			getDocumentService().diffSave(examEntity, examInfo.getAttachments());
 			
-			// set correct permissions for users
 			for (FileInfo file : (List<FileInfo>) examInfo.getAttachments()) {
-				Group group = getParticipantsGroup(examInfo.getDomainId());
+				final Group group = getParticipantsGroup(examInfo.getDomainId());
 				getSecurityService().setPermissions(group, file, LectureAclEntry.READ);
 			}
 		}
@@ -97,14 +96,14 @@ public class PaperSubmissionServiceImpl
     	
     	final List<PaperSubmissionInfo> submissions = getPaperSubmissionDao().findByExam(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, exam);
     	
-    	for(PaperSubmissionInfo submission : submissions){
+    	for (PaperSubmissionInfo submission : submissions) {
     		final UserInfo user = getSecurityService().getUser(submission.getUserId());
     		submission.setFirstName(user.getFirstName());
     		submission.setLastName(user.getLastName());
     		submission.setDisplayName(user.getDisplayName());
-    		if(exam.getDeadline().after(submission.getDeliverDate())){
+    		if (exam.getDeadline().after(submission.getDeliverDate())) {
     			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
-    		}else{
+    		} else {
     			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
     		}
        	}
@@ -129,9 +128,9 @@ public class PaperSubmissionServiceImpl
     		submission.setFirstName(user.getFirstName());
     		submission.setLastName(user.getLastName());
     		submission.setDisplayName(user.getDisplayName());
-    		if(exam.getDeadline().after(submission.getDeliverDate())){
+    		if (exam.getDeadline().after(submission.getDeliverDate())) {
     			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
-    		}else{
+    		} else {
     			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
     		}
        	}
@@ -168,9 +167,9 @@ public class PaperSubmissionServiceImpl
 		submission.setFirstName(user.getFirstName());
 		submission.setLastName(user.getLastName());
 		submission.setDisplayName(user.getDisplayName());
-		if(exam.getDeadline().after(submission.getDeliverDate())){
+		if (exam.getDeadline().after(submission.getDeliverDate())){
 			submission.setSubmissionStatus(SubmissionStatus.IN_TIME);
-		}else{
+		} else {
 			submission.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
 		}
 
@@ -219,7 +218,7 @@ public class PaperSubmissionServiceImpl
 		final ExamInfo exam = getExam(paperSubmissionInfo.getExamId());
 		
 		paperSubmissionInfo.setDeliverDate(new Date());		
-		if(paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.IN_TIME) && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())){
+		if (paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.IN_TIME) && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())) {
 			//Creating a new exam which delivery date is not in time
 			final PaperSubmissionInfo newSubmissionInfo = new PaperSubmissionInfo();			
 			newSubmissionInfo.setDeliverDate(paperSubmissionInfo.getDeliverDate());
@@ -228,8 +227,7 @@ public class PaperSubmissionServiceImpl
 			this.createPaperSubmission(newSubmissionInfo);
 			
 			return newSubmissionInfo;
-			
-		}else{
+		} else {
 			//PaperSubmission is still in time and will be updated
 			final PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
 			
@@ -258,8 +256,7 @@ public class PaperSubmissionServiceImpl
 	@Override
 	protected List handleFindActiveExamsByDomainId(Long domainId) {
 		Validate.notNull(domainId, "courseId cannot be null.");
-
-		// FIXME could be better done with HQL statement.
+		
 		final List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	
 		final List<ExamInfo> activeExams = new ArrayList<ExamInfo>();
@@ -281,11 +278,10 @@ public class PaperSubmissionServiceImpl
 	protected List handleFindInactiveExamsByDomainId(Long domainId) {
 		Validate.notNull(domainId, "domainId cannot be null.");
     	
-		// FIXME could be better done with HQL statement.
 		final List<ExamInfo> exams = getExamDao().findByDomainId(ExamDao.TRANSFORM_EXAMINFO, domainId);
     	
     	final List<ExamInfo> inactiveExams = new ArrayList<ExamInfo>();
-    	Date now = new Date(); // NOPMD
+    	final Date now = new Date(); // NOPMD
     	for (ExamInfo exam : exams){
     		if (exam.getDeadline().before(now)) {
     			inactiveExams.add(exam);
@@ -311,29 +307,30 @@ public class PaperSubmissionServiceImpl
     	
     	final List<UserInfo> members = loadCourseMembers(exam.getDomainId());
     	
-    	//A list of PaperSubmissions is created, whereas for each Member of the course at least one and at most two PaperSubmissionInfos a created
+    	// A list of PaperSubmissions is created, whereas for each Member of the course at least one and at most two PaperSubmissionInfos a created
     	for(UserInfo member : members){
     		boolean submitted = false; // NOPMD
     		
-    		for(PaperSubmissionInfo submission : submissions){
-    			if(member.getId().equals(submission.getUserId())){
+    		for (PaperSubmissionInfo submission : submissions) {
+    			if (member.getId().equals(submission.getUserId())) {
     				final PaperSubmissionInfo paper = new PaperSubmissionInfo(); // NOPMD
     				paper.setUserId(member.getId());
-    				paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
+    				paper.setDisplayName(member.getLastName() + ", " + member.getFirstName());
     	    		paper.setId(submission.getId());
     				paper.setSubmissionStatus(submission.getSubmissionStatus());
     				allSubmissions.add(paper);
  					submitted = true; // NOPMD
     			}
     		}
-    		if (!submitted){
+    		if (!submitted) {
     			final PaperSubmissionInfo paper = new PaperSubmissionInfo(); // NOPMD
     			paper.setUserId(member.getId());
-          		paper.setDisplayName(member.getLastName()+", "+member.getFirstName());
+          		paper.setDisplayName(member.getLastName() + ", " + member.getFirstName());
     			paper.setSubmissionStatus(SubmissionStatus.NOT_SUBMITTED);
 				allSubmissions.add(paper);
     		}
     	}
+    	
     	return allSubmissions;
 	}
 	
@@ -342,11 +339,10 @@ public class PaperSubmissionServiceImpl
 	 */
 	@SuppressWarnings("unchecked") // NOPMD
 	private List<UserInfo> loadCourseMembers(long domainId) {
-		// FIXME: extremely dirty!!! There must be an easier way
-		Group group = getParticipantsGroup(domainId);
+		final Group group = getParticipantsGroup(domainId);
 		
-		List<Authority> members = group.getMembers();
-		List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
+		final List<Authority> members = group.getMembers();
+		final List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
 		for (Authority auth : members) {
 			courseMembers.add(getSecurityService().getUser(auth.getId()));
 		}
@@ -363,20 +359,21 @@ public class PaperSubmissionServiceImpl
 		Validate.notNull(submissions, "submissions cannot be null.");
 		final List<FileInfo> allFiles = new ArrayList<FileInfo>();
 		
-		for(PaperSubmissionInfo submission: (Collection<PaperSubmissionInfo>)submissions){
+		for (PaperSubmissionInfo submission: (Collection<PaperSubmissionInfo>)submissions) {
 			final List<FileInfo> filesOfSubmission = new ArrayList<FileInfo>(); // NOPMD 
 			
 			final FolderInfo folder = getDocumentService().getFolder(submission); 
 			final List<FolderEntryInfo> files = getDocumentService().getFolderEntries(submission, folder);
 			filesOfSubmission.addAll(getDocumentService().allFileEntries(files));
 			
-			for(FileInfo file : filesOfSubmission){
-				String path = submission.getFirstName()+"_"+submission.getLastName();
+			for (FileInfo file : filesOfSubmission) {
+				final String path = submission.getFirstName() + "_" + submission.getLastName();
 				file.setPath(path);
 				file.setAbsoluteName(path + "/" + file.getFileName());
 			}
 			allFiles.addAll(filesOfSubmission);
 		}
+		
 		return allFiles;
 	}
 

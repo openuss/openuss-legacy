@@ -64,8 +64,7 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	 * @param toValidate
 	 * @param value
 	 */
-	public void validateRemoveConfirmation(final FacesContext context, final UIComponent toValidate, 
-			final Object value) {
+	public void validateRemoveConfirmation(final FacesContext context, final UIComponent toValidate, final Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
 			((UIInput) toValidate).setValid(false);
