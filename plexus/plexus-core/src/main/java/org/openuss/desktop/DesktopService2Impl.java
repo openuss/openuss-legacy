@@ -906,9 +906,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 
 		}
 
-		private Long processSeminarpool(Seminarpool seminarpool) {
-			return null;
-		}
+		
 		
 		/*
 		 * Holds all relevant information that is displayed on the MyUni page

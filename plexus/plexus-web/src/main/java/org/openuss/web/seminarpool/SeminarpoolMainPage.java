@@ -41,13 +41,13 @@ public class SeminarpoolMainPage extends AbstractSeminarpoolPage {
 			userInfoList = getSeminarpoolAdministrationService().getAllSeminarpoolAdmins(seminarpoolInfo.getId());
 		}
 		//Check phase
-		if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.PREPARATIONPHASE){
+		if(seminarpoolInfo != null && seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.PREPARATIONPHASE){
 			if(seminarpoolInfo.getRegistrationStartTime().getTime()< System.currentTimeMillis() && System.currentTimeMillis() < seminarpoolInfo.getRegistrationEndTime().getTime()){
 				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONPHASE);
 				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);
 			}
 		}
-		else if(seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE && System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
+		else if(seminarpoolInfo != null && seminarpoolInfo.getSeminarpoolStatus() == SeminarpoolStatus.REGISTRATIONPHASE && System.currentTimeMillis() > seminarpoolInfo.getRegistrationEndTime().getTime()){
 	
 				seminarpoolInfo.setSeminarpoolStatus(SeminarpoolStatus.REGISTRATIONCOMPLETEPHASE);
 				this.seminarpoolAdministrationService.updateSeminarpool(seminarpoolInfo);

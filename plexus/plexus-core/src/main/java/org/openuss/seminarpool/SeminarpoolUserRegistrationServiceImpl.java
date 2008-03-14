@@ -13,6 +13,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.openuss.desktop.DesktopInfo;
+import org.openuss.lecture.CourseMember;
+import org.openuss.lecture.CourseMemberType;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -186,19 +188,49 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected void handleInformParticipantsByMail(Long seminarpoolId)
 			throws Exception {
-		String assignedcourses="";
+		StringBuffer assignedcourses=new StringBuffer();
 		Validate.notNull(seminarpoolId, "handleInformParticipantsByMail ==> seminarpoolId connot be null");
 		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
 		Map<String, String> parameters = new HashMap<String, String>();
-		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
 		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
+		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
 		List<SeminarPlaceAllocationInfo> courseList = this.getSeminarpoolAdministrationService().getAllocationsByUserAndSeminarpool(sur.getUser().getId(), seminarpoolId);
 		for(SeminarPlaceAllocationInfo spai : courseList){
-			assignedcourses += spai.getCourseName()+"<br />";
+			assignedcourses.append(spai.getCourseName());
+			assignedcourses.append("<br />");
 		}
-		parameters.put("courses", assignedcourses);
+		parameters.put("courses", assignedcourses.toString());
 		getMessageService().sendMessage(seminarpool.getName() + "(" + seminarpool.getShortcut() + ")",
 				"seminarpool.application.subject", "seminarpoolapplication", parameters, sur.getUser());
+		}
+	}
+	
+	@Override
+	protected void handleInformLecturerByMail(Long seminarpoolId)
+			throws Exception {
+		StringBuffer participants = new StringBuffer();
+		Validate.notNull(seminarpoolId, "handleInformLecturerByMail ==> seminarpoolId connot be null");
+		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
+		Map<String, String> parameters = new HashMap<String, String>();
+		Collection<CourseSeminarpoolAllocation> courseList = seminarpool.getCourseSeminarpoolAllocation();
+		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
+		for(CourseSeminarpoolAllocation course : courseList){
+			parameters.put("course", course.getCourse().getName());
+			List<SeminarPlaceAllocationInfo> participantsList = this.getSeminarpoolAdministrationService().getAllocationsByCourse(course.getCourse().getId(), seminarpoolId);
+			for(SeminarPlaceAllocationInfo participant : participantsList){
+				participants.append(participant.getFirstName());
+				participants.append(' ');
+				participants.append(participant.getLastName());
+				participants.append("<br />");
+			}
+			parameters.put("participants", participants.toString());
+			List<CourseMember> courseMemberList = this.getCourseMemberDao().findByType(course.getCourse(), CourseMemberType.ASSISTANT);
+			List<User> user = new ArrayList<User>();
+			for(CourseMember courseMember : courseMemberList){
+				user.add(courseMember.getUser());
+			}
+			getMessageService().sendMessage(seminarpool.getName() + "(" + seminarpool.getShortcut() + ")",
+					"seminarpool.application.subject", "seminarpoolapplicationlecturer", parameters, user);
 		}
 	}
 

@@ -1,11 +1,12 @@
 package org.openuss.seminarpool.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 
 public class CourseSeminarpoolAllocationCourseNameComparator implements
-		Comparator<CourseSeminarpoolAllocationInfo> {
+		Comparator<CourseSeminarpoolAllocationInfo>, Serializable {
 
 	private final boolean isAscending;
 	

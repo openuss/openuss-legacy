@@ -30,7 +30,7 @@ public class CourseSeminarpoolAllocationDaoImpl
         	targetVO.setCourseName(this.getCourseDao().load(sourceEntity.getCourse().getId()).getName());
         	targetVO.setCourseShortcut(this.getCourseDao().load(sourceEntity.getCourse().getId()).getShortcut());
         } 
-        targetVO.setNumberOfRegistrations(new Long(sourceEntity.getSeminarPriority().size()));
+        targetVO.setNumberOfRegistrations(Long.valueOf(sourceEntity.getSeminarPriority().size()));
         
     }
 

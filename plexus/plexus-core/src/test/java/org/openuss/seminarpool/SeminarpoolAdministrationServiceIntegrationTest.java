@@ -304,8 +304,8 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		
 		
 		
-		assertTrue(course1Id == course1.getId() || course1Id == course2.getId());
-		assertTrue(course2Id == course1.getId() || course2Id == course2.getId());
+		assertTrue(course1Id.equals(course1.getId()) || course1Id.equals(course2.getId()));
+		assertTrue(course2Id.equals(course1.getId()) || course2Id.equals(course2.getId()));
 		
 		logger.debug("----> END access to findCoursesInSeminarpool test <---- ");
 	}
@@ -324,8 +324,8 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		Long seminarpool1Id = pools.get(0).getId();
 		Long seminarpool2Id = pools.get(1).getId();
 		
-		assertTrue(seminarpool1Id == seminarpool1.getId() || seminarpool1Id == seminarpool2.getId());
-		assertTrue(seminarpool2Id == seminarpool1.getId() || seminarpool2Id == seminarpool2.getId());
+		assertTrue(seminarpool1Id.equals(seminarpool1.getId()) || seminarpool1Id.equals(seminarpool2.getId()));
+		assertTrue(seminarpool2Id.equals(seminarpool1.getId()) || seminarpool2Id.equals(seminarpool2.getId()));
 		
 		logger.debug("----> END access to getAllSeminarpools test <---- ");
 	}
@@ -364,7 +364,6 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 	
 	public void testFindSeminarpoolsByUniversity(){
 		Seminarpool seminarpool1 = testUtility.createUniqueSeminarpoolinDB();
-		Seminarpool seminarpool2 = testUtility.createUniqueSeminarpoolinDB();
 		List <SeminarpoolInfo> sem = this.getSeminarpoolAdministrationService().findSeminarpoolsByUniversity(seminarpool1.getUniversity().getId());
 		assertEquals(1, sem.size());
 	}

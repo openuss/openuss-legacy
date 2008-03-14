@@ -558,7 +558,7 @@ public class SeminarpoolAdministrationServiceImpl extends
 			boolean courseInDepartment = false;
 			for(CourseSeminarpoolAllocationInfo csai : csaiList){
 				this.getCourseService().findCourse(csai.getCourseId());
-				if(this.getInstituteService().findInstitute(this.getCourseService().findCourse(csai.getCourseId()).getInstituteId()).getDepartmentId() == departmentId){
+				if(this.getInstituteService().findInstitute(this.getCourseService().findCourse(csai.getCourseId()).getInstituteId()).getDepartmentId().equals(departmentId)){
 					courseInDepartment=true;
 				}
 			}

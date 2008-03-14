@@ -24,7 +24,7 @@ public class CourseGroupImpl
 		if(user != null && !getUser().contains(user)){
 			getUser().add(user);
 		}
-		if (! user.getCourseGroup().contains(user) ){
+		if (user != null && ! user.getCourseGroup().contains(user) ){
 			user.getCourseGroup().add(this);
 		}
 	}
@@ -34,7 +34,7 @@ public class CourseGroupImpl
 		if(user != null){
 			getUser().remove(user);
 		}
-		if ( user.getCourseGroup().contains(this) ){
+		if (user != null && user.getCourseGroup().contains(this) ){
 			user.getCourseGroup().remove(this);
 		}
 	}

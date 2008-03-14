@@ -1,10 +1,11 @@
 package org.openuss.seminarpool.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.openuss.security.UserInfo;
 
-public class UserInfoLastNameComparator implements Comparator<UserInfo>{
+public class UserInfoLastNameComparator implements Comparator<UserInfo>, Serializable{
 
 	private final boolean isAscending;
 	

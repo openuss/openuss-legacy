@@ -1,10 +1,11 @@
 package org.openuss.seminarpool.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.openuss.seminarpool.SeminarpoolInfo;
 
-public class SeminarpoolInfoShortcutComperator implements Comparator<SeminarpoolInfo> {
+public class SeminarpoolInfoShortcutComperator implements Comparator<SeminarpoolInfo>, Serializable {
 	
 		private final boolean isAscending;
 		

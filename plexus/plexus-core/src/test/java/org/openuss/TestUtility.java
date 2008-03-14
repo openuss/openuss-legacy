@@ -878,7 +878,6 @@ public class TestUtility {
 	public UserGroup createUniqueUserGroupInDB() {
 
 		// Create a unique CourseType
-		GroupService groupService = new GroupServiceImpl();
 		UserGroup userGroup = UserGroup.Factory.newInstance();
 		userGroup.setName("UserGroup");
 		userGroup.setShortcut(unique("group"));

@@ -37,7 +37,7 @@ public class SeminarpoolAllocationServiceImpl extends
 	Simplex simplex;
 	long[][] table;
 	Seminarpool sp;
-	double[] sc1 = new double[variables + 1];
+	double[] sc1;
 
 	/**
 	 * @see org.openuss.seminarpool.SeminarpoolAllocationService#generateAllocation(java.lang.Long)

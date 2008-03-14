@@ -55,6 +55,8 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 		// Send Email
 		this.getSeminarpoolUserRegistrationService().informParticipantsByMail(
 				seminarpoolInfo.getId());
+		this.getSeminarpoolUserRegistrationService().informLecturerByMail(
+				seminarpoolInfo.getId());
 		this.getSeminarpoolUserRegistrationService().setBookmarksOnMyUniPage(
 				seminarpoolInfo.getId());
 		addMessage(i18n("seminarpool_allocation_complete_sucessfull"));
@@ -83,18 +85,26 @@ public class UserAllocationOverviewPage extends AbstractSeminarpoolPage {
 	}
 	
 	private String generateCVSstring(){
-		String cvs = "";
+		StringBuffer cvs = new StringBuffer();
 		List<CourseSeminarpoolAllocationInfo> csaiList = new ArrayList<CourseSeminarpoolAllocationInfo>(seminarpoolAdministrationService.findCoursesInSeminarpool(seminarpoolInfo.getId()));
 		for(CourseSeminarpoolAllocationInfo csai : csaiList){
-			cvs += csai.getCourseName() + "\t\t\t\r\n";
+			cvs.append(csai.getCourseName());
+			cvs.append("\t\t\t\r\n");
 			List<SeminarPlaceAllocationInfo> spaiList = new ArrayList<SeminarPlaceAllocationInfo>(seminarpoolAdministrationService.getAllocationsByCourse(csai.getCourseId(), csai.getSeminarpoolId()));
 			for(SeminarPlaceAllocationInfo spai : spaiList){
 				User user = this.securityService.getUser(spai.getUserId());
-				cvs += user.getFirstName() + "\t" + user.getLastName() + "\t" + user.getEmail() + "\t" + spai.getGroupName() + "\r\n";
+				cvs.append(user.getFirstName());
+				cvs.append('\t');
+				cvs.append(user.getLastName());
+				cvs.append('\t');
+				cvs.append(user.getEmail());
+				cvs.append('\t');
+				cvs.append(spai.getGroupName());
+				cvs.append("\r\n");
 			}
-			cvs += "\r\n";
+			cvs.append("\r\n");
 		}
-		return cvs;
+		return cvs.toString();
 	}
 
 

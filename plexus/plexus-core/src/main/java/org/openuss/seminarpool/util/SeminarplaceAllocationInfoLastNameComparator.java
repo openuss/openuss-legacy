@@ -1,10 +1,11 @@
 package org.openuss.seminarpool.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.openuss.seminarpool.SeminarPlaceAllocationInfo;
 
-public class SeminarplaceAllocationInfoLastNameComparator implements Comparator<SeminarPlaceAllocationInfo> {
+public class SeminarplaceAllocationInfoLastNameComparator implements Comparator<SeminarPlaceAllocationInfo>, Serializable {
 
 	private final boolean isAscending;
 	
