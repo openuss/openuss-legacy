@@ -97,7 +97,6 @@ public class OpenUSSWebDAVContext implements WebDAVContext {
 		return res;
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVContext#getCurLocale()
 	 */

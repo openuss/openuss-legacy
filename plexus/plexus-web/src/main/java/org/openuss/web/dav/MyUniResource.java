@@ -1,12 +1,15 @@
 package org.openuss.web.dav;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
@@ -29,108 +32,59 @@ import org.openuss.webdav.WebDAVStatusCodes;
  * Resource implementing a WebDAV view of MyUni.
  */
 public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
+	private Logger logger = Logger.getLogger(MyUniResource.class);
+	protected SecurityService securityService;
+	protected DesktopService2 desktopService;
+	protected DepartmentService departmentService;
 	
-	protected MyUniResource(WebDAVContext context, WebDAVPath path, long id) {
+	protected Collection<UniversityInfo> universities = null;
+	protected Collection<DepartmentInfo> departments = null;
+	protected Collection<InstituteInfo> institutes = null;
+	protected Collection<CourseInfo> courses = null;
+	
+	protected DesktopInfo desktopInfo = null;
+	
+	public MyUniResource(WebDAVContext context, WebDAVPath path, long id) {
 		super(context, path, id);
 		
 		desktopService = (DesktopService2)(getWAC().getBean("desktopService2"));
 		securityService = (SecurityService) getWAC().getBean(Constants.SECURITY_SERVICE);
+		departmentService = (DepartmentService)(getWAC().getBean(Constants.DEPARTMENT_SERVICE));
 	}
-	
-	protected SecurityService securityService;
-	protected DesktopService2 desktopService;
-	protected DepartmentService departmentService;
-	protected List<UniversityInfo> universities;
-	protected List<DepartmentInfo> departments;
-	protected List<InstituteInfo> institutes;
-	protected List<CourseInfo> courses;
-	protected DesktopInfo desktopInfo;
 	
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getChild(long, java.lang.String, org.openuss.webdav.WebDAVPath)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
-		if (desktopInfo == null) {
-			try {
-				desktopInfo = desktopService.findDesktopByUser(securityService.getCurrentUser().getId());
-			} catch (DesktopException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		if (universities == null) {
-			universities = desktopInfo.getUniversityInfos();
-		}
-		for (UniversityInfo u : universities) {
-			long uniID = u.getId();
-			if (uniID == id) {
-				return new UniversityResource(getContext(), path, u);
-			}
-			if (id == ID_NONE) {
-				if (sanitizeName(UniversityResource.getNameByData(u)).equals(name)) {
-					return new UniversityResource(getContext(), path, u);
-				}
+		for (UniversityInfo info : getUniversities()) {
+			if ((info.getId() == id) ||
+					((id == ID_NONE) && (sanitizeName(UniversityResource.getNameByData(info)).equals(name)))) {
+				return new UniversityResource(getContext(), path, info);
 			}
 		}
 		
-		if (institutes == null) {
-			institutes = desktopInfo.getInstituteInfos();
-		}
-		for (InstituteInfo i : institutes) {
-			long instID = i.getId();
-			
-			long depID = i.getDepartmentId();
-			if (departmentService == null){
-				departmentService = (DepartmentService)(getWAC().getBean(Constants.DEPARTMENT_SERVICE));
-			}
-			DepartmentInfo dep = departmentService.findDepartment(depID);
-			if (depID == id) {
-				return new DepartmentResource(getContext(), path, dep);
-			}
-			
-			if (instID == id) {
-				return new InstituteResource(getContext(), path, i);
-			}
-			if (id == ID_NONE) {
-				if (sanitizeName(InstituteResource.getNameByData(i)).equals(name)) {
-					return new InstituteResource(getContext(), path, i);
-				}
-				if (sanitizeName(DepartmentResource.getNameByData(dep)).equals(name)) {
-					return new DepartmentResource(getContext(), path, dep);
-				}
+		for (DepartmentInfo info : getDepartments()) {
+			if ((info.getId() == id) ||
+					((id == ID_NONE) && (sanitizeName(DepartmentResource.getNameByData(info)).equals(name)))) {
+				return new DepartmentResource(getContext(), path, info);
 			}
 		}
 		
-		if (departments == null) {
-			departments = desktopInfo.getDepartmentInfos();
-		}
-		for (DepartmentInfo d : departments) {
-			long depID = d.getId();
-			if (depID == id){
-				return new DepartmentResource(getContext(), path, d);
-			}
-			if (id == ID_NONE) {
-				if (sanitizeName(DepartmentResource.getNameByData(d)).equals(name)) {
-					return new DepartmentResource(getContext(), path, d);
-				}
+		for (InstituteInfo info : getInstitutes()) {
+			if ((info.getId() == id) ||
+					((id == ID_NONE) && (sanitizeName(InstituteResource.getNameByData(info)).equals(name)))) {
+				return new InstituteResource(getContext(), path, info);
 			}
 		}
 		
-		if (courses == null) {
-			courses = desktopInfo.getCourseInfos();
-		}
-		for (CourseInfo c : courses) {
-			long courseID = c.getId();
-			if (courseID == id){
-				return new CourseResource(getContext(), path, c);
-			}
-			if (id == ID_NONE) {
-				if (sanitizeName(CourseResource.getNameByData(c)).equals(name)) {
-					return new CourseResource(getContext(), path, c);
-				}
+		for (CourseInfo info : getCourses()) {
+			if ((info.getId() == id) ||
+					((id == ID_NONE) && (sanitizeName(CourseResource.getNameByData(info)).equals(name)))) {
+				return new CourseResource(getContext(), path, info);
 			}
 		}
+
 		return null;
 	}
 
@@ -163,63 +117,33 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.web.dav.SimpleWebDAVResource#getRawChildNames()
+	 * @see org.openuss.webdav.CollisionAvoidingSimpleWebDAVResource#getRawChildNames()
 	 */
-	@SuppressWarnings("unchecked")
-	@Override
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long, String> childNames = new HashMap<Long, String>();
-		if (desktopInfo == null){
-			try {
-				long userId = securityService.getCurrentUser().getId();
-				desktopInfo = desktopService.findDesktopByUser(userId);
-			} catch (DesktopException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		}
-		if (universities == null) {
-			universities = desktopInfo.getUniversityInfos();
-		}
-		for (UniversityInfo u : universities) {
-			long uniID = u.getId();
-			String name = UniversityResource.getNameByData(u);
-			childNames.put(uniID, name);
+		
+		for (UniversityInfo info : getUniversities()) {
+			String name = UniversityResource.getNameByData(info);
+			childNames.put(info.getId(), name);
 		}
 		
-		if (departments == null) {
-			departments = desktopInfo.getDepartmentInfos();
-		}
-		for (DepartmentInfo d : departments) {
-			long depID = d.getId();
-			String name = DepartmentResource.getNameByData(d);
-			childNames.put(depID, name);
+		for (DepartmentInfo info : getDepartments()) {
+			String name = DepartmentResource.getNameByData(info);
+			childNames.put(info.getId(), name);
 		}
 		
-		if (institutes == null) {
-			institutes = desktopInfo.getInstituteInfos();
-		}
-		for (InstituteInfo i : institutes) {
-			long depID = i.getDepartmentId();
-			if (departmentService == null){
-				departmentService = (DepartmentService)(getWAC().getBean(Constants.DEPARTMENT_SERVICE));
-			}
-			DepartmentInfo dep = departmentService.findDepartment(depID);
-			String depName = DepartmentResource.getNameByData(dep);
-			departments.add(dep);
-			childNames.put(depID, depName);
-			long instID = i.getId();
-			String name = InstituteResource.getNameByData(i);
-			childNames.put(instID, name);
+		for (InstituteInfo info : getInstitutes()) {
+			String name = InstituteResource.getNameByData(info);
+			childNames.put(info.getId(), name);
 		}
 		
-		if (courses == null) {
-			courses = desktopInfo.getCourseInfos();
+		for (CourseInfo info : getCourses()) {
+			String name = CourseResource.getNameByData(info);
+			childNames.put(info.getId(), name);
 		}
-		for (CourseInfo c : courses) {
-			long courseID = c.getId();
-			String name = CourseResource.getNameByData(c);
-			childNames.put(courseID, name);
-		}
+		
+		logger.error(childNames.size() + " entries");
+		
 		return childNames;
 	}
 
@@ -269,5 +193,74 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	 */
 	public boolean isCollection() {
 		return true;
+	}
+	
+	/**
+	 * @return All universities shown in MyUni.
+	 */
+	@SuppressWarnings("unchecked")
+	protected Collection<UniversityInfo> getUniversities() {
+		if (universities == null) {
+			universities = getDesktopInfo().getUniversityInfos();
+		}
+		
+		return universities;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Collection<DepartmentInfo> getDepartments() {
+		if (departments == null) {
+			departments = new TreeSet<DepartmentInfo>(new Comparator<DepartmentInfo>() {
+				public int compare(DepartmentInfo d1, DepartmentInfo d2) {
+					return d1.getId().compareTo(d2.getId());
+				}
+			}); 
+			departments.addAll(getDesktopInfo().getDepartmentInfos());
+			
+			for (InstituteInfo ii : getInstitutes()) {
+				DepartmentInfo di = departmentService.findDepartment(ii.getDepartmentId());
+				
+				departments.add(di);
+			}
+		}
+		
+		return departments;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Collection<InstituteInfo> getInstitutes() {
+		if (institutes == null) {
+			institutes = getDesktopInfo().getInstituteInfos();
+		}
+		
+		return institutes;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Collection<CourseInfo> getCourses() {
+		if (courses == null) {
+			courses = getDesktopInfo().getCourseInfos();
+		}
+		
+		return courses;
+	}
+
+	protected DesktopInfo getDesktopInfo() {
+		if (desktopInfo == null) {
+			try {
+				desktopInfo = desktopService.findDesktopByUser(getCurrentUserId());
+			} catch (DesktopException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		return desktopInfo;
+	}
+	
+	/**
+	 * @return The id of the currently logged in user
+	 */
+	protected long getCurrentUserId() {
+		return securityService.getCurrentUser().getId();
 	}
 }
