@@ -97,8 +97,6 @@ public class WorkspaceAddZipPage extends AbstractCollaborationPage{
 			for(FileInfo fileInfo : infos) {
 				fileInfo.setCreated(file.getCreated());
 				fileInfo.setModified(file.getCreated());
-				
-				permitRolesImageReadPermission(fileInfo);
 			}
 		}
 	}

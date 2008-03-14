@@ -42,7 +42,7 @@ public class WorkspaceServiceImpl extends
 		
 		workspaceInfo.setId(workspaceEntity.getId());
 		
-		getSecurityService().createObjectIdentity(workspaceEntity, new DefaultDomainObject(workspaceInfo.getDomainId()));
+		getSecurityService().createObjectIdentity(workspaceEntity, null);//new DefaultDomainObject(workspaceInfo.getDomainId()));
 		getSecurityService().setPermissions(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), workspaceEntity, LectureAclEntry.OGCRUD);
 	}
 

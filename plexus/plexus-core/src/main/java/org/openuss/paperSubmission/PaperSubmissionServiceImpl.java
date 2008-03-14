@@ -20,6 +20,7 @@ import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
 
 /**
  * @author  Projektseminar WS 07/08, Team Collaboration
@@ -43,7 +44,7 @@ public class PaperSubmissionServiceImpl
     	Validate.notNull(examEntity, "examEntity cannot be null");
     	
     	examInfo.setId(examEntity.getId());
-    	getSecurityService().createObjectIdentity(examEntity, examInfo.getDomainId());
+    	getSecurityService().createObjectIdentity(examEntity, null);//examInfo.getDomainId());
     	
     	if (examInfo.getAttachments() != null) {
     		LOGGER.debug("found " + examInfo.getAttachments().size()+" attachments.");
@@ -76,7 +77,7 @@ public class PaperSubmissionServiceImpl
     	getExamDao().update(exam);
     	
     	getSecurityService().createObjectIdentity(paperSubmissionEntity, paperSubmissionEntity.getExam());
-    	
+    	getSecurityService().setPermissions(user, paperSubmissionEntity, LectureAclEntry.PAPER_PARTICIPANT);
 	}
 
 	/** 

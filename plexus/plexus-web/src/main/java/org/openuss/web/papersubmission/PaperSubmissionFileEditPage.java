@@ -101,7 +101,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			}
 			
 			documentService.saveFileEntry(selectedFile);
-			permitRolesImageReadPermission(selectedFile);
 			
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
@@ -129,8 +128,6 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 			documentToSelectedFile(document);
 			FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
 			documentService.createFileEntry(selectedFile, folder);
-			
-			permitRolesImageReadPermission(selectedFile);
 			
 			uploadFileManager.removeDocument(document);
 			return true;

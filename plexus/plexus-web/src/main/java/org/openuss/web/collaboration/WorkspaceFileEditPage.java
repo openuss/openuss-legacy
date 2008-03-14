@@ -82,7 +82,6 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 			}
 			
 			documentService.saveFileEntry(selectedFile);
-			permitRolesImageReadPermission(selectedFile);
 			
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
@@ -105,8 +104,6 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		if (document != null) {
 			documentToSelectedFile(document);
 			documentService.createFileEntry(selectedFile, retrieveActualFolder());
-			
-			permitRolesImageReadPermission(selectedFile);
 			
 			uploadFileManager.removeDocument(document);
 			return true;

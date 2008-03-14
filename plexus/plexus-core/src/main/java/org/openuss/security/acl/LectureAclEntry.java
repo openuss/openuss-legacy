@@ -86,15 +86,18 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	// Default combinations of base course permissions
 	public static final int COURSE_PARTICIPANT = READ | PARTICIPATE;
 	
-	// Default combinations of base workspace permissions
-	public static final int WORKSPACE_PARTICIPANT = READ | CREATE | UPDATE | DELETE;
-	
 	// Combinations of base permissions we permit
 	public static final int RU = READ | UPDATE;
 	public static final int CRU = CREATE | RU;
 	public static final int CRUD = CRU | DELETE;
 	public static final int GCRUD = GRANT | CRUD;
 	public static final int OGCRUD = OWN | GCRUD;
+	
+	// Default combinations of base workspace permissions
+	public static final int WORKSPACE_PARTICIPANT = CRUD;
+	
+	// Default combinations of base papersubmission permissions
+	public static final Integer PAPER_PARTICIPANT = CRUD;
 	
 	private static final int[] validPermissions = {
 		GRANT, CREATE, READ, UPDATE, DELETE, ASSIST, PARTICIPATE, 
@@ -103,7 +106,7 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		DEPARTMENT_ADMINISTRATION, MANAGE_DEPARTMENT,
 		INSTITUTE_TUTOR, INSTITUTE_ASSIST, INSTITUTE_ADMINISTRATION, INSTITUTE_OWN
 	};
-	
+
 
 	@Override
 	public int[] getValidPermissions() {
@@ -115,19 +118,19 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 	 */
 	@Override
 	public String printPermissionsBlock(int mask) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(((mask & OWN) == OWN) ? "O" : "-");
 		sb.append(((mask & GRANT) == GRANT) ? "G" : "-");
 		sb.append(((mask & CREATE) == CREATE) ? "C" : "-");
 		sb.append(((mask & READ) == READ) ? "R" : "-");
 		sb.append(((mask & UPDATE) == UPDATE) ? "U" : "-");
 		sb.append(((mask & DELETE) == DELETE) ? "D" : "-");
-		sb.append("|");
+		sb.append('|');
 		sb.append(((mask & MANAGE_COURSE_TYPES) == MANAGE_COURSE_TYPES) ? "MS" : "--");
 		sb.append(((mask & MANAGE_PERIODS) == MANAGE_PERIODS) ? "MP" : "--");
 		sb.append(((mask & MANAGE_COURSES) == MANAGE_COURSES) ? "ME" : "--");
 		sb.append(((mask & MANAGE_NEWS) == MANAGE_NEWS) ? "MN" : "--");
-		sb.append("|");
+		sb.append('|');
 		sb.append(((mask & PARTICIPATE) == PARTICIPATE) ? "P" : "-");
 		sb.append(((mask & ASSIST) == ASSIST) ? "A" : "-");
 		return sb.toString();
@@ -164,35 +167,35 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return DELETE;
 	}
 
-	public int getDEPARTMENT_ADMINISTRATION() {
+	public int getDEPARTMENT_ADMINISTRATION() { // NOPMD by Administrator on 14.03.08 10:35
 		return DEPARTMENT_ADMINISTRATION;
 	}
 
-	public int getMANAGE_DEPARTMENT() {
+	public int getMANAGE_DEPARTMENT() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_DEPARTMENT;
 	}
 
-	public int getMANAGE_UNIVERSITY() {
+	public int getMANAGE_UNIVERSITY() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_UNIVERSITY;
 	}
 
-	public int getUNIVERSITY_ADMINISTRATION() {
+	public int getUNIVERSITY_ADMINISTRATION() { // NOPMD by Administrator on 14.03.08 10:35
 		return UNIVERSITY_ADMINISTRATION;
 	}
 
-	public int getINSTITUTE_ADMINISTRATION() {
+	public int getINSTITUTE_ADMINISTRATION() { // NOPMD by Administrator on 14.03.08 10:35
 		return INSTITUTE_ADMINISTRATION;
 	}
 
-	public int getINSTITUTE_ASSIST() {
+	public int getINSTITUTE_ASSIST() { // NOPMD by Administrator on 14.03.08 10:35
 		return INSTITUTE_ASSIST;
 	}
 
-	public int getINSTITUTE_OWN() {
+	public int getINSTITUTE_OWN() { // NOPMD by Administrator on 14.03.08 10:35
 		return INSTITUTE_OWN;
 	}
 
-	public int getINSTITUTE_TUTOR() {
+	public int getINSTITUTE_TUTOR() { // NOPMD by Administrator on 14.03.08 10:35
 		return INSTITUTE_TUTOR;
 	}
 
@@ -204,19 +207,19 @@ public class LectureAclEntry extends AbstractBasicAclEntry {
 		return GRANT;
 	}
 
-	public int getMANAGE_COURSES() {
+	public int getMANAGE_COURSES() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_COURSES;
 	}
 
-	public int getMANAGE_NEWS() {
+	public int getMANAGE_NEWS() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_NEWS;
 	}
 
-	public int getMANAGE_PERIODS() {
+	public int getMANAGE_PERIODS() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_PERIODS;
 	}
 
-	public int getMANAGE_COURSE_TYPES() {
+	public int getMANAGE_COURSE_TYPES() { // NOPMD by Administrator on 14.03.08 10:35
 		return MANAGE_COURSE_TYPES;
 	}
 

@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.documents.DocumentService;
-import org.openuss.documents.FileInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.paperSubmission.SubmissionStatus;
-import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
-import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -119,9 +116,4 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 		this.securityService = securityService;
 	}
 
-	protected void permitRolesImageReadPermission(FileInfo imageFile) {
-		// TODO should be done within the business layer
-		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
-		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
-	}
 }
