@@ -15,7 +15,7 @@ import org.openuss.web.Constants;
 
 /** Controller for the examremove.xhtml view.
  * 
- * @author Christian Beer
+ * @author Projektseminar WS 07/08, Team Collaboration
  */
 @Bean(name = "views$secured$papersubmission$examremove", scope = Scope.REQUEST)
 @View

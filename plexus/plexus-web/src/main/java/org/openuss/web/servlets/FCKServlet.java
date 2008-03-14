@@ -37,7 +37,7 @@ import org.fckfaces.util.Util;
  * Servlet that lets us extend the FCKeditor with own plugins without putting 
  * them into the classpath.
  * 
- * @author Christian Beer
+ * @author Projektseminar WS 07/08, Team Collaboration
  *
  */
 public class FCKServlet extends org.fckfaces.util.Servlet {

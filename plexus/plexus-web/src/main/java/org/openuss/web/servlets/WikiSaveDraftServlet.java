@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 /** Saves a draft of a wiki post. (currently only session-ping)
  *
- * @author Christian Beer
+ * @author Projektseminar WS 07/08, Team Collaboration
  */
 public class WikiSaveDraftServlet extends HttpServlet {
 	private static final long serialVersionUID = 5078393540079721424L;
