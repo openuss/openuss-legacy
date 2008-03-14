@@ -25,19 +25,13 @@ public class EndBeforeStartRegistrationDateValidator extends BaseBean implements
 	private static final Logger logger = Logger
 			.getLogger(EndBeforeStartRegistrationDateValidator.class);
 
-	public static final String SHORTCUT_MESSAGE_ID = "error_shortcut_already_exists";
-
 	public void validate(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
 		try {
 			// FIXME startdate should be configurable through validator tag
 			// attribute
-			UIComponent newuiop = component.getParent();
-			newuiop = newuiop.findComponent("start_time");
-			((UIOutput) newuiop).getValue();
 			
-			Date startDate = (Date) ((UIOutput) component.getParent()
-					.findComponent("start_time")).getValue();
+			Date startDate = (Date) ((UIOutput) component.getParent().findComponent("registrationStartTime")).getValue();
 			Date endDate = (Date) value;
 
 			if (startDate != null) {
@@ -56,15 +50,13 @@ public class EndBeforeStartRegistrationDateValidator extends BaseBean implements
 				if (startDate.after(endDate)) {
 					((UIInput) component).setValid(false);
 					addError(component.getClientId(context), "Enddate",
-							i18n("validate_error_end_date_after_start_date"));
+							i18n("seminarpool_validate_error_end_date_after_start_date"));
 				}
 			}
-
 		} catch (UniversityServiceException e) {
 			logger.error(e);
 			((UIInput) component).setValid(false);
 			addError(i18n(e.getMessage()));
 		}
 	}
-
 }

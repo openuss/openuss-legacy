@@ -65,6 +65,7 @@
 					maxlength="2" 
 					required="true">
 					<f:validateLongRange minimum="1" />
+					<f:validator validatorId="prioritiesSeminarsValidator"/>
 				</o:input>
 				<o:input
 					id="start_time"
@@ -83,6 +84,7 @@
 					property="registrationEndTime"
 					maxlength="16"
 					required="true" >
+					<f:validator validatorId="endBeforeStartRegistrationDateValidator"/>
 				</o:input>					
 					
 				<h:outputLabel value="#{msg.seminarpool_description}" for="descriptionTextField" styleClass="field_label"/>
