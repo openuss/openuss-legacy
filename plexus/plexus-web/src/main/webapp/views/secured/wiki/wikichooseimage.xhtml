@@ -107,16 +107,18 @@
 	                    storage="file" 
 	                    accept="image/*" 
 	                    immediate="true" 
+	                    validator="imageValidator"
 	                    styleClass="uploadField">
 	                    <f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
 	                </t:inputFileUpload>
-	                <h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
 
 	                <h:commandButton action="#{views$secured$wiki$wikichooseimage.save}"
 	                    value="#{msg['newdocument_button_save']}"
 	                    title="#{msg['newdocument_button_save']}" 
 	                    immediate="true"
 	                    styleClass="button_save" />
+	                    
+	                <h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
 	            </o:block>
             </h:form>
         </ui:define>
