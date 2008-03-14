@@ -151,14 +151,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String saveExam() throws DesktopException, LectureException {
 		LOGGER.debug("Starting method savePaper()");
-		// TODO implement save/update
-
-//		Date currentDate = new Date();
-//		if (examInfo.getDeadline().before(currentDate)) {
-//			addError(i18n("papersubmission_illegal_exam_message"));
-//			addError("deadline", "Enddate", i18n("papersubmission_illegal_exam_message"));
-//			return Constants.SUCCESS;
-//		}
 
 		if (examInfo.getId() == null) {
 			examInfo.setDomainId(courseInfo.getId());

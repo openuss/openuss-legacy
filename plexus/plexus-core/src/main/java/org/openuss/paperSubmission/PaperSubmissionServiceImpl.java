@@ -18,7 +18,6 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
-import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
