@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseService;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.PeriodInfo;
+import org.openuss.lecture.UniversityService;
 import org.openuss.web.Constants;
 import org.openuss.webdav.WebDAVConstants;
 import org.openuss.webdav.WebDAVContext;
@@ -18,18 +18,18 @@ import org.openuss.webdav.WebDAVResource;
  * A WebDAVResource representing an OpenUSS institute.
  */
 public class InstituteResource extends AbstractOrganisationResource{
-	protected CourseService courseService;
+	protected UniversityService universityService;
 	/**
 	 * Cache for the organization unit info objects contained in this one.
 	 */
-	protected Collection<CourseInfo> childrenData = null;
+	protected Collection<PeriodInfo> childrenData = null;
 	protected final InstituteInfo info;
 	
 	public InstituteResource(WebDAVContext context, WebDAVPath path, InstituteInfo info) {
 		super(context, path, info.getId());
 		this.info = info;
 		
-		courseService = (CourseService) getWAC().getBean(Constants.COURSE_SERVICE, CourseService.class);
+		universityService = (UniversityService) getWAC().getBean(Constants.UNIVERSITY_SERVICE);
 	}
 
 	/* (non-Javadoc)
@@ -37,21 +37,21 @@ public class InstituteResource extends AbstractOrganisationResource{
 	 */
 	@Override
 	protected WebDAVResource getChild(long id, String name, WebDAVPath path) {
-		CourseInfo resInfo = null;
+		PeriodInfo periodInfo = null;
 		
 		if (id != ID_NONE) {
-			resInfo = courseService.findCourse(id);
+			periodInfo = universityService.findPeriod(id);
 		} else {
-			for (CourseInfo childData : getSubCourses()) {
-				if (name.equals(sanitizeName(CourseResource.getNameByData(childData)))) {
-					resInfo = childData;
+			for (PeriodInfo childData : getChildrenData()) {
+				if (name.equals(sanitizeName(InstitutePeriodResource.getNameByData(childData)))) {
+					periodInfo = childData;
 					break;
 				}
 			}
 		}
 		
-		if (resInfo != null) {
-			return new CourseResource(getContext(), path, resInfo);
+		if (periodInfo != null) {
+			return new InstitutePeriodResource(getContext(), path, info, periodInfo);
 		}
 		
 		return null;
@@ -64,8 +64,8 @@ public class InstituteResource extends AbstractOrganisationResource{
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long,String> resMap = new TreeMap<Long, String>();
 
-		for (CourseInfo info : getSubCourses()) {
-			resMap.put(info.getId(), CourseResource.getNameByData(info));
+		for (PeriodInfo info : getChildrenData()) {
+			resMap.put(info.getId(), InstitutePeriodResource.getNameByData(info));
 		}
 
 		return resMap;
@@ -93,12 +93,12 @@ public class InstituteResource extends AbstractOrganisationResource{
 	}
 	
 	/**
-	 * @return All institutes in this department
+	 * @return All child organisations
 	 */
 	@SuppressWarnings("unchecked")
-	protected Collection<CourseInfo> getSubCourses() {
+	protected Collection<PeriodInfo> getChildrenData() {
 		if (childrenData == null) {
-			childrenData = courseService.findCoursesByInstituteAndEnabled(getId(), true);
+			childrenData = universityService.findPeriodsByInstituteWithCoursesOrActive(info);
 		}
 		
 		return childrenData;

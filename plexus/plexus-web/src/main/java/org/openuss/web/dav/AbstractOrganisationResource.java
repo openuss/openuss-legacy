@@ -17,7 +17,7 @@ public abstract class AbstractOrganisationResource extends CollisionAvoidingSimp
 	/**
 	 * The virtual ID of the root organisation.
 	 */
-	protected static long ID_ROOT = -1000;
+	protected static final long ID_ROOT = -1000;
 
 	/**
 	 * @param wac The bean factory
