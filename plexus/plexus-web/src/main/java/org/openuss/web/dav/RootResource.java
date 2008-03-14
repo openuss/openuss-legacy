@@ -1,6 +1,5 @@
 package org.openuss.web.dav;
 
-import java.util.AbstractCollection; // various TODOs
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -104,8 +103,7 @@ public class RootResource extends AbstractOrganisationResource {
 	 * @return The translated name of MyUni.
 	 */
 	protected String getMyUniName() {
-		// TODO localize
-		return "MyUni";
+		return getContext().i18n("desktop_command_myuni", "MyUni");
 	}
 
 	/* (non-Javadoc)

@@ -25,6 +25,9 @@ import org.openuss.webdav.WebDAVResource;
 import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 
+/**
+ * Resource implementing a WebDAV view of MyUni.
+ */
 public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	
 	protected MyUniResource(WebDAVContext context, WebDAVPath path, long id) {

@@ -1,6 +1,5 @@
 package org.openuss.web.dav;
 
-import java.util.AbstractCollection; // TODOs
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -103,7 +102,6 @@ public class CourseResource extends AbstractOrganisationResource{
 	 * @return The localized name of the document backend.
 	 */
 	protected String getMaterialsName() {
-		// TODO localize
-		return "documents";
+		return getContext().i18n("course_documents", "documents");
 	}
 }

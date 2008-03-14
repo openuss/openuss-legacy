@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.openuss.web.dav.OpenUSSWebDAVContext;
 import org.openuss.web.dav.RootResource;
 import org.openuss.webdav.IOContext;
 import org.openuss.webdav.MultiStatusAnswer;
@@ -332,12 +333,12 @@ public class WebDAVServlet extends HttpServlet {
  		
  		if (msg != null) {
  	 		String contentType = answer.getContentType();
- 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.CHARSET.name());
+ 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.DEFAULT_CHARSET.name());
  		}
  		
  		OutputStream os = response.getOutputStream();
  		if (msg != null) {
- 			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.CHARSET);
+ 			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.DEFAULT_CHARSET);
  			osw.write(msg);
  			osw.close();
  		}
@@ -532,11 +533,13 @@ public class WebDAVServlet extends HttpServlet {
 		String rlStr = getInitParameter(INIT_PARAMETER_READ_LIMIT);
 		readLimit = (rlStr == null) ? NO_LIMIT : Integer.valueOf(rlStr);
 		
-		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		String maxFileSizeStr = getInitParameter(INIT_PARAMETER_MAX_FILE_SIZE);
 		long maxFileSize = (maxFileSizeStr == null) ? WebDAVContext.NO_MAX_FILESIZE :
 				Long.valueOf(maxFileSizeStr);
-		davContext = new WebDAVContext(wac, maxFileSize);
+		
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		
+		davContext = new OpenUSSWebDAVContext(wac, maxFileSize);
 		
 		logger.info("ResourcePathPrefix: " + resourcePathPrefix);   
         logger.info(" init() done.");
