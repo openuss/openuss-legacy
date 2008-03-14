@@ -118,10 +118,21 @@ public class SeminarpoolAdministrationServiceImpl extends
 		// Clear Membership
 		getMembershipService().clearMembership(
 				seminarpoolEntity.getMembership());
-
+		deleteAllAllocationsFromSeminarpool(seminarpoolEntity);
 		getSeminarpoolDao().remove(seminarpoolId);
 	}
 
+	    private void deleteAllAllocationsFromSeminarpool(Seminarpool seminarpool){
+	        for (CourseSeminarpoolAllocation courseSeminarpoolAllocation : seminarpool.getCourseSeminarpoolAllocation()) {
+	        for (CourseGroup courseGroup : courseSeminarpoolAllocation.getCourseGroup()){
+	            for (User user : courseGroup.getUser()) {
+	            user.getCourseGroup().remove(courseGroup);
+	            }
+	            courseGroup.getUser().clear();
+	        }
+	        }
+	    }
+	
 	/**
 	 * @see org.openuss.seminarpool.SeminarpoolAdministrationService#addSeminarpoolAdmin(java.lang.Long,
 	 *      java.lang.Long)

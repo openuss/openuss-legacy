@@ -57,12 +57,9 @@ public class CourseSeminarpoolAllocationDaoImpl
      */
     private org.openuss.seminarpool.CourseSeminarpoolAllocation loadCourseSeminarpoolAllocationFromCourseSeminarpoolAllocationInfo(org.openuss.seminarpool.CourseSeminarpoolAllocationInfo courseSeminarpoolAllocationInfo)
     {
-    	CourseSeminarpoolAllocation courseSeminarpoolAllocation = null;
+    	CourseSeminarpoolAllocation courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
     	if(courseSeminarpoolAllocationInfo != null && courseSeminarpoolAllocationInfo.getId() != null){
     		courseSeminarpoolAllocation = this.load(courseSeminarpoolAllocationInfo.getId());
-    	}
-    	if(courseSeminarpoolAllocation == null){
-    		courseSeminarpoolAllocation = CourseSeminarpoolAllocation.Factory.newInstance();
     	}
     	return courseSeminarpoolAllocation;
     }
@@ -159,9 +156,6 @@ public class CourseSeminarpoolAllocationDaoImpl
         // @todo verify behavior of seminarPlaceAllocationInfoToEntity
         org.openuss.seminarpool.CourseSeminarpoolAllocation entity = this.loadCourseSeminarpoolAllocationFromSeminarPlaceAllocationInfo(seminarPlaceAllocationInfo);
         this.seminarPlaceAllocationInfoToEntity(seminarPlaceAllocationInfo, entity, true);
-        if(seminarPlaceAllocationInfo.getCourseId() != null){
-        
-        }
         return entity;
     }
 

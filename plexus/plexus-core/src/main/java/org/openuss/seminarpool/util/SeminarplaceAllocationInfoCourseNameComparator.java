@@ -8,18 +8,18 @@ public class SeminarplaceAllocationInfoCourseNameComparator implements
 				Comparator<SeminarPlaceAllocationInfo> {
 
 
-	private boolean isAscending;
+	private final boolean isAscending;
 	
 	public SeminarplaceAllocationInfoCourseNameComparator(boolean isAscending){
 		this.isAscending = isAscending;
 	}
 
 	
-	public int compare(SeminarPlaceAllocationInfo f1, SeminarPlaceAllocationInfo f2) {
+	public int compare(SeminarPlaceAllocationInfo objectOne, SeminarPlaceAllocationInfo objectTwo) {
 		if (isAscending) {
-			return f1.getCourseName().compareToIgnoreCase(f2.getCourseName());
+			return objectOne.getCourseName().compareToIgnoreCase(objectTwo.getCourseName());
 		} else {
-			return f2.getCourseName().compareToIgnoreCase(f1.getCourseName());
+			return objectTwo.getCourseName().compareToIgnoreCase(objectOne.getCourseName());
 		}
 	}
 

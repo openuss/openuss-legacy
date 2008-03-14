@@ -36,8 +36,7 @@ public class SeminarpoolUserRegistrationServiceImpl
 	@Override
 	protected Long handleRegisterUserForSeminarpool(
 			SeminarUserRegistrationInfo userRegistrationInfo,
-			 Collection conditionValue)
-			throws Exception {
+			 Collection conditionValue) {
 		Validate.notNull(userRegistrationInfo, "handleEditUserRegistration UserRegistrationInfo cannot be null");
 		Validate.notNull(userRegistrationInfo.getSeminarPriorityList(), "handleEditUserRegistration SeminarPriorities cannot be null");
 		SeminarUserRegistration targetEntity = 	getSeminarUserRegistrationDao().seminarUserRegistrationInfoToEntity(userRegistrationInfo);

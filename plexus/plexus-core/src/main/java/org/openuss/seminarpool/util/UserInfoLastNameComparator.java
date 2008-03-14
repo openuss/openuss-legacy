@@ -6,17 +6,17 @@ import org.openuss.security.UserInfo;
 
 public class UserInfoLastNameComparator implements Comparator<UserInfo>{
 
-	private boolean isAscending;
+	private final boolean isAscending;
 	
 	public UserInfoLastNameComparator(boolean isAscending){
 		this.isAscending = isAscending;
 	}
 
-	public int compare(UserInfo f1, UserInfo f2) {
+	public int compare(UserInfo nameOne, UserInfo nameTwo) {
 		if (isAscending) {
-			return f1.getLastName().compareToIgnoreCase(f2.getLastName());
+			return nameOne.getLastName().compareToIgnoreCase(nameTwo.getLastName());
 		} else {
-			return f2.getLastName().compareToIgnoreCase(f1.getLastName());
+			return nameTwo.getLastName().compareToIgnoreCase(nameOne.getLastName());
 		}
 	}
 

@@ -69,10 +69,8 @@ public class CourseSeminarpoolAllocationImpl
      */
     public void removeCourseGroup(org.openuss.seminarpool.CourseGroup courseGroup)
     {
-		if (getCourseGroup().remove(courseGroup)) {
-			if (courseGroup.getCourseSeminarpoolAllocation().equals(this)) {
+		if (getCourseGroup().remove(courseGroup) && courseGroup.getCourseSeminarpoolAllocation().equals(this)) {
 				courseGroup.setCourseSeminarpoolAllocation(null);
-			}
 		}
     }
 

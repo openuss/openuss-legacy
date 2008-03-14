@@ -38,10 +38,8 @@ public class SeminarUserRegistrationImpl
     {
 		Validate.notNull(priority, "SeminarPriority cannot be null");
 
-		if (getSeminarPriority().remove(priority)) {
-			if (priority.getSeminarUserRegistration().equals(this)) {
-				priority.setSeminarUserRegistration(null);
-			}
+		if (getSeminarPriority().remove(priority) && priority.getSeminarUserRegistration().equals(this)) {
+			priority.setSeminarUserRegistration(null);
 		}
 		if (priority.getCourseSeminarPoolAllocation().getSeminarPriority().remove(priority) ){
 			priority.setCourseSeminarPoolAllocation(null);
@@ -62,10 +60,8 @@ public class SeminarUserRegistrationImpl
 	public void removeUserCondition(
 			SeminarUserConditionValue seminarUserConditionValue) {
 		Validate.notNull(seminarUserConditionValue, "SeminarPriority cannot be null");
-		if (getSeminarUserConditionValue().remove(seminarUserConditionValue)) {
-			if (seminarUserConditionValue.getSeminarUserRegistration().equals(this)) {
+		if (getSeminarUserConditionValue().remove(seminarUserConditionValue) && seminarUserConditionValue.getSeminarUserRegistration().equals(this)) {
 				seminarUserConditionValue.setSeminarUserRegistration(null);
-			}
 		}
 	}
 

@@ -24,8 +24,9 @@ public class CourseGroupDaoImpl
         org.openuss.seminarpool.CourseGroupInfo targetVO)
     {
         super.toCourseGroupInfo(sourceEntity, targetVO);
-        if(sourceEntity.getCourseSeminarpoolAllocation() != null && sourceEntity.getCourseSeminarpoolAllocation().getId() != null)
-        targetVO.setCourseSeminarpoolAllocationId(sourceEntity.getCourseSeminarpoolAllocation().getId());
+        if(sourceEntity.getCourseSeminarpoolAllocation() != null && sourceEntity.getCourseSeminarpoolAllocation().getId() != null) {
+        	targetVO.setCourseSeminarpoolAllocationId(sourceEntity.getCourseSeminarpoolAllocation().getId());
+        }
         if (sourceEntity.getCourseSchedule() != null && sourceEntity.getCourseSchedule().size() > 0){
         	List<CourseScheduleInfo> courseScheduleInfoList = new ArrayList<CourseScheduleInfo>();
         	for (CourseSchedule courseScheduleEntity : sourceEntity.getCourseSchedule()){	
@@ -58,12 +59,9 @@ public class CourseGroupDaoImpl
      */
     private org.openuss.seminarpool.CourseGroup loadCourseGroupFromCourseGroupInfo(org.openuss.seminarpool.CourseGroupInfo courseGroupInfo)
     {
-        CourseGroup courseGroup = null;
+        CourseGroup courseGroup = CourseGroup.Factory.newInstance();
         if(courseGroupInfo != null && courseGroupInfo.getId() != null){
         	courseGroup = this.load(courseGroupInfo.getId());
-        }
-        if(courseGroup == null){
-        	courseGroup = CourseGroup.Factory.newInstance();
         }
         return courseGroup;
     }

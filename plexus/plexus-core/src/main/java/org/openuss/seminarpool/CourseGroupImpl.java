@@ -49,10 +49,8 @@ public class CourseGroupImpl
 
 	@Override
 	public void removeCourseGroup(CourseSchedule courseSchedule) {
-		if (getCourseSchedule().remove(courseSchedule)) {
-			if (courseSchedule.getCourseGroup().equals(this)) {
+		if (getCourseSchedule().remove(courseSchedule) && courseSchedule.getCourseGroup().equals(this)) {
 				courseSchedule.setCourseGroup(null);
-			}
 		}
 	}
 

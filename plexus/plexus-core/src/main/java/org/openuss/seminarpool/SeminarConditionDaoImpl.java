@@ -47,9 +47,9 @@ public class SeminarConditionDaoImpl
      */
     private org.openuss.seminarpool.SeminarCondition loadSeminarConditionFromSeminarConditionInfo(org.openuss.seminarpool.SeminarConditionInfo seminarConditionInfo)
     {
-    	SeminarCondition seminarCondition = null;
-        if(seminarConditionInfo != null && seminarConditionInfo.getId() != null){
-        	seminarCondition = this.load(seminarConditionInfo.getId());
+        SeminarCondition seminarCondition = null;
+    	if(seminarConditionInfo != null && seminarConditionInfo.getId() != null){
+        	seminarCondition =  this.load(seminarConditionInfo.getId());
         }
         if(seminarCondition == null){
         	seminarCondition = SeminarCondition.Factory.newInstance();

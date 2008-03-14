@@ -6,17 +6,17 @@ import org.openuss.seminarpool.SeminarpoolInfo;
 
 public class SeminarpoolInfoNameComparator implements Comparator<SeminarpoolInfo>{
 	
-		private boolean isAscending;
+		private final boolean isAscending;
 		
 		public SeminarpoolInfoNameComparator(boolean isAscending){
 			this.isAscending = isAscending;
 		}
 
-		public int compare(SeminarpoolInfo f1, SeminarpoolInfo f2) {
+		public int compare(SeminarpoolInfo nameOne, SeminarpoolInfo nameTwo) {
 			if (isAscending) {
-				return f1.getName().compareToIgnoreCase(f2.getName());
+				return nameOne.getName().compareToIgnoreCase(nameTwo.getName());
 			} else {
-				return f2.getName().compareToIgnoreCase(f1.getName());
+				return nameTwo.getName().compareToIgnoreCase(nameOne.getName());
 			}
 		}
 }

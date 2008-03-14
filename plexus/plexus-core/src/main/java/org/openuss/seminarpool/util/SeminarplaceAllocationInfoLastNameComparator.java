@@ -2,23 +2,22 @@ package org.openuss.seminarpool.util;
 
 import java.util.Comparator;
 
-import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 import org.openuss.seminarpool.SeminarPlaceAllocationInfo;
 
 public class SeminarplaceAllocationInfoLastNameComparator implements Comparator<SeminarPlaceAllocationInfo> {
 
-	private boolean isAscending;
+	private final boolean isAscending;
 	
 	public SeminarplaceAllocationInfoLastNameComparator(boolean isAscending){
 		this.isAscending = isAscending;
 	}
 
 	
-	public int compare(SeminarPlaceAllocationInfo f1, SeminarPlaceAllocationInfo f2) {
+	public int compare(SeminarPlaceAllocationInfo nameOne, SeminarPlaceAllocationInfo nameTwo) {
 		if (isAscending) {
-			return f1.getLastName().compareToIgnoreCase(f2.getLastName());
+			return nameOne.getLastName().compareToIgnoreCase(nameTwo.getLastName());
 		} else {
-			return f2.getLastName().compareToIgnoreCase(f1.getLastName());
+			return nameTwo.getLastName().compareToIgnoreCase(nameOne.getLastName());
 		}
 	}
 

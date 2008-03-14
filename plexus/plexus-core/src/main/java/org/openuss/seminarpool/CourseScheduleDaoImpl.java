@@ -20,8 +20,9 @@ public class CourseScheduleDaoImpl
         org.openuss.seminarpool.CourseScheduleInfo targetVO)
     {
         super.toCourseScheduleInfo(sourceEntity, targetVO);
-        if(sourceEntity.getCourseGroup() != null)
-        targetVO.setCourseGroupId(sourceEntity.getCourseGroup().getId());
+        if (sourceEntity.getCourseGroup() != null) {
+        	targetVO.setCourseGroupId(sourceEntity.getCourseGroup().getId());
+        }
     }
 
 

@@ -6,7 +6,7 @@ import org.openuss.seminarpool.SeminarpoolInfo;
 
 public class SeminarpoolInfoShortcutComperator implements Comparator<SeminarpoolInfo> {
 	
-		private boolean isAscending;
+		private final boolean isAscending;
 		
 		public SeminarpoolInfoShortcutComperator(boolean isAscending){
 			this.isAscending = isAscending;
@@ -14,11 +14,11 @@ public class SeminarpoolInfoShortcutComperator implements Comparator<Seminarpool
 
 
 	
-		public int compare(SeminarpoolInfo f1, SeminarpoolInfo f2) {
+		public int compare(SeminarpoolInfo nameOne, SeminarpoolInfo nameTwo) {
 			if (isAscending) {
-				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
+				return nameOne.getShortcut().compareToIgnoreCase(nameTwo.getShortcut());
 			} else {
-				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
+				return nameTwo.getShortcut().compareToIgnoreCase(nameOne.getShortcut());
 			}
 		}
 }

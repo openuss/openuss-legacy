@@ -7,18 +7,18 @@ import org.openuss.seminarpool.CourseSeminarpoolAllocationInfo;
 public class CourseSeminarpoolAllocationCourseNameComparator implements
 		Comparator<CourseSeminarpoolAllocationInfo> {
 
-	private boolean isAscending;
+	private final boolean isAscending;
 	
 	public CourseSeminarpoolAllocationCourseNameComparator(boolean isAscending){
 		this.isAscending = isAscending;
 	}
 
 	
-	public int compare(CourseSeminarpoolAllocationInfo f1, CourseSeminarpoolAllocationInfo f2) {
+	public int compare(CourseSeminarpoolAllocationInfo objectOne, CourseSeminarpoolAllocationInfo objectTwo) {
 		if (isAscending) {
-			return f1.getCourseName().compareToIgnoreCase(f2.getCourseName());
+			return objectOne.getCourseName().compareToIgnoreCase(objectTwo.getCourseName());
 		} else {
-			return f2.getCourseName().compareToIgnoreCase(f1.getCourseName());
+			return objectTwo.getCourseName().compareToIgnoreCase(objectOne.getCourseName());
 		}
 	}
 
