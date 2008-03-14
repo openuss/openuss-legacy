@@ -18,6 +18,7 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -49,6 +50,12 @@ public class PaperSubmissionServiceImpl
     	if (examInfo.getAttachments() != null) {
     		LOGGER.debug("found " + examInfo.getAttachments().size()+" attachments.");
 			getDocumentService().diffSave(examEntity, examInfo.getAttachments());
+			
+			// set correct permissions for users
+			for (FileInfo file : (List<FileInfo>) examInfo.getAttachments()) {
+				Group group = getParticipantsGroup(examInfo.getDomainId());
+				getSecurityService().setPermissions(group, file, LectureAclEntry.READ);
+			}
 		}
 
 		getExamDao().toExamInfo(examEntity, examInfo);
@@ -337,7 +344,7 @@ public class PaperSubmissionServiceImpl
 	@SuppressWarnings("unchecked") // NOPMD
 	private List<UserInfo> loadCourseMembers(long domainId) {
 		// FIXME: extremely dirty!!! There must be an easier way
-		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
+		Group group = getParticipantsGroup(domainId);
 		
 		List<Authority> members = group.getMembers();
 		List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
@@ -390,6 +397,10 @@ public class PaperSubmissionServiceImpl
 		}
 		
 		return inTimeSubmissions;
+	}
+	
+	private Group getParticipantsGroup(Long domainId) {
+		return getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
 	}
 
 }
