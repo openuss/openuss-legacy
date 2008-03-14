@@ -39,7 +39,7 @@
 	     	rows="20">    
 			<t:column>
 				<plexus:commandSortHeader columnName="name">#{msg.seminarpool_participants_coursename}</plexus:commandSortHeader> 
-				<b><h:outputText value="#{bean.userFirstName} (#{bean.userLastName})"/></b>
+				<b><h:outputText value="#{bean.userFirstName} #{bean.userLastName}"/></b>
 			</t:column>
 			<t:column>
 				<plexus:commandSortHeader columnName="priority">#{msg.seminarpool_participants_priority}</plexus:commandSortHeader> 
