@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
+import org.openuss.desktop.Desktop;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.University;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
@@ -140,18 +140,15 @@ public class SeminarpoolAdministrationServiceImpl extends
 	protected void handleAddSeminarpoolAdmin(java.lang.Long userId,
 			java.lang.Long seminarpoolId) throws java.lang.Exception {
 		Seminarpool seminarpool = getSeminarpoolDao().load(seminarpoolId);
-		Validate
-				.notNull(seminarpool,
-						"No Seminarpool found corresponding to the ID "
-								+ seminarpoolId);
-
+		Validate.notNull(seminarpool, "No Seminarpool found corresponding to the ID " + seminarpoolId);
 		User user = getUserDao().load(userId);
 		Validate.notNull(user, "No User found corresponding to the ID " + user);
-		this.getMembershipService()
-				.addMember(seminarpool.getMembership(), user);
+		this.getMembershipService().addMember(seminarpool.getMembership(), user);
 		for (Group group : seminarpool.getMembership().getGroups()) {
 			getSecurityService().addAuthorityToGroup(user, group);
 		}
+		Desktop desktop = getDesktopDao().findByUser(user);
+		getDesktopService2().linkSeminarpool(desktop.getId(), seminarpool.getId());
 
 	}
 
