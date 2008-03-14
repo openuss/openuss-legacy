@@ -23,6 +23,7 @@ import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
+import org.openuss.web.system.AbstractLdapServerPage;
 
 /**
  * Backing bean for the ldap_server registration. Is responsible starting the
@@ -35,98 +36,23 @@ import org.openuss.web.PageLinks;
 
 @Bean(name = Constants.LDAP_SERVER_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
 @View
-
-public class LdapServerRegistrationController extends BasePage {
+public class LdapServerRegistrationController extends AbstractLdapServerPage {
 
 	
 	private static final Logger logger = Logger.getLogger(LdapServerRegistrationController.class);
-	
-	
-	@Property(value = "#{ldapServerInfo}")
-	protected LdapServerInfo ldapServerInfo;
-
-	@Property(value = "#{ldapConfigurationService}")
-	protected LdapConfigurationService ldapConfigurationService;
 	
 	
 	public String start() {
 		logger.debug("start registration process");
 		
 		ldapServerInfo = new LdapServerInfo();		
-		setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
+		setSessionBean(Constants.LDAPSERVER_INFO, ldapServerInfo);
 		
 		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
 	}
 
 	
-	/**
-	 * Refreshing ldapServer VO
-	 * 
-	 * @throws Exception
-	 */
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
-		logger.debug("preprocess - refreshing ldapServer session object");
-		if (ldapServerInfo != null) {
-			if (ldapServerInfo.getId() != null) {
-				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
-			} else {
-				ldapServerInfo = (LdapServerInfo) getSessionBean(Constants.SERVER_INFO);
-			}
-		}
-
-		setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
-	}
-
-	
-	@Prerender
-	public void prerender() throws LectureException {		
-		logger.debug("prerender - refreshing ldapServer session object");
-		refreshLdapServer();
-		if (ldapServerInfo == null || ldapServerInfo.getId() == null) {		
-			addError(i18n("message_ldap_ldapserver_no_ldapserver_selected"));
-			redirect(Constants.LDAP_SERVER_PAGE);
-		}
-	}
-
-	
-	/**
-	 * Adds an additional BreadCrumb.
-	 */
-	 private void addBreadCrumbs() {		 	
-		 breadcrumbs.loadAdministrationCrumbs();
-		 
-		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
-		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_INDEX);
-		 myBreadCrumb.setName(i18n("ldap_index"));
-		 myBreadCrumb.setHint(i18n("ldap_index"));
-		 breadcrumbs.addCrumb(myBreadCrumb);
-		 
-		 myBreadCrumb = new BreadCrumb();
-		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_LDAPSERVER);
-		 myBreadCrumb.setName(i18n("ldap_ldapserver_registration_step1"));
-		 myBreadCrumb.setHint(i18n("ldap_ldapserver_registration_step1"));	 
-		 breadcrumbs.addCrumb(myBreadCrumb);
-		 
-		 myBreadCrumb = new BreadCrumb();
-		 myBreadCrumb.setLink(PageLinks.ADMIN_LDAP_LDAPSERVERSTEP_ONE);
-		 myBreadCrumb.setName(i18n("ldap_server"));
-		 myBreadCrumb.setHint(i18n("ldap_server"));	 
-		 breadcrumbs.addCrumb(myBreadCrumb);
-		 
-	 }
-	
-	
-	private void refreshLdapServer() {
-		if (ldapServerInfo != null) {
-			if (ldapServerInfo.getId() != null) {
-				ldapServerInfo = ldapConfigurationService.getLdapServerById(ldapServerInfo.getId());
-				setSessionBean(Constants.SERVER_INFO, ldapServerInfo);
-			}
-		}
-	}
-	
+		
 	
 	/**
 	 * Value Change Listener
@@ -147,7 +73,6 @@ public class LdapServerRegistrationController extends BasePage {
 	}
 	
 	
-	@SuppressWarnings({ "unchecked" })
 	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
 		List<Long> selectedIds = (ArrayList<Long>) valueChangeEvent.getNewValue();
 		ldapServerInfo.setUserDnPatternIds(selectedIds);
@@ -159,7 +84,6 @@ public class LdapServerRegistrationController extends BasePage {
 	}	
 	
 	
-	@SuppressWarnings({ "unchecked" })
 	public List<SelectItem> getAllAuthenticationDomains() {
 
 		List<SelectItem> domainItems = new ArrayList<SelectItem>();
@@ -173,8 +97,7 @@ public class LdapServerRegistrationController extends BasePage {
 		return domainItems;
 	}
 	
-
-	@SuppressWarnings({ "unchecked" })
+	
 	public List<SelectItem> getAllUserDnPatterns() {
 
 		List<SelectItem> userDnPatternItems = new ArrayList<SelectItem>();
@@ -203,24 +126,4 @@ public class LdapServerRegistrationController extends BasePage {
 		return Constants.LDAP_SERVER_PAGE;
 	}
 	
-	
-	public LdapServerInfo getLdapServerInfo() {
-		return ldapServerInfo;
-	}
-	
-
-	public void setLdapServerInfo(LdapServerInfo ldapServerInfo) {
-		this.ldapServerInfo = ldapServerInfo;
-	}
-
-	
-	public LdapConfigurationService getLdapConfigurationService() {
-		return ldapConfigurationService;
-	}
-
-	public void setLdapConfigurationService(
-			LdapConfigurationService ldapConfigurationService) {
-		this.ldapConfigurationService = ldapConfigurationService;
-	}
-
 }

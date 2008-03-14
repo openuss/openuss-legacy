@@ -22,7 +22,6 @@ import org.openuss.web.PageLinks;
  */
 @Bean(name = "views$secured$system$ldap$ldap_attributemappings", scope = Scope.REQUEST)
 @View
-
 public class LdapAttributeMappingsPage extends AbstractLdapAttributeMappingsOverviewPage{
 	
 	private AttributeMappingTable attributeMappings = new AttributeMappingTable();
