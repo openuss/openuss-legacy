@@ -2,8 +2,10 @@ package org.openuss.webdav;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -446,7 +448,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		Element list = doc.createElement(WebDAVConstants.XHTML_UNORDERED_LIST);
 		body.appendChild(list);
 		
-		Collection<WebDAVResource> children = getChildren();
+		Collection<WebDAVResource> children = sortByName(getChildren());
 		for (WebDAVResource c : children) {
 			Element li = doc.createElement(WebDAVConstants.XHTML_LIST_ELEM);
 			list.appendChild(li);
@@ -468,7 +470,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		
 		return ioc;
 	}
-	
+
 	/**
 	 * Implementation of writeContent() that does not need to check the user's permissions.
 	 * Implementations must call {@link #checkFileSize(long)} as soon as they know the real size.
@@ -589,6 +591,31 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		origName = getContext().evadeUmlauts(origName);
 		
 		return origName;
+	}
+	
+	/**
+	 * Sorts a set of WebDAVResources. This set will not be modified. A new collection will be returned. 
+	 * @param children the unsorted set of WebDAVResources
+	 * @return A collection of WebDAVResources sorted by name
+	 */
+	protected Collection<WebDAVResource> sortByName(Set<WebDAVResource> children) {
+		ArrayList<WebDAVResource> sortedCollection = new ArrayList<WebDAVResource>(children);
+		Collections.sort(sortedCollection, getNameComparator());
+		return sortedCollection;
+	}
+	
+	/**
+	 * @return A comparator for WebDAVResources, which compares by name
+	 */
+	protected Comparator<WebDAVResource> getNameComparator() {
+		Comparator<WebDAVResource> comparator = new Comparator<WebDAVResource>(){
+			public int compare(WebDAVResource r1, WebDAVResource r2) {
+				String name1 = r1.getName();
+				String name2 = r2.getName();
+				return name1.compareTo(name2);
+			}
+		};
+		return comparator;
 	}
 
 
