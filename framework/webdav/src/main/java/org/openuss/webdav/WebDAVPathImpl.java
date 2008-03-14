@@ -330,9 +330,12 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	public int getNumberOfElemsToResolve() {
 		String toResolve = getToResolve();
-		int res = StringUtils.countMatches(toResolve, PATH_SEP);
+		int res = StringUtils.countMatches(toResolve, PATH_SEP) + 1;
 		
 		if (toResolve.endsWith(PATH_SEP)) {
+			res--;
+		}
+		if (toResolve.startsWith(PATH_SEP) && (toResolve.length() > PATH_SEP.length())) {
 			res--;
 		}
 		
