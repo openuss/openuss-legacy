@@ -13,7 +13,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FolderInfo;
-import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
 import org.openuss.security.User;
