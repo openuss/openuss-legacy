@@ -42,14 +42,13 @@
 		     	var="bean" 
 		     	rows="20">    
 				<t:column>
-					<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep4.selectUser}">
-				
-						<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_user_name}</plexus:commandSortHeader> 
+					<plexus:commandSortHeader columnName="name">#{msg.seminarpool_allocation_group_name}</plexus:commandSortHeader> 
+						<h:commandLink action="#{views$secured$seminarpool$allocation$userAllocationByCourseStep4.selectUser}">
 						<b><h:outputText value="#{bean.name}"/></b>
 					</h:commandLink>
 				</t:column>
 				<t:column>
-					<plexus:commandSortHeader columnName="capacity">#{msg.seminarpool_allocation_group_name}</plexus:commandSortHeader> 
+					<plexus:commandSortHeader columnName="capacity">#{msg.seminarpool_add_course_groups_add_capacity}</plexus:commandSortHeader> 
 					<b><h:outputText value="#{bean.capacity}"/></b>
 				</t:column>	
 			</plexus:dataTable>
