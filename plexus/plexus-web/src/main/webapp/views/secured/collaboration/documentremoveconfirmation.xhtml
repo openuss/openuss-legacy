@@ -47,7 +47,11 @@
 					<h:outputText value="#{msg.documents_selected_files}" styleClass="field_label"/>
 					<ul class="file-list">
 						<t:dataList id="entries" var="entry" layout="list" value="#{collaboration_selected_folderentries}">
-							<li><h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/> #{entry.name} #{entry.sizeAsString}</li>
+							<li><h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+								<h:graphicImage value="/images/filetypes/default.gif" 
+					                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/> 
+					    #{entry.name} #{entry.sizeAsString}</li>
 						</t:dataList>					
 					</ul>
 					<p class="content_font_normal">

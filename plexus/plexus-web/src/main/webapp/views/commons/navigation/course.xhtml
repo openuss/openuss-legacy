@@ -34,7 +34,7 @@
 							<t:commandNavigation2
 								id="cmd_documents" forceId="true" 
 								action="documents_main" 
-								activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces" 
+								activeOnViewIds="/views/secured/documents/documents.xhtml,/views/secured/documents/fileedit.xhtml,/views/secured/documents/addzip.xhtml,/views/secured/documents/folderedit.xhtml,/views/secured/documents/remove.faces,/views/secured/documents/remove.xhtml" 
 								rendered="#{courseInfo.documents}">
 								<h:outputText value="#{msg['course_command_documents']}" />
 							</t:commandNavigation2>
@@ -79,7 +79,7 @@
                             <t:commandNavigation2
                             	id="cmd_collaboration" forceId="true" 
                                 action="#{views$secured$collaboration$main.open}" 
-                                activeOnViewIds="/views/secured/collaboration/main.xhtml,/views/secured/collaboration/workspaceview.xhtml,/views/secured/collaboration/workspaceremoveconfirmation.xhtml,/views/secured/collaboration/addzip.xhtml,/views/secured/collaboration/fileedit.xhtml,/views/secured/collaboration/folderedit.xhtml"
+                                activeOnViewIds="/views/secured/collaboration/main.xhtml,/views/secured/collaboration/workspaceview.xhtml,/views/secured/collaboration/workspaceremoveconfirmation.xhtml,/views/secured/collaboration/addzip.xhtml,/views/secured/collaboration/fileedit.xhtml,/views/secured/collaboration/folderedit.xhtml,/views/secured/collaboration/documentremoveconfirmation.xhtml,/views/secured/collaboration/workspaceremoveconfirmation.xhtml"
                                 rendered="#{courseInfo.collaboration}">
                                 <h:outputText  value="#{msg['course_command_collaboration']}"/>
                             </t:commandNavigation2>
