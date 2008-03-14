@@ -194,7 +194,7 @@ public class SeminarpoolAllocationServiceImpl extends
 					table[c][0] = sprio.getSeminarUserRegistration().getUser()
 							.getId();
 					table[c][1] = cg.getId();
-					table[c][2] = maxprio - sprio.getPriority();
+					table[c][2] = maxprio - sprio.getPriority() + 1;
 					c++;
 					capacity[a] = cg.getCapacity();
 					a++;
