@@ -102,9 +102,11 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		
 		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));
 		
-		final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
-		if (!siteVersionInfo.getId().equals(wikiSiteInfo.getId())) {
-			siteTitle.append(" ").append(i18n("wiki_main_version", dateFormat.format(siteVersionInfo.getCreationDate())));
+		if (siteVersionInfo.getWikiSiteId() != null) {
+			final WikiSiteInfo wikiSiteInfo = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId());
+			if (!siteVersionInfo.getId().equals(wikiSiteInfo.getId())) {
+				siteTitle.append(" ").append(i18n("wiki_main_version", dateFormat.format(siteVersionInfo.getCreationDate())));
+			}
 		}
 		
 		return siteTitle.toString();

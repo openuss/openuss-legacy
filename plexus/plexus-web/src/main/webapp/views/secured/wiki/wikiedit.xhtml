@@ -36,9 +36,10 @@
   			<h:form id="editWikiForm">
                 <o:block label="#{views$secured$wiki$wikiedit.siteTitle}" styleClass="form_box">
 					<div class="content_iframe">
-						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400">
+						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" required="true">
 							<f:converter converterId="xssFilter"/>
-						</fck:editor>	 				
+						</fck:editor>
+						<h:message for="textEditor" styleClass="field_error"/>	 				
 					</div>
 					<o:input id="node" forceId="true" entity="wiki_current_site_version" property="note" maxlength="100" />
 				</o:block>
