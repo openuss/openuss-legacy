@@ -1,13 +1,5 @@
 package org.openuss.web.wiki;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Locale;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -39,13 +31,11 @@ public class WikiMainPage extends AbstractWikiPage {
 		if (this.siteVersionId != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
-			String name = getPageName(this.siteName);
+			String name = formatPageName(this.siteName);
 
 			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
 			
-			if (version == null && Constants.WIKI_STARTSITE_NAME.equals(name)) {
-				createInfoIndexPage();
-			} else if (version == null) {
+			if (version == null) {
 				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, this.siteVersionInfo);
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
 				this.siteVersionInfo = null;
@@ -59,8 +49,13 @@ public class WikiMainPage extends AbstractWikiPage {
 				
 		super.prerender();
 	}
-		
-	private String getPageName(String siteName) {
+	
+	/**
+	 * Formats the Site Name.
+	 * @param siteName Site Name to format.
+	 * @return Formated Site Name.
+	 */
+	private String formatPageName(String siteName) {
 		if (siteName != null) {
 			return URLUTF8Encoder.decode(siteName);
 		} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
@@ -68,53 +63,6 @@ public class WikiMainPage extends AbstractWikiPage {
 		} else {
 			return Constants.WIKI_STARTSITE_NAME;
 		}
-	}
-
-	private void createInfoIndexPage() {
-		Locale locale = new Locale(getUser().getLocale());
-		String country = locale.getLanguage();
-		
-		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
-		if (inStream == null) {
-			inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index.xhtml");
-		}
-		if (inStream != null) {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try {
-				IOUtils.copyLarge(inStream, out);
-				
-				saveIndexVersion(out.toString());
-			} catch (IOException ex) {
-				LOGGER.error("Error creating info page.", ex);
-			} finally {
-				try {
-					inStream.close();
-					out.close();
-				} catch (IOException e) {
-					LOGGER.error("Error reading wiki_index.xhtml", e);
-				}
-			}
-		}
-	}
-
-	private WikiSiteContentInfo saveIndexVersion(String text) {
-		this.siteVersionInfo = new WikiSiteContentInfo();
-		this.siteVersionInfo.setId(null);
-		this.siteVersionInfo.setName(Constants.WIKI_STARTSITE_NAME);
-		this.siteVersionInfo.setText(text);
-		this.siteVersionInfo.setNote(i18n("wiki_index_description_note"));
-
-		this.siteVersionInfo.setCreationDate(new Date());
-		this.siteVersionInfo.setAuthorId(user.getId());
-		this.siteVersionInfo.setDomainId(this.courseInfo.getId());
-		this.siteVersionInfo.setDeleted(false);
-		this.siteVersionInfo.setReadOnly(false);
-		this.siteVersionInfo.setStable(false);
-		
-		getWikiService().saveWikiSite(this.siteVersionInfo);
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-		
-		return siteVersionInfo;
 	}
 
 	/**

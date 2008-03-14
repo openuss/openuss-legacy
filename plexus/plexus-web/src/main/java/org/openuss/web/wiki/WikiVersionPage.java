@@ -93,6 +93,10 @@ public class WikiVersionPage extends AbstractWikiPage{
 		}
 	}
 	
+	/**
+	 * Loads WikiSiteVersions.
+	 * @return List of WikiSiteVersions.
+	 */
 	@SuppressWarnings("unchecked")
 	private List<WikiSiteInfo> loadWikiSiteVersions() {
 		if (entries == null) {

@@ -5,12 +5,19 @@
  */
 package org.openuss.wiki;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
@@ -30,6 +37,10 @@ import org.openuss.security.acl.LectureAclEntry;
  * 
  */
 public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
+	
+	private static final Logger LOGGER = Logger.getLogger(WikiServiceImpl.class);
+	
+	private static final String WIKI_STARTSITE_NAME = "index";
 	
 	private static final String IMPORT_IMAGE_TEMPLATE_SEARCH = "<img(.+)src=\"(.*)%s\\?fileid=%s\"(.*)/>";
 	
@@ -61,14 +72,76 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		Validate.notNull(siteName, "Parameter siteName must not be null!");
 
 		final WikiSiteInfo wikiSite = (WikiSiteInfo) getWikiSiteDao().findByDomainIdAndName(WikiSiteDao.TRANSFORM_WIKISITEINFO, domainId, siteName);
-		WikiSiteContentInfo wikiSiteContent;
+		WikiSiteContentInfo wikiSiteContent = null;
 		if (wikiSite != null) {
 			wikiSiteContent = handleGetNewestWikiSiteContent(wikiSite.getWikiSiteId());
-		} else {
-			wikiSiteContent = null;
+		}
+		
+		if ((wikiSiteContent == null) && (WIKI_STARTSITE_NAME.equals(siteName))) {
+			wikiSiteContent = createInfoIndexSite(domainId);
 		}
 		
 		return wikiSiteContent;
+	}
+	
+	/**
+	 * Creates a localized default Index Page.
+	 * @param domainId Domain ID of the specified courses.
+	 * @return Created localized default Index WikiSite.
+	 */
+	private WikiSiteContentInfo createInfoIndexSite(Long domainId) {
+		final UserInfo user = getSecurityService().getCurrentUser();
+		final Locale locale = new Locale(user.getLocale());
+		final String country = locale.getLanguage();
+		
+		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
+		if (inStream == null) {
+			inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index.xhtml");
+		}
+		
+		if (inStream != null) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+				IOUtils.copyLarge(inStream, out);
+				return createIndexVersion(domainId, out.toString(), user);
+			} catch (IOException exception) {
+				LOGGER.error("Error creating info page.", exception);
+			} finally {
+				try {
+					inStream.close();
+					out.close();
+				} catch (IOException exception) {
+					LOGGER.error("Error reading wiki_index.xhtml", exception);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Creates a localized default Index Page Version.
+	 * @param domainId Domain ID of the specified courses.
+	 * @param text Localized Version Text.
+	 * @param user Current User.
+	 * @return Created localized default Index WikiSite.
+	 */
+	private WikiSiteContentInfo createIndexVersion(Long domainId, String text, UserInfo user) {
+		final WikiSiteContentInfo siteVersionInfo = new WikiSiteContentInfo();
+		siteVersionInfo.setId(null);
+		siteVersionInfo.setName(WIKI_STARTSITE_NAME);
+		siteVersionInfo.setText(text);
+
+		siteVersionInfo.setCreationDate(new Date());
+		siteVersionInfo.setAuthorId(user.getId());
+		siteVersionInfo.setDomainId(domainId);
+		siteVersionInfo.setDeleted(false);
+		siteVersionInfo.setReadOnly(false);
+		siteVersionInfo.setStable(false);
+		
+		saveWikiSite(siteVersionInfo);
+		
+		return siteVersionInfo;
 	}
 
 	/** 

@@ -1,24 +1,19 @@
 package org.openuss.web.wiki;
 
+/**
+ * Exception for unexpected import types
+ * @author Projektseminar WS 07/08, Team Collaboration
+ * @see org.openuss.web.Constants
+ */
 public class WikiUnexpectedImportTypeException extends RuntimeException {
 	
-	private static final long serialVersionUID = -2267311467887662408L;
+	private static final long serialVersionUID = -3628604070931200375L;
 
+	/**
+	 * Creates a new Instances of WikiUnexpectedImportTypeException with default message.
+	 */
 	public WikiUnexpectedImportTypeException() {
-		super();
-	}
-
-	public WikiUnexpectedImportTypeException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-	}
-
-	public WikiUnexpectedImportTypeException(String arg0) {
-		super(arg0);
-	}
-
-	public WikiUnexpectedImportTypeException(Throwable arg0) {
-		super(arg0);
-	}
-	
+		super("Unexpected Wiki Import Type.");
+	}	
 	
 }

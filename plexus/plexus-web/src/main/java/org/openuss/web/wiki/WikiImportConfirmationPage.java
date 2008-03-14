@@ -27,7 +27,6 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiImportConfirmationPage.class);
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
@@ -35,17 +34,10 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 		
 		addBreadCrumbs();
 		
-		//Check if Confirmation is required
-		final List<WikiSiteInfo> wikiSites = wikiService.findWikiSitesByDomainObject(courseInfo.getId());
-		if(wikiSites.size() == 1){
-			final List<WikiSiteInfo> wikiSiteVersions = wikiService.findWikiSiteVersionsByWikiSite(wikiSites.get(0).getWikiSiteId());
-			if(wikiSiteVersions.size() == 1){
-				importWiki();
-				redirect(Constants.WIKI_OVERVIEW);
-				return;
-			}
+		if (!isConfirmationRequired()) {
+			importWiki();
+			redirect(Constants.WIKI_OVERVIEW);
 		}
-		
 	}
 	
 	/**
@@ -67,6 +59,21 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	}
 	
 	/**
+	 * Checks if Confirmation is required or not.
+	 * @return <code>true</code> if there are already existing WikiSites and WikiVersions in the current course, otherwise <code>false</code>.
+	 */
+	@SuppressWarnings("unchecked")
+	private boolean isConfirmationRequired() {
+		final List<WikiSiteInfo> wikiSites = wikiService.findWikiSitesByDomainObject(courseInfo.getId());
+		if (wikiSites.size() != 1) {
+			return true;
+		}
+		
+		final List<WikiSiteInfo> wikiSiteVersions = wikiService.findWikiSiteVersionsByWikiSite(wikiSites.get(0).getWikiSiteId());
+		return (wikiSiteVersions.size() != 1);
+	}
+	
+	/**
 	 * Imports the Wiki.
 	 * @return Wiki Overview Page.
 	 */
@@ -81,7 +88,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 			LOGGER.debug("Importing WikiSites from DomainID " + selectedCourseId + ".");
 			wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
 		} else {
-			throw new WikiUnexpectedImportTypeException("Unexpected Wiki Import Type.");
+			throw new WikiUnexpectedImportTypeException();
 		}
 		
 		addMessage(i18n("wiki_message_import_successful"));
