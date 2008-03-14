@@ -123,6 +123,7 @@ public class LdapServersPage extends BasePage {
 			ldapConfigurationService.deleteLdapServer(currentLdapServer);
 
 			setSessionBean(Constants.SERVER_INFO, null);
+			addMessage(i18n("message_ldap_server_removed"));
 			return Constants.LDAP_SERVER_PAGE;			
 		}
 		catch (Exception e) {			

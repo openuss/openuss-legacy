@@ -86,6 +86,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapUserDnPatternsOverviewPa
 			if (currentUserDnPattern.getLdapServerIds() == null || currentUserDnPattern.getLdapServerIds().size()==0) {
 				ldapConfigurationService.deleteUserDnPattern(currentUserDnPattern);
 				setSessionBean(Constants.USERDNPATTERN_INFO, null);
+				addMessage(i18n("message_ldap_userdnpattern_removed"));
 				return Constants.LDAP_USERDNPATTERN_PAGE;
 			} else {
 				addError(i18n("message_ldap_userdnpattern_still_in_use_cannot_be_removed"));

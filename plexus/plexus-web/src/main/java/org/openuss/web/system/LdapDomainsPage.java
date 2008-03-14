@@ -99,6 +99,7 @@ public class LdapDomainsPage extends AbstractLdapDomainsOverviewPage{
 			if (currentAuthenticationDomain.getLdapServerIds() == null || currentAuthenticationDomain.getLdapServerIds().size()==0) {
 				ldapConfigurationService.deleteDomain(currentAuthenticationDomain);
 				setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, null);
+				addMessage(i18n("message_ldap_authenticationdomain_removed"));
 				return Constants.LDAP_DOMAIN_PAGE;
 			} else {
 				addError(i18n("message_ldap_authenticationdomain_still_in_use_cannot_be_removed"));
