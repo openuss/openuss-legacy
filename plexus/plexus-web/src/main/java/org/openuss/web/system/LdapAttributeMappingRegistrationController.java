@@ -1,9 +1,7 @@
 package org.openuss.web.system;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;

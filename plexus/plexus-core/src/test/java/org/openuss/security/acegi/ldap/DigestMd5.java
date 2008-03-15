@@ -66,14 +66,14 @@ public class DigestMd5 {
         	
             Attributes attrs = ctx.getAttributes("cn=p_schu07,ou=projekt-benutzer",null);
         	
-//            NamingEnumeration returnedAttributes = attrs.getAll();
-//        	while (returnedAttributes.hasMore()){
-//        		Attribute returnedAttribute = (Attribute) returnedAttributes.next();
-//        		NamingEnumeration attributeValues = returnedAttribute.getAll();
-//        		while (attributeValues.hasMore()) {
-//        			System.out.println(((Object) attributeValues.next()).toString());
-//        		}
-//        	}
+            NamingEnumeration returnedAttributes = attrs.getAll();
+        	while (returnedAttributes.hasMore()){
+        		Attribute returnedAttribute = (Attribute) returnedAttributes.next();
+        		NamingEnumeration attributeValues = returnedAttribute.getAll();
+        		while (attributeValues.hasMore()) {
+        			System.out.println(((Object) attributeValues.next()).toString());
+        		}
+        	}
         
             // Set up some test values
             String rootDn1 = "dc=uni-muenster, DC=DE";
@@ -333,11 +333,11 @@ public class DigestMd5 {
 //    	testSetUpProviderUrl(" LDAP:// wwusv1.uni-muenster. DE://.:://///////// ", new Integer(389), "//////dc=uni-muenster, dc=de");
 //    	testExtendedLdapUserDetailsMapper(args[0]);
     	
-    	String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exam345p l e5 domain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
-    	System.out.println(username);
-    	username = username.replaceAll("\\$+\\s+\\$+","");
-    	System.out.println(username);
-    	System.out.println(username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1));
+//    	String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exam345p l e5 domain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
+//    	System.out.println(username);
+//    	username = username.replaceAll("\\$+\\s+\\$+","");
+//    	System.out.println(username);
+//    	System.out.println(username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1));
 	}	
 	
 	

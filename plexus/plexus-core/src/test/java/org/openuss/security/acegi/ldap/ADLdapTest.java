@@ -5,8 +5,6 @@
  */
 package org.openuss.security.acegi.ldap;
 
-import java.util.Enumeration;
-
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;

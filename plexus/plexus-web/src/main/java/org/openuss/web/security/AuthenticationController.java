@@ -123,6 +123,7 @@ public class AuthenticationController extends BasePage {
 					 * 3. Handle "local user".
 					 */
 					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
+					user = migrationUtility.reconcile(user, false);
 					UserImpl principal = (UserImpl) user;
 					UserDetails userDetails = principal;
 					auth = AuthenticationUtils.createSuccessAuthentication(principal, authRequest, userDetails);					

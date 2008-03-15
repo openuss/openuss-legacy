@@ -14,7 +14,6 @@ import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openuss.security.AttributeMappingKeys;
-import org.openuss.security.SecurityConstants;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserImpl;

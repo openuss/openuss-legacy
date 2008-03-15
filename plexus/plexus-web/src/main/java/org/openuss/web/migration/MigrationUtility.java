@@ -46,12 +46,8 @@ public class MigrationUtility extends BaseBean{
 		String password = String.valueOf(random.nextLong())+String.valueOf(random.nextLong());
 		securityService.changePassword(password);
 		user.setUsername(centralUserData.getUsername());
-		user.setEmail(centralUserData.getEmail());
-		UserContact userContact = user.getContact();
-		userContact.setFirstName(centralUserData.getFirstName());
-		userContact.setLastName(centralUserData.getLastName());
-		securityService.saveUserContact(userContact);
-		securityService.saveUser(user);
+		
+		user = reconcile(user, true);
 				
 		try {
 			sendMigrationNotificationEmail(user, centralUserData.getAuthenticationDomainName());
@@ -60,6 +56,35 @@ public class MigrationUtility extends BaseBean{
 		}
 		return user;
 	}
+	
+	
+	public User reconcile(User user, boolean haveToSave) {
+		boolean mustSave = haveToSave;
+		if (!user.getEmail().toLowerCase().equals(centralUserData.getEmail().toLowerCase())) {
+		    user.setEmail(centralUserData.getEmail());
+		    mustSave = true;
+		}
+		
+		UserContact userContact = user.getContact();
+		
+		if (!userContact.getFirstName().toLowerCase().equals(centralUserData.getFirstName().toLowerCase())) {
+			userContact.setFirstName(centralUserData.getFirstName());
+			mustSave = true;
+		}
+		
+		if (!userContact.getLastName().toLowerCase().equals(centralUserData.getLastName().toLowerCase())) {
+			userContact.setLastName(centralUserData.getLastName());
+			mustSave = true;
+		}
+		
+		if (mustSave) {
+			securityService.saveUserContact(userContact);
+			securityService.saveUser(user);
+		}
+		return user;
+	}
+	
+	
 	
 	/**
 	 * Sends the user an email notification, that her account was migrated and she must login

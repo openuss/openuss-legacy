@@ -1,16 +1,10 @@
 package org.openuss.web.system;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.framework.web.jsf.model.AbstractPagedTable;
-import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.security.ldap.LdapConfigurationService;
-import org.openuss.security.ldap.UserDnPatternInfo;
 import org.openuss.web.BasePage;
-import org.openuss.web.Constants;
 
 /**
  * 
