@@ -194,6 +194,7 @@ public class SeminarpoolUserRegistrationServiceImpl
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
 		for(SeminarUserRegistration sur : seminarpool.getSeminarUserRegistration()){
+		assignedcourses=new StringBuffer();
 		List<SeminarPlaceAllocationInfo> courseList = this.getSeminarpoolAdministrationService().getAllocationsByUserAndSeminarpool(sur.getUser().getId(), seminarpoolId);
 		for(SeminarPlaceAllocationInfo spai : courseList){
 			assignedcourses.append(spai.getCourseName());
@@ -215,6 +216,7 @@ public class SeminarpoolUserRegistrationServiceImpl
 		Collection<CourseSeminarpoolAllocation> courseList = seminarpool.getCourseSeminarpoolAllocation();
 		parameters.put("seminarpoolname", "" + seminarpool.getName() + "(" + seminarpool.getShortcut() + ")");
 		for(CourseSeminarpoolAllocation course : courseList){
+			participants=new StringBuffer();
 			parameters.put("course", course.getCourse().getName());
 			List<SeminarPlaceAllocationInfo> participantsList = this.getSeminarpoolAdministrationService().getAllocationsByCourse(course.getCourse().getId(), seminarpoolId);
 			for(SeminarPlaceAllocationInfo participant : participantsList){

@@ -26,9 +26,8 @@ public class SeminarpoolAllocationServiceImpl extends
 	List<SeminarUserRegistrationInfo> registrations;
 	Collection<CourseSeminarpoolAllocation> seminars;
 	List<CourseGroup> courseGroupList;
-	double[][] coursegroups;
-	double[] coursegroups2;
-	double[] capacity;
+	long[][] coursegroups;
+	long[] coursegroups2;
 	double[] neededSeminars;
 	double[] endfunction;
 	double[][] result;
@@ -122,8 +121,8 @@ public class SeminarpoolAllocationServiceImpl extends
 
 	private void generateGroupTable() {
 		// Generate table, where can be seen, which groups belong to one course
-		coursegroups = new double[subgroups][2];
-		coursegroups2 = new double[subgroups];
+		coursegroups = new long[subgroups][3];
+		coursegroups2 = new long[subgroups];
 		b = 1;
 		c = 0;
 		for (CourseSeminarpoolAllocation cspa : seminars) {
@@ -131,6 +130,7 @@ public class SeminarpoolAllocationServiceImpl extends
 				courseGroupList.add(cg);
 				coursegroups[c][0] = cg.getId();
 				coursegroups[c][1] = b;
+				coursegroups[c][2] = cg.getCapacity();
 				c++;
 			}
 			b++;
@@ -143,7 +143,7 @@ public class SeminarpoolAllocationServiceImpl extends
 				if (coursegroups[j][0] < coursegroups[minPos][0])
 					minPos = j;
 			}
-			double temp[] = coursegroups[minPos];
+			long temp[] = coursegroups[minPos];
 			coursegroups[minPos] = coursegroups[i];
 			coursegroups[i] = temp;
 		}
@@ -180,12 +180,12 @@ public class SeminarpoolAllocationServiceImpl extends
 
 	private void generateUserTable() {
 		table = new long[variables][3];
-		capacity = new double[subgroups];
 		c = 0;
 		a = 0;
 
 		// Build table and save capacity for each user in array
-
+		long [] groupset;
+		long [] groupnotset;
 		for (SeminarUserRegistration sur : sp.getSeminarUserRegistration()) {
 			a = 0;
 			for (SeminarPriority sprio : sur.getSeminarPriority()) {
@@ -196,14 +196,21 @@ public class SeminarpoolAllocationServiceImpl extends
 					table[c][1] = cg.getId();
 					table[c][2] = maxprio - sprio.getPriority() + 1;
 					c++;
-					capacity[a] = cg.getCapacity();
 					a++;
 				}
 			}
-
-			for (int i = 0; i < subgroups - a; i++) {
+			groupset = new long[a];
+			
+			for(int i = 0; i < a; i++){
+				groupset[i]=table[c-1-i][1];
+			}
+			
+			groupnotset = this.arrayDiff(coursegroups2, groupset);
+			
+			//Subgroups where no priority were set, must get a priority of -1
+			for (int i = 0; i < groupnotset.length; i++) {
 				table[c][0] = sur.getUser().getId();
-				table[c][1] = Long.MAX_VALUE;
+				table[c][1] = groupnotset[i];
 				table[c][2] = -1;
 				c++;
 				a++;
@@ -329,7 +336,7 @@ public class SeminarpoolAllocationServiceImpl extends
 					sc1[i + j] = value;
 				}
 			}
-			sc1[variables] = capacity[c];
+			sc1[variables] = coursegroups[c][2];
 			simplex.newSC(sc1, "<=");
 		}
 	}
@@ -344,6 +351,32 @@ public class SeminarpoolAllocationServiceImpl extends
 				cg.addUser(user);
 			}
 		}
+	}
+	
+	protected long[] arrayDiff(long[] baseSorted, long[] subtract) {
+		int c = baseSorted.length;
+		boolean[] keep = new boolean[c];
+		java.util.Arrays.fill(keep, true);
+		for (long l : subtract) {
+			int p = java.util.Arrays.binarySearch(baseSorted, l);
+			
+			if (p >= 0) {
+				if (keep[p]) {
+					keep[p] = false;
+					c--;
+				}
+			}
+		}
+		long[] res = new long[c];
+		int j = 0;
+		for (int i = 0;i < baseSorted.length;i++) {
+			if (keep[i]) {
+				res[j] = baseSorted[i];
+				j++;
+			}
+		}
+		
+		return res;
 	}
 
 }
