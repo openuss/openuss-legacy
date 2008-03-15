@@ -212,7 +212,8 @@ public class AuthenticationController extends BasePage {
 				 */				
 				exceptionMessage = i18n("authentication_error_password_mismatch");
 			} else {
-				exceptionMessage = ex.getMessage();
+				exceptionMessage = ex.getClass().toString();
+							
 			}
 			addError(exceptionMessage);
 			// Set ACEGI variables

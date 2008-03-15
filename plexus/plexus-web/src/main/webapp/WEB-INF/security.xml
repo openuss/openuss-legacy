@@ -206,12 +206,7 @@
     <!-- ===================== LDAP ==================== -->
     
     <!--
-	<bean id="ldapConfigurationServiceDummy" class="org.openuss.security.ldap.LdapConfigurationServiceImpl">
-		<property name="attributeMappingDao"><ref bean="attributeMappingDao"/></property>
-		<property name="roleAttributeKeyDao"><ref bean="roleAttributeKeyDao"/></property>
-		<property name="authenticationDomainDao"><ref bean="authenticationDomainDao"/></property>
-		<property name="ldapServerDao"><ref bean="ldapServerDao"/></property>
-		<property name="userDnPatternDao"><ref bean="userDnPatternDao"/></property>
+	<bean id="ldapConfigurationServiceDummy" class="org.openuss.security.ldap.LdapConfigurationServiceDummy">
     </bean>
     -->
     
