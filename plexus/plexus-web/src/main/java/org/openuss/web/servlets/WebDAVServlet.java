@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -75,8 +76,8 @@ public class WebDAVServlet extends HttpServlet {
 		
 	// WebDAV compliance
 	private static final String DAV_COMPLIANCE_LEVEL = "1";
-	private static final String DAV_ALLOWED_METHODS = "OPTIONS, GET, HEAD, DELETE, PUT, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE";
-
+	private static final String DAV_ALLOWED_METHODS = "OPTIONS,GET,HEAD,DELETE,PUT,PROPFIND,PROPPATCH,MKCOL,COPY,MOVE,POST";
+	
 	/**
 	 * If set, disable WebDAV
 	 */
@@ -243,7 +244,7 @@ public class WebDAVServlet extends HttpServlet {
 		
  		try {
 	 		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
-	 			Set<WebDAVResource> children = resource.getChildren();
+	 			List<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
 	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
 	 				for (WebDAVResource c : children) {
@@ -302,7 +303,7 @@ public class WebDAVServlet extends HttpServlet {
 		
  		if ((depth == WebDAVConstants.DEPTH_INFINITY) || (depth == WebDAVConstants.DEPTH_1)) {
  			try {
-	 			Set<WebDAVResource> children = resource.getChildren();
+	 			List<WebDAVResource> children = resource.getChildren();
 	 			if (children != null) {
 	 				int newDepth = (depth == WebDAVConstants.DEPTH_INFINITY) ? WebDAVConstants.DEPTH_INFINITY : WebDAVConstants.DEPTH_0;
 	 				for (WebDAVResource c : children) {
