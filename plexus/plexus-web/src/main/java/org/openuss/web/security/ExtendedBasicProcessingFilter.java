@@ -21,7 +21,6 @@ import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
 import org.acegisecurity.ui.AuthenticationDetailsSource;
 import org.acegisecurity.ui.AuthenticationDetailsSourceImpl;
 import org.acegisecurity.ui.AuthenticationEntryPoint;
-import org.acegisecurity.ui.basicauth.BasicProcessingFilter;
 import org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint;
 import org.acegisecurity.ui.rememberme.RememberMeServices;
 import org.apache.commons.codec.binary.Base64;

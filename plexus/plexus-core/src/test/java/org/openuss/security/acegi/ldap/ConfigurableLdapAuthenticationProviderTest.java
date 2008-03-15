@@ -60,7 +60,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();	
+			ldapAuthenticationProvider.init();	
 		} catch (Exception e) {
 			// No Exception expected.
 			fail();
@@ -100,7 +100,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();	
+			ldapAuthenticationProvider.init();	
 		} catch (Exception e) {
 			// No Exception expected.
 			fail();
@@ -153,7 +153,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success
@@ -198,7 +198,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success
@@ -243,7 +243,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success
@@ -288,7 +288,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success			
@@ -344,7 +344,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {
 			fail();
 		}
@@ -430,7 +430,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {
 			fail();
 		}
@@ -507,7 +507,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {			
 			fail();
 		}
@@ -562,7 +562,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {
 			fail();
 		}
@@ -627,7 +627,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {
 			fail();
 		}
@@ -713,7 +713,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {
 			fail();
 		}
@@ -792,7 +792,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {			
 			fail();
 		}
@@ -848,7 +848,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setMessageSource(messageSource);
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
-			ldapAuthenticationProvider.afterPropertiesSet();
+			ldapAuthenticationProvider.init();
 		} catch (Exception e) {			
 			fail();
 		}

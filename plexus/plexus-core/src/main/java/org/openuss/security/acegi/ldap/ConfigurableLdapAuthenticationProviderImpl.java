@@ -53,7 +53,7 @@ import org.springframework.util.Assert;
  *
  */
 public class ConfigurableLdapAuthenticationProviderImpl implements 
-			 ConfigurableLdapAuthenticationProvider, MessageSourceAware, InitializingBean {
+			 ConfigurableLdapAuthenticationProvider, MessageSourceAware {
 
     //~ Instance fields ================================================================================================
 	protected ProviderManager authenticationManager = new ProviderManager();
@@ -300,7 +300,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	}
 	
 	
-	public void afterPropertiesSet() throws Exception {
+	public void init() throws Exception {
 		Assert.notNull(this.ldapConfigurationService, "A ldapconfigurationservice must be set");
 		Assert.notNull(this.userCache, "A user cache must be set");
         Assert.notNull(this.messageSource, "A message source must be set");

@@ -43,12 +43,14 @@ public class LdapConfigurationServiceImpl
     	
 //    	logger.debug("ldapServerList.size():"+ldapServerList.size());
     	
+    	if(ldapServerList !=null) {
     	
     	for (LdapServer ldapServer : ldapServerList) {
 
     		LdapServerConfiguration ldapServerConfiguration = new LdapServerConfiguration();
     		
     		ldapServerConfiguration.setAuthenticationDomainId(ldapServer.getAuthenticationDomain().getId());
+    		ldapServerConfiguration.setAuthenticationDomainName(ldapServer.getAuthenticationDomain().getName());
     		ldapServerConfiguration.setAuthenticationType(ldapServer.getAuthenticationType());
     		ldapServerConfiguration.setEmailKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getEmailKey());
     		ldapServerConfiguration.setFirstNameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getFirstNameKey());
@@ -56,7 +58,8 @@ public class LdapConfigurationServiceImpl
     		ldapServerConfiguration.setLdapServerType(ldapServer.getLdapServerType());
     		ldapServerConfiguration.setPort(ldapServer.getPort());
     		ldapServerConfiguration.setProviderUrl(ldapServer.getProviderUrl());
-    		 
+    		ldapServerConfiguration.setGroupRoleAttributeKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getGroupRoleAttributeKey());
+    		
     		List<RoleAttributeKey> roleAttributeKeys =  ldapServer.getAuthenticationDomain().getAttributeMapping().getRoleAttributeKeys();
     		String[] roleAttributeKeysStringArray = new String[roleAttributeKeys.size()];
     		Iterator<RoleAttributeKey> iterRoleAttributeKey = roleAttributeKeys.iterator();    		
@@ -79,6 +82,7 @@ public class LdapConfigurationServiceImpl
     		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
     		ldapServerConfigurationList.add(ldapServerConfiguration);        	
 		}   	
+    	}
     	
 //    	TODO has to be tested
 
@@ -145,7 +149,7 @@ public class LdapConfigurationServiceImpl
     	if (StringUtils.isBlank(ldapServer.getProviderUrl())){
     		throw new LdapConfigurationServiceException("URL must not be empty!");
     	}
-    	if (!handleIsValidURL(new String[]{"ldap"}, ldapServer.getProviderUrl())) {
+    	if (!ldapServer.getProviderUrl().contains("localhost") && !handleIsValidURL(new String[]{"ldap"}, ldapServer.getProviderUrl())) {
     		throw new LdapConfigurationServiceException("URL must be a valid ldap-url!");
     	}
     	if (! (ldapServer.getPort() > 0)) {
@@ -1019,6 +1023,11 @@ public class LdapConfigurationServiceImpl
     @Override
     protected boolean handleIsValidURL(String[] schemes, String url) {
 //    	String[] schemes = {"ldap"};
+    	
+//    	allow "localhost" as url
+    	if(url.contains("ldap://localhost") || url.contains("ldaps://localhost")) {
+    		return true;
+    	}	
     	UrlValidator urlValidator = new UrlValidator(schemes);
     	return urlValidator.isValid(url);
     }

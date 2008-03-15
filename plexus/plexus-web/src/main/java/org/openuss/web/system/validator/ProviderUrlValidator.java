@@ -19,12 +19,22 @@ import org.openuss.security.ldap.LdapConfigurationService;
  */
 @FacesValidator(value="providerUrlValidator")
 public class ProviderUrlValidator extends BaseBean implements Validator {
+	
 
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		
+		boolean valid = false;
+		
 		String providerUrl = (String) value;
+		
 	    if (StringUtils.isNotEmpty(providerUrl)) {
-	    	LdapConfigurationService ldapConfigurationService = (LdapConfigurationService) getBean("ldapConfigurationService");
-	    	boolean valid = ldapConfigurationService.isValidURL(new String[]{"ldap", "ldaps"}, providerUrl);
+//	    	localhost for testing is allowed
+	    	if(providerUrl.contains("localhost")) {
+	    		valid = true;
+	    	} else {
+	    		LdapConfigurationService ldapConfigurationService = (LdapConfigurationService) getBean("ldapConfigurationService");
+		    	valid = ldapConfigurationService.isValidURL(new String[]{"ldap", "ldaps"}, providerUrl);	    		
+	    	}
 	    	if (!valid) {
 	    			((UIInput)component).setValid(false);
 	    			addError(component.getClientId(context), i18n("error_provider_url_invalid"), null);
