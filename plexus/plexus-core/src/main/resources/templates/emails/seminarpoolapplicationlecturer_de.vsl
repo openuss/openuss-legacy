@@ -1,0 +1,20 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Seminarpool Registration</font></h3>
+		<p>
+			Die Zuordnung von Seminarpool <i>${seminarpoolname}</i> ist beendet!.
+		</p>
+		<p>
+			Die folgenden Teilnehmer wurden Ihrem Kurs ${course} zugeordnet:<br />
+			${participants}
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS!
+		</p>
+		<p>
+			<small>
+				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+			</small>
+		</p>
+	</body>
+</html>

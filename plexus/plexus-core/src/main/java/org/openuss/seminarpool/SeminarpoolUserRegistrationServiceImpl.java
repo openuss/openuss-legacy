@@ -221,6 +221,8 @@ public class SeminarpoolUserRegistrationServiceImpl
 				participants.append(participant.getFirstName());
 				participants.append(' ');
 				participants.append(participant.getLastName());
+				participants.append(' ');
+				participants.append(participant.getGroupName());
 				participants.append("<br />");
 			}
 			parameters.put("participants", participants.toString());

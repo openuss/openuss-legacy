@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.openuss.desktop.Desktop;
+import org.openuss.desktop.DesktopDao;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.University;
 import org.openuss.security.User;
@@ -154,6 +156,11 @@ public class SeminarpoolAdministrationServiceIntegrationTest extends Seminarpool
 		//Crate User
 		User user = testUtility.createUniqueUserInDB();
 		
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktop.setId(desktopDao.create(desktop).getId());
+		
 		flush();
 		
 		//Add User as Admin
@@ -173,6 +180,11 @@ public class SeminarpoolAdministrationServiceIntegrationTest extends Seminarpool
 		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
 		//Crate User
 		User user = testUtility.createUniqueUserInDB();
+		
+		Desktop desktop = Desktop.Factory.newInstance();
+		desktop.setUser(user);
+		DesktopDao desktopDao = (DesktopDao) this.getApplicationContext().getBean("desktopDao");
+		desktop.setId(desktopDao.create(desktop).getId());
 		
 		flush();
 		
