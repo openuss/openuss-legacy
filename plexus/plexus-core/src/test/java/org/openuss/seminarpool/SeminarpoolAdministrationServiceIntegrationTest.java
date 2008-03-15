@@ -15,6 +15,7 @@ import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.University;
+import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 
@@ -293,34 +294,6 @@ logger.debug("----> BEGIN access to addSeminar test <---- ");
 		logger.debug("----> END access to findSeminar test <---- ");
 	}
 	
-	public void testFindCoursesInSeminarpool(){
-		logger.debug("----> BEGIN access to findCoursesInSeminarpool test <---- ");
-		
-		//Create Seminarpool
-		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
-		
-		//Create Courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		Course course2 = testUtility.createUniqueCourseInDB();
-		
-		flush();
-		
-		testUtility.createCourseInSeminarpool(seminarpool.getId(), course1.getId());
-		testUtility.createCourseInSeminarpool(seminarpool.getId(), course2.getId());
-		
-		assertEquals(2, seminarpool.getCourseSeminarpoolAllocation().size());
-		
-		List<CourseSeminarpoolAllocationInfo> courses = this.getSeminarpoolAdministrationService().findCoursesInSeminarpool(seminarpool.getId());
-		Long course1Id = courses.get(0).getCourseId();
-		Long course2Id = courses.get(1).getCourseId();
-		
-		
-		
-		assertTrue(course1Id.equals(course1.getId()) || course1Id.equals(course2.getId()));
-		assertTrue(course2Id.equals(course1.getId()) || course2Id.equals(course2.getId()));
-		
-		logger.debug("----> END access to findCoursesInSeminarpool test <---- ");
-	}
 	
 	public void testGetAllSeminarpools(){
 		logger.debug("----> BEGIN access to getAllSeminarpools test <---- ");
