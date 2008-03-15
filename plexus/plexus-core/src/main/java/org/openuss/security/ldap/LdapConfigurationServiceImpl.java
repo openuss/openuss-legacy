@@ -64,7 +64,7 @@ public class LdapConfigurationServiceImpl
     		String[] roleAttributeKeysStringArray = new String[roleAttributeKeys.size()];
     		Iterator<RoleAttributeKey> iterRoleAttributeKey = roleAttributeKeys.iterator();    		
     	    for (int i = 0; iterRoleAttributeKey.hasNext(); i++) {
-    	    	roleAttributeKeysStringArray[i] = String.valueOf(iterRoleAttributeKey.next());
+    	    	roleAttributeKeysStringArray[i] = iterRoleAttributeKey.next().getName();
     	    }
     		ldapServerConfiguration.setRoleAttributeKeys(roleAttributeKeysStringArray);
     		
@@ -76,7 +76,7 @@ public class LdapConfigurationServiceImpl
     		String[] userDnPatternStringArray = new String[userDnPatterns.size()];
     		Iterator<UserDnPattern> iterUserDnPattern = userDnPatterns.iterator();    		
     	    for (int i = 0; iterUserDnPattern.hasNext(); i++) {
-    	    	userDnPatternStringArray[i] = String.valueOf(iterUserDnPattern.next());
+    	    	userDnPatternStringArray[i] = iterUserDnPattern.next().getName();
     	    }    	    
     		ldapServerConfiguration.setUserDnPatterns(userDnPatternStringArray);    		
     		ldapServerConfiguration.setUsernameKey(ldapServer.getAuthenticationDomain().getAttributeMapping().getUsernameKey());    		
@@ -1025,7 +1025,7 @@ public class LdapConfigurationServiceImpl
 //    	String[] schemes = {"ldap"};
     	
 //    	allow "localhost" as url
-    	if(url.contains("ldap://localhost") || url.contains("ldaps://localhost")) {
+    	if(url.contains("//localhost")) {
     		return true;
     	}	
     	UrlValidator urlValidator = new UrlValidator(schemes);

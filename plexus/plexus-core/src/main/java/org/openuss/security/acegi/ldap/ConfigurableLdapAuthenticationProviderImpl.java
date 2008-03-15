@@ -30,7 +30,6 @@ import org.openuss.security.Roles;
 import org.openuss.security.SecurityConstants;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
