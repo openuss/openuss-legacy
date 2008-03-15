@@ -31,6 +31,7 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public static final String DEPARTMENT_IDENTIFIER = "DEPARTMENT_IDENTIFIER";
 	public static final String INSTITUTE_IDENTIFIER = "INSTITUTE_IDENTIFIER";
 	public static final String COURSE_TYPE_IDENTIFIER = "COURSE_TYPE_IDENTIFIER";
+	public static final String SEMINARPOOL_IDENTIFIER = "SEMINARPOOL_IDENTIFIER";
 	public static final String PERIOD_IDENTIFIER = "PERIOD_IDENTIFIER";
 	public static final String OFFICIAL_FLAG = "OFFICIAL_FLAG";
 	public static final String RESULT_TYPE = "RESULT_TYPE";
@@ -40,6 +41,7 @@ public abstract class DomainIndexer extends LuceneIndexSupport {
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_INSTITUTION = 3;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE_TYPE = 4;
 	public static final int EXTENDED_SEARCH_RESULT_TYPE_COURSE = 5;
+	public static final int EXTENDED_SEARCH_RESULT_TYPE_SEMINARPOOL = 6;
 	
 	// Discussion Search and Indexing
 	// Discussion Indexing

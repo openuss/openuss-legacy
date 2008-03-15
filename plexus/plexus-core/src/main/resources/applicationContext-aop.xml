@@ -73,6 +73,11 @@
 			expression="execution(* org..CourseServiceBase.create(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="CourseServiceDeletePointcut"
 			expression="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)" />
+		<aop:pointcut id="SeminarpoolServiceCreatePointcut"
+			expression="execution(* org..SeminarpoolAdministrationService.createSeminarpool(org.openuss.seminarpool.SeminarpoolInfo, java.lang.Long)) and args(seminarpoolInfo, userId)" />
+		<aop:pointcut id="SeminarpoolServiceDeletePointcut"
+			expression="execution(* org..SeminarpoolAdministrationService.removeSeminarpool(java.lang.Long)) and args(seminarpoolId)" />
+
 		<aop:pointcut id="CourseServiceUpdatePointcut"
 			expression="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
 		<aop:pointcut id="CourseServiceUpdateOnPeriodPointcut"
@@ -292,6 +297,15 @@
 				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
 		</aop:aspect>
 
+		<aop:aspect id="seminarpoolIndexAspect"
+			ref="seminarpoolIndexAspectBean">
+			<aop:after-returning method="createSeminarpoolIndex"
+				pointcut-ref="SeminarpoolServiceCreatePointcut" 
+				arg-names="seminarpoolInfo, userId" />
+			<aop:before method="deleteSeminarpoolIndex"
+				pointcut-ref="SeminarpoolServiceDeletePointcut" arg-names="seminarpoolId" />
+		</aop:aspect>
+
 		<aop:aspect id="mailingStatusAspect"
 			ref="mailingStatusAspectBean">
 			<aop:after-returning method="updateMailingStatus"
@@ -400,7 +414,11 @@
 		<property name="indexerService" ref="indexerService" />
 		<property name="courseDao" ref="courseDao" />
 	</bean>
-	
+	<bean id="seminarpoolIndexAspectBean"
+		class="org.openuss.aop.SeminarpoolIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="seminarpoolDao" ref="seminarpoolDao" />
+	</bean>	
     <!-- Addititional bean for Discussion Search -->
 	
 	<bean id="discussionIndexAspectBean"

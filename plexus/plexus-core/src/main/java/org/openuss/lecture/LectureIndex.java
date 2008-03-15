@@ -11,6 +11,9 @@ import org.openuss.discussion.DiscussionIndexer;
 import org.openuss.discussion.Post;
 import org.openuss.discussion.PostDao;
 import org.openuss.search.DomainIndexer;
+import org.openuss.seminarpool.Seminarpool;
+import org.openuss.seminarpool.SeminarpoolDao;
+import org.openuss.seminarpool.SeminarpoolIndexer;
 
 /**
  * @author Ingo Dueppe
@@ -25,6 +28,8 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	private DepartmentDao departmentDao;
 	private InstituteDao instituteDao;
 	private CourseDao courseDao;
+	private SeminarpoolDao seminarpoolDao;
+	
 	
 	private Directory directory;
 	
@@ -32,6 +37,7 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 	private DepartmentIndexer departmentIndexer;
 	private InstituteIndexer instituteIndexer;
 	private CourseIndexer courseIndexer;
+	private SeminarpoolIndexer seminarpoolIndexer;
 	
 	private FSDirectory fsDirectory;
 	
@@ -134,6 +140,20 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 					courseIndexer.setDomainObject(course);
 					courseIndexer.create();
 				}
+			} catch (Exception ex) {
+				logger.error(ex);
+			}
+		}
+	}
+	
+	private void indexSeminarpools() {
+		logger.debug("indexing seminarpools...");
+		Collection<Seminarpool> seminarpools = seminarpoolDao.loadAll();
+		
+		for(Seminarpool seminarpool: seminarpools) {
+			try {
+				seminarpoolIndexer.setDomainObject(seminarpool);
+				seminarpoolIndexer.create();
 			} catch (Exception ex) {
 				logger.error(ex);
 			}
@@ -292,7 +312,7 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 		indexDepartments();
 		indexInstitutes();
 		indexCourses();
-		
+		indexSeminarpools();
 		logger.debug("recreated lecture index.");
 	}
 
@@ -320,6 +340,22 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 
 	public void setPostDao(PostDao postDao) {
 		this.postDao = postDao;
+	}
+
+	public SeminarpoolDao getSeminarpoolDao() {
+	    return seminarpoolDao;
+	}
+
+	public void setSeminarpoolDao(SeminarpoolDao seminarpoolDao) {
+	    this.seminarpoolDao = seminarpoolDao;
+	}
+
+	public SeminarpoolIndexer getSeminarpoolIndexer() {
+	    return seminarpoolIndexer;
+	}
+
+	public void setSeminarpoolIndexer(SeminarpoolIndexer seminarpoolIndexer) {
+	    this.seminarpoolIndexer = seminarpoolIndexer;
 	}
 	
 }

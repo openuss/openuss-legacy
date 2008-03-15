@@ -26,7 +26,8 @@ public class DomainResultBean implements DomainResult {
 	private String instituteId;
 	private String courseTypeId;
 	private String courseId;
-	private String periodId; 
+	private String periodId;
+	private String seminarpoolId;
 	
 	private float score;
 
@@ -174,7 +175,16 @@ public class DomainResultBean implements DomainResult {
 			+"Uni: "+universityId+"; "
 			+"Dept: "+departmentId+"; "
 			+"Inst: "+instituteId+"; "
+			+"Seminarpool: "+seminarpoolId+"; "
 			+"CourseType: "+courseTypeId;
+	}
+
+	public String getSeminarpoolId() {
+	    return seminarpoolId;
+	}
+
+	public void setSeminarpoolId(String seminarpoolId) {
+	    this.seminarpoolId = seminarpoolId;
 	}
 
 }

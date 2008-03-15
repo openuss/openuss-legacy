@@ -51,8 +51,9 @@ public abstract class AbstractSeminarpoolPage extends BasePage {
 		logger.debug("prerender - refreshing seminarpool session object");
 		refreshSeminarpool();
 		if (seminarpoolInfo == null || seminarpoolInfo.getId() == null) {
-			addError(i18n("message_error_no_department_selected"));
-			redirect(Constants.DESKTOP);
+		    addError(i18n("message_error_seminarpool_page"));
+		    redirect(Constants.OUTCOME_BACKWARD);
+		    return;
 		}
 		breadcrumbs.loadSeminarpoolCrumbs(seminarpoolInfo);
 	}

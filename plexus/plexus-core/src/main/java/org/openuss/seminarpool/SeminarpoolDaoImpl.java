@@ -28,9 +28,12 @@ public class SeminarpoolDaoImpl
      */
     public org.openuss.seminarpool.SeminarpoolInfo toSeminarpoolInfo(final org.openuss.seminarpool.Seminarpool entity)
     {
-        SeminarpoolInfo targetInfo =  super.toSeminarpoolInfo(entity);
-        targetInfo.setUniversityId(entity.getUniversity().getId());
-        return targetInfo;
+	if ( entity != null ) {
+	    SeminarpoolInfo targetInfo =  super.toSeminarpoolInfo(entity);
+            targetInfo.setUniversityId(entity.getUniversity().getId());
+            return targetInfo;
+	}
+	return null;
     }
 
 

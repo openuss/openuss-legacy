@@ -41,6 +41,14 @@
 					</key>
 					<value>discussionIndexerCommand</value>
 				</entry>
+								<!-- Additional IndexerCommand for Discussion Indexing -->
+				<entry>
+					<key>
+						<value>org.openuss.seminarpool.Seminarpool</value>
+					</key>
+					<value>seminarpoolIndexerCommand</value>
+				</entry>
+				
 			</map>
 		</property>
 	</bean>
@@ -80,6 +88,18 @@
 			<ref bean="indexFactory" />
 		</property>
 	</bean>
+
+	<bean id="seminarpoolIndexer" class="org.openuss.seminarpool.SeminarpoolIndexer">
+		<property name="analyzer">
+			<ref bean="analyzer" />
+		</property>
+		<property name="seminarpoolDao">
+			<ref bean="seminarpoolDao" />
+		</property>
+		<property name="indexFactory">
+			<ref bean="indexFactory" />
+		</property>
+	</bean>
 	
 	<bean name="courseIndexer" class="org.openuss.lecture.CourseIndexer">
 		<property name="analyzer" ref="analyzer" />
@@ -101,7 +121,11 @@
 		<!-- Additional properties for Discussion Search -->
 		<property name="fsDiscussionDirectory" ref="discussionDirectory"/>
 		<property name="postDao" ref="postDao"/>
-		<property name="discussionIndexer" ref="discussionIndexer"/>		
+		<property name="discussionIndexer" ref="discussionIndexer"/>
+		<!-- Additional properties for Seminarpool Search -->
+		<property name="seminarpoolDao" ref="seminarpoolDao"/>
+		<property name="seminarpoolIndexer" ref="seminarpoolIndexer"/>
+				
 	</bean>
 	
 	<bean id="recreateLectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
