@@ -1,7 +1,7 @@
 package org.openuss.webdav;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 import org.w3c.dom.Document;
 
@@ -124,7 +124,7 @@ public interface WebDAVResource {
 	 * @return All children of this collection, if this element is a collection, otherwise null.
 	 * @throws WebDAVResourceException If the current user may not list the contents of the collection.
 	 */
-	public Set<WebDAVResource> getChildren() throws WebDAVResourceException;
+	public List<WebDAVResource> getChildren() throws WebDAVResourceException;
 	
 	/**
 	 * @return true iff getChildren does not return null.

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -95,10 +96,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#getChildren()
 	 */
-	public final Set<WebDAVResource> getChildren() throws WebDAVResourceException {
+	public final List<WebDAVResource> getChildren() throws WebDAVResourceException {
 		checkReadable();
 		
-		return getChildrenImpl();
+		return sortByName(getChildrenImpl());
 	}
 	
 	/* (non-Javadoc)
@@ -177,6 +178,9 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	protected MultiStatusResponse getPropertiesImpl(Document req)
 		throws WebDAVResourceException {
 		
+		// Create result document
+		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
+		
 		Set<String> reqProps = null; // The set of the requested properties
 		boolean reqValues = true; // Request demands the values of the properties
 		
@@ -217,9 +221,12 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 					for (int j = 0;j < reqPropNodes.getLength();j++) {
 						Node reqPropNode = reqPropNodes.item(j);
 						
-						if ((reqPropNode instanceof Element) &&
-								(WebDAVConstants.NAMESPACE_WEBDAV.equals(reqPropNode.getNamespaceURI()))) {
-							reqProps.add(reqPropNode.getLocalName());
+						if (reqPropNode instanceof Element) {
+							if (WebDAVConstants.NAMESPACE_WEBDAV.equals(reqPropNode.getNamespaceURI())) {
+								reqProps.add(reqPropNode.getLocalName());
+							} else {
+								pr.addSimpleProperty(WebDAVStatusCodes.SC_NOT_FOUND, reqPropNode.getNamespaceURI(), reqPropNode.getLocalName(), null);
+							}
 						}
 					}
 					
@@ -245,8 +252,6 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			values = Collections.emptyMap();
 		}
 		
-		// Create result document
-		PropertyResponseImpl pr = new PropertyResponseImpl(getHref());
 		// Found properties
 		for (Entry<String,String> e : values.entrySet()) {
 			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, e.getKey(), reqValues ? e.getValue() : null);
@@ -374,6 +379,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	protected abstract WebDAVResource getChild(String name, WebDAVPath path);
 	
 	/**
+	 * The potentially unsorted list of children.
 	 * @see WebDAVResource#getChildren()
 	 */
 	protected abstract Set<WebDAVResource> getChildrenImpl() throws WebDAVResourceException;
@@ -448,7 +454,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		Element list = doc.createElement(WebDAVConstants.XHTML_UNORDERED_LIST);
 		body.appendChild(list);
 		
-		Collection<WebDAVResource> children = sortByName(getChildren());
+		Collection<WebDAVResource> children = getChildren();
 		for (WebDAVResource c : children) {
 			Element li = doc.createElement(WebDAVConstants.XHTML_LIST_ELEM);
 			list.appendChild(li);
@@ -598,27 +604,23 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @param children the unsorted set of WebDAVResources
 	 * @return A collection of WebDAVResources sorted by name
 	 */
-	protected Collection<WebDAVResource> sortByName(Set<WebDAVResource> children) {
+	public static List<WebDAVResource> sortByName(Set<WebDAVResource> children) {
 		ArrayList<WebDAVResource> sortedCollection = new ArrayList<WebDAVResource>(children);
 		Collections.sort(sortedCollection, getNameComparator());
 		return sortedCollection;
 	}
 	
 	/**
-	 * @return A comparator for WebDAVResources, which compares by name
+	 * @return A comparator for WebDAVResources which compares by name
 	 */
-	protected Comparator<WebDAVResource> getNameComparator() {
-		Comparator<WebDAVResource> comparator = new Comparator<WebDAVResource>(){
+	public static Comparator<WebDAVResource> getNameComparator() {
+		return new Comparator<WebDAVResource>(){
 			public int compare(WebDAVResource r1, WebDAVResource r2) {
-				String name1 = r1.getName();
-				String name2 = r2.getName();
-				return name1.compareTo(name2);
+				return r1.getName().compareTo(r2.getName());
 			}
 		};
-		return comparator;
 	}
-
-
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#getContentType()
 	 */
