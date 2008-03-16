@@ -1,5 +1,7 @@
 package org.openuss.webdav;
 
+import java.util.Map;
+
 /**
  * A WebDAV related exception that is ready to be outputted to the client.
  * Each exception contains therefore an HTTP/WebDAV status code (like 404) and (optionally) additional information
@@ -94,5 +96,12 @@ public class WebDAVException extends Exception implements WebDAVAnswer {
 	 */
 	public String getContentType() {
 		return WebDAVConstants.MIMETYPE_TEXT;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVAnswer#getXHeaders()
+	 */
+	public Map<String, String> getXHeaders() {
+		return null;
 	}
 }

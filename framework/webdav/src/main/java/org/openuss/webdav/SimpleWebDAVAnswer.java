@@ -1,5 +1,7 @@
 package org.openuss.webdav;
 
+import java.util.Map;
+
 
 /**
  * A simple, string-based WebDAVAnswer implementation.
@@ -14,6 +16,10 @@ public class SimpleWebDAVAnswer implements WebDAVAnswer {
 	 * A human-readable message.
 	 */
 	protected String message;
+	/**
+	 * Additional HTTP headers
+	 */
+	protected Map<String,String> headers;
 	
 	/**
 	 * @param statusCode The HTTP status code of this message.
@@ -32,6 +38,20 @@ public class SimpleWebDAVAnswer implements WebDAVAnswer {
 		this.statusCode = statusCode;
 		this.message = message;
 	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param statusCode The HTTP status code of this message.
+	 * @param message A human-readable message.
+	 * @param headers Additional HTTP headers to set
+	 */
+	public SimpleWebDAVAnswer(int statusCode, String message, Map<String,String> headers) {
+		this.statusCode = statusCode;
+		this.message = message;
+		this.headers = headers;
+	}
+		
 		
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVAnswer#getContentType()
@@ -52,5 +72,12 @@ public class SimpleWebDAVAnswer implements WebDAVAnswer {
 	 */
 	public String getMessage() {
 		return message;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVAnswer#getHeaderValues()
+	 */
+	public Map<String, String> getXHeaders() {
+		return headers;
 	}
 }

@@ -1,7 +1,9 @@
 package org.openuss.webdav;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,10 +22,16 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	 * Additional inform(ation)al data. null for no information. 
 	 */
 	protected String description;
+	protected Map<String,String> headerValues;
 	
 	public MultiStatusAnswerImpl() {
+		this(null);
+	}
+	
+	public MultiStatusAnswerImpl(Map<String,String> headerValues) {
 		responses = new ArrayList<MultiStatusResponse>();
 		description = null;
+		this.headerValues = headerValues;
 	}
 	
 	/* (non-Javadoc)
@@ -97,5 +105,26 @@ public class MultiStatusAnswerImpl implements MultiStatusAnswer  {
 	 */
 	public int getResponseCount() {
 		return responses.size();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVAnswer#getHeaderValues()
+	 */
+	public Map<String, String> getXHeaders() {
+		return headerValues;
+	}
+	
+	/**
+	 * Adds a new HTTP header value
+	 * 
+	 * @param key The name of the header value
+	 * @param value The header value, unsanitized
+	 */
+	public void setHeaderValue(String key, String value) {
+		if (headerValues == null) {
+			headerValues = new HashMap<String,String>();
+		}
+		
+		headerValues.put(key, value);
 	}
 }

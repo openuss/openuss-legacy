@@ -403,6 +403,14 @@ public final class WebDAVUtils {
 	 * @return The token token in a form that can be presented to the client
 	 */
 	public static String presentLockToken(String token) {
-		return WebDAVConstants.UUID_SCHEME + token; 
+		return WebDAVConstants.OPAQUELOCK_SCHEME + token; 
+	}
+	
+	/**
+	 * @param token The internal token.
+	 * @return The token token in a form that can be presented to the client in a HTTP header answer
+	 */
+	public static String presentLockTokenHeader(String token) {
+		return "<" + presentLockToken(token) + ">"; 
 	}
 }

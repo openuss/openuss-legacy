@@ -5,7 +5,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -738,8 +740,11 @@ public class WebDAVServlet extends HttpServlet {
 		
 		Document doc = WebDAVUtils.newDocument();
 		
+		Element prop = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_PROP);
+		doc.appendChild(prop);
+
 		Element lockdiscovery = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKDISCOVERY);
-		doc.appendChild(lockdiscovery);
+		prop.appendChild(lockdiscovery);
 		
 		Element activelock = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_ACTIVELOCK);
 		lockdiscovery.appendChild(activelock);
@@ -759,6 +764,10 @@ public class WebDAVServlet extends HttpServlet {
 		activelock.appendChild(depth);
 		depth.appendChild(doc.createTextNode(recursive ? WebDAVConstants.DEPTH_INFINITY_STRING : WebDAVConstants.DEPTH_0_STRING));
 		
+		Element timeout = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_TIMEOUT);
+		activelock.appendChild(timeout);
+		timeout.appendChild(doc.createTextNode(WebDAVConstants.TIMEOUT_INFINITE));
+		
 		Element locktoken = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKTOKEN);
 		activelock.appendChild(locktoken);
 		Element tokenHref = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_HREF);
@@ -771,7 +780,10 @@ public class WebDAVServlet extends HttpServlet {
 		lockroot.appendChild(rootHref);
 		rootHref.appendChild(doc.createTextNode(resource.getPath().toClientString()));
 		
-		WebDAVAnswer res = new XMLWebDAVAnswer(statusCode, doc);
+		XMLWebDAVAnswer res = new XMLWebDAVAnswer(statusCode, doc);
+		
+		res.addHeader(WebDAVConstants.HEADER_LOCK_TOKEN, WebDAVUtils.presentLockTokenHeader(token));
+		
 		return res;
 	}
 	
@@ -843,11 +855,18 @@ public class WebDAVServlet extends HttpServlet {
  	 */
  	public static void printAnswer(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
  		String msg = answer.getMessage();
+ 		Map<String,String> xHeaders = answer.getXHeaders();
  		response.setStatus(answer.getStatusCode());
+ 		
+ 		if (xHeaders != null) {
+	 		for (Entry<String,String> e : xHeaders.entrySet()) {
+	 			response.addHeader(e.getKey(), e.getValue());
+	 		}
+ 		}
  		
  		if (msg != null) {
  	 		String contentType = answer.getContentType();
- 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.DEFAULT_CHARSET.name());
+ 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + "\"" + WebDAVConstants.DEFAULT_CHARSET.name() + "\"");
  		}
  		
  		OutputStream os = response.getOutputStream();
