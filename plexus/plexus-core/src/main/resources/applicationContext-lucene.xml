@@ -41,7 +41,7 @@
 					</key>
 					<value>discussionIndexerCommand</value>
 				</entry>
-								<!-- Additional IndexerCommand for Discussion Indexing -->
+								<!-- Additional IndexerCommand for Seminarpool Indexing -->
 				<entry>
 					<key>
 						<value>org.openuss.seminarpool.Seminarpool</value>
@@ -160,7 +160,10 @@
 	<bean id="courseIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
 		<property name="domainIndexer" ref="courseIndexer"/>
 	</bean>
-
+	<bean id="seminarpoolIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="seminarpoolIndexer"/>
+	</bean>
+	
 	<bean id="indexerServiceAbstract" abstract="true"
 		class="org.openuss.search.IndexerServiceImpl">
 		<property name="indexerFactory">
