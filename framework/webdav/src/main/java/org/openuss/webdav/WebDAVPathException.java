@@ -14,7 +14,7 @@ public class WebDAVPathException extends WebDAVHrefException {
 	public WebDAVPathException(int statusCode, WebDAVPath path, String msg, Throwable cause) {
 		super(statusCode, msg, cause);
 		
-		setPath(path);
+		this.path = path.asResolved();
 	}
 
 	public WebDAVPathException(int statusCode, WebDAVPath path, String msg) {

@@ -57,6 +57,9 @@ public final class WebDAVUtils {
 	private final static String DATEFORMAT_INTERNET_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	private final static TimeZone gmtTz = TimeZone.getTimeZone("GMT");
 	
+	private WebDAVUtils() {}
+	
+	
 	/* HTTP */
 	
 	/**

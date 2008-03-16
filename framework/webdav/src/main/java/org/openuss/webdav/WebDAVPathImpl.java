@@ -145,13 +145,6 @@ public class WebDAVPathImpl implements WebDAVPath {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVPath#equals(org.openuss.webdav.WebDAVPath)
-	 */
-	public boolean equals(WebDAVPath p) {
-		return getCompleteString().equals(p.getCompleteString());
-	}
-
-	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#concat(java.lang.String)
 	 */
 	public WebDAVPath concat(String subResStr) {
@@ -358,26 +351,27 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final WebDAVPathImpl other = (WebDAVPathImpl) obj;
-		if (nextToResolvePos != other.nextToResolvePos)
-			return false;
-		if (path == null) {
-			if (other.path != null)
+		}
+		if (obj instanceof WebDAVPath) {
+			WebDAVPath p = (WebDAVPath) obj;
+			
+			if (!getResolved().equals(p.getResolved())) {
 				return false;
-		} else if (!path.equals(other.path))
+			}
+			List<String> toResolveList = getToResolveListImpl(); 
+			if (toResolveList == null) {
+				return (p.getToResolveList() == null);
+			} else {
+				return toResolveList.equals(p.getToResolveList());
+			}
+		} else {
 			return false;
-		if (prefix == null) {
-			if (other.prefix != null)
-				return false;
-		} else if (!prefix.equals(other.prefix))
-			return false;
-		return true;
+		}
 	}
 
 	/**

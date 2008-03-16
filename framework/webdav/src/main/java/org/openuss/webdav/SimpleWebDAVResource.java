@@ -129,15 +129,15 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	public final WebDAVResource createFile(String name, IOContext ioc)
 			throws WebDAVResourceException {
-		name = sanitizeName(name);
+		String sname = sanitizeName(name);
 		
 		checkCreate();
-		checkFreeName(name);
+		checkFreeName(sname);
 		
-		ioc = getExistingIOC(ioc);
-		checkFileSize(ioc.getContentLength());
+		IOContext nioc = getExistingIOC(ioc);
+		checkFileSize(nioc.getContentLength());
 		
-		return createFileImpl(name, ioc);
+		return createFileImpl(sname, nioc);
 	}
 	
 	/* (non-Javadoc)
@@ -517,10 +517,10 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 * @return ioc or a virtual IOContext, iff ioc is null
 	 */
 	protected static IOContext getExistingIOC(IOContext ioc) {
-		if (ioc != null) {
-			return ioc;
-		} else {
+		if (ioc == null) {
 			return new NullIOContext(null);
+		} else {
+			return ioc;
 		}
 	}
 	
@@ -659,9 +659,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		if (origName.equals("")) {
 			return "_";
 		}
-		origName = getContext().evadeUmlauts(origName);
-		
-		return origName;
+		return getContext().evadeUmlauts(origName);
 	}
 	
 	/**

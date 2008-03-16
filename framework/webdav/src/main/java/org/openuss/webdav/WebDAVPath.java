@@ -47,15 +47,7 @@ public interface WebDAVPath extends Serializable {
 	 * @return true iff the object to compare with implements this itnerface and all requesting methods on both objects will return the same.
 	 */
 	public boolean equals(Object o);
-	
-	/**
-	 * Strict equals function.
-	 * 
-	 * @param p The path to compare with.
-	 * @return true iff all requesting methods on both objects will return the same.
-	 */
-	public boolean equals(WebDAVPath p);
-	
+
 	/**
 	 * @return The already resolved path of this object, not encoded.
 	 * 			This includes any prefixes
