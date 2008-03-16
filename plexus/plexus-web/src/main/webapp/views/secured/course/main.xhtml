@@ -152,7 +152,7 @@
 							value="#{msg.course_no_news}" styleClass="news_title" /></p>
 					</c:if>
 					<t:dataList id="news"
-						value="#{views$secured$course$groupnews.currentNews}" var="item"
+						value="#{views$secured$course$coursenews.currentNews}" var="item"
 						styleClass="news">
 						<p class="content_font_normal"><h:outputText
 							value="#{item.publishDate}" styleClass="news_date">
