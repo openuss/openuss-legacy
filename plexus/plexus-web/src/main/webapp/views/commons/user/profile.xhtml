@@ -189,7 +189,8 @@
 							not empty showuser.contact.birthday or
 							not empty showuser.contact.searching or
 							not empty showuser.contact.providing or
-							not empty showuser.contact.interests)}">
+							not empty showuser.contact.interests or
+							not empty showuser.profile.portrait)}">
 					<h:outputText styleClass="profile_header"
 						value="#{msg.profile_personal_header}" />
 					<h:outputText value=""/>
@@ -216,11 +217,12 @@
 						<h:outputText value="#{showuser.contact.interests}" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 						<h:outputText value="" />
 					</c:if>
+					<c:if test="#{not empty showuser.profile.portrait}">
 					<c:if test="#{showuser.profile.profilePersonalPublic or views$secured$user$userprofile.buddy}">
 					<h:outputText value="#{msg.user_contact_portrait}:" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					<h:outputText value="#{showuser.profile.portrait}" escape="false" styleClass="#{((not showuser.profile.profilePersonalPublic) and (views$secured$user$userprofile.ownProfile))? 'profile-not-visible' : 'profile-visible'}"/>
 					<h:outputText value="" />
-					</c:if>
+					</c:if></c:if>
 				</c:if>
 				<c:if test="#{(showuser.profile.profileUniPublic or views$secured$user$userprofile.buddy) and( 
 								not empty showuser.profile.studies or 

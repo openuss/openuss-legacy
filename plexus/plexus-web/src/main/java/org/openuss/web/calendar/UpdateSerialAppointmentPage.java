@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -18,6 +19,7 @@ import org.openuss.calendar.CalendarType;
 import org.openuss.calendar.RecurrenceType;
 import org.openuss.calendar.SerialAppointmentInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.internationalisation.TranslationService;
 import org.openuss.web.Constants;
 
 /**
@@ -36,6 +38,10 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 	private Integer appointmentType;
 
 	private String recurrenceType;
+	
+	@Property(value = "#{translationService}")
+	private TranslationService translationService;
+
 
 	/* ----- business logic ----- */
 
@@ -90,9 +96,10 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 		
 		try {
 			for(AppointmentTypeInfo appType : (Collection<AppointmentTypeInfo>)calendarService.getAllAppointmentTypes()){
-				items.add(new SelectItem(appType.getId().intValue(), appType.getName()));
+				String name = translationService.getTranslation(appType.getId(), appType.getName(), user.getLocale());
+				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
-		} catch (CalendarApplicationException e) {
+		} catch (Exception e) {
 			this.addError("Error");
 			return null;
 		}
@@ -128,5 +135,13 @@ public class UpdateSerialAppointmentPage extends AbstractCalendarPage {
 
 	public void setRecurrenceType(String recurrenceType) {
 		this.recurrenceType = recurrenceType;
+	}
+
+	public TranslationService getTranslationService() {
+		return translationService;
+	}
+
+	public void setTranslationService(TranslationService translationService) {
+		this.translationService = translationService;
 	}
 }

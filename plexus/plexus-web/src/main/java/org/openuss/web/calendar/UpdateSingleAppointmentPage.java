@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -15,6 +16,7 @@ import org.openuss.calendar.AppointmentTypeInfo;
 import org.openuss.calendar.CalendarApplicationException;
 import org.openuss.calendar.CalendarType;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.internationalisation.TranslationService;
 import org.openuss.web.Constants;
 
 /**
@@ -30,8 +32,12 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 	private static final Logger logger = Logger.getLogger(UpdateSingleAppointmentPage.class);
 	
 	private Integer appointmentType;
+	
+	@Property(value = "#{translationService}")
+	private TranslationService translationService;
 		
 	/* ----- business logic ----- */
+
 
 	@Override
 	@Prerender
@@ -81,9 +87,10 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 		
 		try {
 			for(AppointmentTypeInfo appType : (Collection<AppointmentTypeInfo>)calendarService.getAllAppointmentTypes()){
-				items.add(new SelectItem(appType.getId().intValue(), appType.getName()));
+				String name = translationService.getTranslation(appType.getId(), appType.getName(), user.getLocale());
+				items.add(new SelectItem(appType.getId().intValue(), name));
 			}
-		} catch (CalendarApplicationException e) {
+		} catch (Exception e) {
 			this.addError("Error");
 			return null;
 		}
@@ -100,4 +107,11 @@ public class UpdateSingleAppointmentPage extends AbstractCalendarPage{
 		this.appointmentType = appointmentType;
 	}
 
+	public TranslationService getTranslationService() {
+		return translationService;
+	}
+	
+	public void setTranslationService(TranslationService translationService) {
+		this.translationService = translationService;
+	}
 }
