@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+	xmlns:news="http://www.openuss.org/news/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<f:loadBundle basename="resources" var="msg" />
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="header">
+		<link type="application/rss+xml" title="RSS-Global" rel="alternate"
+			href="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/rss/public/global.xml" />
+	</ui:define>
+	<ui:define name="title">
+		<h:outputText value="#{msg.desktop_command_myuni}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+		<ui:include src="/views/commons/sidebar/feeds/globalfeed.xhtml" />
+		<ui:include src="/views/commons/sidebar/whoisonline.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+
+		<o:block label="#{msg.webdav_guide_introduction_header}">
+			<div class="content_font_normal">
+				<h:graphicImage
+					value="/images/webdav/Assistent1.png" alt="XP Assistent" width="563px" height="466px"
+					title="WebDAV XP Guide" />
+			</div>
+		</o:block>
+
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>
