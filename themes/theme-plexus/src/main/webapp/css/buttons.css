@@ -522,7 +522,7 @@ a.icon_recover span {
   	
 }
 
-.flexListItemRight a {
+.flexListItemRight a, .flexListItemRight span.newsletter_none, .flexListItemRight span.forum_none {
   background: transparent none repeat scroll 0%;
   color: #FFFFFF;
   font-size: 0pt;
@@ -535,7 +535,11 @@ a.icon_recover span {
   cursor: pointer;  
 }
 
-.flexListItemRight a span {
+.flexListItemRight span.newsletter_none, .flexListItemRight span.forum_none {
+	cursor: help;	
+}
+
+.flexListItemRight a span, .flexListItemRight span span {
   background-position: left top;
   background-repeat: no-repeat;
   height: 16px;
@@ -555,26 +559,8 @@ a.icon_recover span {
   background-image: url(../img/buttons/newsletter_subscribe_icon.png);
 }
 
-.flexListItemRight span.newsletter_none {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-}
-
 .flexListItemRight span.newsletter_none span {
-  background-position: left top;
   background-image: url(../img/buttons/newsletter_none_icon.png);
-  background-repeat: no-repeat;
-  height: 16px;
-  display: block;
-  width: 16px;
 }
 
 .flexListItemRight a.forum_subscribed span {
@@ -585,26 +571,8 @@ a.icon_recover span {
   background-image: url(../img/buttons/forum_subscribe_icon.png);
 }
 
-.flexListItemRight span.forum_none {
-  background: transparent none repeat scroll 0%;
-  color: #FFFFFF;
-  font-size: 0pt;
-  height: 16px;
-  padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
-  overflow: hidden;
-  position: relative;
-  white-space: nowrap;
-  width: 16px;
-}
-
 .flexListItemRight span.forum_none span {
-  background-position: left top;
   background-image: url(../img/buttons/forum_none_icon.png);
-  background-repeat: no-repeat;
-  height: 16px;
-  display: block;
-  width: 16px;
 }
 
 .flexListItemRight a.remove_bookmark span {
