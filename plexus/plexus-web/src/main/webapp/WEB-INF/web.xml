@@ -477,6 +477,12 @@
 			<!-- -1: No limit -->
 			<param-value>100</param-value>
 		</init-param>
+		<!-- Limit for the number of resources that can be locked in one request -->
+		<init-param>
+			<param-name>lock-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow locks on collections -->
+			<param-value>100</param-value>
+		</init-param>
 		<!-- Whether to replace common umlauts with surrogate character sequences -->
 		<init-param>
 			<param-name>evade-umlauts</param-name>

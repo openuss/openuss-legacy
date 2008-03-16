@@ -1,9 +1,10 @@
 package org.openuss.webdav;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * A WebDAVPath in OpenUSS.
@@ -19,36 +20,34 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	protected static final Pattern STARTURL_PATTERN = Pattern.compile("^http(s)?://[^/]+");
 	/**
-	 * A prefix to the already resolved path.
+	 * The prefix of all paths. 
 	 */
-	protected final String path;
+	protected final String prefix;
 	/**
-	 * The path yet to resolve as supplied by the client.
-	 * This does not include the root path specification or any other prefixes and therefore should not start with a path separator.
-	 * null if everything is resolved.
+	 * The path elements.
 	 */
-	protected final String toResolve;
+	protected final List<String> path;
+	/**
+	 * The index of the next element to resolve in toResolve.
+	 */
+	protected final int nextToResolvePos;
 	
 	/**
 	 * Constructor for parsed client-supplied values.
 	 * 
 	 * @see #parse(String, String)
-	 * @param path A prefix to the already resolved path. If toResolve != null, this should end with a path separator.
-	 * @param toResolve The yet unresolved path of the path or null.
+	 * @see #getRoot(String)
+	 * @param prefix The prefix of all paths. 
+	 * @param path The path elements.
+	 * @param nextToResolvePos The position of the next path element to resolve in toResolve.
 	 */
-	public WebDAVPathImpl(String path, String toResolve) {
-		if ((toResolve == null) || "".equals(toResolve)) {
-			toResolve = null;
-		} else if(PATH_SEP.equals(toResolve)) {
-			path = path + PATH_SEP;
-			toResolve = null;
-		} else if ((!path.endsWith(PATH_SEP)) && toResolve.startsWith(PATH_SEP)) {
-			path = path + PATH_SEP;
-			toResolve = toResolve.substring(PATH_SEP.length());
-		}
+	protected WebDAVPathImpl(String prefix, List<String> path, int nextToResolvePos) {
+		assert(nextToResolvePos >= 0);
+		assert(nextToResolvePos < path.size());
 		
+		this.prefix = prefix;
 		this.path = path;
-		this.toResolve = toResolve;
+		this.nextToResolvePos = nextToResolvePos;
 	}
 	
 	/**
@@ -90,10 +89,22 @@ public class WebDAVPathImpl implements WebDAVPath {
 		}
 		
 		clientInput = clientInput.substring(prefix.length());
+
+		if (clientInput.endsWith(PATH_SEP)) {
+			clientInput = clientInput.substring(0, clientInput.length() - PATH_SEP.length());
+		}
 		
-		return new WebDAVPathImpl(prefix, clientInput);
+		List<String> toResolve;
+		if ((!prefix.endsWith(PATH_SEP)) && clientInput.startsWith(PATH_SEP)) {
+			prefix = prefix + PATH_SEP;
+			clientInput = clientInput.substring(PATH_SEP.length());
+		}
+			
+		toResolve = explode(clientInput);
+		
+		return new WebDAVPathImpl(prefix, toResolve, 0);
 	}
-	
+
 	/**
 	 * Factory for the root WebDAV path.
 	 * 
@@ -105,38 +116,19 @@ public class WebDAVPathImpl implements WebDAVPath {
 			prefix = prefix + PATH_SEP;
 		}
 		
-		return new WebDAVPathImpl(prefix, "");
+		List<String> toResolve = Collections.emptyList();
+		return new WebDAVPathImpl(prefix, toResolve, 0);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getFileName()
 	 */
 	public String getFileName() {
-		// Find end of file name
-		int endPos = path.length(); // Last character of the file name + 1
-		while ((endPos - PATH_SEP.length() >= 0) && PATH_SEP.equals(path.substring(endPos - PATH_SEP.length(), endPos))) {
-			endPos -= PATH_SEP.length();
-		}
-		
-		// No content
-		if (endPos <= 0) {
+		if (isRoot() || (nextToResolvePos == 0)) {
 			return null;
 		}
 		
-		// Find previous path separator
-		int startPos = path.lastIndexOf(PATH_SEP, endPos - 1);
-		if (startPos < 0) {
-			startPos = 0;
-		} else {
-			startPos += PATH_SEP.length();
-		}
-		
-		String res = path.substring(startPos, endPos);
-		if ("".equals(res)) {
-			return null;
-		}
-		
-		return res;
+		return path.get(nextToResolvePos - 1);
 	}
 	
 	/* (non-Javadoc)
@@ -149,25 +141,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 			return null;
 		}
 		
-		int dotPos = fileName.lastIndexOf(FILEEXT_SEP);
-		if ((dotPos > 0) && (dotPos < fileName.length() - 1)) {
-			return fileName.substring(dotPos + 1);
-		} else {
-			return null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((path == null) ? 0 : path.hashCode());
-		result = prime * result
-				+ ((toResolve == null) ? 0 : toResolve.hashCode());
-		return result;
+		return getExtension(fileName);
 	}
 
 	/* (non-Javadoc)
@@ -181,137 +155,125 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 * @see org.openuss.webdav.WebDAVPath#concat(java.lang.String)
 	 */
 	public WebDAVPath concat(String subResStr) {
-		String newPath = path;
-		String newToResolve;
-		if (toResolve != null) {
-			newToResolve = toResolve;
-
-			if (! newToResolve.endsWith(PATH_SEP)) {
-				newToResolve = newToResolve + PATH_SEP;
-			}
-			
-			newToResolve += subResStr;
-		} else {
-			newToResolve = subResStr;
-			
-			if (! newPath.endsWith(PATH_SEP)) {
-				newPath += PATH_SEP;
-			}
-		}
+		List<String> newPathElems = explode(subResStr);
+		List<String> newPath = new ArrayList<String>(len() + newPathElems.size());
+		newPath.addAll(path);
+		newPath.addAll(newPathElems);
 		
-		return new WebDAVPathImpl(newPath, newToResolve);
+		return new WebDAVPathImpl(prefix, newPath, nextToResolvePos);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#toClientString()
 	 */
 	public String toClientString() {
-		return WebDAVURLUTF8Encoder.encode(path);
+		return WebDAVURLUTF8Encoder.encode(getResolved());
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVRemainingPath#getNextName()
 	 */
 	public String getNextName() {
-		if (toResolve == null) {
+		if (isResolved()) {
 			return null;
 		}
 		
-		int endPos = toResolve.indexOf(PATH_SEP);
-		String res;
-		if (endPos == -1) {
-			res = toResolve;
-		} else {
-			res = toResolve.substring(0, endPos);
-		}
-		
-		return res;
+		return path.get(nextToResolvePos);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVRemainingPath#next()
 	 */
 	public WebDAVPath next() {
-		if (toResolve == null) {
+		if (isResolved()) {
 			return null;
 		}
 		
-		String newPath = path;
-		String newToResolve;
-		
-		int endPos = toResolve.indexOf(PATH_SEP);
-		
-		if (endPos == -1) {
-			newPath += toResolve;
-			newToResolve = null;
-		} else {
-			newPath += toResolve.substring(0, endPos+PATH_SEP.length());
-			newToResolve = toResolve.substring(endPos + PATH_SEP.length());
-		}
-		
-		return new WebDAVPathImpl(newPath, newToResolve);
+		return new WebDAVPathImpl(prefix, path, nextToResolvePos + 1);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVPath#common(org.openuss.webdav.WebDAVPath)
-	 */
-	public CommonPathRes common(WebDAVPath other) {
-		String cs1 = getCompleteString();
-		String cs2 = other.getCompleteString();
-		
-		int di = StringUtils.indexOfDifference(cs1, cs2);
-		if ((di == -1) || (di == 0)) { // Both equal or completely different
-			return new CommonPathRes(this, other);
-		}
-		di = cs1.lastIndexOf(PATH_SEP, di - 1);
-		if (di == -1) {
-			return new CommonPathRes(this, other);
-		}
-		WebDAVPath p1 = (di > getPrefix().length()) ? this :
-				new WebDAVPathImpl(cs1.substring(0, di + 1), cs1.substring(di + 1)); 
-		WebDAVPath p2 = (di > other.getPrefix().length()) ? other :
-			new WebDAVPathImpl(cs2.substring(0, di + 1), cs2.substring(di + 1)); 
-		
-		return new CommonPathRes(p1, p2);
-	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getCompleteString()
 	 */
 	public String getCompleteString() {
-		if (toResolve == null) {
-			return path;
-		} else {
-			return path + toResolve;
-		}
+		return prefix + implode(path);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVPath#getPrefix()
+	 * @see org.openuss.webdav.WebDAVPath#getResolved()
+	 */
+	public String getResolved() {
+		return prefix + implode(getResolvedListImpl());
+	}
+	
+	/**
+	 * @return The list of already resolved elements
+	 */
+	public List<String> getResolvedList() {
+		return Collections.unmodifiableList(getResolvedListImpl());
+	}
+	
+	/**
+	 * @return The list of already resolved elements
+	 */
+	protected List<String> getResolvedListImpl() {
+		return path.subList(0, nextToResolvePos);
+	}
+	
+	/**
+	 * @return The prefix of all paths
 	 */
 	public String getPrefix() {
-		return path;
+		return prefix;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getToResolve()
 	 */
 	public String getToResolve() {
-		return toResolve;
+		if (isResolved()) {
+			return null;
+		}
+		
+		return implode(getToResolveListImpl());
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#getToResolve()
+	 */
+	public List<String> getToResolveList() {
+		List<String> res = getToResolveListImpl();
+		
+		if (res == null) {
+			return null;
+		}
+		
+		return Collections.unmodifiableList(res);
+	}
+	
+	/**
+	 * @see org.openuss.webdav.WebDAVPath#getToResolveList()
+	 */
+	protected List<String> getToResolveListImpl() {
+		if (isResolved()) {
+			return null;
+		}
+		
+		return path.subList(nextToResolvePos, len());
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#isResolved()
 	 */
 	public boolean isResolved() {
-		return (toResolve == null);
+		return nextToResolvePos >= len();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#asResolved()
 	 */
 	public WebDAVPath asResolved() {
-		return new WebDAVPathImpl(path + toResolve, null);
+		return new WebDAVPathImpl(prefix, path, len());
 	}
 	
 	/* (non-Javadoc)
@@ -321,50 +283,119 @@ public class WebDAVPathImpl implements WebDAVPath {
 		if (isResolved()) {
 			return this;
 		} else {
-			return new WebDAVPathImpl(path, null);
+			return new WebDAVPathImpl(prefix, path.subList(0, nextToResolvePos), nextToResolvePos);
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVPath#resolveAllBut(int)
+	 */
+	public WebDAVPath resolveAllBut(int but) {
+		if ((but <= 0) || (isResolved())) {
+			return this;
+		}
+		
+		but = Math.min(getNumberOfElemsToResolve(), but);
+		
+		return new WebDAVPathImpl(prefix, path, len() - but);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getNumberOfElemsToResolve()
 	 */
 	public int getNumberOfElemsToResolve() {
-		String toResolve = getToResolve();
-		int res = StringUtils.countMatches(toResolve, PATH_SEP) + 1;
-		
-		if (toResolve.endsWith(PATH_SEP)) {
-			res--;
-		}
-		if (toResolve.startsWith(PATH_SEP) && (toResolve.length() > PATH_SEP.length())) {
-			res--;
-		}
-		
-		return res;
+		return len() - nextToResolvePos;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVPath#getParent()
 	 */
 	public WebDAVPath getParent() {
-		if (isResolved()) {
+		if (isResolved() || isResolvedRoot()) {
 			return this;
 		}
 		
-		int p = toResolve.length() - 1;
-		
-		if (toResolve.endsWith(PATH_SEP)) {
-			p -= PATH_SEP.length();
-		}
-		
-		p = toResolve.lastIndexOf(PATH_SEP, p);
-		
-		if (p <= 0) {
-			return this;
-		}
-		
-		return new WebDAVPathImpl(path, toResolve.substring(0, p));
+		return new WebDAVPathImpl(prefix, path.subList(0, len() - 1), nextToResolvePos);
+	}
+	
+	/**
+	 * @return true iff the path represented by this object denominates the root.
+	 */
+	public boolean isRoot() {
+		return nextToResolvePos == 0;
+	}
+	
+	/**
+	 * @return true iff the path represented by this object denominates the root even if it would been fully resolved.
+	 */
+	public boolean isResolvedRoot() {
+		return len() == 0;
+	}
+	
+	
+	/**
+	 * @return Helper function for the number of elements in the path list.
+	 */
+	protected int len() {
+		return path.size();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + nextToResolvePos;
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+		return result;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final WebDAVPathImpl other = (WebDAVPathImpl) obj;
+		if (nextToResolvePos != other.nextToResolvePos)
+			return false;
+		if (path == null) {
+			if (other.path != null)
+				return false;
+		} else if (!path.equals(other.path))
+			return false;
+		if (prefix == null) {
+			if (other.prefix != null)
+				return false;
+		} else if (!prefix.equals(other.prefix))
+			return false;
+		return true;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 * For debugging output only!
+	 */
+	public String toString() {
+		String res = getResolved();
+		
+		if (isResolved()) {
+			res += " (resolved)";
+		} else {
+			res = res + "  " + getToResolve();
+		}
+		
+		return res;
+	}
+	
 	/**
 	 * Get the base name of a file without the extension.
 	 * 
@@ -406,4 +437,72 @@ public class WebDAVPathImpl implements WebDAVPath {
 			return fileName.substring(dotPos + FILEEXT_SEP.length());
 		}
 	}
+	
+	/**
+	 * Splits a string into its path components.
+	 * 
+	 * @param in The input string. A single path separator at the end is ignored.
+	 * @return A list of the path elements. The inputs "" and PATH_SEP yield an empty list.
+	 */
+	public static List<String> explode(String in) {
+		if (in.endsWith(PATH_SEP)) {
+			in = in.substring(0, in.length() - PATH_SEP.length());
+		}
+		if ("".equals(in)) {
+			return Collections.emptyList();
+		}
+		
+		List<String> res = new ArrayList<String>();
+		int start = 0;
+		int end;
+		for (;;) {
+			end = in.indexOf(PATH_SEP, start);
+			
+			if (end == -1) {
+				res.add(in.substring(start));
+				break;
+			}
+			
+			res.add(in.substring(start, end));
+			start = end + PATH_SEP.length();
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * Joins the path components expressed by lst to a string.
+	 * 
+	 * @param lst The list of path elements.
+	 * @return The concatenated string.
+	 */
+	public static String implode(List<String> lst) {
+		boolean first = true;
+		StringBuilder sb = new StringBuilder();
+		
+		for (String elem : lst) {
+			if (first) {
+				first = false;
+			} else {
+				sb.append(PATH_SEP);
+			}
+			
+			sb.append(elem);
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * @param strPath The input path as a string
+	 * @return strPath, ending with a path separator. 
+	 */
+	public static String appendSep(String strPath) {
+		if (!strPath.endsWith(PATH_SEP)) {
+			strPath = strPath + PATH_SEP;
+		}
+		
+		return strPath;
+	}
+
 }

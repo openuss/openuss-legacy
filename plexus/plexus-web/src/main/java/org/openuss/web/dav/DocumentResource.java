@@ -370,7 +370,7 @@ public class DocumentResource extends SimpleWebDAVResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.WebDAVResource#equals(org.openuss.webdav.WebDAVResource)
 	 */
-	public boolean equals(WebDAVResource res) {
+	public boolean equals(Object res) {
 		if (res instanceof DocumentResource) {
 			DocumentResource other = (DocumentResource) res;
 			

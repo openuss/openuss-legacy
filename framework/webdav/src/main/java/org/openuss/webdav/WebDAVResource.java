@@ -99,7 +99,7 @@ public interface WebDAVResource {
 	 * Creates a file with the the given name as a child of this resource.
 	 * 
 	 * @param name The name of the new file
-	 * @param ioc The data to write.
+	 * @param ioc The data to write or null if an empty file should be created.
 	 * @return the new collection as a WebDAVResource object
 	 * @throws WebDAVResourceException An error that can be handed directly to the client.
 	 * 			If !isCollection() or the resource already exists, a Conflict exception is thrown.
@@ -152,6 +152,27 @@ public interface WebDAVResource {
 	 * @return true if the current user may delete this resource.
 	 */
 	public boolean isDeletable();
+	
+	/**
+	 * Locks a resource.
+	 * 
+	 * @param exclusive True iff other clients should be prevented from acuiring even non-exclusive locks.
+	 * @param token The id of the lock, for internal use.
+	 * @throws WebDAVException If getLockState() does not return UNLOCKED or this resource does not support locking or an internal error occurs.
+	 */
+	public void lock(boolean exclusive, String token) throws WebDAVException;
+	
+	/**
+	 * @return The current type of lock.
+	 * @throws WebDAVException On internal errors
+	 */
+	public WebDAVConstants.LockState getLockState() throws WebDAVException;
+	
+	/**
+	 * @param token The token to unlock.
+	 * @throws WebDAVException If this resource does not support locking or an internal error occurs.
+	 */
+	public void unlock(String token) throws WebDAVException;
 	
 	/**
 	 * This MUST be overwritten to ensure prevention of copying trees in itself.

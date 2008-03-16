@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -303,6 +305,31 @@ public final class WebDAVUtils {
 			
 	}
 	
+	/**
+	 * @param parentNode The parent node whose children should be searched
+	 * @param localName The expected local name.
+	 * @return The first WebDAV child element of parentNode whose local name equals localName. 
+	 * @throws WebDAVException A Bad Request error iff there is no child node named localName.
+	 */
+	public static Element getChildNode(Node parentNode, String localName) throws WebDAVException {
+		Element res = null;
+		
+		NodeList nodeList = parentNode.getChildNodes();
+		for (int i = 0;i < nodeList.getLength();i++) {
+			Node n = nodeList.item(i);
+			
+			if (isDavElement(n, localName)) {
+				res = (Element) n;
+				break;
+			}
+		}
+		if (res == null) {
+			throw new WebDAVException(WebDAVStatusCodes.SC_BAD_REQUEST, "Expected node " + localName + " not found!"); 
+		}
+		
+		return res;
+	}
+	
 	/* Time */
 	
 	/**
@@ -360,5 +387,22 @@ public final class WebDAVUtils {
 	 */
 	public static Timestamp nowTimestamp() {
 		return new Timestamp(new Date().getTime());
+	}
+	
+	/* Various */
+	
+	/**
+	 * @return A new lock token
+	 */
+	public static String genLockToken() {
+		return UUID.randomUUID().toString();
+	}
+	
+	/**
+	 * @param token The internal token.
+	 * @return The token token in a form that can be presented to the client
+	 */
+	public static String presentLockToken(String token) {
+		return WebDAVConstants.UUID_SCHEME + token; 
 	}
 }

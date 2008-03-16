@@ -221,9 +221,9 @@ public abstract class CollisionAvoidingSimpleWebDAVResource extends SimpleWebDAV
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.openuss.webdav.WebDAVResource#equals(org.openuss.webdav.WebDAVResource)
+	 * @see org.openuss.webdav.SimpleWebDAVResource#equals(java.lang.Object)
 	 */
-	public boolean equals(WebDAVResource res) {
+	public boolean equals(Object res) {
 		if (res instanceof CollisionAvoidingSimpleWebDAVResource) {
 			return ((CollisionAvoidingSimpleWebDAVResource) res).getId() == getId();
 		} else {

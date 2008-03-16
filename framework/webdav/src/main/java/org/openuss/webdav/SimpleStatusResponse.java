@@ -45,6 +45,14 @@ public class SimpleStatusResponse implements MultiStatusStatusResponse{
 		this(res.getPath(), statusCode);
 	}
 
+	/**
+	 * @param whe The exception to convert
+	 * @return A new SimpleStatusResponse out of the exception
+	 */
+	public static SimpleStatusResponse createFromWebDAVException(WebDAVHrefException whe) {
+		return new SimpleStatusResponse(whe.getHref(), whe.getStatusCode());
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.openuss.webdav.MultiStatusResponse#addToXML(org.w3c.dom.Element)
 	 */

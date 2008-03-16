@@ -1,6 +1,7 @@
 package org.openuss.webdav;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A WebDAV path specification, optionally including yet unresolved path elements.
@@ -28,7 +29,7 @@ public interface WebDAVPath extends Serializable {
 	/**
 	 * @return The local file name.
 	 * 			For example, a fully resolved WebDAVPath("/a/b/cd.e") would return "cd.e".
-	 * 			null is returned for the root path.
+	 * 			null is returned for the root path or if this element is not resolved yet.
 	 */
 	public String getFileName();
 	
@@ -57,8 +58,9 @@ public interface WebDAVPath extends Serializable {
 	
 	/**
 	 * @return The already resolved path of this object, not encoded.
+	 * 			This includes any prefixes
 	 */
-	public String getPrefix();
+	public String getResolved();
 	
 	/**
 	 * @return A string that can be extradited to the WebDAV client and represents the already resolved path.
@@ -66,12 +68,17 @@ public interface WebDAVPath extends Serializable {
 	public String toClientString();
 
 	/**
-	 * @return The path yet to resolve or null, if this path is already resolved.
+	 * @return The path yet to resolve or null iff this path is already resolved.
 	 */
 	public String getToResolve();
 	
 	/**
-	 * @return The complete path representation, unencoded
+	 * @return The list elements yet to resolve or null iff this path is already resolved.
+	 */
+	public List<String> getToResolveList();
+	
+	/**
+	 * @return The complete path representation including elements yet to resolve, unencoded
 	 */
 	public String getCompleteString();
 	
@@ -104,33 +111,21 @@ public interface WebDAVPath extends Serializable {
 	public WebDAVPath asFinalPath();
 	
 	/**
-	 * @return The path of the parent of the current resource, if it is not fully resolved.
+	 * @return The path of the resource to resolve, if this resource is not fully resolved.
 	 * 			Otherwise the current path.
 	 */
 	public WebDAVPath getParent();
 	
 	/**
-	 * Returns the common path of two yet unresolved WebDAV paths.
-	 * 
-	 * @param other The other path to compare this with.
-	 * 				For useful results, its prefix should equal this object's.
-	 * @return A struct consisting of the two resolved paths with updated prefixes.
-	 */
-	public CommonPathRes common(WebDAVPath other);
-	public static class CommonPathRes {
-		public final WebDAVPath newThis;
-		public final WebDAVPath newOther;
-		
-		public CommonPathRes(WebDAVPath newThis,
-				WebDAVPath newOther) {
-			super();
-			this.newThis = newThis;
-			this.newOther = newOther;
-		}
-	}
-	
-	/**
 	 * @return The number of elements yet to resolve.
 	 */
 	public int getNumberOfElemsToResolve();
+
+	/**
+	 * Call next() until getNumberOfElementsToResolve() <= but 
+	 * 
+	 * @param but When to stop resolving further path elements
+	 * @return The resolved path
+	 */
+	public WebDAVPath resolveAllBut(int but);
 }

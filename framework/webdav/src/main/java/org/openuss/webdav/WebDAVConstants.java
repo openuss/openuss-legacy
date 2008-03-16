@@ -96,8 +96,10 @@ public class WebDAVConstants {
 	public final static String XML_HREF = "href";
 	public final static String XML_KEEPALIVE = "keepalive";
 	public final static String XML_LINK = "link";
+	public final static String XML_LOCKDISCOVERY = "lockdiscovery";
 	public final static String XML_LOCKENTRY = "lockentry";
 	public final static String XML_LOCKINFO = "lockinfo";
+	public final static String XML_LOCKROOT = "lockroot";
 	public final static String XML_LOCKSCOPE = "lockscope";
 	public final static String XML_LOCKTOKEN = "locktoken";
 	public final static String XML_LOCKTYPE = "locktype";
@@ -119,6 +121,7 @@ public class WebDAVConstants {
 	public final static String XML_SHARED = "shared";
 	public final static String XML_SRC = "src";
 	public final static String XML_STATUS = "status";
+	public final static String XML_SUPPORTEDLOCK = "supportedlock";
 	public final static String XML_TIMEOUT = "timeout";
 	public final static String XML_WRITE = "write";
 	
@@ -132,4 +135,9 @@ public class WebDAVConstants {
 	public final static String XHTML_LIST_ELEM = "li";
 	public final static String XHTML_LINK = "a";
 	public final static String XHTML_HREF = "href";
+	
+	// locks
+	public static enum LockState {UNLOCKED, SHARED, EXCLUSIVE};
+	public static final String UUID_SCHEME = "urn:uuid:";
+	public static final String OPAQUELOCK_SCHEME = "opaquelocktoken:";
 }

@@ -39,10 +39,13 @@ import org.openuss.webdav.WebDAVResourceException;
 import org.openuss.webdav.WebDAVStatusCodes;
 import org.openuss.webdav.WebDAVUtils;
 import org.openuss.webdav.XMLPropertyResponseNode;
+import org.openuss.webdav.XMLWebDAVAnswer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * This is the entry point for WebDAV requests.
@@ -63,6 +66,7 @@ public class WebDAVServlet extends HttpServlet {
 	private static final String INIT_PARAMETER_KILLBIT = "killbit";
 	private static final String INIT_PARAMETER_WRITE_LIMIT = "write-limit";
 	private static final String INIT_PARAMETER_READ_LIMIT = "read-limit";
+	private static final String INIT_PARAMETER_LOCK_LIMIT = "lock-limit";
 	private static final String INIT_PARAMETER_EVADE_UMLAUTS = "evade-umlauts";
 	
 	/**
@@ -75,8 +79,8 @@ public class WebDAVServlet extends HttpServlet {
 	private static final int NO_RECURSIVE = -2;
 		
 	// WebDAV compliance
-	private static final String DAV_COMPLIANCE_LEVEL = "1";
-	private static final String DAV_ALLOWED_METHODS = "OPTIONS,GET,HEAD,DELETE,PUT,PROPFIND,PROPPATCH,MKCOL,COPY,MOVE,POST";
+	private static final String DAV_COMPLIANCE_LEVEL = "1,2";
+	private static final String DAV_ALLOWED_METHODS = "OPTIONS,GET,HEAD,DELETE,PUT,PROPFIND,PROPPATCH,MKCOL,COPY,MOVE,POST,LOCK,UNLOCK";
 	
 	/**
 	 * If set, disable WebDAV
@@ -86,6 +90,7 @@ public class WebDAVServlet extends HttpServlet {
 	// Limit the number of reading and writing requests in one call
 	private int readLimit; 
 	private int writeLimit;
+	private int lockLimit;
 	
  	private String resourcePathPrefix;
  	private transient WebDAVContext davContext;
@@ -101,11 +106,8 @@ public class WebDAVServlet extends HttpServlet {
  		}
  		
  		try	{
-	 		WebDAVPath parentPath;
-			WebDAVResource parentResource;
  			String method = request.getMethod();
 			int code = WebDAVMethods.getMethodCode(method);
-			boolean overwrite;
 			WebDAVPath path;
 			WebDAVResource resource;
 			WebDAVAnswer answer;
@@ -129,26 +131,12 @@ public class WebDAVServlet extends HttpServlet {
 				WebDAVUtils.writeToClient(response, resource.readContent());
 				break;
 			case WebDAVMethods.DAV_DELETE:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				resource = getRoot().resolvePath(path);
-				resource.delete();
+				delete(request);
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_OK);
 				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_MKCOL:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				parentPath = path.getParent();
-				parentResource = getRoot().resolvePath(parentPath);
-				
-				String newFilename = path.asResolved().getFileName();
-				if (parentResource.hasChild(newFilename)){
-					answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
-					printAnswer(response, answer);
-					break;
-				}
-				parentResource.createCollection(newFilename);
-				
-				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
+				answer = mkcol(request);
 				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_COPY:
@@ -160,31 +148,7 @@ public class WebDAVServlet extends HttpServlet {
 				printAnswer(response, answer);
 				break;
 			case WebDAVMethods.DAV_PUT:
-				path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
-				parentPath = path.getParent();
-				parentResource = getRoot().resolvePath(parentPath);
-				overwrite = WebDAVUtils.readOverwriteHeader(request);
-				String fileName = path.asResolved().getFileName();
-				IOContext ioc = WebDAVUtils.getClientInputContext(request);
-				
-				if (parentResource.hasChild(fileName)){
-					if (!overwrite){
-						answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
-						printAnswer(response, answer);
-						break;
-					} else {
-						resource = parentResource.resolvePath(parentPath.asResolved().concat(fileName));
-						
-						if (resource.isCollection()) {
-							throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, resource);
-						} else {
-							resource.writeContent(ioc);
-						}
-					}
-				} else {
-					resource = parentResource.createFile(fileName, ioc);
-				}
-				
+				put(request);
 				answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
 				printAnswer(response, answer);
 				break;
@@ -196,6 +160,12 @@ public class WebDAVServlet extends HttpServlet {
 				answer = propPatch(request);
 				printAnswer(response, answer);
 				break;
+			case WebDAVMethods.DAV_LOCK:
+				answer = lock(request);
+				printAnswer(response, answer);
+			case WebDAVMethods.DAV_UNLOCK:
+				answer = unlock(request);
+				printAnswer(response, answer);
 			default:
 				throw new WebDAVException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
 			}
@@ -206,8 +176,8 @@ public class WebDAVServlet extends HttpServlet {
 			logger.debug(ioe);
 		}
  	}
-
- 	/**
+ 	
+	/**
  	 * Handles a PROPPATCH request.
  	 * @param request The client's format. 
  	 * @return an MultiStatusAnswer object
@@ -321,30 +291,6 @@ public class WebDAVServlet extends HttpServlet {
  		}
  	}
 
-	/**
- 	 * Updates the response object by the given answer object and prints it
- 	 * @param response the response object
- 	 * @param answer the SimpleWebDAVAnswer object
- 	 * @throws IOException
- 	 */
- 	public static void printAnswer(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
- 		String msg = answer.getMessage();
- 		response.setStatus(answer.getStatusCode());
- 		
- 		if (msg != null) {
- 	 		String contentType = answer.getContentType();
- 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.DEFAULT_CHARSET.name());
- 		}
- 		
- 		OutputStream os = response.getOutputStream();
- 		if (msg != null) {
- 			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.DEFAULT_CHARSET);
- 			osw.write(msg);
- 			osw.close();
- 		}
- 		os.close();
- 	}
- 	
  	/**
  	 * Handle a COPY or MOVE request.
  	 * 
@@ -477,11 +423,11 @@ public class WebDAVServlet extends HttpServlet {
  				}
 			} else { // this is a file
 				int statusCode;
-				if (dstRes != null) {
+				if (dstRes == null) {
+					statusCode = WebDAVStatusCodes.SC_CREATED;
+				} else {
 					dstRes.delete();
 					statusCode = WebDAVStatusCodes.SC_NO_CONTENT; 
-				} else {
-					statusCode = WebDAVStatusCodes.SC_CREATED;
 				}
 				
 				IOContext context = src.readContent();
@@ -506,6 +452,205 @@ public class WebDAVServlet extends HttpServlet {
  		
  		return res;
  	}
+ 	
+ 	/**
+ 	 * Handles a MKCOL request
+ 	 * 
+ 	 * @param request The sent request
+ 	 * @param The answer to send to the client
+ 	 * @throws WebDAVException On errors, especially not finding 
+ 	 */
+ 	protected WebDAVAnswer mkcol(HttpServletRequest request) throws WebDAVException {
+ 		WebDAVAnswer answer;
+		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource parentResource = resolveParent(path);
+		
+		String newFilename = path.asResolved().getFileName();
+		if (parentResource.hasChild(newFilename)){
+			answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
+		} else {
+			parentResource.createCollection(newFilename);
+			answer = new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_CREATED);
+		}
+		
+		return answer;
+ 	}
+ 	
+ 	/**
+ 	 * Handles a WebDAV put request
+ 	 * 
+ 	 * @param request The client's request
+ 	 * @return The created resource
+ 	 * @throws WebDAVException On any errors
+ 	 * @throws IOException On errors when reading from/writing to the client
+ 	 */
+ 	protected WebDAVResource put(HttpServletRequest request) throws WebDAVException, IOException {
+		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource parentResource = resolveParent(path);
+		boolean overwrite = WebDAVUtils.readOverwriteHeader(request);
+		String fileName = path.asResolved().getFileName();
+		IOContext ioc = WebDAVUtils.getClientInputContext(request);
+		WebDAVResource resource;
+		
+		if (parentResource.hasChild(fileName)){
+			if (overwrite){
+				resource = parentResource.resolvePath(path.resolveAllBut(1));
+				
+				if (resource.isCollection()) {
+					throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, resource);
+				} else {
+					resource.writeContent(ioc);
+				}
+			} else {
+				throw new WebDAVException(WebDAVStatusCodes.SC_PRECONDITION_FAILED);
+			}
+		} else {
+			resource = parentResource.createFile(fileName, ioc);
+		}
+		
+		return resource;
+ 	}
+ 	
+ 	/**
+ 	 * Handles a DELETE request
+ 	 * 
+ 	 * @param request The sent request
+ 	 * @throws WebDAVException On any errors (path resolving, no permissions etc.)
+ 	 */
+ 	protected void delete(HttpServletRequest request) throws WebDAVException {
+		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource resource = getRoot().resolvePath(path);
+		resource.delete();
+ 	}
+ 	
+ 	/**
+ 	 * Handles a LOCK request.
+ 	 * 
+ 	 * @param request The client's request.
+ 	 * @return An answer to print out
+ 	 * @throws WebDAVException On any errors
+ 	 * @throws IOException On IO exceptions
+ 	 */
+ 	protected WebDAVAnswer lock(HttpServletRequest request) throws WebDAVException, IOException {
+ 		// Parse request document
+ 		Document reqDoc = WebDAVUtils.getRequestDocument(request);
+ 		if (reqDoc == null) {
+ 			// Refreshing a lock is not yet implemented
+ 			throw new WebDAVException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, "Refreshing locks is not yet supported");
+ 		}
+ 		boolean exclusive = getLockTypeByReqDoc(reqDoc);
+ 		
+		int depth = WebDAVUtils.readDepthHeader(request);
+		String token = WebDAVUtils.genLockToken();
+		WebDAVPath path = WebDAVPathImpl.parse(resourcePathPrefix, request.getRequestURI());
+		WebDAVResource parent = resolveParent(path);
+		String fileName = path.asResolved().getFileName();
+		WebDAVResource resource = null;
+		int statusCode = WebDAVStatusCodes.SC_OK;
+		if (fileName == null) { // Locking root?
+			statusCode = WebDAVStatusCodes.SC_OK;
+			resource = parent;
+		} else if (parent.hasChild(fileName)) {
+			statusCode = WebDAVStatusCodes.SC_OK;
+			resource = parent.resolvePathElem(fileName);
+		} else {
+			statusCode = WebDAVStatusCodes.SC_CREATED;
+			resource = parent.createFile(fileName, null);
+		}
+		
+		if (resource.isCollection()) {
+			if (depth == WebDAVConstants.DEPTH_INFINITY) {
+				if ((lockLimit == NO_RECURSIVE) && (resource.isCollection())) {
+					throw new WebDAVException(WebDAVStatusCodes.SC_FORBIDDEN, "Infinite depth requests are forbidden");
+				}
+			} else if (depth != WebDAVConstants.DEPTH_0) {
+				throw new WebDAVException(WebDAVStatusCodes.SC_BAD_REQUEST, "Invalid depth value for a LOCK request");
+			}
+			boolean recursive = (depth == WebDAVConstants.DEPTH_INFINITY);
+			Counter lc = new Counter(lockLimit);
+			
+			MultiStatusAnswer manswer = new MultiStatusAnswerImpl();
+			// The set of successfully acquired locks
+			Set<WebDAVResource> acquiredLocks = new HashSet<WebDAVResource>();
+			
+			boolean res = lock(resource, recursive, exclusive, token, lc, acquiredLocks, manswer);
+			
+			WebDAVAnswer answer;
+			if (res) {
+				answer = createSuccessfulLockAnswer(statusCode, exclusive, resource, recursive, token);
+			} else {
+				answer = manswer;
+				
+				for (WebDAVResource wdr : acquiredLocks) {
+					try {
+						wdr.unlock(token);
+					} catch (WebDAVException wde) {
+						// Catch silently
+						logger.error("Error when unrolling a recursive lock", wde);
+					}
+				}
+			}
+			
+			return answer;
+		} else {
+			resource.lock(exclusive, token);
+			
+			return createSuccessfulLockAnswer(statusCode, exclusive, resource, (depth == WebDAVConstants.DEPTH_INFINITY), token);
+		}
+ 	}
+ 	
+	/**
+	 * @param resource The resource to lock
+	 * @param recursive Whether to climb down the resource tree
+	 * @param exclusive The type of the lock to acquire
+	 * @param token The lock token
+	 * @param lc The counter to enforce limits
+	 * @param acquiredLocks The set to add resources that suceeded in acquiring locks
+	 * @param manswer The MultiStatusAnswer to add failures to
+	 * @return true iff locking was successful
+	 */
+	protected boolean lock(WebDAVResource resource, boolean recursive,
+			boolean exclusive, String token, Counter lc,
+			Set<WebDAVResource> acquiredLocks, MultiStatusAnswer manswer) {
+		
+		boolean res = true;
+		
+		try {
+			lc.check();
+			resource.lock(exclusive, token);
+			acquiredLocks.add(resource);
+			
+			if (recursive && resource.isCollection()) {
+				for (WebDAVResource childRes : resource.getChildren()) {
+					res &= lock(childRes, recursive, exclusive, token, lc, acquiredLocks, manswer);
+				}
+			}
+		} catch (WebDAVException wde) {
+			WebDAVHrefException hrefEx;
+			if (wde instanceof WebDAVHrefException) {
+				hrefEx = (WebDAVHrefException) wde;
+			} else {
+				hrefEx = new WebDAVResourceException(wde.getStatusCode(), resource, wde.getMessage(), wde.getCause());
+			}
+			
+			MultiStatusResponse response = SimpleStatusResponse.createFromWebDAVException(hrefEx);
+			manswer.addResponse(response);
+			res = false;
+		}
+		
+		return res;
+	}
+
+	/**
+ 	 * Handles an UNLOCK request.
+ 	 * 
+ 	 * @param request The client's request.
+ 	 * @return An answer to print out
+ 	 */
+ 	protected WebDAVAnswer unlock(HttpServletRequest request) {
+ 		// Just simulated in this version
+		return new SimpleWebDAVAnswer(WebDAVStatusCodes.SC_NO_CONTENT);
+	}
  	
 	/* (non-Javadoc)
 	 * @see javax.servlet.GenericServlet#init()
@@ -532,6 +677,8 @@ public class WebDAVServlet extends HttpServlet {
 		writeLimit = (wlStr == null) ? NO_LIMIT : Integer.valueOf(wlStr);
 		String rlStr = getInitParameter(INIT_PARAMETER_READ_LIMIT);
 		readLimit = (rlStr == null) ? NO_LIMIT : Integer.valueOf(rlStr);
+		String llStr = getInitParameter(INIT_PARAMETER_LOCK_LIMIT);
+		lockLimit = (llStr == null) ? NO_LIMIT : Integer.valueOf(llStr);
 		
 		String maxFileSizeStr = getInitParameter(INIT_PARAMETER_MAX_FILE_SIZE);
 		long maxFileSize = (maxFileSizeStr == null) ? WebDAVContext.NO_MAX_FILESIZE :
@@ -555,6 +702,80 @@ public class WebDAVServlet extends HttpServlet {
 	}
 	
 	/**
+	 * Resolves the parent resource of a given one.
+	 * 
+	 * @param childPath The path of the child resource, completely unresolved
+	 * @return The resolved parent resource
+	 * @throws WebDAVException On errors when resolving the parent resource.
+	 */
+	protected WebDAVResource resolveParent(WebDAVPath childPath) throws WebDAVException {
+		WebDAVPath parentPath = childPath.getParent();
+		WebDAVResource parentResource;
+		try {
+			parentResource = getRoot().resolvePath(parentPath);
+		} catch (WebDAVException e) {
+			if (e.getStatusCode() == WebDAVStatusCodes.SC_NOT_FOUND) {
+				e.setStatusCode(WebDAVStatusCodes.SC_CONFLICT);
+			}
+			
+			throw e;
+		}
+		
+		return parentResource;
+	}
+	
+	/**
+	 * @param statusCode The status code
+	 * @param exclusive Whether the created lock was exclusive
+	 * @param resource The resource the lock was granted on
+	 * @param recursive Whether the lock was recursive
+	 * @param token The used token
+	 * @return The document to return to the client
+	 */
+	protected WebDAVAnswer createSuccessfulLockAnswer(int statusCode,
+			boolean exclusive, WebDAVResource resource, boolean recursive,
+			String token) {
+		
+		Document doc = WebDAVUtils.newDocument();
+		
+		Element lockdiscovery = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKDISCOVERY);
+		doc.appendChild(lockdiscovery);
+		
+		Element activelock = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_ACTIVELOCK);
+		lockdiscovery.appendChild(activelock);
+		
+		Element locktype = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKTYPE);
+		activelock.appendChild(locktype);
+		Element write = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_WRITE);
+		locktype.appendChild(write);
+		
+		Element lockscope = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKSCOPE);
+		activelock.appendChild(lockscope);
+		Element lockscopeVal = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV,
+					exclusive ? WebDAVConstants.XML_EXCLUSIVE : WebDAVConstants.XML_SHARED);
+		lockscope.appendChild(lockscopeVal);
+		
+		Element depth = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_DEPTH);
+		activelock.appendChild(depth);
+		depth.appendChild(doc.createTextNode(recursive ? WebDAVConstants.DEPTH_INFINITY_STRING : WebDAVConstants.DEPTH_0_STRING));
+		
+		Element locktoken = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKTOKEN);
+		activelock.appendChild(locktoken);
+		Element tokenHref = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_HREF);
+		locktoken.appendChild(tokenHref);
+		tokenHref.appendChild(doc.createTextNode(WebDAVUtils.presentLockToken(token)));
+		
+		Element lockroot = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKROOT);
+		activelock.appendChild(lockroot);
+		Element rootHref = doc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_HREF);
+		lockroot.appendChild(rootHref);
+		rootHref.appendChild(doc.createTextNode(resource.getPath().toClientString()));
+		
+		WebDAVAnswer res = new XMLWebDAVAnswer(statusCode, doc);
+		return res;
+	}
+	
+	/**
 	 * Handles method OPTIONS as demanded in RFC2518.
 	 * @param response Reference to the response of the servlet.
 	 */
@@ -564,6 +785,31 @@ public class WebDAVServlet extends HttpServlet {
 		response.addHeader("Allowed", DAV_ALLOWED_METHODS);
 		response.addHeader("MS-Author-Via", WebDAVConstants.HEADER_DAV);
 		response.setStatus(WebDAVStatusCodes.SC_OK);
+	}
+	
+	/**
+	 * Parses the information contained in a lock request.
+	 * 
+	 * @param reqDoc The request document
+	 * @return true iff an exclusive lock was requested
+	 * @throws WebDAVException On invalid request documents
+	 */
+	protected static boolean getLockTypeByReqDoc(Document reqDoc) throws WebDAVException { 
+		Node lockRequest = WebDAVUtils.getChildNode(reqDoc, WebDAVConstants.XML_LOCKINFO);
+		Node lockScope = WebDAVUtils.getChildNode(lockRequest, WebDAVConstants.XML_LOCKSCOPE);
+		NodeList lockScopeChildren = lockScope.getChildNodes();
+		boolean exclusive = true;
+		
+		for (int i = 0;i < lockScopeChildren.getLength();i++) {
+			Node lockNode = lockScopeChildren.item(i);
+			
+			if (WebDAVUtils.isDavElement(lockNode, WebDAVConstants.XML_SHARED)) {
+				exclusive = false;
+				break;
+			}
+		}
+		
+		return exclusive;
 	}
 	
 	/**
@@ -588,6 +834,30 @@ public class WebDAVServlet extends HttpServlet {
 		
 		return pr;
 	}
+	
+	/**
+ 	 * Updates the response object by the given answer object and prints it
+ 	 * @param response the response object
+ 	 * @param answer the SimpleWebDAVAnswer object
+ 	 * @throws IOException
+ 	 */
+ 	public static void printAnswer(HttpServletResponse response, WebDAVAnswer answer) throws IOException{
+ 		String msg = answer.getMessage();
+ 		response.setStatus(answer.getStatusCode());
+ 		
+ 		if (msg != null) {
+ 	 		String contentType = answer.getContentType();
+ 	 		response.setContentType(contentType + WebDAVConstants.MIMETYPE_ENCODING_SEP + WebDAVConstants.DEFAULT_CHARSET.name());
+ 		}
+ 		
+ 		OutputStream os = response.getOutputStream();
+ 		if (msg != null) {
+ 			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.DEFAULT_CHARSET);
+ 			osw.write(msg);
+ 			osw.close();
+ 		}
+ 		os.close();
+ 	}
 	
 	/**
 	 * Helper class to enforce limits.
@@ -619,6 +889,10 @@ public class WebDAVServlet extends HttpServlet {
 		
 		public long getCount() {
 			return this.count;
+		}
+
+		public long getLimit() {
+			return limit;
 		}
 	}
 	

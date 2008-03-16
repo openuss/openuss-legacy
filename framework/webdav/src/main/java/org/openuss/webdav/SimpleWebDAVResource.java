@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.openuss.webdav.WebDAVConstants.LockState;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,6 +31,7 @@ import org.w3c.dom.NodeList;
  * <li>Content type determination</li>
  * <li>Add regularly used properties to the answer of a PROPFIND.</li>
  * <li>Access checking.</li>
+ * <li>Simulation of locking.</li>
  * </ul>
  * 
  * @see CollisionAvoidingSimpleWebDAVResource
@@ -167,11 +169,58 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		deleteImpl();
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#getLockState()
+	 */
+	public final LockState getLockState() throws WebDAVException {
+		checkReadable();
+		
+		return getLockStateImpl();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#lock(boolean, java.lang.String)
+	 */
+	public final void lock(boolean exclusive, String token) throws WebDAVException {
+		if (exclusive) {
+			checkWritable();
+		} else {
+			checkReadable();
+		}
+		
+		checkLockable(exclusive);
+		lockImpl(exclusive, token);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#unlock(java.lang.String)
+	 */
+	public final void unlock(String token) throws WebDAVException  {
+		checkReadable(); // Check only readability because token needs to be known anyway
+		checkLockable();
+		
+		unlockImpl(token);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openuss.webdav.WebDAVResource#supportsLocks(boolean)
+	 */
+	public /* not final */ boolean supportsLocks(boolean exclusive) {
+		return true; // simulate it
+	}
+
+
+ 
+
+	
 	
 	
 	
 	
 		
+
+
+
 	/**
 	 * @see WebDAVResource#getProperties(Document)
 	 */
@@ -190,24 +239,16 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			reqValues = true;
 		} else {
 			// Acquire root node
-			Node rootNode = null;
-			
-			NodeList rootNodeList = req.getChildNodes();
-			for (int i = 0;i < rootNodeList.getLength();i++) {
-				Node n = rootNodeList.item(i);
-				
-				if (WebDAVUtils.isDavElement(n, WebDAVConstants.XML_PROPFIND)) {
-					rootNode = n;
-					break;
-				}
-			}
-			if (rootNode == null) {
-				throw new WebDAVResourceException(WebDAVStatusCodes.SC_BAD_REQUEST, this, "Expected root node " + WebDAVConstants.XML_PROPFIND); 
+			Node rootNode;
+			try {
+				rootNode = WebDAVUtils.getChildNode(req, WebDAVConstants.XML_PROPFIND);
+			} catch (WebDAVException wde) {
+				throw new WebDAVResourceException(wde.getStatusCode(), this, wde.getMessage(), wde.getCause());
 			}
 			
 			// Acquire the real request node
 			NodeList reqNodeList = rootNode.getChildNodes();
-
+			
 			boolean foundNode = false;
 			for (int i = 0;i < reqNodeList.getLength();i++) {
 				Node n = reqNodeList.item(i);
@@ -257,29 +298,8 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, e.getKey(), reqValues ? e.getValue() : null);
 		}
 		
-		// Auto-add properties, if requested
-		Set<String> autoAdded = new TreeSet<String>();
-		
-		// getcontenttype
-		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE))
-				&& (!values.containsKey(WebDAVConstants.XML_GETCONTENTTYPE))) {
-			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
-			autoAdded.add(WebDAVConstants.XML_GETCONTENTTYPE);
-		}
-		// resourcetype
-		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_RESOURCETYPE))
-				&& (!values.containsKey(WebDAVConstants.XML_RESOURCETYPE))) {
-			Document tmpDoc = WebDAVUtils.newDocument();
-			
-			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESOURCETYPE);
-			if (isCollection()) {
-				Element collectionNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
-				propElem.appendChild(collectionNode);
-			}
-			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
-			pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
-			autoAdded.add(WebDAVConstants.XML_RESOURCETYPE);
-		}
+		// Auto-add properties
+		Set<String> autoAdded = autoAddProperties(reqProps, values.keySet(), pr, reqValues);
 		
 		// Non-existant properties
 		Set<String> propsNotFound = disjunction(reqProps, values.keySet());
@@ -448,7 +468,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		html.appendChild(body);
 		
 		Element header = doc.createElement(WebDAVConstants.XHTML_HEADER);
-		header.setTextContent(getPath().getPrefix());
+		header.setTextContent(getPath().getResolved());
 		body.appendChild(header);
 		
 		Element list = doc.createElement(WebDAVConstants.XHTML_UNORDERED_LIST);
@@ -460,7 +480,7 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 			list.appendChild(li);
 			
 			Element link = doc.createElement(WebDAVConstants.XHTML_LINK);
-			link.setAttribute(WebDAVConstants.XHTML_HREF, c.getPath().getPrefix());
+			link.setAttribute(WebDAVConstants.XHTML_HREF, c.getPath().getResolved());
 			link.setTextContent(c.getPath().getFileName());
 			li.appendChild(link);
 		}
@@ -502,6 +522,28 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		} else {
 			return new NullIOContext(null);
 		}
+	}
+	
+	/**
+	 * @see {@link WebDAVResource#getLockState()}
+	 */
+	protected LockState getLockStateImpl() {
+		// Simulation
+		return LockState.UNLOCKED;
+	}
+	
+	/**
+	 * @see {@link WebDAVResource#lock(boolean, String)}
+	 */
+	protected void lockImpl(boolean exclusive, String token) {
+		; // We just simulate locking
+	}
+	
+	/**
+	 * @see {@link WebDAVResource#unlock(String)}
+	 */
+	protected void unlockImpl(String token) {
+		; // We just simulate unlocking
 	}
 
 	public WebDAVContext getContext() {
@@ -575,6 +617,29 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	}
 	
 	/**
+	 * Checks that this resource supports any type of locks
+	 * 
+	 * @throws WebDAVResourceExecption If locks are not supported at all 
+	 */
+	private void checkLockable() throws WebDAVResourceException {
+		if (! (supportsLocks(false) || supportsLocks(true))) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, this, "This resource does not support locking"); 
+		}
+	}
+	
+	/**
+	 * Checks that this resource supports locks
+	 * 
+	 * @param exclusive The type of lock to check
+	 * @throws WebDAVResourceExecption If the specified locking type is not supported 
+	 */
+	private void checkLockable(boolean exclusive) throws WebDAVResourceException {
+		if (! supportsLocks(exclusive)) {
+			throw new WebDAVResourceException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED, this, "This resource does not support locking"); 
+		}
+	}
+	
+	/**
 	 * @param size The size to check.
 	 * @throws WebDAVResourceException If the specified size exceeds the limitations of this server.
 	 */
@@ -597,6 +662,84 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 		origName = getContext().evadeUmlauts(origName);
 		
 		return origName;
+	}
+	
+	/**
+	 * Auto-adds some properties to a PROPFIND answer object
+	 * 
+	 * @param reqProps The set of requested properties in the DAV namespace
+	 * @param providedProps The names of the properties already provided by the implementation
+	 * @param pr The object to add the responses to.
+	 * @param reqValues Whether values are requested, too, or only the names of the properties
+	 * @return The set of the local name of the added properties in the DAV namespace
+	 */
+	protected Set<String> autoAddProperties(Set<String> reqProps, Set<String> providedProps,
+			PropertyResponseImpl pr, boolean reqValues) {
+		Set<String> autoAdded = new TreeSet<String>();
+		
+		// getcontenttype
+		Document tmpDoc = WebDAVUtils.newDocument();
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_GETCONTENTTYPE))
+				&& (!providedProps.contains(WebDAVConstants.XML_GETCONTENTTYPE))) {
+			pr.addSimpleProperty(WebDAVStatusCodes.SC_OK, WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_GETCONTENTTYPE, reqValues ? getContentType() : null);
+			autoAdded.add(WebDAVConstants.XML_GETCONTENTTYPE);
+		}
+		// resourcetype
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_RESOURCETYPE))
+				&& (!providedProps.contains(WebDAVConstants.XML_RESOURCETYPE))) {
+			
+			Element propElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_RESOURCETYPE);
+			if (isCollection() && reqValues) {
+				Element collectionNode = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_COLLECTION);
+				propElem.appendChild(collectionNode);
+			}
+			
+			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(propElem);
+			pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
+			autoAdded.add(WebDAVConstants.XML_RESOURCETYPE);
+		}
+		if (((reqProps == null) || reqProps.contains(WebDAVConstants.XML_SUPPORTEDLOCK))
+				&& (!providedProps.contains(WebDAVConstants.XML_SUPPORTEDLOCK))) {
+			
+			Element supportedLockElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_SUPPORTEDLOCK);
+			if (reqValues) {
+				if (supportsLocks(true)) {
+					Element exLockElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKENTRY); 
+					supportedLockElem.appendChild(exLockElem);
+					
+					Element lockscopeElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKSCOPE);
+					exLockElem.appendChild(lockscopeElem);
+					lockscopeElem.appendChild(tmpDoc.createElementNS(
+							WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_EXCLUSIVE));
+					
+					Element locktypeElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKTYPE);
+					exLockElem.appendChild(locktypeElem);
+					locktypeElem.appendChild(tmpDoc.createElementNS(
+							WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_WRITE));
+				}
+				
+				if (supportsLocks(false)) {
+					Element shLockElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKENTRY); 
+					supportedLockElem.appendChild(shLockElem);
+					
+					Element lockscopeElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKSCOPE);
+					shLockElem.appendChild(lockscopeElem);
+					lockscopeElem.appendChild(tmpDoc.createElementNS(
+							WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_SHARED));
+					
+					Element locktypeElem = tmpDoc.createElementNS(WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_LOCKTYPE);
+					shLockElem.appendChild(locktypeElem);
+					locktypeElem.appendChild(tmpDoc.createElementNS(
+							WebDAVConstants.NAMESPACE_WEBDAV, WebDAVConstants.XML_WRITE));
+				}
+			}
+			
+			XMLPropertyResponseNode xprn = new XMLPropertyResponseNode(supportedLockElem);
+			pr.addProperty(WebDAVStatusCodes.SC_OK, xprn);
+			autoAdded.add(WebDAVConstants.XML_RESOURCETYPE);
+		}
+		
+		return autoAdded;
 	}
 	
 	/**
@@ -654,26 +797,19 @@ public abstract class SimpleWebDAVResource implements WebDAVResource {
 	 */
 	@Override
 	public String toString() {
-		return getClass().getName() + ": " + getPath().getPrefix();
+		return getClass().getName() + ": " + getPath().getResolved();
 	}
 	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object o) {
-		if (o instanceof WebDAVResource) {
-			return equals((WebDAVResource) o);
-		} else {
-			return false;
-		}
-	}
+	public abstract boolean equals(Object o);
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	public abstract int hashCode();
-	
 	
 	/**
 	 * @param origSet

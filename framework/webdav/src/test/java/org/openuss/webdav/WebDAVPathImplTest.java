@@ -1,169 +1,108 @@
 package org.openuss.webdav;
 
-import org.openuss.webdav.WebDAVPath.CommonPathRes;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 public class WebDAVPathImplTest extends TestCase {
 
-	public void testWebDAVPathImpl() {
-		String path = "/webdav/";
-		String toResolve = "rest";
-		WebDAVPathImpl davPath  = new WebDAVPathImpl(path, toResolve);
-		assertEquals("/webdav/", davPath.getPrefix());
-		assertEquals("rest", davPath.getToResolve());
+	public void testParse() throws WebDAVException {
+		WebDAVPathImpl davPath = WebDAVPathImpl.parse("/webdav/", "/webdav/input");
+		assertEquals("/webdav/", davPath.getResolved());
+		assertEquals("input", davPath.getToResolve());
 		
-		String path1 = "/webdav";
-		String toResolve1 = "/rest";
-		WebDAVPathImpl davPath1  = new WebDAVPathImpl(path1, toResolve1);
-		assertEquals("/webdav/", davPath1.getPrefix());
-		assertEquals("rest", davPath1.getToResolve());
-		
-		String path2 = "//d";
-		String toResolve2 = "re/st";
-		WebDAVPathImpl davPath2  = new WebDAVPathImpl(path2, toResolve2);
-		assertEquals("//d", davPath2.getPrefix());
-		assertEquals("re/st", davPath2.getToResolve());
-		
-		String path3 = "/ה/";
-		String toResolve3 = "";
-		WebDAVPathImpl davPath3  = new WebDAVPathImpl(path3, toResolve3);
-		assertEquals("/ה/", davPath3.getPrefix());
-		assertNull(davPath3.getToResolve());
-	}
-
-	public void testParse() {
-		String prefix = "/webdav/";
-		String clientInput = "/webdav/input";
 		try {
-			WebDAVPathImpl davPath = WebDAVPathImpl.parse(prefix, clientInput);
-			assertEquals("/webdav/", davPath.getPrefix());
-			assertEquals("input", davPath.getToResolve());
-		} catch (WebDAVException e) {
-			assertFalse(true);
-		}
-		
-		String prefix1 = "/webdav/";
-		String clientInput1 = "input";
-		try {
-			WebDAVPathImpl.parse(prefix1, clientInput1);
+			WebDAVPathImpl.parse("/webdav/", "input");
 			assertTrue(false);
 		} catch (WebDAVException exDAV){
-			assertTrue(true); //exspected
+			; // expected
 		}
 		
 		String prefix2 = "/webdav";
 		String clientInput2 = "/webdav/הצצה";
-		try {
-			WebDAVPathImpl davPath2 = WebDAVPathImpl.parse(prefix2, clientInput2);
-			assertEquals("/webdav/", davPath2.getPrefix());
-			assertNotSame("הצצה", davPath2.getToResolve()); //because of decoding
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+		davPath = WebDAVPathImpl.parse(prefix2, clientInput2);
+		assertEquals("/webdav/", davPath.getResolved());
 		
-		String prefix3 = "/webdav/";
-		String clientInput3 = "https://openuss.de/webdav/input";
-		try {
-			WebDAVPathImpl davPath3 = WebDAVPathImpl.parse(prefix3, clientInput3);
-			assertEquals("/webdav/", davPath3.getPrefix());
-			assertEquals("input", davPath3.getToResolve());
-		} catch (WebDAVException e) {
-			assertFalse(true);
-		}
+		davPath = WebDAVPathImpl.parse("/webdav/", "https://openuss.de/webdav/input");
+		assertEquals("/webdav/", davPath.getResolved());
+		assertEquals("input", davPath.getToResolve());
+
+		davPath = WebDAVPathImpl.parse("/webdav/", "https://openuss.de/webdav/input");
+		assertEquals("/webdav/", davPath.getResolved());
+		assertEquals("input", davPath.getToResolve());
+	}
+	
+	public void testGetRoot() {
+		String rootStr = "https://example.org/o/p/e/n/u/SSS";
 		
+		WebDAVPathImpl root = WebDAVPathImpl.getRoot(rootStr);
+		rootStr = WebDAVPathImpl.appendSep(rootStr); 
+			
+		assertTrue(root.isRoot());
+		checkRoot(root, rootStr);
+		
+		checkRoot(root.asFinalPath(), rootStr);
+		checkRoot(root.asResolved(), rootStr);
+		checkRoot(root.concat(""), rootStr);
+		checkRoot(root.concat("/"), rootStr);
+		checkRoot(root.concat("x/y").asFinalPath(), rootStr);
+		checkRoot(root.concat("xasdd\\fs").getParent().getParent(), rootStr);
+		checkRoot(root.concat("x/y").getParent().getParent(), rootStr);
+	}
+	
+	protected void checkRoot(WebDAVPath root, String rootStr) {
+		assertTrue(root.isResolved());
+		assertTrue(root.getFileName() == null);
+		assertTrue(root.getFileExt() == null);
+		assertTrue(root.getNextName() == null);
+		assertTrue(root.getParent() == root);
+		assertEquals(root.getNumberOfElemsToResolve(), 0);
+		assertEquals(root.getCompleteString(), rootStr);
+		assertEquals(root.getResolved(), rootStr);
+		assertEquals(root.getToResolve(), null);
+		assertTrue(root.getToResolveList() == null);
+	}
+	
+	public void testGetFileName() throws WebDAVException {
+		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav/",  "/webdav/x/name.txt");
+		assertTrue(null == davPath.getFileName());
+		
+		davPath  = WebDAVPathImpl.parse("/webdav/", "/webdav/name.txt");
+		WebDAVPath davPath1 = davPath.asResolved();
+		assertEquals("name.txt", davPath1.getFileName());
+
+		WebDAVPathImpl davPath2  = WebDAVPathImpl.parse("/", "/test/collection");
+		assertNull(davPath2.getFileName());
 	}
 
-
-
-	public void testGetFileName() {
-		String prefix = "/webdav/";
-		String clientInput = "/webdav/name.txt";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix, clientInput);
-			assertEquals("webdav", davPath.getFileName());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+	public void testGetFileExt() throws WebDAVException {
+		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav/", "/webdav/name.txt");
+		WebDAVPath resolvedPath = davPath.asResolved();
+		assertEquals("txt", resolvedPath.getFileExt());
+			
+		davPath  = WebDAVPathImpl.parse("/webdav/", "/webdav/name.txt/");
+		resolvedPath = davPath.asResolved();
+		assertEquals("txt", resolvedPath.getFileExt());
 		
-		String prefix1 = "/webdav/";
-		String clientInput1 = "/webdav/name.txt";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix1, clientInput1);
-			WebDAVPath davPath1 = davPath.asResolved();
-			assertEquals("name.txt", davPath1.getFileName());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
-		String clientInput2 = "/test/collection/";
-		String prefix2 = "/";
-		try {
-			WebDAVPathImpl davPath2  = WebDAVPathImpl.parse(prefix2, clientInput2);
-			assertNull(davPath2.getFileName());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
-	}
-
-	public void testGetFileExt() {
-		String prefix = "/webdav/";
-		String clientInput = "/webdav/name.txt/";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix, clientInput);
-			WebDAVPath davPathResolved = davPath.asResolved();
-			assertEquals("txt", davPathResolved.getFileExt());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
-		
-		String prefix1 = "/webdav/";
-		String clientInput1 = "/webdav/name.txt.exe/";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix1, clientInput1);
-			WebDAVPath resolvedPath = davPath.asResolved();
-			assertEquals("exe", resolvedPath.getFileExt());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+		davPath  = WebDAVPathImpl.parse("/webdav/", "/webdav/name.txt.exe/");
+		resolvedPath = davPath.asResolved();
+		assertEquals("exe", resolvedPath.getFileExt());
 		
 		String prefix2 = "/webdav/";
 		String clientInput2 = "/webdav/collection/";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix2, clientInput2);
-			WebDAVPath resolvedPath = davPath.asResolved();
-			assertNull(resolvedPath.getFileExt());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
 		
+		davPath  = WebDAVPathImpl.parse(prefix2, clientInput2);
+		resolvedPath = davPath.asResolved();
+		assertNull(resolvedPath.getFileExt());
 	}
 
-	public void testConcat() {
-		try {
-			String prefix = "/webdav/";
-			String clientInput = "/webdav/collection/";
-			WebDAVPathImpl path = WebDAVPathImpl.parse(prefix, clientInput);
-			WebDAVPath path2 = path.concat("a");
-			String correctToResolve = "collection/a";
-			assertEquals(correctToResolve, path2.getToResolve());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
-		try {
-			String prefix = "/webdav/";
-			String clientInput = "/webdav/collection/";
-			WebDAVPathImpl path = WebDAVPathImpl.parse(prefix, clientInput);
-			WebDAVPath path2 = path.concat("");
-			String correctToResolve = "collection/";
-			assertEquals(correctToResolve, path2.getToResolve());
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
+	public void testConcat() throws WebDAVException {
+		WebDAVPathImpl path = WebDAVPathImpl.parse("/webdav/", "/webdav/collection/");
+		WebDAVPath path2 = path.concat("a");
+		assertEquals("collection/a", path2.getToResolve());
+	
+		path2 = path.concat("");
+		assertEquals("collection", path2.getToResolve());
 	}
 
 	public void testToClientString() {
@@ -186,98 +125,28 @@ public class WebDAVPathImplTest extends TestCase {
 		assertNotSame(notExpected, clientString);
 	}
 
-	public void testGetNextName() {
-		String prefix = "/webdav/";
-		String clientInput = "/webdav/collection/name.txt";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix, clientInput);
-			String next = davPath.getNextName();
-			assertEquals("collection", next);
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+	public void testGetNextName() throws WebDAVException {
+		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav/", "/webdav/collection/name.txt");
+		String next = davPath.getNextName();
+		assertEquals("collection", next);
 		
-		String prefix1 = "/webdav/";
-		String clientInput1 = "/webdav/collection/name.txt";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix1, clientInput1);
-			WebDAVPath pathResolved = davPath.asResolved();
-			String next = pathResolved.getNextName();
-			assertNull(next);
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
+		WebDAVPath pathResolved = davPath.asResolved();
+		next = pathResolved.getNextName();
+		assertNull(next);
 	}
 
-	public void testNext() {
-		String prefix = "/webdav";
-		String clientInput = "/webdav/collection/name.txt";
-		try {
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix, clientInput);
-			WebDAVPath nextPath = davPath.next();
-			WebDAVPathImpl correctNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
-			assertTrue(correctNextPath.equals(nextPath));
-			
-			WebDAVPath nextNextPath = nextPath.next();
-			WebDAVPathImpl correctNextNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
-			assertTrue(correctNextNextPath.equals(nextNextPath));
-			
-			WebDAVPath nextNextNextPath = nextNextPath.next();
-			assertNull(nextNextNextPath);
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+	public void testNext() throws WebDAVException {
+		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav", "/webdav/collection/name.txt");
+		WebDAVPath nextPath = davPath.next();
+		WebDAVPathImpl correctNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
+		assertTrue(correctNextPath.equals(nextPath));
 		
+		WebDAVPath nextNextPath = nextPath.next();
+		WebDAVPathImpl correctNextNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
+		assertTrue(correctNextNextPath.equals(nextNextPath));
 		
-	}
-
-	public void testCommon() {
-		try {
-			String prefix = "/a/b/c";
-			String clientInput = "/a/b/c/name.txt";
-			WebDAVPathImpl davPath  = WebDAVPathImpl.parse(prefix, clientInput);
-			
-			String prefix1 = "/a/b/d";
-			String clientInput1 = "/a/b/d/name.txt";
-			WebDAVPathImpl davPath1  = WebDAVPathImpl.parse(prefix1, clientInput1);
-			
-			CommonPathRes commonPath = davPath.common(davPath1);
-			
-			WebDAVPath davPathCommon = commonPath.newThis;
-			WebDAVPath davPathCommon1 = commonPath.newOther;
-			WebDAVPath correctDavPathCommon = WebDAVPathImpl.parse("/a/b/", "/a/b/c/name.txt");
-			WebDAVPath correctDavPathCommon1 = WebDAVPathImpl.parse("/a/b/", "/a/b/d/name.txt");
-			
-			assertTrue(davPathCommon.equals(correctDavPathCommon));
-			assertTrue(davPathCommon1.equals(correctDavPathCommon1));
-			assertFalse(davPathCommon.equals(davPathCommon1));
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
-		
-		try {
-			String prefix = "/webdav/";
-			String clientInput = "/webdav/a/b/c";
-			WebDAVPathImpl path = WebDAVPathImpl.parse(prefix, clientInput);
-			
-			String prefix1 = "/test/";
-			String clientInput1 = "/test/a/b/d";
-			WebDAVPathImpl path1  = WebDAVPathImpl.parse(prefix1, clientInput1);
-			
-			CommonPathRes commonPath = path.common(path1);
-			
-			WebDAVPath davPathCommon = commonPath.newThis;
-			WebDAVPath davPathCommon1 = commonPath.newOther;
-			WebDAVPath correctDavPathCommon = WebDAVPathImpl.parse("/", clientInput);
-			WebDAVPath correctDavPathCommon1 = WebDAVPathImpl.parse("/", clientInput1);
-			
-			assertTrue(davPathCommon.equals(correctDavPathCommon));
-			assertTrue(davPathCommon1.equals(correctDavPathCommon1));
-			assertFalse(davPathCommon.equals(davPathCommon1));
-		} catch (WebDAVException e) {
-			assertTrue(false);
-		}
+		WebDAVPath nextNextNextPath = nextNextPath.next();
+		assertNull(nextNextNextPath);
 	}
 
 	public void testGetCompleteString() {
@@ -287,6 +156,7 @@ public class WebDAVPathImplTest extends TestCase {
 		String expected = "webdav/a/b";
 		String clientString = davPath.getCompleteString();
 		assertEquals(expected, clientString);
+		assertEquals(expected, davPath.getResolved() + davPath.getToResolve());
 		
 		WebDAVPath path = root.concat("הצü");
 		path = path.asResolved();
@@ -301,7 +171,7 @@ public class WebDAVPathImplTest extends TestCase {
 		davPath = davPath.concat("b");
 		davPath = davPath.asFinalPath();
 		String expectedPrefix = "webdav/";
-		String prefix = davPath.getPrefix();
+		String prefix = davPath.getResolved();
 		assertEquals(expectedPrefix, prefix);
 		assertNull(davPath.getToResolve());
 	}
@@ -314,31 +184,50 @@ public class WebDAVPathImplTest extends TestCase {
 	}
 
 	public void testGetParent() {
-		WebDAVPath root = WebDAVPathImpl.getRoot("webdav");
+		WebDAVPath root = WebDAVPathImpl.getRoot("webdav/");
 		assertTrue(root.equals(root.getParent()));
 		
 		WebDAVPath davPath = root.concat("a");
-		davPath = davPath.concat("b");
-		String expected = "webdav/a";
-		assertEquals(expected, davPath.getParent().getCompleteString());
+		assertEquals("webdav/", davPath.getParent().getCompleteString());
+		assertEquals("webdav/", davPath.getParent().getResolved());
+		WebDAVPath davPath2 = davPath.concat("b");
+		assertEquals("webdav/a/b", davPath2.getCompleteString());
+		
+		assertEquals(davPath2.getParent(), davPath);
+		assertEquals("webdav/", davPath2.getResolved());
+		
+		davPath = root.concat("b/x/y");
+		assertEquals("webdav/b/x", davPath.getParent().getCompleteString());
 	}
 
 	public void testStripExtension() {
 		String withoutExtension = WebDAVPathImpl.stripExtension("datei.exe");
-		String expected = "datei";
-		assertEquals(expected, withoutExtension);
+		assertEquals("datei", withoutExtension);
 		
 		withoutExtension = WebDAVPathImpl.stripExtension("datei");
-		expected = "datei";
-		assertEquals(expected, withoutExtension);
+		assertEquals("datei", withoutExtension);
 		
 		withoutExtension = WebDAVPathImpl.stripExtension(".exe");
-		expected = "";
-		assertEquals(expected, withoutExtension);
+		assertEquals("", withoutExtension);
 		
 		withoutExtension = WebDAVPathImpl.stripExtension("datei.exe.bat");
-		expected = "datei.exe";
-		assertEquals(expected, withoutExtension);
+		assertEquals("datei.exe", withoutExtension);
+	}
+
+	public void testPlode() {
+		checkPlode("a");
+		checkPlode("a/ה/ü\\üa/df");
+		checkPlode("");
+		assertEquals(WebDAVPathImpl.explode("").size(), 0);
+		assertEquals(WebDAVPathImpl.explode("/").size(), 0);
+	}
+	
+	protected void checkPlode(String s) {
+		List<String> lst = WebDAVPathImpl.explode(s);
+		String s2 = WebDAVPathImpl.implode(lst);
+		
+		assertEquals(s, s2);
+		assertEquals(s2, WebDAVPathImpl.implode(lst));
 	}
 
 }
