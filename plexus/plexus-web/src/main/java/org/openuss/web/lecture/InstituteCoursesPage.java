@@ -134,6 +134,8 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
 
 		courseService.create(courseInfo);
+		courseInfo=null;
+		setBean(Constants.COURSE_INFO, courseInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		return Constants.SUCCESS;
 	}
