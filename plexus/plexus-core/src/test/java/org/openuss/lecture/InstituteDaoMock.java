@@ -61,19 +61,19 @@ public class InstituteDaoMock extends AbstractMockDao<Institute> implements Inst
 		return null;
 	}
 
-	public Object findByShortcut(int transform, String queryString, String shortcut) {
+	public List findByShortcut(int transform, String queryString, String shortcut) {
 		return null;
 	}
 
-	public Object findByShortcut(int transform, String shortcut) {
+	public List findByShortcut(int transform, String shortcut) {
 		return null;
 	}
 
-	public Institute findByShortcut(String queryString, String shortcut) {
+	public List findByShortcut(String queryString, String shortcut) {
 		return null;
 	}
 
-	public Institute findByShortcut(String shortcut) {
+	public List findByShortcut(String shortcut) {
 		return null;
 	}
 
