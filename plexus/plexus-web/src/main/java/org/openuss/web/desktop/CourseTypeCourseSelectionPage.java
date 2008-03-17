@@ -24,6 +24,8 @@ import org.openuss.web.Constants;
  * @deprecated
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name="views$secured$desktop$coursetypecourseselection", scope=Scope.REQUEST)
 @View
@@ -33,25 +35,26 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 	
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	
-	@Property(value="#{courseType}")
+	@Property(value="#{courseTypeInfo}")
 	private CourseTypeInfo courseTypeInfo;
 	
 	@Property(value="#{courseTypeService}")
-	private CourseTypeService courseTypeService;
-	
+	CourseTypeService courseTypeService;
+
 	@Property(value="#{courseService}")
-	private CourseService courseService;
+	CourseService courseService;
 	
 	@Prerender
 	public void prerender() {
 		logger.debug("prerender courseType course selction");
-		if (courseTypeInfo == null) {
+		if (courseTypeInfo == null||courseTypeInfo.getId()==null) {
 			addError(i18n("message_error_no_coursetype_selected"));
 			redirect(Constants.OUTCOME_BACKWARD);
+			return;
 		} else {
-			courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
+			courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId()); 
 		}
-		setSessionBean(Constants.COURSE_TYPE, courseTypeInfo);
+		setBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		breadcrumbs.clear();
 	}
 	
@@ -61,6 +64,7 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 		
 		private DataPage<CourseInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

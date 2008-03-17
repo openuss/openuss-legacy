@@ -1,6 +1,5 @@
 package org.openuss.web.braincontest;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
@@ -29,38 +28,36 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 	}
 
 	public String change() {
-		addContestToSession();
+		addContestToRequest();
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
 
-	private void addContestToSession() {
+	private void addContestToRequest() {
 		BrainContestInfo bci = this.data.getRowData();
-		if (bci.getTries() == null) {
+		if (bci.getTries() == null){
 			bci.setTries(0);
 		}
-		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
+		setBean(Constants.BRAINCONTENT_CONTEST, bci);
 	}
 
 	public String topList() {
-		addContestToSession();
+		addContestToRequest();
 		return Constants.BRAINCONTEST_TOP;
 	}
 
 	public String solve() {
-		addContestToSession();
+		addContestToRequest();
 		return Constants.BRAINCONTEST_SOLVE;
 	}
 
 	public String newContest() {
-		BrainContestInfo bci = new BrainContestInfo();
-		bci.setReleaseDate(new Date(System.currentTimeMillis()));
-		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
+		setBean(Constants.BRAINCONTENT_CONTEST, new BrainContestInfo());
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
 
 	public String editContest() {
 		BrainContestInfo bci = getBrainContestService().getContest(this.data.getRowData());
-		setSessionBean(Constants.BRAINCONTENT_CONTEST, bci);
+		setBean(Constants.BRAINCONTENT_CONTEST, bci);
 		return Constants.BRAINCONTEST_NEWCONTEST;
 	}
 
@@ -73,7 +70,7 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 
 		@Override
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {
-			if (page != null) {
+			if (page == null) {
 				List<BrainContestInfo> contests = getBrainContestService().getContests(courseInfo);
 				page = new DataPage<BrainContestInfo>(contests.size(), 0, contests);
 				sort(contests);

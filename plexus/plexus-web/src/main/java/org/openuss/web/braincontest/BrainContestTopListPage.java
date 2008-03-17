@@ -28,18 +28,18 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (!isPostBack()) {
-			if (getBrainContest() != null && getBrainContest().getId() != null) {
-				setBrainContest(getBrainContestService().getContest(getBrainContest()));
-			}
-			if (getBrainContest() == null || getBrainContest().getId() == null) {
-				addError(i18n("braincontest_message_contest_not_found"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
+		if (isRedirected()){
+			return;
+		}		
+		if (getBrainContest() == null || getBrainContest().getId() == null) {
+			addError(i18n("braincontest_message_contest_not_found"));
+			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
 		}
-		if (getBrainContest() != null && !getBrainContest().isReleased() && !isAssistant()) {
+		if (getBrainContest() != null && !getBrainContest().isReleased()&&!isAssistant()) {
 			addError(i18n("braincontest_message_contest_not_released"));
 			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
 		}
 		addPageCrumb();
 	}

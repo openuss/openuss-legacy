@@ -27,11 +27,14 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (courseInfo != null) {
+		if (isRedirected()){
+			return;
+		}
+		if (courseInfo!=null){
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
-		if (forum.isReadOnly()) {
+		if (forumReadOnly){
 			addMessage(i18n("discussion_forum_readonly_true_simple"));
 		}
 	}
@@ -43,12 +46,12 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 		private DataPage<TopicInfo> page;
 
 		@SuppressWarnings("unchecked")
-		@Override
-		public DataPage<TopicInfo> getDataPage(int startRow, int pageSize) {
+		@Override 
+		public DataPage<TopicInfo> getDataPage(int startRow, int pageSize) {		
 			if (page == null) {
-				List<TopicInfo> forums = discussionService.getTopics(getForum());
-				setSessionBean(Constants.DISCUSSION_THREADLENGTH, 0);
-				page = new DataPage<TopicInfo>(forums.size(), 0, forums);
+				List<TopicInfo> forums = discussionService.getTopics(getForum());		
+				setBean(Constants.DISCUSSION_THREADLENGTH, 0);
+				page = new DataPage<TopicInfo>(forums.size(),0,forums);
 				sort(forums);
 			}
 			return page;
@@ -61,9 +64,9 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 			return Constants.FAILURE;
 		}
 		TopicInfo topicInfo = new TopicInfo();
-		setSessionBean(Constants.DISCUSSION_TOPIC, topicInfo);
+		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
 		PostInfo postInfo = new PostInfo();
-		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
+		setBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
 		return Constants.DISCUSSION_NEW;
 	}
 
@@ -73,7 +76,7 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 			return Constants.FAILURE;
 		}
 		TopicInfo topicInfo = this.data.getRowData();
-		setSessionBean(Constants.DISCUSSION_TOPIC, topicInfo);
+		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
 		return Constants.DISCUSSION_REMOVETHREAD;
 	}
 

@@ -25,6 +25,7 @@ import org.openuss.web.Constants;
  * @author Weijun Chen
  * @author Kai Stettner
  * @author Malte Stockmann
+ * @author Sebastian Roekens
  * 
  */
 public abstract class AbstractDepartmentsOverviewPage extends BasePage {
@@ -38,6 +39,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
 
+	@Property(value = "#{departmentInfo}")
+	protected DepartmentInfo departmentInfo;
+	
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
 
@@ -61,7 +65,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartment() {
 		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
+		setBean(Constants.DEPARTMENT_INFO, department);
 
 		return Constants.DEPARTMENT_PAGE;
 	}
@@ -74,8 +78,8 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartmentAndConfirmRemove() {
 		logger.debug("Starting method selectDepartmentAndConfirmRemove");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		departmentInfo = currentDepartment();
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 
 		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
 	}
@@ -88,8 +92,8 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartmentAndConfirmDisable() {
 		logger.debug("Starting method selectDepartmentAndConfirmDisable");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		departmentInfo = currentDepartment();
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 
 		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
 	}
@@ -178,7 +182,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 
 	public String confirmRemoveDepartment() {
 		DepartmentInfo departmentInfo = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT, departmentInfo);
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		return "removed";
 	}
 
@@ -210,6 +214,14 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 			return page;
 		}
 
+	}
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
 	}
 
 }

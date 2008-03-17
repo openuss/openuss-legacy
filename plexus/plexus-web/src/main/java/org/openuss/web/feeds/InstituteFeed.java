@@ -33,6 +33,7 @@ public class InstituteFeed extends AbstractFeed {
 	/** news service **/
 	private transient NewsService newsService;
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray(InstituteInfo institute) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 

@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -16,7 +17,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
@@ -27,6 +27,8 @@ import org.openuss.web.Constants;
  * CourseType Administration Page
  * @author Ingo Düppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$institutecourses", scope = Scope.REQUEST)
 @View
@@ -55,11 +57,16 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	
 	private boolean moving = false;
 
+	@Property(value = "#{"+Constants.COURSE_MOVE_INFO+"}")
+	protected CourseInfo courseMoveInfo;	
+	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
-
+		if (isRedirected()){
+			return;
+		}
 		if (instituteInfo != null) {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
@@ -70,12 +77,22 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 				addMessage(i18n("institute_not_activated"));
 			}
 		}
-
+		if (courseInfo!=null && courseInfo.getId()!=null){
+			courseInfo = courseService.findCourse(courseInfo.getId());
+			setBean(Constants.COURSE_INFO, courseInfo);
+			moving=true;
+		}
+		if (moving && (courseMoveInfo == null || courseMoveInfo.getId()==null || !courseMoveInfo.getId().equals(courseInfo.getId()))){
+			courseMoveInfo = courseInfo;
+			setSessionBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
+		}
 		if (periodInfo != null && instituteInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
 				if ((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)
 						|| (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 					periodInfo = periodInfos.get(0);
+				} else {
+					periodInfo = universityService.findPeriod(periodInfo.getId());
 				}
 			}
 			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
@@ -90,7 +107,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		}
 
 		addPageCrumbs();
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
 	private void addPageCrumbs() {
@@ -115,14 +132,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		courseInfo.setPeriodId(periodInfo.getId());
 		courseInfo.setPeriodName(periodInfo.getName());
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
-		// new course by default with the features newsletter, documents and
-		// discussion
-		//FIXME should not be defined in web layer 
-		courseInfo.setNewsletter(true);
-		courseInfo.setDocuments(true);
-		courseInfo.setDiscussion(true);
 
-		courseInfo.setAccessType(AccessType.CLOSED);
 		courseService.create(courseInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		return Constants.SUCCESS;
@@ -131,10 +141,10 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String saveCourse() throws DesktopException {
 		logger.debug("Starting method saveCourse");
 
-		courseService.updateCourse(courseInfo);
+		courseService.updateCourse(courseMoveInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
 		moving = false;
-
+		redirect(Constants.INSTITUTE_COURSES_PAGE);
 		return Constants.SUCCESS;
 	}
 
@@ -144,7 +154,10 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	 */
 	public String moveCourse() {
 		logger.debug("Switching to move mode");
-		setSessionBean(Constants.COURSE_INFO, currentCourse());
+		courseInfo= currentCourse();
+		courseMoveInfo = currentCourse();
+		setBean(Constants.COURSE_INFO, courseInfo);
+		setSessionBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
 		moving = true;
 		return Constants.SUCCESS;
 	}
@@ -155,7 +168,8 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	 */
 	public String cancelCourse() {
 		logger.debug("Switching to move mode");
-		removeSessionBean(Constants.COURSE_INFO);
+		setBean(Constants.COURSE_INFO, null);
+		setSessionBean(Constants.COURSE_MOVE_INFO, null);
 		moving = false;
 		return Constants.SUCCESS;
 	}
@@ -166,21 +180,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	}
 
 	/**
-	 * Store the selected course into session scope and go to course main page.
-	 * 
-	 * @return Outcome
-	 */
-	public String selectCourse() {
-		logger.debug("Starting method selectCourse");
-		CourseInfo course = currentCourse();
-		logger.debug("Returning to method selectCourse");
-		logger.debug(course.getId());
-		setSessionBean(Constants.COURSE_INFO, course);
-
-		return Constants.COURSE_PAGE;
-	}
-
-	/**
 	 * Disables the chosen course. This is just evident for the search indexing.
 	 * 
 	 * @return Outcome
@@ -188,8 +187,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String disableCourse() {
 		logger.debug("Starting method disableCourse");
 		CourseInfo currentCourse = currentCourse();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
 		courseService.setCourseStatus(currentCourse.getId(), false);
 
 		addMessage(i18n("message_course_disabled"));
@@ -204,8 +201,6 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String enableCourse() {
 		logger.debug("Starting method enableCourse");
 		CourseInfo currentCourse = currentCourse();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disabled
 		courseService.setCourseStatus(currentCourse.getId(), true);
 
 		addMessage(i18n("message_course_enabled"));
@@ -223,7 +218,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		CourseInfo currentCourse = currentCourse();
 		logger.debug("Returning to method selectCourseAndConfirmRemove");
 		logger.debug(currentCourse.getId());
-		setSessionBean(Constants.COURSE_INFO, currentCourse);
+		setBean(Constants.COURSE_INFO, currentCourse);
 
 		return Constants.COURSE_CONFIRM_REMOVE_PAGE;
 	}
@@ -363,7 +358,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public void processPeriodSelectChanged(ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
 		periodInfo = universityService.findPeriod(periodId);
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
 	private class LocalDataModelCourses extends AbstractPagedTable<CourseInfo> {
@@ -401,4 +396,13 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 	}
+
+	public CourseInfo getCourseMoveInfo() {
+		return courseMoveInfo;
+	}
+
+	public void setCourseMoveInfo(CourseInfo courseMoveInfo) {
+		this.courseMoveInfo = courseMoveInfo;
+	}
+
 }

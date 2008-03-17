@@ -11,7 +11,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -21,9 +20,6 @@ import org.openuss.web.Constants;
 @View
 public class BrainContestSolvePage extends AbstractBrainContestPage {
 	private static final Logger logger = Logger.getLogger(BrainContestSolvePage.class);
-
-	@Property(value = "#{user}")
-	private UserInfo user;
 
 	@Property(value = "#{braincontest_answer}")
 	private AnswerWebInfo answer;
@@ -37,25 +33,22 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (!isPostBack()) {
-			if (getBrainContest() != null && getBrainContest().getId() != null) {
-				setBrainContest(getBrainContestService().getContest(getBrainContest()));
-				setSessionBean(Constants.BRAINCONTENT_CONTEST, getBrainContest());
-			}
-			if (getBrainContest() == null || getBrainContest().getId() == null) {
-				addError(i18n("braincontest_message_contest_not_found"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
+		if (isRedirected()){
+			return;
 		}
-		if (getBrainContest() != null) {
-			if (!getBrainContest().isReleased() && !isAssistant()) {
-				addError(i18n("braincontest_message_contest_not_released"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
-			List<FileInfo> attachments = getBrainContestService().getAttachments(getBrainContest());
-			if (attachments != null && !attachments.isEmpty()) {
-				setAttachment(attachments.get(0));
-			}
+		if (getBrainContest() == null || getBrainContest().getId() == null) {
+			addError(i18n("braincontest_message_contest_not_found"));
+			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
+		}
+		if (!getBrainContest().isReleased() && !isAssistant()) {
+			addError(i18n("braincontest_message_contest_not_released"));
+			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
+		}
+		List<FileInfo> attachments = getBrainContestService().getAttachments(getBrainContest());
+		if (attachments != null && !attachments.isEmpty()) {
+			setAttachment(attachments.get(0));
 		}
 		addPageCrumb();
 	}
@@ -75,14 +68,6 @@ public class BrainContestSolvePage extends AbstractBrainContestPage {
 			return Constants.BRAINCONTEST_SOLVED;
 		}
 		return Constants.BRAINCONTEST_WRONG;
-	}
-
-	public UserInfo getUser() {
-		return user;
-	}
-
-	public void setUser(UserInfo user) {
-		this.user = user;
 	}
 
 	public boolean isResult() {

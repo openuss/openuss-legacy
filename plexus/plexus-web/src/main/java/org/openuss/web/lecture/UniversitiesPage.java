@@ -24,6 +24,7 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = "views$public$university$universities", scope = Scope.REQUEST)
@@ -60,8 +61,8 @@ public class UniversitiesPage extends BasePage {
 		logger.debug("Starting method selectUniversity");
 		UniversityInfo currentUniversity = currentUniversity();
 		logger.debug("Returning to method selectUniversity");
-		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		logger.debug(currentUniversity.getId());	
+		setBean(Constants.UNIVERSITY_INFO, currentUniversity);
 
 		return Constants.UNIVERSITY_PAGE;
 	}
@@ -76,8 +77,8 @@ public class UniversitiesPage extends BasePage {
 		logger.debug("Starting method selectUniversityAndConfirmRemove");
 		UniversityInfo currentUniversity = currentUniversity();
 		logger.debug("Returning to method selectUniversityAndConfirmRemove");
-		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		logger.debug(currentUniversity.getId());	
+		setBean(Constants.UNIVERSITY_INFO, currentUniversity);
 
 		return Constants.UNIVERSITY_CONFIRM_REMOVE_PAGE;
 	}
@@ -93,7 +94,7 @@ public class UniversitiesPage extends BasePage {
 		UniversityInfo currentUniversity = currentUniversity();
 		logger.debug("Returning to method selectUniversityAndConfirmDisable");
 		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		setBean(Constants.UNIVERSITY_INFO, currentUniversity);
 
 		return Constants.UNIVERSITY_CONFIRM_DISABLE_PAGE;
 	}
@@ -166,7 +167,7 @@ public class UniversitiesPage extends BasePage {
 
 	public String confirmRemoveUniversity() {
 		UniversityInfo universityInfo = currentUniversity();
-		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 		return "removed";
 	}
 
@@ -184,6 +185,7 @@ public class UniversitiesPage extends BasePage {
 
 		private DataPage<UniversityInfo> dataPage;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<UniversityInfo> getDataPage(int startRow, int pageSize) {
 			if (dataPage == null) {

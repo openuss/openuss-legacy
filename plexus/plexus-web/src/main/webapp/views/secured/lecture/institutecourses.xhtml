@@ -81,12 +81,12 @@
 				<h:form id="moveForm">
 					<o:block label="#{msg.period_command_move_course_header}" styleClass="form_box">
 						<h:outputFormat value="#{msg.period_command_move_course_text}" styleClass="content_font_normal">
-							<f:param value="#{courseInfo.name}"/>
+							<f:param value="#{courseMoveInfo.name}"/>
 						</h:outputFormat> <br/>
 						<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
 						<h:selectOneMenu id="targetPeriodSelection" 
 							layout="pageDirection"  
-							value="#{courseInfo.periodId}" 
+							value="#{courseMoveInfo.periodId}" 
 							styleClass="pulldown_inline">  
 								<f:selectItems value="#{views$secured$lecture$institutecourses.allPeriodsOfInstitute}"/>
 								<f:validator validatorId="coursePeriodSelectValidator"/>

@@ -109,6 +109,7 @@ public class Visit extends BaseBean implements Serializable{
 		getViewRoot().setLocale(new Locale(locale));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getSupportedLocaleItems() {
 		if (localeItems == null) {
 			localeItems = new ArrayList<SelectItem>();

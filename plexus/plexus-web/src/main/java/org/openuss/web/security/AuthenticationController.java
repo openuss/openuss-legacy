@@ -43,6 +43,7 @@ import org.openuss.web.statistics.OnlineSessionTracker;
 /**
  * AuthenticationController handles all processes around user login, logout, and forgotten passwords. 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name="authenticationController", scope=Scope.REQUEST)
@@ -181,7 +182,7 @@ public class AuthenticationController extends BasePage {
 			
 			try {
 				DesktopInfo desktop = desktopService2.findDesktopByUser(user.getId());
-				setSessionBean(Constants.DESKTOP_INFO, desktop);
+				setBean(Constants.DESKTOP_INFO, desktop);
 			} catch (DesktopException e) {
 				logger.error(e);
 			}

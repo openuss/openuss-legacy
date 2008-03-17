@@ -113,7 +113,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(postInfo, "PostInfo must not be null.");
 		Validate.notNull(topicInfo, "TopicInfo must not be null.");
 
-		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
+		Topic topic = getTopicDao().load(topicInfo.getId());
 
 		Post post = getPostDao().postInfoToEntity(postInfo);
 

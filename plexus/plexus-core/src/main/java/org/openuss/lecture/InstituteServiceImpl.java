@@ -158,8 +158,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	 */
 	protected InstituteInfo handleFindInstitute(Long instituteId) throws Exception {
 		Validate.notNull(instituteId, "The instituteId cannot be null");
-
-		return (InstituteInfo) getInstituteDao().load(InstituteDao.TRANSFORM_INSTITUTEINFO,instituteId);
+		return (InstituteInfo) getInstituteDao().load(getInstituteDao().TRANSFORM_INSTITUTEINFO, instituteId);
 	}
 
 	/**

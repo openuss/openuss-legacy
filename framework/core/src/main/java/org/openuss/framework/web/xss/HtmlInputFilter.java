@@ -141,6 +141,10 @@ public class HtmlInputFilter {
 		img_atts.add("height");
 		img_atts.add("alt");
 		vAllowed.put("img", img_atts);
+
+		ArrayList<String> div_atts = new ArrayList<String>();
+		div_atts.add("style");
+		vAllowed.put("div", div_atts);
 		
 		ArrayList<String> default_atts = new ArrayList<String>();
 		default_atts.add("color");

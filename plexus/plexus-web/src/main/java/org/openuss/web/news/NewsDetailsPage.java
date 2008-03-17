@@ -21,6 +21,8 @@ import org.openuss.web.Constants;
 /**
  * News Details Page
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$public$news$newsDetail", scope = Scope.REQUEST)
 @View
@@ -44,22 +46,23 @@ public class NewsDetailsPage extends BasePage {
 		if (newsItem != null && newsItem.getId() != null) {
 			logger.debug("refreshing newsitem "+newsItem.getId());
 			newsItem = newsService.getNewsItem(newsItem);
-			setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+			setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 			if (newsItem.getPublisherType()==PublisherType.INSTITUTE){
 				InstituteInfo instituteInfo = instituteService.findInstitute(newsItem.getPublisherIdentifier());
 				breadcrumbs.loadInstituteCrumbs(instituteInfo);
-				setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+				setBean(Constants.INSTITUTE_INFO, instituteInfo);
 				addNewsCrumb();
 			}else if (newsItem.getPublisherType()==PublisherType.COURSE){
 				CourseInfo courseInfo = courseService.findCourse(newsItem.getPublisherIdentifier());
 				breadcrumbs.loadCourseCrumbs(courseInfo);
-				setSessionBean(Constants.COURSE_INFO, courseInfo);
+				setBean(Constants.COURSE_INFO, courseInfo);
 				addNewsCrumb();
 			}
 		} 
 		if (newsItem == null || newsItem.getId() == null){
 			addError(i18n("news_message_newsitem_not_found"));
 			redirect(Constants.HOME);
+			return;
 		}
 	}
 

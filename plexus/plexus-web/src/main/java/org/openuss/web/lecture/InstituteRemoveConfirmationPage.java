@@ -12,6 +12,8 @@ import org.openuss.web.Constants;
 /** Backing bean for the instituteremoveconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$instituteremoveconfirmation", scope = Scope.REQUEST)
 @View
@@ -22,6 +24,9 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);	
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("institute_remove_header"));
@@ -42,9 +47,9 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	public String removeCompleteInstituteTree() throws LectureException {
 		try {
 			instituteService.removeCompleteInstituteTree(instituteInfo.getId());
-			setSessionBean("instituteInfo", null);
-			setSessionBean("courseTypeInfo", null);
-			setSessionBean("courseInfo", null);
+			setBean("instituteInfo", null);
+			setBean("courseTypeInfo", null);
+			setBean("courseInfo", null);
 			addMessage(i18n("message_institute_removed"));
 			return Constants.OUTCOME_BACKWARD;
 		} catch (Exception e) {

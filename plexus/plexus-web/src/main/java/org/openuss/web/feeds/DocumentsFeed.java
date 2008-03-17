@@ -33,6 +33,7 @@ public class DocumentsFeed extends AbstractFeed {
 	
 	public static final Logger logger = Logger.getLogger(DocumentsFeed.class);
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		FeedWrapper feedWrapper = new FeedWrapper();

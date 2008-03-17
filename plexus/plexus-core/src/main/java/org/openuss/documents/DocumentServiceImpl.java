@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -137,7 +136,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		while (folder.getParent() != null) {
 			folder = folder.getParent();
 		}
-		return ObjectUtils.equals(folder.getDomainIdentifier(), domainObject.getId());
+		return folder.getDomainIdentifier().equals(domainObject.getId());
 	}
 
 	@Override
@@ -451,6 +450,15 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected boolean handleIsFolderOfDomainObject(FolderInfo folderInfo, DomainObject domainObject) throws Exception {
 		Folder folder = getFolderDao().load(folderInfo.getId());
 		return isFolderOfDomainObject(domainObject, folder);
+	}
+
+	@Override
+	protected FolderInfo handleGetParentFolder(FileInfo file) throws Exception {
+		FolderEntry folderEntry =  getFolderEntryDao().load(file.getId());
+		if (folderEntry==null){
+			return null;
+		}
+		return (FolderInfo) getFolderDao().load(getFolderDao().TRANSFORM_FOLDERINFO, folderEntry.getParent().getId());
 	}
 
 	private static final class ReleasedFolderEntryPredicate implements Predicate {

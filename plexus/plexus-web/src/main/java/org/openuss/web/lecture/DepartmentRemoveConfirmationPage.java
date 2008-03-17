@@ -13,6 +13,8 @@ import org.openuss.web.Constants;
 /** Backing bean for the departmentremoveconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$departmentremoveconfirmation", scope = Scope.REQUEST)
 @View
@@ -23,6 +25,9 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("department_command_remove"));
@@ -43,10 +48,10 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	public String removeCompleteDepartmentTree() throws LectureException {
 		try {
 			departmentService.removeCompleteDepartmentTree(departmentInfo.getId());
-			setSessionBean("departmentInfo", null);
-			setSessionBean("instituteInfo", null);
-			setSessionBean("courseTypeInfo", null);
-			setSessionBean("courseInfo", null);
+			setBean("departmentInfo", null);
+			setBean("instituteInfo", null);
+			setBean("courseTypeInfo", null);
+			setBean("courseInfo", null);
 			addMessage(i18n("message_department_removed"));
 			return Constants.DEPARTMENTS_ADMIN_PAGE;
 		} catch (Exception e) {
@@ -65,10 +70,10 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	public String removeDepartment() {
 		try {
 			departmentService.removeDepartment(departmentInfo.getId());
-			setSessionBean("departmentInfo", null);
-			setSessionBean("instituteInfo", null);
-			setSessionBean("courseTypeInfo", null);
-			setSessionBean("courseInfo", null);
+			setBean("departmentInfo", null);
+			setBean("instituteInfo", null);
+			setBean("courseTypeInfo", null);
+			setBean("courseInfo", null);
 			addMessage(i18n("message_department_removed"));
 			return Constants.DEPARTMENTS_PAGE;
 		} catch (DepartmentServiceException e) {

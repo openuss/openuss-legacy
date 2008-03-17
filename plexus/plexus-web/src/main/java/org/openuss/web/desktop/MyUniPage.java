@@ -100,7 +100,7 @@ public class MyUniPage extends BasePage {
 					logger.debug("refreshing desktop data");
 					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
 				}
-				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
+				setBean(Constants.DESKTOP_INFO, desktopInfo);
 
 				assert desktopDao != null;
 				desktop = desktopDao.load(desktopInfo.getId());
@@ -203,6 +203,7 @@ public class MyUniPage extends BasePage {
 	/*
 	 * Loads myUni data if myUniData is not already set
 	 */
+	@SuppressWarnings("unchecked")
 	public void prepareData() {
 		logger.debug("Preparing MyUni data");
 		if (myUniData == null) {
@@ -237,6 +238,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
 		if (!departmentListDataLoaded && prerenderCalled && departmentsList != null) {
 			logger.debug("Loading data for departments flexlist");
@@ -256,6 +258,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
 		if (!instituteListDataLoaded && prerenderCalled && institutesList != null) {
 			logger.debug("Loading data for institutes flexlist");
@@ -276,6 +279,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForCourseList(UIFlexList coursesList) {
 		if (!courseListDataLoaded && prerenderCalled && coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
@@ -296,6 +300,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForTabs(UITabs tabs) {
 		if (!tabDataLoaded && prerenderCalled && tabs != null) {
 			logger.debug("Loading data for MyUni-Tabs");
@@ -526,6 +531,7 @@ public class MyUniPage extends BasePage {
 		return departmentsList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setDepartmentsList(UIFlexList departmentsList) {
 		logger.debug("Setting departments flexlist component");
 		this.departmentsList = departmentsList;
@@ -543,6 +549,7 @@ public class MyUniPage extends BasePage {
 		return institutesList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setInstitutesList(UIFlexList institutesList) {
 		logger.debug("Setting institutes flexlist component");
 		this.institutesList = institutesList;
@@ -559,6 +566,7 @@ public class MyUniPage extends BasePage {
 		return coursesList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setCoursesList(UIFlexList coursesList) {
 		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
@@ -575,6 +583,7 @@ public class MyUniPage extends BasePage {
 		return tabs;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;

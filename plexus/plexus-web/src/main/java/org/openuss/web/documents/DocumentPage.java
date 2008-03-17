@@ -17,17 +17,21 @@ public class DocumentPage extends AbstractDocumentPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		entry = documentService.getFileEntry(entry.getId(), false);
 		if (entry==null){
 			addError(Constants.FILE_NOT_FOUND);
 			redirect(i18n(Constants.COURSE_PAGE));
+			return;
 		}
 		setCurrentFolder(documentService.getFolder(entry));
-		//FIXME isFolderOfDomainObject is not working
-//		if (!documentService.isFolderOfDomainObejct(currentFolder, courseInfo)){
-//			addError(Constants.FILE_NOT_FOUND);
-//			redirect(i18n(Constants.COURSE_PAGE));		
-//		}
+		if (!documentService.isFolderOfDomainObject(documentService.getParentFolder(entry), courseInfo)){
+			addError(Constants.FILE_NOT_FOUND);
+			redirect(i18n(Constants.COURSE_PAGE));	
+			return;		
+		}
 	}
 
 

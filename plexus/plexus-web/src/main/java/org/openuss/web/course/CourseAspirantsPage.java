@@ -36,6 +36,9 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}		
 		addPageCrumb();
 	}
 	
@@ -99,6 +102,7 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 		
 		private DataPage<CourseMemberInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<CourseMemberInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

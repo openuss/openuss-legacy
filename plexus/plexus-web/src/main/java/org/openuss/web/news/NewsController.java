@@ -18,6 +18,8 @@ import org.openuss.web.Constants;
  * NewsController for news displaying 
  * @author Ingo Dueppe
  * @author Arne Sutor
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name="news_controller", scope=Scope.REQUEST)
 @View
@@ -44,6 +46,7 @@ public class NewsController extends BaseBean {
 		return Constants.OUTCOME_BACKWARD;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<NewsItemInfo> getCurrentGlobalNews() {
 		if (news == null) {
 			news = newsService.getCurrentNewsItems(NewsCategory.GLOBAL, 20);
@@ -51,6 +54,7 @@ public class NewsController extends BaseBean {
 		return news;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<NewsItemInfo> getCurrentSidebarNews() {
 		if (news == null) {
 			news = newsService.getCurrentNewsItems(NewsCategory.GLOBAL, 3);
@@ -67,7 +71,7 @@ public class NewsController extends BaseBean {
 	public String details() {
 		newsItem = (NewsItemInfo) newsTable.getRowData();
 		newsItem = newsService.getNewsItem(newsItem);
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+		setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
 		return Constants.NEWS_NEWSDETAIL_PAGE;
 	}
 

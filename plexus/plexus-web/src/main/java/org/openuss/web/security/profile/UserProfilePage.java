@@ -28,6 +28,7 @@ import org.openuss.web.upload.UploadedDocument;
 /**
  * View page controller to handle user profile views
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name="views$secured$user$profile", scope=Scope.REQUEST)
@@ -64,7 +65,7 @@ public class UserProfilePage extends BasePage{
 	public String profilePage(){
 		UserInfo profile = new UserInfo();
 		profile.setId(this.user.getId());
-		setSessionAttribute(Constants.SHOW_USER_PROFILE, profile);
+		setBean(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}	
 	

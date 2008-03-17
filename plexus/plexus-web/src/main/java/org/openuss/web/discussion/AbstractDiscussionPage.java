@@ -41,7 +41,7 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 		}
 		if (courseInfo!=null&&courseInfo.getId()!=null){
 			forum = getDiscussionService().getForum(courseInfo);
-			setSessionBean(Constants.DISCUSSION_FORUM, forum);
+			setBean(Constants.DISCUSSION_FORUM, forum);
 		}
 		addDiscussionCrumb();
 	}
@@ -113,4 +113,5 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
 	}
+
 }

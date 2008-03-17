@@ -92,6 +92,7 @@ public class UserBrowserPage extends BasePage{
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public DataPage<UserInfo> fetchDataPage(int startRow, int pageSize) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("fetchDataPage(" + startRow + "," + pageSize + ")");

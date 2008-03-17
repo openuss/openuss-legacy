@@ -51,6 +51,9 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception { //NOPMD
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}		
 		addPageCrumb();
 	}
 	
@@ -91,6 +94,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<CourseMemberInfo> getAssistants() {
 		if (assistants == null) {
 			assistants = courseService.getAssistants(courseInfo);
@@ -112,7 +116,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		CourseMemberInfo memberInfo = data.getRowData();
 		UserInfo user = new UserInfo();
 		user.setId(memberInfo.getUserId());
-		setSessionBean("showuser", user);
+		setBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 

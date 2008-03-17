@@ -16,6 +16,8 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 public abstract class AbstractUniversityPage extends BasePage {
 
@@ -36,39 +38,26 @@ public abstract class AbstractUniversityPage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing university session object");
-		if (universityInfo != null) {
-			universityInfo = universityService.findUniversity(universityInfo.getId());
-		} else {
-			universityInfo = (UniversityInfo) getSessionBean(Constants.UNIVERSITY_INFO);
-		}
-		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		refreshUniversity();
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 	}
 
 	@Prerender
 	public void prerender() throws LectureException {
-		try {
-			logger.debug("prerender - refreshing university session object");
-			refreshUniversity();
-			if (universityInfo == null) {
-				addError(i18n("message_error_no_university_selected"));
-				redirect(Constants.DESKTOP);
-			} 
-		} catch (Exception e) {
-			logger.debug(e.getStackTrace());
-			universityInfo = null;
+		logger.debug("prerender - refreshing university session object");
+		refreshUniversity();
+		if (universityInfo == null||universityInfo.getId()==null) {
 			addError(i18n("university_not_found"));
-			redirect(Constants.HOME);
-		}
-		
+			redirect(Constants.DESKTOP);
+			return;
+		} 
 	}
 
 	private void refreshUniversity() {
 		logger.debug("Starting method refresh university");
-		if (universityInfo != null) {
-			logger.debug(universityInfo.getId());
+		if (universityInfo != null&&universityInfo.getId()!=null) {
 			universityInfo = universityService.findUniversity(universityInfo.getId());
-			logger.debug(universityInfo.getId());
-			setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+			setBean(Constants.UNIVERSITY_INFO, universityInfo);
 		}
 	}
 

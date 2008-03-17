@@ -27,6 +27,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 	@Property(value = "#{" + Constants.DISCUSSION_THREADLENGTH + "}")
 	public Integer length;
 
+	@Property(value = "#{" + Constants.DISCUSSION_QUOTE_POST + "}")
+	public PostInfo quoteFrom;
+	
 	public boolean topicWatchState;
 
 	public boolean topicReadOnly;
@@ -40,16 +43,18 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 		}
 		if (topic != null && topic.getId() != null) {
 			topic = discussionService.getTopic(topic);
-			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+			setBean(Constants.DISCUSSION_TOPIC, topic);
 		}
 		if (topic == null || topic.getId() == null) {
 			addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
 			redirect(Constants.DISCUSSION_MAIN);
+			return;
 		} else {
 			// check if topic belongs to course
 			if (!topic.getForumId().equals(forum.getId())) {
 				addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
 				redirect(Constants.DISCUSSION_MAIN);
+				return;
 			}
 
 			discussionService.addHit(topic);
@@ -87,9 +92,9 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 				} else {
 					posts = new ArrayList<PostInfo>();
 				}
-				setSessionBean(Constants.DISCUSSION_THREADLENGTH, posts.size());
+				setBean(Constants.DISCUSSION_THREADLENGTH, posts.size());
 				sort(posts);
-				page = new DataPage<PostInfo>(posts.size(), 0, posts);
+				page = new DataPage<PostInfo>(posts.size(),0,posts);
 			}
 			return page;
 		}
@@ -101,41 +106,36 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 			return Constants.FAILURE;
 		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
-		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+		setBean(Constants.DISCUSSION_TOPIC, topic);
 		PostInfo post = new PostInfo();
 		String title = "Re: " + this.topic.getTitle();
 		if (title.length() > 250) {
 			title = StringUtils.abbreviate(title, 250);
 		}
 		post.setTitle(title);
-		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
+		setBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
 		return Constants.DISCUSSION_NEW;
 	}
 
-	public String removePost() {
-		if ((topic.isReadOnly() || getForum().isReadOnly()) && (!isAssistant())) {
+	public String removePost(){
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
 			addError(i18n(DISCUSSION_READONLY));
 			return Constants.FAILURE;
 		}
 		PostInfo postInfo = this.data.getRowData();
-		if (this.length == 1) {
-			discussionService.deleteTopic(topic);
-			addMessage(i18n("discussion_post_deleted", postInfo.getTitle()));
-			return Constants.DISCUSSION_MAIN;
-		}
 		discussionService.deletePost(postInfo);
 		addMessage(i18n("discussion_post_deleted", postInfo.getTitle()));
-		return Constants.SUCCESS;
+		return Constants.DISCUSSION_MAIN;
 	}
 
-	public String editPost() {
-		if ((topic.isReadOnly() || getForum().isReadOnly()) && (!isAssistant())) {
+	public String editPost(){
+		if ((topic.isReadOnly()||getForum().isReadOnly())&&(!isAssistant())){
 			addError(i18n(DISCUSSION_READONLY));
 			return Constants.FAILURE;
 		}
 		PostInfo postInfo = this.data.getRowData();
 		postInfo = discussionService.getPost(postInfo);
-		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
+		setBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
 		return Constants.DISCUSSION_NEW;
 	}
 
@@ -145,19 +145,11 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 			return Constants.FAILURE;
 		}
 		TopicInfo topic = discussionService.getTopic(this.topic);
-		setSessionBean(Constants.DISCUSSION_TOPIC, topic);
-		PostInfo quoteFrom = this.data.getRowData();
-		PostInfo post = new PostInfo();
-		String text = "<div style=\"border: 1px solid rgb(204, 204, 204); margin: 15px 20px; padding: 4px; background-color: rgb(238, 238, 238);\"><strong>"
-				+ quoteFrom.getSubmitter()
-				+ " - "
-				+ quoteFrom.getCreated()
-				+ ":</strong> <br/>"
-				+ quoteFrom.getText()
-				+ "</div><br/><br/>";
-		post.setText(text);
-		post.setTitle("Re: " + quoteFrom.getTitle());
-		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, post);
+		setBean(Constants.DISCUSSION_TOPIC, topic);
+		quoteFrom = this.data.getRowData();
+		quoteFrom = discussionService.getPost(quoteFrom);
+		setBean(Constants.DISCUSSION_QUOTE_POST, quoteFrom);
+		setBean(Constants.DISCUSSION_DISCUSSIONENTRY, new PostInfo());
 		return Constants.DISCUSSION_NEW;
 	}
 
@@ -219,6 +211,14 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 			return false;
 		}
 		return getDiscussionService().watchesForum(getDiscussionService().getForum(courseInfo));
+	}
+
+	public PostInfo getQuoteFrom() {
+		return quoteFrom;
+	}
+
+	public void setQuoteFrom(PostInfo quoteFrom) {
+		this.quoteFrom = quoteFrom;
 	}
 
 }

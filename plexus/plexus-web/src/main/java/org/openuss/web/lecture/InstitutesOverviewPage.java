@@ -23,6 +23,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * @deprecated Needed? Page views/public/institute/institutesoverview not
  *             existing
  */
@@ -42,8 +43,15 @@ public class InstitutesOverviewPage extends BasePage {
 	@Property(value = "#{departmentService}")
 	private DepartmentService departmentService;
 
+	@Property(value = "#{"+Constants.DEPARTMENT_INFO+"}")
+	private DepartmentInfo departmentInfo;
+
 	@Prerender
 	public void prerender() throws Exception {
+		if (departmentInfo!=null && departmentInfo.getId()!=null){
+			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+			setBean(Constants.DEPARTMENT_INFO, departmentInfo);
+		}
 	}
 
 	/**
@@ -57,8 +65,7 @@ public class InstitutesOverviewPage extends BasePage {
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstitute");
 		logger.debug(currentInstitute.getId());
-		// setSessionBean(Constants.INSTITUTE, institute);
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 
 		return Constants.INSTITUTE_PAGE;
 	}
@@ -152,12 +159,14 @@ public class InstitutesOverviewPage extends BasePage {
 	}
 
 
+
 	private class InstituteTable extends AbstractPagedTable<InstituteInfo> {
 
 		private static final long serialVersionUID = -6072435481342714879L;
 
 		private DataPage<InstituteInfo> dataPage;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			logger.debug("Starting method getDataPage");
@@ -167,7 +176,7 @@ public class InstitutesOverviewPage extends BasePage {
 							+ institutesOverview.getSortColumn());
 				}
 
-				DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+				DepartmentInfo departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
 				// get all institutes. Does not depend whether it is enabled or disabled
 				List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartmentAndEnabled(departmentInfo.getId(), true);
 				 sort(instituteList);
@@ -202,5 +211,13 @@ public class InstitutesOverviewPage extends BasePage {
 
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
+	}
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
 	}
 }

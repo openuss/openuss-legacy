@@ -14,6 +14,7 @@ import org.openuss.braincontest.BrainContestInfo;
 import org.openuss.braincontest.BrainContestService;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.course.AbstractCoursePage;
 
@@ -25,7 +26,7 @@ import org.openuss.web.course.AbstractCoursePage;
 public class AbstractBrainContestPage extends AbstractCoursePage{
 	
 	@Property(value = "#{braincontest_contest}")
-	private BrainContestInfo brainContest;
+	protected BrainContestInfo brainContest;
 	
 	@Property(value = "#{brainContestService}")
 	private BrainContestService brainContestService;
@@ -37,7 +38,21 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 	@Prerender
 	public void prerender() throws Exception{ // NOPMD idueppe
 		super.prerender();
-		generateBreadCrumbs();
+		if (isRedirected()){
+			return;
+		}
+		if (brainContest != null && brainContest.getId() != null){
+			brainContest = brainContestService.getContest(brainContest);
+			setBean(Constants.BRAINCONTENT_CONTEST, brainContest);
+			if (brainContest != null && !brainContest.getDomainIdentifier().equals(courseInfo.getId())) {
+				addError(i18n("braincontest_message_contest_not_found"));
+				redirect(Constants.BRAINCONTEST_MAIN);
+				return;
+			}
+		}
+		if (brainContest != null) {
+			generateBreadCrumbs();
+		}
 	}
 
 	public void generateBreadCrumbs(){
@@ -48,9 +63,7 @@ public class AbstractBrainContestPage extends AbstractCoursePage{
 		crumb.setHint(i18n("braincontest_main_header"));
 		crumb.setLink(PageLinks.BRAINCONTEST_MAIN);
 		crumb.addParameter("course", courseInfo.getId());
-		if (brainContest.getId() != null && brainContest.getId() != 0) {
-			crumb.addParameter("braincontest",brainContest.getId());
-		}
+		crumb.addParameter("braincontest",brainContest.getId());
 		breadcrumbs.addCrumb(crumb);
 	}
 	

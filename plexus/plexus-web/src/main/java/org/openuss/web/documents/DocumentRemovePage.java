@@ -30,6 +30,9 @@ public class DocumentRemovePage extends AbstractDocumentPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 	

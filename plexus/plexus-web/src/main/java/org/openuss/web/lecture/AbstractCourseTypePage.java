@@ -11,6 +11,7 @@ import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
@@ -22,6 +23,8 @@ import org.openuss.web.Constants;
  * Abstract CourseType Page
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 public abstract class AbstractCourseTypePage extends BasePage {
 
@@ -41,6 +44,9 @@ public abstract class AbstractCourseTypePage extends BasePage {
 	
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
+
+	@Property(value = "#{instituteService}")
+	protected InstituteService instituteService;
 	
 	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
@@ -68,31 +74,45 @@ public abstract class AbstractCourseTypePage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing course type session object");
-		if (courseTypeInfo != null) {
-			courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
-		} else {
-			courseTypeInfo = (CourseTypeInfo) getSessionBean(Constants.COURSE_TYPE_INFO);
-		}
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		refreshCourseType();
+		refreshInstitute();
 	}
 
 	@Prerender
 	public void prerender() throws LectureException {
 		logger.debug("prerender - refreshing course type session object");
+		refreshCourseType();
 		refreshInstitute();
 		if (courseTypeInfo == null) {
 			addError(i18n("message_error_no_course_type_selected"));
 			redirect(Constants.DESKTOP);
-		} else { 
-			//generateCrumbs();
+			return;
+		}
+		if (instituteInfo == null) {
+			addError(i18n("message_error_no_institute_selected"));
+			redirect(Constants.DESKTOP);
+			return;
+		} 
+		if (!courseTypeInfo.getInstituteId().equals(instituteInfo.getId())){
+			addError(i18n("message_error_institute_coursetype"));
+			redirect(Constants.DESKTOP);
+			return;
 		}
 	}
 
 	private void refreshInstitute() {
 		logger.debug("Starting method refresh course type");
+		if (instituteInfo != null && instituteInfo.getId()!= null) {
+			instituteInfo = instituteService.findInstitute(instituteInfo.getId());
+			setBean(Constants.INSTITUTE_INFO, instituteInfo);
+		}
+	}
+
+	private void refreshCourseType() {
+		logger.debug("Starting method refresh course type");
 		if (courseTypeInfo != null) {
 			courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
-			setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+			setBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		}
 	}
 	
@@ -174,6 +194,14 @@ public abstract class AbstractCourseTypePage extends BasePage {
 
 	public void setCourseService(CourseService courseService) {
 		this.courseService = courseService;
+	}
+
+	public InstituteService getInstituteService() {
+		return instituteService;
+	}
+
+	public void setInstituteService(InstituteService instituteService) {
+		this.instituteService = instituteService;
 	}
 	
 

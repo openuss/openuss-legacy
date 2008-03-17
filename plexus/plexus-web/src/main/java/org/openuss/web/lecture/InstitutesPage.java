@@ -12,6 +12,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.DepartmentInfo;
+import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.InstituteServiceException;
@@ -23,6 +24,7 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  * @author Sebastian Roekens
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = "views$public$institute$institutes", scope = Scope.REQUEST)
@@ -38,8 +40,18 @@ public class InstitutesPage extends BasePage {
 	@Property(value = "#{instituteService}")
 	private InstituteService instituteService;
 
+	@Property(value = "#{"+Constants.DEPARTMENT_INFO+"}")
+	private DepartmentInfo departmentInfo;
+
+	@Property(value = "#{"+Constants.DEPARTMENT_SERVICE+"}")
+	private DepartmentService departmentService;
+
 	@Prerender
 	public void prerender() throws Exception {
+		if (departmentInfo != null && departmentInfo.getId() != null){
+			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+			setBean(Constants.DEPARTMENT_INFO, departmentInfo);
+		}
 	}
 
 	/**
@@ -52,9 +64,8 @@ public class InstitutesPage extends BasePage {
 		logger.debug("Starting method selectInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstitute");
-		logger.debug(currentInstitute.getId());
-		// setSessionBean(Constants.INSTITUTE, institute);
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		logger.debug(currentInstitute.getId());	
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 
 		return Constants.INSTITUTE_PAGE;
 	}
@@ -116,8 +127,8 @@ public class InstitutesPage extends BasePage {
 		logger.debug("Starting method selectInstituteAndConfirmDisable");
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstituteAndConfirmDisable");
-		logger.debug(currentInstitute.getId());
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		logger.debug(currentInstitute.getId());	
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 
 		return Constants.INSTITUTE_CONFIRM_DISABLE_PAGE;
 	}
@@ -152,8 +163,8 @@ public class InstitutesPage extends BasePage {
 		logger.debug("Starting method selectInstituteAndConfirmRemove");
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstituteAndConfirmRemove");
-		logger.debug(currentInstitute.getId());
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		logger.debug(currentInstitute.getId());	
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 
 		return Constants.INSTITUTE_CONFIRM_REMOVE_PAGE;
 	}
@@ -169,6 +180,7 @@ public class InstitutesPage extends BasePage {
 
 		private DataPage<InstituteInfo> dataPage;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			logger.debug("Starting method getDataPage");
@@ -178,7 +190,7 @@ public class InstitutesPage extends BasePage {
 							+ institutes.getSortColumn());
 				}
 
-				DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+				DepartmentInfo departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
 				// get all institutes. Does not depend whether it is enabled or
 				// disabled
 				List<InstituteInfo> instituteList = getInstituteService().findInstitutesByDepartment(
@@ -201,4 +213,20 @@ public class InstitutesPage extends BasePage {
 
 	/* ----------- institute sorting comparators ------------- */
 
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}	
 }

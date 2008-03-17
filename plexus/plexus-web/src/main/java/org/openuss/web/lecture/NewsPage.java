@@ -1,6 +1,5 @@
 package org.openuss.web.lecture;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,7 +12,6 @@ import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.LectureException;
-import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -22,6 +20,8 @@ import org.openuss.web.Constants;
  * News Page Controller
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$news", scope = Scope.REQUEST)
 @View
@@ -37,6 +37,9 @@ public class NewsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (!instituteInfo.isEnabled()) {
 			addMessage(i18n("institute_not_activated"));
 		}
@@ -59,6 +62,7 @@ public class NewsPage extends AbstractLecturePage {
 		
 		private DataPage<NewsItemInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<NewsItemInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
@@ -77,14 +81,8 @@ public class NewsPage extends AbstractLecturePage {
 	public String addNewsItem() {
 		NewsItemInfo newsItemInfo = new NewsItemInfo();
 		// define initial values
-		newsItemInfo.setCategory(NewsCategory.GLOBAL);
-		newsItemInfo.setPublishDate(new Date());
-		newsItemInfo.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
 		
-		newsItemInfo.setPublisherIdentifier(instituteInfo.getId());
-		newsItemInfo.setPublisherName(instituteInfo.getName());
-		
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
+		setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
@@ -95,7 +93,7 @@ public class NewsPage extends AbstractLecturePage {
 	public String editNewsItem() {
 		logger.debug("edit news item");
 		NewsItemInfo newsItemInfo = data.getRowData();
-		setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
+		setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItemInfo);
 		return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 	}
 	
@@ -111,6 +109,7 @@ public class NewsPage extends AbstractLecturePage {
 		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<NewsItemInfo> getNewsItems() {
 		logger.debug("getting newsitems for institute " + instituteInfo);
 		return newsService.getNewsItems(instituteInfo);

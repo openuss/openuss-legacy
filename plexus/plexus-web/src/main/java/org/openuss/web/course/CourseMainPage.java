@@ -23,6 +23,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = "views$secured$course$main", scope = Scope.REQUEST)
@@ -40,7 +41,10 @@ public class CourseMainPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (courseInfo != null) {
+		if (isRedirected()){
+			return;
+		}
+		if (courseInfo != null){
 			assistants = courseService.getAssistants(courseInfo);
 		}
 

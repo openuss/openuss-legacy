@@ -28,7 +28,6 @@ public class WelcomePage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception { // NOPMD idueppe
-		super.prerender();
 		logger.debug("starting method prerender");
 
 		// FIXME Factory - why we are doing this?

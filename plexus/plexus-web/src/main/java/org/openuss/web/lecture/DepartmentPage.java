@@ -15,10 +15,13 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public void prerender() throws LectureException 
 	{
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addBreadCrumbs();
 	}
 	
-	private void addBreadCrumbs()
+	private void addBreadCrumbs() 
 	{
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 	}

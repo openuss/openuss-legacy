@@ -35,14 +35,24 @@ public class FileEditPage extends AbstractDocumentPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (!isPostBack()) {
-			if (selectedFile.getId() != null) {
-				selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
-				setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
-			}
-			if (selectedFile.getCreated() == null) {
-				selectedFile.setCreated(new Date());
-			}
+		if (isRedirected()){
+			return;
+		}
+		if (selectedFile.getId() != null) {
+			selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
+			if (selectedFile==null){
+				selectedFile=new FileInfo();
+			} else if (selectedFile!=null){
+					if (!documentService.isFolderOfDomainObject(documentService.getParentFolder(selectedFile), courseInfo)){
+						addError(i18n(Constants.FILE_NOT_FOUND));
+						redirect(i18n(Constants.COURSE_PAGE));	
+						return;		
+					}			
+				}
+			setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
+		}
+		if (selectedFile.getCreated() == null) {
+			selectedFile.setCreated(new Date());
 		}
 		addPageCrumb();
 	}
@@ -66,17 +76,28 @@ public class FileEditPage extends AbstractDocumentPage{
 			if (document != null) {
 				documentToSelectedFile(document);
 			}
+			if (document == null){
+				selectedFile = completeChangedFile(selectedFile, documentService.getFileEntry(selectedFile.getId(), true));
+			}
 			documentService.saveFileEntry(selectedFile);
 			if (document != null) {
 				uploadFileManager.removeDocument(document);
 			}
 			addMessage(i18n("message_documents_save_file"));
 		}
-		removeSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY);
+		setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, null);
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
+	private FileInfo completeChangedFile(FileInfo newFile, FileInfo oldFile){
+		oldFile.setName(newFile.getName());
+		oldFile.setDescription(newFile.getDescription());
+		oldFile.setFileName(newFile.getFileName());
+		oldFile.setCreated(newFile.getCreated());
+		return oldFile;
+	}
+	
 	private boolean saveNewFile() throws IOException, DocumentApplicationException {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (document != null) {

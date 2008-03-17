@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
@@ -23,6 +24,7 @@ import org.openuss.web.Constants;
  * wizard, binding the values and registrating the university.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = Constants.UNIVERSITY_REGISTRATION_CONTROLLER, scope = Scope.REQUEST)
@@ -31,6 +33,9 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 
 	private static final Logger logger = Logger.getLogger(UniversityRegistrationController.class);
 
+	@Property(value = "#{"+Constants.UNIVERSITY_APPLICATION+"}")
+	protected UniversityInfo universityApplication;	
+	
 	private List<SelectItem> localeItems;
 
 	private ValueBinding binding = getFacesContext().getApplication().createValueBinding("#{visit.locale}");
@@ -59,28 +64,29 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 	public String start() {
 
 		logger.debug("start registration process");
-		universityInfo = new UniversityInfo();
-		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		universityApplication = new UniversityInfo();
+		setSessionBean(Constants.UNIVERSITY_APPLICATION, universityApplication);
 
 		return Constants.UNIVERSITY_REGISTRATION_STEP1_PAGE;
 	}
 
 	public String registrate() throws DesktopException, LectureException {
 		// set University by default enabled
-		universityInfo.setEnabled(true);
+		universityApplication.setEnabled(true);
 		// create university
-		Long universityId = universityService.createUniversity(universityInfo, user.getId());
+		Long universityId = universityService.createUniversity(universityApplication, user.getId());
+		universityApplication.setId(universityId);
+		setSessionBean(Constants.UNIVERSITY_APPLICATION, null);
 		universityInfo.setId(universityId);
-
 		return Constants.UNIVERSITY_PAGE;
 	}
 
 	public String getTransformedLocale() {
-		if (universityInfo.getLocale().equals("en")) {
+		if (universityApplication.getLocale().equals("en")) {
 			return bundle.getString("transform_locale_en");
-		} else if (universityInfo.getLocale().equals("de")) {
+		} else if (universityApplication.getLocale().equals("de")) {
 			return bundle.getString("transform_locale_de");
-		} else if (universityInfo.getLocale().equals("ru")) {
+		} else if (universityApplication.getLocale().equals("ru")) {
 			return bundle.getString("transform_locale_ru");
 		} else {
 			return "";
@@ -88,15 +94,23 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 	}
 
 	public String getTransformedUniversityType() {
-		if (universityInfo.getUniversityType().getValue() == -1) {
+		if (universityApplication.getUniversityType().getValue() == -1) {
 			return bundle.getString("organizationtype_misc");
-		} else if (universityInfo.getUniversityType().getValue() == 0) {
+		} else if (universityApplication.getUniversityType().getValue() == 0) {
 			return bundle.getString("organizationtype_university");
-		} else if (universityInfo.getUniversityType().getValue() == 2) {
+		} else if (universityApplication.getUniversityType().getValue() == 2) {
 			return bundle.getString("organizationtype_company");
 		} else {
 			return "";
 		}
+	}
+
+	public UniversityInfo getUniversityApplication() {
+		return universityApplication;
+	}
+
+	public void setUniversityApplication(UniversityInfo universityApplication) {
+		this.universityApplication = universityApplication;
 	}
 
 }

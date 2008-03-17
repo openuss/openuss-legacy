@@ -23,9 +23,10 @@ import org.openuss.web.Constants;
  * the welcome page.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * 
  */
-@Bean(name = "views$public$university$universitieswelcome", scope = Scope.REQUEST)
+@Bean(name = "views$public$university$universitiestablewelcome", scope = Scope.REQUEST)
 @View
 public class UniversitiesWelcomePage extends BasePage {
 
@@ -41,12 +42,18 @@ public class UniversitiesWelcomePage extends BasePage {
 	@Property(value = "#{universityDao}")
 	private UniversityDao universityDao;
 
+	@Property(value = "#{universityInfo}")
+	private UniversityInfo universityInfo;
+	
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
 
 	@Prerender
 	public void prerender() throws Exception {
 		breadcrumbs.clear();
+		if (universityInfo!=null && universityInfo.getId()!=null){
+			universityInfo = universityService.findUniversity(universityInfo.getId());
+		}
 	}
 
 	/**
@@ -60,7 +67,7 @@ public class UniversitiesWelcomePage extends BasePage {
 		UniversityInfo currentUniversity = currentUniversity();
 		logger.debug("Returning to method selectUniversity");
 		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		setBean(Constants.UNIVERSITY_INFO, currentUniversity);
 
 		return Constants.UNIVERSITY_PAGE;
 	}
@@ -73,10 +80,9 @@ public class UniversitiesWelcomePage extends BasePage {
 	 */
 	public String selectUniversityAndConfirmRemove() {
 		logger.debug("Starting method selectUniversityAndConfirmRemove");
-		UniversityInfo currentUniversity = currentUniversity();
+		universityInfo = currentUniversity();
 		logger.debug("Returning to method selectUniversityAndConfirmRemove");
-		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 
 		return Constants.UNIVERSITY_CONFIRM_REMOVE_PAGE;
 	}
@@ -89,10 +95,9 @@ public class UniversitiesWelcomePage extends BasePage {
 	 */
 	public String selectUniversityAndConfirmDisable() {
 		logger.debug("Starting method selectUniversityAndConfirmDisable");
-		UniversityInfo currentUniversity = currentUniversity();
+		universityInfo = currentUniversity();
 		logger.debug("Returning to method selectUniversityAndConfirmDisable");
-		logger.debug(currentUniversity.getId());
-		setSessionBean(Constants.UNIVERSITY_INFO, currentUniversity);
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 
 		return Constants.UNIVERSITY_CONFIRM_DISABLE_PAGE;
 	}
@@ -105,11 +110,8 @@ public class UniversitiesWelcomePage extends BasePage {
 	 */
 	public String enableUniversity() {
 		logger.debug("Starting method enableUniversity");
-		UniversityInfo currentUniversity = currentUniversity();
-		// setOrganisationStatus(true) = Enabled
-		// setOrganisationStatus(false) = Disbled
-		universityService.setUniversityStatus(currentUniversity.getId(), true);
-
+		universityService.setUniversityStatus(currentUniversity().getId(), true);
+		
 		addMessage(i18n("message_university_enabled"));
 		return Constants.SUCCESS;
 	}
@@ -122,8 +124,7 @@ public class UniversitiesWelcomePage extends BasePage {
 	 */
 	public String shortcutUniversity() throws DesktopException {
 		logger.debug("Starting method shortcutUniversity");
-		UniversityInfo currentUniversity = currentUniversity();
-		desktopService2.linkUniversity(desktopInfo.getId(), currentUniversity.getId());
+		desktopService2.linkUniversity(desktopInfo.getId(), currentUniversity().getId());
 
 		addMessage(i18n("message_university_shortcut_created"));
 		return Constants.SUCCESS;
@@ -132,9 +133,6 @@ public class UniversitiesWelcomePage extends BasePage {
 	private UniversityInfo currentUniversity() {
 		logger.debug("Starting method currentUniversity");
 		UniversityInfo universityDetails = universitiesWelcome.getRowData();
-		logger.debug(universityDetails.getName());
-		logger.debug(universityDetails.getOwnerName());
-		logger.debug(universityDetails.getId());
 		UniversityInfo newUniversityInfo = new UniversityInfo();
 		newUniversityInfo.setId(universityDetails.getId());
 		logger.debug(newUniversityInfo.getId());
@@ -175,7 +173,7 @@ public class UniversitiesWelcomePage extends BasePage {
 
 	public String confirmRemoveUniversity() {
 		UniversityInfo universityInfo = currentUniversity();
-		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 		return "removed";
 	}
 
@@ -185,6 +183,7 @@ public class UniversitiesWelcomePage extends BasePage {
 		
 		private DataPage<UniversityInfo> page; 
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<UniversityInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
@@ -198,7 +197,15 @@ public class UniversitiesWelcomePage extends BasePage {
 			}
 			return page;
 		}
+		
+	}
 
+	public UniversityInfo getUniversityInfo() {
+		return universityInfo;
+	}
+
+	public void setUniversityInfo(UniversityInfo universityInfo) {
+		this.universityInfo = universityInfo;
 	}
 
 }

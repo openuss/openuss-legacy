@@ -12,7 +12,7 @@
 	<plexus:dataTable 
 		id="university" 
 		label="#{msg.universityList_header}"
-		value="views$public$university$universitieswelcome.universitiesWelcome" 
+		value="views$public$university$universitiestablewelcome.universitiesWelcome" 
 		var="bean" 
 		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
 		rows="15">
@@ -20,7 +20,7 @@
 			<plexus:commandSortHeader columnName="name">
 				#{msg['university_name']}
 	        </plexus:commandSortHeader>
-	        <h:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command">
+	        <h:commandLink action="#{views$public$university$universitiestablewelcome.selectUniversity}" styleClass="command">
 				<h:outputText value="#{bean.name} (#{bean.shortcut})"/>
 			</h:commandLink> 	
 		</t:column>
@@ -42,7 +42,7 @@
 		<s:authorize ifAllGranted="ROLE_ADMIN">
 			<plexus:column header="#{msg.commands_header}">
 				<plexus:command 
-					bean = "#{views$public$university$universitieswelcome}"
+					bean = "#{views$public$university$universitiestablewelcome}"
 					action = "selectUniversityAndConfirmDisable"
 					styleClass="icon_hide"
 					label="#{msg.university_command_disable}"
@@ -50,7 +50,7 @@
 					rendered="#{bean.enabled}">
 				</plexus:command>
 				<plexus:command 
-					bean = "#{views$public$university$universitieswelcome}"
+					bean = "#{views$public$university$universitiestablewelcome}"
 					action = "enableUniversity"
 					styleClass="icon_public"
 					label="#{msg.university_command_enable}"
@@ -58,7 +58,7 @@
 					rendered="#{not bean.enabled}">
 				</plexus:command>
 				<plexus:command 
-					bean = "#{views$public$university$universitieswelcome}"
+					bean = "#{views$public$university$universitiestablewelcome}"
 					action = "selectUniversityAndConfirmRemove"
 					styleClass="icon_remove"
 					value="#{msg.university_command_remove}"

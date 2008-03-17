@@ -15,6 +15,8 @@ import org.openuss.web.course.AbstractCoursePage;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 public class AbstractDocumentPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(AbstractDocumentPage.class);
@@ -28,13 +30,16 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-	
+		if (isRedirected()){
+			return;
+		}
 		if (currentFolder == null && courseInfo == null) {
 			redirect(Constants.OUTCOME_BACKWARD);
+			return;
 		} else {
 			currentFolder = retrieveActualFolder();
 		}
-		setSessionAttribute(Constants.DOCUMENTS_CURRENT_FOLDER, currentFolder);
+		setBean(Constants.DOCUMENTS_CURRENT_FOLDER, currentFolder);
 		addDocumentsCrumbs();
 	}
 
@@ -77,6 +82,7 @@ public class AbstractDocumentPage extends AbstractCoursePage {
 		return documentService.getFolder(courseInfo, currentFolder);
 	}	
 	
+	@SuppressWarnings("unchecked")
 	public List<FolderInfo> getCurrentPath() {
 		logger.debug("getting current path");
 		if (currentFolder != null && currentFolder.getId() != null) {

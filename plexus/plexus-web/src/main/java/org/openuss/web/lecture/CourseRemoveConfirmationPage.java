@@ -12,6 +12,7 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.CourseServiceException;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
@@ -20,6 +21,8 @@ import org.openuss.web.course.AbstractCoursePage;
 /** Backing bean for the courseremoveconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$courseremoveconfirmation", scope = Scope.REQUEST)
 @View
@@ -34,6 +37,9 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	public void prerender() throws LectureException {
 		try {
 			super.prerender();
+			if (isRedirected()){
+				return;
+			}
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			
 			BreadCrumb newCrumb = new BreadCrumb();
@@ -58,7 +64,10 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	public String removeCourse() {
 		try {
 			courseService.removeCourse(courseInfo.getId());
-			setSessionBean("courseInfo", null);
+			instituteInfo = new InstituteInfo();
+			instituteInfo.setId(courseInfo.getInstituteId());
+			setBean(Constants.INSTITUTE_INFO, instituteInfo);
+			setBean("courseInfo", null);
 			addMessage(i18n("institute_course_removed_succeed"));
 			return Constants.INSTITUTE_COURSES_PAGE;
 		} catch (CourseServiceException e) {

@@ -59,6 +59,9 @@ public class BrainContestDaoImpl extends
 	 *      org.openuss.braincontest.BrainContest)
 	 */
 	public void brainContestInfoToEntity(BrainContestInfo sourceVO,	BrainContest targetEntity,	boolean copyIfNull) {
+		if (sourceVO.getTries()==null){
+			sourceVO.setTries(targetEntity.getTries());
+		}
 		super.brainContestInfoToEntity(sourceVO, targetEntity, copyIfNull);
         if (sourceVO.getTries() != null)
         {

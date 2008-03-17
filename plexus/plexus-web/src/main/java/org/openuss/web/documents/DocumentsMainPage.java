@@ -43,10 +43,14 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		entrySelection.setEntries(loadFolderEntries());
 		entrySelection.processSwitch();
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
@@ -86,6 +90,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
@@ -117,6 +122,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
@@ -147,13 +153,13 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public String newFolder() {
 		logger.debug("create new folder");
-		setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER, new FolderInfo());
+		setBean(Constants.DOCUMENTS_SELECTED_FOLDER, new FolderInfo());
 		return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 	}
 
 	public String newFile() {
 		logger.debug("create new file");
-		setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, new FileInfo());
+		setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 	}
@@ -163,11 +169,11 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		FolderEntryInfo entry = data.getRowData();
 		if (entry.isFolder()) {
 			FolderInfo selectedFolder = documentService.getFolder(entry);
-			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
+			setBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
 			return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 		} else {
 			FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
-			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
+			setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
 			return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 		}
 	}

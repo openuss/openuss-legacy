@@ -3,7 +3,6 @@ package org.openuss.web.mail;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -17,6 +16,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name = "views$secured$newsletter$newslettersubscribers", scope = Scope.REQUEST)
@@ -25,15 +25,13 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 	
 	private SubscriberDataProvider data = new SubscriberDataProvider();
 	
-	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
-	
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
-		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}	
 	
@@ -65,7 +63,7 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 		SubscriberInfo subscriberInfo = data.getRowData();
 		UserInfo user = new UserInfo();
 		user.setId(subscriberInfo.getUserId());
-		setSessionBean("showuser", user);
+		setBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
@@ -87,15 +85,4 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 	public void setData(SubscriberDataProvider data) {
 		this.data = data;
 	}
-
-	public UserInfo getUser() {
-		return user;
-	}
-
-	public void setUser(UserInfo user) {
-		this.user = user;
-	}
-
-	
-	
 }

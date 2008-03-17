@@ -27,11 +27,11 @@
 				    	<h:outputText id="newsText" value="#{news_selected_newsitem.text}" escape="false"/>
 				    </div>
 
-					<f:subview rendered="#{!(empty sessionScope.news_selected_newsitem.attachments)}">
+					<f:subview rendered="#{!(empty news_selected_newsitem.attachments)}">
 						<div class="content_font_normal">
 							<t:dataList 
 								var="attachment" 
-								value="#{sessionScope.news_selected_newsitem.attachments}" >
+								value="#{news_selected_newsitem.attachments}" >
 								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
 									<f:param value="#{attachment.id}" name="fileid" />
 									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />

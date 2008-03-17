@@ -22,6 +22,8 @@ import org.openuss.web.Constants;
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$desktop$desktop", scope = Scope.REQUEST)
 @View
@@ -35,7 +37,6 @@ public class DesktopPage extends BasePage {
 	
 	@Prerender
 	public void prerender() throws Exception {
-		super.prerender();
 		logger.debug("prerender desktop");
 		refreshDesktop();
 		breadcrumbs.clear();
@@ -51,7 +52,7 @@ public class DesktopPage extends BasePage {
 					logger.debug("refreshing desktop data");
 					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
 				}
-				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
+				setBean(Constants.DESKTOP_INFO, desktopInfo);
 			} catch (DesktopException e) {
 				logger.error(e);
 				addError(i18n(e.getMessage()));
@@ -67,7 +68,7 @@ public class DesktopPage extends BasePage {
 	public String showInstitute() {
 		logger.debug("starting method showInstitute");
 		InstituteInfo instituteInfo = institutesProvider.getRowData();
-		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		setBean(Constants.INSTITUTE_INFO, instituteInfo);
 		return Constants.INSTITUTE;
 	}
 
@@ -93,7 +94,7 @@ public class DesktopPage extends BasePage {
 	public String showCourse() {
 		logger.debug("starting method showCourse");
 		CourseInfo courseInfo = coursesProvider.getRowData();
-		setSessionBean(Constants.COURSE_INFO, courseInfo);
+		setBean(Constants.COURSE_INFO, courseInfo);
 		return Constants.COURSE_PAGE;
 	}
 
@@ -149,6 +150,7 @@ public class DesktopPage extends BasePage {
 
 		private DataPage<CourseInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (desktopInfo != null) {
@@ -166,6 +168,7 @@ public class DesktopPage extends BasePage {
 
 		private DataPage<CourseTypeInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(desktopInfo.getCourseTypeInfos());
@@ -180,6 +183,7 @@ public class DesktopPage extends BasePage {
 
 		private DataPage<InstituteInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(desktopInfo.getInstituteInfos());

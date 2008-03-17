@@ -31,6 +31,7 @@ public class NewsletterFeed extends AbstractFeed {
 
 	public static final Logger logger = Logger.getLogger(NewsletterFeed.class);
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		MailInfo mailInfo;
