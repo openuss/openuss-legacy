@@ -33,8 +33,7 @@ public class ViewStackPhaseListener implements PhaseListener {
 		if (event.getFacesContext().getViewRoot() != null) {
 			viewId = event.getFacesContext().getViewRoot().getViewId();
 			viewId = event.getFacesContext().getApplication().getViewHandler().getActionURL(event.getFacesContext(), viewId);
-			//FIXME should not be dependent on string
-			viewId = viewId.substring("/plexus-web".length());
+			viewId = viewId.substring(event.getFacesContext().getExternalContext().getRequestContextPath().length());
 		}
 		
 		if (StringUtils.isNotBlank(viewId)) {
