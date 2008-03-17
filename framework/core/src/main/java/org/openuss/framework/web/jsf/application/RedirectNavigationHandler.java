@@ -52,8 +52,7 @@ public class RedirectNavigationHandler extends NavigationHandler {
 		String currentViewId = facesContext.getViewRoot().getViewId();
 		ViewHandler viewHandler = facesContext.getApplication().getViewHandler();		
 		String currentActionViewId = viewHandler.getActionURL(facesContext, currentViewId);
-		//FIXME should not be dependent on string 
-		currentActionViewId = currentActionViewId.substring("/plexus-web".length());
+		currentActionViewId = currentActionViewId.substring(facesContext.getExternalContext().getRequestContextPath().length());
 		
 		if (isBackward(outcome) && !viewStack.isEmpty()) {
 			String viewId = viewStack.pop();
@@ -119,6 +118,7 @@ public class RedirectNavigationHandler extends NavigationHandler {
 	 * @param facesContext
 	 * @param viewId
 	 */
+	@SuppressWarnings("unchecked")
 	private void redirectToViewId(FacesContext facesContext, final String viewId) {
 		logger.debug("Perform redirect to view " + viewId);
 		final ExternalContext externalContext = facesContext.getExternalContext();
@@ -134,6 +134,7 @@ public class RedirectNavigationHandler extends NavigationHandler {
 	 * @return A Stack representing the views that have been visited during the
 	 *         user sessions.
 	 */
+	@SuppressWarnings({ "unchecked" })
 	private Stack<String> getViewStack(FacesContext facesContext) {
 		Stack<String> viewStack = (Stack<String>) facesContext.getExternalContext().getSessionMap().get(VIEW_STACK_KEY);
 		if (viewStack == null) {
