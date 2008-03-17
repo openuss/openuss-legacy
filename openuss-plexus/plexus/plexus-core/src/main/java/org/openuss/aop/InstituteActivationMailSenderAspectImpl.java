@@ -50,7 +50,7 @@ public class InstituteActivationMailSenderAspectImpl {
 		Validate.notNull(user, "InstituteActivationMailSenderAspectImpl - no user found with the given userId "+userId);
 		
 		// Loading institute
-		Institute institute = instituteDao.findByShortcut(instituteInfo.getShortcut());
+		Institute institute = instituteDao.load(instituteInfo.getId());
 		Validate.notNull(institute, "InstituteActivationMailSenderAspectImpl - no institute found with the given shortcut "+instituteInfo.getShortcut());
 		
 		if (institute.getEmail() == null) {
