@@ -138,15 +138,11 @@ public class WebDAVPathImplTest extends TestCase {
 	public void testNext() throws WebDAVException {
 		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav", "/webdav/collection/name.txt");
 		WebDAVPath nextPath = davPath.next();
-		WebDAVPathImpl correctNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
-		assertTrue(correctNextPath.equals(nextPath));
+		WebDAVPathImpl correctNextPath = WebDAVPathImpl.parse("/webdav/collection", "/webdav/collection/name.txt");
+		assertEquals(correctNextPath.getCompleteString(), nextPath.getCompleteString());
+		assertEquals(correctNextPath.getToResolve(), nextPath.getToResolve());
 		
-		WebDAVPath nextNextPath = nextPath.next();
-		WebDAVPathImpl correctNextNextPath = WebDAVPathImpl.parse("/webdav/collection/", "/webdav/collection/name.txt");
-		assertTrue(correctNextNextPath.equals(nextNextPath));
-		
-		WebDAVPath nextNextNextPath = nextNextPath.next();
-		assertNull(nextNextNextPath);
+		assert(nextPath.next() == nextPath);
 	}
 
 	public void testGetCompleteString() {
