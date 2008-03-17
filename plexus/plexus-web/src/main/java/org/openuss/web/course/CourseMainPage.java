@@ -99,6 +99,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String shortcutCourse() {
 		//courseInfo = courseData.getRowData();
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
@@ -111,6 +114,9 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public String removeCourseShortcut() {
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());

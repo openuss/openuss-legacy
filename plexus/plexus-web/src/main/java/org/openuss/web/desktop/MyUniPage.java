@@ -16,8 +16,6 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.Desktop;
-import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.MyUniCourseInfo;
 import org.openuss.desktop.MyUniDepartmentInfo;
@@ -28,7 +26,6 @@ import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.web.BasePage;
-import org.openuss.web.Constants;
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -53,7 +50,6 @@ public class MyUniPage extends BasePage {
 	private UIFlexList institutesList;
 	private UIFlexList coursesList;
 	private UITabs tabs;
-	private Desktop desktop;
 
 	private boolean prerenderCalled = false;
 	private boolean tabDataLoaded = false;
@@ -87,30 +83,6 @@ public class MyUniPage extends BasePage {
 		// Load data into the list components
 		loadValuesForComponents();
 		breadcrumbs.loadMyUniCrumbs();
-	}
-
-	private void refreshDesktop() {
-		if (user != null) {
-			try {
-				if (desktopInfo == null) {
-					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktopInfo = desktopService2.findDesktopByUser(user.getId());
-
-				} else {
-					logger.debug("refreshing desktop data");
-					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
-				}
-				setBean(Constants.DESKTOP_INFO, desktopInfo);
-
-				assert desktopDao != null;
-				desktop = desktopDao.load(desktopInfo.getId());
-				assert desktop != null;
-
-			} catch (DesktopException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
-		}
 	}
 
 	/*

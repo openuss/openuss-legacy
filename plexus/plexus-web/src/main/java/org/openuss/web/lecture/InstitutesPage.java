@@ -74,6 +74,9 @@ public class InstitutesPage extends BasePage {
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		// desktopService.linkInstitute(desktop, currentInstitute);
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
 
 		addMessage(i18n("message_institute_shortcut_created"));
@@ -94,6 +97,9 @@ public class InstitutesPage extends BasePage {
 	public String removeShortcut() {
 		try {
 			InstituteInfo currentInstitute = currentInstitute();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());

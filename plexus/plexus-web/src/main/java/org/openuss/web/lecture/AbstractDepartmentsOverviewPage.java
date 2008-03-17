@@ -127,6 +127,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String shortcutDepartment() throws DesktopException {
 		logger.debug("Starting method shortcutDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
 				.getId());
 
@@ -149,6 +152,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String removeShortcut() {
 		try {
 			DepartmentInfo currentDepartment = currentDepartment();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkDepartment(desktopInfo.getId(),
 					currentDepartment.getId());
 		} catch (Exception e) {

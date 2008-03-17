@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
@@ -24,8 +25,7 @@ import org.openuss.web.Constants;
  * 
  * @author Kai Stettner
  * @author Sebastian Roekens
- * @deprecated Needed? Page views/public/institute/institutesoverview not
- *             existing
+ * 
  */
 @Bean(name = "views$public$institute$institutesoverview", scope = Scope.REQUEST)
 @View
@@ -45,7 +45,12 @@ public class InstitutesOverviewPage extends BasePage {
 
 	@Property(value = "#{"+Constants.DEPARTMENT_INFO+"}")
 	private DepartmentInfo departmentInfo;
-
+	
+	@Preprocess
+	public void preprocess() throws Exception {
+		super.preprocess();
+	}
+	
 	@Prerender
 	public void prerender() throws Exception {
 		if (departmentInfo!=null && departmentInfo.getId()!=null){
@@ -74,6 +79,9 @@ public class InstitutesOverviewPage extends BasePage {
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		// desktopService.linkInstitute(desktop, currentInstitute);
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
 
 		addMessage(i18n("message_institute_shortcut_created"));
@@ -94,6 +102,9 @@ public class InstitutesOverviewPage extends BasePage {
 	public String removeShortcut() {
 		try {
 			InstituteInfo currentInstitute = currentInstitute();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());

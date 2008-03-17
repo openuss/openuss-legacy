@@ -155,6 +155,9 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_department"));
 		} try{
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());}
 			catch(Exception e){
