@@ -1,0 +1,26 @@
+<project name="openuss :: framework :: webdav :: build" default="install" basedir=".">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<!-- 	In order to get this target under eclipse to work you need to define the variable
+			m2_repo which points to your maven2 repository -->
+	<target name="compile">
+		<exec executable="${maven.executable}">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="${maven.executable}">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="${maven.executable}" failifexecutionfails="true" failonerror="true">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="${maven.executable}">
+			<arg line="eclipse:eclipse"/>
+		</exec>
+	</target>	
+</project>

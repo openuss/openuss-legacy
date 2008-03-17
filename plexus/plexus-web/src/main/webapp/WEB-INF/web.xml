@@ -229,6 +229,13 @@
 	
 	<filter-mapping>
 		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
 		<url-pattern>/files/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
@@ -293,6 +300,13 @@
 	<filter-mapping>
 		<filter-name>Acegi Security Chain Filter</filter-name>
 		<url-pattern>/rss/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
@@ -475,6 +489,50 @@
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	
+	<servlet>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.WebDAVServlet</servlet-class>
+		<init-param>
+			<param-name>resource-path-prefix</param-name>
+			<param-value>/webdav</param-value>
+		</init-param>
+		<init-param>
+			<!-- Comment this param out to allow unlimited uploads -->
+			<param-name>max-file-size</param-name>
+			<param-value>52428800</param-value><!-- 50 MiB -->
+		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>read-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow recursive requests -->
+			<param-value>-2</param-value>
+		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>write-limit</param-name>
+			<!-- -1: No limit -->
+			<param-value>100</param-value>
+		</init-param>
+		<!-- Limit for the number of resources that can be locked in one request -->
+		<init-param>
+			<param-name>lock-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow locks on collections -->
+			<param-value>100</param-value>
+		</init-param>
+		<!-- Whether to replace common umlauts with surrogate character sequences -->
+		<init-param>
+			<param-name>evade-umlauts</param-name>
+			<!-- true: Replace umlauts, false: Do not modify strings -->
+			<param-value>true</param-value>
+		</init-param>
+		<!-- Uncomment the following to disable WebDAV -->
+		<!-- <init-param>
+			<param-name>killbit</param-name>
+			<param-value>true</param-value>
+		</init-param>-->
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+
 <!--
 	<servlet>
 	    <servlet-name>Jenia internal servlet</servlet-name>
@@ -536,6 +594,11 @@
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<url-pattern>/webdav/*</url-pattern>
 	</servlet-mapping>
 
 <!--
