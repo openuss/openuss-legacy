@@ -30,6 +30,7 @@ public class CourseFeed extends AbstractFeed {
 
 	public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		List<SyndEntry> newsEntries = getNewsService().getNewsItems(course);

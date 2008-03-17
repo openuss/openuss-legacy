@@ -17,6 +17,7 @@ import org.openuss.web.course.AbstractCoursePage;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name = "views$secured$newsletter$showmail", scope = Scope.REQUEST)
@@ -36,40 +37,33 @@ public class ShowMailPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		
-		if (mail==null){
+		if (mail==null||mail.getId()==null ){
 			addError(i18n("newsletter_mailaccess_impossible"));
 			redirect(Constants.NEWSLETTER_MAIN);
 			return;
 		}			
-		if (mail.getId() == null) {
+		MailInfo mi = new MailInfo(); 
+		mi.setId(mail.getId());
+		mail = getCourseNewsletterService().getMail(mi);
+		if (mail==null){
 			addError(i18n("newsletter_mailaccess_impossible"));
 			redirect(Constants.NEWSLETTER_MAIN);
 			return;
 		}
-		if (mail.getId()!=null){
-			MailInfo mi = new MailInfo(); 
-			mi.setId(mail.getId());
-			mail = getCourseNewsletterService().getMail(mi);
-			if (mail==null){
-				addError(i18n("newsletter_mailaccess_impossible"));
-				redirect(Constants.NEWSLETTER_MAIN);
-				return;
-			}
-			
-			if (mail.getStatus()==MailingStatus.DELETED){
-				addError(i18n("newsletter_mailaccess_impossible"));
-				redirect(Constants.NEWSLETTER_MAIN);
-				return;
-			}
-			setSessionBean(Constants.NEWSLETTER_MAIL, mail);
-			
-			BreadCrumb newCrumb = new BreadCrumb();
-			newCrumb.setName(mail.getSubject());
-			
-			breadcrumbs.loadCourseCrumbs(courseInfo);
-			breadcrumbs.addCrumb(newCrumb);
-			
+		
+		if (mail.getStatus()==MailingStatus.DELETED){
+			addError(i18n("newsletter_mailaccess_impossible"));
+			redirect(Constants.NEWSLETTER_MAIN);
+			return;
 		}
+		setBean(Constants.NEWSLETTER_MAIL, mail);
+		
+		BreadCrumb newCrumb = new BreadCrumb();
+		newCrumb.setName(mail.getSubject());
+		
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		breadcrumbs.addCrumb(newCrumb);
+			
 	}
 
 

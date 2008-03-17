@@ -38,11 +38,11 @@
 					<h:outputText value="#{braincontest_contest.description}" escape="false"/>
 				</div>
 				
-				<f:subview rendered="#{!(empty sessionScope.braincontest_contest.attachments)}">
+				<f:subview rendered="#{!(empty braincontest_contest.attachments)}">
 					<div class="content_font_normal">
 						<t:dataList 
 							var="attachment" 
-							value="#{sessionScope.braincontest_contest.attachments}" >
+							value="#{braincontest_contest.attachments}" >
 							<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
 								<f:param value="#{attachment.id}" name="fileid" />
 								<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />

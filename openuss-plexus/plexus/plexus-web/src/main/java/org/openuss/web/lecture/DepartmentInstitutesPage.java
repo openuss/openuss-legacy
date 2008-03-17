@@ -11,6 +11,8 @@ import org.openuss.lecture.LectureException;
 /**
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$departmentinstitutes", scope = Scope.REQUEST)
 @View
@@ -28,6 +30,9 @@ public class DepartmentInstitutesPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 	

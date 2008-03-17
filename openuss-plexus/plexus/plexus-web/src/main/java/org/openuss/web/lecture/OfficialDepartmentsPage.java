@@ -18,6 +18,7 @@ import org.openuss.lecture.DepartmentType;
 @View
 public class OfficialDepartmentsPage extends AbstractDepartmentsOverviewPage{
 	
+	@SuppressWarnings("unchecked")
 	public List<DepartmentInfo> fetchDepartmentList(int startRow, int pageSize) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());

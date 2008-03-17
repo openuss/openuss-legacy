@@ -22,6 +22,8 @@ import org.openuss.web.Constants;
  * @author Kai Stettner
  * @author Tianyu Wang
  * @author Weijun Chen
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$universityperiods", scope = Scope.REQUEST)
 @View
@@ -31,7 +33,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 
 	private PeriodDataModel periodData = new PeriodDataModel();
 	
-	@Property(value = "#{sessionScope.periodInfo}")
+	@Property(value = "#{periodInfo}")
 	private PeriodInfo periodInfo;
 	
 	private List<PeriodInfo> periods;
@@ -41,11 +43,13 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (universityInfo != null) {
 			// refresh period list
 			periods = universityService.findPeriodsByUniversity(universityInfo.getId());
 			
-			periodInfo = (PeriodInfo) getSessionBean(Constants.PERIOD_INFO);
 			if (periodInfo != null) {
 				if (periodInfo.getId() != null && periods.contains(periodInfo)) {
 					periodInfo = universityService.findPeriod(periodInfo.getId());
@@ -55,7 +59,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 			}
 		}
 		
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		addPageCrumb();
 	}
 	
@@ -87,7 +91,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 */
 	public String addPeriod() {
 		PeriodInfo periodInfo = new PeriodInfo();
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_ADD_PAGE;
 	}
 	
@@ -102,7 +106,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		logger.debug("edit period");
 		PeriodInfo periodInfo = periodData.getRowData();
 		logger.debug("set sessionBean");
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_EDIT_PAGE;
 	}
 
@@ -114,7 +118,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 	 */
 	public String confirmRemovePeriod() {
 		PeriodInfo periodInfo = periodData.getRowData();
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		return Constants.UNIVERSITY_PERIOD_REMOVE_PAGE;
 	}
 	
@@ -145,6 +149,7 @@ public class UniversityPeriodsPage extends AbstractUniversityPage {
 		
 		private DataPage<PeriodInfo> page;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<PeriodInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

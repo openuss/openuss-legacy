@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -12,8 +11,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.newsletter.MailDetail;
 import org.openuss.newsletter.MailInfo;
-import org.openuss.newsletter.MailingStatus;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -28,15 +25,14 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	
 	private NewsletterDataProvider data = new NewsletterDataProvider();
 	
-	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
 	
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
-		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
+		if (isRedirected()){
+			return;
+		}
 	}	
 	
 	private class NewsletterDataProvider extends AbstractPagedTable<MailInfo> {
@@ -57,8 +53,7 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 
 	public String newMail(){
 		MailDetail md = new MailDetail();
-		md.setSendDate(new Date(System.currentTimeMillis()));
-		setSessionBean(Constants.NEWSLETTER_MAIL, md);
+		setBean(Constants.NEWSLETTER_MAIL, md);
 		return Constants.NEWSLETTER_NEWMAIL;
 	}
 	
@@ -66,15 +61,14 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		MailInfo mi = data.getRowData();		
 		getCourseNewsletterService().deleteMail(courseInfo, getCourseNewsletterService().getMail(mi));
 		this.mail = new MailDetail();
+		setBean(Constants.NEWSLETTER_MAIL, mail);
 		return Constants.SUCCESS;
 	}
 	
 	public String changeMail(){	
 		MailInfo mi = data.getRowData();
 		MailDetail md = getCourseNewsletterService().getMail(mi);
-		md.setStatus(MailingStatus.DRAFT);
-		getCourseNewsletterService().updateMail(courseInfo, md);
-		setSessionBean(Constants.NEWSLETTER_MAIL, md);
+		setBean(Constants.NEWSLETTER_MAIL, md);
 		return Constants.NEWSLETTER_NEWMAIL;
 	}
 	
@@ -88,19 +82,14 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 	}
 	
 	public String sendMail(){
-		MailInfo mi = data.getRowData();
-		MailDetail md = getCourseNewsletterService().getMail(mi);
-		this.mail = md;
-		setSessionBean(Constants.NEWSLETTER_MAIL, md);
-		getCourseNewsletterService().sendMail(courseInfo, getMail());
+		getCourseNewsletterService().sendMail(courseInfo, getCourseNewsletterService().getMail(data.getRowData()));
 		return Constants.SUCCESS;
 	}
 	
 	public String showMail(){
 		MailInfo mi = data.getRowData();
-		MailDetail md = getCourseNewsletterService().getMail(mi);		
-		this.mail = md;		
-		setSessionBean(Constants.NEWSLETTER_MAIL, md);
+		mail = getCourseNewsletterService().getMail(mi);		
+		setBean(Constants.NEWSLETTER_MAIL, mail);
 		return Constants.NEWSLETTER_SHOWMAIL;
 	}
 	
@@ -123,11 +112,6 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		return Constants.NEWSLETTER_SUBSCRIBERS;
 	}
 	
-	public String exportSubscribers(){
-		//TODO implement me
-		return Constants.SUCCESS;
-	}
-	
 	public NewsletterDataProvider getData() {
 		return data;
 	}
@@ -136,11 +120,4 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		this.data = data;
 	}
 
-	public UserInfo getUser() {
-		return user;
-	}
-
-	public void setUser(UserInfo user) {
-		this.user = user;
-	}
 }

@@ -64,6 +64,7 @@ public class DefaultExceptionHandler extends BaseBean implements ExceptionHandle
 	 * 
 	 * @param exception
 	 */
+	@SuppressWarnings("unchecked")
 	private void handleSystemException(Exception exception) {
 		logger.error("SystemException", exception);
 		FacesContext context = FacesContext.getCurrentInstance();

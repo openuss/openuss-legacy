@@ -43,6 +43,13 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(courseInfo.getCourseTypeId(), "GetCourseTypeId cannot be null.");
 		Validate.notNull(courseInfo.getPeriodId(), "PeriodId cannot be null.");
 
+		//default configuration
+		courseInfo.setNewsletter(true);
+		courseInfo.setDocuments(true);
+		courseInfo.setDiscussion(true);
+
+		courseInfo.setAccessType(AccessType.CLOSED);
+		
 		// Default is enabled
 		courseInfo.setEnabled(true);
 
@@ -88,6 +95,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#create(org.openuss.lecture.CourseInfo)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void handleRemoveCourse(Long courseId) throws Exception {
 		Validate.notNull(courseId, "CourseId cannot be null.");
 		Course course = (Course) this.getCourseDao().load(courseId);
@@ -126,10 +134,16 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(courseInfo, "Parameter course must not be null.");
 		Validate.notNull(courseInfo.getId(), "Parameter course must contain a valid course id.");
 
+		//check changes of access type
+		CourseInfo courseOld = findCourse(courseInfo.getId());
+		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
+			removeAspirants(courseOld);
+		}
+
+		
 		// Check changes of CourseType
 		CourseType courseType = this.getCourseTypeDao().load(courseInfo.getCourseTypeId());
-		Course courseOld = getCourseDao().load(courseInfo.getId());
-		if (!courseOld.getCourseType().equals(courseType)) {
+		if (!courseOld.getCourseTypeId().equals(courseType.getId())) {
 			throw new CourseServiceException("The CourseType cannot be changed.");
 		}
 
@@ -337,6 +351,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAspirants(org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings("unchecked")
 	protected List<CourseMemberInfo> handleGetAspirants(final Course course) {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASPIRANT);
@@ -526,6 +541,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	/**
 	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings("unchecked")
 	private List<CourseMemberInfo> getAssistants(final Course course) {
 		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
 				CourseMemberType.ASSISTANT);

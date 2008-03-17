@@ -70,12 +70,15 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getContest(org.openuss.braincontest.BrainContestInfo)
 	 */
+	@SuppressWarnings("unchecked")
 	protected BrainContestInfo handleGetContest(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest.getId(), "Parameter contest must provide an identifier.");
 		BrainContestInfo bci = (BrainContestInfo) getBrainContestDao().load(BrainContestDao.TRANSFORM_BRAINCONTESTINFO,
 				contest.getId());
-		List<FileInfo> attachments = getAttachments(bci);
-		bci.setAttachments(attachments);
+		if (bci!=null) {
+			List<FileInfo> attachments = getAttachments(bci);
+			bci.setAttachments(attachments);
+		}
 		return bci;
 	}
 
@@ -166,6 +169,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	 *      org.openuss.security.User,
 	 *      org.openuss.braincontest.BrainContestInfo, boolean)
 	 */
+	@SuppressWarnings("unchecked")
 	protected boolean handleAnswer(String answer, UserInfo user, BrainContestInfo contest, boolean topList) throws BrainContestApplicationException {
 		Validate.notNull(answer, "Answer must not be null");
 		Validate.notNull(user, "User must not be null");
@@ -198,6 +202,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getAnswers(org.openuss.braincontest.BrainContestInfo)
 	 */
+	@SuppressWarnings("unchecked")
 	protected List<AnswerInfo> handleGetAnswers(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest, "Contest must not be null");
 

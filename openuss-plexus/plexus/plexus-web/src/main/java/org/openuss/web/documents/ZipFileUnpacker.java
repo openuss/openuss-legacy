@@ -37,6 +37,7 @@ public class ZipFileUnpacker {
 		this.files = new ArrayList<File>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<FileInfo> extractZipFile() throws IOException{
 		logger.debug("start extracting zip file "+file.getAbsolutePath()+" size "+file.length());
 		List<FileInfo> fileInfos = new ArrayList<FileInfo>();

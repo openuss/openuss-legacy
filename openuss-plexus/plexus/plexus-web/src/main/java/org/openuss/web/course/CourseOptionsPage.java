@@ -8,11 +8,11 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
@@ -22,6 +22,7 @@ import org.openuss.web.Constants;
  * Course Edit Page Controller
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = "views$secured$course$courseoptions", scope = Scope.REQUEST)
@@ -29,28 +30,29 @@ import org.openuss.web.Constants;
 public class CourseOptionsPage extends AbstractCoursePage {
 
 	private static final Logger logger = Logger.getLogger(CourseOptionsPage.class);
+	
+	@Property(value = "#{"+Constants.COURSE_OPTIONS_INFO+"}")
+	private CourseInfo courseOptionsInfo;
 
 	private static final long serialVersionUID = 8821048605517398410L;
 
 	@Prerender
 	@Override
 	public void prerender() throws Exception {
-		if (courseInfo == null) {
-			courseInfo = (CourseInfo) getSessionBean(Constants.COURSE);
+		super.prerender();
+		if (isRedirected()){
+			return;
 		}
-		if (courseInfo == null) {
-			addMessage(i18n("message_error_course_page"));
-			redirect(Constants.OUTCOME_BACKWARD);
-		} else {
-			if (!isPostBack()) {
-				logger.debug("---------- is not postback ---------- refreshing course");
-				super.prerender();
-			} else {
-				breadcrumbs.loadCourseCrumbs(courseInfo);
-			}
-		}
-		setSessionBean(Constants.COURSE, courseInfo);
+		setCourseOptionsBean();
+		breadcrumbs.loadCourseCrumbs(courseInfo);
 		addPageCrumb();
+	}
+
+	private void setCourseOptionsBean() {
+		if (courseOptionsInfo==null || courseOptionsInfo.getId()==null || !courseOptionsInfo.getId().equals(courseInfo.getId())){
+			courseOptionsInfo = courseService.findCourse(courseInfo.getId());
+			setSessionBean(Constants.COURSE_OPTIONS_INFO, courseOptionsInfo);
+		}
 	}
 
 	private void addPageCrumb() {
@@ -68,16 +70,7 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	 */
 	public String saveOptions() throws LectureException {
 		logger.trace("saving course options");
-		
-		// TODO should be done within the business layer
-		CourseInfo courseOld = getCourseService().findCourse(courseInfo.getId());
-		if (courseOld.getAccessType() == AccessType.APPLICATION && courseInfo.getAccessType() != AccessType.APPLICATION) {
-			getCourseService().removeAspirants(courseOld);
-		}
-		// XSS Filter Content
-		courseInfo.setDescription(new HtmlInputFilter().filter(courseInfo.getDescription()));
-		
-		courseService.updateCourse(courseInfo);
+		courseService.updateCourse(courseOptionsInfo);
 		addMessage(i18n("message_course_options_saved"));
 		return Constants.COURSE_OPTIONS_PAGE;
 	}
@@ -88,7 +81,8 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	 * @return outcome
 	 */
 	public String cancelOptions() {
-		// nothing to do - course will be automatically refreshed during prerender phase.
+		// remove courseOptionsInfo - not needed any more
+		setSessionBean(Constants.COURSE_OPTIONS_INFO, null);
 		return Constants.COURSE_PAGE;
 	}
 
@@ -99,7 +93,8 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	 */
 	public void processAccessTypeChanged(ValueChangeEvent event) {
 		Object accessType = event.getNewValue();
-		courseInfo.setAccessType((AccessType) accessType);
+		courseOptionsInfo.setAccessType((AccessType) accessType);
+		setSessionBean(Constants.COURSE_OPTIONS_INFO, courseOptionsInfo);
 	}
 
 	public List<SelectItem> getAccessTypes() {
@@ -110,6 +105,14 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		items.add(new SelectItem(AccessType.PASSWORD, i18n("course_options_access_password")));
 		items.add(new SelectItem(AccessType.APPLICATION, i18n("course_options_access_application")));
 		return items;
+	}
+
+	public CourseInfo getCourseOptionsInfo() {
+		return courseOptionsInfo;
+	}
+
+	public void setCourseOptionsInfo(CourseInfo courseOptionsInfo) {
+		this.courseOptionsInfo = courseOptionsInfo;
 	}
 
 }

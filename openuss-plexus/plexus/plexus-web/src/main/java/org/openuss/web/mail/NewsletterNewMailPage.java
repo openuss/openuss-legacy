@@ -1,36 +1,48 @@
 package org.openuss.web.mail;
 
+import java.util.Date;
+
 import org.apache.shale.tiger.managed.Bean;
-import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.newsletter.MailDetail;
-import org.openuss.security.UserInfo;
+import org.openuss.newsletter.MailInfo;
+import org.openuss.newsletter.MailingStatus;
 import org.openuss.web.Constants;
 
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name = "views$secured$newsletter$newmail", scope = Scope.REQUEST)
 @View
 public class NewsletterNewMailPage extends AbstractNewsletterPage{
 	
-	@Property(value= "#{"+Constants.USER+"}")
-	private UserInfo user;
-	
-	@Property(value = "#{"+Constants.NEWSLETTER_MAIL+"}")
-	private MailDetail mail;
-	
 	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
-		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
-		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
+		if (isRedirected()){
+			return;
+		}
+		if (mail!=null && mail.getId()!=null){
+			MailInfo mi = new MailInfo();
+			mi.setId(mail.getId());
+			mail =  getCourseNewsletterService().getMail(mi);
+			if (mail == null){
+				mail = new MailDetail();
+			}
+			mail.setStatus(MailingStatus.DRAFT);
+			setBean(Constants.NEWSLETTER_MAIL, mail);
+		}
+		if (mail!=null && mail.getId()==null){
+			mail.setSendDate(new Date(System.currentTimeMillis()));
+			setBean(Constants.NEWSLETTER_MAIL, mail);
+		}
 		addPageCrumb();
 	}	
 	
@@ -56,24 +68,4 @@ public class NewsletterNewMailPage extends AbstractNewsletterPage{
 		getCourseNewsletterService().sendPreview(courseInfo, mail);
 		return Constants.SUCCESS;	
 	}
-	
-
-	public UserInfo getUser() {
-		return user;
-	}
-
-	public void setUser(UserInfo user) {
-		this.user = user;
-	}
-
-
-	public MailDetail getMail() {
-		return mail;
-	}
-
-
-	public void setMail(MailDetail mail) {
-		this.mail = mail;
-	}
-
 }

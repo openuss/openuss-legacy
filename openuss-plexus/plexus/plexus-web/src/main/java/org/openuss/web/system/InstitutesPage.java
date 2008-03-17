@@ -31,6 +31,7 @@ import org.openuss.web.PageLinks;
  * @author Ingo Dueppe
  * @author Malte Stockmann
  * @author Kai Stettner
+ * @author Sebastian Roekens
  */
 @Bean(name="views$secured$system$institutes", scope=Scope.REQUEST)
 @View
@@ -50,11 +51,6 @@ public class InstitutesPage extends BasePage{
 
 	@Prerender
 	public void prerender() {
-		try {
-			super.prerender();
-		} catch (Exception e) {
-			
-		}
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("admin_command_institutes"));
 		newCrumb.setHint(i18n("admin_command_institutes"));
@@ -71,7 +67,7 @@ public class InstitutesPage extends BasePage{
 		logger.debug("Returning to method selectInstitute");
 		logger.debug(currentInstitute.getId());	
 	
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 		
 		return Constants.INSTITUTE_PAGE;
 		
@@ -100,7 +96,7 @@ public class InstitutesPage extends BasePage{
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstituteAndConfirmRemove");
 		logger.debug(currentInstitute.getId());	
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 		
 		return Constants.INSTITUTE_CONFIRM_REMOVE_PAGE;
 	}
@@ -148,6 +144,7 @@ public class InstitutesPage extends BasePage{
 		
 		private DataPage<InstituteInfo> page;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null){

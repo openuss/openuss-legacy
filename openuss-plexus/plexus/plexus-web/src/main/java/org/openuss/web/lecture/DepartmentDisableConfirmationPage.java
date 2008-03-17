@@ -3,7 +3,6 @@ package org.openuss.web.lecture;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -14,6 +13,8 @@ import org.openuss.web.Constants;
  * Backing bean for the departmentdisableconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$departmentdisableconfirmation", scope = Scope.REQUEST)
 @View
@@ -26,17 +27,15 @@ public class DepartmentDisableConfirmationPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 		
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("department_command_disable"));
 		newCrumb.setHint(i18n("department_command_disable"));
 		breadcrumbs.addCrumb(newCrumb);
-	}
-	
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
 	}
 	
 	/**

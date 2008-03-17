@@ -3,9 +3,9 @@ package org.openuss.framework.web.jsf.application;
 import java.util.Stack;
 
 import javax.faces.application.NavigationHandler;
+import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.events.PostRedirectGetPhaseListener;
@@ -15,6 +15,7 @@ import org.openuss.framework.web.jsf.util.ConversationUtil;
  * This NavigationHandler forces a redirect on each request if the viewId
  * change.
  * 
+ * @author Sebastian Roekens
  * @author idueppe
  */
 public class RedirectNavigationHandler extends NavigationHandler {
@@ -47,15 +48,19 @@ public class RedirectNavigationHandler extends NavigationHandler {
 
 		// check if the outcome is a viewId
 		Stack<String> viewStack = getViewStack(facesContext);
-
+		
 		String currentViewId = facesContext.getViewRoot().getViewId();
-
+		ViewHandler viewHandler = facesContext.getApplication().getViewHandler();		
+		String currentActionViewId = viewHandler.getActionURL(facesContext, currentViewId);
+		//FIXME should not be dependent on string 
+		currentActionViewId = currentActionViewId.substring("/plexus-web".length());
+		
 		if (isBackward(outcome) && !viewStack.isEmpty()) {
 			String viewId = viewStack.pop();
-			if (StringUtils.equals(viewId, currentViewId) && !viewStack.isEmpty()) {
+			if (StringUtils.equals(viewId, currentActionViewId) && !viewStack.isEmpty()) {
 				viewId = viewStack.pop();
 			}
-			if (!StringUtils.equals(currentViewId, viewId)) {
+			if (!StringUtils.equals(currentActionViewId, viewId)) {
 				redirectToViewId(facesContext, viewId);
 				return;
 			} else {

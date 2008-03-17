@@ -34,6 +34,9 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (file != null && file.getCreated() == null) {
 			logger.debug("reseting date");
 			file.setCreated(new Date());

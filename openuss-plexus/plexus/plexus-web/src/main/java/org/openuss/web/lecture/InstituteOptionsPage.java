@@ -34,6 +34,8 @@ import org.openuss.web.upload.UploadedDocument;
  * @author Kai Stettner
  * @author Malte Stockmann
  * @author Tianyu Wang
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$instituteoptions", scope = Scope.REQUEST)
 @View
@@ -52,6 +54,9 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 
@@ -146,7 +151,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			getDocumentService().removeFolderEntry(fileId);
 		}
 		instituteService.update(instituteInfo);
-		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
+		setBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 
 	/** ***************************** begin application ******************** */
@@ -159,6 +164,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		return universityId;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllUniversities() {
 		List<SelectItem> universityItems = new ArrayList<SelectItem>();
 		List<UniversityInfo> allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
@@ -181,6 +187,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 		return universityItems;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllDepartments() {
 		logger.debug("getting departments for university:" + universityId);
 
@@ -229,7 +236,7 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 	public String selectInstituteAndConfirmDisable() {
 		logger.debug("Starting method selectInstituteAndConfirmDisable");
 		logger.debug(instituteInfo.getId());
-		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		setBean(Constants.INSTITUTE_INFO, instituteInfo);
 
 		return Constants.INSTITUTE_CONFIRM_DISABLE_PAGE;
 	}

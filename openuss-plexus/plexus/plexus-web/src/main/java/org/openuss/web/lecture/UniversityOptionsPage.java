@@ -28,6 +28,8 @@ import org.openuss.web.upload.UploadedDocument;
  * @author Ingo Dueppe
  * @author Kai Stettner
  * @author Malte Stockmann
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$universityoptions", scope = Scope.REQUEST)
 @View
@@ -49,6 +51,9 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 	
@@ -122,7 +127,7 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 	 */
 	public String selectUniversityAndConfirmDisable() {
 		logger.debug("Starting method selectUniversityAndConfirmDisable");	
-		setSessionBean(Constants.UNIVERSITY_INFO, universityInfo);
+		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 		
 		return Constants.UNIVERSITY_CONFIRM_DISABLE_PAGE;
 	}

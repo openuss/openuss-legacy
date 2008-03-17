@@ -56,7 +56,9 @@ public class InstitutePage extends AbstractLecturePage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
-		
+		if (isRedirected()){
+			return;
+		}
 		if (instituteInfo != null) {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
@@ -104,7 +106,7 @@ public class InstitutePage extends AbstractLecturePage {
 			}
 		} 
 		
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}
 	
@@ -153,7 +155,7 @@ public class InstitutePage extends AbstractLecturePage {
 		CourseInfo course = currentCourse();
 		logger.debug("Returning to method selectCourse");
 		logger.debug(course.getId());	
-		setSessionBean(Constants.COURSE_INFO, course);
+		setBean(Constants.COURSE_INFO, course);
 		
 		return Constants.COURSE_PAGE;
 	}
@@ -273,7 +275,7 @@ public class InstitutePage extends AbstractLecturePage {
 			periodInfo.setName(i18n("all_active_periods"));
 		} else {
 			periodInfo = universityService.findPeriod(periodId);
-			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 
@@ -328,7 +330,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @throws LectureException 
 	 */
 	public String applyForMembership() throws LectureException {
-		if (user != null && institute != null) {
+		if (user != null && instituteInfo != null) {
 			try {
 				organisationService.addAspirant(instituteInfo.getId(), user.getId());
 				addMessage(i18n("institute_message_application_of_membership_send"));

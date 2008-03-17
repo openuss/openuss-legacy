@@ -41,11 +41,11 @@
 					</div>
 
 					<h:outputLabel value="#{msg.discussion_discussionentry_attachment}" for="attachmentUpload" styleClass="field_label" />
-					<f:subview rendered="#{!(empty sessionScope.discussion_discussionentry.attachments)}">
+					<f:subview rendered="#{!(empty post_attachments)}">
 						<div class="content_font_normal">
 							<t:dataList 
 								var="attachment" 
-								value="#{sessionScope.discussion_discussionentry.attachments}" 
+								value="#{post_attachments}" 
 								binding="${views$secured$discussion$discussionnew.attachmentList}">
 						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 									action="#{views$secured$discussion$discussionnew.removeAttachment}"

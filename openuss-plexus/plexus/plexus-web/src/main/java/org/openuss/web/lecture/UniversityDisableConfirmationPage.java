@@ -13,6 +13,8 @@ import org.openuss.web.Constants;
 /** Backing bean for the universitydisableconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$universitydisableconfirmation", scope = Scope.REQUEST)
 @View
@@ -25,6 +27,9 @@ public class UniversityDisableConfirmationPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadUniversityCrumbs(universityInfo);
 		
 		BreadCrumb newCrumb = new BreadCrumb();

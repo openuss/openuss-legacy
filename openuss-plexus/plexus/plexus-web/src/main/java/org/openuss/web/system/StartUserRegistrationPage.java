@@ -18,7 +18,6 @@ public class StartUserRegistrationPage extends BasePage{
 
 	@Prerender
 	public void prerender() throws Exception{
-		super.prerender();
 		user = new UserInfo();
 		user.setLocale(((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getLocale().toString());
 		setSessionBean(Constants.USER, user);

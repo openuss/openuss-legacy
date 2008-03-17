@@ -29,12 +29,12 @@
  		 
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
-	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.courseInfo.name} - #{sessionScope.courseInfo.periodName}" styleClass="form_box">
-					<o:input entity="courseInfo" property="shortcut" maxlength="30" required="true"/>
+	  			<o:block label="#{msg.course_options_headline} - #{courseOptionsInfo.name} - #{courseOptionsInfo.periodName}" styleClass="form_box">
+					<o:input entity="courseOptionsInfo" property="shortcut" maxlength="30" required="true"/>
 					<h:outputLabel for="accessType" value="#{msg.course_options_access_headline}" styleClass="field_label"/>
 					<h:selectOneMenu id="accessType" 
 						layout="pageDirection" 
-						value="#{sessionScope.courseInfo.accessType}" 
+						value="#{courseOptionsInfo.accessType}" 
 						valueChangeListener="#{views$secured$course$courseoptions.processAccessTypeChanged}" 
 						onchange="this.form.submit();"
 						immediate="true" 
@@ -43,24 +43,26 @@
 						<f:selectItems value="#{views$secured$course$courseoptions.accessTypes}"/>
 					</h:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
-					<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
-		 				<o:input entity="courseInfo" property="password" required="true"/>
+					<c:if test="#{courseOptionsInfo.accessType.value == 3}">
+		 				<o:input entity="courseOptionsInfo" property="password" required="true"/>
 	 				</c:if> 				
 					
 					<h:outputText value="#{msg.course_description}" styleClass="field_label"/>					
 					<div class="content_iframe">
-						<fck:editor value="#{sessionScope.courseInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+						<fck:editor value="#{courseOptionsInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300">
+							<f:converter converterId="xssFilter"/>
+						</fck:editor>	 				
 					</div>
 	 				
 					<h:outputText value="#{msg.course_options_features_headline}" styleClass="header_font_normal"/>
 					<div class="content_font_normal">
-						<o:input entity="courseInfo" property="documents"/>
-						<o:input entity="courseInfo" property="discussion"/>
-						<o:input entity="courseInfo" property="newsletter"/>
-						<!-- <o:input entity="courseInfo" property="wiki"/>-->
-						<o:input entity="courseInfo" property="chat"/>
-						<o:input entity="courseInfo" property="braincontest"/>
-						<o:input entity="courseInfo" property="freestylelearning"/>
+						<o:input entity="courseOptionsInfo" property="documents"/>
+						<o:input entity="courseOptionsInfo" property="discussion"/>
+						<o:input entity="courseOptionsInfo" property="newsletter"/>
+						<!-- <o:input entity="courseOptionsInfo" property="wiki"/>-->
+						<o:input entity="courseOptionsInfo" property="chat"/>
+						<o:input entity="courseOptionsInfo" property="braincontest"/>
+						<o:input entity="courseOptionsInfo" property="freestylelearning"/>
 					</div>
 				</o:block>
 				<o:block>

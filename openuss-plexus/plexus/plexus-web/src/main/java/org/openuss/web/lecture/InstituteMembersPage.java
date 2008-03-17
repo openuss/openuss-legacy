@@ -40,6 +40,8 @@ import org.openuss.web.Constants;
  * @author Ingo Dueppe
  * @author Kai Stettner
  * @author Tianyu Wang
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$auth$institutemembers", scope = Scope.REQUEST)
 @View
@@ -66,6 +68,9 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		// force refreshing data on Render-Response-Phase
 		instituteSecurity = null;
 		instituteGroups = null;

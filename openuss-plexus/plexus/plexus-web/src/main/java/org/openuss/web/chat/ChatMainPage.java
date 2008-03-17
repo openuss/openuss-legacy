@@ -36,6 +36,9 @@ public class ChatMainPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}		
 		addPageCrumb();
 	}
 	
@@ -53,6 +56,7 @@ public class ChatMainPage extends AbstractCoursePage {
 
 		private DataPage<ChatRoomInfo> page;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<ChatRoomInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

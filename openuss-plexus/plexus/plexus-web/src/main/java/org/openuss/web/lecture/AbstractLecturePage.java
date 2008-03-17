@@ -11,7 +11,6 @@ import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.CourseTypeService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
-import org.openuss.lecture.Institute;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
@@ -37,9 +36,6 @@ public abstract class AbstractLecturePage extends BasePage {
 
 	@Property(value = "#{securityService}")
 	protected SecurityService securityService;
-	
-	@Property(value = "#{institute}")
-	protected Institute institute;
 	
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
@@ -71,7 +67,7 @@ public abstract class AbstractLecturePage extends BasePage {
 	@Property (value="#{documentService}")
 	private DocumentService documentService;
 
-	@Property(value = "#{sessionScope.courseTypeInfo}")
+	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
 	
 	@Property(value = "#{courseInfo}")
@@ -94,10 +90,8 @@ public abstract class AbstractLecturePage extends BasePage {
 		logger.debug("preprocess - refreshing institute session object");
 		if (instituteInfo != null) {
 			instituteInfo = instituteService.findInstitute(instituteInfo.getId());
-		} else {
-			instituteInfo = (InstituteInfo) getSessionBean(Constants.INSTITUTE_INFO);
 		}
-		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		setBean(Constants.INSTITUTE_INFO, instituteInfo);
 	}
 
 	@Prerender
@@ -108,6 +102,7 @@ public abstract class AbstractLecturePage extends BasePage {
 		if (instituteInfo == null) {
 			addError(i18n("message_error_no_institute_selected"));
 			redirect(Constants.DESKTOP);
+			return;
 		} 
 	}
 
@@ -115,7 +110,7 @@ public abstract class AbstractLecturePage extends BasePage {
 		logger.debug("Starting method refresh institute");
 		if (instituteInfo != null) {
 			instituteInfo = instituteService.findInstitute(instituteInfo.getId());
-			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+			setBean(Constants.INSTITUTE_INFO, instituteInfo);
 		}
 	}
 
@@ -123,16 +118,7 @@ public abstract class AbstractLecturePage extends BasePage {
 		logger.debug("Starting method refresh department");
 		if (instituteInfo != null) {
 			 departmentInfo = departmentService.findDepartment(instituteInfo.getDepartmentId());
-			setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);}
-	}
-	
-
-	public Institute getInstitute() {
-		return institute;
-	}
-
-	public void setInstitute(Institute institute) {
-		this.institute = institute;
+			setBean(Constants.DEPARTMENT_INFO, departmentInfo);}
 	}
 	
 	public InstituteInfo getInstituteInfo() {

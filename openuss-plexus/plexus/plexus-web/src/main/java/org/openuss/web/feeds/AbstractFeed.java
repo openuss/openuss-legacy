@@ -61,7 +61,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 
 	private SyndEntry createSyndEntry(String title, String link, Date date, String blogContent, String cat, String author) {
-		final List categories = new ArrayList();
+		final List<SyndCategory> categories = new ArrayList<SyndCategory>();
 		SyndEntry entry;
 		SyndContent description;
 		SyndCategory category;

@@ -5,6 +5,7 @@ package org.openuss.web;
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
  */
 public class Constants {
 	// request parameters 
@@ -13,14 +14,18 @@ public class Constants {
 	// Session Entity Beans
 	public static final String UNIVERSITY = "university";
 	public static final String UNIVERSITY_INFO = "universityInfo";
+	public static final String UNIVERSITY_APPLICATION = "universityApplication";
 	public static final String DEPARTMENT = "department";
 	public static final String DEPARTMENT_INFO = "departmentInfo";
+	public static final String DEPARTMENT_APPLICATION = "departmentApplication";
 	public static final String INSTITUTE = "institute";
 	public static final String INSTITUTE_INFO = "instituteInfo";
 	public static final String COURSE_TYPE = "courseType";
 	public static final String COURSE_TYPE_INFO = "courseTypeInfo";
 	public static final String COURSE = "course";
 	public static final String COURSE_INFO = "courseInfo";
+	public static final String COURSE_OPTIONS_INFO = "courseOptionsInfo";
+	public static final String COURSE_MOVE_INFO = "courseMoveInfo";
 	public static final String DESKTOP_INFO = "desktopInfo";
 
 	public static final String PERIOD = "period";
@@ -164,7 +169,6 @@ public class Constants {
 	public static final String BRAINCONTEST_SOLVED = "braincontest_solved";
 	public static final String BRAINCONTEST_WRONG = "braincontest_wrong";
 	public static final String BRAINCONTENT_CONTEST = "braincontest_contest";
-	public static final String BRAINCONTEST_ATTACHMENTS = "braincontest_attachments";
 
 	// discussion navigation outcomes and combobox long constants
 	public static final String DISCUSSION_DISCUSSIONENTRY = "discussion_discussionentry";
@@ -178,6 +182,7 @@ public class Constants {
 	public static final String DISCUSSION_THREAD_NOT_FOUND = "discussion_thread_not_found";
 	public static final String DISCUSSION_POST_NOT_FOUND = "discussion_post_not_found";
 	public static final String DISCUSSION_POST_NOT_AUTHOR = "discussion_post_not_author";
+	public static final String DISCUSSION_QUOTE_POST = "discussion_quote";
 	
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";
@@ -221,12 +226,18 @@ public class Constants {
 	public static final String VISIT = "visit";
 	public static final String STEP3 = "step3";	
 	public static final String FILE_NOT_FOUND = "documents_file_not_found";
+	public static final String FOLDER_NOT_FOUND = "documents_folder_not_found";
 	
 	// strings used by string builder
 	public static final String SPACE = " ";
 	public static final String NEWLINE = "\r\n";
 	public static final String ARROW = " -> ";
-
+	
+	// Session keys for attachments
+ 	public static final String BRAINCONTEST_ATTACHMENTS = "contest_attachments";
+ 	public static final String COURSENEWS_ATTACHMENTS = "coursenews_attachments";
+ 	public static final String POST_ATTACHMENTS = "post_attachments";
+ 	public static final String INSTITUTENEWS_ATTACHMENTS = "institutenews_attachments";
 
 	
 }

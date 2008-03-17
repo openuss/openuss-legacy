@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
-import org.apache.shale.tiger.view.Prerender;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
@@ -19,6 +18,7 @@ import org.openuss.security.UserInfo;
  * 
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
  */
 public abstract class BasePage extends BaseBean {
 
@@ -45,7 +45,7 @@ public abstract class BasePage extends BaseBean {
 	 * @throws DesktopException
 	 */
 	@Preprocess
-	public void preprocess() throws Exception { 
+	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
 
 		if (desktopInfo == null) {
@@ -53,25 +53,17 @@ public abstract class BasePage extends BaseBean {
 				logger.debug("preprocess - getting desktop session object");
 				desktopInfo = desktopService2.findDesktopByUser(user.getId());
 				logger.debug(desktopInfo.getId());
-				setSessionBean(Constants.DESKTOP_INFO, desktopInfo);
-			}
-
-			if (desktopInfo != null) {
-				logger.error("could not find desktop for user " + user);
-				addError(i18n("message_error_no_desktop_found"));
-				redirect(Constants.HOME);
+				setBean(Constants.DESKTOP_INFO, desktopInfo);
+				if (desktopInfo == null) {
+					logger.error("could not find desktop for user " + user);
+					addError(i18n("message_error_no_desktop_found"));
+					redirect(Constants.HOME);
+					return;
+				}
 			}
 		}
 	}
 
-	@Prerender
-	public void prerender() throws Exception {
-		// FIXME Why are we doing this?
-		if ((user != null) && (user.getId() == null)) {
-			user = new UserInfo();
-			setSessionBean(Constants.USER, user);
-		}
-	}
 
 	/**
 	 * @return ResoureBundle

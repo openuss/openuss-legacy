@@ -41,7 +41,7 @@
 
 				<f:subview rendered="${!empty documents_selected_file.fileName}">
 					<div class="content_font_normal">
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_file.extension}.gif" />
+						<h:graphicImage	value="/images/filetypes/#{documents_selected_file.extension}.gif" />
 						&#160;<h:outputText value="#{documents_selected_file.fileName}"/>
 					</div>
 				</f:subview>

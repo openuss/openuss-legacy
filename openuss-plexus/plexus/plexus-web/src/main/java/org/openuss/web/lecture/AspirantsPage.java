@@ -24,6 +24,8 @@ import org.openuss.web.Constants;
  * Aspirant page to manage user application for membership 
  *  
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$auth$aspirants", scope = Scope.REQUEST)
 @View
@@ -43,6 +45,9 @@ public class AspirantsPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if(instituteInfo != null) {
 			if (!instituteInfo.isEnabled()) {
 				addMessage(i18n("institute_not_activated"));
@@ -112,6 +117,7 @@ public class AspirantsPage extends AbstractLecturePage {
 		
 		private DataPage<UserInfo> page; 
 		
+		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

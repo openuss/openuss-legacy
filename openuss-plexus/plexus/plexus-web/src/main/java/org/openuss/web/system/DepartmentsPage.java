@@ -17,6 +17,7 @@ import org.openuss.web.lecture.AbstractDepartmentsOverviewPage;
  * Backing Bean for the view secured/system/departments.xhtml
  * 
  * @author Malte Stockmann
+ * @author Sebastian Roekens
  *
  */
 @Bean(name = "views$secured$system$departments", scope = Scope.REQUEST)
@@ -26,7 +27,14 @@ public class DepartmentsPage extends AbstractDepartmentsOverviewPage{
 	
 	@Prerender
 	public void prerender() {
-		super.prerender();
+		try {
+			super.prerender();
+			if (isRedirected()){
+				return;
+			}
+		} catch (Exception e) {
+			
+		}
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("departmentList_header"));
 		newCrumb.setHint(i18n("departmentList_header"));
@@ -36,6 +44,7 @@ public class DepartmentsPage extends AbstractDepartmentsOverviewPage{
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<DepartmentInfo> fetchDepartmentList(int startRow, int pageSize) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("fetch institutes data page at " + startRow + ", "+ pageSize+" sorted by "+departments.getSortColumn());

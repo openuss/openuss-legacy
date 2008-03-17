@@ -163,7 +163,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		
 		MailDetail mailDetails = (MailDetail) getMailDao().load(MailDao.TRANSFORM_MAILDETAIL, mailInfo.getId());
 		
-		if (mailDetails.getMessageId() != null) {
+		if (mailDetails != null && mailDetails.getMessageId() != null) {
 			JobInfo jobInfo = getMessageService().getJobState(mailDetails.getMessageId());
 			if (jobInfo != null) {
 				mailDetails.setErrorCount(jobInfo.getError());
