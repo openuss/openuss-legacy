@@ -42,24 +42,6 @@ public class DesktopPage extends BasePage {
 		breadcrumbs.clear();
 	}
 	
-	private void refreshDesktop() {
-		if (user != null) {
-			try {
-				if (desktopInfo == null || desktopInfo.getId() == null) {
-					logger.error("No desktop found for user " + user.getUsername() + ". Create new one.");
-					desktopInfo = desktopService2.findDesktopByUser(user.getId());
-				} else {
-					logger.debug("refreshing desktop data");
-					desktopInfo = desktopService2.findDesktop(desktopInfo.getId());
-				}
-				setBean(Constants.DESKTOP_INFO, desktopInfo);
-			} catch (DesktopException e) {
-				logger.error(e);
-				addError(i18n(e.getMessage()));
-			}
-		}
-	}
-	
 	/**
 	 * Show selected institute
 	 * 
@@ -81,6 +63,9 @@ public class DesktopPage extends BasePage {
 		logger.debug("starting method remove institute");
 		InstituteInfo instituteInfo = institutesProvider.getRowData();
 		//desktopService.unlinkInstitute(desktop, institute);
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		addMessage(i18n("desktop_message_removed_institute_succeed", instituteInfo.getName()));
 		return Constants.DESKTOP;
@@ -108,6 +93,9 @@ public class DesktopPage extends BasePage {
 		CourseInfo courseInfo = coursesProvider.getRowData();
 		try {
 			//desktopService.unlinkCourse(desktop, course);
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
 			addMessage(i18n("desktop_mesage_removed_course_succeed", courseInfo.getShortcut()));
 		} catch (DesktopException e) {
@@ -153,6 +141,9 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			if (desktopInfo != null) {
 				List<CourseInfo> courses = new ArrayList<CourseInfo>(desktopInfo.getCourseInfos());
 				sort(courses);
@@ -171,6 +162,9 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(desktopInfo.getCourseTypeInfos());
 			sort(courseTypes);
 			page = new DataPage<CourseTypeInfo>(courseTypes.size(), 0, courseTypes);
@@ -186,6 +180,9 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(desktopInfo.getInstituteInfos());
 			sort(institutes);
 			page = new DataPage<InstituteInfo>(institutes.size(), 0, institutes);

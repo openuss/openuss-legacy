@@ -48,10 +48,19 @@ public abstract class BasePage extends BaseBean {
 	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
 
-		if (desktopInfo == null) {
-			if (user != null && user.getId() != null) {
-				logger.debug("preprocess - getting desktop session object");
-				desktopInfo = desktopService2.findDesktopByUser(user.getId());
+		refreshDesktop();
+	}
+
+
+	protected void refreshDesktop() {
+		if (desktopInfo == null && user != null && user.getId() != null) {
+				logger.debug("refrehsing desktop object");
+				try{
+					desktopInfo = desktopService2.findDesktopByUser(user.getId());
+				} catch (DesktopException e){
+					// should not occur
+					logger.error(e.getMessage());
+				}
 				logger.debug(desktopInfo.getId());
 				setBean(Constants.DESKTOP_INFO, desktopInfo);
 				if (desktopInfo == null) {
@@ -60,7 +69,6 @@ public abstract class BasePage extends BaseBean {
 					redirect(Constants.HOME);
 					return;
 				}
-			}
 		}
 	}
 

@@ -124,6 +124,9 @@ public class UniversitiesWelcomePage extends BasePage {
 	 */
 	public String shortcutUniversity() throws DesktopException {
 		logger.debug("Starting method shortcutUniversity");
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.linkUniversity(desktopInfo.getId(), currentUniversity().getId());
 
 		addMessage(i18n("message_university_shortcut_created"));

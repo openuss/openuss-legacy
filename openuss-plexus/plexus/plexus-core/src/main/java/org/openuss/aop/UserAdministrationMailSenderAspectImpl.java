@@ -223,7 +223,9 @@ public class UserAdministrationMailSenderAspectImpl {
 			if (group.getGroupType() == GroupType.ADMINISTRATOR){
 				for (Authority auth : group.getMembers()){
 					if (auth instanceof User){
-						recipients1.add((User)auth);
+						if (!recipients1.contains((User)auth)){
+							recipients1.add((User)auth);
+						}
 					}
 					
 				}

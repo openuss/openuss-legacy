@@ -60,7 +60,9 @@ public class InstituteDepartmentMailSenderAspectImpl {
 		// Determine Recipients (Members of the Department)
 		List<User> recipients1 = new ArrayList<User>();
 		for (User member : application.getDepartment().getMembership().getMembers()) {
-			recipients1.add(member);
+			if (!recipients1.contains(member)){
+				recipients1.add(member);
+			}
 		}
 		recipients1.remove(application.getApplyingUser());
 

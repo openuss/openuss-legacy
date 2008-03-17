@@ -168,6 +168,9 @@ public class InstitutePage extends AbstractLecturePage {
 		//courseInfo = courseData.getRowData();
 		try {
 			CourseInfo currentCourse = currentCourse();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
@@ -183,6 +186,9 @@ public class InstitutePage extends AbstractLecturePage {
 		try {
 			//courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
@@ -201,6 +207,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public String addShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_shortcut"), e.getMessage());
@@ -218,6 +227,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public String removeShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
