@@ -193,8 +193,9 @@
 		<param-value>false</param-value>
 	</context-param>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - 
 	   Debug Filter
+	  - - - - - - - - - - - - - - - - - - - - - - - -->
 	<filter>
 		<filter-name>EarlyWarningFilter</filter-name>
 		<filter-class>org.openuss.web.servlets.EarlyWarningFilter</filter-class>
@@ -204,7 +205,7 @@
 		<filter-name>EarlyWarningFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Session In View Filter
