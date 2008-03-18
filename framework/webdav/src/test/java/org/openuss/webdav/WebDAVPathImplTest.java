@@ -19,7 +19,7 @@ public class WebDAVPathImplTest extends TestCase {
 		}
 		
 		String prefix2 = "/webdav";
-		String clientInput2 = "/webdav/הצצה";
+		String clientInput2 = "/webdav/\u00e4\u00f6\u00f6\u00e4";
 		davPath = WebDAVPathImpl.parse(prefix2, clientInput2);
 		assertEquals("/webdav/", davPath.getResolved());
 		
@@ -118,9 +118,9 @@ public class WebDAVPathImplTest extends TestCase {
 		assertEquals(expected, clientString);
 		
 		WebDAVPath root = WebDAVPathImpl.getRoot("webdav");
-		WebDAVPath path2 = root.concat("הצü");
+		WebDAVPath path2 = root.concat("\u00e4\u00f6\u00fc");
 		path2 = path2.asResolved();
-		String notExpected = "webdav/הצü";
+		String notExpected = "webdav/\u00e4\u00f6\u00fc";
 		clientString = path2.toClientString();
 		assertNotSame(notExpected, clientString);
 	}
@@ -136,13 +136,30 @@ public class WebDAVPathImplTest extends TestCase {
 	}
 
 	public void testNext() throws WebDAVException {
-		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav", "/webdav/collection/name.txt");
+		String completeInput = "/webdav/collection/x/name.txt";
+		WebDAVPathImpl davPath  = WebDAVPathImpl.parse("/webdav", completeInput);
 		WebDAVPath nextPath = davPath.next();
-		WebDAVPathImpl correctNextPath = WebDAVPathImpl.parse("/webdav/collection", "/webdav/collection/name.txt");
-		assertEquals(correctNextPath.getCompleteString(), nextPath.getCompleteString());
-		assertEquals(correctNextPath.getToResolve(), nextPath.getToResolve());
+		assertEquals(nextPath.getCompleteString(), completeInput);
+		assertEquals(nextPath.getFileName(), "collection");
+		assertEquals(nextPath.getToResolve(), "x/name.txt");
+		assertEquals(nextPath.getNumberOfElemsToResolve(), 2);
+		assertEquals(nextPath.getNextName(), "x");
 		
-		assert(nextPath.next() == nextPath);
+		WebDAVPath nextPath2 = nextPath.next();
+		assertEquals(nextPath2.getCompleteString(), completeInput);
+		assertEquals(nextPath2.getFileName(), "x");
+		assertEquals(nextPath2.getToResolve(), "name.txt");
+		assertEquals(nextPath2.getNumberOfElemsToResolve(), 1);
+		assertEquals(nextPath2.getNextName(), "name.txt");
+		
+		WebDAVPath nextPath3 = nextPath2.next();
+		assertEquals(nextPath3.getCompleteString(), completeInput);
+		assertEquals(nextPath3.getFileName(), "name.txt");
+		assertNull(nextPath3.getToResolve());
+		assertEquals(nextPath3.getNumberOfElemsToResolve(), 0);
+		assertNull(nextPath3.getNextName());
+		
+		assertNull(nextPath3.next());
 	}
 
 	public void testGetCompleteString() {
@@ -154,9 +171,9 @@ public class WebDAVPathImplTest extends TestCase {
 		assertEquals(expected, clientString);
 		assertEquals(expected, davPath.getResolved() + davPath.getToResolve());
 		
-		WebDAVPath path = root.concat("הצü");
+		WebDAVPath path = root.concat("\u00e4\u00f6\u00fc");
 		path = path.asResolved();
-		expected = "webdav/הצü";
+		expected = "webdav/\u00e4\u00f6\u00fc";
 		clientString = path.getCompleteString();
 		assertEquals(expected, clientString);
 	}
@@ -212,7 +229,7 @@ public class WebDAVPathImplTest extends TestCase {
 
 	public void testPlode() {
 		checkPlode("a");
-		checkPlode("a/ה/ü\\üa/df");
+		checkPlode("a/\u00e4/\u00fc\\\u00fca/df");
 		checkPlode("");
 		assertEquals(WebDAVPathImpl.explode("").size(), 0);
 		assertEquals(WebDAVPathImpl.explode("/").size(), 0);

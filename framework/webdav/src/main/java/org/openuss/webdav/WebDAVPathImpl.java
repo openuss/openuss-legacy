@@ -43,7 +43,7 @@ public class WebDAVPathImpl implements WebDAVPath {
 	 */
 	protected WebDAVPathImpl(String prefix, List<String> path, int nextToResolvePos) {
 		assert(nextToResolvePos >= 0);
-		assert(nextToResolvePos < path.size());
+		assert(nextToResolvePos <= path.size());
 		
 		this.prefix = prefix;
 		this.path = path;
