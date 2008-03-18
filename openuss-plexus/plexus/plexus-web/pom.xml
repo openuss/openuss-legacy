@@ -41,6 +41,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.openuss.openformula</groupId>
+			<artifactId>formula-editor</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openuss.plexus</groupId>
 			<artifactId>plexus-core</artifactId>
 			<version>${pom.version}</version>
