@@ -14,11 +14,11 @@
 	<artifactId>openformula</artifactId>
 	<name>OpenFormula</name>
 	<packaging>pom</packaging>
-	<url>http://openuss.sourceforge.net</url>
+	<url>http://openuss.sf.net/plexus</url>
 
 	<organization>
 		<name>openuss</name>
-		<url>http://openuss.sourceforge.net</url>
+		<url>http://openuss.sf.net/plexus</url>
 	</organization>
 
 	<modules>

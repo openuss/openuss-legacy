@@ -14,14 +14,32 @@
 	<artifactId>plexus</artifactId>
 	<name>Plexus</name>
 	<packaging>pom</packaging>
+	
+		<profiles>
+		<profile>
+			<id>without-model</id>
+			<modules>
+				<module>plexus-remote</module>
+				<module>plexus-api</module>
+				<module>plexus-core</module>
+		 		<module>plexus-web</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>plexus-model</module>
+				<module>plexus-remote</module>
+				<module>plexus-api</module>
+				<module>plexus-core</module>
+		 		<module>plexus-web</module>
+			</modules>
+		</profile>
+	</profiles>
 
-	<modules>
-		<module>plexus-model</module>
-		<module>plexus-remote</module>
-		<module>plexus-api</module>
-		<module>plexus-core</module>
- 		<module>plexus-web</module>
-	</modules>
 
 	<reporting>
 		<plugins>

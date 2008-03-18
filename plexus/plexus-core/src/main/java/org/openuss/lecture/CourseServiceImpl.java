@@ -43,13 +43,6 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(courseInfo.getCourseTypeId(), "GetCourseTypeId cannot be null.");
 		Validate.notNull(courseInfo.getPeriodId(), "PeriodId cannot be null.");
 
-		//default configuration
-		courseInfo.setNewsletter(true);
-		courseInfo.setDocuments(true);
-		courseInfo.setDiscussion(true);
-
-		courseInfo.setAccessType(AccessType.CLOSED);
-		
 		// Default is enabled
 		courseInfo.setEnabled(true);
 
