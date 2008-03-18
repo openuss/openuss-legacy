@@ -90,8 +90,8 @@
         
             <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 	            <h:form id="submissionsTableView">
-	                 
-	                <o:block label="#{msg.papersubmission_exam_edit_description}" styleClass="form_box" rendered="#{!(empty examInfo.attachments)}">
+	            
+	           		<o:block label="#{msg.papersubmission_exam_edit_description}" styleClass="form_box" rendered="#{!(empty examInfo.description)}">
 	                   <div class="content_font_normal">
                             <h:outputText value="#{examInfo.description}" escape="false"/>
                         </div>
@@ -117,7 +117,8 @@
 							</div>
 						</o:block>	
 					</f:subview>
-					<ui:include src="/views/secured/papersubmission/submissionviewtable.xhtml" />
+	                 
+	                <ui:include src="/views/secured/papersubmission/submissionviewtable.xhtml" />
 				</h:form>
             </s:acl>	        
         </ui:define>
