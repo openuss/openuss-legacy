@@ -150,6 +150,10 @@ public class AppointmentDetailPage extends AbstractCalendarPage {
 			// group calendar
 			return Constants.GROUP_CALENDAR;
 		}
+		if (calendarInfo.getCalendarType().equals(CalendarType.user_calendar)) {
+			// user calendar
+			return Constants.CALENDAR_HOME;
+		}
 		return Constants.OUTCOME_BACKWARD;
 	}
 	
