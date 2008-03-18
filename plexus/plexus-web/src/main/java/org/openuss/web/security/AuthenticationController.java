@@ -163,9 +163,11 @@ public class AuthenticationController extends BasePage {
 					target = "/" + target;
 				return target;
 			}
-			return Constants.SUCCESS;
+			redirect(Constants.SUCCESS);
+			return "";
 		}
-		return Constants.DESKTOP;
+		redirect(Constants.DESKTOP);
+		return "";
 	}
 	
 	private boolean isValidSavedRequest(SavedRequest request) {

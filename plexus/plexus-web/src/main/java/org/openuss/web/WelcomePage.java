@@ -11,6 +11,7 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.statistics.OnlineStatisticService;
 import org.openuss.statistics.SystemStatisticInfo;
+import org.openuss.web.desktop.MyUniPage;
 
 @Bean(name = "views$welcome", scope = Scope.REQUEST)
 @View
@@ -29,11 +30,16 @@ public class WelcomePage extends BasePage {
 
 	@Property(value = "#{" + Constants.ONLINE_STATISTIC_SERVICE + "}")
 	private OnlineStatisticService onlineStatisticService;
+	
+	@Property(value = "#{views$secured$myuni$myuni}")
+	private MyUniPage myUniPage;
 
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
 		logger.debug("starting method prerender");
+		
+		myUniPage.prerender();
 
 		// FIXME Factory - why we are doing this?
 		if (user != null && user.getId() == null) {
@@ -76,6 +82,10 @@ public class WelcomePage extends BasePage {
 
 	public void setOnlineStatisticService(OnlineStatisticService onlineStatisticService) {
 		this.onlineStatisticService = onlineStatisticService;
+	}
+
+	public void setMyUniPage(MyUniPage myUniPage) {
+		this.myUniPage = myUniPage;
 	}
 
 }

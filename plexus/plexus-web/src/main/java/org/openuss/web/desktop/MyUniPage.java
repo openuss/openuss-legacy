@@ -47,13 +47,11 @@ import org.openuss.web.BasePage;
  * @author Julian Reimann
  */
 @Bean(name = "views$secured$myuni$myuni", scope = Scope.REQUEST)
-@View
 public class MyUniPage extends BasePage {
 	private static final Logger logger = Logger.getLogger(DesktopPage.class);
 
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
-	
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
@@ -92,7 +90,7 @@ public class MyUniPage extends BasePage {
 
 	private Map<Long, MyUniInfo> myUniData;
 
-	private static final String myUniBasePath = "/views/secured/myuni/myuni.faces";
+	private static final String myUniBasePath = "/views/welcome.faces";
 	private static final String departmentsBasePath = "/views/public/department/department.faces";
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";

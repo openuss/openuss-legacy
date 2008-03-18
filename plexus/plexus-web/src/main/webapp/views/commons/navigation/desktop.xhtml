@@ -15,9 +15,6 @@
 					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" open="true">
 						<t:commandNavigation2  value="#{msg.mainmenu_command_home}" action="home" activeOnViewIds="/views/welcome.xhtml"/>
 						<s:authorize ifAllGranted="ROLE_USER">
-							<t:commandNavigation2 value="#{msg['desktop_command_myuni']}" activeOnViewIds="/views/secured/myuni/myuni.xhtml" action="desktop"/>
-						</s:authorize>
-						<s:authorize ifAllGranted="ROLE_USER">
 							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_profile" activeOnViewIds="/views/secured/user/profileData.xhtml">
 							</t:commandNavigation2>
 						</s:authorize>

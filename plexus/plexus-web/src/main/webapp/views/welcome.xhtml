@@ -2,25 +2,31 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:o="http://www.openuss.org/jsfcontrols"
-      xmlns:p="http://www.openuss.org/plexus/jsf"
-      xmlns:s="http://www.openuss.org/jsf-security"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:sec="http://sourceforge.net/projects/jsf-comp/acegijsf"
-      xmlns:fck="http://www.fck-faces.org/fck-faces">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:sec="http://sourceforge.net/projects/jsf-comp/acegijsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
       
- 	<head> 
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title><ui:insert name="title"/></title>
-		<link href="../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
-		<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
-	</head>
-	<body>      
-	<f:loadBundle basename="resources" var="msg" />
+ <head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><ui:insert name="title"/></title>
+	<link href="../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+	<link href="../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+	
+<body>      
 	<!-- text above will be ignored -->
+	
+	<f:loadBundle basename="resources" var="msg" />
+	
 	<ui:composition template="/views/layout/welcome.xhtml">
 		<ui:define name="header">
 			<link type="application/rss+xml" title="RSS-Global" rel="alternate" href="#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}/rss/public/global.xml"/>
@@ -29,63 +35,134 @@
   		<ui:define name="title">
   			<h:outputText value="#{msg.welcome_headline}"/>
   		</ui:define>
+  		
 		<ui:define name="navigation"> 
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
 		</ui:define>
+		
 		<ui:define name="sidebar"> 
 			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/feeds/globalfeed.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
+			<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
+				<o:legend>
+					<o:legendItem styleClass="newsletter_none" label="#{msg.flexlist_title_newsletter_none}"/>
+					<o:legendItem styleClass="newsletter_notSubscribed" label="#{msg.flexlist_title_newsletter_subscribe}"/>
+					<o:legendItem styleClass="newsletter_subscribed" label="#{msg.flexlist_title_newsletter_unsubscribe}"/>
+					<o:legendItem styleClass="forum_none" label="#{msg.flexlist_title_forum_none}"/>
+					<o:legendItem styleClass="forum_notSubscribed" label="#{msg.flexlist_title_forum_subscribe}"/>
+					<o:legendItem styleClass="forum_subscribed" label="#{msg.flexlist_title_forum_unsubscribe}"/>
+					<o:legendItem styleClass="remove_bookmark" label="#{msg.flexlist_title_removeBookmarkUrl}"/>
+				</o:legend>
+			</c:if>			
 		</ui:define>
+		
   		<ui:define name="content">
-  			<o:block styleClass="empty_box">  
-  				<o:link value="/views/welcome.faces">
-	  				<h:outputFormat value="#{msg.home} -#{msg.desktop_heading}" styleClass="header_font_normal">
-						<f:param value="#{user.firstName} #{user.lastName}" />
-					</h:outputFormat>
-				</o:link>
-  			</o:block>
-  			<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
-			  		<h:panelGrid columns="2">
-			  			<h:outputText value="#{msg.welcome_barometer_universities}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.universities}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_departments}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.departments}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.courses}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_users}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.users}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_documents}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.documents}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{msg.welcome_barometer_posts}" styleClass="content_font_normal"/>
-			  			<h:outputText value="#{systemStatistic.posts}" styleClass="content_font_normal"/>
-			  		</h:panelGrid>
-		  	</o:block>
-		  	
-		  	<o:block styleClass="teaser_blue" label="#{msg.welcome_teaser_header}">
-  				<h:form>
-			  		<p class="content_font_normal">
-				  		 <h:outputText value="#{msg.welcome_openuss_introduction}"/>
-					</p>
-					<p class="content_font_normal">
-						 <h:outputLink value="#{SYSTEM_PROPERTIES.PROVIDER_URL}" style="background:url(/theme-plexus/img/icons/arrow_right_blue.png) left center no-repeat; padding-left:18px;"><h:outputText value=" #{msg.welcome_provider_information}"/></h:outputLink>
-				  	</p>
-		  		</h:form>
-			</o:block>
+  	
+<!-- GETTING STARTED -->	
+			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
+				<o:block>	
+					<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false" />
+				</o:block>
+			</c:if>  		
+			  	
+			  		
+<!-- USER IS NOT LOGGED IN -->
+			<s:authorize ifNotGranted="ROLE_USER">
+				<o:block styleClass="teaser_blue_right" label="#{msg.welcome_barometer_header}">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg.welcome_barometer_universities}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.universities}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_departments}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.departments}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_institutes}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.institutes}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_courses}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.courses}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_users}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.users}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_documents}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.documents}" styleClass="content_font_normal"/>
+						<h:outputText value="#{msg.welcome_barometer_posts}" styleClass="content_font_normal"/>
+						<h:outputText value="#{systemStatistic.posts}" styleClass="content_font_normal"/>
+					</h:panelGrid>
+				</o:block>
 			
-			<div>
-				<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
-			</div>
-			<div class="clear_both"/>
-		  	
-		  	<h:form id="universitiesForm">
-				<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
-			</h:form>
-		  	<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
+				<o:block styleClass="teaser_blue" label="#{msg.welcome_teaser_header}">
+					<h:form>
+						<p class="content_font_normal">
+							<h:outputText value="#{msg.welcome_openuss_introduction}"/>
+						</p>
+						<p class="content_font_normal">
+							<h:outputLink value="#{SYSTEM_PROPERTIES.PROVIDER_URL}" style="background:url(/theme-plexus/img/icons/arrow_right_blue.png) left center no-repeat; padding-left:18px;"><h:outputText value=" #{msg.welcome_provider_information}"/></h:outputLink>
+						</p>
+					</h:form>
+				</o:block>
+					
+				<div>
+					<h:outputText value=" " styleClass="content_font_normal" escape="false"/>
+				</div>
+				<div class="clear_both"/>
+			
+				<h:form id="universitiesForm">
+					<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
+				</h:form>
+				
+				<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>	
+			</s:authorize>
+			
+			
+<!-- USER IS LOGGED IN -->
+			<s:authorize ifAllGranted="ROLE_USER">
+			  	<o:block styleClass="empty_box">  
+			  		<o:link value="/views/welcome.faces">
+				  		<h:outputFormat value="#{msg.home} - #{msg.desktop_heading}" styleClass="header_font_normal">
+							<f:param value="#{user.firstName} #{user.lastName}" />
+						</h:outputFormat>
+					</o:link>
+			  	</o:block>
+			  	
+	<!-- FLEXLIST IS EMPTY -->
+				<c:if test="#{empty views$secured$myuni$myuni.myUniData}">
+					<o:block styleClass="status_box">								
+						<h:outputFormat value="#{msg.myuni_empty_page_explanation}" styleClass="content_font_normal"/>
+					</o:block>
+			  			
+					<h:form id="universitiesForm">
+						<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
+					</h:form>
+					
+					<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
+				</c:if>
+			
+			
+	<!-- FLEXLIST IS NOT EMPTY -->
+				<c:if test="#{!empty views$secured$myuni$myuni.myUniData}">
+					<div class="content_box">
+						<o:flexlist_tabs binding="#{views$secured$myuni$myuni.tabs}" />
+						<div class="content_normal">
+							<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.departmentsList}" styleClass="flexListDepartments"></o:flexlist>
+							<o:flexlist expanded="false" binding="#{views$secured$myuni$myuni.institutesList}" styleClass="flexListInstitutions"></o:flexlist>
+							<o:courseflexlist binding="#{views$secured$myuni$myuni.coursesList}" styleClass="flexListCourses"></o:courseflexlist>
+							<o:flexlist binding="#{views$secured$myuni$myuni.examsList}"></o:flexlist>
+						</div>
+						<div class="footer_normal">
+							<div class="footer_normal_left_bg" />
+							<div class="footer_normal_right_bg" />
+						</div>
+					</div>
+			
+					<p:newsTable value="#{news_controller.currentGlobalNews}" headline="${msg.news_header}"/>
+			
+					<h:form id="universitiesForm">
+						<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
+					</h:form>						
+				</c:if>
+			</s:authorize>  		
+  		
   		</ui:define>
 	</ui:composition>
-	<!-- text above will be ignored     -->
-	</body>
+	
+	<!-- text below will be ignored -->
+</body>
 </html>
