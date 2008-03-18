@@ -37,11 +37,11 @@ public class GroupDeleteConfirmationPage extends AbstractGroupPage {
 			groupService.deleteUserGroup(groupInfo);
 			setSessionBean("groupInfo", null);
 			addMessage(i18n("group_removed_succeed"));
-			return Constants.OPENUSS4US_GROUPS;
+			return Constants.DESKTOP;
 		} catch (Exception e) {
 			// e.printStackTrace();
 			addMessage(i18n("group_removed_failed"));
-			return Constants.OPENUSS4US_GROUPS;
+			return Constants.DESKTOP;
 		}
 	}
 	

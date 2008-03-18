@@ -283,11 +283,6 @@
 			<from-outcome>openuss4us_calendar_edit_subscriptions</from-outcome>
 			<to-view-id>/views/secured/calendar/subscribedcalendars.xhtml</to-view-id>
 		</navigation-case>
-
-		<navigation-case>
-			<from-outcome>openuss4us_groups</from-outcome>
-			<to-view-id>/views/secured/groups/groups.xhtml</to-view-id>
-		</navigation-case>	
 		
 		<navigation-case>
 			<from-outcome>openuss4us_groups_create</from-outcome>
@@ -367,10 +362,6 @@
 			<to-view-id>/views/secured/groups/components/groupmoderators.xhtml</to-view-id>
 		</navigation-case>
 		
-		<navigation-case>
-			<from-outcome>group_options_members</from-outcome>
-			<to-view-id>/views/secured/groups/components/groupmembers.xhtml</to-view-id>
-		</navigation-case>
 		<navigation-case>
 			<from-outcome>group_delete_confirmation</from-outcome>
 			<to-view-id>/views/secured/groups/components/groupdeleteconfirmation.xhtml</to-view-id>

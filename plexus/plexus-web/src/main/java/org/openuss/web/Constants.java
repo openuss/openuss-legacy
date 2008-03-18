@@ -314,7 +314,6 @@ public class Constants {
 	public static final String OPENUSS4US_APPOINTMENT_DETAILS = "view_appointment_details";
 	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
 	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
-	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";
 	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
 	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
 	public static final String OPENUSS4US_USER_SEARCH = "openuss4us_user_search";
