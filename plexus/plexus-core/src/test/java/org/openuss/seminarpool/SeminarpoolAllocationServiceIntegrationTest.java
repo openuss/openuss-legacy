@@ -54,11 +54,13 @@ public class SeminarpoolAllocationServiceIntegrationTest extends SeminarpoolAllo
 		Course course1 = testUtility.createUniqueCourseInDB();
 		Course course2 = testUtility.createUniqueCourseInDB();
 		Course course3 = testUtility.createUniqueCourseInDB();
+		
+		flush();
+		
 		Seminarpool seminarpool = testUtility.createUniqueSeminarpoolinDB();
 		seminarpool.setMaxSeminarAllocations(2);
 		seminarpool.setPriorities(3);
 		
-		flush();
 		List<SeminarUserRegistration> surilist = new ArrayList<SeminarUserRegistration>();
 		
 		SeminarpoolAdministrationService adminservice = (SeminarpoolAdministrationService) this.getApplicationContext().getBean("seminarpoolAdministrationService");
@@ -79,8 +81,8 @@ public class SeminarpoolAllocationServiceIntegrationTest extends SeminarpoolAllo
 		
 		Collection<CourseGroupInfo> coll1 = new ArrayList<CourseGroupInfo>();
 		coll1.add(courseGroup1);
-		           
-		seminarpoolAllocation1.setId(adminservice.addSeminar(seminarpoolAllocation1, coll1));
+		seminarpoolAllocation1.setId(courseSeminarpoolAllocationDao.create(courseSeminarpoolAllocationDao.courseSeminarpoolAllocationInfoToEntity(seminarpoolAllocation1)).getId());
+		adminservice.addSeminar(seminarpoolAllocation1, coll1);
 		
 		//Course 2
 		CourseSeminarpoolAllocationInfo seminarpoolAllocation2 = new CourseSeminarpoolAllocationInfo();
@@ -102,8 +104,8 @@ public class SeminarpoolAllocationServiceIntegrationTest extends SeminarpoolAllo
 		Collection<CourseGroupInfo> coll2 = new ArrayList<CourseGroupInfo>();
 		coll2.add(courseGroup2);
 		coll2.add(courseGroup3);
-		
-		seminarpoolAllocation2.setId(adminservice.addSeminar(seminarpoolAllocation2, coll2));
+		seminarpoolAllocation2.setId(courseSeminarpoolAllocationDao.create(courseSeminarpoolAllocationDao.courseSeminarpoolAllocationInfoToEntity(seminarpoolAllocation2)).getId());
+		adminservice.addSeminar(seminarpoolAllocation2, coll2);
 		
 		//Course 3
 		CourseSeminarpoolAllocationInfo seminarpoolAllocation3 = new CourseSeminarpoolAllocationInfo();
@@ -119,198 +121,211 @@ public class SeminarpoolAllocationServiceIntegrationTest extends SeminarpoolAllo
 		
 		Collection<CourseGroupInfo> coll3 = new ArrayList<CourseGroupInfo>();
 		coll3.add(courseGroup3);
-		
-		seminarpoolAllocation3.setId(adminservice.addSeminar(seminarpoolAllocation3, coll2));
+		seminarpoolAllocation3.setId(courseSeminarpoolAllocationDao.create(courseSeminarpoolAllocationDao.courseSeminarpoolAllocationInfoToEntity(seminarpoolAllocation3)).getId());
+		adminservice.addSeminar(seminarpoolAllocation3, coll2);
 		
 		SeminarUserRegistrationInfo userRegistrationInfo1;
 		List<SeminarPriority> seminarPriorityList;
 		SeminarPrioritiesInfo seminarPrioritiesInfo1;
 		
+		SeminarUserRegistration userRegistration1 = SeminarUserRegistration.Factory.newInstance();
+		SeminarUserRegistration userRegistration2 = SeminarUserRegistration.Factory.newInstance();
+		SeminarUserRegistration userRegistration3 = SeminarUserRegistration.Factory.newInstance();
+		SeminarUserRegistration userRegistration4 = SeminarUserRegistration.Factory.newInstance();
+		SeminarUserRegistration userRegistration5 = SeminarUserRegistration.Factory.newInstance();
+		SeminarUserRegistration userRegistration6 = SeminarUserRegistration.Factory.newInstance();
+		
 		//Register User1
-		SeminarUserRegistration userRegistration = SeminarUserRegistration.Factory.newInstance();
+		
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		SeminarPriority seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		SeminarPriority seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		SeminarPriority seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(2);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user1);
+		userRegistration1.setNeededSeminars(2);
+		userRegistration1.setSeminarpool(seminarpool);
+		userRegistration1.setUser(user1);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(1);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration1);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(2);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration1);
 		seminarPriorityList.add(seminarPriorities2);
 		
 		seminarPriorities3.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation3.getId()));
 		seminarPriorities3.setPriority(3);
-		seminarPriorities3.setSeminarUserRegistration(userRegistration);
+		seminarPriorities3.setSeminarUserRegistration(userRegistration1);
 		seminarPriorityList.add(seminarPriorities3);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration1.setSeminarPriority(seminarPriorityList);
+		userRegistration1.setId(seminarUserRegistrationDao.create(userRegistration1).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration1),null);
+		surilist.add(userRegistration1);
 		
 		//Register User2
-		userRegistration = SeminarUserRegistration.Factory.newInstance();
+		userRegistration2 = SeminarUserRegistration.Factory.newInstance();
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(2);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user2);
+		userRegistration2.setNeededSeminars(2);
+		userRegistration2.setSeminarpool(seminarpool);
+		userRegistration2.setUser(user2);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(1);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration2);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(3);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration2);
 		seminarPriorityList.add(seminarPriorities2);
 		
 		seminarPriorities3.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation3.getId()));
 		seminarPriorities3.setPriority(2);
-		seminarPriorities3.setSeminarUserRegistration(userRegistration);
+		seminarPriorities3.setSeminarUserRegistration(userRegistration2);
 		seminarPriorityList.add(seminarPriorities3);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration2.setSeminarPriority(seminarPriorityList);
+		userRegistration2.setId(seminarUserRegistrationDao.create(userRegistration2).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration2),null);
+		surilist.add(userRegistration2);
 		
 		//Register User3
-		userRegistration = SeminarUserRegistration.Factory.newInstance();
+		userRegistration3 = SeminarUserRegistration.Factory.newInstance();
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(2);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user3);
+		userRegistration3.setNeededSeminars(2);
+		userRegistration3.setSeminarpool(seminarpool);
+		userRegistration3.setUser(user3);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(1);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration3);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(2);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration3);
 		seminarPriorityList.add(seminarPriorities2);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration3.setSeminarPriority(seminarPriorityList);
+		userRegistration3.setId(seminarUserRegistrationDao.create(userRegistration3).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration3),null);
+		surilist.add(userRegistration3);
 		
 		//Register User4
-		userRegistration = SeminarUserRegistration.Factory.newInstance();
+		userRegistration4 = SeminarUserRegistration.Factory.newInstance();
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(2);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user4);
+		userRegistration4.setNeededSeminars(2);
+		userRegistration4.setSeminarpool(seminarpool);
+		userRegistration4.setUser(user4);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(3);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration4);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(2);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration4);
 		seminarPriorityList.add(seminarPriorities2);
 		
 		seminarPriorities3.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation3.getId()));
 		seminarPriorities3.setPriority(1);
-		seminarPriorities3.setSeminarUserRegistration(userRegistration);
+		seminarPriorities3.setSeminarUserRegistration(userRegistration4);
 		seminarPriorityList.add(seminarPriorities3);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration4.setSeminarPriority(seminarPriorityList);
+		userRegistration4.setId(seminarUserRegistrationDao.create(userRegistration4).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration4),null);
+		surilist.add(userRegistration4);
 		
 		//Register User5
-		userRegistration = SeminarUserRegistration.Factory.newInstance();
+		userRegistration5 = SeminarUserRegistration.Factory.newInstance();
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(2);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user5);
+		userRegistration5.setNeededSeminars(2);
+		userRegistration5.setSeminarpool(seminarpool);
+		userRegistration5.setUser(user5);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(1);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration5);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(3);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration5);
 		seminarPriorityList.add(seminarPriorities2);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration5.setSeminarPriority(seminarPriorityList);
+		userRegistration5.setId(seminarUserRegistrationDao.create(userRegistration5).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration5),null);
+		surilist.add(userRegistration5);
 		
 		//Register User6
-		userRegistration = SeminarUserRegistration.Factory.newInstance();
+		userRegistration6 = SeminarUserRegistration.Factory.newInstance();
 		seminarPriorityList = new ArrayList<SeminarPriority>();
 		seminarPriorities1 = SeminarPriority.Factory.newInstance();
 		seminarPriorities2 = SeminarPriority.Factory.newInstance();
 		seminarPriorities3 = SeminarPriority.Factory.newInstance();
 		
-		userRegistration.setNeededSeminars(1);
-		userRegistration.setSeminarpool(seminarpool);
-		userRegistration.setUser(user6);
+		userRegistration6.setNeededSeminars(1);
+		userRegistration6.setSeminarpool(seminarpool);
+		userRegistration6.setUser(user6);
 		
 		
 		seminarPriorities1.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation1.getId()));
 		seminarPriorities1.setPriority(2);
-		seminarPriorities1.setSeminarUserRegistration(userRegistration);
+		seminarPriorities1.setSeminarUserRegistration(userRegistration6);
 		seminarPriorityList.add(seminarPriorities1);
 		
 		seminarPriorities2.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation2.getId()));
 		seminarPriorities2.setPriority(3);
-		seminarPriorities2.setSeminarUserRegistration(userRegistration);
+		seminarPriorities2.setSeminarUserRegistration(userRegistration6);
 		seminarPriorityList.add(seminarPriorities2);
 		
 		seminarPriorities3.setCourseSeminarPoolAllocation(courseSeminarpoolAllocationDao.load(seminarpoolAllocation3.getId()));
 		seminarPriorities3.setPriority(1);
-		seminarPriorities3.setSeminarUserRegistration(userRegistration);
+		seminarPriorities3.setSeminarUserRegistration(userRegistration6);
 		seminarPriorityList.add(seminarPriorities3);
 		
-		userRegistration.setSeminarPriority(seminarPriorityList);
-		userRegistration.setId(userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration),null));
-		surilist.add(userRegistration);
+		userRegistration6.setSeminarPriority(seminarPriorityList);
+		userRegistration6.setId(seminarUserRegistrationDao.create(userRegistration6).getId());
+		userregservice.registerUserForSeminarpool(seminarUserRegistrationDao.toSeminarUserRegistrationInfo(userRegistration6),null);
+		surilist.add(userRegistration6);
 	
-		flush();
 		
 
 		seminarpool.setSeminarUserRegistration(surilist);
 	
 		seminarpoolDao.update(seminarpool);
-
 		
 		this.getSeminarpoolAllocationService().generateAllocation(seminarpool.getId());
+			
+		
 	}
 	
 }

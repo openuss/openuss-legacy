@@ -378,5 +378,10 @@ public class SeminarpoolAllocationServiceImpl extends
 		
 		return res;
 	}
+	
+	public double[][] getResult(Long seminarpoolId){
+		this.generateAllocation(seminarpoolId);
+		return result;
+	}
 
 }
