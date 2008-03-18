@@ -127,7 +127,7 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 	 */
 	protected DepartmentInfo handleFindDepartment(Long departmentId) throws Exception {
 		Validate.notNull(departmentId, "The DepartmentId cannot be null");
-		return (DepartmentInfo) getDepartmentDao().load(getDepartmentDao().TRANSFORM_DEPARTMENTINFO, departmentId);
+		return (DepartmentInfo) getDepartmentDao().load(DepartmentDao.TRANSFORM_DEPARTMENTINFO, departmentId);
 	}
 
 	/**

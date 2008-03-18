@@ -278,7 +278,7 @@
 		</plugins>
 	</build>
 	<modules>
-        <module>documentation</module>
+        <!--  <module>documentation</module> -->
 		<module>framework</module>
 		<module>themes</module>
 		<module>openformula</module>
