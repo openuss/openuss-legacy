@@ -41,7 +41,7 @@
 	<ui:define name="content">
 		<h:form id="documentTableView">
 			<ui:include src="documentstable.xhtml" />
-			<o:block>
+			<o:block rendered="#{!views$secured$documents$documents.moveMode}">
 					<h:commandButton 
 					    id="download"
 						action="#{views$secured$documents$documents.download}" 
@@ -77,6 +77,24 @@
 						styleClass="button_add"/>
 				</s:acl>
 			</o:block>
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+				<o:block rendered="#{views$secured$documents$documents.moveMode}">
+					
+					<h:outputText value="#{msg['documents_choose_target']}" styleClass="field_label"/>
+					
+					<h:selectOneMenu id="targetFolder" value="#{views$secured$documents$documents.targetFolder}" styleClass="pulldown_inline">
+					   	<f:selectItems value="#{views$secured$documents$documents.folderList}"/>
+					</h:selectOneMenu><br/>
+					<h:commandButton 
+							action="#{views$secured$documents$documents.moveFolderEntriesToTarget}"
+							value="#{msg['documents_move']}"
+							hint="#{msg['course_assistants_add_hint']}"
+							styleClass="button_add" />
+					<h:commandButton action="documents_main" immediate="true"
+							value="#{msg['newdocument_button_cancel']}"
+							styleClass="button_cancel" />
+				</o:block>
+			</s:acl>
 		</h:form>
 	</ui:define>
 </ui:composition>

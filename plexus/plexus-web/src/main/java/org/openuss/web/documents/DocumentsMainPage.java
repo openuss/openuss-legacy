@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -43,8 +44,15 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
+	
+	/*
+	 * Target folder list
+	 */
+	private List<SelectItem> folderList;
 
 	private List<FolderEntryInfo> entries;
+
+	private boolean moveMode = false;
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -208,5 +216,55 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			}
 		}
 		return avaliableExtensions;
+	}
+	
+
+	public List<SelectItem> getFolderList() {
+		if(folderList == null){
+			//get Folder List from Document Service
+
+			List<FolderInfo> allFolderInfos;
+			
+			if (courseInfo.getId() != null) {
+				allFolderInfos = super.documentService.getAllSubfolders(courseInfo);
+			}
+			else allFolderInfos = new ArrayList<FolderInfo>();
+			
+			folderList = new ArrayList<SelectItem>();
+			for(FolderInfo info: allFolderInfos) {
+				if (info != null) {
+					String depth = "";
+					//check depth
+					List path = super.documentService.getFolderPath(info);
+					for(int i = 0; i < path.size(); i++)
+						depth = depth + "> ";
+					//@TODO implement check wether element is root. Change name if so.
+					String name = info.getName() == null ? "Root" : info.getName();
+					folderList.add(new SelectItem(info,depth + name ));
+				} else {
+					SelectItem item = new SelectItem("--");
+					item.setDisabled(true);
+					folderList.add(item);
+				}
+			}
+		}
+		return folderList;
+	}
+	
+	public String switchToMoveMode(){
+		setMoveMode(true);
+		return Constants.SUCCESS;
+	}
+
+	public void setFolderList(List<SelectItem> folderList) {
+		this.folderList = folderList;
+	}
+
+	public boolean getMoveMode() {
+		return moveMode;
+	}
+
+	public void setMoveMode(boolean moveMode) {
+		this.moveMode = moveMode;
 	}
 }

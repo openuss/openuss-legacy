@@ -493,4 +493,26 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 		return true; // vaild
 	}
+	
+	@Override
+	protected void handleMoveFolderEntries(DomainObject domainObject, FolderInfo target, List chosenObjects)
+			throws Exception {
+		Validate.notNull(target, "Parameter target must not be null");
+		Validate.notNull(target.getId(), "Parameter target must contain valid domain id");
+		Folder targetFolder = getFolderDao().load(target.getId());
+		List<FolderEntry> chosen = new ArrayList<FolderEntry>(chosenObjects);
+		getFolderEntryDao().folderEntryInfoToEntityCollection(chosen);
+		// Moving chosen to target
+		for (FolderEntry fe : chosen) {
+			targetFolder.moveHere(fe);
+		}
+	}
+
+	@Override
+	protected List handleGetAllSubfolders(DomainObject domainObject) throws Exception {
+		Folder root = getFolderDao().folderInfoToEntity(super.getFolder(domainObject));
+		List allFolders = root.getAllSubfolders();
+		getFolderDao().toFolderInfoCollection(allFolders);
+		return allFolders;
+	}
 }

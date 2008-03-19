@@ -5,7 +5,9 @@
  */
 package org.openuss.documents;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,12 +42,7 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 
 	@Override
 	public boolean canAdd(FolderEntry folderEntry) {
-		for (FolderEntry entry : getEntries()) {
-			if (StringUtils.equalsIgnoreCase(folderEntry.getFileName(), entry.getFileName()) && !ObjectUtils.equals(entry, folderEntry)) {
-				return false; // not valid
-			}
-		}
-		return true; // vaild
+		return correctName(folderEntry) && correctHierarchy(folderEntry);
 	}
 	
 	@Override
@@ -95,4 +92,61 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 		return size;
 	}
 
+	@Override
+	public boolean correctHierarchy(FolderEntry entry) {
+		if(!(entry instanceof Folder)){
+			return true; //Only tried to move a file, therefore correct hierarchy
+		}
+		if(this.equals(entry)){
+			return false; //Tried to move folder into itself
+		}
+		return correctHierarchyCheckHelp(entry, this);
+	}
+	
+	private boolean correctHierarchyCheckHelp(FolderEntry entry, Folder parent){
+		if(parent.getParent()==null){
+			return true; //There is no parent, everything correct
+		}
+		if(parent.getParent().equals(entry)){
+			return false; //Tried to move folder into subfolder
+		}
+		return correctHierarchyCheckHelp(entry, parent.getParent());
+	}
+
+	@Override
+	public void moveHere(FolderEntry entry) throws DocumentApplicationException {
+		if(canAdd(entry)){
+			entry.getParent().removeFolderEntry(entry);
+			this.addFolderEntry(entry);
+		} else {
+			if(!correctName(entry)){
+				throw new DocumentApplicationException("documents_folder_not_a_unique_filename");
+			} else {
+				throw new DocumentApplicationException("documents_operation_would_destroy_hierarchy");
+			}
+		}
+	}
+
+	@Override
+	public boolean correctName(FolderEntry entry) {
+		for (FolderEntry folderEntry : getEntries()) {
+			if (StringUtils.equalsIgnoreCase(entry.getFileName(), folderEntry.getFileName()) && !ObjectUtils.equals(folderEntry, entry)) {
+				return false; // not valid
+			}
+		}
+		return true; // valid
+	}
+
+	@Override
+	public List getAllSubfolders() {
+		List<Folder> subfolders = new ArrayList<Folder>();
+		subfolders.add(this);
+		List<FolderEntry> folderEntries = this.getEntries();
+		for (FolderEntry fe : folderEntries) {
+			if(fe instanceof Folder){
+				subfolders.addAll(((Folder)fe).getAllSubfolders());
+			}
+		}
+		return subfolders;
+	}
 }

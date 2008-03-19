@@ -34,6 +34,8 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 	
 	private FolderEntryDao folderEntryDao;
 	
+	private FolderDao folderDao;
+	
 	private SecurityService securityService;
 	
 	private DefaultDomainObject defaultDomainObject;
@@ -316,6 +318,49 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 		assertNotNull(info.getInputStream());
 	}
 	
+	public void testMoveFolderEntriesIllegalTarget() throws Exception{
+		//create root
+		FolderInfo folderInfoRoot = documentService.getFolder(defaultDomainObject);
+		//create subfolder
+		FolderInfo subfolder = createSubFolder();
+		subfolder.setName("subfolder");
+		documentService.createFolder(subfolder, folderInfoRoot);
+		//test moving subfolder to subfolder
+		List<FolderEntryInfo> chosen = new ArrayList<FolderEntryInfo>();
+		chosen.add(getFolderDao().toFolderEntryInfo(getFolderDao().folderInfoToEntity(subfolder)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		}
+		//test moving root to subfolder
+		chosen.clear();
+		chosen.add(getFolderDao().toFolderEntryInfo(getFolderDao().folderInfoToEntity(folderInfoRoot)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		} catch (DocumentServiceException e) {
+			assertTrue(true);
+		}
+		//test moving subfolder to subsubfolder
+		chosen.clear();
+		FolderInfo subsubfolder = createSubFolder();
+		subsubfolder.setName("SubSubFolder");
+		documentService.createFolder(subsubfolder, subfolder);
+		chosen.add(getFolderDao().toFolderEntryInfo(getFolderDao().folderInfoToEntity(subfolder)));
+		try {
+			documentService.moveFolderEntries(defaultDomainObject, subsubfolder, chosen);
+			assertTrue(false);
+		} catch (DocumentApplicationException e) {
+			assertTrue(true);
+		} catch (DocumentServiceException e) {
+			assertTrue(true);
+		}
+	}
+	
 	private void validateFileInfo(FileInfo info) {
 		assertNotNull(info.getName());
 		assertNotNull(info.getAbsoluteName());
@@ -369,6 +414,14 @@ public class DocumentServiceIntegrationTest extends DocumentServiceIntegrationTe
 
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
+	}
+
+	public FolderDao getFolderDao() {
+		return folderDao;
+	}
+
+	public void setFolderDao(FolderDao folderDao) {
+		this.folderDao = folderDao;
 	}
 	
 }
