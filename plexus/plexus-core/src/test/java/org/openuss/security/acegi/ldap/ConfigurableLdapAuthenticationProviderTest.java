@@ -70,7 +70,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (ProviderNotFoundException pnfe) {
 			// success
@@ -110,7 +110,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (ProviderNotFoundException pnfe) {
 			// success
@@ -516,7 +516,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (BadCredentialsException be) {
 			// Success
@@ -571,7 +571,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success
@@ -802,7 +802,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (BadCredentialsException be) {
 			// Success
@@ -858,7 +858,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		Authentication authRequest = new UsernamePasswordAuthenticationToken(username,password);
 		// Test
 		try {
-			Authentication authResponse = ldapAuthenticationProvider.authenticate(authRequest);
+			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
 		} catch (IllegalArgumentException iae) {
 			// Success

@@ -31,6 +31,9 @@ import org.openuss.web.utils.MessageBox;
  * Registration process controller to manage the user registration process
  * 
  * @author Ingo Dueppe
+ * @author Peter Schuh
+ * @author Christian Grelle
+ * 
  */
 @Bean(name = "registrationController", scope = Scope.REQUEST)
 @View
@@ -173,6 +176,7 @@ public class RegistrationController extends BaseBean {
 	 * @throws RegistrationException
 	 * @throws MessagingException
 	 */
+	@SuppressWarnings("unchecked")
 	public String forgotPassword() throws RegistrationException, Exception {
 		if (registrationService == null)
 			throw new IllegalStateException(
