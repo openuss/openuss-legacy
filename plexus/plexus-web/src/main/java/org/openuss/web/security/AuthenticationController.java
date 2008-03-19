@@ -330,7 +330,7 @@ public class AuthenticationController extends BasePage {
 			centralUserData.setUsername(AuthenticationUtils.generateCentralUserLoginName(centralUserData.getAuthenticationDomainName(), centralUserData.getUsername()));
 			centralUserData.setFirstName((String) userDetails.getAttributes().get(AttributeMappingKeys.FIRSTNAME_KEY).get());
 			centralUserData.setLastName((String) userDetails.getAttributes().get(AttributeMappingKeys.LASTNAME_KEY).get());
-			centralUserData.setEmail((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());
+			centralUserData.setEmail(((String) userDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get()).toLowerCase());
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

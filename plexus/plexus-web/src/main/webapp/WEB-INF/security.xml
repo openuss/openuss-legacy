@@ -205,11 +205,6 @@
     
     <!-- ===================== LDAP ==================== -->
     
-    <!--
-	<bean id="ldapConfigurationServiceDummy" class="org.openuss.security.ldap.LdapConfigurationServiceDummy">
-    </bean>
-    -->
-    
     
     <bean id="ldapConfigurationServiceDummy" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="target">
@@ -226,10 +221,15 @@
         </property>
     </bean>
     
-    <bean id="configurableLdapAuthenticationProvider" class="org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderImpl" init-method="init"> 
+    <bean id="configurableLdapAuthenticationProvider" class="org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderImpl" depends-on="ldapConfigurationService" init-method="init"> 
         <property name="userCache" ref="userCache"/>
         <property name="ldapConfigurationService" ref="ldapConfigurationServiceDummy"/>
     </bean>
+    	
+	<bean id="ldapConfigDomainCommand" class="org.openuss.security.acegi.ldap.LdapConfigDomainCommand">
+		 <property name="configurableLdapAuthenticationProvider"><ref bean="configurableLdapAuthenticationProvider"/></property>		
+	</bean>
+    
     
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		      Access Control List Definitions
@@ -261,10 +261,4 @@
 		<property name="objectIdentityDao"><ref bean="objectIdentityDao"/></property>
 	</bean>
 
-	<!-- Ldap Authentication stuff -->
-	
-	<bean id="ldapConfigDomainCommand" class="org.openuss.security.acegi.ldap.LdapConfigDomainCommand">
-		 <property name="configurableLdapAuthenticationProvider"><ref bean="configurableLdapAuthenticationProvider"/></property>		
-	</bean>
-    
 </beans>
