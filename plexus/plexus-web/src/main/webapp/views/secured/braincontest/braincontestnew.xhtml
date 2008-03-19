@@ -45,11 +45,11 @@
 					</div>
 	
 					<h:outputLabel value="#{msg.braincontest_attachment}" for="attachmentUpload" styleClass="field_label" />
-					<f:subview rendered="#{!(empty sessionScope.braincontest_contest.attachments)}">
+					<f:subview rendered="#{!(empty contest_attachments)}">
 						<div class="content_font_normal">
 							<t:dataList 
 								var="attachment" 
-								value="#{sessionScope.braincontest_contest.attachments}" 
+								value="#{contest_attachments}" 
 								binding="${views$secured$braincontest$braincontestnew.attachmentList}">
 						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 									action="#{views$secured$braincontest$braincontestnew.removeAttachment}"

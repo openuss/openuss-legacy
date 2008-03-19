@@ -34,12 +34,12 @@
 					styleClass="button_search" 
 					forceId="true"
 					action="#{views$public$search$search.search}">
-			 		<img src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
+			 		<img class="search" src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
 				</t:commandLink>
 				<br/>
 		  		<ul class="int">
 		  			<li>
-						<h:commandLink action="#{views$public$search$extendedsearch.initSearchForm}" value="${msg.extended_search_link}"></h:commandLink>
+						<h:commandLink action="#{views$public$search$extendedsearch.initSearchForm}" value="${msg.extended_search_link}" class="search_ext"/>
 			  		</li>
 			  	</ul>
 			</p>

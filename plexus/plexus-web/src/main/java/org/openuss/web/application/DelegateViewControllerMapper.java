@@ -9,16 +9,15 @@ import org.apache.shale.view.ViewControllerMapper;
 
 /**
  * ViewControllerMapper
+ * 
  * @author Ingo Dueppe
  */
 public class DelegateViewControllerMapper implements ViewControllerMapper {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(DelegateViewControllerMapper.class);
-	
+
 	private List<ViewControllerMapper> strategies;
-	
+
 	/**
 	 * Defines the strategies of view controller mappings.
 	 */
@@ -28,31 +27,30 @@ public class DelegateViewControllerMapper implements ViewControllerMapper {
 
 	/**
 	 * Defines the strategies of view controller mappings.
+	 * 
 	 * @param strategies
 	 */
-	public void setStrategies(List<ViewControllerMapper> strategies) {
+	public void setStrategies(final List<ViewControllerMapper> strategies) {
 		this.strategies = strategies;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String mapViewId(String viewId) {
-		if (logger.isDebugEnabled())
-			logger.debug("look up controller for "+viewId);
+	public String mapViewId(final String viewId) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("look up controller for " + viewId);
+		}
 		if (strategies != null) {
 			for (ViewControllerMapper mapper : strategies) {
 				String ctrl = mapper.mapViewId(viewId);
 				if (StringUtils.isNotBlank(ctrl)) {
-					if (logger.isDebugEnabled())
-						logger.debug("found "+ctrl);
+					logger.debug("found " + ctrl);
 					return ctrl;
 				}
 			}
 		}
 		return null;
 	}
-	
-	
 
 }

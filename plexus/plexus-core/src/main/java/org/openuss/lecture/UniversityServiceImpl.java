@@ -186,14 +186,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		Validate.notNull(periodInfo, "UniversityService.handleUpdate - the Period cannot be null");
 
-		// Check changes of University
-		University university = this.getUniversityDao().load(periodInfo.getUniversityId());
-		Period periodOld = this.getPeriodDao().load(periodInfo.getId());
-		if (!periodOld.getUniversity().equals(university)) {
-			throw new UniversityServiceException("UniversityService.handleUpdate - The University cannot be changed.");
-		}
-		
 		// Check changes of default Period
+		PeriodInfo periodOld = (PeriodInfo) getPeriodDao().load(PeriodDao.TRANSFORM_PERIODINFO, periodInfo.getId());
 		if (!periodOld.isDefaultPeriod() == periodInfo.isDefaultPeriod()) {
 			throw new UniversityServiceException("UniversityService.handleUpdate - The default attribute cannot be changed.");
 		}
@@ -310,8 +304,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 
 		Validate.notNull(universityId, "UniversityService.handleFindUniversity - the UniversityID cannot be null");
 
-		University university = this.getUniversityDao().load(universityId);
-		return this.getUniversityDao().toUniversityInfo(university);
+		return (UniversityInfo) this.getUniversityDao().load(UniversityDao.TRANSFORM_UNIVERSITYINFO, universityId);
 	}
 
 	/**
@@ -362,9 +355,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	protected org.openuss.lecture.PeriodInfo handleFindPeriod(java.lang.Long periodId) throws java.lang.Exception {
 
 		Validate.notNull(periodId, "UniversityService.handleFindPeriod - the PeriodID cannot be null");
-
-		Period periodEntity = this.getPeriodDao().load(periodId);
-		return this.getPeriodDao().toPeriodInfo(periodEntity);
+		return (PeriodInfo) getPeriodDao().load(PeriodDao.TRANSFORM_PERIODINFO, periodId);
 	}
 
 	/**

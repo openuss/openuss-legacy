@@ -1,4 +1,4 @@
-package org.openuss.web.discussion; 
+package org.openuss.web.discussion;
 
 import java.util.List;
 
@@ -15,66 +15,74 @@ import org.openuss.web.Constants;
 
 @Bean(name = "views$secured$discussion$discussions", scope = Scope.REQUEST)
 @View
-public class DiscussionMainPage extends AbstractDiscussionPage{
-	
+public class DiscussionMainPage extends AbstractDiscussionPage {
+
 	private DiscussionDataProvider data = new DiscussionDataProvider();
-	
+
 	public boolean forumWatchState;
-	
+
 	public boolean forumReadOnly;
-	
+
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception {	
+	public void prerender() throws Exception {
 		super.prerender();
-		if (courseInfo != null) {
+		if (isRedirected()){
+			return;
+		}
+		if (courseInfo!=null){
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
 		}
-	}	
-	
+		if (forumReadOnly){
+			addMessage(i18n("discussion_forum_readonly_true_simple"));
+		}
+	}
+
 	private class DiscussionDataProvider extends AbstractPagedTable<TopicInfo> {
 
 		private static final long serialVersionUID = 5974442506189912052L;
-		
-		private DataPage<TopicInfo> page; 
-		
+
+		private DataPage<TopicInfo> page;
+
 		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<TopicInfo> getDataPage(int startRow, int pageSize) {		
-			List<TopicInfo> al = discussionService.getTopics(getForum());		
-			setSessionBean(Constants.DISCUSSION_THREADLENGTH, 0);
-			page = new DataPage<TopicInfo>(al.size(),0,al);
-			sort(al);
+			if (page == null) {
+				List<TopicInfo> forums = discussionService.getTopics(getForum());		
+				setBean(Constants.DISCUSSION_THREADLENGTH, 0);
+				page = new DataPage<TopicInfo>(forums.size(),0,forums);
+				sort(forums);
+			}
 			return page;
 		}
 	}
-	
-	public String newTopic(){
-		if (getForum().isReadOnly()&&(!isAssistant())){
+
+	public String newTopic() {
+		if (getForum().isReadOnly() && (!isAssistant())) {
 			addError(i18n("discussion_readonly"));
-			return Constants.FAILURE;			
+			return Constants.FAILURE;
 		}
-		TopicInfo ti = new TopicInfo();
-		setSessionBean(Constants.DISCUSSION_TOPIC, ti);
-		PostInfo pi = new PostInfo();
-		setSessionBean(Constants.DISCUSSION_DISCUSSIONENTRY, pi);
+		TopicInfo topicInfo = new TopicInfo();
+		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
+		PostInfo postInfo = new PostInfo();
+		setBean(Constants.DISCUSSION_DISCUSSIONENTRY, postInfo);
 		return Constants.DISCUSSION_NEW;
 	}
 
-	public String removeTopic(){
-		if (getForum().isReadOnly()&&(!isAssistant())){
+	public String removeTopic() {
+		if (getForum().isReadOnly() && (!isAssistant())) {
 			addError(i18n("discussion_readonly"));
-			return Constants.FAILURE;			
-		}		
-		TopicInfo t = this.data.getRowData();
-		setSessionBean(Constants.DISCUSSION_TOPIC, t);
+			return Constants.FAILURE;
+		}
+		TopicInfo topicInfo = this.data.getRowData();
+		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
 		return Constants.DISCUSSION_REMOVETHREAD;
 	}
 
-	public String changeWatchState(){
+	public String changeWatchState() {
 		ForumInfo forum = discussionService.getForum(courseInfo);
-		if (discussionService.watchesForum(forum)){
+		if (discussionService.watchesForum(forum)) {
 			discussionService.removeForumWatch(forum);
 			addMessage(i18n("discussion_unsubscribe_success"));
 		} else if(!discussionService.watchesForum(forum)){
@@ -83,16 +91,15 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 		} 
 		return Constants.SUCCESS;
 	}
-	
-	public String changeReadOnly(){
+
+	public String changeReadOnly() {
 		discussionService.changeEditState(getForum());
 		return Constants.SUCCESS;
 	}
-	
+
 	public DiscussionDataProvider getData() {
 		return data;
 	}
-
 
 	public void setData(DiscussionDataProvider data) {
 		this.data = data;
@@ -113,5 +120,5 @@ public class DiscussionMainPage extends AbstractDiscussionPage{
 	public void setForumReadOnly(boolean forumReadOnly) {
 		this.forumReadOnly = forumReadOnly;
 	}
-	
+
 }

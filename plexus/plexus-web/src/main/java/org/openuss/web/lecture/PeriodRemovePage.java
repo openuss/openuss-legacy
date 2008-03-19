@@ -16,9 +16,10 @@ import org.openuss.web.Constants;
  * 
  * @author Kai Stettner
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  * 
  */
-@Bean(name = "views$secured$lecture$periodremove", scope = Scope.REQUEST)
+@Bean(name = "views$secured$lecture$universityperiodremove", scope = Scope.REQUEST)
 @View
 public class PeriodRemovePage extends AbstractPeriodPage {
 
@@ -28,9 +29,9 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	@Override
 	public void preprocess() throws Exception {
 		super.preprocess();
-		if (periodInfo != null) {
+		if (periodInfo != null && periodInfo.getId()!=null) {
 			periodInfo = universityService.findPeriod(periodInfo.getId());
-			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 
@@ -38,9 +39,8 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (periodInfo != null) {
-			periodInfo = universityService.findPeriod(periodInfo.getId());
-			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		if (isRedirected()){
+			return;
 		}
 		addPageCrumb();
 	}
@@ -66,7 +66,7 @@ public class PeriodRemovePage extends AbstractPeriodPage {
 			logger.debug("Remove Period");
 		try {
 			universityService.removePeriod(periodInfo.getId());
-			removeSessionBean(Constants.PERIOD_INFO);
+			setBean(Constants.PERIOD_INFO, null);
 			addMessage(i18n("message_period_removed"));
 			return Constants.UNIVERSITY_PERIODS_PAGE;
 		} catch (UniversityServiceException e) {

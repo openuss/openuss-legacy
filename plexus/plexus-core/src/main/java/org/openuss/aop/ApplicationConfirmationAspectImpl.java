@@ -25,10 +25,10 @@ public class ApplicationConfirmationAspectImpl {
 			logger.debug("--> Checking Confirmation for Application " + applicationId + " <--");
 
 			// Check User ACL Admin Right for Department
-			Application application = applicationDao.load((Long) applicationId);
+			final Application application = applicationDao.load((Long) applicationId);
 			
 			if ((application != null) && (!application.isConfirmed())) {
-				Department department = application.getDepartment();
+		 		final Department department = application.getDepartment();
 				if (department != null) {
 					logger.debug("--> everything is fine <--");
 
@@ -63,7 +63,7 @@ public class ApplicationConfirmationAspectImpl {
 		return userDao;
 	}
 	
-	public void setUserDao(UserDao userDao) {
+	public void setUserDao(final UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
@@ -71,7 +71,7 @@ public class ApplicationConfirmationAspectImpl {
 		return applicationDao;
 	}
 	
-	public void setApplicationDao(ApplicationDao applicationDao) {
+	public void setApplicationDao(final ApplicationDao applicationDao) {
 		this.applicationDao = applicationDao;
 	}
 	
@@ -79,7 +79,7 @@ public class ApplicationConfirmationAspectImpl {
 		return departmentService;
 	}
 	
-	public void setDepartmentService(DepartmentService departmentService) {
+	public void setDepartmentService(final DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
 	
@@ -87,7 +87,7 @@ public class ApplicationConfirmationAspectImpl {
 		return securityService;
 	}
 	
-	public void setSecurityService(SecurityService securityService) {
+	public void setSecurityService(final SecurityService securityService) {
 		this.securityService = securityService;
 	}
 }

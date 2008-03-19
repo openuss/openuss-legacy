@@ -48,6 +48,7 @@
 						
 						<o:link value="/views/secured/wiki/wikimain.faces">
 							<f:param value="#{entry.id}" name="versionId" />
+							<f:param value="#{courseInfo.id}" name="course"/>
 							<h:outputText value="#{entry.creationDate}">
 								<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
 							</h:outputText>
@@ -58,6 +59,7 @@
 						<plexus:commandSortHeader columnName="note"> #{msg['wiki_version_column_note']} </plexus:commandSortHeader>
 						<o:link value="/views/secured/wiki/wikimain.faces">
 							<f:param value="#{entry.id}" name="versionId" />
+							<f:param value="#{courseInfo.id}" name="course"/>
 						<h:outputText value="#{entry.note}"/>
 						</o:link>
 					</t:column>	

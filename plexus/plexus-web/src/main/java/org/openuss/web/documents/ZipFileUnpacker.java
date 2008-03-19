@@ -37,39 +37,35 @@ public class ZipFileUnpacker {
 		this.files = new ArrayList<File>();
 	}
 	
-	public List<FileInfo> extractZipFile() {
+	@SuppressWarnings("unchecked")
+	public List<FileInfo> extractZipFile() throws IOException{
 		logger.debug("start extracting zip file "+file.getAbsolutePath()+" size "+file.length());
 		List<FileInfo> fileInfos = new ArrayList<FileInfo>();
 
-		try {
-			Enumeration<ZipEntry> entries = zipFile.getEntries();
-			while(entries.hasMoreElements()) {
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				
-				
-				logger.debug(" - name: "+entry.getName());
-				if (!entry.isDirectory()) {
-					File file = TempFileHelper.createTempFile();
-					OutputStream os = new FileOutputStream(file);
-					InputStream is = zipFile.getInputStream(entry);
-					IOUtils.copyLarge(is, os);
-					IOUtils.closeQuietly(os);
-					IOUtils.closeQuietly(is);
-					FileInfo info = new FileInfo();
-					info.setFileName(entry.getName());
-					info.setDescription(entry.getComment());
-					info.setCreated(new Date(entry.getTime()));
-					info.setModified(info.getCreated());
-					info.setContentType("application/octet-stream");
-					info.setInputStream(new FileInputStream(file));
-					info.setFileSize((int)entry.getSize());
-					fileInfos.add(info);
-					files.add(file);
-				}
+		Enumeration<ZipEntry> entries = zipFile.getEntries();
+		while(entries.hasMoreElements()) {
+			ZipEntry entry = (ZipEntry) entries.nextElement();
+			
+			
+			logger.debug(" - name: "+entry.getName());
+			if (!entry.isDirectory()) {
+				File file = TempFileHelper.createTempFile();
+				OutputStream os = new FileOutputStream(file);
+				InputStream is = zipFile.getInputStream(entry);
+				IOUtils.copyLarge(is, os);
+				IOUtils.closeQuietly(os);
+				IOUtils.closeQuietly(is);
+				FileInfo info = new FileInfo();
+				info.setFileName(entry.getName());
+				info.setDescription(entry.getComment());
+				info.setCreated(new Date(entry.getTime()));
+				info.setModified(info.getCreated());
+				info.setContentType("application/octet-stream");
+				info.setInputStream(new FileInputStream(file));
+				info.setFileSize((int)entry.getSize());
+				fileInfos.add(info);
+				files.add(file);
 			}
-		} catch (IOException e) {
-			logger.error(e);
-			throw new RuntimeException(e);
 		}
 		
 		return fileInfos;

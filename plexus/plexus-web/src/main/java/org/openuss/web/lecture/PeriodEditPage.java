@@ -15,6 +15,8 @@ import org.openuss.web.PageLinks;
  * @author Ingo Dueppe
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$universityperiodedit", scope = Scope.REQUEST)
 @View
@@ -23,6 +25,9 @@ public class PeriodEditPage extends AbstractPeriodPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 	

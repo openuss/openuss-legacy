@@ -91,7 +91,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	
 	/**
 	 * Creates a new WorkspaceInfo object and sets it into session scope
-
 	 * @return outcome
 	 */
 	public String addWorkspace() {

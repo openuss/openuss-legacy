@@ -31,8 +31,6 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
-import org.openuss.desktop.DesktopException;
-import org.openuss.desktop.DesktopInfo;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
@@ -43,6 +41,7 @@ import org.openuss.web.statistics.OnlineSessionTracker;
 /**
  * AuthenticationController handles all processes around user login, logout, and forgotten passwords. 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  *
  */
 @Bean(name="authenticationController", scope=Scope.REQUEST)
@@ -181,12 +180,7 @@ public class AuthenticationController extends BasePage {
 			securityService.setLoginTime(user);
 			setSessionBean(Constants.USER_SESSION_KEY, user);
 			
-			try {
-				DesktopInfo desktop = desktopService2.findDesktopByUser(user.getId());
-				setSessionBean(Constants.DESKTOP_INFO, desktop);
-			} catch (DesktopException e) {
-				logger.error(e);
-			}
+			refreshDesktop();
 		}
 	}
 

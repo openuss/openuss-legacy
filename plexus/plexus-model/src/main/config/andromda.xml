@@ -21,6 +21,7 @@
                     <modelPackages processAll="true">
                     	<modelPackage process="false">org::acegisecurity::acl::basic::cache</modelPackage>
                     	<modelPackage process="false">org::acegisecurity::providers::dao</modelPackage>
+                    	<modelPackage process="false">org::openuss::events</modelPackage>
                     	<modelPackage process="false">org::openuss::framework::*</modelPackage>
                     	<modelPackage process="false">org::openuss::migration::legacy::dao</modelPackage>
                     	<modelPackage process="false">org::quartz</modelPackage>

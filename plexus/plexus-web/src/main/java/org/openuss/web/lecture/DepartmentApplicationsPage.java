@@ -19,6 +19,8 @@ import org.openuss.web.Constants;
  * Application page to manage institute application for membership
  * 
  * @author Tianyu Wang
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$departmentapplicationspage", scope = Scope.REQUEST)
 @View
@@ -30,6 +32,9 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 
@@ -49,6 +54,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 
 		private DataPage<ApplicationInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<ApplicationInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
@@ -73,8 +79,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 		InstituteInfo currentInstitute = currentInstitute();
 		logger.debug("Returning to method selectInstitute");
 		logger.debug(currentInstitute.getId());
-		// setSessionBean(Constants.INSTITUTE, institute);
-		setSessionBean(Constants.INSTITUTE_INFO, currentInstitute);
+		setBean(Constants.INSTITUTE_INFO, currentInstitute);
 
 		return Constants.INSTITUTE_PAGE;
 	}

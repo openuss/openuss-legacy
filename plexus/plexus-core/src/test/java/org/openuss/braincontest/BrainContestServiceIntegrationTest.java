@@ -141,32 +141,8 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 	
 	public void testSaveContest() throws BrainContestApplicationException{
-		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
-		assertNotNull(entries);
-		assertEquals(entries.size(), 0);
-		
-		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
-		assertNull(brainContest.getId());
-		
-		brainContestService.createContest(brainContest);
-		flush();
-		
-		assertNotNull(brainContest.getId());
-		assertEquals("testDescription", brainContest.getDescription());
-		assertEquals("testTitle", brainContest.getTitle());
-		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
-
-		entries = brainContestService.getContests(defaultDomainObject);
-		assertEquals(1, entries.size());
-		BrainContestInfo addedContest = entries.get(0);
-		assertEquals(brainContest.getId(), addedContest.getId());
-		assertEquals(brainContest.getTitle(), addedContest.getTitle());
-		assertEquals(brainContest.getDescription(), addedContest.getDescription());
-		assertEquals(brainContest.getReleaseDate(), addedContest.getReleaseDate());
-		assertEquals(brainContest.getSolution(), addedContest.getSolution());
-		assertEquals(brainContest.getTries(), addedContest.getTries());
-		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
+		List<BrainContestInfo> entries;
+		BrainContestInfo addedContest = createAndVerifyBrainContest();
 		
 		DefaultDomainObject newDomain = createDomainObject();
 		Date newDate = new Date(System.currentTimeMillis());		
@@ -198,6 +174,36 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 			fail("BrainContestApplicationException should have been thrown while wrong save");
 		} catch (BrainContestServiceException e) {
 		}			
+	}
+
+	private BrainContestInfo createAndVerifyBrainContest() throws BrainContestApplicationException {
+		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
+		assertNotNull(entries);
+		assertEquals(entries.size(), 0);
+		
+		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
+		assertNull(brainContest.getId());
+		
+		brainContestService.createContest(brainContest);
+		flush();
+		
+		assertNotNull(brainContest.getId());
+		assertEquals("testDescription", brainContest.getDescription());
+		assertEquals("testTitle", brainContest.getTitle());
+		assertEquals(brainContest.getTries().intValue(), 0);
+		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
+
+		entries = brainContestService.getContests(defaultDomainObject);
+		assertEquals(1, entries.size());
+		BrainContestInfo addedContest = entries.get(0);
+		assertEquals(brainContest.getId(), addedContest.getId());
+		assertEquals(brainContest.getTitle(), addedContest.getTitle());
+		assertEquals(brainContest.getDescription(), addedContest.getDescription());
+		assertEquals(brainContest.getReleaseDate(), addedContest.getReleaseDate());
+		assertEquals(brainContest.getSolution(), addedContest.getSolution());
+		assertEquals(brainContest.getTries(), addedContest.getTries());
+		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
+		return addedContest;
 	}
 
 	public void testAttachmentUpdate() throws BrainContestApplicationException {
@@ -290,32 +296,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 	}
 	
 	public void testAnswers() throws BrainContestApplicationException{
-		List<BrainContestInfo> entries = brainContestService.getContests(defaultDomainObject);
-		assertNotNull(entries);
-		assertEquals(entries.size(), 0);
-		
-		BrainContestInfo brainContest = createBrainContestInfo(defaultDomainObject.getId());
-		assertNull(brainContest.getId());
-		
-		brainContestService.createContest(brainContest);		
-		flush();
-
-		assertNotNull(brainContest.getId());
-		assertEquals("testDescription", brainContest.getDescription());
-		assertEquals("testTitle", brainContest.getTitle());
-		assertEquals(brainContest.getTries().intValue(), 0);
-		assertEquals(brainContest.getDomainIdentifier(), defaultDomainObject.getId());
-
-		entries = brainContestService.getContests(defaultDomainObject);
-		assertEquals(1, entries.size());
-		BrainContestInfo addedContest = entries.get(0);
-		assertEquals(brainContest.getId(), addedContest.getId());
-		assertEquals(brainContest.getTitle(), addedContest.getTitle());
-		assertEquals(brainContest.getDescription(), addedContest.getDescription());
-		assertEquals(brainContest.getReleaseDate(), addedContest.getReleaseDate());
-		assertEquals(brainContest.getSolution(), addedContest.getSolution());
-		assertEquals(brainContest.getTries(), addedContest.getTries());
-		assertEquals(brainContest.getDomainIdentifier(), addedContest.getDomainIdentifier());
+		BrainContestInfo addedContest = createAndVerifyBrainContest();
 		
 		User user = testUtility.createUniqueUserInDB();
 		UserInfo userInfo = getSecurityService().getUser(user.getId());
@@ -325,11 +306,11 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, false));
 
 		assertEquals(1, addedContest.getTries().intValue());
-		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
+		brainContestService.getAnswers(addedContest);		
 		//check case wrong answer + no adding to top list
 		assertFalse("Wrong answer handled as right",brainContestService.answer("xxx", userInfo, addedContest, false));
 
-		answers = brainContestService.getAnswers(addedContest);		
+		brainContestService.getAnswers(addedContest);		
 		assertEquals(2, addedContest.getTries().intValue());
 		//check case wrong answer + adding to top list		
 
@@ -340,7 +321,7 @@ public class BrainContestServiceIntegrationTest extends BrainContestServiceInteg
 		assertTrue("Right answer handled as wrong",brainContestService.answer("testSolution", userInfo, addedContest, true));
 		flush();
 
-		answers = brainContestService.getAnswers(addedContest);		
+		Collection<AnswerInfo> answers = brainContestService.getAnswers(addedContest);		
 		assertNotNull(answers);
 		assertEquals(1, answers.size());		
 		answer = answers.iterator().next();

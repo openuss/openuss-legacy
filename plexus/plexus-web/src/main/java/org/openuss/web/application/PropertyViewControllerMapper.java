@@ -27,21 +27,24 @@ public class PropertyViewControllerMapper implements ViewControllerMapper {
 	}
 	
 	public String mapViewId(String viewId) {
-		if (StringUtils.isEmpty(viewId))
+		if (StringUtils.isEmpty(viewId)) {
 			return null;
+		}
 		
 		// remove "/views/" prefix
-		if (viewId.startsWith("/views/"))
+		if (viewId.startsWith("/views/")) {
 			viewId = viewId.substring(7);
+		}
 		
-		int slash = viewId.lastIndexOf("/");
-        int period = viewId.lastIndexOf(".");
+		int slash = viewId.lastIndexOf('/');
+        int period = viewId.lastIndexOf('.');
         if ((period >= 0) && (period > slash)) {
             viewId = viewId.substring(0, period);
         }
         
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
         	logger.debug("look up controller for view "+viewId);
+        }
 		
 		return StringUtils.trim(views.getProperty(viewId));
 	}

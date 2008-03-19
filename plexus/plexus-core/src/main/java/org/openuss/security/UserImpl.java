@@ -5,6 +5,7 @@
  */
 package org.openuss.security;
 
+import java.util.Locale;
 import java.util.Set;
 
 import org.acegisecurity.GrantedAuthority;
@@ -25,14 +26,27 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		setTheme("plexus");
 	}
 	
-	@Override
 	public void setUsername(String username) {
-		super.setUsername(username.toLowerCase().trim());
+		setName(username);
+	}
+
+	public String getUsername() {
+		return super.getName();
 	}
 	
 	@Override
+	public void setName(String name) {
+		if (StringUtils.isNotBlank(name)) {
+			super.setName(name.toLowerCase(Locale.ENGLISH).trim());
+		} else {
+			super.setName("");
+		}
+	}
+
+	
+	@Override
 	public void setEmail(String email) {
-		super.setEmail(email.toLowerCase().trim());
+		super.setEmail(email.toLowerCase(Locale.ENGLISH).trim());
 	}
 
 	/**
@@ -57,6 +71,11 @@ public class UserImpl extends UserBase implements User, UserDetails {
 			return this.getUsername().equals(object);
 		}
 		return super.equals(object);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	/**
@@ -89,11 +108,6 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		} else {
 			return super.toString();
 		}
-	}
-
-	@Override
-	public String getName() {
-		return getUsername();
 	}
 
 	@Override

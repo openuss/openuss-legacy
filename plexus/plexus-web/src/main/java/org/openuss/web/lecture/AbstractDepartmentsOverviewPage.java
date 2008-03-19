@@ -1,10 +1,7 @@
 package org.openuss.web.lecture;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
@@ -28,6 +25,7 @@ import org.openuss.web.Constants;
  * @author Weijun Chen
  * @author Kai Stettner
  * @author Malte Stockmann
+ * @author Sebastian Roekens
  * 
  */
 public abstract class AbstractDepartmentsOverviewPage extends BasePage {
@@ -41,6 +39,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
 
+	@Property(value = "#{departmentInfo}")
+	protected DepartmentInfo departmentInfo;
+	
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
 
@@ -48,7 +49,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	protected OrganisationService organisationService;
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() {
 	}
 
 	protected DepartmentInfo currentDepartment() {
@@ -64,7 +65,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartment() {
 		DepartmentInfo department = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, department);
+		setBean(Constants.DEPARTMENT_INFO, department);
 
 		return Constants.DEPARTMENT_PAGE;
 	}
@@ -77,8 +78,8 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartmentAndConfirmRemove() {
 		logger.debug("Starting method selectDepartmentAndConfirmRemove");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		departmentInfo = currentDepartment();
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 
 		return Constants.DEPARTMENT_CONFIRM_REMOVE_PAGE;
 	}
@@ -91,8 +92,8 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	 */
 	public String selectDepartmentAndConfirmDisable() {
 		logger.debug("Starting method selectDepartmentAndConfirmDisable");
-		DepartmentInfo currentDepartment = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT_INFO, currentDepartment);
+		departmentInfo = currentDepartment();
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 
 		return Constants.DEPARTMENT_CONFIRM_DISABLE_PAGE;
 	}
@@ -126,6 +127,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String shortcutDepartment() throws DesktopException {
 		logger.debug("Starting method shortcutDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
+		if (desktopInfo==null){
+			refreshDesktop();
+		}
 		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
 				.getId());
 
@@ -148,6 +152,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String removeShortcut() {
 		try {
 			DepartmentInfo currentDepartment = currentDepartment();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkDepartment(desktopInfo.getId(),
 					currentDepartment.getId());
 		} catch (Exception e) {
@@ -159,22 +166,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 		return Constants.SUCCESS;
 	}
 
-	protected DataPage<DepartmentInfo> dataPage;
-
-	public abstract DataPage<DepartmentInfo> fetchDataPage(int startRow,
-			int pageSize);
-
-	protected void sort(List<DepartmentInfo> departmentList) {
-		if (StringUtils.equals("shortcut", departments.getSortColumn())) {
-			Collections.sort(departmentList, new ShortcutComparator());
-		} else if (StringUtils.equals("city", departments.getSortColumn())) {
-			Collections.sort(departmentList, new CityComparator());
-		} else if (StringUtils.equals("country", departments.getSortColumn())) {
-			Collections.sort(departmentList, new CountryComparator());
-		} else {
-			Collections.sort(departmentList, new NameComparator());
-		}
-	}
+	public abstract List<DepartmentInfo> fetchDepartmentList(int startRow, int pageSize);
 
 	public DepartmentService getDepartmentService() {
 		return departmentService;
@@ -194,49 +186,9 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 
 	/* ----------- departments sorting comparators ------------- */
 
-	protected class NameComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getName().compareToIgnoreCase(f2.getName());
-			} else {
-				return f2.getName().compareToIgnoreCase(f1.getName());
-			}
-		}
-	}
-
-	protected class CityComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getCity().compareToIgnoreCase(f2.getCity());
-			} else {
-				return f2.getCity().compareToIgnoreCase(f1.getCity());
-			}
-		}
-	}
-
-	protected class CountryComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getCountry().compareToIgnoreCase(f2.getCountry());
-			} else {
-				return f2.getCountry().compareToIgnoreCase(f1.getCountry());
-			}
-		}
-	}
-
-	protected class ShortcutComparator implements Comparator<DepartmentInfo> {
-		public int compare(DepartmentInfo f1, DepartmentInfo f2) {
-			if (departments.isAscending()) {
-				return f1.getShortcut().compareToIgnoreCase(f2.getShortcut());
-			} else {
-				return f2.getShortcut().compareToIgnoreCase(f1.getShortcut());
-			}
-		}
-	}
-
 	public String confirmRemoveDepartment() {
 		DepartmentInfo departmentInfo = currentDepartment();
-		setSessionBean(Constants.DEPARTMENT, departmentInfo);
+		setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		return "removed";
 	}
 
@@ -256,11 +208,26 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 
 		protected static final long serialVersionUID = -6077435481342714879L;
 
+		DataPage<DepartmentInfo> page;
+		
 		@Override
 		public DataPage<DepartmentInfo> getDataPage(int startRow, int pageSize) {
-			return fetchDataPage(startRow, pageSize);
+			if (page == null) {
+				List<DepartmentInfo> departmentList = fetchDepartmentList(startRow, pageSize);
+				sort(departmentList);
+				page = new DataPage<DepartmentInfo>(departmentList.size(),0,departmentList);
+			}
+			return page;
 		}
 
+	}
+
+	public DepartmentInfo getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(DepartmentInfo departmentInfo) {
+		this.departmentInfo = departmentInfo;
 	}
 
 }

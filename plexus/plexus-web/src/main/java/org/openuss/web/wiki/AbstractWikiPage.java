@@ -68,6 +68,8 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
 		wikiBreadCrumb.setName(i18n(Constants.WIKI_MAIN_HEADER));
 		wikiBreadCrumb.setHint(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.addParameter("course",courseInfo.getId());
+		wikiBreadCrumb.addParameter("page", Constants.WIKI_STARTSITE_NAME);
 		breadcrumbs.addCrumb(wikiBreadCrumb);
 		
 		if (siteVersionInfo != null && siteVersionInfo.getName() != null) {

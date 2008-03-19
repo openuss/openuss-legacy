@@ -26,10 +26,12 @@ public class BrainContestImpl extends BrainContestBase implements BrainContest {
 	/**
 	 * @see org.openuss.braincontest.BrainContest#getAnswersCount()
 	 */
-	public java.lang.Integer getAnswersCount() {
-		if (getAnswers() == null)
+	public Integer getAnswersCount() {
+		if (getAnswers() == null) {
 			return 0;
-		return getAnswers().size();
+		} else {
+			return getAnswers().size();
+		}
 	}
 
 	@Override

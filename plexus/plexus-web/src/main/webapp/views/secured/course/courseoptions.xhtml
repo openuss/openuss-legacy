@@ -29,12 +29,13 @@
  		 
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
-	  			<o:block label="#{msg.course_options_headline} - #{sessionScope.courseInfo.name} - #{sessionScope.courseInfo.periodName}" styleClass="form_box">
-					<o:input id="shortcut" forceId="true" entity="courseInfo" property="shortcut" maxlength="30" required="true"/>
+				<t:saveState value="#{courseOptionInfo}"/>
+	  			<o:block label="#{msg.course_options_headline} - #{courseOptionsInfo.name} - #{courseOptionsInfo.periodName}" styleClass="form_box">
+					<o:input entity="courseOptionsInfo" id="shortcut" forceId="true" property="shortcut" maxlength="30" required="true"/>
 					<h:outputLabel for="accessType" value="#{msg.course_options_access_headline}" styleClass="field_label"/>
 					<t:selectOneMenu id="accessType" forceId="true"
 						layout="pageDirection" 
-						value="#{sessionScope.courseInfo.accessType}" 
+						value="#{courseOptionsInfo.accessType}" 
 						valueChangeListener="#{views$secured$course$courseoptions.processAccessTypeChanged}" 
 						onchange="this.form.submit();"
 						immediate="true" 
@@ -43,26 +44,28 @@
 						<f:selectItems value="#{views$secured$course$courseoptions.accessTypes}"/>
 					</t:selectOneMenu>
 					<h:message for="accessType" styleClass="field_error"/>
-					<c:if test="#{sessionScope.courseInfo.accessType.value == 3}">
-		 				<o:input id="password" forceId="true" entity="courseInfo" property="password" required="true"/>
+					<c:if test="#{courseOptionsInfo.accessType.value == 3}">
+		 				<o:input id="password" forceId="true" entity="courseOptionsInfo" property="password" required="true"/>
 	 				</c:if> 				
 					
 					<h:outputText value="#{msg.course_description}" styleClass="field_label"/>					
 					<div class="content_iframe">
-						<fck:editor value="#{sessionScope.courseInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300" />	 				
+						<fck:editor value="#{courseOptionsInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300">
+							<f:converter converterId="xssFilter"/>
+						</fck:editor>	 				
 					</div>
 	 				
 					<h:outputText value="#{msg.course_options_features_headline}" styleClass="header_font_normal"/>
 					<div class="content_font_normal">
-						<o:input entity="courseInfo" property="documents" forceId="true"/>
-						<o:input entity="courseInfo" property="discussion" forceId="true"/>
-						<o:input entity="courseInfo" property="newsletter" forceId="true"/>
-						<o:input entity="courseInfo" property="chat" forceId="true"/>
-						<o:input entity="courseInfo" property="braincontest" forceId="true"/>
-						<o:input entity="courseInfo" property="freestylelearning" forceId="true"/>
-						<o:input entity="courseInfo" property="wiki" forceId="true"/>
-	 					<o:input entity="courseInfo" property="papersubmission" disabled="#{sessionScope.courseInfo.accessType.value != 3 and sessionScope.courseInfo.accessType.value != 4}" forceId="true"/>
-                       	<o:input entity="courseInfo" property="collaboration" disabled="#{sessionScope.courseInfo.accessType.value != 3 and sessionScope.courseInfo.accessType.value != 4}" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="documents" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="discussion" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="newsletter" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="chat" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="braincontest" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="freestylelearning" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="wiki" forceId="true"/>
+	 					<o:input entity="courseOptionsInfo" property="papersubmission" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+                       	<o:input entity="courseOptionsInfo" property="collaboration" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
 					</div>
 				</o:block>
 				<o:block>

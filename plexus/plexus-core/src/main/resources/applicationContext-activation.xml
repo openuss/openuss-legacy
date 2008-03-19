@@ -10,7 +10,7 @@
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	 
 	 <bean name="instituteActivationCommand" class="org.openuss.lecture.InstituteActivationCommand">
-	 	<property name="instituteDao" ref="instituteDao"/>
+	 	<property name="instituteService" ref="instituteService"/>
 	 </bean>
 
 </beans>

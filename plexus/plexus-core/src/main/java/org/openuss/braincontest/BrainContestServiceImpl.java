@@ -51,29 +51,34 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	private void verifiyPermissionsOnEntries(DomainObject domainObject, List<BrainContest> contests) {
 		logger.debug("verify permissions on entries");
 		if (!AcegiUtils.hasPermission(domainObject, new Integer[] { LectureAclEntry.ASSIST })) {
-			CollectionUtils.filter(contests, new Predicate() {
-				public boolean evaluate(Object object) {
-					if (object instanceof BrainContestInfo) {
-						return ((BrainContestInfo) object).isReleased();
-					} else if (object instanceof BrainContest) {
-						return ((BrainContest) object).isReleased();
-					} else {
-						return false;
-					}
-				}
-			});
+			CollectionUtils.filter(contests, new ReleasedPredicate());
+		}
+	}
+
+	private static final class ReleasedPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			if (object instanceof BrainContestInfo) {
+				return ((BrainContestInfo) object).isReleased();
+			} else if (object instanceof BrainContest) {
+				return ((BrainContest) object).isReleased();
+			} else {
+				return false;
+			}
 		}
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getContest(org.openuss.braincontest.BrainContestInfo)
 	 */
+	@SuppressWarnings("unchecked")
 	protected BrainContestInfo handleGetContest(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest.getId(), "Parameter contest must provide an identifier.");
 		BrainContestInfo bci = (BrainContestInfo) getBrainContestDao().load(BrainContestDao.TRANSFORM_BRAINCONTESTINFO,
 				contest.getId());
-		List<FileInfo> attachments = getAttachments(bci);
-		bci.setAttachments(attachments);
+		if (bci!=null) {
+			List<FileInfo> attachments = getAttachments(bci);
+			bci.setAttachments(attachments);
+		}
 		return bci;
 	}
 
@@ -94,7 +99,6 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		if (contest.getAttachments() != null && !contest.getAttachments().isEmpty()) {
 			logger.debug("found "+contest.getAttachments().size()+" attachments.");
 			FolderInfo folder = getDocumentService().getFolder(brainContest);
-
 			for (FileInfo attachment : contest.getAttachments()) {
 				getDocumentService().createFileEntry(attachment, folder);
 			}
@@ -160,49 +164,51 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	}
 
 	/**
+	 * @throws BrainContestApplicationException 
 	 * @see org.openuss.braincontest.BrainContestService#answer(java.lang.String,
 	 *      org.openuss.security.User,
 	 *      org.openuss.braincontest.BrainContestInfo, boolean)
 	 */
-	protected boolean handleAnswer(String answer, UserInfo user, BrainContestInfo contest, boolean topList)
-			throws Exception {
+	@SuppressWarnings("unchecked")
+	protected boolean handleAnswer(String answer, UserInfo user, BrainContestInfo contest, boolean topList) throws BrainContestApplicationException {
 		Validate.notNull(answer, "Answer must not be null");
 		Validate.notNull(user, "User must not be null");
 		Validate.notNull(contest, "Contest must not be null");
 
-		BrainContest bc = getBrainContestDao().load(contest.getId());
+		BrainContest brainContest = getBrainContestDao().load(contest.getId());
 
 		// TODO findByContestAndSolver should only return one instance
 		// There fore the answer id is a composite id of contest and solver
-		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(getSecurityService().getUserObject(user), bc);
-		if (checkIfAnswered.size() > 0) {
+		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(getSecurityService().getUserObject(user), brainContest);
+		if (!checkIfAnswered.isEmpty()) {
 			throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
 		}
 
-		boolean valid = bc.validateAnswer(answer);
+		boolean valid = brainContest.validateAnswer(answer);
 
 		if (valid && topList) {
 			Answer answerObject = Answer.Factory.newInstance();
 			answerObject.setAnsweredAt(new Date(System.currentTimeMillis()));
 			answerObject.setSolver(getSecurityService().getUserObject(user));
-			bc.addAnswer(answerObject);
+			brainContest.addAnswer(answerObject);
 		}
-		getBrainContestDao().update(bc);
+		getBrainContestDao().update(brainContest);
 
 		// refresh given object
-		getBrainContestDao().toBrainContestInfo(bc, contest);
+		getBrainContestDao().toBrainContestInfo(brainContest, contest);
 		return valid;
 	}
 
 	/**
 	 * @see org.openuss.braincontest.BrainContestService#getAnswers(org.openuss.braincontest.BrainContestInfo)
 	 */
+	@SuppressWarnings("unchecked")
 	protected List<AnswerInfo> handleGetAnswers(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest, "Contest must not be null");
 
-		BrainContest bc = getBrainContestDao().load(contest.getId());
+		BrainContest brainContest = getBrainContestDao().load(contest.getId());
 
-		List<?> answers = new ArrayList<Answer>(bc.getAnswers());
+		List<?> answers = new ArrayList<Answer>(brainContest.getAnswers());
 		getAnswerDao().toAnswerInfoCollection(answers);
 		return (List<AnswerInfo>)answers;
 	}
@@ -211,8 +217,8 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	protected void handleRemoveContest(BrainContestInfo contest) throws Exception {
 		Validate.notNull(contest, "Contest must not be null");
 
-		BrainContest bc = getBrainContestDao().load(contest.getId());
-		getBrainContestDao().remove(bc);
+		BrainContest brainContest = getBrainContestDao().load(contest.getId());
+		getBrainContestDao().remove(brainContest);
 		getSecurityService().removeObjectIdentity(contest);
 	}
 

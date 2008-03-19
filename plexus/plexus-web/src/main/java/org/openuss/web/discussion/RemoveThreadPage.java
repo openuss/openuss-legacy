@@ -17,21 +17,27 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (!isAssistant()){
 			addError(i18n("error_access_denied_details"));
 			redirect(Constants.DISCUSSION_MAIN);	
+			return;
 		}
 		if (topic != null && topic.getId() != null) {
 			topic = discussionService.getTopic(topic);
-			setSessionBean(Constants.DISCUSSION_TOPIC, topic);
+			setBean(Constants.DISCUSSION_TOPIC, topic);
 		}
 		if (topic == null || topic.getId() == null) {
 			addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
 			redirect(Constants.DISCUSSION_MAIN);
+			return;
 		} else {
 			if (!topic.getForumId().equals(forum.getId())){
 				addError(i18n(Constants.DISCUSSION_THREAD_NOT_FOUND));
 				redirect(Constants.DISCUSSION_MAIN);
+				return;
 			}
 			addPageCrumb();
 		}		
@@ -45,6 +51,7 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 	}
 	
 	public String removeThread(){
+		topic = discussionService.getTopic(topic);
 		discussionService.deleteTopic(topic);
 		addMessage(i18n("discussion_topic_deleted", topic.getTitle()));
 		return Constants.DISCUSSION_MAIN;
@@ -60,7 +67,9 @@ public class RemoveThreadPage extends AbstractDiscussionPage{
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}

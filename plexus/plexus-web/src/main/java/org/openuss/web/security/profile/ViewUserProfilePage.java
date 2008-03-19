@@ -15,6 +15,8 @@ import org.openuss.web.Constants;
  * ViewUserProfile page to display user profile informations
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$user$userprofile", scope = Scope.REQUEST)
 @View
@@ -42,6 +44,7 @@ public class ViewUserProfilePage extends BasePage {
 			
 			addError(i18n("user_profile_notexisting"));
 			redirect(Constants.DESKTOP);
+			return;
 		}
 
 		breadcrumbs.loadProfileCrumbs();

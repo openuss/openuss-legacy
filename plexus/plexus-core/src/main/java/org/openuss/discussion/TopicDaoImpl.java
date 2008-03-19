@@ -12,8 +12,10 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.openuss.security.User;
 import org.openuss.viewtracking.ViewState;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
  * @see org.openuss.discussion.Topic
@@ -98,8 +100,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			" FROM DISCUSSION_TOPIC as topic LEFT OUTER JOIN TRACKING_VIEWSTATE as v " +
 			" ON topic.id = v.DOMAIN_IDENTIFIER and v.USER_IDENTIFIER = :userId " +
 			" WHERE topic.FORUM_FK = :forumId ";
-		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
-			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createSQLQuery(queryString);
 				queryObject.setParameter("forumId", forum.getId());
 				queryObject.setParameter("userId", user.getId());
@@ -139,8 +141,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
 			" and tw.topic.id = v.domainViewStatePk.domainIdentifier and tw.user.id = v.domainViewStatePk.userIdentifier" +
 			" and u = tw.user";			
-		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
-			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createQuery(queryString);
 				queryObject.setParameter("topicId", topic.getId());				
 				queryObject.setParameter("viewStateRead", ViewState.READ);
@@ -166,8 +168,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
 			" and fw.user.id = v.domainViewStatePk.userIdentifier" +
 			" and u = fw.user and fw.forum.id = :forumId";
-		return (List) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
-			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
+		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createQuery(queryString);
 				queryObject.setParameter("forumId", forum.getId());				
 				queryObject.setParameter("topicId", topic.getId());				

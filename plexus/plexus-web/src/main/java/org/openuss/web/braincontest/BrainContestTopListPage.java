@@ -28,24 +28,22 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (!isPostBack()) {
-			if (getBrainContest() != null && getBrainContest().getId() != null) {
-				setBrainContest(getBrainContestService().getContest(getBrainContest()));
-			}
-			if (getBrainContest() == null || getBrainContest().getId() == null) {
-				addError(i18n("braincontest_message_contest_not_found"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
+		if (isRedirected()){
+			return;
+		}		
+		if (getBrainContest() == null || getBrainContest().getId() == null) {
+			addError(i18n("braincontest_message_contest_not_found"));
+			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
 		}
-		if (getBrainContest() != null) {
-			if (!getBrainContest().isReleased()&&!isAssistant()) {
-				addError(i18n("braincontest_message_contest_not_released"));
-				redirect(Constants.BRAINCONTEST_MAIN);
-			}
+		if (getBrainContest() != null && !getBrainContest().isReleased()&&!isAssistant()) {
+			addError(i18n("braincontest_message_contest_not_released"));
+			redirect(Constants.BRAINCONTEST_MAIN);
+			return;
 		}
 		addPageCrumb();
 	}
-	
+
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
@@ -53,11 +51,11 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 		crumb.setHint(i18n("braincontest_toplist_header"));
 		breadcrumbs.addCrumb(crumb);
 	}
-		
+
 	private class BrainContestTopListDataProvider extends AbstractPagedTable<AnswerInfo> {
 
 		private static final long serialVersionUID = -6154567464715182827L;
-		
+
 		private DataPage<AnswerInfo> page;
 
 		@SuppressWarnings("unchecked")
@@ -66,7 +64,7 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 			if (page == null) {
 				logger.debug("fetching answers");
 				List<AnswerInfo> answers = getBrainContestService().getAnswers(getBrainContest());
-				page = new DataPage<AnswerInfo>(answers.size(), 0, answers);				
+				page = new DataPage<AnswerInfo>(answers.size(), 0, answers);
 			}
 			return page;
 		}

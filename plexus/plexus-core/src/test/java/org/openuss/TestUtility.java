@@ -51,6 +51,8 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class TestUtility {
 
+	private static final String USERNAME = "username";
+
 	private UserDao userDao;
 
 	private GroupDao groupDao;
@@ -83,7 +85,7 @@ public class TestUtility {
 	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
 	 */
 	public User createDefaultUserInDB() {
-		defaultUser.setUsername(unique("username"));
+		defaultUser.setUsername(unique(USERNAME));
 		defaultUser.setGroups(new ArrayList<Group>());
 		userDao.create(defaultUser);
 		return defaultUser;
@@ -124,7 +126,7 @@ public class TestUtility {
 	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createPersistInstituteWithDefaultUser() {
-		defaultUser.setUsername(unique("username"));
+		defaultUser.setUsername(unique(USERNAME));
 		defaultUser.setFirstName("firstName");
 		defaultUser.setLastName("lastName");
 		defaultUser.setTitle("title");
@@ -145,7 +147,7 @@ public class TestUtility {
 	public User createUniqueUserInDB() {
 		// Create a unique User
 		User user = User.Factory.newInstance();
-		user.setUsername(unique("username"));
+		user.setUsername(unique(USERNAME));
 		user.setPassword("masterkey");
 		user.setEmail(unique("openuss") + "@e-learning.uni-muenster.de");
 		user.setEnabled(true);
@@ -206,7 +208,7 @@ public class TestUtility {
 		university.setAddress("Leo 18");
 		university.setCity("Münster");
 		university.setCountry("Germany");
-		university.setEmail("openuss@uni-muenster.de");
+		university.setEmail(unique("openuss@uni-muenster.de"));
 		university.setLocale("de");
 		university.setPostcode("48149");
 		university.setTelefax("0251-telefax");
@@ -636,7 +638,7 @@ public class TestUtility {
 	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
 	 */
 	public Institute createdDefaultInstituteWithStoredUser() {
-		defaultUser.setUsername(unique("username"));
+		defaultUser.setUsername(unique(USERNAME));
 		userDao.create(defaultUser);
 		defaultInstitute.setName(unique("name"));
 		defaultInstitute.setShortcut(unique("shortcut"));
@@ -657,7 +659,7 @@ public class TestUtility {
 	}
 
 	private User createSecureContext(Long roleId) {
-		String username = unique("username");
+		String username = unique(USERNAME);
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 		String password = encoder.encodePassword("password", null);
 
@@ -667,7 +669,7 @@ public class TestUtility {
 		user.setFirstName("firstName");
 		user.setLastName("lastName");
 		user.setTitle("title");
-		user.setEmail("email");
+		user.setEmail(unique("email"));
 		user.setEnabled(true);
 		Group group = groupDao.load(roleId);
 		user.addGroup(group);
@@ -691,7 +693,7 @@ public class TestUtility {
 	 */
 	public User createDefaultUser() {
 		User user = User.Factory.newInstance();
-		user.setUsername(unique("username"));
+		user.setUsername(unique(USERNAME));
 		user.setFirstName("firstName");
 		user.setLastName("lastName");
 		user.setPassword("password");

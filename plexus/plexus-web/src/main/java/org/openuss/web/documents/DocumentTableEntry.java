@@ -11,7 +11,7 @@ public class DocumentTableEntry implements Serializable {
 
 	private static final long serialVersionUID = -3053386731692416783L;
 
-	public String filename;
+	public String fileName;
 
 	public String mimeType;
 
@@ -26,7 +26,7 @@ public class DocumentTableEntry implements Serializable {
 	public Boolean marked;
 
 	public DocumentTableEntry(String filename, String mimeType, String size, Date lastChange, Date created, boolean viewed) {
-		this.filename = filename;
+		this.fileName = filename;
 		this.mimeType = mimeType;
 		this.size = size;
 		this.lastChange = new Date(lastChange.getTime());
@@ -42,12 +42,12 @@ public class DocumentTableEntry implements Serializable {
 		this.created = new Date(created.getTime());
 	}
 
-	public String getFilename() {
-		return filename;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFilename(String filename) {
-		this.filename = filename;
+	public void setFileName(String filename) {
+		this.fileName = filename;
 	}
 
 	public Date getLastChange() {

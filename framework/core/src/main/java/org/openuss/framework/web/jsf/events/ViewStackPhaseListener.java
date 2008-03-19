@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
  * ViewStackPhaseListener main the view stack of the visit views of the user
  *  
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 public class ViewStackPhaseListener implements PhaseListener {
 
@@ -31,6 +32,8 @@ public class ViewStackPhaseListener implements PhaseListener {
 		
 		if (event.getFacesContext().getViewRoot() != null) {
 			viewId = event.getFacesContext().getViewRoot().getViewId();
+			viewId = event.getFacesContext().getApplication().getViewHandler().getActionURL(event.getFacesContext(), viewId);
+			viewId = viewId.substring(event.getFacesContext().getExternalContext().getRequestContextPath().length());
 		}
 		
 		if (StringUtils.isNotBlank(viewId)) {

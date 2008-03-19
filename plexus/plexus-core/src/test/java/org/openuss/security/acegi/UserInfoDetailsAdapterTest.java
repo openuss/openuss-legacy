@@ -1,16 +1,18 @@
 package org.openuss.security.acegi;
 
+import junit.framework.TestCase;
+
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.UserDetails;
+import org.openuss.foundation.DefaultDomainObject;
+import org.openuss.foundation.DomainObject;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
-
-import junit.framework.TestCase;
 
 public class UserInfoDetailsAdapterTest extends TestCase {
 
 	public void testGetAuthorities() {
-		UserDetails details = createUserDetailsObject();
+		UserInfoDetailsAdapter details = createUserDetailsObject();
 
 		assertEquals("username", details.getUsername());
 		assertEquals("password", details.getPassword());
@@ -19,21 +21,23 @@ public class UserInfoDetailsAdapterTest extends TestCase {
 		assertNotNull(authorities);
 		assertEquals(3, authorities.length);
 		
-		assertTrue(authorities[0].equals("ROLE_USER"));
-		assertTrue(authorities[1].equals("ROLE_ADMIN"));
-		assertTrue(authorities[2].equals("SECURE"));
-		assertFalse(authorities[2].equals("ROLE_ADMIN"));
+		assertTrue(authorities[0].getAuthority().equals("ROLE_USER"));
+		assertTrue(authorities[1].getAuthority().equals("ROLE_ADMIN"));
+		assertTrue(authorities[2].getAuthority().equals("SECURE"));
+		assertFalse(authorities[2].getAuthority().equals("ROLE_ADMIN"));
 		
 		assertTrue(authorities[1].equals(authorities[1]));
+		
+		DomainObject domainObject = new DefaultDomainObject(120L);
+		assertTrue(details.equals(domainObject));
 	}
 
-	private UserDetails createUserDetailsObject() {
+	private UserInfoDetailsAdapter createUserDetailsObject() {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(120L);
 		userInfo.setUsername("username");
 		userInfo.setPassword("password");
-		UserDetails details = new UserInfoDetailsAdapter(userInfo,new String[]{"ROLE_USER","ROLE_ADMIN","SECURE"});
-		return details;
+		return new UserInfoDetailsAdapter(userInfo,new String[]{"ROLE_USER","ROLE_ADMIN","SECURE"});
 	}
 	
 	/**

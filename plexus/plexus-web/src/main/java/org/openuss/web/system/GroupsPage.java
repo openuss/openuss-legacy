@@ -45,6 +45,7 @@ public class GroupsPage extends BasePage{
 		
 		private DataPage<GroupItem> page;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<GroupItem> getDataPage(int startRow, int pageSize) {
 			if (page == null){

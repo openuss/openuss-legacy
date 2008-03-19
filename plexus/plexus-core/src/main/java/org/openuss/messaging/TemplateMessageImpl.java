@@ -30,12 +30,7 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 		Validate.notEmpty(name, "Parameter name must not be null");
 		Validate.notEmpty(value, "Parameter value must not be null");
 
-		TemplateParameter parameter = (TemplateParameter) CollectionUtils.find(getParameters(), new Predicate() {
-			public boolean evaluate(Object object) {
-				TemplateParameter param = (TemplateParameter) object;
-				return StringUtils.equals(name, param.getName());
-			}
-		});
+		TemplateParameter parameter = (TemplateParameter) CollectionUtils.find(getParameters(), new ParameterNamePredicate(name));
 		
 		if (parameter == null) {
 			parameter = TemplateParameter.Factory.newInstance();
@@ -84,6 +79,19 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 			params.put(param.getName(), param.getValue());
 		}
 		return params;
+	}
+
+	private static final class ParameterNamePredicate implements Predicate {
+		private final String name;
+	
+		private ParameterNamePredicate(String name) {
+			this.name = name;
+		}
+	
+		public boolean evaluate(Object object) {
+			TemplateParameter param = (TemplateParameter) object;
+			return StringUtils.equals(name, param.getName());
+		}
 	}
 	
 	

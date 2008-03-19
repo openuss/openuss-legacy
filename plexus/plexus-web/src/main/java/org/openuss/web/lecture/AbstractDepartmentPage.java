@@ -7,6 +7,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
@@ -17,6 +18,8 @@ import org.openuss.web.Constants;
  * @author Kai Stettner
  * @author Tianyu Wang
  * @author Weijun Chen
+ * @author Sebastian Roekens
+ * 
  */
 public abstract class AbstractDepartmentPage extends BasePage {
 
@@ -30,9 +33,14 @@ public abstract class AbstractDepartmentPage extends BasePage {
 
 	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
+	
+	@Property (value="#{"+Constants.UNIVERSITY_INFO+"}")
+	private UniversityInfo universityInfo;
+	
+	
 
 	/**
-	 * Refreshing department VO
+	 * Refreshing department VO before apply values phase to be sure that request objects are restored.
 	 * 
 	 * @throws Exception
 	 */
@@ -40,15 +48,7 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	public void preprocess() throws Exception {
 		super.preprocess();
 		logger.debug("preprocess - refreshing department session object");
-		if (departmentInfo != null) {
-			if (departmentInfo.getId() != null) {
-				departmentInfo = departmentService.findDepartment(departmentInfo.getId());
-			} else {
-				departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
-			}
-		}
-
-		setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
+		refreshDepartment();
 	}
 
 	@Prerender
@@ -58,15 +58,14 @@ public abstract class AbstractDepartmentPage extends BasePage {
 		if (departmentInfo == null || departmentInfo.getId() == null) {
 			addError(i18n("message_error_no_department_selected"));
 			redirect(Constants.DESKTOP);
+			return;
 		}
 	}
 
 	private void refreshDepartment() {
-		if (departmentInfo != null) {
-			if (departmentInfo.getId() != null) {
-				departmentInfo = departmentService.findDepartment(departmentInfo.getId());
-				setSessionBean(Constants.DEPARTMENT_INFO, departmentInfo);
-			}
+		if (departmentInfo != null && departmentInfo.getId() != null) {
+			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
+			setBean(Constants.DEPARTMENT_INFO, departmentInfo);
 		}
 	}
 
@@ -102,6 +101,14 @@ public abstract class AbstractDepartmentPage extends BasePage {
 
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
+	}
+
+	public UniversityInfo getUniversityInfo() {
+		return universityInfo;
+	}
+
+	public void setUniversityInfo(UniversityInfo universityInfo) {
+		this.universityInfo = universityInfo;
 	}
 
 }

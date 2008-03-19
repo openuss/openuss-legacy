@@ -163,18 +163,7 @@
         <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property>
         <property name="objectDefinitionSource">
             <value>
-                org.openuss.lecture.LectureService.getInstitutes=ROLE_ADMIN, ROLE_USER, ACL_INSTITUTE_READ
-                org.openuss.lecture.LectureService.getInstitute=ACL_INSTITUTE_READ
-                org.openuss.lecture.LectureService.getCourseType=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.getPeriod=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.getCourse=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.persist=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.add=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.removeInstitute=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.removeCourseType=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.removePeriod=ROLE_ADMIN, ROLE_USER
-                org.openuss.lecture.LectureService.removeCourse=ROLE_ADMIN, ROLE_USER
-                
+
                 org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
                 org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
                 org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ADMIN
@@ -189,6 +178,7 @@
                 org.openuss.lecture.OrganisationService.setOrganisationEnabled=ROLE_ADMIN
                 org.openuss.lecture.InstituteService.setInstituteStatus=ROLE_ADMIN
                 org.openuss.lecture.InstituteService.removeCompleteInstituteTree=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.findInstitute=ROLE_USER, ROLE_ADMIN
             </value>
         </property>
     </bean>

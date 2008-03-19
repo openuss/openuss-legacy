@@ -8,7 +8,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.web.Constants;
-import org.openuss.wiki.WikiSiteContentInfo;
 
 /**
  * Backing Bean for wikiedit.xhtml.

@@ -15,10 +15,13 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public void prerender() throws LectureException 
 	{
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addBreadCrumbs();
 	}
 	
-	private void addBreadCrumbs()
+	private void addBreadCrumbs() 
 	{
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
 	}
@@ -32,6 +35,9 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public String addShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("department_error_shortcut"), e.getMessage());
@@ -49,6 +55,9 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public String removeShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkDepartment(desktopInfo.getId(), departmentInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("department_error_remove_shortcut"), e.getMessage());

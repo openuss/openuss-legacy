@@ -62,7 +62,8 @@ public class BreadCrumbs extends BaseBean {
 	public BreadCrumbs() {
 		super();
 		organisationHierarchy = new OrganisationHierarchy();
-		init();
+		rendered = true;
+		breadcrumbs = null;
 	}
 
 	/*
@@ -86,7 +87,7 @@ public class BreadCrumbs extends BaseBean {
 	 */
 	public List<BreadCrumb> getCrumbs() {
 		if (breadcrumbs == null) {
-			breadcrumbs = getBaseCrumbs();
+			breadcrumbs = newBaseCrumbs();
 		}
 		return breadcrumbs;
 	}
@@ -115,11 +116,10 @@ public class BreadCrumbs extends BaseBean {
 
 	// Startpage Crumb Generation
 
-	private List<BreadCrumb> getBaseCrumbs() {
+	private List<BreadCrumb> newBaseCrumbs() {
 		List<BreadCrumb> crumbs = new ArrayList<BreadCrumb>();
 
 		BreadCrumb baseCrumb = new BreadCrumb();
-
 		baseCrumb.setName(i18n("home"));
 		baseCrumb.setHint(i18n("home"));
 		baseCrumb.setLink(PageLinks.START_PAGE);
@@ -140,30 +140,27 @@ public class BreadCrumbs extends BaseBean {
 		 * (UniversityService)binding.getValue(getFacesContext());
 		 */
 
-		if (universityService == null)
+		if (universityService == null) {
 			return getEmptyList();
+		}
 
 		UniversityInfo info = universityService.findUniversity(universityId);
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		BreadCrumb universityCrumb = getUniversityCrumb(info);
-
-		assert crumbs != null;
-		crumbs.add(universityCrumb);
+		List<BreadCrumb> crumbs = newBaseCrumbs();
+		crumbs.add(getUniversityCrumb(info));
 		return crumbs;
 	}
 
 	private List<BreadCrumb> getUniversityCrumbs(UniversityInfo info) {
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		BreadCrumb universityCrumb = getUniversityCrumb(info);
-
-		assert crumbs != null;
-		crumbs.add(universityCrumb);
+		List<BreadCrumb> crumbs = newBaseCrumbs();
+		crumbs.add(getUniversityCrumb(info));
 		return crumbs;
 	}
 
@@ -189,42 +186,42 @@ public class BreadCrumbs extends BaseBean {
 		 * DepartmentService departmentService =
 		 * (DepartmentService)binding.getValue(getFacesContext());
 		 */
-		if (departmentService == null)
+		if (departmentService == null) {
 			return getEmptyList();
+		}
 
 		DepartmentInfo info = departmentService.findDepartment(departmentId);
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getUniversityInfo() != null)
+		if (organisationHierarchy.getUniversityInfo() != null) {
 			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
-		else
+		} else {
 			crumbs = getUniversityCrumbs(info.getUniversityId());
-
-		BreadCrumb departmentCrumb = getDepartmentCrumb(info);
-
+		}
 		assert crumbs != null;
-		crumbs.add(departmentCrumb);
+		crumbs.add(getDepartmentCrumb(info));
 		return crumbs;
 	}
 
 	private List<BreadCrumb> getDepartmentCrumbs(DepartmentInfo info) {
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getUniversityInfo() != null)
+		if (organisationHierarchy.getUniversityInfo() != null) {
 			crumbs = getUniversityCrumbs(organisationHierarchy.getUniversityInfo());
-		else
+		} else {
 			crumbs = getUniversityCrumbs(info.getUniversityId());
-
-		BreadCrumb departmentCrumb = getDepartmentCrumb(info);
+		}
 
 		assert crumbs != null;
-		crumbs.add(departmentCrumb);
+		crumbs.add(getDepartmentCrumb(info));
 		return crumbs;
 	}
 
@@ -252,37 +249,40 @@ public class BreadCrumbs extends BaseBean {
 		 * (InstituteService)binding.getValue(getFacesContext());
 		 */
 
-		if (instituteService == null)
+		if (instituteService == null) {
 			return getEmptyList();
+		}
 
 		InstituteInfo info = instituteService.findInstitute(instituteId);
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getDepartmentInfo() != null)
+		if (organisationHierarchy.getDepartmentInfo() != null) {
 			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
-		else
+		} else {
 			crumbs = getDepartmentCrumbs(info.getDepartmentId());
-
-		BreadCrumb instituteCrumb = getInstituteCrumb(info);
+		}
 
 		assert crumbs != null;
-		crumbs.add(instituteCrumb);
+		crumbs.add(getInstituteCrumb(info));
 		return crumbs;
 	}
 
 	private List<BreadCrumb> getInstituteCrumbs(InstituteInfo info) {
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getDepartmentInfo() != null)
+		if (organisationHierarchy.getDepartmentInfo() != null) {
 			crumbs = getDepartmentCrumbs(organisationHierarchy.getDepartmentInfo());
-		else
+		} else {
 			crumbs = getDepartmentCrumbs(info.getDepartmentId());
+		}
 
 		BreadCrumb instituteCrumb = getInstituteCrumb(info);
 
@@ -302,16 +302,23 @@ public class BreadCrumbs extends BaseBean {
 		return instituteCrumb;
 	}
 
-	private List<BreadCrumb> getCourseCrumbs(CourseInfo info) {
-		if (info == null)
+	/**
+	 * Generates a CourceCrumb structure.
+	 * @param info course object
+	 * @return List&gt;BreadCrumb&lt;
+	 */
+	private List<BreadCrumb> getCourseCrumbs(final CourseInfo info) {
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getInstituteInfo() != null)
+		if (organisationHierarchy.getInstituteInfo() != null) {
 			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
-		else
+		} else {
 			crumbs = getInstituteCrumbs(info.getInstituteId());
+		}
 
 		BreadCrumb courseCrumb = getCourseCrumb(info);
 
@@ -334,15 +341,17 @@ public class BreadCrumbs extends BaseBean {
 	// Course Type Crumb Generation
 
 	private List<BreadCrumb> getCourseTypeCrumbs(CourseTypeInfo info) {
-		if (info == null)
+		if (info == null) {
 			return getEmptyList();
+		}
 
 		List<BreadCrumb> crumbs;
 
-		if (organisationHierarchy.getInstituteInfo() != null)
+		if (organisationHierarchy.getInstituteInfo() != null) {
 			crumbs = getInstituteCrumbs(organisationHierarchy.getInstituteInfo());
-		else
+		} else {
 			crumbs = getInstituteCrumbs(info.getInstituteId());
+		}
 
 		BreadCrumb courseTypeCrumb = getCourseTypeCrumb(info);
 
@@ -365,8 +374,8 @@ public class BreadCrumbs extends BaseBean {
 	// MyUni Crumb Generation
 
 	private List<BreadCrumb> getMyUniCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
-		assert crumbs != null;
+		List<BreadCrumb> crumbs = newBaseCrumbs();
+		assert (crumbs != null);
 
 		BreadCrumb myUniCrumb = new BreadCrumb();
 		myUniCrumb.setName(i18n("desktop_command_myuni"));
@@ -380,7 +389,7 @@ public class BreadCrumbs extends BaseBean {
 	// Edit Profile Crumb Generation
 
 	private List<BreadCrumb> getProfileCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
+		List<BreadCrumb> crumbs = newBaseCrumbs();
 		assert crumbs != null;
 
 		BreadCrumb profileCrumb = new BreadCrumb();
@@ -394,7 +403,7 @@ public class BreadCrumbs extends BaseBean {
 	// Extended Search Crumb Generation
 
 	private List<BreadCrumb> getExtendedSearchCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
+		List<BreadCrumb> crumbs = newBaseCrumbs();
 		assert crumbs != null;
 
 		BreadCrumb extendedSearchCrumb = new BreadCrumb();
@@ -408,7 +417,7 @@ public class BreadCrumbs extends BaseBean {
 	// Search Crumb Generation
 
 	private List<BreadCrumb> getSearchCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
+		List<BreadCrumb> crumbs = newBaseCrumbs();
 		assert crumbs != null;
 
 		BreadCrumb searchCrumb = new BreadCrumb();
@@ -422,7 +431,7 @@ public class BreadCrumbs extends BaseBean {
 	// Administration Crumb Generation
 
 	private List<BreadCrumb> getAdministrationCrumbs() {
-		List<BreadCrumb> crumbs = getBaseCrumbs();
+		List<BreadCrumb> crumbs = newBaseCrumbs();
 		assert crumbs != null;
 
 		BreadCrumb administrationCrumb = new BreadCrumb();
@@ -435,38 +444,38 @@ public class BreadCrumbs extends BaseBean {
 
 	// Public loader methods to generate crumbs for the domain object types
 
-	public void loadUniversityCrumbs(Long universityId) {
+	public void loadUniversityCrumbs(final Long universityId) {
 		setCrumbs(getUniversityCrumbs(universityId));
 	}
 
-	public void loadUniversityCrumbs(UniversityInfo universityInfo) {
+	public void loadUniversityCrumbs(final UniversityInfo universityInfo) {
 		setCrumbs(getUniversityCrumbs(universityInfo));
 	}
 
-	public void loadDepartmentCrumbs(Long departmentId) {
+	public void loadDepartmentCrumbs(final Long departmentId) {
 		setCrumbs(getDepartmentCrumbs(departmentId));
 	}
 
-	public void loadDepartmentCrumbs(DepartmentInfo departmentInfo) {
+	public void loadDepartmentCrumbs(final DepartmentInfo departmentInfo) {
 		setCrumbs(getDepartmentCrumbs(departmentInfo));
 	}
 
-	public void loadInstituteCrumbs(Long instituteId) {
+	public void loadInstituteCrumbs(final Long instituteId) {
 		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteId));
 		setCrumbs(getInstituteCrumbs(instituteId));
 	}
 
-	public void loadInstituteCrumbs(InstituteInfo instituteInfo) {
+	public void loadInstituteCrumbs(final InstituteInfo instituteInfo) {
 		setOrganisationHierarchy(organisationService.findInstituteHierarchy(instituteInfo.getId()));
 		setCrumbs(getInstituteCrumbs(instituteInfo));
 	}
 
-	public void loadCourseCrumbs(CourseInfo courseInfo) {
+	public void loadCourseCrumbs(final CourseInfo courseInfo) {
 		setOrganisationHierarchy(organisationService.findCourseHierarchy(courseInfo.getId()));
 		setCrumbs(getCourseCrumbs(courseInfo));
 	}
 
-	public void loadCourseTypeCrumbs(CourseTypeInfo courseTypeInfo) {
+	public void loadCourseTypeCrumbs(final CourseTypeInfo courseTypeInfo) {
 		// setOrganisationHierarchy(organisationService.findCourseTypeHierarchy(courseTypeInfo.getId()));
 		setCrumbs(getCourseTypeCrumbs(courseTypeInfo));
 	}
@@ -491,9 +500,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getAdministrationCrumbs());
 	}
 
-	public void addCrumb(BreadCrumb newCrumb) {
-		if (newCrumb != null)
+	public void addCrumb(final BreadCrumb newCrumb) {
+		if (newCrumb != null) {
 			getCrumbs().add(newCrumb);
+		}
 	}
 
 	// Getters and Setters
@@ -502,7 +512,7 @@ public class BreadCrumbs extends BaseBean {
 		return courseService;
 	}
 
-	public void setCourseService(CourseService courseService) {
+	public void setCourseService(final CourseService courseService) {
 		this.courseService = courseService;
 	}
 
@@ -510,7 +520,7 @@ public class BreadCrumbs extends BaseBean {
 		return courseTypeService;
 	}
 
-	public void setCourseTypeService(CourseTypeService courseTypeService) {
+	public void setCourseTypeService(final CourseTypeService courseTypeService) {
 		this.courseTypeService = courseTypeService;
 	}
 
@@ -518,7 +528,7 @@ public class BreadCrumbs extends BaseBean {
 		return instituteService;
 	}
 
-	public void setInstituteService(InstituteService instituteService) {
+	public void setInstituteService(final InstituteService instituteService) {
 		this.instituteService = instituteService;
 	}
 
@@ -526,7 +536,7 @@ public class BreadCrumbs extends BaseBean {
 		return departmentService;
 	}
 
-	public void setDepartmentService(DepartmentService departmentService) {
+	public void setDepartmentService(final DepartmentService departmentService) {
 		this.departmentService = departmentService;
 	}
 
@@ -534,7 +544,7 @@ public class BreadCrumbs extends BaseBean {
 		return universityService;
 	}
 
-	public void setUniversityService(UniversityService universityService) {
+	public void setUniversityService(final UniversityService universityService) {
 		this.universityService = universityService;
 	}
 
@@ -542,11 +552,11 @@ public class BreadCrumbs extends BaseBean {
 		return organisationService;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
+	public void setOrganisationService(final OrganisationService organisationService) {
 		this.organisationService = organisationService;
 	}
 
-	private void setOrganisationHierarchy(OrganisationHierarchy organisationHierarchy) {
+	private void setOrganisationHierarchy(final OrganisationHierarchy organisationHierarchy) {
 		if (organisationHierarchy != null) {
 			this.organisationHierarchy = organisationHierarchy;
 		} else {

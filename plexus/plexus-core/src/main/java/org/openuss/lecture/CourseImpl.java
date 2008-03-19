@@ -22,10 +22,15 @@ public class CourseImpl extends CourseBase implements Course, Lifecycle {
 
 	private static final Logger logger = Logger.getLogger(CourseImpl.class);
 
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
 	private static final long serialVersionUID = -5670314763540215921L;
+	
+	public CourseImpl() {
+		//default configuration
+		setAccessType(AccessType.CLOSED);
+		setNewsletter(true);
+		setDocuments(true);
+		setDiscussion(true);
+	}
 
 	private String shortenInMiddle(String str, int maxLength){
 		if (str==null){

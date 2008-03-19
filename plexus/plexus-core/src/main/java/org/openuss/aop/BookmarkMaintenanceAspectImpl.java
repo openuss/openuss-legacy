@@ -20,7 +20,8 @@ import org.openuss.lecture.UniversityInfo;
 public class BookmarkMaintenanceAspectImpl {
 
 	private static final Logger logger = Logger.getLogger(BookmarkMaintenanceAspectImpl.class);
-	private DesktopService2 desktopService2;
+	
+	private DesktopService2 desktopService2; 
 	private OrganisationDao organisationDao;
 	private UniversityDao universityDao;
 	private DepartmentDao departmentDao;
@@ -31,14 +32,14 @@ public class BookmarkMaintenanceAspectImpl {
 	 * @param organisationId
 	 * @param userId
 	 */
-	public void bookmarkOrganisation (Long organisationId, Long userId) {
+	public void bookmarkOrganisation (final Long organisationId, final Long userId) {
 		logger.debug("----------> BEGIN method bookmarkOrganisation <----------");
 		
 		Organisation organisation = this.getOrganisationDao().load(organisationId);
 		Validate.notNull(organisation, "No organisation found with the given organisationId");
 		
 		if (organisation instanceof University) {
-			UniversityInfo universityInfo =	getUniversityDao().toUniversityInfo((University)organisation);
+			UniversityInfo universityInfo =	getUniversityDao().toUniversityInfo((University)organisation); 
 			this.bookmarkUniversity(universityInfo, userId);
 		} else if (organisation instanceof Department) {
 			DepartmentInfo departmentInfo = getDepartmentDao().toDepartmentInfo((Department) organisation);
@@ -55,7 +56,7 @@ public class BookmarkMaintenanceAspectImpl {
 	 * @param universityInfo,
 	 *            userId
 	 */
-	public void bookmarkUniversity(UniversityInfo universityInfo, Long userId) {
+	public void bookmarkUniversity(final UniversityInfo universityInfo, final Long userId) {
 		logger.debug("----------> BEGIN method bookmarkUniversity <----------");
 
 		Validate.notNull(universityInfo, "The universityInfo cannot be null.");
@@ -63,7 +64,7 @@ public class BookmarkMaintenanceAspectImpl {
 
 		try {
 			// Get DesktopInfo
-			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId);
+			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(userId); 
 
 			// Link University
 			desktopService2.linkUniversity(desktopInfo.getId(), universityInfo.getId());
@@ -79,7 +80,7 @@ public class BookmarkMaintenanceAspectImpl {
 	 * 
 	 * @param universityId
 	 */
-	public void deleteBookmarksOfUniversity(Long universityId) {
+	public void deleteBookmarksOfUniversity(final Long universityId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfUniversity <----------");
 
 		Validate.notNull(universityId, "The universityId cannot be null.");
@@ -93,7 +94,7 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> End method deleteBookmarksOfUniversity <----------");
 	}
 
-	public void bookmarkDepartment(DepartmentInfo departmentInfo, Long userId) {
+	public void bookmarkDepartment(final DepartmentInfo departmentInfo, final Long userId) {
 		logger.debug("----------> BEGIN method bookmarkDepartment <----------");
 
 		Validate.notNull(departmentInfo, "The departmentInfo cannot be null.");
@@ -117,7 +118,7 @@ public class BookmarkMaintenanceAspectImpl {
 	 * 
 	 * @param departmentId
 	 */
-	public void deleteBookmarksOfDepartment(Long departmentId) {
+	public void deleteBookmarksOfDepartment(final Long departmentId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfDepartment <----------");
 
 		Validate.notNull(departmentId, "The departmentId cannot be null.");
@@ -137,7 +138,7 @@ public class BookmarkMaintenanceAspectImpl {
 	 * @param instituteInfo,
 	 *            userId
 	 */
-	public void bookmarkInstitute(InstituteInfo instituteInfo, Long userId) {
+	public void bookmarkInstitute(final InstituteInfo instituteInfo, final Long userId) {
 		logger.debug("----------> BEGIN method bookmarkInstitute <----------");
 
 		Validate.notNull(instituteInfo,	"The instituteInfo cannot be null.");
@@ -161,7 +162,7 @@ public class BookmarkMaintenanceAspectImpl {
 	 * 
 	 * @param instituteId
 	 */
-	public void deleteBookmarksOfInstitute(Long instituteId) {
+	public void deleteBookmarksOfInstitute(final Long instituteId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfInstitute <----------");
 
 		Validate.notNull(instituteId, "The instituteId cannot be null.");
@@ -175,7 +176,7 @@ public class BookmarkMaintenanceAspectImpl {
 		logger.debug("----------> End method deleteBookmarksOfInstitute <----------");
 	}
 
-	public void deleteBookmarksOfCourse(Long courseId) {
+	public void deleteBookmarksOfCourse(final Long courseId) {
 		logger.debug("----------> BEGIN method deleteBookmarksOfCourses <----------");
 
 		Validate.notNull(courseId, "The courseId cannot be null.");
@@ -194,7 +195,7 @@ public class BookmarkMaintenanceAspectImpl {
 		return desktopService2;
 	}
 
-	public void setDesktopService(DesktopService2 desktopService) {
+	public void setDesktopService(final DesktopService2 desktopService) {
 		this.desktopService2 = desktopService;
 	}
 
@@ -202,7 +203,7 @@ public class BookmarkMaintenanceAspectImpl {
 		return organisationDao;
 	}
 
-	public void setOrganisationDao(OrganisationDao organisationDao) {
+	public void setOrganisationDao(final OrganisationDao organisationDao) {
 		this.organisationDao = organisationDao;
 	}
 
@@ -210,7 +211,7 @@ public class BookmarkMaintenanceAspectImpl {
 		return universityDao;
 	}
 
-	public void setUniversityDao(UniversityDao universityDao) {
+	public void setUniversityDao(final UniversityDao universityDao) {
 		this.universityDao = universityDao;
 	}
 
@@ -218,7 +219,7 @@ public class BookmarkMaintenanceAspectImpl {
 		return departmentDao;
 	}
 
-	public void setDepartmentDao(DepartmentDao departmentDao) {
+	public void setDepartmentDao(final DepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
 
@@ -226,7 +227,7 @@ public class BookmarkMaintenanceAspectImpl {
 		return instituteDao;
 	}
 
-	public void setInstituteDao(InstituteDao instituteDao) {
+	public void setInstituteDao(final InstituteDao instituteDao) {
 		this.instituteDao = instituteDao;
 	}
 	

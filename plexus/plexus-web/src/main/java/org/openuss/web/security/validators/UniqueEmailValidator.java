@@ -28,7 +28,9 @@ public class UniqueEmailValidator extends BaseBean implements Validator {
 			UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 			boolean unique = (service.isNonExistingEmailAddress(user, email)==null);
 			if (!unique) {
-				((UIInput)component).setValid(false);
+				if (component instanceof UIInput) {
+					((UIInput)component).setValid(false);
+				}
 				addError(component.getClientId(context), i18n("error_email_already_exists"), null);
 			}
 		}

@@ -1,5 +1,6 @@
 package org.openuss.web.feeds;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
 public abstract class AbstractFeed implements MessageSourceAware {
@@ -59,7 +61,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 
 	private SyndEntry createSyndEntry(String title, String link, Date date, String blogContent, String cat, String author) {
-		final List categories = new ArrayList();
+		final List<SyndCategory> categories = new ArrayList<SyndCategory>();
 		SyndEntry entry;
 		SyndContent description;
 		SyndCategory category;
@@ -82,13 +84,13 @@ public abstract class AbstractFeed implements MessageSourceAware {
 	}
 	
 	private String filter(String text){
-		String filteredString = "";
+		StringBuilder filtered = new StringBuilder();
 		for (char c : text.toCharArray()){
 			if (org.jdom.Verifier.isXMLCharacter(c)){
-				filteredString += c; 
+				filtered.append(c);
 			}
 		}
-		return filteredString;
+		return filtered.toString();
 	}
 
 	public Writer convertToXml(String title, String link, String description, String copyright, List<SyndEntry> entries) {
@@ -99,7 +101,7 @@ public abstract class AbstractFeed implements MessageSourceAware {
 			feed.setLink(link);
 			if (description == null) {
 				feed.setDescription("");
-			} else if (description != null) {
+			} else {
 				feed.setDescription(description);
 			}
 			feed.setCopyright(copyright);
@@ -113,9 +115,15 @@ public abstract class AbstractFeed implements MessageSourceAware {
 			} catch (IllegalDataException ex) {
 				logger.debug(ex.getMessage(), ex);
 				return filterFeed(entries, feed);
+			} catch (IOException ex) {
+				logger.debug(ex.getMessage(), ex);
+				return filterFeed(entries, feed);
+			} catch (FeedException ex) {
+				logger.debug(ex.getMessage(), ex);
+				return filterFeed(entries, feed);
 			}
 			return writer;
-		} catch (Exception ex) {
+		} catch (RuntimeException ex) {
 			logger.error("Unknown error: ", ex);
 			return null;
 		}

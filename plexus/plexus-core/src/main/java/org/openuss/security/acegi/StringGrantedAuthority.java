@@ -34,6 +34,6 @@ public class StringGrantedAuthority implements GrantedAuthority {
 
 	@Override
 	public String toString() {
-		return authority.toString();
+		return authority;
 	}
 }

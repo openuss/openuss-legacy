@@ -16,6 +16,9 @@ public class BrainContestSolvedPage extends AbstractBrainContestPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 	}
 

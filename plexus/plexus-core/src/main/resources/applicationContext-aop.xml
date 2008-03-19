@@ -75,10 +75,12 @@
 			expression="execution(* org..CourseServiceBase.removeCourse(java.lang.Long)) and args(courseId)" />
 		<aop:pointcut id="CourseServiceUpdatePointcut"
 			expression="execution(* org..CourseServiceBase.updateCourse(org.openuss.lecture.CourseInfo)) and args(courseInfo)" />
-		<aop:pointcut id="CourseServiceUpdateOnPeriodPointcut"
-			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
 		<aop:pointcut id="CourseServiceSetStatusPointcut"
 			expression="execution(* org..CourseServiceBase.setCourseStatus(java.lang.Long, boolean)) and args(courseId, status)" />
+<!--  
+		<aop:pointcut id="CourseServiceUpdateOnPeriodPointcut"
+			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
+-->
 
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
@@ -229,6 +231,7 @@
 				arg-names="departmentId" />
 		</aop:aspect>
 
+<!-- 
 		<aop:aspect id="instituteIndexAspect"
 			ref="instituteIndexAspectBean">
 			<aop:after-returning method="createInstituteIndex"
@@ -256,7 +259,6 @@
 				method="updateInstituteIndexOnDepartmentApplicationApproval"
 				pointcut-ref="DepartmentServiceAcceptInstituteApplicationPointcut"
 				arg-names="applicationId, userId" />
-
 		</aop:aspect>
 
 		<aop:aspect id="courseIndexAspect"
@@ -276,6 +278,7 @@
 			<aop:before method="deleteCourseIndex"
 				pointcut-ref="CourseServiceDeletePointcut" arg-names="courseId" />
 		</aop:aspect>
+ -->
 
 		<aop:aspect id="mailingStatusAspect"
 			ref="mailingStatusAspectBean">
@@ -357,6 +360,7 @@
 		<property name="departmentService" ref="departmentService" />
 	</bean>
 
+<!-- 
 	<bean id="instituteIndexAspectBean"
 		class="org.openuss.aop.InstituteIndexingAspect">
 		<property name="indexerService" ref="indexerService" />
@@ -370,5 +374,6 @@
 		<property name="indexerService" ref="indexerService" />
 		<property name="courseDao" ref="courseDao" />
 	</bean>
+ -->
 
 </beans>

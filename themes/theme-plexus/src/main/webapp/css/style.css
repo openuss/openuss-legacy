@@ -129,7 +129,7 @@ span.userinfo a,span.userinfo a:hover,span.userinfo a:active,span.userinfo a:vis
 	color: #FFF !important;
 }
 
-.openuss_logo {
+#openuss_logo {
 	background-image: url(../img/logo.jpg);
 	background-repeat: no-repeat;
 	background-position: -5px 10px;
@@ -723,7 +723,8 @@ p.search_type {
 	padding-left: 0;
 	color: #505050;
 	background: none;
-	text-decoration: none
+	text-decoration: none;
+	font-weight: normal;
 }
 
 #right .content_box a.button_search:hover {
@@ -1081,13 +1082,13 @@ p.header_font_normal,span.header_font_normal {
 }
 
 .userphoto {
-	display: run-in;
+	/*display: run-in;*/
 	width: 60px;
 	height: 60px;
 }
 
 .organisation_logo {
-	display: run-in;
+	/*display: run-in;*/
 	max-width: 240px;
 	max-height: 240px;
 }

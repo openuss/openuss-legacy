@@ -2,6 +2,7 @@ package org.openuss.web.lecture;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIData;
@@ -23,7 +24,6 @@ import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.news.PublisherType;
-import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
 import org.openuss.web.upload.UploadFileManager;
@@ -32,6 +32,8 @@ import org.openuss.web.upload.UploadFileManager;
  * News Page Controller
  * @author Ingo Dueppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$newsedit", scope = Scope.REQUEST)
 @View
@@ -48,19 +50,39 @@ public class NewsEditPage extends AbstractLecturePage {
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
 	
+	@Property(value = "#{"+Constants.INSTITUTENEWS_ATTACHMENTS+"}")
+	private List<FileInfo> attachments;
+	
 	private UIData attachmentList;
 	
 	@Override
 	@Prerender
 	public void prerender() throws LectureException{
 		super.prerender();
-		if (!isPostBack()) {
-			if (newsItem != null && newsItem.getId() != null) {
-				newsItem = newsService.getNewsItem(newsItem);
-				setSessionBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
-			} 
+		if (isRedirected()){
+			return;
 		}
-		
+		if (newsItem != null && newsItem.getId() != null) {
+			newsItem = newsService.getNewsItem(newsItem);
+			setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+		} if (newsItem == null || newsItem.getId()==null){
+			newsItem = new NewsItemInfo();
+			newsItem.setCategory(NewsCategory.GLOBAL);
+			newsItem.setPublishDate(new Date());
+			newsItem.setExpireDate(new Date(System.currentTimeMillis()+1000L*60L*60L*24L*28L));
+			
+			newsItem.setPublisherIdentifier(instituteInfo.getId());
+			newsItem.setPublisherName(instituteInfo.getName());
+			setBean(Constants.NEWS_SELECTED_NEWSITEM, newsItem);
+		} 
+		if (!isPostBack() && newsItem !=null){
+			attachments = newsItem.getAttachments();
+			setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, attachments);
+		}
+		if (attachments == null){
+			attachments = new ArrayList<FileInfo>();
+			setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, attachments);
+		}
 		addNewsCrumbs();
 	}
 
@@ -90,43 +112,41 @@ public class NewsEditPage extends AbstractLecturePage {
 	 */
 	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving news");
-		
+		newsItem.setAttachments(attachments);
 		if (newsItem.getPublishDate().after(newsItem.getExpireDate())) {
 			addError(i18n("news_error_expire_before_publish_date"));
 			return Constants.INSTITUTE_NEWS_EDIT_PAGE;
 		}
-		newsItem.setAuthor(getAuthorName());
+		newsItem.setAuthor(user.getDisplayName());
 		newsItem.setPublisherType(PublisherType.INSTITUTE);
+		newsItem.setPublisherName(instituteInfo.getName());
+		newsItem.setPublisherIdentifier(instituteInfo.getId());
 		newsService.saveNewsItem(newsItem);
 		addMessage(i18n("news_saved_success"));		
 		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
-	private String getAuthorName() {
-		// FIXME - should be called directly from view
-		UserInfo user = (UserInfo) getSessionBean(Constants.USER);
-		return user.getDisplayName();
-	}
-	
-	
 	public String removeAttachment() {
 		logger.debug("news attachment removed");
 		FileInfo attachment = (FileInfo) attachmentList.getRowData();
-		if (newsItem.getAttachments() != null) {
-			newsItem.getAttachments().remove(attachment);
+		if (attachments != null) {
+			attachments.remove(attachment);
+			setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, attachments);
 		}
 		return Constants.SUCCESS;
 	}
 
 	public String addAttachment() throws IOException, BrainContestApplicationException {
 		logger.debug("news attachment add");
-		if (newsItem.getAttachments() == null) {
-			newsItem.setAttachments(new ArrayList<FileInfo>());
+		if (attachments == null) {
+			attachments = new ArrayList<FileInfo>();
+			setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, attachments);
 		}
 		FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
-		if (fileInfo != null && !newsItem.getAttachments().contains(fileInfo)) {
+		if (fileInfo != null && !attachments.contains(fileInfo)) {
 			if (validFileName(fileInfo.getFileName())) {
-				newsItem.getAttachments().add(fileInfo);
+				attachments.add(fileInfo);
+				setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, attachments);
 			} else {
 				addError(i18n("news_filename_already_exists"));
 				return Constants.FAILURE;
@@ -147,7 +167,7 @@ public class NewsEditPage extends AbstractLecturePage {
 	}
 	
 	private boolean validFileName(String fileName) {
-		for (FileInfo attachment : newsItem.getAttachments()) {
+		for (FileInfo attachment : attachments) {
 			if (StringUtils.equalsIgnoreCase(fileName, attachment.getFileName())) {
 				return false;
 			}
@@ -161,8 +181,9 @@ public class NewsEditPage extends AbstractLecturePage {
 	 */
 	public String cancel() {
 		logger.debug("cancel");
-		removeSessionBean(Constants.NEWS_SELECTED_NEWSITEM);
-		removeSessionBean(Constants.UPLOADED_FILE);
+		setBean(Constants.NEWS_SELECTED_NEWSITEM, null);
+		setBean(Constants.UPLOADED_FILE, null);
+		setSessionBean(Constants.INSTITUTENEWS_ATTACHMENTS, null);
 		return Constants.INSTITUTE_NEWS_PAGE;
 	}
 
@@ -198,6 +219,14 @@ public class NewsEditPage extends AbstractLecturePage {
 
 	public void setAttachmentList(UIData attachmentList) {
 		this.attachmentList = attachmentList;
+	}
+
+	public List<FileInfo> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<FileInfo> attachments) {
+		this.attachments = attachments;
 	}
 
 }

@@ -18,6 +18,7 @@
 			
 			<o:link value="/views/secured/wiki/wikimain.faces">
               <f:param value="#{wikiPage.name}" name="page" />
+              <f:param value="#{courseInfo.id}" name="course" />
 			  <h:outputText value="#{wikiPage.name}" />
 			</o:link>
 		</t:column>

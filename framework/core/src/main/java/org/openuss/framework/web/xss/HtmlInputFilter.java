@@ -1,13 +1,14 @@
 package org.openuss.framework.web.xss;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -107,6 +108,32 @@ public class HtmlInputFilter {
 		a_atts.add("color");
 		a_atts.add("style");
 		vAllowed.put("a", a_atts);
+		
+		ArrayList<String> table_atts  = new ArrayList<String>();
+		table_atts.add("width");
+		table_atts.add("cellspacing");
+		table_atts.add("cellpadding");
+		table_atts.add("border");
+		table_atts.add("style");
+		vAllowed.put("table", table_atts);
+		
+		ArrayList<String> col_atts  = new ArrayList<String>();
+		col_atts.add("width");
+		col_atts.add("span");
+		col_atts.add("style");
+		vAllowed.put("col", col_atts);
+		
+		ArrayList<String> tr_atts  = new ArrayList<String>();
+		tr_atts.add("height");
+		tr_atts.add("style");
+		vAllowed.put("tr", tr_atts);
+
+		ArrayList<String> td_atts  = new ArrayList<String>();
+		td_atts.add("height");
+		td_atts.add("align");
+		td_atts.add("style");
+		td_atts.add("class");
+		vAllowed.put("td", td_atts);
 
 		ArrayList<String> img_atts = new ArrayList<String>();
 		img_atts.add("src");
@@ -115,6 +142,10 @@ public class HtmlInputFilter {
 		img_atts.add("alt");
 		img_atts.add("style");
 		vAllowed.put("img", img_atts);
+
+		ArrayList<String> div_atts = new ArrayList<String>();
+		div_atts.add("style");
+		vAllowed.put("div", div_atts);
 		
 		ArrayList<String> default_atts = new ArrayList<String>();
 		default_atts.add("color");
@@ -136,6 +167,7 @@ public class HtmlInputFilter {
 		vAllowed.put("strike", default_atts );
 		vAllowed.put("u", default_atts );
 		vAllowed.put("h1", default_atts );
+		vAllowed.put("tbody", default_atts );
 		vAllowed.put("h2", default_atts );
 		vAllowed.put("h3", default_atts );
 		vAllowed.put("h4", default_atts );
@@ -146,9 +178,10 @@ public class HtmlInputFilter {
 		vAllowed.put("sup", default_atts );
 		vAllowed.put("sub", default_atts );
 		
+		
 
-		vSelfClosingTags = new String[] { "img" , "br"};
-		vNeedClosingTags = new String[] { "a", "b", "strong", "i", "em" };
+		vSelfClosingTags = new String[] { "img" , "br", "col"};
+		vNeedClosingTags = new String[] { "a", "b", "strong", "i", "em", "table", "tbody", "tr", "td" };
 		vAllowedProtocols = new String[] { "http", "mailto" }; // no ftp.
 		vProtocolAtts = new String[] { "src", "href" };
 		vRemoveBlanks = new String[] { "a", "b", "strong", "i", "em", "p", "ul", "ol", "li" };
@@ -294,7 +327,7 @@ public class HtmlInputFilter {
 		Pattern p = Pattern.compile("^/([a-z0-9]+)", REGEX_FLAGS_SI);
 		Matcher m = p.matcher(s);
 		if (m.find()) {
-			String name = m.group(1).toLowerCase();
+			String name = m.group(1).toLowerCase(Locale.ENGLISH);
 			if (vAllowed.containsKey(name)) {
 				if (!inArray(name, vSelfClosingTags)) {
 					if (vTagCounts.containsKey(name)) {
@@ -309,14 +342,14 @@ public class HtmlInputFilter {
 		p = Pattern.compile("^([a-z0-9]+)(.*?)(/?)$", REGEX_FLAGS_SI);
 		m = p.matcher(s);
 		if (m.find()) {
-			String name = m.group(1).toLowerCase();
+			String name = m.group(1).toLowerCase(Locale.ENGLISH);
 			String body = m.group(2);
 			String ending = m.group(3);
 
 			// debug( "in a starting tag, name='" + name + "'; body='" + body +
 			// "'; ending='" + ending + "'" );
 			if (vAllowed.containsKey(name)) {
-				String params = "";
+				StringBuilder params = new StringBuilder();
 
 				Pattern p2 = Pattern.compile("([a-z0-9]+)=([\"'])(.*?)\\2", REGEX_FLAGS_SI);
 				Pattern p3 = Pattern.compile("([a-z0-9]+)(=)([^\"\\s']+)", REGEX_FLAGS_SI);
@@ -335,7 +368,7 @@ public class HtmlInputFilter {
 
 				String paramName, paramValue;
 				for (int ii = 0; ii < paramNames.size(); ii++) {
-					paramName = paramNames.get(ii).toLowerCase();
+					paramName = paramNames.get(ii).toLowerCase(Locale.ENGLISH);
 					paramValue = paramValues.get(ii);
 
 					// debug( "paramName='" + paramName + "'" );
@@ -347,7 +380,11 @@ public class HtmlInputFilter {
 						if (inArray(paramName, vProtocolAtts)) {
 							paramValue = processParamProtocol(paramValue);
 						}
-						params += " " + paramName + "=\"" + paramValue + "\"";
+						params.append(" ");
+						params.append(paramName);
+						params.append("=\"");
+						params.append(paramValue);
+						params.append("\"");
 					}
 				}
 
@@ -378,11 +415,10 @@ public class HtmlInputFilter {
 		p = Pattern.compile("^!--(.*)--$", REGEX_FLAGS_SI);
 		m = p.matcher(s);
 		if (m.find()) {
-			String comment = m.group();
 			if (STRIP_COMMENTS) {
 				return "";
 			} else {
-				return "<" + comment + ">";
+				return "<" + m.group() + ">";
 			}
 		}
 

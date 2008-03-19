@@ -19,14 +19,14 @@ public class ForumImpl extends ForumBase implements Forum {
 	private static final long serialVersionUID = -2096584781367256187L;
 
 	@Override
-	public void addTopic(Topic topic) {
+	public void addTopic(final Topic topic) {
 		Validate.notNull(topic, "Parameter topic must not be null.");
 		getTopics().add(topic);
 		topic.setForum(this);
 	}
 
 	@Override
-	public void removeTopic(Topic topic) {
+	public void removeTopic(final Topic topic) {
 		Validate.notNull(topic, "Parameter topic must not be null");
 		getTopics().remove(topic);
 		if (topic.getForum().equals(this)) {

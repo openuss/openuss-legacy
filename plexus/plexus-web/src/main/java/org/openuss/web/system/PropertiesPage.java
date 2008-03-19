@@ -18,7 +18,8 @@ import org.openuss.web.PageLinks;
 
 /**
  * @author Ingo Dueppe
- *
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name="views$secured$system$properties", scope=Scope.REQUEST)
 @View
@@ -30,10 +31,11 @@ public class PropertiesPage extends BasePage  {
 	@Property(value="#{systemService}")
 	private SystemService systemService;
 
+	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() {
 		propertyList.setData(new ArrayList<SystemProperty>(systemService.getProperties()));
-		setSessionBean(Constants.BREADCRUMBS, null);
+		setBean(Constants.BREADCRUMBS, null);
 		
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("admin_command_properties"));
@@ -43,6 +45,7 @@ public class PropertiesPage extends BasePage  {
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<SystemProperty> getProperties() {
 		return systemService.getProperties();
 	}

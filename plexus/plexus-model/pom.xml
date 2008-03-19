@@ -60,7 +60,6 @@
 			<plugin>
 				<groupId>org.andromda.maven.plugins</groupId>
 				<artifactId>andromda-maven-plugin</artifactId>
-				<version>3.2</version>
 				<executions>
 					<execution>
 	 			     	<phase>generate-sources</phase>
@@ -77,7 +76,11 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<reporting>
+		<excludeDefaults>true</excludeDefaults>
+	</reporting>
+	
+	
 	<properties>
 		<andromda.config>andromda.xml</andromda.config>
 		<model.uri>

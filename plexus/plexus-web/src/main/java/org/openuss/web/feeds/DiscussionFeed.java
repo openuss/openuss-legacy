@@ -41,7 +41,7 @@ public class DiscussionFeed extends AbstractFeed {
 
 		List<Topic> topics = getDiscussionService().getTopics(forum);
 
-		if (topics != null && topics.size() != 0) {
+		if (topics != null && !topics.isEmpty()) {
 			Collections.reverse(topics);
 			Iterator i = topics.iterator();
 			Iterator j;
@@ -56,10 +56,12 @@ public class DiscussionFeed extends AbstractFeed {
 				j = posts.iterator();
 				while (j.hasNext()) {
 					post = (PostInfo) j.next();
-					if (lastEntry == null)
+					if (lastEntry == null) {
 						lastEntry = post.getLastModification();
-					if (post.getLastModification().after(lastEntry))
+					}
+					if (post.getLastModification().after(lastEntry)) {
 						lastEntry = post.getLastModification();
+					}
 					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 							+ "/views/secured/discussion/discussionthread.faces?course=" + course.getId() + "&topic="
 							+ topic.getId() + "#" + post.getId();
@@ -87,10 +89,12 @@ public class DiscussionFeed extends AbstractFeed {
 		if (courseId == null || courseId == 0) {
 			return null;
 		}
-		CourseInfo course = getCourseService().getCourseInfo(courseId);
-		if (course == null)
+		CourseInfo course = getCourseService().findCourse(courseId);
+		if (course == null) {
 			return null;
-		return buildFeedArray(course);
+		} else {
+			return buildFeedArray(course);
+		}
 	}
 
 	public SystemService getSystemService() {

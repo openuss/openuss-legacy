@@ -26,15 +26,7 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 
 	public List<Command> findAllEachCommandsAfter(final Long commandId) {
 		List<Command> commands = (List<Command>) loadAll();
-		CollectionUtils.filter(commands, new Predicate() {
-			public boolean evaluate(Object object) {
-				if (object instanceof Command) {
-					Command command = (Command) object;
-					return command.getId() > commandId && command.getState() == CommandState.EACH;
-				}
-				return false;
-			}
-		});
+		CollectionUtils.filter(commands, new EachCommandFilterPredicate(commandId));
 		return commands;
 	}
 
@@ -52,15 +44,7 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 
 	public List<Command> findAllOnceCommands() {
 		List<Command> commands = (List<Command>) loadAll();
-		CollectionUtils.filter(commands, new Predicate() {
-			public boolean evaluate(Object object) {
-				if (object instanceof Command) {
-					Command command = (Command) object;
-					return  command.getState() == CommandState.ONCE;
-				}
-				return false;
-			}
-		});
+		CollectionUtils.filter(commands, new OnceCommandFilterPredicate());
 		return commands;
 	}
 
@@ -82,6 +66,32 @@ public class MockCommandDao extends AbstractMockDao<Command> implements CommandD
 
 	public Object create(int transform, Long domainIdentifier, String command, CommandState state, String commandType, Date startTime, Date executionTime) {
 		return create(Command.Factory.newInstance(domainIdentifier, command, state, commandType, startTime, executionTime));
+	}
+
+	private static final class EachCommandFilterPredicate implements Predicate {
+		private final Long commandId;
+
+		private EachCommandFilterPredicate(Long commandId) {
+			this.commandId = commandId;
+		}
+
+		public boolean evaluate(Object object) {
+			if (object instanceof Command) {
+				Command command = (Command) object;
+				return command.getId() > commandId && command.getState() == CommandState.EACH;
+			}
+			return false;
+		}
+	}
+
+	private static final class OnceCommandFilterPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			if (object instanceof Command) {
+				Command command = (Command) object;
+				return  command.getState() == CommandState.ONCE;
+			}
+			return false;
+		}
 	}
 
 }

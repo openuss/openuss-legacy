@@ -17,7 +17,6 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
-import org.apache.shale.tiger.view.View;
 import org.openuss.course.newsletter.CourseNewsletterService;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.MyUniCourseInfo;
@@ -98,7 +97,7 @@ public class MyUniPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-		super.prerender();
+//		super.prerender();
 		logger.debug("Prerender MyUni-Page");
 		prerenderCalled = true;
 		

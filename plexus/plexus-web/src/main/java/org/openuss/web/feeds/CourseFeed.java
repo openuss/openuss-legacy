@@ -30,6 +30,7 @@ public class CourseFeed extends AbstractFeed {
 
 	public static final Logger logger = Logger.getLogger(CourseFeed.class);
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray(CourseInfo course) {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		List<SyndEntry> newsEntries = getNewsService().getNewsItems(course);
@@ -69,7 +70,7 @@ public class CourseFeed extends AbstractFeed {
 		if (courseId == null || courseId == 0) {
 			return null;
 		} else {
-			CourseInfo course = getCourseService().getCourseInfo(courseId);
+			CourseInfo course = getCourseService().findCourse(courseId);
 			if (course == null) {
 				return null;
 			}

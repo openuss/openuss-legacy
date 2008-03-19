@@ -26,6 +26,7 @@ import org.openuss.web.Constants;
  * 
  * @author Julian Reimann
  * @author Kai Stettner
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = Constants.INSTITUTE_REGISTRATION_CONTROLLER, scope = Scope.SESSION)
@@ -37,6 +38,7 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 	private Long selectedDepartment;
 	private InstituteInfo instituteInfo;
 
+	@SuppressWarnings("unchecked")
 	public String start() {
 		logger.debug("Start institute registration process");
 
@@ -79,13 +81,14 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 		// department application process
 		instituteService.applyAtDepartment(instituteId, selectedDepartment, user.getId());
 
-		setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);
+		setBean(Constants.INSTITUTE_INFO, instituteInfo);
 		
 		addMessage(i18n("institute_registration_success"));
 		
 		return Constants.INSTITUTE_PAGE;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllUniversities() {
 		List<SelectItem> universityItems = new ArrayList<SelectItem>();
 		List<UniversityInfo> allEnabledUniversities = universityService.findUniversitiesByEnabled(true);
@@ -108,6 +111,7 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 		return universityItems;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllDepartments() {
 		logger.debug("getting departments for university:" + selectedUniversity);
 		List<SelectItem> departmentItems = new ArrayList<SelectItem>();

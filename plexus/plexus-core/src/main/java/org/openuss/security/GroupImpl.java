@@ -34,7 +34,9 @@ public class GroupImpl extends org.openuss.security.GroupBase implements org.ope
 	@Override
 	public void addMember(Authority authority) {
 		if (authority != null && !equals(authority)) { 
-			getMembers().add(authority);
+			if (!getMembers().contains(authority)){
+				getMembers().add(authority);
+			}
 		}
 	}
 
@@ -70,6 +72,11 @@ public class GroupImpl extends org.openuss.security.GroupBase implements org.ope
 			return this.getName().equals(object);
 		}
 		return super.equals(object);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 	
 	/**

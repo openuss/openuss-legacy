@@ -17,18 +17,18 @@ public abstract class AbstractDomainCommand implements DomainCommand {
 	private String commandType;
 
 	public Date getStartTime() {
-		return startTime != null? new Date(startTime.getTime()):null;
+		return startTime == null? null : new Date(startTime.getTime());
 	}
 
-	public void setStartTime(Date commandTime) {
-		this.startTime = commandTime != null ? new Date(commandTime.getTime()):null;
+	public void setStartTime(final Date commandTime) {
+		this.startTime = (commandTime == null) ? null : new Date(commandTime.getTime());
 	}
 
 	public String getCommandType() {
 		return commandType;
 	}
 
-	public void setCommandType(String commandType) {
+	public void setCommandType(final String commandType) {
 		this.commandType = commandType;
 	}
 
@@ -36,7 +36,7 @@ public abstract class AbstractDomainCommand implements DomainCommand {
 		return domainObject;
 	}
 
-	public void setDomainObject(DomainObject domainObject) {
+	public void setDomainObject(final DomainObject domainObject) {
 		this.domainObject = domainObject;
 	}
 

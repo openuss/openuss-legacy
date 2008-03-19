@@ -34,7 +34,7 @@ public class Text2HtmlConverter {
 
 		// Create links for URLs
 		Matcher matcher = Pattern.compile("(http://|www.)[^\\s<]*").matcher(text);
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder(200); 
 
 		int end = 0;
 

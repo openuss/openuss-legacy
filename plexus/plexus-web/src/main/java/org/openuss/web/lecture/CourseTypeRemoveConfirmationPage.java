@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -19,6 +18,8 @@ import org.openuss.web.Constants;
 /** Backing bean for the coursetyperemoveconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$coursetyperemoveconfirmation", scope = Scope.REQUEST)
 @View
@@ -29,6 +30,9 @@ public class CourseTypeRemoveConfirmationPage extends AbstractCourseTypePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadInstituteCrumbs(courseTypeInfo.getInstituteId());
 		
 		BreadCrumb newCrumb = new BreadCrumb();
@@ -37,15 +41,11 @@ public class CourseTypeRemoveConfirmationPage extends AbstractCourseTypePage {
 		breadcrumbs.addCrumb(newCrumb);
 	}
 	
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
-	}
-	
 	/**
 	 * Course Types
 	 * @return List<Course>
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Course> getCourses() {
 		return courseService.findCoursesByCourseType(courseTypeInfo.getId());
 	}
@@ -58,8 +58,8 @@ public class CourseTypeRemoveConfirmationPage extends AbstractCourseTypePage {
 	public String removeCourseType() throws LectureException {
 		try {
 			courseTypeService.removeCourseType(courseTypeInfo.getId());
-			setSessionBean("courseTypeInfo", null);
-			setSessionBean("courseInfo", null);
+			setBean("courseTypeInfo", null);
+			setBean("courseInfo", null);
 			addMessage(i18n("institute_course_type_removed_succeed"));
 			return Constants.INSTITUTE_COURSE_TYPES_PAGE;
 		} catch (Exception e) {
@@ -79,7 +79,9 @@ public class CourseTypeRemoveConfirmationPage extends AbstractCourseTypePage {
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}

@@ -1,76 +1,66 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jstl/core">
-	<ui:composition>
-		<c:if test="${empty columns}">
-			<c:set var="columns" value="1"/>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core">
+<ui:composition>
+	<c:if test="${empty columns}">
+		<c:set var="columns" value="1" />
+	</c:if>
+	<c:if test="${empty label and empty styleClass}">
+		<c:set var="styleClass" value="empty_box" />
+	</c:if>
+	<c:if test="${empty fontClass}">
+		<c:set var="fontClass" value="content_font_normal" />
+	</c:if>
+	<c:if test="${empty headerClass}">
+		<c:set var="headerClass" value="header_font_normal" />
+	</c:if>
+	<c:if test="${empty footerClass}">
+		<c:set var="footerClass" value="footer_font_normal" />
+	</c:if>
+	<c:if test="${empty rendered}">
+		<c:set var="rendered" value="true" />
+	</c:if>
+	<c:if test="${rendered}">
+		<c:if test="${empty styleClass}">
+			<div class="content_box">
+			<div class="header_normal">
+			<div class="header_normal_left_bg" />
+			<div class="header_normal_right_bg" />
+			<c:if test="${!empty label}">
+				<p class="${headerClass}">${label}</p>
+			</c:if></div>
+			<div class="content_normal"><c:set var="label" value="" /> <c:set
+				var="styleClass" value="" /> <ui:insert /></div>
+			<div class="footer_normal">
+			<div class="footer_normal_left_bg" />
+			<div class="footer_normal_right_bg" />
+			<c:if test="${!empty footer}">
+				<p class="${footerClass}">${footer}</p>
+			</c:if></div>
+			</div>
 		</c:if>
-		<c:if test="${empty label and empty styleClass}">
-			<c:set var="styleClass" value="empty_box"/>
+		<c:if test="${!empty styleClass}">
+			<div class="${styleClass}">
+			<div class="content_box">
+			<div class="header_normal">
+			<div class="header_normal_left_bg" />
+			<div class="header_normal_right_bg" />
+			<c:if test="${!empty label}">
+				<p class="${headerClass}">${label}</p>
+			</c:if></div>
+			<div class="content_normal"><c:set var="label" value="" /> <c:set
+				var="styleClass" value="" /> <ui:insert /></div>
+			<div class="footer_normal">
+			<div class="footer_normal_left_bg" />
+			<div class="footer_normal_right_bg" />
+			<c:if test="${!empty footer}">
+				<p class="${footerClass}">${footer}</p>
+			</c:if></div>
+			</div>
+			</div>
 		</c:if>
-		<c:if test="${empty fontClass}">
-			<c:set var="fontClass" value="content_font_normal"/>
-		</c:if>
-		<c:if test="${empty headerClass}">
-			<c:set var="headerClass" value="header_font_normal" />
-		</c:if>
-		<c:if test="${empty footerClass}">
-			<c:set var="footerClass" value="footer_font_normal" />
-		</c:if>
-		<c:if test="${empty rendered}">
-			<c:set var="rendered" value="true"/>
-		</c:if>
-		<c:if test="${rendered}">
-			<c:if test="${empty styleClass}">
-			     <div class="content_box">
-				    <div class="header_normal">
-				    	<div class="header_normal_left_bg"/>
-		    			<div class="header_normal_right_bg"/>
-						<c:if test="${!empty label}">
-							<p class="${headerClass}">${label}</p>
-						</c:if>
-			       </div>
-			       <div class="content_normal">
-			       		<c:set var="label" value=""/>
-			       		<c:set var="styleClass" value=""/>
-						<ui:insert/>
-			       </div>
-			       <div class="footer_normal">
-			       		<div class="footer_normal_left_bg"/>
-			       	  	<div class="footer_normal_right_bg"/>
-			       	  <c:if test="${!empty footer}">
-			       	  	<p class="${footerClass}">${footer}</p>
-			       	  </c:if>
-			       </div>
-			     </div>
-			</c:if>
-			<c:if test="${!empty styleClass}">
-				<div class="${styleClass}">
-				     <div class="content_box">
-					    <div class="header_normal">
-					    	<div class="header_normal_left_bg"/>
-			    			<div class="header_normal_right_bg"/>
-							<c:if test="${!empty label}">
-								<p class="${headerClass}">${label}</p>
-							</c:if>
-				       </div>
-				       <div class="content_normal">
-				       		<c:set var="label" value=""/>
-				       		<c:set var="styleClass" value=""/>
-							<ui:insert/>
-				       </div>
-				       <div class="footer_normal">
-				       		<div class="footer_normal_left_bg"/>
-				       	  	<div class="footer_normal_right_bg"/>
-				       	  <c:if test="${!empty footer}">
-				       	  	<p class="${footerClass}">${footer}</p>
-				       	  </c:if>
-				       </div>
-				     </div>
-			    </div>
-			</c:if>
-		</c:if>
-	</ui:composition>
+	</c:if>
+</ui:composition>
 </html>

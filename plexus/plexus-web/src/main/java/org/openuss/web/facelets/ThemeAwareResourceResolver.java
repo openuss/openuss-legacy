@@ -50,8 +50,9 @@ public class ThemeAwareResourceResolver extends ClasspathResourceResolver {
 	private FacesContext facesContext;
 	
 	public FacesContext getFacesContext() {
-		if (facesContext != null)
+		if (facesContext != null) {
 			return facesContext; // for unit testing
+		}
 		return FacesContext.getCurrentInstance();
 	}
 

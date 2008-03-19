@@ -23,6 +23,7 @@ import org.openuss.web.Constants;
 /**
  * 
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  * 
  */
 @Bean(name = "views$secured$course$main", scope = Scope.REQUEST)
@@ -40,7 +41,10 @@ public class CourseMainPage extends AbstractCoursePage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (courseInfo != null) {
+		if (isRedirected()){
+			return;
+		}
+		if (courseInfo != null){
 			assistants = courseService.getAssistants(courseInfo);
 		}
 
@@ -53,7 +57,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	public void validatePassword(FacesContext context, UIComponent toValidate, Object value) {
 		String password = (String) value;
 		if (!StringUtils.equalsIgnoreCase(password, courseInfo.getPassword())) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("message_error_password_is_not_correct"), null);
 		}
 	}
@@ -93,6 +99,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String shortcutCourse() {
 		//courseInfo = courseData.getRowData();
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
@@ -105,6 +114,9 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public String removeCourseShortcut() {
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());

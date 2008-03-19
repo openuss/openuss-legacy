@@ -22,6 +22,18 @@ public class FolderEditPage extends AbstractDocumentPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
+		if (selectedFolder != null && selectedFolder.getId()!=null){
+			selectedFolder = documentService.getFolder(selectedFolder);
+			if (!documentService.isFolderOfDomainObject(selectedFolder, courseInfo)){
+				addError(i18n(Constants.FOLDER_NOT_FOUND));
+				redirect(i18n(Constants.COURSE_PAGE));	
+				return;		
+			}			
+		}
+		setBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
 		addPageCrumb();
 	}
 	
@@ -41,7 +53,7 @@ public class FolderEditPage extends AbstractDocumentPage{
 			documentService.saveFolder(selectedFolder);
 			addMessage(i18n("message_documents_save_folder"));
 		}
-		removeSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER);
+		setBean(Constants.DOCUMENTS_SELECTED_FOLDER, null);
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 

@@ -132,11 +132,6 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 		return isEqualOrNull(self, foundInfo);
 	}
 
-	@Override
-	public void handleRegisterListener(LectureListener listener) throws Exception {
-		// TODO: Implement this method.
-	}
-
 	/*------------------- private methods -------------------- */
 
 	// TODO: Add Set of listeners

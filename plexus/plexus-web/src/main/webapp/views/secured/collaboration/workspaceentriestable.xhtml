@@ -42,6 +42,7 @@
 			<o:link value="/views/secured/collaboration/workspaceview.faces" title="#{entry.description}" rendered="#{entry.folder}">
 				<f:param value="#{workspaceInfo.id}" name="workspace" />
 				<f:param value="#{entry.id}" name="folder" />
+				<f:param value="#{courseInfo.id}" name="course"/>
 				<h:outputText value="#{entry.name}"/>
 			</o:link>
 

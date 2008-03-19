@@ -16,7 +16,6 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.openuss.lecture.Institute;
-import org.openuss.security.Roles;
 import org.openuss.security.User;
 import org.openuss.security.UserImpl;
 import org.openuss.security.UserInfo;
@@ -67,19 +66,6 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		return userActivationCode.getCreatedAt();		
 	}
 	
-	/**
-	 * Convenience method to asign <code>user</code> and
-	 * <code>assistant</code> roles to a user.
-	 * 
-	 * @param user
-	 * @param assistant
-	 *            wether or not to asign the assistant role to the user
-	 */
-	private void asignRolesToUser(User user) {
-		getSecurityService().addAuthorityToGroup(user, Roles.USER);
-		getSecurityService().saveUser(user);
-	}
-
 	@Override
 	protected String handleGenerateActivationCode(UserInfo user) throws RegistrationException {
 		UserActivationCode reg = UserActivationCode.Factory.newInstance();
@@ -122,7 +108,6 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		securityContext.setAuthentication(authRequest);
 		
 		if (authRequest.getPrincipal() instanceof User) {
-		
 			logger.debug("Principal is: "+authRequest.getPrincipal());
 			User details = (User) authRequest.getPrincipal();
 			user = getSecurityService().getUserObject(getSecurityService().getUserByName(details.getUsername()));

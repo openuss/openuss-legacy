@@ -30,6 +30,8 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$auth$departmentMembers", scope = Scope.REQUEST)
 @View
@@ -60,6 +62,9 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		addPageCrumb();
 		username= null;
 	}
@@ -74,6 +79,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<GroupItem> getdepartmentGroups() {
 	
 		if (departmentGroups == null) {
@@ -149,6 +155,9 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_department"));
 		} try{
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());}
 			catch(Exception e){
@@ -164,6 +173,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 
 		private static final long serialVersionUID = 449438749521068451L;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			List<UserInfo> members = organisationService.findAllMembers(departmentInfo.getId());

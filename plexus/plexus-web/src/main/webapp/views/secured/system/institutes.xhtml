@@ -46,7 +46,7 @@
 						<h:selectBooleanCheckbox value="#{bean.enabled}" valueChangeListener="#{views$secured$system$institutes.changedInstitute}"/>
 					</t:column>
 				
-					<t:column>
+					<t:column> 
 						<plexus:commandSortHeader columnName="id">
 							#{msg['institute_id']}
 						</plexus:commandSortHeader>
@@ -63,7 +63,7 @@
 					</t:column>
 		
 					<t:column>
-						<plexus:commandSortHeader columnName="ownername">
+						<plexus:commandSortHeader columnName="ownerName">
 							#{msg['institute_ownername']}
 						</plexus:commandSortHeader>
 						<h:outputText value="#{bean.ownerName}"/>

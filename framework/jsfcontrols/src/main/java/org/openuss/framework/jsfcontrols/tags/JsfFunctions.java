@@ -23,8 +23,8 @@ public final class JsfFunctions {
 	private static final Logger logger = Logger.getLogger(JsfFunctions.class);
 	
 	public static String getValue(final Object entity, final String property) {
-		if ((entity instanceof String) && (property instanceof String)) {
-			return "#{"+(String)entity+"["+(String)property+"]}"; 
+		if ((entity instanceof String) && property != null) {
+			return "#{"+(String)entity+"["+property+"]}"; 
 		}
 		return "";
 	}
@@ -84,7 +84,7 @@ public final class JsfFunctions {
 			String key = entity + "_" + property + suffix;
 			if (StringUtils.isNotBlank(namespace))
 				key = namespace + "_" + key;
-			key = key.replace(".", "_").toLowerCase();
+			key = key.replace(".", "_").toLowerCase(Locale.ENGLISH);
 
 			return i18n(key);
 				

@@ -89,11 +89,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		Folder root = getRootFolderForDomainObject(domainObject);
 		List<?> entries = new ArrayList<FolderEntry>(root.getEntries());
 
-		CollectionUtils.filter(entries, new Predicate() {
-			public boolean evaluate(Object object) {
-				return (object instanceof FileEntry);
-			}
-		});
+		CollectionUtils.filter(entries, new FileEntryPredicate());
 		filterEntriesByPermission(entries);
 		getFileEntryDao().toFileInfoCollection(entries);
 		return entries;
@@ -141,7 +137,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		while (folder.getParent() != null) {
 			folder = folder.getParent();
 		}
-		return ObjectUtils.equals(folder.getDomainIdentifier(), domainObject.getId());
+		return folder.getDomainIdentifier().equals(domainObject.getId());
 	}
 
 	@Override
@@ -288,23 +284,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
 			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.ASSIST })) {
-				CollectionUtils.filter(entries, new Predicate() {
-					public boolean evaluate(Object object) {
-						boolean eval = false;
-						if (object instanceof FolderEntry) {
-							eval = ((FolderEntry) object).isReleased();
-						} else if (object instanceof FileInfo) {
-							eval = ((FileInfo) object).isReleased();
-						} else if (object instanceof FolderEntryInfo) {
-							eval = ((FolderEntryInfo) object).isReleased();
-						} 
-						if (!eval) {
-							logger.trace("------------------------------------> removing file "+object);
-						}
-						
-						return eval;
-					}
-				});
+				CollectionUtils.filter(entries, new ReleasedFolderEntryPredicate());
 			}
 		}
 	}
@@ -493,7 +473,40 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		}
 		return true; // vaild
 	}
-	
+
+	@Override
+	protected FolderInfo handleGetParentFolder(FileInfo file) throws Exception {
+		FolderEntry folderEntry =  getFolderEntryDao().load(file.getId());
+		if (folderEntry==null){
+			return null;
+		}
+		return (FolderInfo) getFolderDao().load(FolderDao.TRANSFORM_FOLDERINFO, folderEntry.getParent().getId());
+	}
+
+	private static final class ReleasedFolderEntryPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			boolean eval = false;
+			if (object instanceof FolderEntry) {
+				eval = ((FolderEntry) object).isReleased();
+			} else if (object instanceof FileInfo) {
+				eval = ((FileInfo) object).isReleased();
+			} else if (object instanceof FolderEntryInfo) {
+				eval = ((FolderEntryInfo) object).isReleased();
+			} 
+			if (!eval) {
+				logger.trace("------------------------------------> removing file "+object);
+			}
+			
+			return eval;
+		}
+	}
+
+	private static final class FileEntryPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return (object instanceof FileEntry);
+		}
+	}
+
 	@Override
 	protected void handleMoveFolderEntries(DomainObject domainObject, FolderInfo target, List chosenObjects)
 			throws Exception {
@@ -515,4 +528,5 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 		getFolderDao().toFolderInfoCollection(allFolders);
 		return allFolders;
 	}
+
 }

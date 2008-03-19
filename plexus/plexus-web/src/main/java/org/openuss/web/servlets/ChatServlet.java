@@ -47,6 +47,7 @@ public class ChatServlet extends HttpServlet {
 	 * @return XML representation of the room, starting with first new message
 	 * @param startMessage
 	 */
+	@SuppressWarnings("unchecked")
 	public String toXml(ChatRoomInfo room, long lastMessage) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -88,6 +89,7 @@ public class ChatServlet extends HttpServlet {
 		return xml.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void addUsersXML(ChatRoomInfo room, StringBuffer xml) {
 		for (ChatUserInfo user : (List<ChatUserInfo>) chatService.getChatUsers(room.getId())) {
 			xml.append("<user>" + user.getDisplayName() + "</user>");

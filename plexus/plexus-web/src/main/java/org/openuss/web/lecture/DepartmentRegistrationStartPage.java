@@ -6,15 +6,16 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
-import org.openuss.web.BasePage;
 
 /**
  * 
  * @author Julian Reimann
+ * @author Sebastian Roekens
+ * 
  */
 @View
 @Bean(name = "views$secured$lecture$registration$departmentstart", scope = Scope.REQUEST)
-public class DepartmentRegistrationStartPage extends BasePage {
+public class DepartmentRegistrationStartPage extends AbstractDepartmentRegistrationPage {
 
 	@Prerender
 	public void prerender() throws LectureException {

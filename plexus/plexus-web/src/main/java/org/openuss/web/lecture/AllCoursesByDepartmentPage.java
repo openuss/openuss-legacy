@@ -2,8 +2,6 @@ package org.openuss.web.lecture;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
@@ -27,7 +25,6 @@ import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
-import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.web.Constants;
 import org.springframework.beans.support.PropertyComparator;
 

@@ -11,6 +11,8 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 public class AbstractPeriodPage extends AbstractUniversityPage {
 
@@ -23,17 +25,18 @@ public class AbstractPeriodPage extends AbstractUniversityPage {
 	@Override
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (periodInfo == null) {
 			addMessage(i18n("message_error_no_period_selected"));
 			redirect(Constants.INSTITUTE_PERIODS_PAGE);
-		} else if (periodInfo.getId() != null) {
+			return;
+		} 
+		if (periodInfo != null && periodInfo.getId() != null) {
 			periodInfo = universityService.findPeriod(periodInfo.getId());
-			// check security constraint
-			// TODO acegi should check this method if user is allow to read or
-			// update the period
-			
-			}
-		setBean("periodInfo", periodInfo);
+		}
+		setBean(Constants.PERIOD_INFO, periodInfo);
 	}
 
 

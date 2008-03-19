@@ -30,6 +30,8 @@ import org.openuss.web.Constants;
  * @author Tianyu Wang
  * @author Weijun Chen
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$auth$universitymembers", scope = Scope.REQUEST)
 @View
@@ -59,6 +61,9 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		username = null;
 		addPageCrumb();
 	}
@@ -73,6 +78,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 		breadcrumbs.addCrumb(crumb);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<GroupItem> getUniversityGroups() {
 
 		if (universityGroups == null) {
@@ -162,6 +168,7 @@ public class UniversityMembersPage extends AbstractUniversityPage {
 
 		private static final long serialVersionUID = 449438749521068451L;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 

@@ -47,6 +47,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.openuss.openformula</groupId>
+			<artifactId>formula-editor</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.openuss.plexus</groupId>
 			<artifactId>plexus-core</artifactId>
 			<version>${pom.version}</version>
@@ -268,23 +274,4 @@
 		</dependency>
 	</dependencies>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>dependencies</report>
-							<report>dependency-convergence</report>
-							<report>index</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>

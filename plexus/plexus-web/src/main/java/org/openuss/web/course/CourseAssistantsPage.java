@@ -41,16 +41,19 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	private Long userId;
 
-	List<CourseMemberInfo> assistants;
-	Set<Long> assistantsUserIds;
-	List<SelectItem> instituteMembers;
+	private List<CourseMemberInfo> assistants;
+	private Set<Long> assistantsUserIds;
+	private List<SelectItem> instituteMembers;
 	
 	private DataPage<CourseMemberInfo> page;
 
 
 	@Prerender
-	public void prerender() throws Exception {
+	public void prerender() throws Exception { //NOPMD
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}		
 		addPageCrumb();
 	}
 	
@@ -62,6 +65,19 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		breadcrumbs.addCrumb(crumb);
 	}	
 	
+	private static final class FilterByUserIdsPredicte implements Predicate {
+		private final Set<Long> userIds;
+
+		public FilterByUserIdsPredicte(Set<Long> userIds) {
+			this.userIds = userIds;
+		}
+
+		public boolean evaluate(Object object) {
+			InstituteMember member = (InstituteMember) object;
+			return !userIds.contains(member.getId());
+		}
+	}
+
 	private class AssistantsDataProvider extends AbstractPagedTable<CourseMemberInfo> {
 		
 		private static final long serialVersionUID = -5342817757466323535L;
@@ -78,6 +94,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<CourseMemberInfo> getAssistants() {
 		if (assistants == null) {
 			assistants = courseService.getAssistants(courseInfo);
@@ -99,7 +116,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		CourseMemberInfo memberInfo = data.getRowData();
 		UserInfo user = new UserInfo();
 		user.setId(memberInfo.getUserId());
-		setSessionBean("showuser", user);
+		setBean("showuser", user);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 
@@ -132,18 +149,13 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		assistantsUserIds = null;
 		page = null;
 	}
-
+	
 	public Collection<SelectItem> getInstituteMemberList() {
 		if (instituteMembers == null) {
-			InstituteSecurity instituteSecurity = lectureService.getInstituteSecurity(courseInfo.getInstituteId());
+			InstituteSecurity instituteSecurity = instituteService.getInstituteSecurity(courseInfo.getInstituteId());
 			List<InstituteMember> members = instituteSecurity.getMembers();
 			final Set<Long> userIds = getAssistantsUserIdMap();
-			CollectionUtils.filter(members, new Predicate() {
-				public boolean evaluate(Object object) {
-					InstituteMember member = (InstituteMember) object;
-					return !userIds.contains(member.getId());
-				}
-			});
+			CollectionUtils.filter(members, new FilterByUserIdsPredicte(userIds));
 			List<UserInfo> membersUser = new ArrayList<UserInfo>();
 			for(InstituteMember member : members) {
 				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
@@ -153,7 +165,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			instituteMembers = new ArrayList<SelectItem>();
 			instituteMembers.add(new SelectItem(Constants.COURSE_CHOOSE_ASSISTANT, i18n(Constants.COURSE_CHOSSE_ASSISTANT_TEXT)));
 			for(UserInfo member : membersUser) {
-				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName()));
+				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName())); //NOPMD idueppe
 			}
 		}
 		return instituteMembers;

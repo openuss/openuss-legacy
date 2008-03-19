@@ -76,12 +76,16 @@ public class UserDaoImpl extends UserDaoBase {
 		if (StringUtils.isNotBlank(target.getPassword())) {
 			source.setPassword(target.getPassword());
 		}
+		if (copyIfNull || source.getUsername() != null) {
+			target.setUsername(source.getUsername());
+		}
 		super.userInfoToEntity(source, target, copyIfNull);
 	}
 
 	@Override
 	public void toUserInfo(User source, UserInfo target) {
 		super.toUserInfo(source, target);
+		target.setUsername(source.getUsername());
 		target.setDisplayName(source.getDisplayName());
 	}
 

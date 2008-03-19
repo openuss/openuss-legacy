@@ -12,6 +12,8 @@ import org.openuss.web.Constants;
 /** Backing bean for the institutedisableconfirmation.xhtml view.
  * 
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$institutedisableconfirmation", scope = Scope.REQUEST)
 @View
@@ -22,6 +24,9 @@ public class InstituteDisableConfirmationPage extends AbstractLecturePage {
 	@Prerender
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 		
 		BreadCrumb newCrumb = new BreadCrumb();

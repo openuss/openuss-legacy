@@ -48,11 +48,7 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 	 * @see org.openuss.messaging.MessageJob#getToSend()
 	 */
 	public int getToSend() {
-		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
-			public boolean evaluate(Object object) {
-				return SendState.TOSEND.equals(((Recipient) object).getState()); 
-			}
-		});
+		return CollectionUtils.countMatches(getRecipients(), new ToSendPredicate());
 	}
 
 	
@@ -60,22 +56,14 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 	 * {@inheritDoc}
 	 */
 	public int getError() {
-		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
-			public boolean evaluate(Object object) {
-				return SendState.ERROR.equals(((Recipient) object).getState()); 
-			}
-		});
+		return CollectionUtils.countMatches(getRecipients(), new ErrorPredicate());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public int getSend() {
-		return CollectionUtils.countMatches(getRecipients(), new Predicate() {
-			public boolean evaluate(Object object) {
-				return SendState.SEND.equals(((Recipient) object).getState()); 
-			}
-		});
+		return CollectionUtils.countMatches(getRecipients(), new SendPredicate());
 	}
 
 
@@ -87,6 +75,27 @@ public class MessageJobImpl extends MessageJobBase implements MessageJob {
 		recipient.setLocale(locale);
 		recipient.setJob(this);
 		getRecipients().add(recipient);
+	}
+
+
+	private static final class ToSendPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return SendState.TOSEND.equals(((Recipient) object).getState()); 
+		}
+	}
+
+
+	private static final class ErrorPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return SendState.ERROR.equals(((Recipient) object).getState()); 
+		}
+	}
+
+
+	private static final class SendPredicate implements Predicate {
+		public boolean evaluate(Object object) {
+			return SendState.SEND.equals(((Recipient) object).getState()); 
+		}
 	}
 
 }

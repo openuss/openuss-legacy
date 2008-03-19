@@ -5,13 +5,8 @@ import java.util.List;
 import org.acegisecurity.acl.basic.AclObjectIdentity;
 import org.acegisecurity.acl.basic.BasicAclDao;
 import org.acegisecurity.acl.basic.BasicAclEntry;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
-import org.openuss.security.Group; // FIXME PACKAGE CYCLE
-import org.openuss.security.GroupType; // FIXME PACKAGE CYCLE
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
-import org.openuss.security.acl.Permission;
 import org.openuss.security.acl.PermissionDao;
 
 /**
@@ -34,8 +29,9 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 			EntityObjectIdentity objIdentity = (EntityObjectIdentity) aclObjectIdentity;
 
 			ObjectIdentity identity = objectIdentityDao.load(objIdentity.getIdentifier());
-			if (identity == null)
+			if (identity == null) {
 				return null; // unknown identity
+			}
 
 			// get permission entries of object identity
 			List<BasicAclEntry> entries = getBasicAclPermissions(identity);
@@ -56,13 +52,8 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	 * @return BasicAclEntry
 	 */
 	private BasicAclEntry createBasicAclEntry(ObjectIdentity identity) {
-		Permission permission = Permission.Factory.newInstance();
-		permission.setAclObjectIdentity(identity);
-		permission.setId(identity.getId());
-		permission.setMask(0);
-		permission.setRecipient(Group.Factory.newInstance(RECIPIENT_USED_FOR_INHERITENCE_MARKER,GroupType.UNDEFINED));
-		
-		return new AclPermissionAdapter(permission);
+		Long parentId = identity.getParent() == null ? null : identity.getParent().getId();
+		return new AclPermissionAdapter(RECIPIENT_USED_FOR_INHERITENCE_MARKER,0,identity.getId(),parentId);
 	}
 
 	/**
@@ -70,13 +61,7 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	 * @return List<BasicAclEntry>
 	 */
 	private List<BasicAclEntry> getBasicAclPermissions(ObjectIdentity objectIdentity) {
-		List entries = permissionDao.findPermissions(objectIdentity);
-		CollectionUtils.transform(entries, new Transformer() {
-			public Object transform(Object input) {
-				return new AclPermissionAdapter((Permission)input);
-			}
-		});
-		return entries; 
+		return permissionDao.findPermissionsWithRecipient(objectIdentity); 
 	}
 
 	public PermissionDao getPermissionDao() {
@@ -94,4 +79,5 @@ public class PermissionAclDaoAdapter implements BasicAclDao {
 	public void setObjectIdentityDao(ObjectIdentityDao objectIdentityDao) {
 		this.objectIdentityDao = objectIdentityDao;
 	}
+
 }

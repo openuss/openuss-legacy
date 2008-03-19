@@ -18,11 +18,9 @@ import javax.faces.context.ResponseWriter;
 public class UIParam extends UIOutput {
 
 	public void encodeBegin(FacesContext context) throws IOException {
-		return;
 	}
 
 	public void decode(FacesContext context) {
-		return;
 	}
 
 	public void encodeEnd(FacesContext context) throws IOException {

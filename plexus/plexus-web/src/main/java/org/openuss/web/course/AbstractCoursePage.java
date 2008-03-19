@@ -1,6 +1,8 @@
 package org.openuss.web.course;
 
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
@@ -10,7 +12,6 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.LectureService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
@@ -19,45 +20,65 @@ import org.openuss.web.Constants;
 
 /**
  * @author Kai Stettner
+ * @author Ingo Düppe
+ * @author Sebastian Roekens
+ * 
  */
 public class AbstractCoursePage extends BasePage {
+
 	private static final long serialVersionUID = 1394531398550932611L;
 
-	@Property(value = "#{lectureService}")
-	protected LectureService lectureService;
-	
+	private static final Logger logger = Logger
+			.getLogger(AbstractCoursePage.class);
+
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
-	
+
 	@Property(value = "#{universityService}")
 	protected UniversityService universityService;
-	
+
 	@Property(value = "#{departmentInfo}")
 	protected DepartmentInfo departmentInfo;
-	
+
 	@Property(value = "#{departmentService}")
 	protected DepartmentService departmentService;
 
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
-	
+
 	@Property(value = "#{instituteService}")
 	protected InstituteService instituteService;
-	
+
 	@Property(value = "#{courseTypeInfo}")
 	protected CourseTypeInfo courseTypeInfo;
-	
+
 	@Property(value = "#{courseTypeService}")
 	protected CourseTypeService courseTypeService;
-	
+
 	@Property(value = "#{courseInfo}")
 	protected CourseInfo courseInfo;
-	
+
 	@Property(value = "#{courseService}")
 	protected CourseService courseService;
-	
+
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
+
+	/**
+	 * Refreshing CourseInfo before apply values phase. This ensures that
+	 * courseInfo is recreated before the commands are processed.'
+	 * 
+	 * @throws Exception
+	 */
+	@Preprocess
+	public void preprocess() throws Exception {
+		super.preprocess();
+		logger.debug("preprocess - refreshing course object in request scope");
+		if (courseInfo != null && courseInfo.getId() != null) {
+			courseInfo = courseService.findCourse(courseInfo.getId());
+		}
+		setBean(Constants.COURSE_INFO, courseInfo);
+	}
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -70,13 +91,15 @@ public class AbstractCoursePage extends BasePage {
 			return;
 		} else {
 			if (courseInfo.getCourseTypeId()==null){
-				courseInfo = getCourseService().getCourseInfo(courseInfo.getId());
+				courseInfo = getCourseService().findCourse(courseInfo.getId());
 			}
-			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
-			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
+			courseTypeInfo = courseTypeService.findCourseType(courseInfo
+					.getCourseTypeId());
+			instituteInfo = instituteService.findInstitute(courseTypeInfo
+					.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
-			setSessionBean(Constants.COURSE_INFO, courseInfo);
-			setSessionBean(Constants.INSTITUTE_INFO, instituteInfo);	
+			setBean(Constants.COURSE_INFO, courseInfo);
+			setBean(Constants.INSTITUTE_INFO, instituteInfo);
 		}
 	}
 
@@ -168,13 +191,4 @@ public class AbstractCoursePage extends BasePage {
 		this.periodInfo = periodInfo;
 	}
 
-	public LectureService getLectureService() {
-		return lectureService;
-	}
-
-	public void setLectureService(LectureService lectureService) {
-		this.lectureService = lectureService;
-	}
-
-	
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipException;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -33,6 +34,9 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		if (file != null && file.getCreated() == null) {
 			logger.debug("reseting date");
 			file.setCreated(new Date());
@@ -68,10 +72,13 @@ public class DocumentAddZipPage extends AbstractDocumentPage{
 				}
 				removeSessionBean(Constants.UPLOADED_FILE);
 			}
+		} catch (ZipException e){
+			addError(i18n("message_error_zip_file_password"));
+			return Constants.FAILURE;
 		} catch (IOException e) {
 			logger.error(e);
 			addError(i18n("message_error_zip_file_unpacking"));
-			return Constants.FAILURE;
+			return Constants.FAILURE;			
 		} finally {
 			removeSessionBean(Constants.UPLOADED_FILE);
 		}

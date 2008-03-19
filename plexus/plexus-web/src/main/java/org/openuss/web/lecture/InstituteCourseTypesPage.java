@@ -1,13 +1,11 @@
 package org.openuss.web.lecture;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -30,6 +28,8 @@ import org.openuss.web.Constants;
  * CourseType Administration Page
  * @author Ingo Düppe
  * @author Kai Stettner
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$lecture$institutecoursetypes", scope = Scope.REQUEST)
 @View
@@ -55,6 +55,12 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
+		if (!instituteInfo.isEnabled()) {
+			addMessage(i18n("institute_not_activated"));
+		}
 		addPageCrumbs();
 	}
 
@@ -76,7 +82,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	public String addCourseType() {
 		editing = true;
 		courseTypeInfo = new CourseTypeInfo();
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		setBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		return Constants.SUCCESS;
 	}
 
@@ -92,7 +98,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 			return Constants.FAILURE;
 		}
 		courseTypeInfo = courseTypeService.findCourseType(courseTypeInfo.getId());
-		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
+		setBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
 		if (courseTypeInfo == null) {
 			addWarning(i18n("error_course_type_not_found"));
 			return Constants.FAILURE;
@@ -184,7 +190,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	 */
 	public String cancelCourseType() {
 		logger.debug("cancelCourseType()");
-		removeSessionBean(Constants.COURSE_TYPE_INFO);
+		setBean(Constants.COURSE_TYPE_INFO, null);
 		editing = false;
 		return Constants.SUCCESS;
 	}
@@ -205,7 +211,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		CourseTypeInfo currentCourseType = currentCourseType();
 		logger.debug("Returning to method selectCourseTypeAndConfirmRemove");
 		logger.debug(currentCourseType.getId());
-		setSessionBean(Constants.COURSE_TYPE_INFO, currentCourseType);
+		setBean(Constants.COURSE_TYPE_INFO, currentCourseType);
 
 		return Constants.COURSE_TYPE_CONFIRM_REMOVE_PAGE;
 

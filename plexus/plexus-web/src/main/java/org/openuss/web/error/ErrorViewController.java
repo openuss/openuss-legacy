@@ -25,13 +25,14 @@ public class ErrorViewController {
 	public String getStackTrace() {
 		StringWriter out = new StringWriter();
 		try {
-			if (exception != null)
+			if (exception != null) {
 				exception.printStackTrace(new PrintWriter(out));
+			}
 			String str = out.toString().replaceAll("<", "&lt;");
 			str = str.replaceAll("\n", "<br/>");
 			return str;
 		} catch (Throwable e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			return "could not create exception stacktrace";
 		}
 	}

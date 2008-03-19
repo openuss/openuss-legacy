@@ -59,13 +59,6 @@
 		
   		<ui:define name="content">
   	
-<!-- GETTING STARTED -->	
-			<c:if test="#{not empty SYSTEM_PROPERTIES.GETTING_STARTED}">
-				<o:block>	
-					<h:outputText value="#{SYSTEM_PROPERTIES.GETTING_STARTED}" escape="false" />
-				</o:block>
-			</c:if>  		
-			  	
 			  		
 <!-- USER IS NOT LOGGED IN -->
 			<s:authorize ifNotGranted="ROLE_USER">

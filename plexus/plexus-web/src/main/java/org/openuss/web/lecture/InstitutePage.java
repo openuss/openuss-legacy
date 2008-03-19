@@ -56,7 +56,9 @@ public class InstitutePage extends AbstractLecturePage {
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
-		
+		if (isRedirected()){
+			return;
+		}
 		if (instituteInfo != null) {
 			departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
@@ -104,7 +106,7 @@ public class InstitutePage extends AbstractLecturePage {
 			}
 		} 
 		
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}
 	
@@ -153,7 +155,7 @@ public class InstitutePage extends AbstractLecturePage {
 		CourseInfo course = currentCourse();
 		logger.debug("Returning to method selectCourse");
 		logger.debug(course.getId());	
-		setSessionBean(Constants.COURSE_INFO, course);
+		setBean(Constants.COURSE_INFO, course);
 		
 		return Constants.COURSE_PAGE;
 	}
@@ -166,6 +168,9 @@ public class InstitutePage extends AbstractLecturePage {
 		//courseInfo = courseData.getRowData();
 		try {
 			CourseInfo currentCourse = currentCourse();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
@@ -181,6 +186,9 @@ public class InstitutePage extends AbstractLecturePage {
 		try {
 			//courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
@@ -199,6 +207,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public String addShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_shortcut"), e.getMessage());
@@ -216,6 +227,9 @@ public class InstitutePage extends AbstractLecturePage {
 	public String removeShortcut()
 	{
 		try {
+			if (desktopInfo==null){
+				refreshDesktop();
+			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
@@ -273,7 +287,7 @@ public class InstitutePage extends AbstractLecturePage {
 			periodInfo.setName(i18n("all_active_periods"));
 		} else {
 			periodInfo = universityService.findPeriod(periodId);
-			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 
@@ -328,7 +342,7 @@ public class InstitutePage extends AbstractLecturePage {
 	 * @throws LectureException 
 	 */
 	public String applyForMembership() throws LectureException {
-		if (user != null && institute != null) {
+		if (user != null && instituteInfo != null) {
 			try {
 				organisationService.addAspirant(instituteInfo.getId(), user.getId());
 				addMessage(i18n("institute_message_application_of_membership_send"));

@@ -5,7 +5,6 @@
  */
 package org.openuss.lecture;
 
-import org.apache.commons.lang.ObjectUtils;
 
 /**
  * @see org.openuss.lecture.Period
@@ -59,13 +58,11 @@ public class PeriodDaoImpl extends PeriodDaoBase {
 	 */
 	public Period periodInfoToEntity(PeriodInfo periodInfo) {
 		Period entity = this.loadPeriodFromPeriodInfo(periodInfo);
-		if (entity == null) {
+		if (entity == null || entity.getId()==null) {
 			entity = Period.Factory.newInstance();
+			entity.setUniversity(getUniversityDao().load(periodInfo.getUniversityId()));
 		}
 		this.periodInfoToEntity(periodInfo, entity, true);
-		if (entity.getUniversity() == null && periodInfo.getUniversityId() != null || !ObjectUtils.equals(periodInfo.getUniversityId(), entity.getUniversity().getId())) {
-			entity.setUniversity(this.getUniversityDao().load(periodInfo.getUniversityId()));
-		}
 		return entity;
 	}
 

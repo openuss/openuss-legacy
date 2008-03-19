@@ -12,42 +12,23 @@
 		OpenUSS Plexus is the relaunch of the well known E-Learning
 		plattform OpenUSS.
 	</description>
-	<url>http://teamopenuss.uni-muenster.de/</url>
+	<url>http://openuss.sf.net/plexus/</url>
 	<prerequisites>
-		<maven>2.0.1</maven>
+		<maven>2.0.7</maven>
 	</prerequisites>
 	<issueManagement>
 		<system>jira</system>
 		<url>http://teamopenuss.uni-muenster.de/jira/browse/USS</url>
 	</issueManagement>
 	<inceptionYear>2006</inceptionYear>
-	<ciManagement>
-		<system>continuum</system>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>
-						openuss-svn-commits@lists.sourceforge.net
-					</address>
-				</configuration>
-			</notifier>
-			<notifier>
-				<type>mail</type>
-				<configuration>
-					<address>idueppe@users.sourceforge.net</address>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
 	<mailingLists>
 		<mailingList>
-			<name>OpenUSS CVS List</name>
+			<name>OpenUSS SVN List</name>
 			<subscribe>
-				http://lists.sourceforge.net/mailman/listinfo/openuss-cvs-commits
+				http://lists.sourceforge.net/mailman/listinfo/openuss-svn-commits
 			</subscribe>
 			<unsubscribe>
-				http://lists.sourceforge.net/mailman/listinfo/openuss-cvs-commits
+				http://lists.sourceforge.net/mailman/listinfo/openuss-svn-commits
 			</unsubscribe>
 			<archive>
 				http://sourceforge.net/mailarchive/forum.php?forum_id=48702
@@ -89,11 +70,8 @@
 			</organization>
 			<roles>
 				<role>Developer</role>
-				<role>Project Admin</role>
-				<role>Dokumentation</role>
-				<role>UI - Development</role>
 			</roles>
-			<timezone>1</timezone>
+			<timezone>2</timezone>
 		</developer>
 	</developers>
 	<contributors>
@@ -130,7 +108,7 @@
 	</scm>
 	<organization>
 		<name>OpenUSS</name>
-		<url>http://openuss.sourceforge.net</url>
+		<url>http://openuss.sourceforge.net/plexus</url>
 	</organization>
 	<build>
 		<extensions>
@@ -300,7 +278,7 @@
 		</plugins>
 	</build>
 	<modules>
-        <module>documentation</module>
+        <!--  <module>documentation</module> -->
 		<module>framework</module>
 		<module>themes</module>
 		<module>openformula</module>
@@ -329,7 +307,6 @@
 			<name>Apache Incubating Release Distribution Repository</name>
 			<url>http://people.apache.org/repo/m2-incubating-repository</url>
 		</repository>
-
 		<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
@@ -337,6 +314,13 @@
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
 		</repository>		
 <!-- 
+		<repository>
+			<id>java-net</id>
+			<name>Java.Net</name>
+			<layout>legacy</layout>
+			<url>https://maven-repository.dev.java.net/nonav/repository</url>
+		</repository>		
+
         <repository>
 			<id>andromda</id>
 			<name>andromda</name>
@@ -441,23 +425,13 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+<!--  
 	<reporting>
 		<plugins>
 			<plugin>
 				<artifactId>
 					maven-project-info-reports-plugin
 				</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>project-team</report>
-							<report>mailing-list</report>
-							<report>issue-tracking</report>
-							<report>scm</report>
-							<report>summary</report>
-						</reports>
-					</reportSet>
-				</reportSets>
 			</plugin>
 			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
@@ -482,6 +456,8 @@
 					</reportSets>
 		        </configuration>
 			</plugin>
+-->
+			<!-- 
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<configuration>
@@ -500,19 +476,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<rulesets>
-						<ruleset>/rulesets/basic.xml</ruleset>
-						<ruleset>/rulesets/controversial.xml</ruleset>
-					</rulesets>
-					<format>xml</format>
-					<linkXref>true</linkXref>
-					<sourceEncoding>UTF-8</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
 				<configuration>
 					<aggregate>true</aggregate>
@@ -525,31 +488,30 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
 			</plugin>
-			<!-- 
-				<plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jxr-maven-plugin</artifactId>
 				<configuration>
-				<aggregate>true</aggregate>
+					<aggregate>true</aggregate>
 				</configuration>
-				</plugin>
-				<plugin>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
-				</plugin>
-				<plugin>
+			</plugin>
+			<plugin>
 				<artifactId>maven-changes-plugin</artifactId>
 				<reportSets>
-				<reportSet>
-				<reports>
-				<report>jira-report</report>
-				</reports>
-				</reportSet>
+					<reportSet>
+						<reports>
+							<report>jira-report</report>
+						</reports>
+					</reportSet>
 				</reportSets>
-				</plugin>
-			-->
+			</plugin>
 		</plugins>
 	</reporting>
+-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -571,6 +533,11 @@
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
 				<version>3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -1032,7 +999,7 @@
 		<site>
 			<id>openuss-site</id>
 			<name>OpenUSS Website</name>
-			<url>scpexe://teamopenuss.uni-muenster.de/</url>
+			<url>scpexe://openuss.sourceforge.net/plexus</url>
 		</site>
 	</distributionManagement>
 	<properties>

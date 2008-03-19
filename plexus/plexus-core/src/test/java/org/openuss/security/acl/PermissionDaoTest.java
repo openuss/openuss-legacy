@@ -5,8 +5,11 @@
  */
 package org.openuss.security.acl;
 
+import java.util.List;
+
 import org.openuss.TestUtility;
 import org.openuss.security.User;
+import org.openuss.security.acegi.acl.AclPermissionAdapter;
 
 
 /**
@@ -22,13 +25,13 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 
 	public void testPermissionDaoCreate() {
 		User user = testUtility.createUniqueUserInDB();
-		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
+		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB(null);
 		createAndTestPermission(user, objectIdentity);
 	}
 
 	public void testFindPermission() {
 		User user = testUtility.createUniqueUserInDB();
-		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB();
+		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB(null);
 		Permission permission = createAndTestPermission(user, objectIdentity);
 		
 		flush();
@@ -37,6 +40,24 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 		assertNotNull(found);
 		assertEquals(permission, found);
 		assertEquals(objectIdentity, permission.getAclObjectIdentity());
+	}
+	
+	public void testFindPermissionWithRecipient() {
+		User user = testUtility.createUniqueUserInDB();
+		ObjectIdentity grandgrandParent = createAndTestObjectIdentityInDB(null);
+		ObjectIdentity grandParent = createAndTestObjectIdentityInDB(grandgrandParent);
+		ObjectIdentity parent = createAndTestObjectIdentityInDB(grandParent);
+		ObjectIdentity objectIdentity = createAndTestObjectIdentityInDB(parent);
+		
+		Permission permission = createAndTestPermission(user, objectIdentity);
+		
+		flush();
+		
+		List<AclPermissionAdapter> list = permissionDao.findPermissionsWithRecipient(objectIdentity);
+		assertNotNull(list);
+		assertTrue(list.size() == 1);
+		assertTrue(list.get(0).getMask() == permission.getMask());
+		
 	}
 
 	private Permission createAndTestPermission(User user, ObjectIdentity objectIdentity) {
@@ -51,10 +72,10 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 		return permission;
 	}
 
-	private ObjectIdentity createAndTestObjectIdentityInDB() {
+	private ObjectIdentity createAndTestObjectIdentityInDB(ObjectIdentity parent) {
 		ObjectIdentity objectIdentity = ObjectIdentity.Factory.newInstance();
 		objectIdentity.setId(TestUtility.unique());
-		objectIdentity.setParent(null);
+		objectIdentity.setParent(parent);
 		objectIdentityDao.create(objectIdentity);
 		return objectIdentity;
 	}

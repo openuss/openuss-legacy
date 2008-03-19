@@ -105,7 +105,7 @@
 									activeOnViewIds="/views/secured/course/courseassistants.xhtml">
 									<h:outputText value="#{msg['course_command_options_assistants']}" />
 								</t:commandNavigation2>
-								<c:if test="#{sessionScope.courseInfo.accessType.value != 0 and sessionScope.courseInfo.accessType.value != 1 }">
+								<c:if test="#{courseInfo.accessType.value != 0 and courseInfo.accessType.value != 1 }">
 									<t:commandNavigation2
 										id="cmd_members" forceId="true"  
 										action="course_options_members" 
@@ -113,7 +113,7 @@
 										<h:outputText value="#{msg['course_command_options_participants']}" />
 									</t:commandNavigation2>
 								</c:if>
-								<c:if test="#{sessionScope.courseInfo.accessType.value == 4}">
+								<c:if test="#{courseInfo.accessType.value == 4}">
 									<t:commandNavigation2
 										id="cmd_aspirants" forceId="true"  
 										action="course_options_aspirants" 

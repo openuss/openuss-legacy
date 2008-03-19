@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.lecture.events.InstituteUpdatedEvent;
 import org.openuss.security.Group;
 import org.openuss.security.GroupItem;
 import org.openuss.security.GroupType;
@@ -126,8 +127,7 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 	 */
 	protected DepartmentInfo handleFindDepartment(Long departmentId) throws Exception {
 		Validate.notNull(departmentId, "The DepartmentId cannot be null");
-		Department department = (Department) this.getDepartmentDao().load(departmentId);
-		return this.getDepartmentDao().toDepartmentInfo(department);
+		return (DepartmentInfo) getDepartmentDao().load(DepartmentDao.TRANSFORM_DEPARTMENTINFO, departmentId);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 		// Add Institute to Department
 		department.add(institute);
 		getInstituteDao().update(institute);
-
+		
 		// Delete all old Applications of the Institute (should actually only be max 2)
 		List<Application> applicationsOld = new ArrayList<Application>();
 		for (Application applicationOld : institute.getApplications()) {
@@ -222,6 +222,8 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 		application.setConfirmationDate(new Date());
 		application.setConfirmingUser(user);
 		application.setConfirmed(true);
+		
+		getEventPublisher().publishEvent(new InstituteUpdatedEvent(institute));
 	}
 
 	/**

@@ -25,7 +25,9 @@ public class UsernameExistValidator extends BaseBean implements Validator {
 			SecurityService service = (SecurityService) getBean("securityService");
 			boolean notExist = service.isValidUserName(null, username);
 			if (notExist) {
-				((UIInput)component).setValid(false);
+				if (component instanceof UIInput) {
+					((UIInput)component).setValid(false);
+				}
 				addError(component.getClientId(context), i18n("error_username_does_not_exists"), null);
 			}
 		}

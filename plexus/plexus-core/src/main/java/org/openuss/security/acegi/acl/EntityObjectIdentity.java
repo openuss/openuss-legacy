@@ -45,10 +45,15 @@ public class EntityObjectIdentity implements AclObjectIdentity {
 		try {
 			Assert.notNull(object, "object cannot be null");
 			identifier = identifierFromObject(object);
-		} catch (IllegalAccessException th) {
-			logger.error(th);
-			throw th;
+		} catch (IllegalAccessException iae) {
+			logger.error(iae);
+			throw iae;
 		}
+	}
+	
+	public EntityObjectIdentity(Long identifier) {
+		super();
+		this.identifier = identifier;
 	}
 
 	private Long identifierFromObject(Object object) throws IllegalAccessException, InvocationTargetException {

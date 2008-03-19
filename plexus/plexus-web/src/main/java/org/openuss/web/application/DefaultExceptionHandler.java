@@ -36,13 +36,13 @@ public class DefaultExceptionHandler extends BaseBean implements ExceptionHandle
 	public void handleException(Exception exception) {
 		boolean found = false;
 		// search for application exceptions
-		Throwable e = exception;
-		while (e != e.getCause() && e.getCause() != null && !found) {
-			e = e.getCause();
-			found = e instanceof ApplicationException;
+		Throwable throwable = exception;
+		while (throwable != throwable.getCause() && throwable.getCause() != null && !found) {
+			throwable = throwable.getCause();
+			found = throwable instanceof ApplicationException;
 		}
 		if (found) {
-			handleApplicationException((Exception)e);
+			handleApplicationException((Exception)throwable);
 		} else {
 			handleSystemException(exception);
 		}
@@ -64,6 +64,7 @@ public class DefaultExceptionHandler extends BaseBean implements ExceptionHandle
 	 * 
 	 * @param exception
 	 */
+	@SuppressWarnings("unchecked")
 	private void handleSystemException(Exception exception) {
 		logger.error("SystemException", exception);
 		FacesContext context = FacesContext.getCurrentInstance();

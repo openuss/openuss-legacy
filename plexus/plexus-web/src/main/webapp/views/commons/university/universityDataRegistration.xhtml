@@ -9,32 +9,32 @@
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://www.openuss.org/jsfcontrols">
       
-	<o:input entity="universityInfo" property="name" maxlength="250" required="true"/>
-	<o:input entity="universityInfo" property="shortName" maxlength="250" required="true"/>
-	<o:input entity="universityInfo" property="shortcut" maxlength="30" required="true">
+	<o:input entity="universityApplication" property="name" maxlength="250" required="true"/>
+	<o:input entity="universityApplication" property="shortName" maxlength="250" required="true"/>
+	<o:input entity="universityApplication" property="shortcut" maxlength="30" required="true">
 		<f:validator validatorId="filenameValidator"/>
 	</o:input>
 	<h:outputLabel value="#{msg.university_preferences_university}" for="universityTypeSelect" styleClass="field_label" />
-	<h:selectOneListbox id="university_preferences_university" size="1" styleClass="pulldown" value="#{universityInfo.universityType}">
+	<h:selectOneListbox id="university_preferences_university" size="1" styleClass="pulldown" value="#{universityApplication.universityType}">
 	    <f:selectItems value="#{universityRegistration.supportedOrganizationTypes}"/>
 	</h:selectOneListbox>
 	<h:outputLabel value="#{msg.universityinfo_description}" for="descriptionEditor" styleClass="field_label"/>
-	<h:inputTextarea styleClass="pulldown" value="#{universityInfo.description}" id="descriptionTextField" />
-	<o:input entity="universityInfo" property="ownerName" maxlength="50" required="true"/>
-	<o:input entity="universityInfo" property="address" maxlength="100"/>
-	<o:input entity="universityInfo" property="country" maxlength="100"/>
-	<o:input entity="universityInfo" property="postcode" maxlength="100"/>
-	<o:input entity="universityInfo" property="city" maxlength="100"/>
-	<o:input entity="universityInfo" property="email" maxlength="100"/>
-	<o:input entity="universityInfo" property="website" maxlength="100"/>
-	<o:input entity="universityInfo" property="telephone" maxlength="100"/>
-	<o:input entity="universityInfo" property="telefax" maxlength="100"/>
+	<h:inputTextarea styleClass="pulldown" value="#{universityApplication.description}" id="descriptionTextField" />
+	<o:input entity="universityApplication" property="ownerName" maxlength="50" required="true"/>
+	<o:input entity="universityApplication" property="address" maxlength="100"/>
+	<o:input entity="universityApplication" property="country" maxlength="100"/>
+	<o:input entity="universityApplication" property="postcode" maxlength="100"/>
+	<o:input entity="universityApplication" property="city" maxlength="100"/>
+	<o:input entity="universityApplication" property="email" maxlength="100"/>
+	<o:input entity="universityApplication" property="website" maxlength="100"/>
+	<o:input entity="universityApplication" property="telephone" maxlength="100"/>
+	<o:input entity="universityApplication" property="telefax" maxlength="100"/>
 	<h:outputLabel value="#{msg.user_locale}" for="languageSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{universityInfo.locale}">
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{universityApplication.locale}">
 	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 	</h:selectOneListbox>
 	<!-- <h:outputLabel value="#{msg.user_theme}" for="themeSelect" styleClass="field_label"/>
-	<h:selectOneListbox id="themeSelect" size="1" value="#{universityInfo.theme}" styleClass="pulldown" >
+	<h:selectOneListbox id="themeSelect" size="1" value="#{universityApplication.theme}" styleClass="pulldown" >
 	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
 	</h:selectOneListbox> -->
 

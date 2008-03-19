@@ -41,7 +41,7 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 		}
 		if (courseInfo!=null&&courseInfo.getId()!=null){
 			forum = getDiscussionService().getForum(courseInfo);
-			setSessionBean(Constants.DISCUSSION_FORUM, forum);
+			setBean(Constants.DISCUSSION_FORUM, forum);
 		}
 		addDiscussionCrumb();
 	}
@@ -49,12 +49,11 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	protected boolean isAssistant(){
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		AclEntry[] acls = aclManager.getAcls(courseInfo, auth);
-		Integer required = LectureAclEntry.ASSIST;
 		if ((acls != null) && acls.length > 0) {
 			for (AclEntry aclEntry : acls) {
 				if (aclEntry instanceof BasicAclEntry) {
 					BasicAclEntry processableAcl = (BasicAclEntry) aclEntry;
-					if (processableAcl.isPermitted(required)) {
+					if (processableAcl.isPermitted(LectureAclEntry.ASSIST)) { // NOPMD
 						return true;
 					}
 				}
@@ -114,4 +113,5 @@ public class AbstractDiscussionPage extends AbstractCoursePage{
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
 	}
+
 }

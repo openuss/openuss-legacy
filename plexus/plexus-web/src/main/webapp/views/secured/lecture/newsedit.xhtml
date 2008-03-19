@@ -57,11 +57,11 @@
 				
 				<h:outputLabel value="#{msg.news_selected_newsitem_attachment}" for="attachment"	styleClass="field_label" />
 
-				<f:subview rendered="#{!(empty sessionScope.news_selected_newsitem.attachments)}">
+				<f:subview rendered="#{!(empty institutenews_attachments)}">
 					<div class="content_font_normal">
 						<t:dataList 
 							var="attachment" 
-							value="#{sessionScope.news_selected_newsitem.attachments}" 
+							value="#{institutenews_attachments}" 
 							binding="${views$secured$lecture$newsedit.attachmentList}">
 					  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
 								action="#{views$secured$lecture$newsedit.removeAttachment}"

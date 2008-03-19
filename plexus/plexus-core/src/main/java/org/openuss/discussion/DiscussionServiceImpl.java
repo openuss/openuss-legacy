@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
@@ -33,7 +34,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	 * @see org.openuss.discussion.DiscussionService#createTopic(org.openuss.discussion.PostInfo,
 	 *      java.lang.Long)
 	 */
-	protected void handleCreateTopic(PostInfo postInfo, ForumInfo forumInfo) throws Exception {
+	protected void handleCreateTopic(final PostInfo postInfo, final ForumInfo forumInfo) {
 		Validate.notNull(postInfo, "postInfo must not be null");
 		Validate.notNull(forumInfo, "forumInfo must not be null");
 
@@ -41,36 +42,36 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Topic topic = Topic.Factory.newInstance();
 		topic.setReadOnly(false);
 
-		topic.setSubmitter(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getSubmitter())));
+		topic.setSubmitter(getSecurityService().getUserObject(
+				getSecurityService().getUserByName(postInfo.getSubmitter())));
 		Forum forum = getForumDao().load(forumInfo.getId());
-		// TODO define a add topic method in forum 
+		// TODO define a add topic method in forum
 		forum.getTopics().add(topic);
 		topic.setForum(forum);
 
 		getTopicDao().create(topic);
 		getForumDao().update(forum);
-		
+
 		// add object identity to security
 		getSecurityService().createObjectIdentity(topic, topic.getForum().getDomainIdentifier());
-		
- 		TopicInfo topicInfo = getTopicDao().toTopicInfo(topic);
 
- 		// add first post
+		TopicInfo topicInfo = getTopicDao().toTopicInfo(topic);
+
+		// add first post
 		handleAddPost(postInfo, topicInfo);
 		topic = getTopicDao().load(topicInfo.getId());
-		
+
 		getPostDao().toPostInfo(topic.getFirst(), postInfo);
-		
+
 		sendNotificationsToForumWatchers(topic, topic.getForum());
 
 	}
 
-	@SuppressWarnings("unchecked")
-	private void sendNotificationsToForumWatchers(Topic topic, Forum forum) {
+	private void sendNotificationsToForumWatchers(final Topic topic, final Forum forum) {
 		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
 		List<User> emails = new ArrayList<User>();
-		for (ForumWatch watch : watches){
-			emails.add(watch.getUser());			
+		for (ForumWatch watch : watches) {
+			emails.add(watch.getUser());
 		}
 		logEmailAdresses(emails);
 		sendNotificationEmail(emails, topic);
@@ -79,14 +80,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#deleteTopic(org.openuss.discussion.TopicInfo)
 	 */
-	@SuppressWarnings("unchecked")
-	protected void handleDeleteTopic(TopicInfo topicInfo) throws Exception {
+	protected void handleDeleteTopic(final TopicInfo topicInfo) {
 		Validate.notNull(topicInfo, "topicInfo must not be null.");
-		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
-		removeTopic(topic);
+		removeTopic(getTopicDao().topicInfoToEntity(topicInfo));
 	}
 
-	private void removeTopic(Topic topic) {
+	private void removeTopic(final Topic topic) {
 		removeAllDiscussionWatchesOfTopic(topic);
 		for (Post post : topic.getPosts()) {
 			getTrackingService().remove(post);
@@ -102,66 +101,62 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getSecurityService().removeObjectIdentity(topic);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void removeAllDiscussionWatchesOfTopic(Topic topic) {
-		List<DiscussionWatch> topicWatches = getDiscussionWatchDao().findByTopic(topic);
-		getDiscussionWatchDao().remove(topicWatches);
+	private void removeAllDiscussionWatchesOfTopic(final Topic topic) {
+		getDiscussionWatchDao().remove(getDiscussionWatchDao().findByTopic(topic));
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#addPost(org.openuss.discussion.PostInfo,
 	 *      org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleAddPost(PostInfo postInfo, TopicInfo topicInfo) throws Exception {
+	protected void handleAddPost(final PostInfo postInfo, final TopicInfo topicInfo) {
 		Validate.notNull(postInfo, "PostInfo must not be null.");
 		Validate.notNull(topicInfo, "TopicInfo must not be null.");
-		
-		Topic topic = getTopicDao().topicInfoToEntity(topicInfo);
-		
+
+		Topic topic = getTopicDao().load(topicInfo.getId());
+
 		Post post = getPostDao().postInfoToEntity(postInfo);
-		
-		post.setSubmitter(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getSubmitter())));
+
+		post.setSubmitter(getSecurityService().getUserObject(
+				getSecurityService().getUserByName(postInfo.getSubmitter())));
 
 		addPostToTopicAndPersist(topic, post);
-		
+
 		getSecurityService().createObjectIdentity(post, topicInfo.getId());
 
 		getDocumentService().diffSave(post, postInfo.getAttachments());
-		
+
 		sendNotifications(topic, topic.getForum());
 		getTrackingService().setModified(topic);
 		getTrackingService().setRead(topic);
-		
+
 		getPostDao().toPostInfo(post, postInfo);
-		
+
 	}
-	
-	@SuppressWarnings("unchecked")
-	private void sendNotifications(Topic topic, Forum forum){
+
+	private void sendNotifications(final Topic topic, final Forum forum) {
 		List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
 		List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
 		Set<User> emails = new HashSet();
 		emails.addAll(emailsByTopic);
-		emails.addAll(emailsByForum);		
+		emails.addAll(emailsByForum);
 		logEmailAdresses(emails);
-		List l = new ArrayList(emails);
-		sendNotificationEmail(l, topic);
+		sendNotificationEmail(new ArrayList(emails), topic);
 		logger.debug("got users to notify");
 	}
-	
+
 	/**
-	 * obsolete method, which prints out email adresses of users to notify
-	 * just for testing purposes
-	 * TODO remove me 
+	 * obsolete method, which prints out email adresses of users to notify just
+	 * for testing purposes TODO remove me
 	 */
-	private void logEmailAdresses(Collection<User> emails){
+	private void logEmailAdresses(final Collection<User> emails) {
 		logger.debug("email adresses to notify:");
-		for (User adress: emails){
-			logger.debug("----------- " + adress.getEmail()+ "-----------");
+		for (User adress : emails) {
+			logger.debug("----------- " + adress.getEmail() + "-----------");
 		}
 	}
 
-	private void addPostToTopicAndPersist(Topic topic, Post post) {
+	private void addPostToTopicAndPersist(final Topic topic, final Post post) {
 		topic.addPost(post);
 		getPostDao().create(post);
 		getTopicDao().update(topic);
@@ -170,7 +165,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#deletePost(org.openuss.discussion.PostInfo)
 	 */
-	protected void handleDeletePost(PostInfo postInfo) throws Exception {
+	protected void handleDeletePost(final PostInfo postInfo) {
 		Validate.notNull(postInfo, "post must not be null");
 		Post post = getPostDao().postInfoToEntity(postInfo);
 		Topic topic = post.getTopic();
@@ -185,27 +180,26 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 				getPostDao().remove(post);
 			}
 		}
-		
+
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#updatePost(org.openuss.discussion.PostInfo)
 	 */
-	@SuppressWarnings("unchecked")
-	protected void handleUpdatePost(PostInfo postInfo) throws Exception {
+	protected void handleUpdatePost(final PostInfo postInfo) {
 		Post post = getPostDao().load(postInfo.getId());
 		post.setText(postInfo.getText());
 		post.setTitle(postInfo.getTitle());
 		post.setEditor(getSecurityService().getUserObject(getSecurityService().getUserByName(postInfo.getEditor())));
 		post.setLastModification(postInfo.getLastModification());
 		getPostDao().update(post);
-		
+
 		getDocumentService().diffSave(post, postInfo.getAttachments());
 
-		getPostDao().toPostInfo(post,postInfo);
-		
+		getPostDao().toPostInfo(post, postInfo);
+
 		sendNotifications(post.getTopic(), post.getTopic().getForum());
-		
+
 		getTrackingService().setModified(post.getTopic());
 		getTrackingService().setRead(post.getTopic());
 
@@ -214,17 +208,15 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getPost(org.openuss.discussion.PostInfo)
 	 */
-	@SuppressWarnings("unchecked")
-	protected PostInfo handleGetPost(PostInfo post) throws Exception {
+	protected PostInfo handleGetPost(final PostInfo post) {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
-		PostInfo postInfo = (PostInfo) getPostDao().load(getPostDao().TRANSFORM_POSTINFO, post.getId());
-		if (postInfo == null) {
-			return null;  
+		PostInfo postInfo = (PostInfo) getPostDao().load(PostDao.TRANSFORM_POSTINFO, post.getId());
+		if (postInfo != null) {
+			List<FileInfo> attachments = getAttachments(postInfo);
+			postInfo.setAttachments(attachments);
+			postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
 		}
-		List<FileInfo> attachments = getAttachments(postInfo);
-		postInfo.setAttachments(attachments);
-		postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
 		return postInfo;
 
 	}
@@ -232,11 +224,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getPosts(org.openuss.discussion.TopicInfo)
 	 */
-	@SuppressWarnings("unchecked")
-	protected List handleGetPosts(TopicInfo topicInfo) throws Exception {
+	protected List handleGetPosts(final TopicInfo topicInfo) {
 		Validate.notNull(topicInfo);
 		Validate.notNull(topicInfo.getId());
-		
+
 		getTrackingService().setRead(topicInfo);
 
 		Topic topic = getTopicDao().load(topicInfo.getId());
@@ -247,14 +238,14 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			List<FileInfo> attachments = getDocumentService().getFileEntries(post);
 			post.setAttachments(attachments);
 		}
-		
+
 		return posts;
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getTopic(org.openuss.discussion.TopicInfo)
 	 */
-	protected TopicInfo handleGetTopic(TopicInfo topic)	throws Exception {
+	protected TopicInfo handleGetTopic(final TopicInfo topic) {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
 		return (TopicInfo) getTopicDao().load(TopicDao.TRANSFORM_TOPICINFO, topic.getId());
@@ -263,72 +254,77 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
 	 */
-	@SuppressWarnings("unchecked")
-	protected List handleGetTopics(ForumInfo forumInfo) throws Exception {
+	protected List handleGetTopics(final ForumInfo forumInfo) {
 		Validate.notNull(forumInfo, "Parameter forum must not be null");
 		Validate.notNull(forumInfo.getId(), "Parameter form must provide an valid id.");
-		
+
 		Forum forum = getForumDao().load(forumInfo.getId());
+		List<TopicInfo> topics;
 		if (forum == null) {
-			return new ArrayList<TopicInfo>();
+			topics =  new ArrayList<TopicInfo>();
 		} else {
-			List <TopicInfo> topics = getTopicDao().loadTopicsWithViewState(forum, getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
+			topics = getTopicDao().loadTopicsWithViewState(forum, getCurrentUserObject());
 			Collections.sort(topics, new TopicInfoComparator());
-			return topics;
 		}
+		return topics;
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#addTopicWatch(org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleAddTopicWatch(TopicInfo topic) throws Exception {
+	protected void handleAddTopicWatch(final TopicInfo topic)  {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
-		dw.setTopic(getTopicDao().load(topic.getId()));
-		dw.setUser(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
-		getDiscussionWatchDao().create(dw);
+		DiscussionWatch watch = DiscussionWatch.Factory.newInstance();
+		watch.setTopic(getTopicDao().load(topic.getId()));
+		watch.setUser(getCurrentUserObject());
+		getDiscussionWatchDao().create(watch);
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#addForumWatch(java.lang.Long)
 	 */
-	protected void handleAddForumWatch(ForumInfo forum) throws Exception {
+	protected void handleAddForumWatch(final ForumInfo forum)  {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
-		ForumWatch fw = ForumWatch.Factory.newInstance();
-		fw.setForum(getForumDao().load(forum.getId()));
-		fw.setUser(getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
-		getForumWatchDao().create(fw);
+		ForumWatch watch = ForumWatch.Factory.newInstance();
+		watch.setForum(getForumDao().load(forum.getId()));
+		watch.setUser(getCurrentUserObject());
+		getForumWatchDao().create(watch);
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#removeTopicWatch(org.openuss.discussion.TopicInfo)
 	 */
-	protected void handleRemoveTopicWatch(TopicInfo topic) throws Exception {
-		Validate.notNull(topic);
-		Validate.notNull(topic.getId());
-		Topic t = getTopicDao().load(topic.getId());
-		DiscussionWatch dw = getDiscussionWatchDao().findByTopicAndUser(t, getSecurityService().getUserObject(getSecurityService().getCurrentUser()));
-		getDiscussionWatchDao().remove(dw);
+	protected void handleRemoveTopicWatch(final TopicInfo topicInfo) {
+		Validate.notNull(topicInfo);
+		Validate.notNull(topicInfo.getId());
+		Topic topic = getTopicDao().load(topicInfo.getId());
+		DiscussionWatch watch = getDiscussionWatchDao().findByTopicAndUser(topic, getCurrentUserObject());
+		getDiscussionWatchDao().remove(watch);
+	}
+
+	private User getCurrentUserObject() {
+		return getSecurityService().getUserObject(getSecurityService().getCurrentUser());
 	}
 
 	/**
 	 * @see org.openuss.discussion.DiscussionService#removeForumWatch(java.lang.Long)
 	 */
-	protected void handleRemoveForumWatch(ForumInfo forum) throws Exception {
-		Validate.notNull(forum);
-		Validate.notNull(forum.getId());
-		Forum f = getForumDao().load(forum.getId());
-		ForumWatch fw = getForumWatchDao().findByUserAndForum(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), f);
-		getForumWatchDao().remove(fw);
+	protected void handleRemoveForumWatch(final ForumInfo forumInfo) {
+		Validate.notNull(forumInfo);
+		Validate.notNull(forumInfo.getId());
+		Forum forum = getForumDao().load(forumInfo.getId());
+		ForumWatch watch = getForumWatchDao().findByUserAndForum(getCurrentUserObject(), forum);
+		getForumWatchDao().remove(watch);
 	}
 
 	/**
+	 * @throws DocumentApplicationException 
 	 * @see org.openuss.discussion.DiscussionService#addAttachment(org.openuss.discussion.PostInfo,
 	 *      org.openuss.documents.FileInfo)
 	 */
-	protected void handleAddAttachment(PostInfo post, FileInfo file) throws Exception {
+	protected void handleAddAttachment(final PostInfo post, final FileInfo file) throws DocumentApplicationException {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
 		Validate.notNull(file);
@@ -337,9 +333,10 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	/**
+	 * @throws DocumentApplicationException 
 	 * @see org.openuss.discussion.DiscussionService#removeAttachment(org.openuss.discussion.PostInfo)
 	 */
-	protected void handleRemoveAttachment(PostInfo post, FileInfo fileInfo) throws Exception {
+	protected void handleRemoveAttachment(final PostInfo post, final FileInfo fileInfo) throws DocumentApplicationException {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
 		Validate.notNull(fileInfo);
@@ -348,7 +345,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	@Override
-	protected void handleAddForum(ForumInfo forum) throws Exception {
+	protected void handleAddForum(final ForumInfo forum) {
 		Validate.notNull(forum, "forum must not be null");
 		Validate.notNull(forum.getDomainIdentifier(), "domain Identifier of forum must not be null");
 		Forum forumObject = getForumDao().forumInfoToEntity(forum);
@@ -356,79 +353,81 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	@Override
-	protected void handleChangeEditState(ForumInfo forum) throws Exception {
-		Validate.notNull(forum);
-		Validate.notNull(forum.getId());
-		Forum f = getForumDao().load(forum.getId());
-		f.setReadOnly(!f.isReadOnly());
-		getForumDao().update(f);
+	protected void handleChangeEditState(final ForumInfo forumInfo) {
+		Validate.notNull(forumInfo);
+		Validate.notNull(forumInfo.getId());
+		Forum forum = getForumDao().load(forumInfo.getId());
+		forum.setReadOnly(!forum.isReadOnly());
+		getForumDao().update(forum);
 	}
 
 	@Override
-	protected void handleChangeEditState(TopicInfo topic) throws Exception {
-		Validate.notNull(topic);
-		Validate.notNull(topic.getId());
-		Topic t = getTopicDao().load(topic.getId());
-		t.setReadOnly(!t.isReadOnly());
-		getTopicDao().update(t);
+	protected void handleChangeEditState(final TopicInfo topicInfo) {
+		Validate.notNull(topicInfo);
+		Validate.notNull(topicInfo.getId());
+		Topic topic = getTopicDao().load(topicInfo.getId());
+		topic.setReadOnly(!topic.isReadOnly());
+		getTopicDao().update(topic);
 	}
 
 	@Override
-	protected ForumInfo handleGetForum(DomainObject domainObject) throws Exception {
+	protected ForumInfo handleGetForum(final DomainObject domainObject) {
 		Validate.notNull(domainObject, "DomainObject must not be null.");
-		Validate.notNull(domainObject.getId(),"DomainObject must provide an id.");
+		Validate.notNull(domainObject.getId(), "DomainObject must provide an id.");
 		Forum forum = getForumDao().findByDomainIdentifier(domainObject.getId());
 		if (forum == null) {
-			ForumInfo f = new ForumInfo();
-			f.setDomainIdentifier(domainObject.getId());
-			f.setReadOnly(false);
-			handleAddForum(f);
+			ForumInfo forumInfo = new ForumInfo();
+			forumInfo.setDomainIdentifier(domainObject.getId());
+			forumInfo.setReadOnly(false);
+			handleAddForum(forumInfo);
 			forum = getForumDao().findByDomainIdentifier(domainObject.getId());
 		}
 		return getForumDao().toForumInfo(forum);
 	}
 
 	@Override
-	protected void handleAddHit(TopicInfo topic) throws Exception {
-		Validate.notNull(topic);
-		Validate.notNull(topic.getId());
-		Topic t = getTopicDao().load(topic.getId());
-		t.setHits(t.getHits() + 1);
-		topic.setHits(t.getHits());
-		getTopicDao().update(t);
+	protected void handleAddHit(final TopicInfo topicInfo) {
+		Validate.notNull(topicInfo);
+		Validate.notNull(topicInfo.getId());
+		Topic topic = getTopicDao().load(topicInfo.getId());
+		topic.setHits(topic.getHits() + 1);
+		topicInfo.setHits(topic.getHits());
+		getTopicDao().update(topic);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleGetAttachments(PostInfo post) throws Exception {
+	protected List handleGetAttachments(final PostInfo post) {
 		Validate.notNull(post);
 		Validate.notNull(post.getId());
-		List<FileInfo> attachments = getDocumentService().getFileEntries(post);
-		return attachments;
+		return getDocumentService().getFileEntries(post);
 	}
 
 	@Override
-	protected boolean handleWatchesForum(ForumInfo forum) throws Exception {
+	protected boolean handleWatchesForum(final ForumInfo forum){
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
-		return (getForumWatchDao().findByUserAndForum(getSecurityService().getUserObject(getSecurityService().getCurrentUser()), getForumDao().load(forum.getId())) != null);
+		return (getForumWatchDao().findByUserAndForum(
+				getCurrentUserObject(),
+				getForumDao().load(forum.getId())) != null);
 	}
 
 	@Override
-	protected boolean handleWatchesTopic(TopicInfo topic) throws Exception {
+	protected boolean handleWatchesTopic(final TopicInfo topic) {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()), getSecurityService().getUserObject(getSecurityService().getCurrentUser())) != null);
+		return (getDiscussionWatchDao().findByTopicAndUser(getTopicDao().load(topic.getId()),
+				getCurrentUserObject()) != null);
 	}
-	
-	@SuppressWarnings("unchecked")
-	private void sendNotificationEmail(List<User> recipients, Topic topic) {
-		if (recipients==null||recipients.size()==0) return;
-		try {
-			String link = "/views/secured/discussion/discussionthread.faces?topic="+ topic.getId()+"&course="+topic.getForum().getDomainIdentifier();
 
-			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()+link;
-				
+	private void sendNotificationEmail(final List<User> recipients, final Topic topic) {
+		if (recipients == null || recipients.isEmpty()) {
+			return;
+		}
+		try {
+			String link = "/views/secured/discussion/discussionthread.faces?topic=" + topic.getId() + "&course="
+					+ topic.getForum().getDomainIdentifier();
+
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue() + link;
 
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
@@ -443,17 +442,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			// FIXME use forum name and an application event if course is updated
 			parameters.put("forumname", "ISSUE: Find domain name");
 			parameters.put("topiclink", link);
-			
-			getMessageService().sendMessage(
-					"user.discussion.watch.sender", 
-					"user.discussion.watch.subject", 
-					"discussionnotification",
-					parameters, recipients);
+
+			getMessageService().sendMessage("user.discussion.watch.sender", "user.discussion.watch.subject",
+					"discussionnotification", parameters, recipients);
 		} catch (Exception e) {
 			logger.error("Error: ", e);
 		}
 	}
-
-
 
 }

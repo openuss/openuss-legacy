@@ -3,6 +3,7 @@ package org.openuss.web.documents;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,22 +46,27 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
 	
-	/*
-	 * Target folder list
-	 */
+		
+		/*
+		 * Target folder list
+		 */
 	private List<SelectItem> folderList;
+	 
+	private boolean moveMode = false;
 
 	private List<FolderEntryInfo> entries;
-
-	private boolean moveMode = false;
 
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
+		if (isRedirected()){
+			return;
+		}
 		entrySelection.setEntries(loadFolderEntries());
 		entrySelection.processSwitch();
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
@@ -82,7 +88,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;
-		
+
 		private DataPage<FolderEntryInfo> page;
 
 		@Override
@@ -100,15 +106,16 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		 * 
 		 * @param periods
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
 			if (isAscending()) {
-				chain.addComparator(folderComparator);
+				chain.addComparator(new FolderEntryInfoComparator());
 			} else {
-				chain.addComparator(new ReverseComparator(folderComparator));
+				chain.addComparator(new ReverseComparator(new FolderEntryInfoComparator()));
 			}
-			
+
 			if (StringUtils.isNotBlank(getSortColumn())) {
 				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
 			} else {
@@ -117,18 +124,21 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			Collections.sort(list, chain);
 		}
 
-		private Comparator<FolderEntryInfo> folderComparator = new Comparator<FolderEntryInfo>() {
-			public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
-				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
-					return 0;
-				} else {
-					return info1.isFolder()?-1:1;
-				}
-			}
-			
-		};	
 	}
 
+	private static final class FolderEntryInfoComparator implements Comparator<FolderEntryInfo>, Serializable {
+		private static final long serialVersionUID = -2966816757063701789L;
+
+		public int compare(FolderEntryInfo info1, FolderEntryInfo info2) {
+			if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
+				return 0;
+			} else {
+				return info1.isFolder() ? -1 : 1;
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
@@ -163,13 +173,13 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public String newFolder() {
 		logger.debug("create new folder");
-		setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER, new FolderInfo());
+		setBean(Constants.DOCUMENTS_SELECTED_FOLDER, new FolderInfo());
 		return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 	}
 
 	public String newFile() {
 		logger.debug("create new file");
-		setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, new FileInfo());
+		setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 	}
@@ -179,11 +189,11 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		FolderEntryInfo entry = data.getRowData();
 		if (entry.isFolder()) {
 			FolderInfo selectedFolder = documentService.getFolder(entry);
-			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
+			setBean(Constants.DOCUMENTS_SELECTED_FOLDER, selectedFolder);
 			return Constants.DOCUMENTS_EDIT_FOLDER_PAGE;
 		} else {
 			FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
-			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
+			setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
 			return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 		}
 	}

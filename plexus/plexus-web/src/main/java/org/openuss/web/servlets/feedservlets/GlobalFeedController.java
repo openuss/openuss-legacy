@@ -3,7 +3,6 @@ package org.openuss.web.servlets.feedservlets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.openuss.web.feeds.FeedWrapper;
 import org.openuss.web.feeds.GlobalFeed;
 import org.springframework.web.servlet.ModelAndView;

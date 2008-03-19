@@ -5,10 +5,11 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.web.Constants;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
+ * 
  */
 @Bean(name = "views$secured$newsletter$exportedsubscribers", scope = Scope.REQUEST)
 @View
@@ -22,8 +23,9 @@ public class ExportedSubscribersPage extends AbstractNewsletterPage {
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		newsletter = getCourseNewsletterService().getNewsletter(courseInfo);
-		setSessionBean(Constants.NEWSLETTER_NEWSLETTER, newsletter);
+		if (isRedirected()){
+			return;
+		}
 		setSubscribersSemicolon(getCourseNewsletterService().exportSubscribers(courseInfo));
 		setSubscribersComma(getSubscribersSemicolon().replace(';', ','));
 		addPageCrumb();

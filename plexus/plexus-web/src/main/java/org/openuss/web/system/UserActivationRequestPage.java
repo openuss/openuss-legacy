@@ -13,8 +13,6 @@ public class UserActivationRequestPage extends BasePage{
 
 	@Prerender
 	public void prerender() throws Exception{
-		super.prerender();
-		
 		breadcrumbs.init();
 		
 		BreadCrumb newCrumb = new BreadCrumb();

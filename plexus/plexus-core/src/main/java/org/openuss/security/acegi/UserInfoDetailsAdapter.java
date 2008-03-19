@@ -24,18 +24,30 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 	}
 
 	private void setAuthorities(String[] authorities) {
-		grantedAuthorities = new StringGrantedAuthority[authorities.length];
+		grantedAuthorities = new GrantedAuthority[authorities.length];
 		for(int i = 0; i < authorities.length; i++) {
 			grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
 		}
 	}
 	
 	public void setAuthorities(GrantedAuthority[] authorities) {
-		this.grantedAuthorities = authorities;
+		if (authorities != null) {
+			grantedAuthorities = copyAuthorities(authorities);
+		} else {
+			grantedAuthorities = new GrantedAuthority[0];
+		}
+	}
+
+	private GrantedAuthority[] copyAuthorities(GrantedAuthority[] authorities) {
+		GrantedAuthority[] grantedAuthorities = new GrantedAuthority[authorities.length];
+		for(int i = 0; i < authorities.length; i++) {
+			grantedAuthorities[i] = authorities[i];
+		}
+		return grantedAuthorities;
 	}
 	
 	public GrantedAuthority[] getAuthorities() {
-		return this.grantedAuthorities;
+		return copyAuthorities(this.grantedAuthorities);
 	}
 	
 	/**
@@ -54,6 +66,11 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 			return this.getUsername().equals(object);
 		}
 		return super.equals(object);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	/**
@@ -87,4 +104,5 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 			return super.toString();
 		}
 	}
+
 }

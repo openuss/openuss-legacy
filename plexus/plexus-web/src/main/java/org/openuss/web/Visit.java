@@ -57,6 +57,7 @@ public class Visit extends BaseBean implements Serializable{
 	}
 
 	public Visit() {
+		super();
 		logger.trace("Visit object created");
 	}
 
@@ -89,35 +90,36 @@ public class Visit extends BaseBean implements Serializable{
 		if (locale == null) {
 			locale = getViewRoot().getLocale().toString();
 		}
-		
 		if (logger.isTraceEnabled()) {
 			logger.trace("get locale "+locale);
 		}
-		if (locale == null) {
-			logger.error("locale is still null - set to default en");
-			locale = "en";
-		}
+//		if (locale == null) {
+//			logger.error("locale is still null - set to default en");
+//			locale = "en";
+//		}
 		return locale;
 	}
 
 	public void setLocale(String locale) {
-		if (logger.isTraceEnabled())
+		if (logger.isTraceEnabled()) {
 			logger.trace("set locale to "+locale);
+		}
 		this.locale = locale;
 		
 		getViewRoot().setLocale(new Locale(locale));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getSupportedLocaleItems() {
 		if (localeItems == null) {
 			localeItems = new ArrayList<SelectItem>();
 			Application application = FacesContext.getCurrentInstance().getApplication();
 			for (Iterator<Locale> iter = application.getSupportedLocales(); iter.hasNext();) {
 				Locale locale = (Locale) iter.next();
-				SelectItem item = new SelectItem(locale.toString(), locale.getDisplayName());
+				SelectItem item = new SelectItem(locale.toString(), locale.getDisplayName()); // NOPMD idueppe
 				localeItems.add(item);
 			}
-			if (localeItems.size() == 0) {
+			if (localeItems.isEmpty()) {
 				Locale defaultLocale = application.getDefaultLocale();
 				localeItems.add(new SelectItem(defaultLocale.toString(), defaultLocale.getDisplayName()));
 			}
@@ -131,8 +133,7 @@ public class Visit extends BaseBean implements Serializable{
 			
 			String[] zones = TimeZone.getAvailableIDs();
 			for (String zoneId : zones) {
-				SelectItem item = new SelectItem(zoneId, zoneId);
-				timeZoneItems.add(item);
+				timeZoneItems.add(new SelectItem(zoneId, zoneId)); // NOPMD
 			}
 		}
 		return timeZoneItems;

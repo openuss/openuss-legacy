@@ -13,7 +13,7 @@ public class AnswerDaoImpl extends AnswerDaoBase {
 	 * @see org.openuss.braincontest.AnswerDao#toAnswerInfo(org.openuss.braincontest.Answer,
 	 *      org.openuss.braincontest.AnswerInfo)
 	 */
-	public void toAnswerInfo(Answer sourceEntity, AnswerInfo targetVO) {
+	public void toAnswerInfo(final Answer sourceEntity, final AnswerInfo targetVO) {
 		super.toAnswerInfo(sourceEntity, targetVO);
 		targetVO.setImageId(sourceEntity.getImageId());
 		targetVO.setSolverName(sourceEntity.getDisplayName());
@@ -31,7 +31,7 @@ public class AnswerDaoImpl extends AnswerDaoBase {
 	 * object from the object store. If no such entity object exists in the
 	 * object store, a new, blank entity is created
 	 */
-	private Answer loadAnswerFromAnswerInfo(AnswerInfo answerInfo) {
+	private Answer loadAnswerFromAnswerInfo(final AnswerInfo answerInfo) {
 		Answer answer = null;
 		if (answerInfo != null && answerInfo.getId() != null) {
 			answer = this.load(answerInfo.getId());
@@ -45,7 +45,7 @@ public class AnswerDaoImpl extends AnswerDaoBase {
 	/**
 	 * @see org.openuss.braincontest.AnswerDao#answerInfoToEntity(org.openuss.braincontest.AnswerInfo)
 	 */
-	public Answer answerInfoToEntity(AnswerInfo answerInfo) {
+	public Answer answerInfoToEntity(final AnswerInfo answerInfo) {
 		Answer entity = this.loadAnswerFromAnswerInfo(answerInfo);
 		this.answerInfoToEntity(answerInfo, entity, true);
 		return entity;
@@ -55,7 +55,7 @@ public class AnswerDaoImpl extends AnswerDaoBase {
 	 * @see org.openuss.braincontest.AnswerDao#answerInfoToEntity(org.openuss.braincontest.AnswerInfo,
 	 *      org.openuss.braincontest.Answer)
 	 */
-	public void answerInfoToEntity(AnswerInfo sourceVO, Answer targetEntity, boolean copyIfNull) {
+	public void answerInfoToEntity(final AnswerInfo sourceVO, final Answer targetEntity, final boolean copyIfNull) {
 		super.answerInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 

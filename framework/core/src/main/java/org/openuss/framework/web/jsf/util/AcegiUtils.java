@@ -1,5 +1,6 @@
 package org.openuss.framework.web.jsf.util;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -48,7 +49,7 @@ public class AcegiUtils {
 					for (Integer required : requiredIntegers) {
 						if (processableAcl.isPermitted(required)) {
 							if (logger.isDebugEnabled()) {
-								logger.debug("Including tag body as found permission: " + requiredIntegers	+ " due to AclEntry: '" + processableAcl + "'");
+								logger.debug("Including tag body as found permission: " + Arrays.toString(requiredIntegers)	+ " due to AclEntry: '" + processableAcl + "'");
 							}
 							return true;
 						}
@@ -75,7 +76,7 @@ public class AcegiUtils {
 			integers.add(new Integer(integer));
 		}
 	
-		return (Integer[]) integers.toArray(new Integer[] {});
+		return (Integer[]) integers.toArray(new Integer[integers.size()]); 
 	}
 
 	/**
@@ -97,13 +98,15 @@ public class AcegiUtils {
 		return acls;
 	}
 
-	private static AclManager _aclManager;
+	private volatile static AclManager _aclManager;
 	
 	public static AclManager getAclManager() {
 		// FIXME remove dependency to java server faces
 		if (_aclManager == null) {
-			FacesContext facesContext = FacesUtils.getFacesContext();
-			_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+			synchronized (AcegiUtils.class) {
+				FacesContext facesContext = FacesUtils.getFacesContext();
+				_aclManager = (AclManager) facesContext.getApplication().createValueBinding("#{aclManager}").getValue(facesContext);
+			}
 		}	
 		return _aclManager;
 	}

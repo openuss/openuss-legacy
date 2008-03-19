@@ -107,7 +107,9 @@ public class InstituteDaoImpl extends InstituteDaoBase {
 						member = members.get(authority.getId());
 					}
 					member.getGroups().add(instituteGroup);
-					instituteGroup.getMembers().add(member);
+					if (!instituteGroup.getMembers().contains(member)){
+						instituteGroup.getMembers().add(member);
+					}
 				} else if (authority instanceof Group) {
 					logger.error("group members are not supported yet and will be ignored!");
 				}

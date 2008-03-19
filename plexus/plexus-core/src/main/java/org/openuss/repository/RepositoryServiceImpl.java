@@ -142,7 +142,9 @@ public class RepositoryServiceImpl extends RepositoryServiceBase {
 		// ensure the server path exists
 		File dirPath = new File(path);
 		if (!dirPath.exists()) {
-			dirPath.mkdirs();
+			if (!dirPath.mkdirs()) {
+				throw new RepositoryServiceException("Cannot create repository path "+dirPath.getAbsolutePath());
+			}
 		}
 	}
 
