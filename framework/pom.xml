@@ -4,7 +4,7 @@
  	<parent>
 		<groupId>org.openuss</groupId>
 		<artifactId>openuss</artifactId>
-		<version>3.0</version>
+		<version>3.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.openuss.framework</groupId>
 	<artifactId>framework</artifactId>

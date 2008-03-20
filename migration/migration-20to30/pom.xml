@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openuss.migration</groupId>
 		<artifactId>migration</artifactId>
-		<version>3.0</version>
+		<version>3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>migration-20to30</artifactId>
 	<name>Migration - 2.0 to 3.0</name>

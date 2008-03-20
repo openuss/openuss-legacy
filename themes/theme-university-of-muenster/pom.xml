@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openuss.themes</groupId>
 		<artifactId>themes</artifactId>
-		<version>3.0</version>
+		<version>3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>theme-university-of-muenster</artifactId>
 	<name>Theme - University of Muenster</name>

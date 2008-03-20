@@ -4,7 +4,7 @@
 	<artifactId>openuss</artifactId>
 	<packaging>pom</packaging>
 	<name>Open University Support System - The Relaunch</name>
-	<version>3.0</version>
+	<version>3.1-SNAPSHOT</version>
 	<description>
 		OpenUSS Plexus is the relaunch of the well known E-Learning
 		plattform OpenUSS.
@@ -96,8 +96,8 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/tags/openuss-3.0</connection>
-		<url>https://openuss.svn.sourceforge.net/svnroot/openuss/tags/openuss-3.0</url>
+		<connection>scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</connection>
+		<url>https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</url>
 	</scm>
 	<organization>
 		<name>OpenUSS</name>
