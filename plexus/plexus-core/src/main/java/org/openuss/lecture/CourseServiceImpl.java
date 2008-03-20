@@ -359,18 +359,6 @@ public class CourseServiceImpl extends CourseServiceBase {
 				CourseMemberType.PARTICIPANT);
 	}
 
-	/**
-	 * @see org.openuss.lecture.CourseService#addAssistant(org.openuss.lecture.Course,
-	 *      org.openuss.security.User)
-	 * @deprecated
-	 */
-	@SuppressWarnings( { "unchecked" })
-	protected void handleAddAssistant(Course course, User user) throws Exception {
-		CourseMember assistant = retrieveCourseMember(course, user);
-		assistant.setMemberType(CourseMemberType.ASSISTANT);
-		persistCourseMember(assistant);
-	}
-
 	@Override
 	protected void handleAcceptAspirant(Long memberId) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberId);
@@ -428,10 +416,19 @@ public class CourseServiceImpl extends CourseServiceBase {
 	}
 
 	@Override
-	protected void handleAddAssistant(CourseInfo course, UserInfo user) throws Exception {
-		CourseMember assistant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService()
-				.getUserObject(user));
+	protected void handleAddAssistant(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		Validate.notNull(courseInfo, "Parameter course must not be null");
+		Validate.notNull(userInfo, "Parameter user must not be null");
+		User user = getSecurityService().getUserObject(userInfo);
+		Course course = getCourseDao().load(courseInfo.getId());
+
+		if (course == null || user == null) {
+			throw new CourseServiceException("course_user_not_found");
+		}
+		
+		CourseMember assistant = retrieveCourseMember(course, user);
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
+		
 		getCourseMemberDao().create(assistant);
 		getSecurityService().setPermissions(assistant.getUser(), assistant.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
 	}
