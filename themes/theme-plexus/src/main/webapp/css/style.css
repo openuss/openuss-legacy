@@ -2377,7 +2377,10 @@ a:hover {
 	color:#2C5885 !important;	
 }
 
-
+div.inline_buttons {
+	padding-top: 0.5em;
+	padding-left: 10px;
+}
 
 
 /* ========== WIKI ========== */

@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -39,32 +40,33 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	@Property(value = "#{securityService}")
 	protected SecurityService securityService;
 
-	private Long userId;
-
 	private List<CourseMemberInfo> assistants;
 	private Set<Long> assistantsUserIds;
 	private List<SelectItem> instituteMembers;
-	
+
+	private Long userId;
+
+	private String username;
+
 	private DataPage<CourseMemberInfo> page;
 
-
 	@Prerender
-	public void prerender() throws Exception { //NOPMD
+	public void prerender() throws Exception { // NOPMD
 		super.prerender();
-		if (isRedirected()){
+		if (isRedirected()) {
 			return;
-		}		
+		}
 		addPageCrumb();
 	}
-	
+
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setLink("");
 		crumb.setName(i18n("course_command_options_assistants"));
 		crumb.setHint(i18n("course_command_options_assistants"));
 		breadcrumbs.addCrumb(crumb);
-	}	
-	
+	}
+
 	private static final class FilterByUserIdsPredicte implements Predicate {
 		private final Set<Long> userIds;
 
@@ -79,7 +81,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	}
 
 	private class AssistantsDataProvider extends AbstractPagedTable<CourseMemberInfo> {
-		
+
 		private static final long serialVersionUID = -5342817757466323535L;
 
 		@Override
@@ -131,16 +133,26 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String addAssistant() {
 		logger.debug("course assistant aspirant added");
-		UserInfo user = new UserInfo();
-		user.setId(userId);
-		if (user.getId().longValue()==Constants.COURSE_CHOOSE_ASSISTANT.longValue()){
+		UserInfo user = null;
+		if (userId != Constants.COURSE_CHOOSE_ASSISTANT) {
+			user = new UserInfo();
+			user.setId(userId);
+		} else if (StringUtils.isNotBlank(username)) {
+			if (securityService.getUserByName(username) != null) {
+				user = securityService.getUserByName(username);
+			} else {
+				user = securityService.getUserByEmail(username);
+			}
+		}
+		if (user == null) {
 			addError(i18n(Constants.COURSE_CHOOSE_ERROR));
 			return Constants.FAILURE;
-		} 
-		courseService.addAssistant(courseInfo, user);
-		addMessage(i18n("message_course_add_assistant"));
-		resetCachedData();
-		return Constants.SUCCESS;
+		} else {
+			courseService.addAssistant(courseInfo, user);
+			addMessage(i18n("message_course_add_assistant"));
+			resetCachedData();
+			return Constants.SUCCESS;
+		}
 	}
 
 	private void resetCachedData() {
@@ -149,7 +161,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		assistantsUserIds = null;
 		page = null;
 	}
-	
+
 	public Collection<SelectItem> getInstituteMemberList() {
 		if (instituteMembers == null) {
 			InstituteSecurity instituteSecurity = instituteService.getInstituteSecurity(courseInfo.getInstituteId());
@@ -157,15 +169,17 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 			final Set<Long> userIds = getAssistantsUserIdMap();
 			CollectionUtils.filter(members, new FilterByUserIdsPredicte(userIds));
 			List<UserInfo> membersUser = new ArrayList<UserInfo>();
-			for(InstituteMember member : members) {
+			for (InstituteMember member : members) {
 				membersUser.add(getSecurityService().getUserByName(member.getUsername()));
 			}
 			UserComparator userComparator = new UserComparator();
 			Collections.sort(membersUser, userComparator);
 			instituteMembers = new ArrayList<SelectItem>();
-			instituteMembers.add(new SelectItem(Constants.COURSE_CHOOSE_ASSISTANT, i18n(Constants.COURSE_CHOSSE_ASSISTANT_TEXT)));
-			for(UserInfo member : membersUser) {
-				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName())); //NOPMD idueppe
+			instituteMembers.add(new SelectItem(Constants.COURSE_CHOOSE_ASSISTANT,
+					i18n(Constants.COURSE_CHOSSE_ASSISTANT_TEXT)));
+			for (UserInfo member : membersUser) {
+				instituteMembers.add(new SelectItem(member.getId(), member.getDisplayName())); // NOPMD
+																								// idueppe
 			}
 		}
 		return instituteMembers;
@@ -202,6 +216,14 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

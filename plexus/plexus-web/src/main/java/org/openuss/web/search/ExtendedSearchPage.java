@@ -369,7 +369,7 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		List<SelectItem> institutesToDisplay = new ArrayList<SelectItem>();
 		InstituteInfo instituteInfo;
 		
-		if(suborganisationId.intValue() > Constants.EXTENDED_SEARCH_GET_ALL.intValue()){
+		if(suborganisationId > Constants.EXTENDED_SEARCH_GET_ALL){
 			List<?> institutes = instituteService.findInstitutesByDepartmentAndEnabled(suborganisationId, true);
 			if(institutes.size() > 0){
 				institutesToDisplay.add(getAllSelectItem());

@@ -143,9 +143,9 @@ public class Constants {
 	public static final String COURSE_TYPE_COURSE_SELECTION_PAGE = "coursetype_course_selection";
 	public static final String COURSE_TYPE_CONFIRM_REMOVE_PAGE = "course_type_remove_confirmation";
 	public static final String COURSE_CONFIRM_REMOVE_PAGE = "course_remove_confirmation";
-	public static final Long   COURSES_ALL_PERIODS = -111L;
-	public static final Long   COURSES_ALL_ACTIVE_PERIODS = -112L;
-	public static final Long   COURSE_CHOOSE_ASSISTANT = -120L;
+	public static final long   COURSES_ALL_PERIODS = -111L;
+	public static final long   COURSES_ALL_ACTIVE_PERIODS = -112L;
+	public static final long   COURSE_CHOOSE_ASSISTANT = -120L;
 	public static final String COURSE_CHOSSE_ASSISTANT_TEXT = "course_assistants_select";
 	public static final String COURSE_CHOOSE_ERROR = "course_assistants_select_error";
 
@@ -208,8 +208,8 @@ public class Constants {
 	public static final String EXTENDED_SEARCH = "extended_search";
 	public static final String EXTENDED_SEARCH_VIEW = "extendedSearch";
 	public static final String EXTENDED_SEARCH_RESULT = "extended_search_result";
-	public static final Long EXTENDED_SEARCH_GET_ALL = -1L;
-	public static final Long EXTENDED_SEARCH_NO_RECORDS_FOUND = -2L;
+	public static final long EXTENDED_SEARCH_GET_ALL = -1L;
+	public static final long EXTENDED_SEARCH_NO_RECORDS_FOUND = -2L;
 	public static final int EXTENDED_SEARCH_SCOPE_UNIVERSITIES = 1;
 	public static final int EXTENDED_SEARCH_SCOPE_COMPANIES = 2;
 	public static final int EXTENDED_SEARCH_SCOPE_OTHER = 3;
