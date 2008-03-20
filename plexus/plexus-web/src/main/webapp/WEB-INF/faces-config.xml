@@ -105,10 +105,5 @@
       	<component-class>org.openuss.web.application.DefaultViewRoot</component-class>
   	</component>
 
-    <component>
-        <component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
-        <component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
-    </component>	
-
 </faces-config>
 
