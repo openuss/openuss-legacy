@@ -36,7 +36,7 @@
 									<classpath>
 										<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar" />
 										<pathelement location="${settings.localRepository}/ant/ant/1.6.5/ant-1.6.5.jar" />
-										<pathelement location="${settings.localRepository}/org/openuss/framework/framework-tools/3.0-SNAPSHOT/framework-tools-3.0-SNAPSHOT.jar" />
+										<pathelement location="${settings.localRepository}/org/openuss/framework/framework-tools/3.1-SNAPSHOT/framework-tools-3.1-SNAPSHOT.jar" />
 									</classpath>
 								</taskdef>
 								<schemaexport output="target/firebird_database_schema.sql" create="true" text="true" delimiter=";" properties="hibernate-export-schema.properties">
