@@ -21,6 +21,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseApplicationException;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.InstituteMember;
 import org.openuss.lecture.InstituteSecurity;
@@ -28,6 +29,7 @@ import org.openuss.security.SecurityService;
 import org.openuss.security.UserComparator;
 import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
+import org.openuss.web.lecture.OfficialDepartmentsPage;
 
 @Bean(name = "views$secured$course$courseassistants", scope = Scope.REQUEST)
 @View
@@ -44,6 +46,8 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	private List<CourseMemberInfo> assistants;
 	private Set<Long> assistantsUserIds;
 	private List<SelectItem> instituteMembers;
+	
+	private String username;
 	
 	private DataPage<CourseMemberInfo> page;
 
@@ -131,16 +135,21 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public String addAssistant() {
 		logger.debug("course assistant aspirant added");
-		UserInfo user = new UserInfo();
-		user.setId(userId);
-		if (user.getId().longValue()==Constants.COURSE_CHOOSE_ASSISTANT.longValue()){
-			addError(i18n(Constants.COURSE_CHOOSE_ERROR));
-			return Constants.FAILURE;
-		} 
-		courseService.addAssistant(courseInfo, user);
-		addMessage(i18n("message_course_add_assistant"));
-		resetCachedData();
-		return Constants.SUCCESS;
+		if (userId != null){
+			UserInfo user = new UserInfo();
+			user.setId(userId);
+			if (user.getId().longValue()==Constants.COURSE_CHOOSE_ASSISTANT.longValue()){
+				addError(i18n(Constants.COURSE_CHOOSE_ERROR));
+				return Constants.FAILURE;
+			} 
+			courseService.addAssistant(courseInfo, user);
+			addMessage(i18n("message_course_add_assistant"));
+			resetCachedData();
+			userId  = null;
+			return Constants.SUCCESS;
+		} else {
+			return addUser();
+		}
 	}
 
 	private void resetCachedData() {
@@ -171,6 +180,27 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 		return instituteMembers;
 	}
 
+	public String addUser() {
+		logger.debug("course assistant aspirant added");
+		UserInfo user = new UserInfo();
+		if(securityService.getUserByName(username) != null){
+		user = securityService.getUserByName(username);	
+		} else {
+			user = securityService.getUserByEmail(username);
+		}
+		try{
+			courseService.addAssistant(courseInfo, user);
+			addMessage(i18n("message_course_add_assistant"));
+			resetCachedData();
+		} catch (Exception e) {
+			logger.debug(e.getMessage());
+			addError(i18n("organisation_error_apply_member_at_course"));
+			return Constants.FAILURE;
+		}
+		username = "";
+		return Constants.SUCCESS;
+	}
+	
 	public String save() {
 		logger.debug("Course assistants page - saved");
 		return Constants.SUCCESS;
@@ -202,6 +232,15 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

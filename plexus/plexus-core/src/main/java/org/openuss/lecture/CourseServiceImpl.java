@@ -433,6 +433,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 				.getUserObject(user));
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
 		getCourseMemberDao().create(assistant);
+		getSecurityService().setPermissions(assistant.getUser(), assistant.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
 	}
 
 	@Override
