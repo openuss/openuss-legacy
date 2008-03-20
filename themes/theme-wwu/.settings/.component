@@ -1,7 +1,0 @@
-<project-modules id="moduleCoreId">
-  <wb-module deploy-name="theme-wwu">
-    <property context-root="theme-wwu"/>
-    <wb-resource deploy-path="/" source-path="src/main/webapp"/>
-    <property name="java-output-path" value="/target/classes"/>
-  </wb-module>
-</project-modules>
