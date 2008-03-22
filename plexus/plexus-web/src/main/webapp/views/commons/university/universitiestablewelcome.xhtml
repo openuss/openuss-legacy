@@ -19,7 +19,7 @@
 		infoText="#{msg.table_info_text_universities}">
 		
 		<t:column>
-	        <t:commandLink action="#{views$public$university$universitieswelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
+	        <t:commandLink action="#{views$public$university$universitiestablewelcome.selectUniversity}" styleClass="command" rendered="${not empty bean.imageId}">
 				<h:graphicImage rendered="${not empty bean.imageId}"
 								value="/files?fileid=#{bean.imageId}"
 								title="#{msg.logo} #{bean.name}"
