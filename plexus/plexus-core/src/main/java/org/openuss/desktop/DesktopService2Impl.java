@@ -185,6 +185,20 @@ public class DesktopService2Impl extends DesktopService2Base {
 		if (!desktop.getCourses().contains(course)) {
 			desktop.getCourses().add(course);
 		}
+		
+		// edited by Marius, Philipp and Stefan
+		User user = desktop.getUser();
+		UserInfo userInfo = getUserDao().toUserInfo(user);
+		CourseInfo courseInfo = getCourseService().findCourse(courseId);
+		if (user.isNewsletterSelected()) {
+			logger.debug("Newsletter isSelected = true");
+			getCourseNewsletterService().subscribe(courseInfo, userInfo);
+			logger.debug("Newsletter subcribed");
+		}
+		
+		if (user.isDiscussionSelected()) {
+			getDiscussionService().addForumWatch(getDiscussionService().getForum(courseInfo));
+		}
 	}
 
 	/**
@@ -269,6 +283,9 @@ public class DesktopService2Impl extends DesktopService2Base {
 		UserInfo userInfo = this.getDesktopDao().toDesktopInfo(desktop).getUserInfo();
 		CourseInfo courseInfo = this.getCourseDao().toCourseInfo(course);
 		CourseMemberInfo memberInfo = this.getCourseService().getMemberInfo(courseInfo, userInfo);
+
+		getCourseNewsletterService().unsubscribe(courseInfo, userInfo);
+		getDiscussionService().removeForumWatch(getDiscussionService().getForum(courseInfo));
 		
 		if(memberInfo != null)
 			this.getCourseService().removeMember(memberInfo.getId());

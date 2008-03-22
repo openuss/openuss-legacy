@@ -311,12 +311,16 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#removeForumWatch(java.lang.Long)
 	 */
-	protected void handleRemoveForumWatch(final ForumInfo forumInfo) {
-		Validate.notNull(forumInfo);
-		Validate.notNull(forumInfo.getId());
-		Forum forum = getForumDao().load(forumInfo.getId());
-		ForumWatch watch = getForumWatchDao().findByUserAndForum(getCurrentUserObject(), forum);
-		getForumWatchDao().remove(watch);
+	protected void handleRemoveForumWatch(final ForumInfo forum) {
+		Validate.notNull(forum);
+		Validate.notNull(forum.getId());
+		
+		Forum f = getForumDao().load(forum.getId());
+		User user = getCurrentUserObject();
+		ForumWatch fw = getForumWatchDao().findByUserAndForum(user, f);
+		if(fw != null) {
+			getForumWatchDao().remove(fw);
+		}
 	}
 
 	/**
