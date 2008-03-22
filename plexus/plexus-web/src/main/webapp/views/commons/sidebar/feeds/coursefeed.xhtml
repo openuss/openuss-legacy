@@ -17,21 +17,24 @@
 				<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
 					<ul class="int">
 						<li>
-							<o:link value="/rss/secured/course.xml?course=#{courseInfo.id}"	title="#{msg['rss_course']}" >
+							<o:link value="/rss/secured/course.xml"	title="#{msg['rss_course']}" >
+								<f:param name="course" value="#{courseInfo.id}"/>
 							   #{msg['rss_course']}
 							</o:link>
 								
 						</li>
 						<c:if test="#{courseInfo.discussion}">
 							<li>
-								<o:link value="/rss/secured/discussion.xml?course=#{courseInfo.id}"	title="#{msg['rss_discussion']}" >
+								<o:link value="/rss/secured/discussion.xml"	title="#{msg['rss_discussion']}" >
+								   <f:param name="course" value="#{courseInfo.id}"/>
 								   #{msg['rss_discussion']}
 								</o:link>
 							</li>
 						</c:if>
 						<c:if test="#{courseInfo.documents}">
 							<li>
-								<o:link value="/rss/secured/documents.xml?course=#{courseInfo.id}" title="#{msg['rss_documents']}" >
+								<o:link value="/rss/secured/documents.xml" title="#{msg['rss_documents']}" >
+								   <f:param name="course" value="#{courseInfo.id}"/>
 								   #{msg['rss_documents']}
 								</o:link>
 									
@@ -39,7 +42,8 @@
 						</c:if>
 						<c:if test="#{courseInfo.newsletter}">							
 							<li>
-								<o:link value="/rss/secured/newsletter.xml?course=#{courseInfo.id}" title="#{msg['rss_newsletter']}" >
+								<o:link value="/rss/secured/newsletter.xml" title="#{msg['rss_newsletter']}" >
+      							   <f:param name="course" value="#{courseInfo.id}"/>
 								   #{msg['rss_newsletter']}
 								</o:link>
 							</li>
