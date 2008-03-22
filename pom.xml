@@ -95,8 +95,8 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.1</connection>
-		<url>http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.1</url>
+		<connection>scm:svn:http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.2</connection>
+		<url>http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.2</url>
 	</scm>
     <ciManagement>
         <system>continuum</system>
