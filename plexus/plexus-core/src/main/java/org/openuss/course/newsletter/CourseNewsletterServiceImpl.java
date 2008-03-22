@@ -76,7 +76,11 @@ public class CourseNewsletterServiceImpl extends CourseNewsletterServiceBase {
 	 *      org.openuss.security.User)
 	 */
 	protected void handleUnsubscribe(final CourseInfo course, final UserInfo user) {
-		getNewsletterService().unsubscribe(getNewsletter(course), user);
+		NewsletterInfo newsletter = getNewsletter(course);
+		if(newsletter.isSubscribed()){
+			getNewsletterService().unsubscribe(newsletter, user);
+		}
+		
 	}
 
 	/**

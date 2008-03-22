@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.openuss.documents.DocumentApplicationException;
@@ -135,7 +136,9 @@ public class DocumentResource extends SimpleWebDAVResource {
 				}
 			}
 			if (tmpf != null) {
-				tmpf.delete();
+				if (!tmpf.delete()) {
+					tmpf.deleteOnExit();
+				}
 			}
 		}
 		
@@ -252,15 +255,11 @@ public class DocumentResource extends SimpleWebDAVResource {
 		} catch (DocumentApplicationException e) {
 			throw new WebDAVResourceException(WebDAVStatusCodes.SC_INTERNAL_SERVER_ERROR, this, "Internal error when writing to a file: " + e.getMessage());
 		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					// Catch silently
-				}
-			}
+			IOUtils.closeQuietly(is);
 			if (tmpf != null) {
-				tmpf.delete();
+				if (!tmpf.delete()) {
+					tmpf.deleteOnExit();
+				}
 			}
 		}
 	}

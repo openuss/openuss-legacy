@@ -3,11 +3,10 @@
 	<groupId>org.openuss</groupId>
 	<artifactId>openuss</artifactId>
 	<packaging>pom</packaging>
-	<name>Open University Support System - The Relaunch</name>
+	<name>OpenUSS</name>
 	<version>3.2-SNAPSHOT</version>
 	<description>
-		OpenUSS Plexus is the relaunch of the well known E-Learning
-		plattform OpenUSS.
+		Open University Support System is the relaunch of the well known E-Learning plattform OpenUSS.
 	</description>
 	<url>http://openuss.sf.net/plexus/</url>
 	<prerequisites>
@@ -96,9 +95,13 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</connection>
-		<url>https://openuss.svn.sourceforge.net/svnroot/openuss/trunk/openuss-plexus</url>
+		<connection>scm:svn:http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.1</connection>
+		<url>http://openuss.svn.sourceforge.net/svnroot/openuss/branches/openuss-plexus-3.1</url>
 	</scm>
+    <ciManagement>
+        <system>continuum</system>
+        <url>http://teamopenuss.uni-muenster.de/continuum</url>
+    </ciManagement>      
 	<organization>
 		<name>OpenUSS</name>
 		<url>http://openuss.sourceforge.net/plexus</url>
@@ -992,9 +995,19 @@
 		<site>
 			<id>openuss-site</id>
 			<name>OpenUSS Website</name>
-			<url>scpexe://openuss.sourceforge.net/plexus</url>
+			<url>scpexe://plexus-3.2</url>
 		</site>
 	</distributionManagement>
+
+    <reporting>
+       <plugins>
+          <plugin>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-project-info-reports-plugin</artifactId>
+          </plugin>
+       </plugins>
+    </reporting>
+
 	<properties>
 		<shale.version>1.0.4</shale.version>
 		<spring.version>2.0.8</spring.version>

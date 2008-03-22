@@ -16,10 +16,10 @@
 				<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
 						<ul class="int">
 							<li>
-								<h:outputLink value="../../../rss/secured/discussion.xml?course=#{courseInfo.id}" 
-								 			title="#{msg['rss_discussion']}" >
+								<o:link value="/rss/secured/discussion.xml"	title="#{msg['rss_discussion']}" >
+								 	<f:param name="course" value="#{courseInfo.id}"/>
 								   #{msg['rss_discussion']}
-								</h:outputLink>
+								</o:link>
 								
 							</li>
 						</ul>

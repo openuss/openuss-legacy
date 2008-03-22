@@ -165,9 +165,11 @@ public class WebDAVServlet extends HttpServlet {
 			case WebDAVMethods.DAV_LOCK:
 				answer = lock(request);
 				printAnswer(response, answer);
+				break;
 			case WebDAVMethods.DAV_UNLOCK:
 				answer = unlock(request);
 				printAnswer(response, answer);
+				break;
 			default:
 				throw new WebDAVException(WebDAVStatusCodes.SC_METHOD_NOT_ALLOWED);
 			}
