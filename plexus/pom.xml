@@ -22,7 +22,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>default</id>
+			<id>default-modules</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -38,7 +38,7 @@
 			<id>without-reports</id>
 		</profile>
 		<profile>
-			<id>default</id>
+			<id>default-reports</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
