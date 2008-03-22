@@ -8,7 +8,7 @@
 	</bannerLeft>
 	<body>
         <menu ref="parent" inherit="bottom"/>
-        <menu ref="modules" inherit="bottom"/>
-        <menu ref="reports" inherit="bottom"/>
+        <menu ref="modules"/>
+        <menu ref="reports"/>
 	</body>
 </project>
