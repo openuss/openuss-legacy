@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="OpenUSS - Plexus">
+	<bannerRight>
+		<name>OpenUSS Logo</name>
+		<src>http://www.openuss.de/theme-plexus/img/logo.jpg</src>
+		<href>http://www.openuss.org</href>
+	</bannerRight>
+	<body>
+		<breadcrumbs>
+			<item name="Maven"/>
+		</breadcrumbs>
+		<links>
+			<item name="Openuss Plexus" href="introduction.html" />
+		</links>
+	
+	 	<menu ref="reports"/>
+	
+	</body>
+</project>
