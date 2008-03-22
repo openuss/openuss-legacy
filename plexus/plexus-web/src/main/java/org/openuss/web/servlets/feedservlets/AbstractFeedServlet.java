@@ -7,6 +7,7 @@ import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
@@ -64,16 +65,16 @@ public abstract class AbstractFeedServlet {
 		}
 
 		String modifiedSince = req.getParameter(IF_MODIFIED_SINCE);
-		if (modifiedSince != null && modifiedSince != "" && feedWrapper.getLastModified() != null) {
+		if (StringUtils.isNotBlank(modifiedSince) && feedWrapper.getLastModified() != null) {
 			try {
-				if (DateFormat.getDateTimeInstance().parse(modifiedSince).getTime() < feedWrapper.getLastModified()
-						.getTime()) {
+				if (DateFormat.getDateTimeInstance().parse(modifiedSince).getTime() < feedWrapper.getLastModified().getTime()) {
 					res.sendError(HttpServletResponse.SC_NOT_MODIFIED);
 					return true;
 				}
 			} catch (ParseException e) {
 				logger.debug("Malformed header information");
 			}
+		} else {
 			res.setContentType(APPLICATION_RSS_XML);
 			if (feedWrapper.getWriter() != null) {
 				res.getWriter().write(feedWrapper.getWriter().toString());
