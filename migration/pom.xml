@@ -23,22 +23,4 @@
 		<module>migration-notification</module>
 	</modules>
 
-	<reporting>
-		<plugins>
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                	<reportSet>
-                		<reports>
-                			<report>dependencies</report>
-                			<report>dependency-convergence</report>
-                			<report>index</report>
-                		</reports>
-                	</reportSet>
-                </reportSets>
-            </plugin>             
-		</plugins>
-	</reporting>
-
 </project>
