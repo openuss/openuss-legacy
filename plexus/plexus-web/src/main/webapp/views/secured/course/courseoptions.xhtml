@@ -64,8 +64,17 @@
 						<o:input entity="courseOptionsInfo" property="braincontest" forceId="true"/>
 						<o:input entity="courseOptionsInfo" property="freestylelearning" forceId="true"/>
 						<o:input entity="courseOptionsInfo" property="wiki" forceId="true"/>
-	 					<o:input entity="courseOptionsInfo" property="papersubmission" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
-                       	<o:input entity="courseOptionsInfo" property="collaboration" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+						
+						<c:choose>
+							<c:when test="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" >
+								<o:input entity="courseOptionsInfo" property="papersubmission" label="#{msg.courseoptionsinfo_papersubmission} *" forceId="true" />
+                       			<o:input entity="courseOptionsInfo" property="collaboration" label="#{msg.courseoptionsinfo_collaboration} *" forceId="true" />
+                       		</c:when>
+                       		<c:otherwise>
+                       			<o:input entity="courseOptionsInfo" property="papersubmission" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+                       			<o:input entity="courseOptionsInfo" property="collaboration" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+                       		</c:otherwise>
+                       	</c:choose>
 					</div>
 				</o:block>
 				<o:block>
