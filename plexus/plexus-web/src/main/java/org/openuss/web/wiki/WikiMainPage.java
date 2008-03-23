@@ -1,5 +1,7 @@
 package org.openuss.web.wiki;
 
+import java.util.regex.Matcher;
+
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -28,6 +30,11 @@ public class WikiMainPage extends AbstractWikiPage {
 			return;
 		}
 		
+		if ((siteName != null) && (!isValidWikiSiteName())) {
+			addError(i18n("wiki_error_illegal_site_name"));
+			return;
+		}
+		
 		if (this.siteVersionId != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
 		} else {
@@ -48,6 +55,16 @@ public class WikiMainPage extends AbstractWikiPage {
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 				
 		super.prerender();
+	}
+	
+	/**
+	 * Checks if the site name is valid.
+	 * @return <code>true</code> if the site name is valid, otherwise <code>false</code>.
+	 */
+	private boolean isValidWikiSiteName() {		
+		final Matcher matcher = WikiSiteNameValidator.ALLOWED_CHARACTERS_PATTERN.matcher(siteName);
+		
+		return matcher.matches();
 	}
 	
 	/**
