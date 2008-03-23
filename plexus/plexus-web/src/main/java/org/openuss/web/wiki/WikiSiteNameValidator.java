@@ -12,6 +12,11 @@ import javax.faces.validator.ValidatorException;
 import org.apache.shale.tiger.register.FacesValidator;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 
+/**
+ * Checks whether or not an a Wiki Site name is valid.
+ * @author Projektseminar WS 07/08, Team Collaboration
+ *
+ */
 @FacesValidator(value="wikiSiteNameValidator")
 public class WikiSiteNameValidator extends BaseBean implements Validator {
 

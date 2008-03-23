@@ -30,9 +30,13 @@ public class WikiMainPage extends AbstractWikiPage {
 			return;
 		}
 		
-		if ((siteName != null) && (!isValidWikiSiteName())) {
-			addError(i18n("wiki_error_illegal_site_name"));
-			return;
+		if (siteName != null) {
+			siteName = siteName.trim();
+			
+			if (!isValidWikiSiteName()) {
+				addError(i18n("wiki_error_illegal_site_name"));
+				return;
+			}
 		}
 		
 		if (this.siteVersionId != null) {
