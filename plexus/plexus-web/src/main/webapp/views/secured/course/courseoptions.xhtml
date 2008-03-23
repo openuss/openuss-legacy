@@ -76,6 +76,9 @@
                        		</c:otherwise>
                        	</c:choose>
 					</div>
+					<c:if test="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}">
+						<h:outputText value="#{msg.course_options_features_disabled_info}" styleClass="header_font_normal"/>
+					</c:if>
 				</o:block>
 				<o:block>
 					<t:commandButton 
