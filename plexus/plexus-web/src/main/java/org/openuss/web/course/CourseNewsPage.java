@@ -61,7 +61,7 @@ public class CourseNewsPage extends AbstractCoursePage {
 		@Override 
 		public DataPage<NewsItemInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<NewsItemInfo> news = newsService.getNewsItems(courseInfo);
+				List<NewsItemInfo> news = getNewsService().getNewsItems(getCourseInfo());
 				page = new DataPage<NewsItemInfo>(news.size(),0,news);
 				sort(news);
 			}

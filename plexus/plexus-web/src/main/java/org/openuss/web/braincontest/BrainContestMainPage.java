@@ -71,7 +71,7 @@ public class BrainContestMainPage extends AbstractBrainContestPage {
 		@Override
 		public DataPage<BrainContestInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<BrainContestInfo> contests = getBrainContestService().getContests(courseInfo);
+				List<BrainContestInfo> contests = getBrainContestService().getContests(getCourseInfo());
 				page = new DataPage<BrainContestInfo>(contests.size(), 0, contests);
 				sort(contests);
 			}

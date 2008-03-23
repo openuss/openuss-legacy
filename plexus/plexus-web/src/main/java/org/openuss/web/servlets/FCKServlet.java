@@ -31,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.fckfaces.util.Util;
 
 /**
@@ -67,14 +68,17 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
         // resource found, copying on output stream
         OutputStream out = response.getOutputStream();
         InputStream bis = new FileInputStream(file);
-        byte[] buffer = new byte[4096];
-        int read = bis.read(buffer);
-        while (read != -1) {
-            out.write(buffer, 0, read);
-            read = bis.read(buffer);
+        try {
+	        byte[] buffer = new byte[4096];
+	        int read = bis.read(buffer);
+	        while (read != -1) {
+	            out.write(buffer, 0, read);
+	            read = bis.read(buffer);
+	        }
+        } finally {
+        	IOUtils.closeQuietly(bis);
+        	IOUtils.closeQuietly(out);
         }
-        bis.close();
-        out.close();
 	}
 
 	private void setHeaders(final String uri, final File file, 

@@ -190,13 +190,13 @@ public class DesktopService2Impl extends DesktopService2Base {
 		User user = desktop.getUser();
 		UserInfo userInfo = getUserDao().toUserInfo(user);
 		CourseInfo courseInfo = getCourseService().findCourse(courseId);
-		if (user.isNewsletterSelected()) {
+		if (user.isNewsletterSupscriptionEnabled()) {
 			logger.debug("Newsletter isSelected = true");
 			getCourseNewsletterService().subscribe(courseInfo, userInfo);
 			logger.debug("Newsletter subcribed");
 		}
 		
-		if (user.isDiscussionSelected()) {
+		if (user.isDiscussionSubscriptionEnabed()) {
 			getDiscussionService().addForumWatch(getDiscussionService().getForum(courseInfo));
 		}
 	}

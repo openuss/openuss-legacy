@@ -71,7 +71,7 @@ public class UserDaoImpl extends UserDaoBase {
 	}
 
 	@Override
-	public void userInfoToEntity(org.openuss.security.UserInfo source, org.openuss.security.User target, boolean copyIfNull) {
+	public void userInfoToEntity(UserInfo source, User target, boolean copyIfNull) {
 		// prevent for override the password
 		if (StringUtils.isNotBlank(target.getPassword())) {
 			source.setPassword(target.getPassword());

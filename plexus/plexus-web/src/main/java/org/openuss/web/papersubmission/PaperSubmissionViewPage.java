@@ -109,8 +109,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			crumb.setName(this.examInfo.getName());
 			crumb.setHint(this.examInfo.getName());
 			
-			if(courseInfo != null && courseInfo.getId() != null 
-					&& this.examInfo != null && this.examInfo.getId() != null){
+			if(courseInfo != null && courseInfo.getId() != null	&& this.examInfo.getId() != null){
 				
 				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 				crumb.addParameter("course", courseInfo.getId());
@@ -127,7 +126,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFileEntries());
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
-				return paperSelection.isSelected(object);
+				return getPaperSelection().isSelected(object);
 			}
 		});
 		LOGGER.debug("selected " + selected.size() + " files");

@@ -1,9 +1,5 @@
 package org.openuss.web.wiki;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
@@ -55,21 +51,6 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			LOGGER.error("Remove image failed", e);
 			addMessage(i18n(Constants.WIKI_IMAGE_CANNOT_BE_REMOVED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;
-		}
-	}
-	
-	/**
-	 * Validator to check whether the user has accepted the user agreement or not.
-	 * 
-	 * @param context FacesContext.
-	 * @param toValidate UIComponent that has to be validated.
-	 * @param value Inserted Value.
-	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			((UIInput) toValidate).setValid(false);
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}
 }

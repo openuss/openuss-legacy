@@ -83,7 +83,9 @@ public class WorkspaceDocumentRemovePage extends AbstractCollaborationPage {
 	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput)toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {		
+				((UIInput)toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}

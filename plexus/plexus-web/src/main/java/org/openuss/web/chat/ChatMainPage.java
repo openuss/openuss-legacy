@@ -60,7 +60,7 @@ public class ChatMainPage extends AbstractCoursePage {
 		@Override
 		public DataPage<ChatRoomInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<ChatRoomInfo> rooms = chatService.getRooms(courseInfo);
+				List<ChatRoomInfo> rooms = getChatService().getRooms(getCourseInfo());
 				sort(rooms);
 				page = new DataPage<ChatRoomInfo>(rooms.size(), 0, rooms);
 			}

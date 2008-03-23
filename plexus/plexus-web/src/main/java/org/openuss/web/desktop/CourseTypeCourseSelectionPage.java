@@ -68,7 +68,7 @@ public class CourseTypeCourseSelectionPage extends BasePage {
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseInfo> courses = courseService.findCoursesByCourseType(courseTypeInfo.getId());
+				List<CourseInfo> courses = getCourseService().findCoursesByCourseType(getCourseTypeInfo().getId());
 				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(),0,courses);
 			}

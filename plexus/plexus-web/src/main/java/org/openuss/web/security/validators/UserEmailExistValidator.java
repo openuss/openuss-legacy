@@ -28,7 +28,9 @@ public class UserEmailExistValidator extends BaseBean implements Validator {
 			if (notExist) {
 				UserInfo user = service.isNonExistingEmailAddress(null, useremail);
 				if (user == null){
-					((UIInput)component).setValid(false);
+					if (component instanceof UIInput) {
+						((UIInput)component).setValid(false);
+					}
 					addError(component.getClientId(context), i18n("error_email_does_not_exists"), null);
 				}	
 			}

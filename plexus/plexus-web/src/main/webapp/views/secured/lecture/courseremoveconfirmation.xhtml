@@ -44,10 +44,9 @@
 						<br/>
 					</p>
 					<p class="content_font_normal">
-	   					<h:selectBooleanCheckbox id="checkConfirmation"
-	   						validator="#{views$secured$lecture$courseremoveconfirmation.validateRemoveConfirmation}" 
-	   						styleClass="checkbox" 
-	   						required="true"/>
+	   					<h:selectBooleanCheckbox id="checkConfirmation"	styleClass="checkbox" required="true">
+	   						<f:validator validatorId="confirmationValidator" />
+	   					</h:selectBooleanCheckbox>
 	   					<h:outputLabel value="#{msg.course_remove_confirmation_flag}" for="checkConfirmation"/>
 	   				</p>
 	   				<h:message for="checkConfirmation" styleClass="field_error"/>

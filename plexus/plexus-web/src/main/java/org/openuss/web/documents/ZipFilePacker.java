@@ -26,8 +26,8 @@ public class ZipFilePacker {
 
 	private static final Logger logger = Logger.getLogger(ZipFilePacker.class);
 	
-	private List<FileInfo> files;
-	private RepositoryService repositoryService;
+	protected List<FileInfo> files;
+	protected RepositoryService repositoryService;
 	
 	public ZipFilePacker(List<FileInfo> files, RepositoryService repositoryService) {
 		this.files = files;

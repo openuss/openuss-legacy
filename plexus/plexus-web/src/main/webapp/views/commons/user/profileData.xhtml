@@ -81,8 +81,8 @@
 	<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
 	<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
 	<br />
-	<o:input entity="user" forceId="true" property="newsletterSelected" required="false"/>
-	<o:input entity="user" forceId="true" property="discussionSelected" required="false" /> 
+	<o:input entity="user" forceId="true" property="newsletterSubscriptionEnabled" required="false"/>
+	<o:input entity="user" forceId="true" property="discussionSubscriptionEnabled" required="false" /> 
 	<br />	
 	<s:authorize ifAllGranted="ROLE_USER">
 		<!-- visibility -->
