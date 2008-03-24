@@ -5,6 +5,7 @@
  */
 package org.openuss.wiki;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +46,8 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	private static final String IMPORT_IMAGE_TEMPLATE_SEARCH = "<img(.+)src=\"(.*)%s\\?fileid=%s\"(.*)/>";
 	
 	private static final String IMPORT_IMAGE_TEMPLATE_REPLACE = "<img$1src=\"$2%s\\?fileid=%s\"$3/>";
+	
+	private static final String DEFAULT_WIKI_INDEX_SITE_TEXT = "<h1>Default Wiki Index Site</h1>";
 
 	@Override
 	protected void handleDeleteWikiSite(Long wikiSiteId) {
@@ -95,8 +98,13 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		final String country = locale.getLanguage();
 		
 		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index_" + country + ".xhtml");
+		
 		if (inStream == null) {
 			inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("wiki_index.xhtml");
+		}
+		
+		if (inStream == null) {
+			inStream = new ByteArrayInputStream(DEFAULT_WIKI_INDEX_SITE_TEXT.getBytes());
 		}
 		
 		if (inStream != null) {
