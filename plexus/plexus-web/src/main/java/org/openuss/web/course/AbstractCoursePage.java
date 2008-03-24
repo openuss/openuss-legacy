@@ -2,7 +2,6 @@ package org.openuss.web.course;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
@@ -27,9 +26,6 @@ import org.openuss.web.Constants;
 public class AbstractCoursePage extends BasePage {
 
 	private static final long serialVersionUID = 1394531398550932611L;
-
-	private static final Logger logger = Logger
-			.getLogger(AbstractCoursePage.class);
 
 	@Property(value = "#{universityInfo}")
 	protected UniversityInfo universityInfo;
@@ -63,22 +59,6 @@ public class AbstractCoursePage extends BasePage {
 
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
-
-	/**
-	 * Refreshing CourseInfo before apply values phase. This ensures that
-	 * courseInfo is recreated before the commands are processed.'
-	 * 
-	 * @throws Exception
-	 */
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
-		logger.debug("preprocess - refreshing course object in request scope");
-		if (courseInfo != null && courseInfo.getId() != null) {
-			courseInfo = courseService.findCourse(courseInfo.getId());
-		}
-		setBean(Constants.COURSE_INFO, courseInfo);
-	}
 
 	@Prerender
 	public void prerender() throws Exception {

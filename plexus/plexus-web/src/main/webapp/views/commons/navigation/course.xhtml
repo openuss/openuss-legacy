@@ -14,6 +14,7 @@
 
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
 			<h:form id="courseNavigationForm">
+				<t:saveState value="#{courseInfo}"/>
 				<t:panelNavigation2 id="course_navigation" forceId="true" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
 					<t:commandNavigation2 value="#{msg['course_navigation_header']}">
 						<t:commandNavigation2
