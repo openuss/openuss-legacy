@@ -14,6 +14,7 @@ import org.acegisecurity.acl.AclManager;
 import org.openuss.TestUtility;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.lecture.Course;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -26,6 +27,7 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	
 	private static final String siteText = "default-test-site-text";
 	private static final String siteNote = "default-test-site-note";
+	private static final String WIKI_STARTSITE_NAME = "index";
 
 	private SecurityService securityService;
 
@@ -105,6 +107,26 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 			foundSiteNames.add(wikiSite.getName());
 		}
 		assertEquals(createdSiteNames, foundSiteNames);
+	}
+	
+	public void testCreateAndDeleteWikiSiteVersion(){
+		final String siteName = "testCreateAndDeleteWikiSiteVersion";
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		wikiService.saveWikiSite(wikiSite);
+		
+		final Long wikiSiteVersionId = wikiSite.getId();
+		final Long wikiSiteId = wikiSite.getWikiSiteId();
+		wikiService.deleteWikiSiteVersion(wikiSiteVersionId);
+		wikiService.deleteWikiSite(wikiSiteId);		
+		
+		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(wikiSiteId);
+		assertNull(wikiSiteInfo);
+	}
+	
+	public void testCreateNewIndexSite(){
+		final Course course =  testUtility.createUniqueCourseInDB();
+		final WikiSiteContentInfo wikiSiteContentInfo = wikiService.findWikiSiteContentByDomainObjectAndName(course.getId(),WIKI_STARTSITE_NAME);
+		assertNotNull(wikiSiteContentInfo.getText());
 	}
 	
 	private WikiSiteContentInfo createDefaultWikiSiteContentInfo(String siteName) {
