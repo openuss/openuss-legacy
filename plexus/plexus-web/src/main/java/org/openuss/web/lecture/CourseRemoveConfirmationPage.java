@@ -1,19 +1,13 @@
 package org.openuss.web.lecture;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.CourseServiceException;
+import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
@@ -51,11 +45,6 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 		}
 	}
 	
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
-	}
-	
 	/**
 	 * Delete course including all data
 	 * @return outcome
@@ -75,22 +64,4 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 			return Constants.INSTITUTE_COURSES_PAGE;
 		}
 	}
-	
-	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
-	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
-	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			if (toValidate instanceof UIInput) {
-				((UIInput) toValidate).setValid(false);
-			}
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
-		}
-	}
-	
 }

@@ -54,18 +54,18 @@
                 
                 <!-- Hibernate cache (default) configuration -->
                 <property name="hibernateVersion">3</property>
-                <property name="hibernateEnableCache">true</property>
                 <property name="cache">${core.generated.dir}</property>
+                <property name="hibernateEnableCache">true</property>
                 <property name="hibernateEhCacheDiskStore">java.io.tmpdir/hibernate</property>
                 <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
-                <property name="hibernateEntityCache">none</property>
-                <property name="hibernateAssociationCache">read-write</property>
+                <property name="hibernateEntityCache">read-only</property>
+                <property name="hibernateAssociationCache">read-only</property>
                 <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
                 <property name="hibernateUseQueryCache">true</property>
                 <property name="ehCacheMaxElementsInMemory">10000</property>
                 <property name="ehCacheEternal">false</property>
-                <property name="ehCacheTimeToIdleSeconds">120</property>
-                <property name="ehCacheTimeToLiveSeconds">120</property>
+                <property name="ehCacheTimeToIdleSeconds">240</property>
+                <property name="ehCacheTimeToLiveSeconds">240</property>
                 <property name="ehCacheOverflowToDisk">false</property>
 
             </properties>

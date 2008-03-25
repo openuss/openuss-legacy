@@ -28,7 +28,9 @@ public class ImageValidator extends BaseBean implements Validator {
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		final UploadedFile uploadedFile = (UploadedFile) value;
 		if (!isValidImageFile(uploadedFile)) {
-			((UIInput) component).setValid(false);
+			if (component instanceof UIInput) {
+				((UIInput) component).setValid(false);
+			}
 			addError(component.getClientId(context), i18n(ILLEGAL_IMAGE_DATA_MESSAGE), null);
 		}
 	}

@@ -32,8 +32,8 @@ public class AbstractPeriodPage extends AbstractUniversityPage {
 			addMessage(i18n("message_error_no_period_selected"));
 			redirect(Constants.INSTITUTE_PERIODS_PAGE);
 			return;
-		} 
-		if (periodInfo != null && periodInfo.getId() != null) {
+		}  
+		if (periodInfo.getId() != null) {
 			periodInfo = universityService.findPeriod(periodInfo.getId());
 		}
 		setBean(Constants.PERIOD_INFO, periodInfo);

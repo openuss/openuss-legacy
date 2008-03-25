@@ -25,7 +25,9 @@ public class CalendarDateAfterNowValidator extends BaseBean implements Validator
 		Date currentDate = new Date();
 		if (date.before(currentDate)) {
 			addError(i18n("papersubmission_illegal_exam_message"));
-			((UIInput) component).setValid(false);
+			if (component instanceof UIInput) {
+				((UIInput) component).setValid(false);
+			}
 			addError(component.getClientId(context), "Deadline", i18n("papersubmission_validate_error_deadline_before_today"));
 		}
 	}

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.openuss.web.dav.OpenUSSWebDAVContext;
 import org.openuss.web.dav.RootResource;
@@ -874,8 +875,11 @@ public class WebDAVServlet extends HttpServlet {
  		OutputStream os = response.getOutputStream();
  		if (msg != null) {
  			OutputStreamWriter osw = new OutputStreamWriter(os, WebDAVConstants.DEFAULT_CHARSET);
- 			osw.write(msg);
- 			osw.close();
+ 			try {
+ 				osw.write(msg);
+ 			} finally {
+ 				IOUtils.closeQuietly(osw);
+ 			}
  		}
  		os.close();
  	}

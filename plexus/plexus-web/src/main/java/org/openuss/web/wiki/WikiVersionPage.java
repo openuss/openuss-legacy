@@ -24,8 +24,6 @@ public class WikiVersionPage extends AbstractWikiPage{
 	
 	private final WikiDataProvider data = new WikiDataProvider();
 	
-	private List<WikiSiteInfo> entries;
-	
 	/**
 	 * Returns Wiki Overview Page.
 	 * @return Wiki Overview Page.
@@ -91,18 +89,20 @@ public class WikiVersionPage extends AbstractWikiPage{
 			}
 			return page;
 		}
-	}
 	
-	/**
-	 * Loads WikiSiteVersions.
-	 * @return List of WikiSiteVersions.
-	 */
-	@SuppressWarnings("unchecked")
-	private List<WikiSiteInfo> loadWikiSiteVersions() {
-		if (entries == null) {
-			entries = wikiService.findWikiSiteVersionsByWikiSite(this.siteVersionInfo.getWikiSiteId());
+		private List<WikiSiteInfo> entries;
+		
+		/**
+		 * Loads WikiSiteVersions.
+		 * @return List of WikiSiteVersions.
+		 */
+		@SuppressWarnings("unchecked")
+		private List<WikiSiteInfo> loadWikiSiteVersions() {
+			if (entries == null) {
+				entries = wikiService.findWikiSiteVersionsByWikiSite(siteVersionInfo.getWikiSiteId());
+			}
+			return entries;
 		}
-		return entries;
-	}
 	
+	}
 }

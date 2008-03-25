@@ -2,10 +2,6 @@ package org.openuss.web.lecture;
 
 import java.util.List;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -66,23 +62,6 @@ public class CourseTypeRemoveConfirmationPage extends AbstractCourseTypePage {
 			e.printStackTrace();
 			addMessage(i18n("institute_course_type_cannot_be_removed"));
 			return Constants.INSTITUTE_COURSE_TYPES_PAGE;
-		}
-	}
-	
-	/**
-	 * Validator to check wether the user has accepted the user agreement or not.
-	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
-	 */
-	public void validateRemoveConfirmation(FacesContext context, UIComponent toValidate, Object value) {
-		boolean accept = (Boolean) value;
-		if (!accept) {
-			if (toValidate instanceof UIInput) {
-				((UIInput) toValidate).setValid(false);
-			}
-			addError(toValidate.getClientId(context), i18n("error_need_to_confirm_removement"), null);
 		}
 	}
 	

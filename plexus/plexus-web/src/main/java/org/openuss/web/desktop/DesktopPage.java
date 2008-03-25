@@ -34,14 +34,14 @@ public class DesktopPage extends BasePage {
 	private CourseDataProvider coursesProvider = new CourseDataProvider();
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
-	
+
 	@Prerender
 	public void prerender() throws Exception {
 		logger.debug("prerender desktop");
 		refreshDesktop();
 		breadcrumbs.clear();
 	}
-	
+
 	/**
 	 * Show selected institute
 	 * 
@@ -62,8 +62,8 @@ public class DesktopPage extends BasePage {
 	public String removeInstitute() throws DesktopException {
 		logger.debug("starting method remove institute");
 		InstituteInfo instituteInfo = institutesProvider.getRowData();
-		//desktopService.unlinkInstitute(desktop, institute);
-		if (desktopInfo==null){
+		// desktopService.unlinkInstitute(desktop, institute);
+		if (desktopInfo == null) {
 			refreshDesktop();
 		}
 		desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
@@ -92,8 +92,8 @@ public class DesktopPage extends BasePage {
 		logger.debug("starting method remove course");
 		CourseInfo courseInfo = coursesProvider.getRowData();
 		try {
-			//desktopService.unlinkCourse(desktop, course);
-			if (desktopInfo==null){
+			// desktopService.unlinkCourse(desktop, course);
+			if (desktopInfo == null) {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
@@ -110,28 +110,6 @@ public class DesktopPage extends BasePage {
 	 * 
 	 * @return outcome
 	 */
-//	public String showCourseType() {
-//		logger.debug("starting method showCourseType");
-//		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
-//		setSessionBean(Constants.COURSE_TYPE_INFO, courseTypeInfo);
-//		return Constants.COURSE_TYPE_COURSE_SELECTION_PAGE;
-//	}
-
-//	public String removeCourseType() {
-//		logger.debug("starting method remove courseType");
-//		CourseTypeInfo courseTypeInfo = courseTypesProvider.getRowData();
-//		try {
-//			//desktopService.unlinkCourseType(desktop, courseType);
-//			desktopService2.unlinkCourseType(desktopInfo.getId(), courseTypeInfo.getId());
-//			addMessage(i18n("desktop_message_removed_coursetype_succeed", courseTypeInfo.getName()));
-//		} catch (DesktopException e) {
-//			logger.debug(e);
-//			addError(i18n(e.getMessage()));
-//		}
-//		return Constants.DESKTOP;
-//	}
-
-	/* ------------------ data models ------------------- */
 	private class CourseDataProvider extends AbstractPagedTable<CourseInfo> {
 
 		private static final long serialVersionUID = 255073655670856663L;
@@ -141,11 +119,11 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
-			if (desktopInfo==null){
+			if (getDesktopInfo() == null) {
 				refreshDesktop();
 			}
-			if (desktopInfo != null) {
-				List<CourseInfo> courses = new ArrayList<CourseInfo>(desktopInfo.getCourseInfos());
+			if (getDesktopInfo() != null) {
+				List<CourseInfo> courses = new ArrayList<CourseInfo>(getDesktopInfo().getCourseInfos());
 				sort(courses);
 				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
 			}
@@ -162,10 +140,10 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
-			if (desktopInfo==null){
+			if (getDesktopInfo() == null) {
 				refreshDesktop();
 			}
-			List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(desktopInfo.getCourseTypeInfos());
+			List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(getDesktopInfo().getCourseTypeInfos());
 			sort(courseTypes);
 			page = new DataPage<CourseTypeInfo>(courseTypes.size(), 0, courseTypes);
 			return page;
@@ -180,10 +158,10 @@ public class DesktopPage extends BasePage {
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<InstituteInfo> getDataPage(int startRow, int pageSize) {
-			if (desktopInfo==null){
+			if (getDesktopInfo() == null) {
 				refreshDesktop();
 			}
-			List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(desktopInfo.getInstituteInfos());
+			List<InstituteInfo> institutes = new ArrayList<InstituteInfo>(getDesktopInfo().getInstituteInfos());
 			sort(institutes);
 			page = new DataPage<InstituteInfo>(institutes.size(), 0, institutes);
 			return page;

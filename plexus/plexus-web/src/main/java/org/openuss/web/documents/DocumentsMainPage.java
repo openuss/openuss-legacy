@@ -67,7 +67,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<FolderEntryInfo> loadFolderEntries() {
+	protected List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(courseInfo, currentFolder);
 		}
@@ -78,7 +78,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFolderEntries());
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
-				return entrySelection.isSelected(object);
+				return getEntrySelection().isSelected(object);
 			}
 		});
 		logger.debug("selected " + selected.size() + " files");

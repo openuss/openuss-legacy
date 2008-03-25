@@ -21,34 +21,34 @@ import org.openuss.web.upload.UploadedDocument;
 
 @Bean(name = "views$secured$documents$fileedit", scope = Scope.REQUEST)
 @View
-public class FileEditPage extends AbstractDocumentPage{
+public class FileEditPage extends AbstractDocumentPage {
 	private static final Logger logger = Logger.getLogger(FileEditPage.class);
-	
-	@Property(value = "#{"+Constants.DOCUMENTS_SELECTED_FILEENTRY+"}")
+
+	@Property(value = "#{" + Constants.DOCUMENTS_SELECTED_FILEENTRY + "}")
 	private FileInfo selectedFile;
-	
-	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
+
+	@Property(value = "#{" + Constants.UPLOAD_FILE_MANAGER + "}")
 	private UploadFileManager uploadFileManager;
-	
+
 	private UIInput fileUpload;
 
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
-		if (isRedirected()){
+		if (isRedirected()) {
 			return;
 		}
 		if (selectedFile.getId() != null) {
 			selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
-			if (selectedFile==null){
-				selectedFile=new FileInfo();
-			} else if (selectedFile!=null){
-					if (!documentService.isFolderOfDomainObject(documentService.getParentFolder(selectedFile), courseInfo)){
-						addError(i18n(Constants.FILE_NOT_FOUND));
-						redirect(i18n(Constants.COURSE_PAGE));	
-						return;		
-					}			
+			if (selectedFile == null) {
+				selectedFile = new FileInfo();
+			} else {
+				if (!documentService.isFolderOfDomainObject(documentService.getParentFolder(selectedFile), courseInfo)) {
+					addError(i18n(Constants.FILE_NOT_FOUND));
+					redirect(i18n(Constants.COURSE_PAGE));
+					return;
 				}
+			}
 			setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
 		}
 		if (selectedFile.getCreated() == null) {
@@ -56,7 +56,7 @@ public class FileEditPage extends AbstractDocumentPage{
 		}
 		addPageCrumb();
 	}
-	
+
 	private void addPageCrumb() {
 		BreadCrumb crumb = new BreadCrumb();
 		crumb.setName(i18n("documents_file"));
@@ -64,22 +64,23 @@ public class FileEditPage extends AbstractDocumentPage{
 		breadcrumbs.addCrumb(crumb);
 	}
 
-	public String save() throws DocumentApplicationException, IOException{
+	public String save() throws DocumentApplicationException, IOException {
 		logger.debug("saving file");
 		if (isNewFile()) {
 			if (!saveNewFile()) {
-				addError(fileUpload.getClientId(getFacesContext()),i18n("error_file_input_required"),i18n("error_file_input_required"));
+				addError(fileUpload.getClientId(getFacesContext()), i18n("error_file_input_required"),
+						i18n("error_file_input_required"));
 				return Constants.FAILURE;
-			}
-			else
+			} else
 				addMessage(i18n("documents_upload_successful"));
 		} else if (isExistingFile()) {
 			UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 			if (document != null) {
 				documentToSelectedFile(document);
 			}
-			if (document == null){
-				selectedFile = completeChangedFile(selectedFile, documentService.getFileEntry(selectedFile.getId(), true));
+			if (document == null) {
+				selectedFile = completeChangedFile(selectedFile, documentService.getFileEntry(selectedFile.getId(),
+						true));
 			}
 			documentService.saveFileEntry(selectedFile);
 			if (document != null) {
@@ -92,14 +93,14 @@ public class FileEditPage extends AbstractDocumentPage{
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
-	private FileInfo completeChangedFile(FileInfo newFile, FileInfo oldFile){
+	private FileInfo completeChangedFile(FileInfo newFile, FileInfo oldFile) {
 		oldFile.setName(newFile.getName());
 		oldFile.setDescription(newFile.getDescription());
 		oldFile.setFileName(newFile.getFileName());
 		oldFile.setCreated(newFile.getCreated());
 		return oldFile;
 	}
-	
+
 	private boolean saveNewFile() throws IOException, DocumentApplicationException {
 		UploadedDocument document = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (document != null) {
@@ -114,13 +115,13 @@ public class FileEditPage extends AbstractDocumentPage{
 	}
 
 	private void documentToSelectedFile(UploadedDocument document) throws IOException {
-		logger.debug("source is "+document.getSource());
+		logger.debug("source is " + document.getSource());
 		if (StringUtils.isBlank(selectedFile.getFileName())) {
 			selectedFile.setFileName(document.getFileName());
 		} else {
 			String fileName = selectedFile.getFileName();
 			if (!StringUtils.equals(extension(fileName), extension(document.getFileName()))) {
-				fileName = fileName + '.' +extension(document.getFileName());
+				fileName = fileName + '.' + extension(document.getFileName());
 			}
 			selectedFile.setFileName(fileName);
 		}
@@ -138,20 +139,17 @@ public class FileEditPage extends AbstractDocumentPage{
 		return selectedFile != null && selectedFile.getId() == null;
 	}
 
-	
 	private String extension(String fileName) {
 		if (fileName != null) {
-			return fileName.substring(fileName.lastIndexOf('.')+1).trim();
+			return fileName.substring(fileName.lastIndexOf('.') + 1).trim();
 		} else {
 			return "";
 		}
 	}
 
-
 	public FileInfo getSelectedFile() {
 		return selectedFile;
 	}
-
 
 	public void setSelectedFile(FileInfo newFolder) {
 		this.selectedFile = newFolder;
@@ -173,4 +171,4 @@ public class FileEditPage extends AbstractDocumentPage{
 		this.fileUpload = fileUpload;
 	}
 
-} 
+}

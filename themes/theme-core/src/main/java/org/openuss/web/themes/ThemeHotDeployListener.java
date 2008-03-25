@@ -28,9 +28,6 @@ import org.openuss.framework.deploy.HotDeployListener;
  */
 public class ThemeHotDeployListener implements HotDeployListener {
 
-	/**
-	 * Logger for this class
-	 */
 	private static final Logger logger = Logger.getLogger(ThemeHotDeployListener.class);
 
 	private ThemeManager themeManager;
@@ -39,14 +36,14 @@ public class ThemeHotDeployListener implements HotDeployListener {
 		return themeManager;
 	}
 
-	public void setThemeManager(ThemeManager themeManager) {
+	public void setThemeManager(final ThemeManager themeManager) {
 		this.themeManager = themeManager;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void invokeDeploy(HotDeployEvent event) throws HotDeployException {
+	public void invokeDeploy(final HotDeployEvent event) throws HotDeployException {
 		String servletContextName = "N/A";
 		try {
 			ServletContext context = event.getServletContext();
@@ -67,7 +64,7 @@ public class ThemeHotDeployListener implements HotDeployListener {
 		}
 	}
 
-	private Theme buildTheme(InputStream stream) throws DocumentException {
+	private Theme buildTheme(final InputStream stream) throws DocumentException {
 		SAXReader saxReader = new SAXReader();
 		saxReader.setMergeAdjacentText(true);
 		// @todo should be switch on!
@@ -95,7 +92,7 @@ public class ThemeHotDeployListener implements HotDeployListener {
 		return theme;
 	}
 
-	public void invokeUndeploy(HotDeployEvent event) throws HotDeployException {
+	public void invokeUndeploy(final HotDeployEvent event) throws HotDeployException {
 		String servletContextName = "N/A";
 		try {
 			ServletContext context = event.getServletContext();

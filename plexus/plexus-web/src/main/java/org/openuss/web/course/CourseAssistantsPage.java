@@ -48,7 +48,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 
 	private String username;
 
-	private DataPage<CourseMemberInfo> page;
+	protected DataPage<CourseMemberInfo> page;
 
 	@Prerender
 	public void prerender() throws Exception { // NOPMD
@@ -97,7 +97,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<CourseMemberInfo> getAssistants() {
+	protected List<CourseMemberInfo> getAssistants() {
 		if (assistants == null) {
 			assistants = courseService.getAssistants(courseInfo);
 		}

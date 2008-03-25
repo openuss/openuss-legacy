@@ -1,5 +1,7 @@
 package org.openuss.web.lecture;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +42,10 @@ import org.springframework.beans.support.PropertyComparator;
 @Bean(name = "views$public$department$allcoursesbydepartment", scope = Scope.REQUEST)
 @View
 public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(AllCoursesByDepartmentPage.class);
 	
 	/**
 	 * This is the paged table with all relevant courses.
@@ -155,7 +161,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			CourseInfo currentCourse = allCoursesTable.getRowData();
 			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
 		} catch (Exception e) {
-			
+			logger.error(e.getMessage(),e);
 		}
 		return false;
 	}

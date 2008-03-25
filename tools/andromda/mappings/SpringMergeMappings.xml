@@ -170,4 +170,50 @@
     </template>]]></to>
     </mapping>
     
+    <mapping>
+     <from><![CDATA[<template
+        path="templates/spring/SpringServiceLocator.vsl"
+        outputPattern="$generatedFile"
+        outlet="services"
+        overwrite="true"
+        outputToSingleFile="true"
+        outputOnEmptyElements="false">
+        <modelElements>
+            <modelElement variable="services">
+                <type name="org.andromda.cartridges.spring.metafacades.SpringService">
+                    <property name="richClient">false</property>
+                    <property name="abstract">false</property>
+                </type>
+            </modelElement>
+            <modelElement variable="manageables">
+                <type name="org.andromda.cartridges.spring.metafacades.SpringManageableEntity"/>
+            </modelElement>
+        </modelElements>
+    </template>]]>
+     </from>
+     <to><![CDATA[<!-- skip service locator -->]]></to>
+    </mapping>
+
+    <mapping>
+     <from><![CDATA[<template
+        path="templates/spring/SpringServiceLocator.vsl"
+        outputPattern="$generatedFile"
+        outlet="server"
+        overwrite="true"
+        outputToSingleFile="true"
+        outputOnEmptyElements="false">
+        <modelElements>
+            <modelElement variable="services">
+                <type name="org.andromda.cartridges.spring.metafacades.SpringService">
+                    <property name="richClient">true</property>
+                </type>
+            </modelElement>
+            <modelElement variable="manageables">
+                <type name="org.andromda.cartridges.spring.metafacades.SpringManageableEntity"/>
+            </modelElement>
+        </modelElements>
+    </template>]]>     </from>
+     <to><![CDATA[<!-- skip service locator -->]]></to>
+    </mapping>
+    
 </mappings>

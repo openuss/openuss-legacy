@@ -244,7 +244,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 
-	public String addAttachment() throws IOException, BrainContestApplicationException {
+	public String addAttachment() throws IOException{
 		LOGGER.debug("papersubmission attachment add");
 		if (examInfo.getAttachments() == null) {
 			examInfo.setAttachments(new ArrayList<FileInfo>());

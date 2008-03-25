@@ -81,12 +81,13 @@ public class WikiChooseImagePage extends AbstractWikiPage {
 			
 			return page;
 		}
+
+		@SuppressWarnings("unchecked") 
+		private List<FolderEntryInfo> loadImages() {
+			return getWikiService().findImagesByDomainId(getCourseInfo().getId());
+		}
 	}
 
-	@SuppressWarnings("unchecked") 
-	private List<FolderEntryInfo> loadImages() {
-		return getWikiService().findImagesByDomainId(courseInfo.getId());
-	}
 	
 	public WikiImageProvider getImagesData() {
 		return data;

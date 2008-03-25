@@ -3,7 +3,6 @@ package org.openuss.web.lecture;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
-import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
@@ -36,11 +35,6 @@ public class UniversityDisableConfirmationPage extends AbstractUniversityPage {
 		newCrumb.setName(i18n("university_command_disable"));
 		newCrumb.setHint(i18n("university_command_disable"));
 		breadcrumbs.addCrumb(newCrumb);
-	}
-	
-	@Preprocess
-	public void preprocess() throws Exception {
-		super.preprocess();
 	}
 	
 	/**

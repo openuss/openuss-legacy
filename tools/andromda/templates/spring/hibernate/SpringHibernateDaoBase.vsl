@@ -998,6 +998,9 @@ $xmlIndent        return transformEntity(transform, ($entity.fullyQualifiedName)
 #*            *##set ($propertyGetterValue = false)
 #*            *##set ($propertyGetterValue = $converter.typeConvert($property.type.fullyQualifiedName, "source.${property.getterName}()", $entityProperty.type.fullyQualifiedName))
 #*            *##if ($propertyGetterValue)
+#*		      *##if ($property.type.primitive)
+	    target.${entityProperty.setterName}($propertyGetterValue);
+#*		      *##else	
         if (copyIfNull || source.${property.getterName}() != $property.type.javaNullString)
         {
 #*            *##if ($entityProperty.identifier && $entity.compositeIdentifier )
@@ -1006,6 +1009,7 @@ $xmlIndent        return transformEntity(transform, ($entity.fullyQualifiedName)
             target.${entityProperty.setterName}($propertyGetterValue);
 #*            *##end          
         }
+#*            *##end		
 #*            *##else
         // No conversion for target.${entityProperty.name} (can't convert source.${property.getterName}():${property.type.fullyQualifiedName} to $entityProperty.type.fullyQualifiedName)
 #*            *##end        

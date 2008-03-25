@@ -81,7 +81,9 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	public void validateOverwriteConfirmation(FacesContext context, UIComponent toValidate, Object value) {
 		boolean accept = (Boolean) value;
 		if (!accept) {
-			((UIInput) toValidate).setValid(false);
+			if (toValidate instanceof UIInput) {
+				((UIInput) toValidate).setValid(false);
+			}
 			addError(toValidate.getClientId(context), i18n("wiki_error_need_to_confirm_overwrite"), null);
 		}
 	}

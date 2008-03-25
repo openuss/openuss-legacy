@@ -110,7 +110,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	}
 	
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
-	private List<FolderEntryInfo> loadFolderEntries() {
+	protected List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(workspaceInfo, currentFolder);
 		}
@@ -223,7 +223,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		final List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFolderEntries());
 		CollectionUtils.filter(selected, new Predicate() {
 			public boolean evaluate(Object object) {
-				return entrySelection.isSelected(object);
+				return getEntrySelection().isSelected(object);
 			}
 		});
 		LOGGER.debug("selected " + selected.size() + " files");

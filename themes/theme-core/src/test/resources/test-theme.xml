@@ -3,4 +3,5 @@
 	<images>images-path</images>
 	<layout>default-layout</layout>
 	<stylesheet>stylesheet</stylesheet>
+	<dialog>dialog</dialog>
 </theme>

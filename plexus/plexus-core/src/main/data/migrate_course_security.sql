@@ -16,8 +16,6 @@ ALTER TABLE COURSES2GROUPS ADD CONSTRAINT SECURITY_GROUP_COURSES_FKC FOREIGN KEY
 
 -- adding groups for all courses --
 
-alter table SECURITY_GROUP drop constraint SECURITY_GROUPIFKC;
-
 create procedure create_groups
 as
 declare variable groupid bigint;
@@ -28,23 +26,17 @@ begin
         execute statement 'SELECT NEXT VALUE FOR GLOBAL_SEQUENCE FROM RDB$DATABASE'
         into :groupid;
 
-        INSERT INTO SECURITY_GROUP (ID, NAME, LABEL, GROUP_TYPE, PWD, MEMBERSHIP_FK)
-        VALUES (:groupid, ('GROUP_COURSE_'|| :courseid || '_PARTICIPANTS'), 'autogroup_participant_label', 5, NULL, NULL);
+        INSERT INTO SECURITY_AUTHORITY (ID, NAME)
+        VALUES (:groupId, ('GROUP_COURSE_'|| :courseid || '_PARTICIPANTS'));
+
+        INSERT INTO SECURITY_GROUP (ID, LABEL, GROUP_TYPE, PWD, MEMBERSHIP_FK)
+        VALUES (:groupid, 'autogroup_participant_label', 5, NULL, NULL);
 
         insert into courses2groups (courses_fk, groups_fk)
         values (:courseid, :groupid);
      end
 end;
 execute procedure create_groups;
-
-
-INSERT INTO SECURITY_AUTHORITY (ID)
-select id
-FROM security_group
-where security_group.group_type=5;
-
-alter table SECURITY_GROUP add constraint SECURITY_GROUPIFKC foreign key (ID) references SECURITY_AUTHORITY;
-
 ----------------------------------------------------------------------------------
 -- move all read permissions to course to read permission for new created group --
 ----------------------------------------------------------------------------------

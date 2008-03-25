@@ -1,7 +1,6 @@
 package org.openuss.web.papersubmission;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,7 +107,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	}
 	
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
-	private List<FolderEntryInfo> loadFileEntries() {
+	protected List<FolderEntryInfo> loadFileEntries() {
 		if (entries == null) {
 			FolderInfo folder = documentService.getFolder(paperSubmissionInfo);
 			entries = documentService.getFolderEntries(paperSubmissionInfo, folder);
@@ -164,7 +163,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		this.paperFileSelection = paperFileSelection;
 	}
 	
-	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> implements Serializable {
+	private class LocalDataModelSubmissionFiles extends AbstractPagedTable<FolderEntryInfo> {
 		private static final long serialVersionUID = -6289875618529435428L;
 
 		private DataPage<FolderEntryInfo> page;
@@ -176,10 +175,8 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 							
 				if(paperSubmissionInfo == null){
 					page = new DataPage<FolderEntryInfo>(0,0,null);
-				}
-				else{
+				} else{
 					List<FolderEntryInfo> entries = loadFileEntries();
-					
 					sort(entries);
 					page = new DataPage<FolderEntryInfo>(entries.size(), 0, entries);
 				}

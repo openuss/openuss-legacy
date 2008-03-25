@@ -242,13 +242,14 @@ public class MyUniPage extends BasePage {
 	 * Handles newsletter and forum subscriptions
 	 */
 	private void handleSubscriptions(){
+		// FIXME Do not use DAO objects in web layer
 		UserInfo user = getSecurityService().getCurrentUser();
 		if (paramSubscribeNewsletter != null){
 			try {
 				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
 				getCourseNewsletterService().subscribe(ci, user);
 				addMessage(i18n("newsletter_subscribe_success"));
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				addError(i18n("errorpage_text"));
 			}
 			
@@ -259,7 +260,7 @@ public class MyUniPage extends BasePage {
 				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
 				getCourseNewsletterService().unsubscribe(ci, user);
 				addMessage(i18n("newsletter_unsubscribe_success"));
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				addError(i18n("errorpage_text"));
 			}
 			
@@ -272,9 +273,11 @@ public class MyUniPage extends BasePage {
 					getDiscussionService().addForumWatch(forum);
 					addMessage(i18n("discussion_subscribe_success"));
 				}
-				else addError(i18n("errorpage_text"));
+				else {
+					addError(i18n("errorpage_text"));
+				}
 				
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				addError(i18n("errorpage_text"));
 			}
 		}
@@ -284,7 +287,7 @@ public class MyUniPage extends BasePage {
 				ForumInfo forum = getDiscussionService().getForum(ci);
 				getDiscussionService().removeForumWatch(forum);
 				addMessage(i18n("discussion_unsubscribe_success"));
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				addError(i18n("errorpage_text"));
 			}
 		}
@@ -382,7 +385,7 @@ public class MyUniPage extends BasePage {
 						newItem.setTitle(universityInfo.getName());
 						newItem.setUrl(contextPath()+myUniBasePath + "?university=" + universityInfo.getId().toString());
 
-						if (universityId != null && universityId.longValue() == universityInfo.getId().longValue()) {
+						if (universityId.equals(universityInfo.getId())) {
 							currentItem = newItem;
 							newItem.setUrl(contextPath() + universityBasePath + universityId);
 						}

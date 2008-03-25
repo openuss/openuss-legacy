@@ -56,8 +56,7 @@ public class PaperSubmissionAddZipPage extends AbstractPaperSubmissionPage{
 		
 		if (this.examInfo != null) {
 			crumb = new BreadCrumb(examInfo.getName(), examInfo.getName());
-			if(courseInfo != null && courseInfo.getId() != null 
-					&& examInfo != null && examInfo.getId() != null){
+			if(courseInfo != null && courseInfo.getId() != null && examInfo.getId() != null){
 				
 				crumb.setLink(PageLinks.PAPERSUBMISSION_SUBMISSIONVIEW);
 				crumb.addParameter("course",courseInfo.getId());

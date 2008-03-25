@@ -276,7 +276,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	}	
 
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
-	private List<UserInfo> loadCourseMembers() {
+	protected List<UserInfo> loadCourseMembers() {
 		final Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
 		
 		final List<Authority> members = group.getMembers();
@@ -309,7 +309,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomainAndUser(courseInfo.getId(), user));
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(getWorkspaceService().findWorkspacesByDomainAndUser(getCourseInfo().getId(), getUser()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
@@ -329,7 +329,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(workspaceService.findWorkspacesByDomain(courseInfo.getId()));
+				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(getWorkspaceService().findWorkspacesByDomain(getCourseInfo().getId()));
 				
 				sort(workspaces);
 				page = new DataPage<WorkspaceInfo>(workspaces.size(), 0, workspaces);
