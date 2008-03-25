@@ -2,8 +2,8 @@ package org.openuss.web.documents;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +26,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.documents.FolderInfo;
@@ -45,7 +46,10 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
-	
+	/*
+	 * Target Folder to which selected Entries will be moved
+	 */
+	private FolderInfo targetFolder;
 		
 		/*
 		 * Target folder list
@@ -100,7 +104,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			}
 			return page;
 		}
-
+		
 		/**
 		 * Default property sort method
 		 * 
@@ -261,6 +265,24 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		return folderList;
 	}
 	
+	/**
+	 * Moves selected FolderEntries to target
+	 * Uses documentService.moveFolderEntries();
+	 * @return success
+	 * @throws DocumentApplicationException 
+	 */
+	public String moveFolderEntriesToTarget() throws Exception{
+		
+		if (courseInfo.getId() != null) {
+			documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+			addMessage(i18n("documents_move_files"));
+		}
+		//reload table
+		//TODO: Reload table
+		return Constants.DOCUMENTS_MAIN_PAGE;
+	}
+
+	
 	public String switchToMoveMode(){
 		setMoveMode(true);
 		return Constants.SUCCESS;
@@ -276,5 +298,13 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public void setMoveMode(boolean moveMode) {
 		this.moveMode = moveMode;
+	}
+	
+	public FolderInfo getTargetFolder() {
+		return targetFolder;
+	}
+
+	public void setTargetFolder(FolderInfo targetFolder) {
+		this.targetFolder = targetFolder;
 	}
 }

@@ -69,6 +69,14 @@
 						styleClass="button_add"/>
 				</s:acl>
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+					<h:commandButton
+						id="move"
+						value="#{msg.documents_move}"
+						title="#{msg.documents_move}"
+						action="#{views$secured$documents$documents.switchToMoveMode}"
+						styleClass="button_add"/>
+				</s:acl>
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 					<h:commandButton 
 					    id="delete"
 						action="#{views$secured$documents$documents.delete}" 
@@ -84,11 +92,11 @@
 					
 					<h:selectOneMenu id="targetFolder" value="#{views$secured$documents$documents.targetFolder}" styleClass="pulldown_inline">
 					   	<f:selectItems value="#{views$secured$documents$documents.folderList}"/>
+						<f:converter converterId="folderInfoConverter" />
 					</h:selectOneMenu><br/>
 					<h:commandButton 
 							action="#{views$secured$documents$documents.moveFolderEntriesToTarget}"
-							value="#{msg['documents_move']}"
-							hint="#{msg['course_assistants_add_hint']}"
+							value="#{msg.documents_move}"
 							styleClass="button_add" />
 					<h:commandButton action="documents_main" immediate="true"
 							value="#{msg['newdocument_button_cancel']}"
