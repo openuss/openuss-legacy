@@ -5,6 +5,7 @@
  */
 package org.openuss.wiki;
 
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.Set;
 
 import org.acegisecurity.acl.AclManager;
 import org.openuss.TestUtility;
+import org.openuss.documents.DocumentService;
+import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderEntryInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.Course;
@@ -40,6 +44,8 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	private User nonAssistantUser;
 
 	private TestUtility testUtility;
+	
+	private DocumentService documentService;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
@@ -69,6 +75,18 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		final WikiSiteContentInfo newestWikiSite = wikiService.getNewestWikiSiteContent(wikiSite.getWikiSiteId());
 		assertEquals(wikiSite, newestWikiSite);
 	}
+	
+	public void testCreateAndFindWikiSite() {
+		final String siteName = "create-and-find-wiki-site-test";
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		wikiService.saveWikiSite(wikiSite);
+		assertNotNull(wikiSite.getId());
+		assertNotNull(wikiSite.getWikiSiteId());
+		
+		final WikiSiteInfo newWikiSite = wikiService.getWikiSite(wikiSite.getWikiSiteId());
+		assertNotNull(newWikiSite);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public void testCreateAndFindWikiSiteVersion() {
@@ -129,6 +147,34 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertNotNull(wikiSiteContentInfo.getText());
 	}
 	
+	@SuppressWarnings("unchecked")	
+	public void testCreateRetrieveImage(){
+		final FileInfo image = createFileInfo("file");
+		final Course course =  testUtility.createUniqueCourseInDB();
+		final WikiSiteContentInfo wikiSiteContentInfo = wikiService.findWikiSiteContentByDomainObjectAndName(course.getId(),WIKI_STARTSITE_NAME);
+		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(wikiSiteContentInfo.getWikiSiteId());
+		wikiService.saveImage(wikiSiteInfo, image);
+		
+//		List<FolderEntryInfo> images = wikiService.findImagesByDomainId(course.getId()); FIXME null pointer exeption
+//		for(FolderEntryInfo img : images){
+//			assertNotNull(img);
+//		}
+		
+		wikiService.deleteImage(image.getId());		
+		
+	}
+	
+	public void testStableVersion(){
+		final String siteName = "testCreateAndDeleteWikiSiteVersion";
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		wikiSite.setStable(true);
+		wikiService.saveWikiSite(wikiSite);
+		
+		WikiSiteContentInfo newStable = wikiService.getNewestStableWikiSiteContent(wikiSite.getWikiSiteId());
+		
+		assertEquals(newStable.isStable(),true);
+	}
+	
 	private WikiSiteContentInfo createDefaultWikiSiteContentInfo(String siteName) {
 		Date creationDate = new Date();
 		
@@ -149,6 +195,19 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	private DefaultDomainObject createDomainObject() {
 		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		return defaultDomainObject;
+	}
+	
+	private FileInfo createFileInfo(String name) {
+		FileInfo info = new FileInfo();
+		byte[] data = "this is the content of the file".getBytes();
+		info.setFileName(name);
+		info.setDescription("description");
+		info.setContentType("plain/text");
+		info.setFileSize(data.length);
+		info.setCreated(new Date());
+		info.setModified(new Date());
+		info.setInputStream(new ByteArrayInputStream(data));
+		return info;
 	}
 
 	public TestUtility getTestUtility() {
