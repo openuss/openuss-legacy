@@ -435,7 +435,7 @@ public class DocumentServiceIntegrationTest extends
 			documentService.moveFolderEntries(defaultDomainObject, subfolder,
 					chosen);
 			assertTrue(false);
-		} catch (DocumentServiceException e) {
+		} catch (Exception e) {
 			assertTrue(true);
 		}
 		// test moving root to subfolder
@@ -447,7 +447,7 @@ public class DocumentServiceIntegrationTest extends
 					chosen);
 			assertTrue(false);
 
-		} catch (DocumentServiceException e) {
+		} catch (Exception e) {
 			assertTrue(true);
 		}
 		// test moving subfolder to subsubfolder
@@ -462,7 +462,7 @@ public class DocumentServiceIntegrationTest extends
 					subsubfolder, chosen);
 			assertTrue(false);
 
-		} catch (DocumentServiceException e) {
+		} catch (Exception e) {
 			assertTrue(true);
 		}
 	}
