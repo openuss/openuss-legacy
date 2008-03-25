@@ -15,7 +15,10 @@ import java.util.Set;
 import org.acegisecurity.acl.AclManager;
 import org.openuss.TestUtility;
 import org.openuss.braincontest.BrainContestApplicationException;
+import org.openuss.documents.DocumentApplicationException;
+import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
+import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.Course;
@@ -38,25 +41,27 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 
 	private DefaultDomainObject defaultDomainObject;
 
-	private User assistantUser;
+	private User user1;
 	
-	private User nonAssistantUser;
+	private User user2;
 	
 	private TestUtility testUtility;
 	
 	private CourseDao courseDao;
+	
+	private DocumentService documentService;
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		AcegiUtils.setAclManager(aclManager);
 		defaultDomainObject = createDomainObject();
-		assistantUser = testUtility.createUserSecureContext();
+		user2 = testUtility.createUserSecureContext();
 		securityService.createObjectIdentity(defaultDomainObject, null);
-		securityService.setPermissions(assistantUser, defaultDomainObject, LectureAclEntry.ASSIST);
+		securityService.setPermissions(user2, defaultDomainObject, LectureAclEntry.ASSIST);
 		
-		nonAssistantUser = testUtility.createUserSecureContext();
-		securityService.setPermissions(nonAssistantUser, defaultDomainObject, LectureAclEntry.PAPER_PARTICIPANT);
+		user1 = testUtility.createUserSecureContext();
+		securityService.setPermissions(user1, defaultDomainObject, LectureAclEntry.PAPER_PARTICIPANT);
 	}
 	
 	public void testCreateAndGetExam() throws PaperSubmissionServiceException {
@@ -98,11 +103,8 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 			fail("No PaperSubmissionServiceException thrown at non possible Exam create");
 		} catch (PaperSubmissionServiceException e) {
 		}
-		
 	}
 	
-	
-
 	public void testCreateAndGetPaperSubmission() throws PaperSubmissionServiceException {
 		ExamInfo examInfo = createExamInfo("name");
 		try {
@@ -161,30 +163,17 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 
 	public void testRemoveExam(){
 		ExamInfo examInfo = createExamInfo("name");
-		try {
-			this.getPaperSubmissionService().createExam(examInfo);
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
+		getPaperSubmissionService().createExam(examInfo);
 		Long examId = examInfo.getId();
 		assertNotNull(examId);
 		
-		
 		PaperSubmissionInfo paperSubmissionInfo = createPaperSubmissionInfo(examId);
-		try {
-			this.paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
-		} catch (PaperSubmissionServiceException e) {
-			fail(e.getMessage());
-		}
+		paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
 		Long paperSubmissionId = paperSubmissionInfo.getId();
 		assertNotNull(paperSubmissionId);
 				
 		ExamInfo examInfo2 = createExamInfo("name2");
-		try {
-			this.getPaperSubmissionService().createExam(examInfo2);
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
+		getPaperSubmissionService().createExam(examInfo2);
 		Long examId2 = examInfo2.getId();
 		assertNotNull(examId2);
 		
@@ -237,11 +226,82 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 	}
 	
 	public void testFindPaperSubmissions(){
+		Course course = createCourseDomain();
 		
+		ExamInfo examInfo = createExamInfo("test_exam");
+		examInfo.setDomainId(course.getId());
+		Long futureDate = new Date().getTime()+1000000000;
+		examInfo.setDeadline(new Date(futureDate));
+		getPaperSubmissionService().createExam(examInfo);
+		Long examId = examInfo.getId();
+		assertNotNull(examId);
+		
+		FileInfo fileOne = createFileInfo("one");
+		FileInfo fileTwo = createFileInfo("two");
+		FileInfo fileThree = createFileInfo("three");
+		
+		PaperSubmissionInfo paperSubmissionInfo = createPaperSubmissionInfo(examId);
+		paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
+		Long paperSubmissionId = paperSubmissionInfo.getId();
+		assertNotNull(paperSubmissionId);
+		
+		FolderInfo folder = getDocumentService().getFolder(paperSubmissionInfo);
+		try {
+			getDocumentService().createFileEntry(fileOne, folder);
+			getDocumentService().createFileEntry(fileTwo, folder);
+			getDocumentService().createFileEntry(fileThree, folder);
+		} catch (DocumentApplicationException e) {
+			fail(e.getMessage());
+		}
+		
+		List<PaperSubmissionInfo> submissionListByExam = paperSubmissionService.findPaperSubmissionsByExam(examId);
+		assertNotNull(submissionListByExam);
+		assertEquals(1,submissionListByExam.size());
+		assertEquals(submissionListByExam.get(0).getExamId(), examId);
+		
+		List<PaperSubmissionInfo> submissionListByExamAndUser = paperSubmissionService.findPaperSubmissionsByExamAndUser(examId, user1.getId());
+		assertNotNull(submissionListByExamAndUser);
+		assertEquals(1,submissionListByExamAndUser.size());
+		assertEquals(submissionListByExamAndUser.get(0).getExamId(), examId);
+		assertEquals(submissionListByExamAndUser.get(0).getUserId(), user1.getId());
+		
+		List<PaperSubmissionInfo> intimeSubmissionListByExam = paperSubmissionService.findInTimePaperSubmissionsByExam(examId);
+		assertNotNull(intimeSubmissionListByExam);
+		assertEquals(1,intimeSubmissionListByExam.size());
+		assertEquals(intimeSubmissionListByExam.get(0).getExamId(), examId);
+		assertEquals(SubmissionStatus.IN_TIME, intimeSubmissionListByExam.get(0).getSubmissionStatus());
+		
+		List<FileInfo> fileInfoList = paperSubmissionService.getPaperSubmissionFiles(submissionListByExam);
+		assertNotNull(fileInfoList);
+		assertEquals(3,fileInfoList.size());
 	}
 	
 	
-	public void testGetPaperSubmissionFiles() {
+	public void testMembersAsPaperSubmissions() {
+		Course course = createCourseDomain();
+		
+		ExamInfo examInfo = createExamInfo("test_exam");
+		examInfo.setDomainId(course.getId());
+		Long futureDate = new Date().getTime()+1000000000;
+		examInfo.setDeadline(new Date(futureDate));
+		getPaperSubmissionService().createExam(examInfo);
+		Long examId = examInfo.getId();
+		assertNotNull(examId);
+		
+		PaperSubmissionInfo paperSubmissionInfo = createPaperSubmissionInfo(examId);
+		paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
+		Long paperSubmissionId = paperSubmissionInfo.getId();
+		assertNotNull(paperSubmissionId);
+		
+		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + course.getId() + "_PARTICIPANTS");
+		group.addMember(user1);
+		group.addMember(user2);
+		
+		List<PaperSubmissionInfo> membersAsSubmissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examId);
+		assertNotNull(membersAsSubmissions);
+		assertEquals(2, membersAsSubmissions.size());
+		assertNotSame(membersAsSubmissions.get(0).getSubmissionStatus(), SubmissionStatus.NOT_SUBMITTED);
+		assertEquals(membersAsSubmissions.get(1).getSubmissionStatus(), SubmissionStatus.NOT_SUBMITTED);
 		
 	}
 	
@@ -288,21 +348,7 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		assertTrue(extractedExam2.getAttachments().contains(fileThree));
 	}
 	
-	private Course createCourseDomain() {
-		Course course = testUtility.createUniqueCourseInDB();
-		// Create default Group for Course
-		Group participantsGroup = getSecurityService().createGroup("COURSE_" + course.getId() + "_PARTICIPANTS",
-				"autogroup_participant_label", null, GroupType.PARTICIPANT);
-		Set<Group> groups = course.getGroups();
-		if (groups == null) {
-			groups = new HashSet<Group>();
-		}
-		groups.add(participantsGroup);
-		course.setGroups(groups);
-		getCourseDao().update(course);
-
-		return course;
-	}
+	
 
 	public void testAttachments() throws BrainContestApplicationException{
 		Course course = createCourseDomain();
@@ -361,6 +407,22 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		return defaultDomainObject;
 	}
 	
+	private Course createCourseDomain() {
+		Course course = testUtility.createUniqueCourseInDB();
+		// Create default Group for Course
+		Group participantsGroup = getSecurityService().createGroup("COURSE_" + course.getId() + "_PARTICIPANTS",
+				"autogroup_participant_label", null, GroupType.PARTICIPANT);
+		Set<Group> groups = course.getGroups();
+		if (groups == null) {
+			groups = new HashSet<Group>();
+		}
+		groups.add(participantsGroup);
+		course.setGroups(groups);
+		getCourseDao().update(course);
+
+		return course;
+	}
+	
 	private ExamInfo createExamInfo(String name) {
 		ExamInfo examInfo = new ExamInfo();
 		examInfo.setDeadline(new Date());
@@ -375,10 +437,10 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 	private PaperSubmissionInfo createPaperSubmissionInfo(Long examId) {
 		PaperSubmissionInfo paperSubmissionInfo = new PaperSubmissionInfo();
 		paperSubmissionInfo.setDeliverDate(new Date());
-		paperSubmissionInfo.setDisplayName(nonAssistantUser.getDisplayName());
-		paperSubmissionInfo.setFirstName(nonAssistantUser.getFirstName());
-		paperSubmissionInfo.setLastName(nonAssistantUser.getLastName());
-		paperSubmissionInfo.setUserId(nonAssistantUser.getId());
+		paperSubmissionInfo.setDisplayName(user1.getDisplayName());
+		paperSubmissionInfo.setFirstName(user1.getFirstName());
+		paperSubmissionInfo.setLastName(user1.getLastName());
+		paperSubmissionInfo.setUserId(user1.getId());
 		paperSubmissionInfo.setSubmissionStatus(SubmissionStatus.NOT_IN_TIME);
 		paperSubmissionInfo.setExamId(examId);
 		
@@ -423,21 +485,6 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		return testUtility;
 	}
 
-	public User getAssistantUser() {
-		return assistantUser;
-	}
-
-	public void setAssistantUser(User assistantUser) {
-		this.assistantUser = assistantUser;
-	}
-
-	public User getNonAssistantUser() {
-		return nonAssistantUser;
-	}
-
-	public void setNonAssistantUser(User nonAssistantUser) {
-		this.nonAssistantUser = nonAssistantUser;
-	}
 
 	public CourseDao getCourseDao() {
 		return courseDao;
@@ -445,5 +492,29 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 
 	public void setCourseDao(CourseDao courseDao) {
 		this.courseDao = courseDao;
+	}
+
+	public DocumentService getDocumentService() {
+		return documentService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public User getUser1() {
+		return user1;
+	}
+
+	public void setUser1(User user1) {
+		this.user1 = user1;
+	}
+
+	public User getUser2() {
+		return user2;
+	}
+
+	public void setUser2(User user2) {
+		this.user2 = user2;
 	}
 }

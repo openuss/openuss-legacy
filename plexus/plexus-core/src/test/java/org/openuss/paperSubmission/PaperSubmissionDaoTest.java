@@ -7,7 +7,6 @@ package org.openuss.paperSubmission;
 
 import java.util.Date;
 
-
 /**
  * JUnit Test for Spring Hibernate PaperSubmissionDao class.
  * @see org.openuss.paperSubmission.PaperSubmissionDao
@@ -20,5 +19,12 @@ public class PaperSubmissionDaoTest extends PaperSubmissionDaoTestBase {
 		assertNull(paperSubmission.getId());
 		paperSubmissionDao.create(paperSubmission);
 		assertNotNull(paperSubmission.getId());
+		PaperSubmission paperSubmission2 = paperSubmissionDao.load(paperSubmission.getId());
+		assertEquals(paperSubmission2.getId(), paperSubmission.getId());
+		paperSubmission.setDeliverDate(new Date());
+		paperSubmissionDao.update(paperSubmission);
+		paperSubmission2 = paperSubmissionDao.load(paperSubmission.getId());
+		paperSubmissionDao.remove(paperSubmission2);
+		assertNull(paperSubmissionDao.load(paperSubmission2.getId()));
 	}
 }
