@@ -56,6 +56,7 @@ public class ThemeManageBeanTest extends TestCase {
 	public void testDefaultThemeRegistration() {
 		manager.setDefaultThemeId(theme.getId());
 		mockServletContext.setAttribute(ThemeManager.THEME_SCOPEKEY, theme);
+		
 		replay(mockServletContext);
 		try {
 			manager.registerTheme(theme);

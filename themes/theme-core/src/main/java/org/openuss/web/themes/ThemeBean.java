@@ -31,7 +31,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -45,7 +45,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setImagesPath(String imagesPath) {
+	public void setImagesPath(final String imagesPath) {
 		this.imagesPath = imagesPath;
 	}
 
@@ -59,7 +59,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -73,7 +73,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setStylesheet(String stylesheet) {
+	public void setStylesheet(final String stylesheet) {
 		this.stylesheet = stylesheet;
 	}
 
@@ -87,25 +87,26 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setLayout(String layout) {
+	public void setLayout(final String layout) {
 		this.layout = layout;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Theme) {
-			Theme theme = (Theme) obj;
-			return StringUtils.equals(id, theme.getId());
+			return StringUtils.equals(id, ((Theme) obj).getId());
+		} else {
+			return super.equals(obj);
 		}
-		return super.equals(obj);
 	}
 
 	@Override
 	public int hashCode() {
-		if (id != null)
-			return id.hashCode();
-		else
+		if (id == null) {
 			return super.hashCode();
+		} else {
+			return id.hashCode();
+		}
 	}
 
 	/**
@@ -118,7 +119,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setClassLoader(ClassLoader classLoader) {
+	public void setClassLoader(final ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 
@@ -132,7 +133,7 @@ public class ThemeBean implements Theme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setServletContext(ServletContext servletContext) {
+	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
 
