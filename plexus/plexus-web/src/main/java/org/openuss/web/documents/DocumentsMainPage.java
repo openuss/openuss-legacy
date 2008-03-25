@@ -104,7 +104,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			}
 			return page;
 		}
-
+		
 		/**
 		 * Default property sort method
 		 * 
@@ -271,12 +271,14 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 * @return success
 	 * @throws DocumentApplicationException 
 	 */
-	public String moveFolderEntriesToTarget() throws DocumentApplicationException{
+	public String moveFolderEntriesToTarget() throws Exception{
 		
 		if (courseInfo.getId() != null) {
 			documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
+			addMessage(i18n("documents_move_files"));
 		}
-		addMessage(i18n("documents_move_files"));
+		//reload table
+		//TODO: Reload table
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 
