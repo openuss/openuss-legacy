@@ -58,8 +58,8 @@
                 <property name="hibernateEnableCache">true</property>
                 <property name="hibernateEhCacheDiskStore">java.io.tmpdir/hibernate</property>
                 <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
-                <property name="hibernateEntityCache">read-only</property>
-                <property name="hibernateAssociationCache">read-only</property>
+                <property name="hibernateEntityCache">none</property>
+                <property name="hibernateAssociationCache">read-write</property>
                 <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
                 <property name="hibernateUseQueryCache">true</property>
                 <property name="ehCacheMaxElementsInMemory">10000</property>
