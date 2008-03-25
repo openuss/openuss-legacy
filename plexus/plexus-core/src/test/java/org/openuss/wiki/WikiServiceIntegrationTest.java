@@ -5,11 +5,19 @@
  */
 package org.openuss.wiki;
 
-import java.io.ByteArrayInputStream;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import org.acegisecurity.acl.AclManager;
 import org.openuss.TestUtility;
@@ -18,7 +26,6 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
-import org.openuss.lecture.Course;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -26,12 +33,34 @@ import org.openuss.security.acl.LectureAclEntry;
 /**
  * JUnit Test for Spring Hibernate WikiService class.
  * @see org.openuss.wiki.WikiService
+ * @author Projektseminar WS 07/08, Team Collaboration
  */
 public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
+	
+	private enum ImageType {
+		JPG("jpg"), PNG("png");
+		
+		private final String extension;
+		
+		private ImageType(String extension) {
+			this.extension = extension;
+		}
+
+		public String getExtension() {
+			return extension;
+		}
+	}
+	
+	// FIXME dyck: handle hardcodes!!
+	// TODO dyck: Javadoc
 	
 	private static final String siteText = "default-test-site-text";
 	private static final String siteNote = "default-test-site-note";
 	private static final String WIKI_STARTSITE_NAME = "index";
+	
+	private static final String SAMPLE_IMAGE_FILE_NAME_TEMPLATE = "sample-image";
+	private static final String SAMPLE_IMAGE_FILE_NAME_SEPARATOR = ".";
+	
 
 	private SecurityService securityService;
 
@@ -141,27 +170,63 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertNull(wikiSiteInfo);
 	}
 	
-	public void testCreateNewIndexSite(){
-		final Course course =  testUtility.createUniqueCourseInDB();
-		final WikiSiteContentInfo wikiSiteContentInfo = wikiService.findWikiSiteContentByDomainObjectAndName(course.getId(),WIKI_STARTSITE_NAME);
-		assertNotNull(wikiSiteContentInfo.getText());
+	@SuppressWarnings("unchecked")
+	public void testCreateFindAndRemoveImage() throws IOException {
+		final Map<String, FileInfo> savedFiles = new HashMap<String, FileInfo>();
+		final RenderedImage sampleImage = createSampleImage();
+		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
+		assertNotNull(defaultIndexSite);
+		
+		for (ImageType imageType : ImageType.values()) {
+			final FileInfo fileInfo = createSampleImageFileInfo(imageType, sampleImage);
+			savedFiles.put(imageType.getExtension(), fileInfo);
+			wikiService.saveImage(defaultIndexSite, fileInfo);
+		}
+		
+		final List<FolderEntryInfo> imageFolderEntries = wikiService.findImagesByDomainId(defaultDomainObject.getId());
+		assertEquals(ImageType.values().length, imageFolderEntries.size());
+		
+		for (FolderEntryInfo imageFolderEntry : imageFolderEntries) {
+			FileInfo imageFile = documentService.getFileEntry(imageFolderEntry.getId(), true);
+			assertNotNull(imageFile);
+			
+			final String extension = imageFile.getExtension();
+			final FileInfo originalImageFile = savedFiles.get(extension);
+			assertNotNull(originalImageFile);
+			assertEquals(originalImageFile, imageFile);
+			
+			wikiService.deleteImage(imageFile.getId());
+			savedFiles.remove(extension);
+		}
+		
+		assertTrue(savedFiles.isEmpty());
 	}
 	
-	@SuppressWarnings("unchecked")	
-	public void testCreateRetrieveImage(){
-		final FileInfo image = createFileInfo("file");
-		final Course course =  testUtility.createUniqueCourseInDB();
-		final WikiSiteContentInfo wikiSiteContentInfo = wikiService.findWikiSiteContentByDomainObjectAndName(course.getId(),WIKI_STARTSITE_NAME);
-		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(wikiSiteContentInfo.getWikiSiteId());
-		wikiService.saveImage(wikiSiteInfo, image);
+	private RenderedImage createSampleImage() {
+		final int width = 100;
+		final int height = 100;
+		final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		return bufferedImage;
+	}
+	
+	private FileInfo createSampleImageFileInfo(ImageType imageType, RenderedImage image) throws IOException {
+		final String extension = SAMPLE_IMAGE_FILE_NAME_SEPARATOR + imageType.getExtension();
+		final String fileName = SAMPLE_IMAGE_FILE_NAME_TEMPLATE + extension;
+		final Date creationDate = new Date();
+		final File file = File.createTempFile(SAMPLE_IMAGE_FILE_NAME_TEMPLATE, extension);
+		ImageIO.write(image, imageType.getExtension(), file);
+		final FileInputStream inputStream = new FileInputStream(file);
 		
-//		List<FolderEntryInfo> images = wikiService.findImagesByDomainId(course.getId()); FIXME null pointer exeption
-//		for(FolderEntryInfo img : images){
-//			assertNotNull(img);
-//		}
+		final FileInfo fileInfo = new FileInfo();
+		fileInfo.setFileName(fileName);
+		fileInfo.setDescription("");
+		fileInfo.setContentType("");
+		fileInfo.setFileSize((int) file.length());
+		fileInfo.setCreated(creationDate);
+		fileInfo.setModified(creationDate);
+		fileInfo.setInputStream(inputStream);
 		
-		wikiService.deleteImage(image.getId());		
-		
+		return fileInfo;
 	}
 	
 	public void testStableVersion(){
@@ -174,8 +239,6 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		
 		assertEquals(newStable.isStable(),true);
 	}
-	
-	
 	
 	private WikiSiteContentInfo createDefaultWikiSiteContentInfo(String siteName) {
 		Date creationDate = new Date();
@@ -198,34 +261,21 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		return defaultDomainObject;
 	}
-	
-	private FileInfo createFileInfo(String name) {
-		FileInfo info = new FileInfo();
-		byte[] data = "this is the content of the file".getBytes();
-		info.setFileName(name);
-		info.setDescription("description");
-		info.setContentType("plain/text");
-		info.setFileSize(data.length);
-		info.setCreated(new Date());
-		info.setModified(new Date());
-		info.setInputStream(new ByteArrayInputStream(data));
-		return info;
-	}
-
-	public TestUtility getTestUtility() {
-		return testUtility;
-	}
 
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}
 
-	public SecurityService getSecurityService() {
-		return securityService;
-	}
-
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
+	}
+
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
+	}
+
+	public void setAclManager(AclManager aclManager) {
+		this.aclManager = aclManager;
 	}
 
 }
