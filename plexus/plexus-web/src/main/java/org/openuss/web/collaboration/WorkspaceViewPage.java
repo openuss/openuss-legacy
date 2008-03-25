@@ -92,6 +92,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		crumb.setLink(PageLinks.COLLABORATION_MAIN);
 		crumb.setName(i18n("collaboration_main_header"));
 		crumb.setHint(i18n("collaboration_main_header"));
+		crumb.addParameter("course", courseInfo.getId());
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
