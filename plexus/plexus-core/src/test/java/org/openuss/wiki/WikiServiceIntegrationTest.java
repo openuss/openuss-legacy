@@ -175,6 +175,8 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertEquals(newStable.isStable(),true);
 	}
 	
+	
+	
 	private WikiSiteContentInfo createDefaultWikiSiteContentInfo(String siteName) {
 		Date creationDate = new Date();
 		
