@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<plexus:dataTable id="requestTable"
+		value="views$secured$buddylist$buddyrequest.data" var="currentbuddy"
+		rows="20" label="#{msg['openuss4us_buddylist_open_requests']}">
+		<t:column styleClass="userphoto">
+			<div class="userimage"><h:commandLink value="" 
+				action="#{views$secured$buddylist$buddyrequest.linkProfile}">
+				<h:graphicImage styleClass="userphoto"
+					value="/files?fileid=#{currentbuddy.requestingPictureId}"
+					title="#{currentbuddy.requesterName}"
+					rendered="#{not empty currentbuddy.requestingPictureId}" />
+				<h:graphicImage styleClass="userphoto"
+					value="/images/icons/no_pic.gif" alt="#{msg.user_profile_no_image}"
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty currentbuddy.requestingPictureId}" />
+			</h:commandLink></div>
+		</t:column>
+		<t:column styleClass="col_max_left">
+			<h:outputText value="#{currentbuddy.requesterName}"
+				styleClass="header_font_normal" />
+			<br />
+			<t:dataList value="#{currentbuddy.tags}" var="currentTag"
+				styleClass="content_font_normal">
+				<h:outputText value="#{currentTag}" styleClass="content_font_normal" />
+			</t:dataList>
+		</t:column>
+		<t:column styleClass="col_commands">
+			<h:commandLink
+				action="#{views$secured$buddylist$buddyrequest.authorizeBuddy}"
+				title="#{msg.openuss4us_buddylist_button_authorize}"
+				class="icon_authorizebuddy" />
+			<h:commandLink
+				action="#{views$secured$buddylist$buddyrequest.declineBuddy}"
+				title="#{msg.openuss4us_buddylist_button_decline}"
+				class="icon_declinebuddy" />
+			<h:commandLink
+				action="#{views$secured$buddylist$buddyrequest.addBuddy}"
+				title="#{msg.user_profile_addbuddy}"
+				class="icon_addbuddy" />
+		</t:column>
+	</plexus:dataTable>
+</ui:composition>

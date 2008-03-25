@@ -1285,7 +1285,7 @@ ul {
 	padding: 0 0 0 10px;
 }
 
-.field_label {
+.field_label,.field_message_label {
 	display: block;
 	font-size: 8pt;
 	color: #000000;
@@ -2410,4 +2410,207 @@ div.inline_buttons {
 
 .wiki_content p {
     margin-bottom: 10pt;
+}
+
+/* ========= Calendar and Internal Messaging ============== */
+#messagebox .messagecenter_header, #buddylist .buddylist_header, #tags .activetag{
+	padding: 8px 0 0 0px;
+	margin: 10px 0 0 0;
+	font-size: 9pt;
+	text-decoration: none;
+	font-weight: bold;
+	color: #505050;
+}
+
+#appointmentbox .appointmentheader{
+	padding: 8px 0 0 0px;
+	margin: 10px 0 0 0;
+	font-size: 8pt;
+	text-decoration: none;
+	font-weight: bold;
+	color: #505050;
+}
+
+#appointmentbox .appointmentdetails{
+	font-weight: normal;
+	}
+#messagebox .userphoto {
+	margin: 10px 10px 10px 0px;
+}
+
+#messagebox .date{
+	padding: 8px 0 0 0px;
+	margin: 10px 0 0 0;
+	font-size: 8pt;
+	text-decoration: none;
+	color: #505050
+}
+
+
+#center p.header_font_appointment,span.header_font_appointment {
+	padding: 0 0 0 0;
+	font-size: 9pt;
+	text-decoration: none;
+	font-weight: bold;
+	color: #505050;
+}
+
+.field_message {
+	width: 500px;
+	height: 150px;
+	font-size: 9pt;
+	text-decoration: none;
+	color: #505050;
+	border: 1px solid #B4B4B4;
+	margin: 3px 0 0 10px;
+	display: block;
+}
+
+span.profile_header {
+	padding: 0px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+textarea.internalmessage {
+	width: 200px;
+	heigth: 200px;
+}
+
+/* ========= user calendar (schedule) ========= */
+td.col_30px_left {
+	width: 5%;
+	text-align: left;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_20p_center {
+	width: 19%;
+	text-align: center;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_max_center {
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	color: #505050;
+}
+
+td.col_nowidth_center {
+	text-align: center;
+}
+
+span.profile_text {
+	padding: 15px 15px 15px 15px;
+}
+
+div.schedule-compact-default table.day td.header {
+	background-image: url(../img/option_box_header.jpg);
+	background-repeat: repeat-x;
+	color: #FFFFFF;
+	font-size: 8pt;
+}
+
+div.schedule-detailed-default table.background td.header {
+	background: #5493D4 none repeat scroll 0%;
+	color: #FFFFFF;
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+div.schedule-detailed-default td.gutter {
+	background: #5493D4 none repeat scroll 0%;
+	color: #FFFFFF;
+}
+
+div.schedule-compact-default td.inactive-day td.content {
+	height: 45px;
+}
+
+div.schedule-detailed-default {
+	border: 0px none;
+}
+
+table.month {
+	margin-left: 1px;
+	margin-right: 0px;
+	margin-top: 1px;
+	margin-down: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-collapse: collapse;
+}
+
+table.week {
+	margin-left: 0px;
+	margin-right: 1px;
+	margin-top: 1px;
+	margin-down: 1px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border: 0px solid;
+	border-collapse: collapse;
+}
+
+table.week td {
+	border: 0px solid;
+	border-color: #FFFFFF;
+	border-collapse: colapse;
+	padding: 0px 1px 0px 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	margin-down: 0px;
+}
+
+table.month td {
+	border: 0px none;
+	border-color: #FFFFFF;
+	border-collapse: separate;
+	padding: 0px 1px 0px 0px;
+	margin: 0px;
+}
+
+table.month td.inactive-day weekend {
+	background-color: #FFFFFF
+}
+
+table.day td.header {
+	border: 0px none;
+	border-color: #FFFFFF;
+	border-collapse: colapse;
+	padding: 0px;
+	margin: 0px;
+}
+
+table.calendar_header {
+	border: 0px none;
+	border-color: #FFFFFF;
+	border-collapse: colapse;
+	padding: 0px;
+	margin: 0px;
+	font-weight: bold;
+	width: 100%;
+}
+
+table.calendar_header td {
+	width: 16.66667%;
+	border: 0px none;
+	color: #505050;
+}
+
+/* Profile settings */
+span.profile-not-visible {
+	color: grey;
+	font-style: italic;
+}
+span.profile-visible {
+	color: black;
 }

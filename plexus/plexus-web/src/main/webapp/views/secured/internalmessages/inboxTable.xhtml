@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<div id="messagebox">
+	<plexus:dataTable id="inboxTable"
+		value="views$secured$internalmessages$messagecenter.inboxData" var="inboxMessage"
+		 label="#{msg.openuss4us_messagecenter_inbox_header}" rows="10">
+		<t:column>
+			<plexus:commandSortHeader columnName="readByCurrentUser"> #{msg['openuss4us_messagecenter_inbox_readstatus']}</plexus:commandSortHeader>
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<img src="#{theme.imagesPath}/icons/viewstate#{inboxMessage.readByCurrentUser ? 0 : 1}.png"/>
+			</h:commandLink>
+		</t:column>
+		<t:column styleClass="userphoto">
+			<plexus:commandSortHeader columnName="senderDisplayName"> #{msg['discussion_thread_column_author']}</plexus:commandSortHeader>
+			<div class="userimage"><h:commandLink value=""
+				action="#{views$secured$internalmessages$messagecenter.linkToSender}">
+				<h:outputText value="#{inboxMessage.senderDisplayName}"
+					styleClass="messagecenter_header" />
+				<h:graphicImage styleClass="userphoto"
+					value="/files?fileid=#{inboxMessage.senderImageId}"
+					title="#{inboxMessage.senderDisplayName}"
+					rendered="#{not empty inboxMessage.senderImageId}" />
+				<h:graphicImage styleClass="userphoto"
+					value="/images/icons/no_pic.gif" alt="#{msg.user_profile_no_image}"
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty inboxMessage.senderImageId}" />
+			</h:commandLink></div>
+		</t:column>
+		<t:column styleClass="col_max_left">
+			<plexus:commandSortHeader columnName="subject"> #{msg['discussion_thread_column_message']} </plexus:commandSortHeader>  
+		
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readReceivedMessage}">
+			<h:outputText value="#{inboxMessage.subject}"
+				styleClass="messagecenter_header" /><br />
+			<h:outputText value="#{fn:substring(inboxMessage.content, 0, 100)}..."
+				syleClass="content_font_normal"
+				rendered="#{fn:length(inboxMessage.content) gt 100}" />
+			<h:outputText value="#{inboxMessage.content}"
+				syleClass="content_font_normal"
+				rendered="#{fn:length(inboxMessage.content) le 100}" />
+			</h:commandLink>
+			
+		</t:column>
+		<t:column styleClass="col_post_date">
+			<plexus:commandSortHeader columnName="messageDate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
+			<h:outputText value="#{inboxMessage.messageDate}"
+				styleClass="date">
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+			</h:outputText>
+		</t:column>
+		<t:column styleClass="col_commands">
+			<f:facet name="header">  
+				#{msg.commands_header}
+			</f:facet>
+			
+			
+			<h:commandLink
+				action="#{views$secured$internalmessages$messagecenter.answerMessage}"
+				title="#{msg.user_answer_internalmessage}"
+				class="icon_replymessage" />
+			<h:commandLink
+				action="#{views$secured$internalmessages$messagecenter.deleteRecieved}"
+				title="#{msg.openuss4us_messagecenter_deletemessageicon}"
+				class="icon_deletemessage" />
+
+		</t:column>
+	</plexus:dataTable>
+	</div>
+</ui:composition>

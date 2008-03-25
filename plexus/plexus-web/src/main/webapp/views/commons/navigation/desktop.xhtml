@@ -5,22 +5,34 @@
 	xmlns:o="http://www.openuss.org/jsfcontrols"
 	xmlns:s="http://www.openuss.org/jsf-security"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:plexus="http://www.openuss.org/plexus/jsf">
-	<div id="navigation_box">
-	    <ui:include src="/views/commons/navigation/default.xhtml" />
-		<s:authorize ifAllGranted="ROLE_USER">
-			<h:form id="navigationDesktop">
-				<t:panelNavigation2 id="desktop" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator" >
-					<t:commandNavigation2 value="#{msg['desktop_navigation_header']}" open="true">
-						<t:commandNavigation2  value="#{msg.mainmenu_command_home}" action="home" activeOnViewIds="/views/welcome.xhtml"/>
-						<s:authorize ifAllGranted="ROLE_USER">
-							<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}" action="user_profile" activeOnViewIds="/views/secured/user/profileData.xhtml">
-							</t:commandNavigation2>
-						</s:authorize>
-					</t:commandNavigation2>
-				</t:panelNavigation2>	
-			</h:form>
-		</s:authorize>
-	</div>
+	<div id="navigation_box"><ui:include
+		src="/views/commons/navigation/default.xhtml" /> <s:authorize
+		ifAllGranted="ROLE_USER">
+		<h:form id="navigationDesktop">
+			<t:panelNavigation2 id="desktop" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['desktop_navigation_header']}"
+					open="true">
+					<t:commandNavigation2 value="#{msg.mainmenu_command_home}"
+						action="home" activeOnViewIds="/views/welcome.xhtml" />
+					<t:commandNavigation2 action="openuss4us_buddylist"
+						activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml,/views/secured/buddylist/usersearch.xhtml"
+						value="#{msg['openuss4us_command_buddylist']}"/>
+					<t:commandNavigation2 action="openuss4us_messagecenter"
+						activeOnViewIds="/views/secured/internalMessages/messagecenter.xhtml,/views/secured/internalMessages/newinternalmessage.xhtml,/views/secured/internalMessages/readmessage.xhtml"
+						value="#{msg['openuss4us_command_messagecenter']}"/>
+					<s:authorize ifAllGranted="ROLE_USER">
+						<t:commandNavigation2
+							value="#{msg['desktop_command_userprofile']}"
+							action="user_profile"
+							activeOnViewIds="/views/secured/user/profileData.xhtml">
+						</t:commandNavigation2>
+					</s:authorize>
+				</t:commandNavigation2>
+			</t:panelNavigation2>
+		</h:form>
+	</s:authorize></div>
 </ui:composition>

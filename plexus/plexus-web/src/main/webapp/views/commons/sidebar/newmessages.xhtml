@@ -1,0 +1,35 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+	<h:form>
+	<s:authorize ifAllGranted="ROLE_USER">
+	<c:if test="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages gt 0}">
+	  	<o:block styleClass="option_box" label="Nachrichten">
+	  		<p class="content_font_normal"> 
+		  		<ul class="int">
+		  			<li>
+					  	<o:link value="/views/secured/internalmessages/messagecenter.faces">
+					  		<h:outputFormat rendered="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages gt 1}" value="#{msg.openuss4us_messagecenter_numberofunreadmessages}" styleClass="content_font_normal" >
+					  			<f:param value="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages}" />
+					  		</h:outputFormat>
+					  		<h:outputFormat rendered="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages eq 1}" value="#{msg.openuss4us_messagecenter_numberofunreadmessage}" styleClass="content_font_normal" >
+					  			<f:param value="#{views$secured$internalmessages$messagecenter.numberOfUnreadMessages}" />
+					  		</h:outputFormat>
+				  		</o:link>
+			  		</li>
+			  	</ul>
+			 </p>
+	  	</o:block></c:if></s:authorize>
+	</h:form>
+	
+</f:subview>

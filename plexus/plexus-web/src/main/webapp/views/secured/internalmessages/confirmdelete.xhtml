@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>
+			<ui:insert name="title"/>
+		</title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>
+	
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="title">
+			<h:outputText value="#{msg['openuss4us_navigation_header']}" />
+  		</ui:define>
+  		<ui:define name="navigation">  			
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+  		</ui:define>
+  		<ui:define name="sidebar">  			
+			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/default.xhtml" />
+  		</ui:define>
+  		<ui:define name="content">
+		<h:form id="read_internal_message" enctype="multipart/form-data">
+			
+			<o:block
+				label="#{msg.warning_attention}"
+				styleClass="warning_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{msg.openuss4us_messagecenter_deletemessage}" styleClass="warning" /> <br />
+				</p>
+				
+			</o:block>
+			
+			<o:block label="#{internalMessageInfo.subject}" styleClass="content_box">
+			<h:panelGrid columns="2">
+				<h:panelGroup>
+				<h:outputText
+					value="#{msg.openuss4us_messagecenter_sender}" styleClass="header_font_normal" /><br />
+				<h:outputText value="#{internalMessageInfo.senderDisplayName}"
+					styleClass="content_font_normal" /><br />
+					</h:panelGroup>
+					<h:panelGroup>
+				<h:outputText value="#{msg.openuss4us_messagecenter_recipient}" styleClass="header_font_normal" /><br/>
+
+
+				<t:dataList 
+					id="recipients"  
+					var="rec"
+					label="#{msg.openuss4us_messagecenter_recipient}"
+					value="#{internalMessageInfo.internalMessageRecipientsInfos}"
+					rendered="#{not empty internalMessageInfo.internalMessageRecipientsInfos}"
+					layout="simple" rowCountVar="rowCount" rowIndexVar="index">
+					<h:outputText value="#{rec.recipientDisplayName}" styleClass="content_font_normal" />
+				</t:dataList></h:panelGroup>
+				 <f:facet name="footer">
+						<h:panelGroup styleClass="content_font_normal">
+							<h:outputText value="#{msg.openuss4us_messagecenter_sentdate}: "/>
+							<h:outputText value="#{internalMessageInfo.messageDate}">
+								<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+							</h:outputText>
+						</h:panelGroup>
+					</f:facet>
+				</h:panelGrid>
+			</o:block>
+			<o:block styleClass="empty_box">
+				<p class="content_font_normal"><h:outputText
+					value="#{internalMessageInfo.content}"
+					escape="false" /></p>
+			</o:block>
+			
+			<o:block>
+				<h:commandButton id="reallydelete" action="#{views$secured$internalmessages$readmessage.delete}"
+					value="#{msg.openuss4us_messagecenter_command_message_delete}" styleClass="button_warning" 
+					rendered="true"/>	
+				<h:commandButton action="openuss4us_messagecenter"
+					value="#{msg.back}" styleClass="button" />
+			</o:block>
+		</h:form>
+	</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

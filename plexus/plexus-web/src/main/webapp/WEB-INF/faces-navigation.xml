@@ -177,7 +177,137 @@
 		</navigation-case>
 		
 		
+	
+	  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	O p e n U S S 4 U S - R u l e s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+		<navigation-case>
+			<from-outcome>openuss4us_buddylist</from-outcome>
+			<to-view-id>/views/secured/buddylist/buddylist.xhtml</to-view-id>
+		</navigation-case>		
 		
+		<navigation-case>
+			<from-outcome>buddylist_edit_Tags</from-outcome>
+			<to-view-id>/views/secured/buddylist/edittags.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_addbuddy</from-outcome>
+			<to-view-id>/views/secured/buddylist/addbuddy.xhtml</to-view-id>
+		</navigation-case>	
+
+		<navigation-case>
+			<from-outcome>openuss4us_delete_buddy</from-outcome>
+			<to-view-id>/views/secured/buddylist/deletebuddy.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_buddylist_requests</from-outcome>
+			<to-view-id>/views/secured/buddylist/buddyrequest.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_messagecenter</from-outcome>
+			<to-view-id>/views/secured/internalmessages/messagecenter.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_newinternalmessage</from-outcome>
+			<to-view-id>/views/secured/internalmessages/newinternalmessage.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_read_message</from-outcome>
+			<to-view-id>/views/secured/internalmessages/readmessage.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_delete_message</from-outcome>
+			<to-view-id>/views/secured/internalmessages/confirmdelete.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar</from-outcome>
+			<to-view-id>/views/secured/calendar/usercalendar.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_usercalendar_list</from-outcome>
+			<to-view-id>/views/secured/calendar/calendar.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar_calendar</from-outcome>
+			<to-view-id>/views/secured/calendar/calendar.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>view_appointment_details</from-outcome>
+			<to-view-id>/views/secured/calendar/viewappointmentdetails.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>delete_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/deleteappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>update_single_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/updatesingleappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>update_serial_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/updateserialappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_calendar_edit_subscriptions</from-outcome>
+			<to-view-id>/views/secured/calendar/subscribedcalendars.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>openuss4us_groups</from-outcome>
+			<to-view-id>/views/secured/groups/groups.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_create</from-outcome>
+			<to-view-id>/views/secured/groups/groupcreate.xhtml</to-view-id>
+		</navigation-case>
+				
+		<navigation-case>
+			<from-outcome>openuss4us_groups_join</from-outcome>
+			<to-view-id>/views/secured/groups/groupjoin.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>openuss4us_groups_leave</from-outcome>
+			<to-view-id>/views/secured/groups/groupleave.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>calendar_create_single_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createsingleappointment.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>calendar_create_serial_appointment</from-outcome>
+			<to-view-id>/views/secured/calendar/createserialappointment.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>openuss4us_usercalendar_upcominglist</from-outcome>
+			<to-view-id>/views/secured/calendar/calendarlist.xhtml</to-view-id>
+		</navigation-case>		
+		
+		<navigation-case>
+			<from-outcome>openuss4us_user_search</from-outcome>
+			<to-view-id>/views/secured/buddylist/usersearch.xhtml</to-view-id>
+		</navigation-case>
+		
+			
 	</navigation-rule>
 	
 	
@@ -1122,6 +1252,8 @@
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	
 		
 </faces-config>
 

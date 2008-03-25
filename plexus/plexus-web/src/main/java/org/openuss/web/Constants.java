@@ -310,5 +310,38 @@ public class Constants {
 	public static final String WIKI_IMAGE_CANNOT_BE_REMOVED = "wiki_image_cannot_be_removed";
 	public static final String WIKI_NEW_SITE_BACKUP = "wiki_create_backup";
 
+	// openuss4us calendar
+	public static final String CALENDAR_HOME = "openuss4us_calendar";
+	public static final String CALENDAR_CREATE_SINGLE_APPOINTMENT = "calendar_create_single_appointment";
+	public static final String CALENDAR_CREATE_SERIAL_APPOINTMENT = "calendar_create_serial_appointment";
+	public static final String CALENDAR_DELETE_APPOINTMENT = "delete_appointment";
+	public static final String CALENDAR_EDIT_SUBSCRIPTIONS = "openuss4us_calendar_edit_subscriptions";
+	public static final String CALENDAR_UPDATE_SINGLE = "update_single_appointment";
+	public static final String CALENDAR_UPDATE_SERIAL = "update_serial_appointment";
+	public static final String APPOINTMENT_INFO = "appointmentInfo";
+	public static final String APPOINTMENTTYPE_INFO = "appointmentTypeInfo";
+	public static final String CALENDAR_INFO = "calendarInfo";
+
+	// openuss4us navigation outcomes
+	public static final String OPENUSS4US_MESSAGECENTER = "openuss4us_messagecenter";
+	public static final String OPENUSS4US_MESSAGECENTER_CREATE = "openuss4us_newinternalmessage";
+	public static final String OPENUSS4US_MESSAGECENTER_REQUESTDELETE = "openuss4us_delete_message";
+	public static final String OPENUSS4US_MESSAGECENTER_READMSG = "openuss4us_read_message";
+	public static final String OPENUSS4US_BUDDYLIST = "openuss4us_buddylist";
+	public static final String OPENUSS4US_CALENDAR = "openuss4us_calendar";
+	public static final String OPENUSS4US_CALENDAR_TRANSLATE = "admin_calendar_translate";
+	public static final String OPENUSS4US_APPOINTMENT_DETAILS = "view_appointment_details";
+	public static final String OPENUSS4US_DELETEBUDDY = "openuss4us_delete_buddy";
+	public static final String OPENUSS4US_EDITTAGS = "buddylist_edit_Tags";
+	public static final String OPENUSS4US_GROUPS = "openuss4us_groups";
+	public static final String OPENUSS4US_GROUPS_CREATE = "openuss4us_groups_create";
+	public static final String OPENUSS4US_GROUPS_JOIN = "openuss4us_groups_join";
+	public static final String OPENUSS4US_USER_SEARCH = "openuss4us_user_search";
+	public static final String OPENUSS4US_ADD_BUDDY = "openuss4us_addbuddy";
+
+	// openuss4us constants
+	public static final String OPENUSS4US_CHOSEN_BUDDYINFO = "buddy";
+	public static final String OPENUSS4US_INTERNALMESSAGE_RECIPIENT = "internalMessageRecipientsInfo";
+	public static final String OPENUSS4US_INTERNALMESSAGE_MESSAGE = "internalMessageInfo";
 	
 }

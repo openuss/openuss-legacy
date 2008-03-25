@@ -8,7 +8,8 @@
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:c="http://java.sun.com/jstl/core"
-      xmlns:news="http://www.openuss.org/news/jsf">
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
       
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -22,23 +23,29 @@
 	<body>
 	
 	<!-- text above will be ignored -->
-	<ui:composition template="/views/layout/dialog.xhtml">
+	<ui:composition template="/views/layout/layout.xhtml">
   		<ui:define name="title">
-   			<h:outputFormat value="#{msg.user_profile_heading}">
-  				<f:param value="#{showuser.firstName}"/>
-  				<f:param value="#{showuser.lastName}"/>
-  			</h:outputFormat>
+			<h:outputText value="#{msg['openuss4us_command_messagecenter']}" />
+  		</ui:define>
+  		<ui:define name="navigation">  			
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+  		</ui:define>
+  		<ui:define name="sidebar">  			
+			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/default.xhtml" />
   		</ui:define>
   		<ui:define name="content">
-			<ui:include src="/views/commons/user/profile.xhtml"/>
-			<h:form>
-				<o:block>
-					<h:commandButton action="#{views$secured$internalmessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalmessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
-					<h:commandButton id="doit" action="openuss4us_addbuddy" value="#{msg.user_profile_addbuddy}" styleClass="button" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
-					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button"/>
+			<h:form id="openuss4us_messagecenter" enctype="multipart/form-data">
+			<ui:include src="inboxTable.xhtml" />
+			<ui:include src="outboxTable.xhtml" />
+   			 	<o:block>
+				<h:commandButton id="back" action="view:backward" value="#{msg.back}"
+				styleClass="button" />
+				<h:commandButton action="openuss4us_user_search"
+					value="#{msg.openuss4us_user_search_label}"
+					styleClass="button" />
 				</o:block>
-			</h:form>
-			
+	 		</h:form> 
   		</ui:define>
 	</ui:composition>
 	<!-- text above will be ignored -->

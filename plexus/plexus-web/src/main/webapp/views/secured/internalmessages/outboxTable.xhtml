@@ -1,0 +1,64 @@
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<div id="messagebox">
+	<plexus:dataTable id="outboxTable"
+		value="views$secured$internalmessages$messagecenter.outboxData" var="outboxMessage"
+		 label="#{msg.openuss4us_messagecenter_outbox_header}" rows="10">
+		<t:column styleClass="userphoto">
+		<f:facet name="header">
+				#{msg.openuss4us_messagecenter_recipient}
+			</f:facet>
+			<t:dataList
+				rowCountVar="rowCount"
+				rowIndexVar="index"
+				layout="simple"
+				value="#{outboxMessage.internalMessageRecipientsInfos}" var="rec"
+				styleClass="messagecenter_header"
+				>
+				<h:outputText value="#{rec.recipientDisplayName}"/><h:outputText value=" - " rendered="#{index + 1 lt rowCount}"/>
+			</t:dataList>
+		</t:column>
+		<t:column styleClass="col_max_left">
+		<f:facet name="header">
+				#{msg['discussion_thread_column_message']} 
+			</f:facet>
+			<h:commandLink value="" action= "#{views$secured$internalmessages$messagecenter.readSentMessage}">
+			<h:outputText value="#{outboxMessage.subject}"
+				styleClass="messagecenter_header" /><br />
+			<h:outputText value="#{fn:substring(outboxMessage.content, 0, 100)}..."
+				syleClass="content_font_normal"
+				rendered="#{fn:length(outboxMessage.content) gt 100}" />
+			<h:outputText value="#{outboxMessage.content}"
+				syleClass="content_font_normal"
+				rendered="#{fn:length(outboxMessage.content) le 100}" />
+			</h:commandLink>
+		</t:column>
+		<t:column styleClass="col_post_date">
+			<plexus:commandSortHeader columnName="outboxsentdate"> #{msg['openuss4us_messagecenter_sentdate']} </plexus:commandSortHeader>
+			<h:outputText value="#{outboxMessage.messageDate}"
+				styleClass="date">
+				<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+			</h:outputText>
+		</t:column>
+		<t:column styleClass="col_commands">
+		<f:facet name="header">
+				 #{msg.commands_header}
+			</f:facet>
+			
+			<h:commandLink
+				action="#{views$secured$internalmessages$messagecenter.deleteSent}"
+				title="#{msg.openuss4us_messagecenter_deletemessageicon}"
+				class="icon_deletemessage" />
+									
+		</t:column>
+	</plexus:dataTable>
+	</div>
+</ui:composition>
