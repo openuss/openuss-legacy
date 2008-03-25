@@ -555,7 +555,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 * @see org.openuss.wiki.WikiService
 	 * 
 	 */
-	private class ImageImportAllocation {
+	private static class ImageImportAllocation {
 		
 		private final Long importId;
 		
