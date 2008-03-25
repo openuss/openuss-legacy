@@ -18,7 +18,7 @@ import org.openuss.foundation.DefaultDomainObject;
  */
 public class ExamDaoTest extends ExamDaoTestBase {
 	
-	public void testExamDaoCreate() {
+	public void testExamDao() {
 		DefaultDomainObject domain = new DefaultDomainObject(TestUtility.unique());
 		Exam exam = Exam.Factory.newInstance();
 		exam.setName("test_exam");

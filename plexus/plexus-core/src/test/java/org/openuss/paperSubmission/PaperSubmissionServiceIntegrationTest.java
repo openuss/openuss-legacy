@@ -147,7 +147,6 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		assertEquals(extractedSubmissionInfo.getId(), oldId);
 		assertNotSame(extractedSubmissionInfo.getDeliverDate(), oldDate);
 		
-		
 		paperSubmissionInfo = new PaperSubmissionInfo();
 		
 		try {
@@ -158,9 +157,6 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		
 	}
 		
-	
-	
-
 	public void testRemoveExam(){
 		ExamInfo examInfo = createExamInfo("name");
 		getPaperSubmissionService().createExam(examInfo);
