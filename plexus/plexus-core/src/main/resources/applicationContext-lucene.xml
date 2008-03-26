@@ -34,6 +34,13 @@
 					</key>
 					<value>courseIndexerCommand</value>
 				</entry>
+				<!-- Additional IndexerCommand for Discussion Indexing -->
+				<entry>
+					<key>
+						<value>org.openuss.discussion.Post</value>
+					</key>
+					<value>discussionIndexerCommand</value>
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -91,6 +98,10 @@
 		<property name="courseIndexer" ref="courseIndexer"/>
 		<property name="fsDirectory" ref="lectureDirectory"/>
 		<property name="indexFactory" ref="indexFactory" />
+		<!-- Additional properties for Discussion Search -->
+		<property name="fsDiscussionDirectory" ref="discussionDirectory"/>
+		<property name="postDao" ref="postDao"/>
+		<property name="discussionIndexer" ref="discussionIndexer"/>		
 	</bean>
 	
 	<bean id="recreateLectureIndex" class="org.springframework.aop.framework.ProxyFactoryBean">
@@ -145,6 +156,28 @@
 		<constructor-arg ref="searcherFactory"/>
 		<constructor-arg ref="analyzer" />
 	</bean>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Discussion Indexing and Searching Configuration
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean name="discussionIndexer" class="org.openuss.discussion.DiscussionIndexer">
+		<property name="analyzer" ref="discussionAnalyzer" />
+		<property name="postDao" ref="postDao" />
+		<property name="indexFactory" ref="discussionIndexFactory" />
+	</bean>
+	
+	<bean id="discussionIndexerCommand" class="org.openuss.search.DomainIndexerCommand">
+		<property name="domainIndexer" ref="discussionIndexer"/>
+	</bean>	
+
+	<!-- discussion search -->
+	<bean id="discussionSearcher" class="org.openuss.discussion.DiscussionSearchQuery" scope="prototype">
+		<constructor-arg ref="discussionSearcherFactory"/>
+		<constructor-arg ref="discussionAnalyzer" />
+	</bean>
+
+
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Lucene Support Configuration
@@ -172,6 +205,35 @@
 		class="org.openuss.search.lucene.WorkAroundFSDirectoryFactoryBean">
 		<property name="create" value="true" />
 		<property name="location" value="file:${java.io.tmpdir}/lucene/lecture" />
+	</bean>	
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Lucene Support Configuration for Discussion Indexing and Search
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="discussionDirectory"
+		class="org.openuss.search.lucene.WorkAroundFSDirectoryFactoryBean">
+		<property name="create" value="true" />
+		<property name="location" value="file:${java.io.tmpdir}/lucene/discussion" />
 	</bean>
+
+	<bean id="discussionAnalyzer"
+		class="org.apache.lucene.analysis.standard.StandardAnalyzer" />
+
+	<bean id="discussionIndexFactory"
+		class="org.springmodules.lucene.index.factory.SimpleIndexFactory">
+		<property name="create" value="true" />
+		<property name="directory" ref="discussionDirectory" />
+		<property name="analyzer" ref="discussionAnalyzer" />
+		<property name="resolveLock" value="true"/>
+		<property name="writeLockTimeout" value="2000"/>
+	</bean>
+	
+	<bean id="discussionSearcherFactory"
+		class="org.springmodules.lucene.search.factory.SimpleSearcherFactory">
+		<property name="indexFactory" ref="discussionIndexFactory" />
+		<property name="directory" ref="discussionDirectory" />
+	</bean>
+
 
 </beans>

@@ -79,6 +79,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
 		return Constants.DISCUSSION_REMOVETHREAD;
 	}
+	
+	public String search(){
+		return Constants.DISCUSSION_SEARCH;
+	}
 
 	public String changeWatchState() {
 		ForumInfo forum = discussionService.getForum(courseInfo);

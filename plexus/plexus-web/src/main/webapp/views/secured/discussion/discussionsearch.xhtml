@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	
+	<!-- text above will be ignored -->
+
+	<ui:composition template="/views/layout/layout.xhtml">
+
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+		<ui:define name="title">
+			<h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+		</ui:define>
+  		<ui:define name="content">
+  		
+			<h:form id="discussionThreadTableView" enctype="multipart/form-data">
+	  			<o:block label="#{msg.discussion_search}" styleClass="form_box">
+
+					<h:panelGrid border="0" columns="2" footerClass="footer_left">
+						<h:outputText value="#{msg.extended_search_search_term}" styleClass="field_label" style="vertical-align:top;" />
+					 	<h:inputText id="discussion_search_search_term" styleClass="field_inline" value="#{discussion_search_results.textToSearch}" />
+						
+						<h:outputText value=" "/>
+						<h:panelGrid border="0" columns="1">
+					 		<h:panelGroup>
+					 			<h:selectBooleanCheckbox id="discussion_search_title_only" value="#{discussion_search_results.titleOnly}"/>
+								<h:outputText value="#{msg.discussion_search_title_only}"/>
+								<t:htmlTag value="br" />
+					 			<h:selectBooleanCheckbox id="discussion_search_fuzzy_search" value="#{discussion_search_results.isFuzzy}"/>
+								<h:outputText value="#{msg.discussion_search_search_fuzzy}"/>								
+								<t:htmlTag value="br" />
+					 		</h:panelGroup>
+					 	</h:panelGrid>
+						
+						<h:outputText value="#{msg.discussion_search_and_or}" styleClass="field_label"/>
+						<h:panelGroup>
+							<t:htmlTag value="hr" style="width:500px; margin-left:10px; text-align:left;" />
+						</h:panelGroup>
+
+						<h:outputText value="#{msg.discussion_search_submitter}" styleClass="field_label"/>	
+					 	<h:inputText id="discussion_search_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
+										
+						<h:outputText value=" "/>
+
+					</h:panelGrid>
+
+				</o:block>
+				
+				<o:block>
+					<h:commandButton					            
+						action="#{views$secured$discussion$discussionsearch.search}"
+						value="#{msg['discussion_search_button']}"
+						title="#{msg['discussion_search_button']}"
+						styleClass="button" />				
+					<h:commandButton 
+						action="#{views$secured$discussion$discussionsearch.cancel}"
+						value="#{msg.discussion_search_button_cancel}"						 
+						immediate="true" 
+						styleClass="button"/>
+					<h:commandButton 
+						action="#{views$secured$discussion$discussionsearch.clear}"
+						value="#{msg.discussion_search_button_clear}"						 
+						styleClass="button"/>
+				</o:block>
+				
+				<ui:include src="discussionsearchresults.xhtml" />	
+				
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+
+	</body>
+</html>

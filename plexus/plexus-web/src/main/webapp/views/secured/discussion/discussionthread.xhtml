@@ -79,9 +79,15 @@
 						rendered="#{not discussion_forum.readOnly and not discussion_topic.readOnly}"
 						styleClass="button"/>	
 				</s:acl>
+				<h:commandButton
+					id="discussionSearchButton"
+					action="#{views$secured$discussion$discussions.search}"
+					value="#{msg['discussion_search']}"
+					title="#{msg['discussion_search']}"
+					styleClass="button"/>					
 				<h:commandButton 
-				    id="newDiscussionEntry"
-					action="discussion_main" 
+				    id="discussionBackButton"
+					action="view:backward" 
 					value="#{msg.back}" 
 					title="#{msg.back}"
 					styleClass="button"
