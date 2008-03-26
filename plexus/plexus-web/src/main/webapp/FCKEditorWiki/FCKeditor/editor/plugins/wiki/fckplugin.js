@@ -11,8 +11,6 @@
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
-	basePath = FCKConfig.BasePath.substring(0, FCKConfig.BasePath.indexOf("/", 1));
-
 	// Register the related commands.
 	FCKCommands.RegisterCommand('OpenUSSWikiLink', 
 	    new FCKDialogCommand(FCKLang['OpenUSSWikiLinkTitle'], 
