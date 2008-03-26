@@ -40,7 +40,7 @@ public class WikiVersionPage extends AbstractWikiPage{
 		LOGGER.debug("editing WikiSiteVersion");
 		WikiSiteInfo entry = data.getRowData();
 		siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
-		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
 		return Constants.WIKI_EDIT_PAGE;
 	}

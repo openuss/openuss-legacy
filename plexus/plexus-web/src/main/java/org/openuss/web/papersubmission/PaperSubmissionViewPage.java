@@ -67,6 +67,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		super.prerender();
 		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
 			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		} 
 		paperSelection.processSwitch();
@@ -83,6 +84,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 		if(!paperInfos.isEmpty()){
 			paperSubmissionInfo = paperInfos.get(paperInfos.size()-1);
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 			return paperSubmissionInfo;
 		}
@@ -291,6 +293,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		PaperSubmissionInfo currentSubmission = currentSubmission();
 		LOGGER.debug("Returning to method selectSubmission");
 		LOGGER.debug(currentSubmission.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
 		
 		if(currentSubmission.getId()==null){

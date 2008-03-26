@@ -48,6 +48,7 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage {
 		departmentApplication = new DepartmentInfo();
 		//set department type to official
 		departmentApplication.setDepartmentType(DepartmentType.OFFICIAL);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.DEPARTMENT_APPLICATION, departmentApplication);
 		return Constants.DEPARTMENT_REGISTRATION_STEP1_PAGE;
 	}

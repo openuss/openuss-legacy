@@ -128,7 +128,7 @@ public class UserProfilePage extends BasePage{
 			documentService.removeFolderEntry(fileId);
 		}
 		securityService.saveUser(user);
-		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 

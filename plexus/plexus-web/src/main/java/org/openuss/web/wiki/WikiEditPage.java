@@ -55,6 +55,7 @@ public class WikiEditPage extends AbstractWikiPage {
 		siteVersionInfo.setStable(false);
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 
 		addMessage(i18n(Constants.WIKI_SITE_SAVE_SUCCEEDED));

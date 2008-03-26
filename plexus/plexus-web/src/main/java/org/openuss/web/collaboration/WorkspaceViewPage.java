@@ -133,7 +133,6 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 			final String fileName = this.workspaceInfo.getName();
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
-			
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FILEENTRIES, files);
 			HttpServletResponse response = getResponse();
 			response.sendRedirect(getExternalContext().getRequestContextPath() + Constants.ZIP_DOWNLOAD_URL);

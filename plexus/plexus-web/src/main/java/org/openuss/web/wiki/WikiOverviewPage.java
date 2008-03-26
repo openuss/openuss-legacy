@@ -54,6 +54,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Remove Site Page.
 	 */
 	public String removeSite() {
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, getData().getRowData());
 		
 		return Constants.WIKI_REMOVE_SITE_PAGE;

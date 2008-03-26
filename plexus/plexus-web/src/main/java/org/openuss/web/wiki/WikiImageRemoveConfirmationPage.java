@@ -44,6 +44,7 @@ public class WikiImageRemoveConfirmationPage extends AbstractWikiPage {
 			FolderEntryInfo entry = (FolderEntryInfo) getSessionBean(Constants.WIKI_IMAGE);
 			getWikiService().deleteImage(entry.getId());
 			
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.WIKI_IMAGE, null);
 			addMessage(i18n(Constants.WIKI_IMAGE_REMOVE_SUCCEEDED));
 			return Constants.WIKI_CHOOSE_IMAGE_PAGE;

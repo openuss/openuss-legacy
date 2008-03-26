@@ -45,6 +45,7 @@ public class WorkspaceFileEditPage extends AbstractCollaborationPage {
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
 				selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
+				// FIXME Do not use session bean for navigation
 				setSessionBean(Constants.COLLABORATION_SELECTED_FILEENTRY, selectedFile);
 			}
 			if (selectedFile.getCreated() == null) {

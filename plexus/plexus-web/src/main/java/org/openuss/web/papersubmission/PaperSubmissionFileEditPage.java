@@ -49,6 +49,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
 				selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
+				// FIXME Do not use session bean for navigation
 				setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
 			}
 			if (selectedFile.getCreated() == null) {
