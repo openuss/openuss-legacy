@@ -36,25 +36,25 @@ import org.springframework.beans.support.PropertyComparator;
 /**
  * Controller for the workspaceview.xhtml view.
  * 
- * @author  Projektseminar WS 07/08, Team Collaboration
- *
+ * @author Projektseminar WS 07/08, Team Collaboration
+ * 
  */
 @Bean(name = "views$secured$collaboration$workspaceview", scope = Scope.REQUEST)
 @View
 public class WorkspaceViewPage extends AbstractCollaborationPage {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(WorkspaceViewPage.class);
-		
+
 	private DocumentDataProvider data = new DocumentDataProvider();
 
 	@Property(value = "#{" + Constants.COLLABORATION_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
-	
+
 	/*
 	 * Target Folder to which selected Entries will be moved
 	 */
 	private FolderInfo targetFolder;
-	
+
 	/*
 	 * Target folder list
 	 */
@@ -63,28 +63,31 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	private transient List<FolderEntryInfo> entries;
 
 	private boolean moveMode = false;
-	
-	/** Prepares the information needed for rendering. 
-	 * @throws Exception 
-	 * @throws Exception */
+
+	/**
+	 * Prepares the information needed for rendering.
+	 * 
+	 * @throws Exception
+	 * @throws Exception
+	 */
 	@Prerender
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:55
+	public void prerender() throws Exception {
 		super.prerender();
-		
+
 		if (currentFolder == null && workspaceInfo == null) {
 			redirect(Constants.OUTCOME_BACKWARD);
 		} else {
 			currentFolder = retrieveActualFolder();
 		}
 		setSessionAttribute(Constants.COLLABORATION_CURRENT_FOLDER, currentFolder);
-		
+
 		entrySelection.setEntries(loadFolderEntries());
 		entrySelection.processSwitch();
 
 		addPageCrumbs();
 	}
 
-	/** 
+	/**
 	 * Adds an additional breadcrumb to the course-crumbs.
 	 */
 	private void addPageCrumbs() {
@@ -96,39 +99,39 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		breadcrumbs.addCrumb(crumb);
-		
-		for(FolderInfo folder : getCurrentPath()) {
+
+		for (FolderInfo folder : getCurrentPath()) {
 			if (folder.isRoot()) {
-				crumb = new BreadCrumb(workspaceInfo.getName()); // NOPMD by Administrator on 13.03.08 13:03
+				crumb = new BreadCrumb(workspaceInfo.getName()); 
 			} else {
-				crumb = new BreadCrumb(folder.getName(), folder.getDescription()); // NOPMD by Administrator on 13.03.08 13:03
+				crumb = new BreadCrumb(folder.getName(), folder.getDescription()); 
 			}
 			crumb.setLink(PageLinks.COLLABORATION_WORKSPACE);
-			crumb.addParameter("workspace",workspaceInfo.getId());
-			crumb.addParameter("folder",folder.getId());
+			crumb.addParameter("workspace", workspaceInfo.getId());
+			crumb.addParameter("folder", folder.getId());
 			breadcrumbs.addCrumb(crumb);
 		}
 	}
-	
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
+
+	@SuppressWarnings("unchecked")
 	protected List<FolderEntryInfo> loadFolderEntries() {
 		if (entries == null) {
 			entries = documentService.getFolderEntries(workspaceInfo, currentFolder);
 		}
 		return entries;
 	}
-	
+
 	/**
 	 * Downloads the selected documents.
 	 * 
 	 * @return success
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		LOGGER.debug("downloading documents");
 		final List<FileInfo> files = documentService.allFileEntries(selectedEntries());
-		
+
 		if (!files.isEmpty()) {
 			this.workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
 			final String fileName = this.workspaceInfo.getName();
@@ -141,7 +144,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
-		
+
 		return Constants.SUCCESS;
 	}
 
@@ -160,23 +163,32 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
-		
+
 		return Constants.SUCCESS;
 	}
-	
+
 	/**
 	 * Moves selected FolderEntries to target
-	 * Uses documentService.moveFolderEntries();.
+	 * 
 	 * @return success
-	 * @throws DocumentApplicationException 
+	 * @throws DocumentApplicationException
 	 */
 	public String moveFolderEntriesToTarget() throws DocumentApplicationException {
-		addMessage(i18n("documents_move_files"));
+		List<FolderEntryInfo> selection = selectedEntries();
+		if (selection.isEmpty()) {
+			addError(i18n("messages_error_no_documents_selected"));
+		} else {
+			documentService.moveFolderEntries(workspaceInfo, targetFolder, selectedEntries() );
+			addMessage(i18n("documents_move_files"));
+			entries = null;
+			moveMode = false;
+		}
 		return Constants.COLLABORATION_MAIN_PAGE;
 	}
 
 	/**
 	 * Creates a new Folder.
+	 * 
 	 * @return COLLABORATION_EDIT_FOLDER_PAGE
 	 */
 	public String newFolder() {
@@ -187,6 +199,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 	/**
 	 * Creates a new File.
+	 * 
 	 * @return COLLABORATION_EDIT_FILEENTRY_PAGE
 	 */
 	public String newFile() {
@@ -198,7 +211,9 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 	/**
 	 * edits a folder entry
-	 * @return COLLABORATION_EDIT_FOLDER_PAGE if a folder, COLLABORATION_EDIT_FILEENTRY_PAGE if file
+	 * 
+	 * @return COLLABORATION_EDIT_FOLDER_PAGE if a folder,
+	 *         COLLABORATION_EDIT_FILEENTRY_PAGE if file
 	 */
 	public String editFolderEntry() {
 		LOGGER.debug("editing folder entry");
@@ -213,12 +228,12 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			return Constants.COLLABORATION_EDIT_FILEENTRY_PAGE;
 		}
 	}
-	
-	public String switchToMoveMode(){
+
+	public String switchToMoveMode() {
 		setMoveMode(true);
 		return Constants.SUCCESS;
 	}
-	
+
 	private List<FolderEntryInfo> selectedEntries() {
 		final List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFolderEntries());
 		CollectionUtils.filter(selected, new Predicate() {
@@ -229,10 +244,10 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		LOGGER.debug("selected " + selected.size() + " files");
 		return selected;
 	}
-	
+
 	/**
 	 * Store the selected FolderEntry into session scope and go to Workspace
-	 * remove confirmation page. 
+	 * remove confirmation page.
 	 * 
 	 * @return outcome
 	 */
@@ -241,7 +256,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		FolderEntryInfo entry = data.getRowData();
 		LOGGER.debug("Returning to method selectFileAndConfirmRemove");
 		LOGGER.debug(entry.getId());
-		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, Arrays.asList(new FolderEntryInfo[] {entry}));
+		setSessionBean(Constants.COLLABORATION_SELECTED_FOLDERENTRIES, Arrays.asList(new FolderEntryInfo[] { entry }));
 
 		return Constants.COLLABORATION_REMOVE_FOLDERENTRY_PAGE;
 	}
@@ -249,7 +264,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public DocumentDataProvider getData() {
 		return data;
 	}
-	
+
 	public void setData(DocumentDataProvider data) {
 		this.data = data;
 	}
@@ -257,7 +272,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public FolderEntrySelection getEntrySelection() {
 		return entrySelection;
 	}
-	
+
 	public void setEntrySelection(FolderEntrySelection selectedEntries) {
 		this.entrySelection = selectedEntries;
 	}
@@ -265,7 +280,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public FolderInfo getTargetFolder() {
 		return targetFolder;
 	}
-	
+
 	public void setTargetFolder(FolderInfo targetFolder) {
 		this.targetFolder = targetFolder;
 	}
@@ -275,24 +290,18 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * 
 	 * @return List of all subfolders
 	 */
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	public List<SelectItem> getFolderList() {
-		if(folderList == null){
-			List<FolderInfo> allFolderInfos = super.documentService.getFolderEntries(workspaceInfo, documentService.getFolder(workspaceInfo));
+		if (folderList == null) {
+			// Get folder list from document service.
+			List<FolderInfo> allFolderInfos = documentService.getAllSubfolders(workspaceInfo);
 			folderList = new ArrayList<SelectItem>();
-			for(FolderInfo info: allFolderInfos) {
+			for (FolderInfo info : allFolderInfos) {
 				if (info != null) {
-					final StringBuilder depth = new StringBuilder(); // NOPMD by Administrator on 13.03.08 13:03
-					
-					final List path = super.documentService.getFolderPath(info);
-					for(int i = 0; i < path.size(); i++) {
-						depth.append("> ");
-					}
-					
-					depth.append(info.getName() == null ? "Root" : info.getName());
-					folderList.add(new SelectItem(info, depth.toString())); // NOPMD by Administrator on 13.03.08 13:03
+					List path = documentService.getFolderPath(info);
+					String name = info.isRoot() ? i18n("root_folder") : info.getName();
+					folderList.add(new SelectItem(info, pathDepth(path) + name));
 				} else {
-					SelectItem item = new SelectItem("--"); // NOPMD by Administrator on 13.03.08 13:03
+					SelectItem item = new SelectItem("--");
 					item.setDisabled(true);
 					folderList.add(item);
 				}
@@ -300,7 +309,15 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		}
 		return folderList;
 	}
-	
+
+	private String pathDepth(List path) {
+		final StringBuilder depth = new StringBuilder();
+		for (int i = 0; i < path.size(); i++) {
+			depth.append("/ ");
+		}
+		return depth.toString();
+	}
+
 	public void setFolderList(List<SelectItem> folderList) {
 		this.folderList = folderList;
 	}
@@ -308,7 +325,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	public boolean isMoveMode() {
 		return moveMode;
 	}
-	
+
 	public void setMoveMode(boolean moveMode) {
 		this.moveMode = moveMode;
 	}
@@ -319,7 +336,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	private class DocumentDataProvider extends AbstractPagedTable<FolderEntryInfo> {
 
 		private static final long serialVersionUID = -1886479086904372812L;
-		
+
 		private DataPage<FolderEntryInfo> page;
 
 		@Override
@@ -334,9 +351,11 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 
 		/**
 		 * Default property sort method.
-		 * @param list List of FolderEntryInfo objects.
+		 * 
+		 * @param list
+		 *            List of FolderEntryInfo objects.
 		 */
-		@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void sort(List<FolderEntryInfo> list) {
 			final ComparatorChain chain = new ComparatorChain();
@@ -345,13 +364,13 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			} else {
 				chain.addComparator(new ReverseComparator(folderComparator));
 			}
-			
+
 			if (StringUtils.isNotBlank(getSortColumn())) {
 				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
 			} else {
 				chain.addComparator(new PropertyComparator("name", true, isAscending()));
 			}
-			
+
 			Collections.sort(list, chain);
 		}
 
@@ -360,11 +379,22 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 				if (info1.isFolder() && info2.isFolder() || !info1.isFolder() && !info2.isFolder()) {
 					return 0;
 				} else {
-					return info1.isFolder()?-1:1;
+					return info1.isFolder() ? -1 : 1;
 				}
 			}
-			
-		};	
+
+		};
 	}
-	
+
+	/**
+	 * Cancel Move Mode
+	 * @return SUCCESS
+	 */
+	public String cancelMove() {
+		moveMode = false;
+		return Constants.SUCCESS;
+	}
+
+
+
 }
