@@ -27,7 +27,6 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.Course;
-import org.openuss.lecture.Institute;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -39,30 +38,17 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	
-	private enum ImageType {
-		JPG("jpg"), PNG("png");
-		
-		private final String extension;
-		
-		private ImageType(String extension) {
-			this.extension = extension;
-		}
-
-		public String getExtension() {
-			return extension;
-		}
-	}
-	
-	// FIXME dyck: handle hardcodes!!
-	// TODO dyck: Javadoc
-	
-	private static final String siteText = "default-test-site-text";
-	private static final String siteNote = "default-test-site-note";
 	private static final String WIKI_STARTSITE_NAME = "index";
+	
+	private static final String DEFAULT_TEST_SITE_NAME = "default-test-site-name";
+	private static final String DEFAULT_TEST_SITE_TEXT = "default-test-site-text";
+	private static final String DEFAULT_TEST_SITE_NOTE = "default-test-site-note";
 	
 	private static final String SAMPLE_IMAGE_FILE_NAME_TEMPLATE = "sample-image";
 	private static final String SAMPLE_IMAGE_FILE_NAME_SEPARATOR = ".";
 	
+	private static final int NUMBER_OF_NEW_WIKI_SITES = 10;
+	private static final int NUMBER_OF_NEW_WIKI_SITE_VERSIONS = 5;
 
 	private SecurityService securityService;
 
@@ -91,14 +77,21 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		securityService.setPermissions(nonAssistantUser, defaultDomainObject, LectureAclEntry.PAPER_PARTICIPANT);
 	}
 	
+	/**
+	 * Tests the creation of a default index site when there is currently no
+	 * WikiSiteVersion for WIKI_STARTSITE_NAME.
+	 */
 	public void testCreateDefaultIndexSite() {
-		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
+		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), WIKI_STARTSITE_NAME);
 		assertNotNull(defaultIndexSite);
 	}
 	
+	/**
+	 * Tests the creation, storage and selection of the newest version of
+	 * a WikiSiteContentInfo.
+	 */
 	public void testCreateAndFindNewestWikiSite() {
-		final String siteName = "create-and-find-wiki-site-test";
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
 		wikiService.saveWikiSite(wikiSite);
 		assertNotNull(wikiSite.getId());
 		assertNotNull(wikiSite.getWikiSiteId());
@@ -107,10 +100,13 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertEquals(wikiSite, newestWikiSite);
 	}
 	
+	/**
+	 * Tests the creation, storage and selection of several
+	 * WikiSiteContentInfos respectively WikiSiteInfos.
+	 */
 	public void testCreateAndFindWikiSite() {
-		final String siteName = "create-and-find-wiki-site-test";
-		final String siteName2 = "create-and-find-wiki-site-test-new";		
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		final String newSiteName = DEFAULT_TEST_SITE_NAME + "-new";		
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
 		wikiService.saveWikiSite(wikiSite);
 		assertNotNull(wikiSite.getId());
 		assertNotNull(wikiSite.getWikiSiteId());
@@ -118,49 +114,41 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		final WikiSiteInfo newWikiSite = wikiService.getWikiSite(wikiSite.getWikiSiteId());
 		assertNotNull(newWikiSite);
 		
-		newWikiSite.setName(siteName2);
+		newWikiSite.setName(newSiteName);
 		wikiService.saveWikiSite(newWikiSite);
-		final WikiSiteInfo newWikiSite2 = wikiService.getWikiSite(newWikiSite.getWikiSiteId());
-		assertEquals(newWikiSite2.getName(), siteName2);
+		final WikiSiteInfo foundNewWikiSite = wikiService.getWikiSite(newWikiSite.getWikiSiteId());
+		assertEquals(foundNewWikiSite.getName(), newSiteName);
 		
-		final WikiSiteContentInfo newWikiSite3 = wikiService.getWikiSiteContent(wikiSite.getId());
-		assertNotNull(newWikiSite3.getId());
-		
+		final WikiSiteContentInfo foundNewWikiSiteContent = wikiService.getWikiSiteContent(wikiSite.getId());
+		assertNotNull(foundNewWikiSiteContent.getId());
 	}
 	
-	
+	/**
+	 * Tests the creation, storage, version control and selection of several
+	 * WikiSiteContentInfos respectively WikiSiteInfos.
+	 */
 	@SuppressWarnings("unchecked")
-	public void testCreateAndFindWikiSiteVersion() {
-		final String siteName = "create-and-find-wiki-site-version-test";
-		final int iterations = 10;
-		
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
-		for (int counter = 0; counter < iterations; counter++) {
+	public void testCreateAndFindWikiSiteVersion() {		
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
+		for (int counter = 0; counter < NUMBER_OF_NEW_WIKI_SITES; counter++) {
 			wikiSite.setId(null);
 			wikiService.saveWikiSite(wikiSite);
 		}
 		
 		final List<WikiSiteInfo> wikiSites = wikiService.findWikiSiteVersionsByWikiSite(wikiSite.getWikiSiteId());
-		assertEquals(iterations, wikiSites.size());
+		assertEquals(NUMBER_OF_NEW_WIKI_SITES, wikiSites.size());
 	}
 	
+	/**
+	 * Tests the creation, storage and selection of several WikiSiteInfos.
+	 */
 	@SuppressWarnings("unchecked")
 	public void testCreateAndFindWikiSites() {
-		final String siteNameTemplate = "create-and-find-wiki-sites-test";
-		final int iterations = 10;
-		final Set<String> createdSiteNames = new HashSet<String>();
+		final Set<String> createdSiteNames = createTestSites(NUMBER_OF_NEW_WIKI_SITES);
 		final Set<String> foundSiteNames = new HashSet<String>();
 		
-		for (int counter = 0; counter < iterations; counter++) {
-			final String siteName = siteNameTemplate + counter;
-			createdSiteNames.add(siteName);
-			
-			final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
-			wikiService.saveWikiSite(wikiSite);
-		}
-		
 		final List<WikiSiteInfo> wikiSites = wikiService.findWikiSitesByDomainObject(defaultDomainObject.getId());
-		assertEquals(iterations, wikiSites.size());
+		assertEquals(NUMBER_OF_NEW_WIKI_SITES, wikiSites.size());
 		
 		for (WikiSiteInfo wikiSite : wikiSites) {
 			foundSiteNames.add(wikiSite.getName());
@@ -168,9 +156,26 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertEquals(createdSiteNames, foundSiteNames);
 	}
 	
+	private Set<String> createTestSites(final int numberOfNewWikiSites) {
+		final String siteNameTemplate = DEFAULT_TEST_SITE_NAME;
+		final Set<String> createdSiteNames = new HashSet<String>();
+		
+		for (int counter = 0; counter < numberOfNewWikiSites; counter++) {
+			final String siteName = siteNameTemplate + counter;
+			createdSiteNames.add(siteName);
+			
+			final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+			wikiService.saveWikiSite(wikiSite);
+		}
+		
+		return createdSiteNames;
+	}
+	
+	/**
+	 * Tests the creation, storage and deleting of a WikiSiteContentInfo.
+	 */
 	public void testCreateAndDeleteWikiSiteVersion(){
-		final String siteName = "testCreateAndDeleteWikiSiteVersion";
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
 		wikiService.saveWikiSite(wikiSite);
 		
 		final Long wikiSiteVersionId = wikiSite.getId();
@@ -182,12 +187,15 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertNull(wikiSiteInfo);
 	}
 	
+	/**
+	 * Tests the creation, storage, selection and deleting of an Image.
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public void testCreateFindAndRemoveImage() throws IOException {
 		final Map<String, FileInfo> savedFiles = new HashMap<String, FileInfo>();
 		final RenderedImage sampleImage = createSampleImage();
-		//final Course course = testUtility.createUniqueCourseInDB();
-		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
+		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), WIKI_STARTSITE_NAME);
 		assertNotNull(defaultIndexSite);
 		
 		for (ImageType imageType : ImageType.values()) {
@@ -215,23 +223,50 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertTrue(savedFiles.isEmpty());
 	}
 	
-	public void testImportWiki(){
-		final String siteName = "testImportWiki";
-		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
-		assertNotNull(defaultIndexSite);
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
-		final Course courseB = testUtility.createUniqueCourseInDB();
-		final Course courseC = testUtility.createUniqueCourseInDB();
+	@SuppressWarnings("unchecked")
+	public void testImportWikiSites() {
+		Set<String> exportWikiSiteNames = createWikiImportSetup();
 		
-		wikiService.saveWikiSite(wikiSite);
-		wikiService.importWikiSites(courseB.getId(), wikiSite.getDomainId());
-		WikiSiteContentInfo newWikiSite = wikiService.findWikiSiteContentByDomainObjectAndName(courseB.getId(), siteName);
-		assertNotNull(newWikiSite);
+		final Course importCourse = testUtility.createUniqueCourseInDB();
+		wikiService.importWikiSites(importCourse.getId(), defaultDomainObject.getId());
 		
-		wikiService.importWikiVersions(courseC.getId(), wikiSite.getDomainId());
-		WikiSiteContentInfo newWikiSite2 = wikiService.findWikiSiteContentByDomainObjectAndName(courseB.getId(), siteName);
-		assertNotNull(newWikiSite2);
+		final List<WikiSiteInfo> importedWikiSites = wikiService.findWikiSitesByDomainObject(importCourse.getId());
+		for (WikiSiteInfo importedWikiSite : importedWikiSites) {
+			assertTrue(exportWikiSiteNames.contains(importedWikiSite.getName()));
+			
+			final List<WikiSiteInfo> importedWikiSiteVersions = wikiService.findWikiSiteVersionsByWikiSite(importedWikiSite.getWikiSiteId());
+			assertEquals(1, importedWikiSiteVersions.size());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testImportWikiSiteVersions() {
+		Set<String> exportWikiSiteNames = createWikiImportSetup();
 		
+		final Course importCourse = testUtility.createUniqueCourseInDB();
+		wikiService.importWikiVersions(importCourse.getId(), defaultDomainObject.getId());
+		
+		final List<WikiSiteInfo> importedWikiSites = wikiService.findWikiSitesByDomainObject(importCourse.getId());
+		for (WikiSiteInfo importedWikiSite : importedWikiSites) {
+			assertTrue(exportWikiSiteNames.contains(importedWikiSite.getName()));
+			
+			final List<WikiSiteInfo> importedWikiSiteVersions = wikiService.findWikiSiteVersionsByWikiSite(importedWikiSite.getWikiSiteId());
+			assertEquals(NUMBER_OF_NEW_WIKI_SITE_VERSIONS, importedWikiSiteVersions.size());
+		}
+	}
+	
+	private Set<String> createWikiImportSetup() {
+		wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), WIKI_STARTSITE_NAME);
+		
+		Set<String> exportWikiSiteNames = createTestSites(NUMBER_OF_NEW_WIKI_SITES);
+		for (int counter = 1; counter < NUMBER_OF_NEW_WIKI_SITE_VERSIONS; counter++) {
+			exportWikiSiteNames = createTestSites(NUMBER_OF_NEW_WIKI_SITES);
+			wikiService.saveWikiSite(createDefaultWikiSiteContentInfo(WIKI_STARTSITE_NAME));
+		}
+		
+		exportWikiSiteNames.add(WIKI_STARTSITE_NAME);
+		
+		return exportWikiSiteNames;
 	}
 	
 //	public void testFindInstitutes(){
@@ -270,9 +305,8 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		return fileInfo;
 	}
 	
-	public void testStableVersion(){
-		final String siteName = "testCreateAndDeleteWikiSiteVersion";
-		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+	public void testStableVersion() {
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
 		wikiSite.setStable(true);
 		wikiService.saveWikiSite(wikiSite);
 		
@@ -281,13 +315,17 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertEquals(newStable.isStable(),true);
 	}
 	
+	private WikiSiteContentInfo createDefaultWikiSiteContentInfo() {
+		return createDefaultWikiSiteContentInfo(DEFAULT_TEST_SITE_NAME);
+	}
+	
 	private WikiSiteContentInfo createDefaultWikiSiteContentInfo(String siteName) {
 		Date creationDate = new Date();
 		
 		final WikiSiteContentInfo wikiSite = new WikiSiteContentInfo();
 		wikiSite.setName(siteName);
-		wikiSite.setText(siteText);
-		wikiSite.setNote(siteNote);
+		wikiSite.setText(DEFAULT_TEST_SITE_TEXT);
+		wikiSite.setNote(DEFAULT_TEST_SITE_NOTE);
 		wikiSite.setCreationDate(creationDate);
 		wikiSite.setAuthorId(assistantUser.getId());
 		wikiSite.setDomainId(defaultDomainObject.getId());
@@ -301,6 +339,24 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	private DefaultDomainObject createDomainObject() {
 		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		return defaultDomainObject;
+	}
+	
+	/**
+	 * Enum representing the supported Image formats.
+	 * @author Projektseminar WS 07/08, Team Collaboration
+	 */
+	private enum ImageType {
+		JPG("jpg"), PNG("png");
+		
+		private final String extension;
+		
+		private ImageType(String extension) {
+			this.extension = extension;
+		}
+
+		public String getExtension() {
+			return extension;
+		}
 	}
 
 	public void setTestUtility(TestUtility testUtility) {
