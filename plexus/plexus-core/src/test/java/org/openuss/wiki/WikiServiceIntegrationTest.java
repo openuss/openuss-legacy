@@ -26,6 +26,7 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.lecture.Course;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -200,6 +201,25 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		}
 		
 		assertTrue(savedFiles.isEmpty());
+	}
+	
+	public void testImportWiki(){
+		final String siteName = "testImportWiki";
+		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
+		assertNotNull(defaultIndexSite);
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
+		final Course courseB = testUtility.createUniqueCourseInDB();
+		final Course courseC = testUtility.createUniqueCourseInDB();
+		
+		wikiService.saveWikiSite(wikiSite);
+		wikiService.importWikiSites(courseB.getId(), wikiSite.getDomainId());
+		WikiSiteContentInfo newWikiSite = wikiService.findWikiSiteContentByDomainObjectAndName(courseB.getId(), siteName);
+		assertNotNull(newWikiSite);
+		
+		wikiService.importWikiVersions(courseC.getId(), wikiSite.getDomainId());
+		WikiSiteContentInfo newWikiSite2 = wikiService.findWikiSiteContentByDomainObjectAndName(courseB.getId(), siteName);
+		assertNotNull(newWikiSite2);
+		
 	}
 	
 	private RenderedImage createSampleImage() {
