@@ -27,6 +27,7 @@ import org.openuss.documents.FolderEntryInfo;
 import org.openuss.foundation.DefaultDomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.Course;
+import org.openuss.lecture.Institute;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
@@ -185,6 +186,7 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	public void testCreateFindAndRemoveImage() throws IOException {
 		final Map<String, FileInfo> savedFiles = new HashMap<String, FileInfo>();
 		final RenderedImage sampleImage = createSampleImage();
+		//final Course course = testUtility.createUniqueCourseInDB();
 		final WikiSiteContentInfo defaultIndexSite = wikiService.findWikiSiteContentByDomainObjectAndName(defaultDomainObject.getId(), "index");
 		assertNotNull(defaultIndexSite);
 		
@@ -231,6 +233,15 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		assertNotNull(newWikiSite2);
 		
 	}
+	
+//	public void testFindInstitutes(){
+//		Institute institute = testUtility.createUniqueInstituteInDB();
+//		User user = testUtility.createUniqueUserInDB();
+//		
+//		Course course = testUtility.createUniqueCourseInDB();
+//		wikiService.findAllExportableWikiCoursesByInstituteAndUser(institute, user, course);
+//		
+//	}
 	
 	private RenderedImage createSampleImage() {
 		final int width = 100;
