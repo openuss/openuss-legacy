@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
+import org.openuss.web.PageLinks;
 import org.openuss.wiki.WikiSiteInfo;
 
 /**
@@ -23,6 +26,35 @@ public class WikiVersionPage extends AbstractWikiPage{
 	private static final Logger LOGGER = Logger.getLogger(WikiVersionPage.class);
 	
 	private final WikiDataProvider data = new WikiDataProvider();
+	
+	@Override
+	@Prerender
+	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
+		super.prerender();
+		
+		addBreadCrumbs();
+	}
+	
+	/**
+	 * Adds an additional BreadCrumb to the course crumbs.
+	 */
+	private void addBreadCrumbs() {
+		breadcrumbs.loadCourseCrumbs(courseInfo);
+		
+		final BreadCrumb wikiBreadCrumb = new BreadCrumb();
+		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
+		wikiBreadCrumb.setName(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.setHint(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.addParameter("course",courseInfo.getId());
+		wikiBreadCrumb.addParameter("page", Constants.WIKI_STARTSITE_NAME);
+		breadcrumbs.addCrumb(wikiBreadCrumb);
+		
+		final BreadCrumb wikiVersionsBreadCrumb = new BreadCrumb();
+		wikiVersionsBreadCrumb.setName(i18n("wiki_version_header"));
+		wikiVersionsBreadCrumb.setHint(i18n("wiki_version_header"));
+		breadcrumbs.addCrumb(wikiVersionsBreadCrumb);
+	}
+		
 	
 	/**
 	 * Returns Wiki Overview Page.
