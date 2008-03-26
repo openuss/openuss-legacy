@@ -36,6 +36,9 @@
   			<h:form id="editWikiForm">
   				<o:block label="#{views$secured$wiki$wikiedit.siteTitle}" styleClass="form_box">
 					<div class="content_iframe">
+						<!-- hidden field for fckeditor -->
+						<input type="hidden" id="openussCourseId" name="openussCourseId" value="#{param.course}"/>
+						
 						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" required="true">
 							<f:converter converterId="xssFilter"/>
 						</fck:editor>

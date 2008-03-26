@@ -11,10 +11,6 @@
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
-	openussCourseId = 1005; // FIXME parameterize courseId
-
-	alert("t13: " + window.openussCourseId);
-
 	// Register the related commands.
 	FCKCommands.RegisterCommand('OpenUSSWikiLink', 
 	    new FCKDialogCommand(FCKLang['OpenUSSWikiLinkTitle'], 

@@ -33,13 +33,16 @@ basePath = FCKConfig.BasePath.substring(0, FCKConfig.BasePath.indexOf("/", 1));
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
+	// get parameters from hidden fields in xhtml. these must be present!!
+	openussCourseId = top.document.getElementById('openussCourseId').value;
+
 	FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
 
     // Wiki link plugin
     var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
     FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
-    FCKConfig.ImageBrowserURL = basePath + '/views/secured/wiki/wikichooseimage.faces?course=1005';  //FIXME parameterize course
+    FCKConfig.ImageBrowserURL = basePath + '/views/secured/wiki/wikichooseimage.faces?course=' + openussCourseId;
     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
