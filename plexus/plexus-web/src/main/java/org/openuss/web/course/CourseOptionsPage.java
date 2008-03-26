@@ -30,8 +30,8 @@ import org.openuss.web.Constants;
 public class CourseOptionsPage extends AbstractCoursePage {
 
 	private static final Logger logger = Logger.getLogger(CourseOptionsPage.class);
-	
-	@Property(value = "#{"+Constants.COURSE_OPTIONS_INFO+"}")
+
+	@Property(value = "#{" + Constants.COURSE_OPTIONS_INFO + "}")
 	private CourseInfo courseOptionsInfo;
 
 	private static final long serialVersionUID = 8821048605517398410L;
@@ -40,16 +40,21 @@ public class CourseOptionsPage extends AbstractCoursePage {
 	@Override
 	public void prerender() throws Exception {
 		super.prerender();
-		if (isRedirected()){
+		if (isRedirected()) {
 			return;
 		}
-		setCourseOptionsBean();
+		initCourseOptionsBean();
 		breadcrumbs.loadCourseCrumbs(courseInfo);
 		addPageCrumb();
 	}
+	
+	public void preprocess() throws Exception {
+		super.preprocess();
+		initCourseOptionsBean();
+	}
 
-	private void setCourseOptionsBean() {
-		if (courseOptionsInfo==null || courseOptionsInfo.getId()==null || !courseOptionsInfo.getId().equals(courseInfo.getId())){
+	private void initCourseOptionsBean() {
+		if (courseOptionsInfo == null || !courseOptionsInfo.equals(courseInfo)) {
 			courseOptionsInfo = courseService.findCourse(courseInfo.getId());
 			setBean(Constants.COURSE_OPTIONS_INFO, courseOptionsInfo);
 		}
@@ -94,8 +99,8 @@ public class CourseOptionsPage extends AbstractCoursePage {
 		courseOptionsInfo.setAccessType((AccessType) accessType);
 		setSessionBean(Constants.COURSE_OPTIONS_INFO, courseOptionsInfo);
 		if (!AccessType.PASSWORD.equals(accessType) && !AccessType.APPLICATION.equals(accessType)) {
-			courseInfo.setCollaboration(false);
-			courseInfo.setPapersubmission(false);
+			courseOptionsInfo.setCollaboration(false);
+			courseOptionsInfo.setPapersubmission(false);
 		}
 	}
 

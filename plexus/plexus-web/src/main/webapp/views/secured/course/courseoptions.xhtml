@@ -29,7 +29,7 @@
  		 
   		<ui:define name="content">
 			<h:form id="courseOptionForm">
-				<t:saveState value="#{courseOptionInfo}"/>
+				<t:saveState value="#{courseOptionsInfo}"/>
 	  			<o:block label="#{msg.course_options_headline} - #{courseOptionsInfo.name} - #{courseOptionsInfo.periodName}" styleClass="form_box">
 					<o:input entity="courseOptionsInfo" id="shortcut" forceId="true" property="shortcut" maxlength="30" required="true"/>
 					<h:outputLabel for="accessType" value="#{msg.course_options_access_headline}" styleClass="field_label"/>
