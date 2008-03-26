@@ -16,7 +16,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
