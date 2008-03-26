@@ -108,6 +108,7 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 	
 	public void testCreateAndFindWikiSite() {
 		final String siteName = "create-and-find-wiki-site-test";
+		final String siteName2 = "create-and-find-wiki-site-test-new";		
 		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo(siteName);
 		wikiService.saveWikiSite(wikiSite);
 		assertNotNull(wikiSite.getId());
@@ -115,6 +116,15 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		
 		final WikiSiteInfo newWikiSite = wikiService.getWikiSite(wikiSite.getWikiSiteId());
 		assertNotNull(newWikiSite);
+		
+		newWikiSite.setName(siteName2);
+		wikiService.saveWikiSite(newWikiSite);
+		final WikiSiteInfo newWikiSite2 = wikiService.getWikiSite(newWikiSite.getWikiSiteId());
+		assertEquals(newWikiSite2.getName(), siteName2);
+		
+		final WikiSiteContentInfo newWikiSite3 = wikiService.getWikiSiteContent(wikiSite.getWikiSiteId());
+		assertNotNull(newWikiSite3);
+		
 	}
 	
 	
