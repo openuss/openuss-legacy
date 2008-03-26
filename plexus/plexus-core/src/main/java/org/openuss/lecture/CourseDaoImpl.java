@@ -70,7 +70,7 @@ public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	 */
 	public Course courseInfoToEntity(CourseInfo courseInfo) {
 		Course entity = this.loadCourseFromCourseInfo(courseInfo);
-		this.courseInfoToEntity(courseInfo, entity, true);
+		this.courseInfoToEntity(courseInfo, entity, false);
 		
 		if (entity.getCourseType() != null && !entity.getCourseType().getId().equals(courseInfo.getCourseTypeId()) ) {
 			Exception e = new Exception("Course Type changed!");

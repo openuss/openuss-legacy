@@ -25,6 +25,7 @@ import org.openuss.web.Constants;
 
 /**
  * CourseType Administration Page
+ * 
  * @author Ingo Düppe
  * @author Kai Stettner
  * @author Sebastian Roekens
@@ -34,37 +35,37 @@ import org.openuss.web.Constants;
 @View
 public class InstituteCoursesPage extends AbstractLecturePage {
 
-	/** logger **/
+	/** logger * */
 	public static final Logger logger = Logger.getLogger(InstituteCoursesPage.class);
 
 	private LocalDataModelCourses dataCourses = new LocalDataModelCourses();
 
 	private List<SelectItem> institutePeriodItems;
-	
+
 	private List<PeriodInfo> institutePeriodsActive;
-	
+
 	private List<PeriodInfo> institutePeriodsPassive;
-	
+
 	private List<SelectItem> instituteCourseTypeItems;
-	
+
 	private List<CourseTypeInfo> instituteCourseTypes;
 
 	private List<PeriodInfo> periodInfos;
-	
+
 	private Long universityId;
-	
+
 	private Long departmentId;
-	
+
 	private boolean moving = false;
 
-	@Property(value = "#{"+Constants.COURSE_MOVE_INFO+"}")
-	protected CourseInfo courseMoveInfo;	
-	
+	@Property(value = "#{" + Constants.COURSE_MOVE_INFO + "}")
+	protected CourseInfo courseMoveInfo;
+
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws LectureException {
 		super.prerender();
-		if (isRedirected()){
+		if (isRedirected()) {
 			return;
 		}
 		if (instituteInfo != null) {
@@ -74,14 +75,14 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 			universityInfo = universityService.findUniversity(universityId);
 			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
 		}
-		if (courseInfo!=null && courseInfo.getId()!=null){
+		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 			setBean(Constants.COURSE_INFO, courseInfo);
-			moving=true;
+			moving = true;
 		}
-		if (moving && (courseMoveInfo == null || courseMoveInfo.getId()==null || !courseMoveInfo.getId().equals(courseInfo.getId()))){
+		if (moving && (courseMoveInfo == null || courseMoveInfo.getId() == null || !courseMoveInfo.getId().equals(courseInfo.getId()))) {
 			courseMoveInfo = courseInfo;
-			setSessionBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
+			setBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
 		}
 		if (periodInfo != null && instituteInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
@@ -131,10 +132,9 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
 
 		courseService.create(courseInfo);
-		courseInfo=null;
-		setBean(Constants.COURSE_INFO, courseInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
-		setSessionBean(Constants.COURSE_INFO, courseInfo);
+		// Push new course info into id
+		setBean(Constants.COURSE_INFO, courseInfo); 
 		return Constants.COURSE_OPTIONS_PAGE;
 	}
 
@@ -143,41 +143,43 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 		courseService.updateCourse(courseMoveInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
-		moving = false;
-		redirect(Constants.INSTITUTE_COURSES_PAGE);
+		resetMoving();
 		return Constants.SUCCESS;
+	}
+
+	private void resetMoving() {
+		setBean(Constants.COURSE_MOVE_INFO, null);
+		moving = false;
 	}
 
 	/**
 	 * Beginning move mode of course to a different period
+	 * 
 	 * @return outcome
 	 */
 	public String moveCourse() {
 		logger.debug("Switching to move mode");
-		courseInfo= currentCourse();
+		courseInfo = currentCourse();
 		courseMoveInfo = currentCourse();
 		setBean(Constants.COURSE_INFO, courseInfo);
-		setSessionBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
+		setBean(Constants.COURSE_MOVE_INFO, courseMoveInfo);
 		moving = true;
-		
 		return Constants.SUCCESS;
 	}
 
 	/**
-	 * Canceling move mode of course 
+	 * Canceling move mode of course
+	 * 
 	 * @return outcome
 	 */
 	public String cancelCourse() {
 		logger.debug("Switching to move mode");
-		setBean(Constants.COURSE_INFO, null);
-		setSessionBean(Constants.COURSE_MOVE_INFO, null);
-		moving = false;
+		resetMoving();
 		return Constants.SUCCESS;
 	}
 
 	private CourseInfo currentCourse() {
-		CourseInfo course = dataCourses.getRowData();
-		return course;
+		return dataCourses.getRowData();
 	}
 
 	/**
@@ -232,7 +234,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String shortcutCourse() {
 		try {
 			CourseInfo currentCourse = currentCourse();
-			if (desktopInfo==null){
+			if (desktopInfo == null) {
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -247,7 +249,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 	public String removeCourseShortcut() {
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null) {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());

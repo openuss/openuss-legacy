@@ -43,46 +43,50 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(courseInfo.getCourseTypeId(), "GetCourseTypeId cannot be null.");
 		Validate.notNull(courseInfo.getPeriodId(), "PeriodId cannot be null.");
 
-		// Default is enabled
-		courseInfo.setEnabled(true);
-
+	
 		// Transform VO to entity
-		Course courseEntity = this.getCourseDao().courseInfoToEntity(courseInfo);
-		Validate.notNull(courseEntity, "Cannot transform courseInfo to entity.");
-		courseEntity.setEnabled(true);
+		Course course = this.getCourseDao().courseInfoToEntity(courseInfo);
+		Validate.notNull(course, "Cannot transform courseInfo to entity.");
+		course.setEnabled(true);
+		
+		// Define default values
+		course.setAccessType(AccessType.CLOSED);
+		course.setDocuments(true);
+		course.setNewsletter(true);
+		course.setDiscussion(true);
 
 		// Add Course to CourseType and Period
-		this.getCourseTypeDao().load(courseInfo.getCourseTypeId()).add(courseEntity);
-		this.getPeriodDao().load(courseInfo.getPeriodId()).add(courseEntity);
+		this.getCourseTypeDao().load(courseInfo.getCourseTypeId()).add(course);
+		this.getPeriodDao().load(courseInfo.getPeriodId()).add(course);
 
 		// Save Entity
-		this.getCourseDao().create(courseEntity);
-		Validate.notNull(courseEntity, "Id of course cannot be null.");
+		this.getCourseDao().create(course);
+		Validate.notNull(course, "Id of course cannot be null.");
 
 		// FIXME - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
-		courseInfo.setId(courseEntity.getId());
+		courseInfo.setId(course.getId());
 
 		// Set Security
-		this.getSecurityService().createObjectIdentity(courseEntity, courseEntity.getCourseType());
+		this.getSecurityService().createObjectIdentity(course, course.getCourseType());
 
 		// Create default Group for Course
-		Group participantsGroup = getSecurityService().createGroup("COURSE_" + courseEntity.getId() + "_PARTICIPANTS",
+		Group participantsGroup = getSecurityService().createGroup("COURSE_" + course.getId() + "_PARTICIPANTS",
 				"autogroup_participant_label", null, GroupType.PARTICIPANT);
-		Set<Group> groups = courseEntity.getGroups();
+		Set<Group> groups = course.getGroups();
 		if (groups == null) {
 			groups = new HashSet<Group>();
 		}
 		groups.add(participantsGroup);
-		courseEntity.setGroups(groups);
-		getCourseDao().update(courseEntity);
+		course.setGroups(groups);
+		getCourseDao().update(course);
 
-		defineCourseSecuritySettings(courseEntity, participantsGroup);
+		defineCourseSecuritySettings(course, participantsGroup);
 
-		getEventPublisher().publishEvent(new CourseCreatedEvent(courseEntity));
+		getEventPublisher().publishEvent(new CourseCreatedEvent(course));
 
-		return courseEntity.getId();
+		return course.getId();
 	}
 
 	/**

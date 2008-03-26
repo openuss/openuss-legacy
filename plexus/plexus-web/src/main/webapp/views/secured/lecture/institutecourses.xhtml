@@ -28,6 +28,8 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+  			<t:saveState value="#{courseInfo}"/>
+  			<t:saveState value="#{courseMoveInfo}"/>
   			
 	        <o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
 	  			<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
@@ -91,7 +93,7 @@
 			<c:if test="#{views$secured$lecture$institutecourses.moving}">
 				<h:form id="moveForm">
 					<o:block label="#{msg.period_command_move_course_header}" styleClass="form_box">
-						<h:outputFormat value="#{msg.period_command_move_course_text}" styleClass="content_font_normal">
+						<h:outputFormat value="#{msg.period_command_move_course_text}" styleClass="field_label">
 							<f:param value="#{courseMoveInfo.name}"/>
 						</h:outputFormat> <br/>
 						<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
@@ -103,25 +105,14 @@
 								<f:validator validatorId="coursePeriodSelectValidator"/>
 						</t:selectOneMenu>						
 					</o:block>
-					<o:block>	
-						<t:commandButton id="saveCourse" forceId="true" action="#{views$secured$lecture$institutecourses.saveCourse}" value="#{msg.save}" styleClass="button_save" />
+					<o:block>	 
+						<t:commandButton id="moveCourse" forceId="true" action="#{views$secured$lecture$institutecourses.saveCourse}" value="#{msg.course_command_move}" styleClass="button_save" />
 						<t:commandButton id="cancelCourse" forceId="true" action="#{views$secured$lecture$institutecourses.cancelCourse}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
 					</o:block>
 				</h:form>			
 			</c:if>
   		</ui:define>
 	</ui:composition>
-	<!-- 
-		<div id="link_period_question" style="display:block; margin-top: 10px; font-size:11px;">
-			<h:outputText value="#{msg.period_selection_question}" /> 
-			<a href="javascript:void(0);" onclick="Effect.toggle($('linkperiod'));Effect.toggle($('link_period_question'));" style="color:green;">
-				<h:outputText value="#{msg.period_selection_question_yes}" />
-			</a> 
-			<a href="javascript:void(0);" onclick="Effect.toggle($('link_period_question'));">
-				<h:outputText value="#{msg.period_selection_question_no}" />
-			</a>
-		</div> 
-	 -->
 	<!-- text above will be ignored -->
 	</body>
 </html>
