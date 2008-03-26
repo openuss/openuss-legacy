@@ -39,12 +39,12 @@
 						<!-- hidden field for fckeditor -->
 						<input type="hidden" id="openussCourseId" name="openussCourseId" value="#{param.course}"/>
 						
-						<fck:editor value="#{wiki_current_site_version.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" required="true">
+						<fck:editor value="#{views$secured$wiki$wikiedit.siteVersionInfo.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" required="true">
 							<f:converter converterId="xssFilter"/>
 						</fck:editor>
 						<h:message for="textEditor" styleClass="field_error"/>	 				
 					</div>
-					<o:input id="node" forceId="true" entity="wiki_current_site_version" property="note" maxlength="100" />
+					<o:input id="node" forceId="true" entity="views$secured$wiki$wikiedit.siteVersionInfo" property="note" maxlength="100" />
 				</o:block>
 				
 				<o:block>

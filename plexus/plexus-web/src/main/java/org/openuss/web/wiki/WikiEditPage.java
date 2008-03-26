@@ -25,10 +25,14 @@ public class WikiEditPage extends AbstractWikiPage {
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
 		
-		siteVersionInfo.setDomainId(this.courseInfo.getId());
-
-		if (siteVersionInfo.getName() == null) {
-			siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
+		if (siteVersionId != null) {
+			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
+		} else {
+			siteVersionInfo.setDomainId(this.courseInfo.getId());
+	
+			if (siteVersionInfo.getName() == null) {
+				siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
+			}
 		}
 		
 		siteVersionInfo.setNote(null);
