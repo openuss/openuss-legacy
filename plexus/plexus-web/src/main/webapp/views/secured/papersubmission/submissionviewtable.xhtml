@@ -72,6 +72,13 @@
              
        <s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
             <!-- Student-view -->
+            
+            <o:block label="#{msg.papersubmission_submission_comment_description}" styleClass="form_box" rendered="#{!(empty paperSubmissionInfo.comment)}">
+	                   <div class="content_font_normal">
+                            <h:outputText value="#{views$secured$papersubmission$submissionview.comment}" escape="false"/>
+                       </div>
+	        </o:block> 
+	                
             <plexus:dataTable   
                   id="submissionfiles" 
                   label="#{msg['papersubmission_submissionfilestable_header']}" 

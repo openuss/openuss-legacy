@@ -140,7 +140,7 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		Long oldId = paperSubmissionInfo.getId();
 		Date oldDate = paperSubmissionInfo.getDeliverDate();
 		paperSubmissionInfo.setDeliverDate(new Date());
-		paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
+		paperSubmissionService.updatePaperSubmission(paperSubmissionInfo,true);
 		extractedSubmissionInfo = new PaperSubmissionInfo();
 		extractedSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionId);
 		assertNotNull(extractedSubmissionInfo);

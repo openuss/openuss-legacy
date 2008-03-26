@@ -8,7 +8,8 @@
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
       xmlns:s="http://www.openuss.org/jsf-security"      
-      xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fck="http://www.fck-faces.org/fck-faces"      
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
     <head>
@@ -98,8 +99,19 @@
 							value="#{msg.documents_main_button_download}" 
 							title="#{msg.documents_main_button_download}"
 							styleClass="button_add"/>
-	               </o:block>   
-	                
+	               </o:block>
+	               
+	               <o:block label="#{msg.papersubmission_submission_comment_description}" styleClass="form_box">
+           	       		<div class="content_iframe">
+                        	<fck:editor value="#{paperSubmissionInfo.comment}" id="textEditor" toolbarSet="Basic" maxlength="250" height="200">
+                            	<f:converter converterId="xssFilter"/>
+                        	</fck:editor>
+                    	</div>           
+			       </o:block> 
+			       <o:block>   
+			            <t:commandButton id="saveComment" forceId="true"   action="#{views$secured$papersubmission$submissionviewlecturer.saveComment}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+			       </o:block>   
+				                
 	            </s:acl>
             </h:form>	        
         </ui:define>
