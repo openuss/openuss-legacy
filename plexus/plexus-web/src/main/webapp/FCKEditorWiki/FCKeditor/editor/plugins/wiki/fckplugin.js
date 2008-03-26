@@ -11,28 +11,21 @@
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
+	openussCourseId = 1005; // FIXME parameterize courseId
+
+	alert("t13: " + window.openussCourseId);
+
 	// Register the related commands.
 	FCKCommands.RegisterCommand('OpenUSSWikiLink', 
 	    new FCKDialogCommand(FCKLang['OpenUSSWikiLinkTitle'], 
 	                         FCKLang['OpenUSSWikiLinkTitle'], 
-	                         basePath + '/views/secured/wiki/wikieditlinks.faces', 400, 500));
-	                         
-    // Register the related commands.
-    FCKCommands.RegisterCommand('OpenUSSWikiImage', 
-        new FCKDialogCommand(FCKLang['OpenUSSWikiImageTitle'], 
-                             FCKLang['OpenUSSWikiImageTitle'], 
-                             basePath + '/views/secured/wiki/wikieditimages.faces', 400, 500));
-	                         
+	                         basePath + '/views/secured/wiki/wikieditlinks.faces?course=' + openussCourseId, 400, 500));
+	                         	                         
 	// Create the "Link" toolbar button.
 	var oWikiLinkItem = new FCKToolbarButton('OpenUSSWikiLink', FCKLang['OpenUSSWikiLinkTitle']);
 	oWikiLinkItem.IconPath = FCKPlugins.Items['wiki'].Path + '/wikilink.gif';
 	
-	// Create the "Image" toolbar button.
-    var oWikiImageItem = new FCKToolbarButton('OpenUSSWikiImage', FCKLang['OpenUSSWikiImageTitle']);
-    oWikiImageItem.IconPath = FCKPlugins.Items['wiki'].Path + '/wikiimage.gif';
-	
 	FCKToolbarItems.RegisterItem('OpenUSSWikiLink', oWikiLinkItem);
-	FCKToolbarItems.RegisterItem('OpenUSSWikiImage', oWikiImageItem);
 	
 	FCK.ContextMenu.RegisterListener( {
 	        AddItems : function( menu, tag, tagName )
