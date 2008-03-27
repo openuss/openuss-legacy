@@ -429,8 +429,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (context == null || context.getAuthentication() == null) {
 			return null;
 		}
-		String name = context.getAuthentication().getName();
-		return getUserByName(name);
+		Object principal = context.getAuthentication().getPrincipal();
+		if (principal instanceof UserInfo) {
+			return (UserInfo) principal;
+		} else {
+			String name = context.getAuthentication().getName();
+			return getUserByName(name);
+		}
 	}
 
 	@Override
