@@ -27,21 +27,23 @@
 						</li>
 					</c:if>
 				</ul>
-				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >					
-					<h:outputText value="#{msg.discussion_topic_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussionthread.topicReadOnly}" escape="false"/>
-					<h:outputText value="#{msg.discussion_topic_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussionthread.topicReadOnly}" escape="false"/>
-					<ul class="action_list">
-						<c:if test="#{not views$secured$discussion$discussionthread.topicReadOnly}">
-							<li class="topic_lock">
-								<h:commandLink action="#{views$secured$discussion$discussionthread.changeReadOnly}" ><span />#{msg['discussion_topic_lock']}</h:commandLink>
-							</li>
-						</c:if>
-						<c:if test="#{views$secured$discussion$discussionthread.topicReadOnly}">
-							<li class="topic_unlock">
-								<h:commandLink action="#{views$secured$discussion$discussionthread.changeReadOnly}" ><span />#{msg['discussion_topic_unlock']}</h:commandLink>
-							</li>
-						</c:if>
-					</ul>
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+					<c:if test="#{!discussion_forum.readOnly}">					
+						<h:outputText value="#{msg.discussion_topic_readonly_true}" styleClass="content_font_normal" rendered="#{discussion_topic.readOnly}" escape="false"/>
+						<h:outputText value="#{msg.discussion_topic_readonly_false}" styleClass="content_font_normal" rendered="#{not discussion_topic.readOnly}" escape="false"/>
+						<ul class="action_list">
+							<c:if test="#{not discussion_topic.readOnly}">
+								<li class="topic_lock">
+									<h:commandLink action="#{views$secured$discussion$discussionthread.changeReadOnly}" ><span />#{msg['discussion_topic_lock']}</h:commandLink>
+								</li>
+							</c:if>
+							<c:if test="#{discussion_topic.readOnly}">
+								<li class="topic_unlock">
+									<h:commandLink action="#{views$secured$discussion$discussionthread.changeReadOnly}" ><span />#{msg['discussion_topic_unlock']}</h:commandLink>
+								</li>
+							</c:if>
+						</ul>
+					</c:if>
 				</s:acl>				
 			</o:block>
 		</h:form>

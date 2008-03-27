@@ -42,7 +42,7 @@
   			<h:outputFormat value="#{msg.discussion_forum_readonly_true_simple}" styleClass="content_font_normal" />
    		</o:block>	
 
-		<o:block rendered="#{discussion_topic.readOnly}" styleClass="status_box">							
+		<o:block rendered="#{discussion_topic.readOnly and !discussion_forum.readOnly}" styleClass="status_box">							
   			<h:outputFormat value="#{msg.discussion_topic_readonly_true_simple}" styleClass="content_font_normal" />
    		</o:block>	
 	
