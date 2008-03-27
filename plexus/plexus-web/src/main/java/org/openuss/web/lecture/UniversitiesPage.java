@@ -12,7 +12,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.OrganisationService;
-import org.openuss.lecture.UniversityDao;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
@@ -39,9 +38,6 @@ public class UniversitiesPage extends BasePage {
 
 	@Property(value = "#{universityService}")
 	private UniversityService universityService;
-
-	@Property(value = "#{universityDao}")
-	private UniversityDao universityDao;
 
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
@@ -172,14 +168,6 @@ public class UniversitiesPage extends BasePage {
 		UniversityInfo universityInfo = currentUniversity();
 		setBean(Constants.UNIVERSITY_INFO, universityInfo);
 		return "removed";
-	}
-
-	public UniversityDao getUniversityDao() {
-		return universityDao;
-	}
-
-	public void setUniversityDao(UniversityDao universityDao) {
-		this.universityDao = universityDao;
 	}
 
 	private class UniversityTable extends AbstractPagedTable<UniversityInfo> {
