@@ -41,6 +41,7 @@
 	</ui:define>			
 	
 	<ui:define name="content" styleClass="footer_normal">
+			<t:saveState value="#{courseInfo}"/>
 			<s:authorize ifAllGranted="ROLE_USER">
 				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
 					<!-- check if access type is AccessType.CLOSED -->
