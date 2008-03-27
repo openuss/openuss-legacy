@@ -25,7 +25,7 @@ public class WikiSaveDraftServlet extends HttpServlet {
 
 	private static final Logger logger = Logger.getLogger(WikiSaveDraftServlet.class);
 	
-	private static final String SESSION_KEY = "org.openuss.web.servlets.wikisavedraft.lastpink";
+	private static final String SESSION_KEY = "org.openuss.web.servlets.wikisavedraft.lastping";
 
 	@Override
 	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
