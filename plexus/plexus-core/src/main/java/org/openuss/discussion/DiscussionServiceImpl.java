@@ -275,10 +275,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected void handleAddTopicWatch(final TopicInfo topic)  {
 		Validate.notNull(topic);
 		Validate.notNull(topic.getId());
-		DiscussionWatch watch = DiscussionWatch.Factory.newInstance();
-		watch.setTopic(getTopicDao().load(topic.getId()));
-		watch.setUser(getCurrentUserObject());
-		getDiscussionWatchDao().create(watch);
+		if (!watchesTopic(topic)){
+			DiscussionWatch watch = DiscussionWatch.Factory.newInstance();
+			watch.setTopic(getTopicDao().load(topic.getId()));
+			watch.setUser(getCurrentUserObject());
+			getDiscussionWatchDao().create(watch);
+		}
 	}
 
 	/**
@@ -287,10 +289,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	protected void handleAddForumWatch(final ForumInfo forum)  {
 		Validate.notNull(forum);
 		Validate.notNull(forum.getId());
-		ForumWatch watch = ForumWatch.Factory.newInstance();
-		watch.setForum(getForumDao().load(forum.getId()));
-		watch.setUser(getCurrentUserObject());
-		getForumWatchDao().create(watch);
+		if (!watchesForum(forum)){
+			ForumWatch watch = ForumWatch.Factory.newInstance();
+			watch.setForum(getForumDao().load(forum.getId()));
+			watch.setUser(getCurrentUserObject());
+			getForumWatchDao().create(watch);
+		}
 	}
 
 	/**
