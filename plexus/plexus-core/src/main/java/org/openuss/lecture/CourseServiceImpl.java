@@ -446,43 +446,55 @@ public class CourseServiceImpl extends CourseServiceBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleApplyUser(CourseInfo courseInfo, UserInfo user) throws Exception {
-		Validate.notNull(user, "Parameter user must not be null.");
-		Validate.notNull(courseInfo, "Parameter courseInfo must not be null.");
-		Validate.notNull(courseInfo.getId(), "Parameter courseInfo.id must not be null.");
-		Course course = getCourseDao().load(courseInfo.getId());
-		if (course.getAccessType() == AccessType.APPLICATION) {
-			List<CourseMemberInfo> assistants = getAssistants(course);
-			List<User> recipients = new ArrayList<User>();
-			if (assistants != null && assistants.size() != 0) {
-				for (CourseMemberInfo member : assistants) {
-					recipients.add(getSecurityService().getUserObject(member.getUserId()));
-				}
-				// FIXME - link should be configured from outside the core
-				// component
-				String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-						+ "/views/secured/course/courseaspirants.faces?course=" + course.getId();
-				Map<String, String> parameters = new HashMap<String, String>();
-				parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
-				parameters.put("courseapplicantlink", link);
-				getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication",
-						parameters, recipients);
-			}
-			addAspirant(course, getSecurityService().getUserObject(user));
-		} else {
-			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
-		}
+	protected void handleApplyUser(Long courseId, Long userId) throws Exception {
+		handleApplyUser(courseId, userId, null);
 	}
 
 	@Override
-	protected void handleApplyUserByPassword(String password, CourseInfo course, UserInfo user) throws Exception {
-		Course originalCourse = getCourseDao().courseInfoToEntity(course);
-		if (originalCourse.getAccessType() == AccessType.PASSWORD && originalCourse.isPasswordCorrect(password)) {
-			addParticipant(originalCourse, getSecurityService().getUserObject(user));
+	protected void handleApplyUser(Long courseId, Long userId, String password) throws Exception {
+		Validate.notNull(courseId, "Parameter courseId must not be null");
+		Validate.notNull(userId, "Parameter userId must not be null");
+		
+		Course course = getCourseDao().load(courseId);
+		User user = getSecurityService().getUserObject(userId);
+		
+		if (course == null || user == null) {
+			throw new CourseServiceException("Course not found with id "+courseId);
+		}
+		
+		if (course.getAccessType() == AccessType.OPEN) {
+			addParticipant(course, user);
+		} else if (course.getAccessType() == AccessType.PASSWORD ) {
+			if (course.getAccessType() == AccessType.PASSWORD && course.isPasswordCorrect(password)) {
+				addParticipant(course, user);
+			} else {
+				throw new CourseApplicationException("message_error_password_is_not_correct");
+			}
+		} else if (course.getAccessType() == AccessType.APPLICATION) {
+			sendApplicationNotificationToAssistants(course);
+			addAspirant(course, user);
 		} else {
-			throw new CourseApplicationException("message_error_password_is_not_correct");
+			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
+		}
+
+	}
+
+	private void sendApplicationNotificationToAssistants(Course course) {
+		List<CourseMemberInfo> assistants = getAssistants(course);
+		List<User> recipients = new ArrayList<User>();
+		if (assistants != null && !assistants.isEmpty()) {
+			for (CourseMemberInfo member : assistants) {
+				recipients.add(getSecurityService().getUserObject(member.getUserId()));
+			}
+			String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+			link += "/views/secured/course/courseaspirants.faces?course=" + course.getId();
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
+			parameters.put("courseapplicantlink", link);
+			getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication", parameters, recipients);
 		}
 	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -538,8 +550,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	 */
 	@SuppressWarnings("unchecked")
 	private List<CourseMemberInfo> getAssistants(final Course course) {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
-				CourseMemberType.ASSISTANT);
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course, CourseMemberType.ASSISTANT);
 	}
 
 	private Group getParticipantsGroup(Course course) {

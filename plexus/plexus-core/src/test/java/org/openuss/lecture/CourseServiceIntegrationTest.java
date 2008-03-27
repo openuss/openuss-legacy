@@ -262,7 +262,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testRejectAspirant() {
-		courseService.applyUser(courseInfo, getSecurityService().getUser(user.getId()));
+		courseService.applyUser(courseInfo.getId(), user.getId());
 		
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
