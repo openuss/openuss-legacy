@@ -59,12 +59,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 
 			discussionService.addHit(topic);
 			topicWatchState = discussionService.watchesTopic(topic);
-			topicReadOnly = topic.isReadOnly();
-			if (forum.isReadOnly()) {
-				addMessage(i18n("discussion_forum_readonly_true_simple"));
-			} else if (!forum.isReadOnly() && topicReadOnly) {
-				addMessage(i18n("discussion_topic_readonly_true_simple"));
-			}
 			addPageCrumb();
 		}
 	}

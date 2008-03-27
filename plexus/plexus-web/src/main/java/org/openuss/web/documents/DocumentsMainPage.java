@@ -253,7 +253,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 					for(int i = 0; i < path.size(); i++) {
 						depth = depth.append("/ ");
 					}
-					String name = info.isRoot() ? i18n("root_folder") : info.getName();
+					String name = info.isRoot() ? i18n("documents_root_folder") : info.getName();
 					folderList.add(new SelectItem(info,depth + name ));
 				} else {
 					SelectItem item = new SelectItem("--");

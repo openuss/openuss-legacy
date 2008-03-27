@@ -298,7 +298,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 			for (FolderInfo info : allFolderInfos) {
 				if (info != null) {
 					List path = documentService.getFolderPath(info);
-					String name = info.isRoot() ? i18n("root_folder") : info.getName();
+					String name = info.isRoot() ? i18n("documents_root_folder") : info.getName();
 					folderList.add(new SelectItem(info, pathDepth(path) + name));
 				} else {
 					SelectItem item = new SelectItem("--");
