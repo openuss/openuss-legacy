@@ -128,6 +128,27 @@ $operation.getDocumentation("     * ")
             return getFactory().create${entity.entityName}();
         }
 
+#if (!$entity.identifiers.empty() && !$entity.compositeIdentifier)
+        /**
+         * Constructs a new instance of {@link ${entity.fullyQualifiedName}}, taking all required and/or
+         * read-only properties as arguments.
+         */
+        public static $entity.fullyQualifiedName newInstance(## no newline
+#set ($comma = "")
+#foreach ($identifier in $entity.identifiers)
+${comma}${identifier.getterSetterTypeName} ${identifier.name}## no newline
+#set ($comma = ", ")
+#end
+)
+		{
+            final ${entity.fullyQualifiedName} entity = getFactory().create${entity.entityName}();
+#foreach ($identifier in $entity.identifiers)
+            entity.${identifier.setterName}(${identifier.name});
+#end
+            return entity;
+        }
+#end
+
 #if ($entity.allRequiredConstructorParameters.size() > $entity.identifiers.size() && $entity.allRequiredConstructorParameters.size() < $entity.allProperties.size())
         /**
          * Constructs a new instance of {@link ${entity.fullyQualifiedName}}, taking all required and/or

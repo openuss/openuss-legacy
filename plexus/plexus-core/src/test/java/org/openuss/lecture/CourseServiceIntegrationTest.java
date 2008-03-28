@@ -267,7 +267,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
 		
-		courseService.rejectAspirant(aspirants.get(0).getId());
+		courseService.rejectAspirant(aspirants.get(0));
 		
 		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
 		assertEquals(0, emptyAspirants.size());
@@ -282,7 +282,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());
 		
-		courseService.removeMember(aspirants.get(0).getId());
+		courseService.removeMember(aspirants.get(0));
 
 		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
 		assertEquals(0, emptyAspirants.size());
@@ -294,7 +294,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
 		assertEquals(1, assistants.size());
 		
-		courseService.removeMember(assistants.get(0).getId());
+		courseService.removeMember(assistants.get(0));
 		
 		Collection<CourseMember> emptyAssistant = courseService.getAssistants(courseInfo);
 		assertEquals(0, emptyAssistant.size());
@@ -306,7 +306,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> participant = courseService.getParticipants(courseInfo);
 		assertEquals(1, participant.size());
 		
-		courseService.removeMember(participant.get(0).getId());
+		courseService.removeMember(participant.get(0));
 		
 		Collection<CourseMember> emptyParticipants = courseService.getParticipants(courseInfo);
 		assertEquals(0, emptyParticipants.size());

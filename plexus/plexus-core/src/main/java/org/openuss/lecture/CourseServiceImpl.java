@@ -364,23 +364,40 @@ public class CourseServiceImpl extends CourseServiceBase {
 	}
 
 	@Override
-	protected void handleAcceptAspirant(Long memberId) throws Exception {
-		CourseMember member = getCourseMemberDao().load(memberId);
+	protected void handleAcceptAspirant(CourseMemberInfo memberInfo) throws Exception {
+		CourseMemberPK pk = memberInfoToPK(memberInfo);
+		
+		
+		CourseMember member = getCourseMemberDao().load(pk);
 		if (member.getMemberType() == CourseMemberType.ASPIRANT) {
 			persistParticipantWithPermissions(member);
 		}
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
-		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
+		
+		Course course = member.getCourseMemberPk().getCourse();
+		User user = member.getCourseMemberPk().getUser();
+		
+		parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
+		getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
 				"course.application.subject", "courseapplicationapply", parameters,
-				getSecurityService().getUser(member.getUser().getId()));
+				getSecurityService().getUser(user.getId()));
+	}
+
+	private CourseMemberPK memberInfoToPK(CourseMemberInfo memberInfo) {
+		CourseMemberPK pk = new CourseMemberPK();
+		pk.setCourse(Course.Factory.newInstance(memberInfo.getCourseId()));
+		pk.setUser(User.Factory.newInstance(memberInfo.getUserId()));
+		return pk;
 	}
 
 	@Override
-	protected void handleRemoveMember(Long memberId) throws Exception {
-		CourseMember member = getCourseMemberDao().load(memberId);
+	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
+		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
 		if (member != null) {
-			getSecurityService().removeAuthorityFromGroup(member.getUser(), getParticipantsGroup(member.getCourse()));
+			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+
+			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
 		}
 	}
@@ -395,20 +412,26 @@ public class CourseServiceImpl extends CourseServiceBase {
 		while (i.hasNext()) {
 			member = i.next();
 			if (member.getMemberType() == CourseMemberType.ASPIRANT) {
-				getCourseMemberDao().remove(member.getId());
+				getCourseMemberDao().remove(member);
 			}
 		}
 	}
 
 	@Override
-	protected void handleRejectAspirant(Long memberId) throws Exception {
-		CourseMember member = getCourseMemberDao().load(memberId);
-		removeMember(memberId);
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("coursename", "" + member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")");
-		getMessageService().sendMessage(member.getCourse().getName() + "(" + member.getCourse().getShortcut() + ")",
-				"course.application.subject", "courseapplicationreject", parameters,
-				getSecurityService().getUser(member.getUser().getId()));
+	protected void handleRejectAspirant(CourseMemberInfo memberInfo) throws Exception {
+		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
+		if (member != null) {
+			removeMember(memberInfo);
+			Map<String, String> parameters = new HashMap<String, String>();
+			
+			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+			
+			parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
+			getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
+					"course.application.subject", "courseapplicationreject", parameters,
+					getSecurityService().getUser(user.getId()));
+		}
 	}
 
 	@Override
@@ -434,7 +457,11 @@ public class CourseServiceImpl extends CourseServiceBase {
 		assistant.setMemberType(CourseMemberType.ASSISTANT);
 		
 		getCourseMemberDao().create(assistant);
-		getSecurityService().setPermissions(assistant.getUser(), assistant.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
+		
+		course = assistant.getCourseMemberPk().getCourse();
+		user = assistant.getCourseMemberPk().getUser();
+		
+		getSecurityService().setPermissions(user, course, LectureAclEntry.INSTITUTE_TUTOR);
 	}
 
 	@Override
@@ -511,9 +538,21 @@ public class CourseServiceImpl extends CourseServiceBase {
 	}
 
 	@Override
-	protected CourseMemberInfo handleGetMemberInfo(CourseInfo course, UserInfo user) throws Exception {
-		return (CourseMemberInfo) getCourseMemberDao().findByUserAndCourse(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				getSecurityService().getUserObject(user), getCourseDao().courseInfoToEntity(course));
+	protected CourseMemberInfo handleGetMemberInfo(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		Course course = getCourseDao().courseInfoToEntity(courseInfo);
+		User user = getSecurityService().getUserObject(userInfo);
+		
+		CourseMemberPK pk = createPK(course, user);
+		
+		
+		return (CourseMemberInfo) getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,	pk);
+	}
+
+	private CourseMemberPK createPK(Course course, User user) {
+		CourseMemberPK pk = new CourseMemberPK();
+		pk.setCourse(course);
+		pk.setUser(user);
+		return pk;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -564,7 +603,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	}
 
 	private void persistCourseMember(CourseMember member) {
-		if (member.getId() == null) {
+		if (member.getCourseMemberPk() == null) {
 			getCourseMemberDao().create(member);
 		} else {
 			getCourseMemberDao().update(member);
@@ -574,20 +613,19 @@ public class CourseServiceImpl extends CourseServiceBase {
 	private void persistParticipantWithPermissions(CourseMember participant) {
 		participant.setMemberType(CourseMemberType.PARTICIPANT);
 		persistCourseMember(participant);
-		getSecurityService().addAuthorityToGroup(participant.getUser(), getParticipantsGroup(participant.getCourse()));
-		getSecurityService().saveUser(participant.getUser());
+		getSecurityService().addAuthorityToGroup(participant.getCourseMemberPk().getUser(), getParticipantsGroup(participant.getCourseMemberPk().getCourse()));
+		getSecurityService().saveUser(participant.getCourseMemberPk().getUser());
 	}
 
 	private CourseMember retrieveCourseMember(Course course, User user) {
-		CourseMember member = getCourseMemberDao().findByUserAndCourse(user, course);
+		CourseMember member = getCourseMemberDao().load(createPK(course,user));
 		if (member == null) {
 			member = CourseMember.Factory.newInstance();
 			course = getCourseDao().load(course.getId());
 			UserInfo userInfo = new UserInfo();
 			userInfo.setId(user.getId());
 			user = getSecurityService().getUserObject(userInfo);
-			member.setCourse(course);
-			member.setUser(user);
+			member.setCourseMemberPk(createPK(course,user));
 		}
 		return member;
 	}
