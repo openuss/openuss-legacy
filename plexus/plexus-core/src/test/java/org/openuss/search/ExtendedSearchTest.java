@@ -1,11 +1,7 @@
 package org.openuss.search;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.openuss.TestUtility;
 import org.openuss.lecture.LectureSearchQuery;
-import org.openuss.lecture.University;
 import org.openuss.lecture.UniversityService;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
@@ -17,19 +13,20 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
  */
 public class ExtendedSearchTest extends AbstractTransactionalDataSourceSpringContextTests {
 
-	private static final Logger logger = Logger.getLogger(ExtendedSearchTest.class);
+//	private static final Logger logger = Logger.getLogger(ExtendedSearchTest.class);
 	
 	private TestUtility testUtility;
-	private University university;
-	private String universityName;
+//	private University university;
+//	private String universityName;
 	private LectureSearchQuery lectureSearchQuery;
 	private UniversityService universityService;
-	private List<DomainResult> hits;
+//	private List<DomainResult> hits;
 	
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
-		university = testUtility.createUniqueUniversityInDB();
+//		university = 
+			testUtility.createUniqueUniversityInDB();
 	}
 	
 	
