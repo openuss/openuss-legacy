@@ -160,10 +160,7 @@ declare variable permissionid bigint;
 begin
     for select id from lecture_course into :courseid do
     begin
-        execute statement 'SELECT NEXT VALUE FOR GLOBAL_SEQUENCE FROM RDB$DATABASE'
-        into :permissionid;
-
-        insert into security_permission select :permissionid, 1040, :courseid, c2g.groups_fk
+        insert into security_permission select gen_id(GLOBAL_SEQUENCE, 1), 1040, :courseid, c2g.groups_fk
         from courses2groups c2g
         where c2g.courses_fk = :courseid;
      end
@@ -173,6 +170,38 @@ execute procedure add_coursegroup_permissions;
 drop procedure add_coursegroup_permissions;
 
 drop procedure create_groups;
+
+-- Migration of course_member to lecture_course_member
+
+/* Create Table... */
+CREATE TABLE LECTURE_COURSE_MEMBER(
+	COURSE_ID BIGINT NOT NULL,
+	USER_ID BIGINT NOT NULL,
+	MEMBER_TYPE INTEGER NOT NULL);
+
+ALTER TABLE LECTURE_COURSE_MEMBER ADD PRIMARY KEY (COURSE_ID, USER_ID);
+ALTER TABLE LECTURE_COURSE_MEMBER ADD CONSTRAINT FK_COURSE_MEMBER_COURSE FOREIGN KEY (COURSE_ID) REFERENCES LECTURE_COURSE (ID);
+ALTER TABLE LECTURE_COURSE_MEMBER ADD CONSTRAINT FK_COURSE_MEMBER_USER FOREIGN KEY (USER_ID) REFERENCES SECURITY_USER (ID);
+
+-- INSERT old COURSE_MEMBERS into new table
+-- if double entries take the highest membership of assist, participant, or aspirant.
+
+INSERT INTO LECTURE_COURSE_MEMBER (COURSE_ID, USER_ID, MEMBER_TYPE)
+SELECT  DISTINCT
+  COURSE_FK course_id,
+  USER_FK user_id,
+  (SELECT min(MEMBER_TYPE)
+   FROM course_member c
+   WHERE c.course_fk = m.course_fk and c.user_fk = m.user_fk) member_type
+FROM
+  COURSE_MEMBER m;
+
+ALTER TABLE COURSE_MEMBER DROP CONSTRAINT COURSE_MEMBER_USER_FKC;
+
+ALTER TABLE COURSE_MEMBER DROP CONSTRAINT COURSE_MEMBER_COURSE_FKC;
+
+
+DROP TABLE COURSE_MEMBER;
 
 -- Migration of collaboration extensions
 
