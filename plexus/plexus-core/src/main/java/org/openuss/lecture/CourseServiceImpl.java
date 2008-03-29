@@ -50,7 +50,9 @@ public class CourseServiceImpl extends CourseServiceBase {
 		course.setEnabled(true);
 		
 		// Define default values
-		course.setAccessType(AccessType.CLOSED);
+		if (course.getAccessType() == null) {
+			course.setAccessType(AccessType.CLOSED);
+		}
 		course.setDocuments(true);
 		course.setNewsletter(true);
 		course.setDiscussion(true);
@@ -82,7 +84,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 		course.setGroups(groups);
 		getCourseDao().update(course);
 
-		defineCourseSecuritySettings(course, participantsGroup);
+		getSecurityService().setPermissions(participantsGroup, course, LectureAclEntry.COURSE_PARTICIPANT);
+		updateAccessTypePermission(course);
 
 		getEventPublisher().publishEvent(new CourseCreatedEvent(course));
 
@@ -172,29 +175,6 @@ public class CourseServiceImpl extends CourseServiceBase {
 	protected CourseInfo handleFindCourse(Long courseId) {
 		Validate.notNull(courseId, "CourseId cannot be null.");
 		return (CourseInfo) this.getCourseDao().load(CourseDao.TRANSFORM_COURSEINFO, courseId);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List handleFindAllCoursesByInstitute(Long instituteId) throws Exception {
-		Validate.notNull(instituteId, "InstituteId cannot be null.");
-		Institute institute = this.getInstituteDao().load(instituteId);
-		Validate.notNull(institute, "No institute could be found with the instituteId " + instituteId);
-
-		List<CourseInfo> courses = new ArrayList<CourseInfo>();
-		Iterator iter = institute.getCourseTypes().iterator();
-		while (iter.hasNext()) {
-			CourseType courseType = (CourseType) iter.next();
-			courses.addAll(this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType));
-			/*
-			 * Iterator courseIter = courseType.getCourses().iterator(); while
-			 * (courseIter.hasNext()) { Course course = (Course)
-			 * courseIter.next();
-			 * courses.add(this.getCourseDao().toCourseInfo(course)); }
-			 */
-		}
-
-		return courses;
 	}
 
 	@SuppressWarnings( { "unchecked" })
@@ -334,341 +314,27 @@ public class CourseServiceImpl extends CourseServiceBase {
 		return courseInfos;
 	}
 
-	@Override
-	protected boolean handleIsNoneExistingCourseShortcut(CourseInfo self, String shortcut) {
-		logger.error("IsNoneExistingCourseShortcut is called!");
-		Course found = getCourseDao().findByShortcut(shortcut);
-		CourseInfo foundInfo = null;
-		if (found != null) {
-			foundInfo = this.getCourseDao().toCourseInfo(found);
-		}
-		return isEqualOrNull(self, foundInfo);
-	}
-
-	/**
-	 * @see org.openuss.lecture.CourseService#getAspirants(org.openuss.lecture.Course)
-	 */
-	@SuppressWarnings("unchecked")
-	protected List<CourseMemberInfo> handleGetAspirants(final Course course) {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
-				CourseMemberType.ASPIRANT);
-	}
-
-	/**
-	 * @see org.openuss.lecture.CourseService#getParticipants(org.openuss.lecture.Course)
-	 */
-	@SuppressWarnings( { "unchecked" })
-	protected List<CourseMemberInfo> handleGetParticipants(Course course) {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course,
-				CourseMemberType.PARTICIPANT);
-	}
-
-	@Override
-	protected void handleAcceptAspirant(CourseMemberInfo memberInfo) throws Exception {
-		CourseMemberPK pk = memberInfoToPK(memberInfo);
-		
-		
-		CourseMember member = getCourseMemberDao().load(pk);
-		if (member.getMemberType() == CourseMemberType.ASPIRANT) {
-			persistParticipantWithPermissions(member);
-		}
-		Map<String, String> parameters = new HashMap<String, String>();
-		
-		Course course = member.getCourseMemberPk().getCourse();
-		User user = member.getCourseMemberPk().getUser();
-		
-		parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
-		getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
-				"course.application.subject", "courseapplicationapply", parameters,
-				getSecurityService().getUser(user.getId()));
-	}
-
-	private CourseMemberPK memberInfoToPK(CourseMemberInfo memberInfo) {
-		CourseMemberPK pk = new CourseMemberPK();
-		pk.setCourse(Course.Factory.newInstance(memberInfo.getCourseId()));
-		pk.setUser(User.Factory.newInstance(memberInfo.getUserId()));
-		return pk;
-	}
-
-	@Override
-	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
-		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
-		if (member != null) {
-			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
-
-			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
-			getCourseMemberDao().remove(member);
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleRemoveAspirants(CourseInfo course) throws Exception {
-		Course courseDao = getCourseDao().load(course.getId());
-		List<CourseMember> members = getCourseMemberDao().findByCourse(courseDao);
-		Iterator<CourseMember> i = members.iterator();
-		CourseMember member;
-		while (i.hasNext()) {
-			member = i.next();
-			if (member.getMemberType() == CourseMemberType.ASPIRANT) {
-				getCourseMemberDao().remove(member);
-			}
+	protected List handleFindAllCoursesByInstitute(Long instituteId) throws Exception {
+		Validate.notNull(instituteId, "InstituteId cannot be null.");
+		Institute institute = this.getInstituteDao().load(instituteId);
+		Validate.notNull(institute, "No institute could be found with the instituteId " + instituteId);
+	
+		List<CourseInfo> courses = new ArrayList<CourseInfo>();
+		Iterator iter = institute.getCourseTypes().iterator();
+		while (iter.hasNext()) {
+			CourseType courseType = (CourseType) iter.next();
+			courses.addAll(this.getCourseDao().findByCourseType(CourseDao.TRANSFORM_COURSEINFO, courseType));
+			/*
+			 * Iterator courseIter = courseType.getCourses().iterator(); while
+			 * (courseIter.hasNext()) { Course course = (Course)
+			 * courseIter.next();
+			 * courses.add(this.getCourseDao().toCourseInfo(course)); }
+			 */
 		}
-	}
-
-	@Override
-	protected void handleRejectAspirant(CourseMemberInfo memberInfo) throws Exception {
-		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
-		if (member != null) {
-			removeMember(memberInfo);
-			Map<String, String> parameters = new HashMap<String, String>();
-			
-			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
-			
-			parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
-			getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
-					"course.application.subject", "courseapplicationreject", parameters,
-					getSecurityService().getUser(user.getId()));
-		}
-	}
-
-	@Override
-	protected void handleAddAspirant(CourseInfo course, UserInfo user) throws Exception {
-		CourseMember aspirant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService()
-				.getUserObject(user));
-		aspirant.setMemberType(CourseMemberType.ASPIRANT);
-		getCourseMemberDao().create(aspirant);
-	}
-
-	@Override
-	protected void handleAddAssistant(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
-		Validate.notNull(courseInfo, "Parameter course must not be null");
-		Validate.notNull(userInfo, "Parameter user must not be null");
-		User user = getSecurityService().getUserObject(userInfo);
-		Course course = getCourseDao().load(courseInfo.getId());
-
-		if (course == null || user == null) {
-			throw new CourseServiceException("course_user_not_found");
-		}
-		
-		CourseMember assistant = retrieveCourseMember(course, user);
-		assistant.setMemberType(CourseMemberType.ASSISTANT);
-		
-		getCourseMemberDao().create(assistant);
-		
-		course = assistant.getCourseMemberPk().getCourse();
-		user = assistant.getCourseMemberPk().getUser();
-		
-		getSecurityService().setPermissions(user, course, LectureAclEntry.INSTITUTE_TUTOR);
-	}
-
-	@Override
-	protected void handleAddParticipant(CourseInfo course, UserInfo user) throws Exception {
-		CourseMember participant = retrieveCourseMember(getCourseDao().courseInfoToEntity(course), getSecurityService()
-				.getUserObject(user));
-		persistParticipantWithPermissions(participant);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void handleApplyUser(Long courseId, Long userId) throws Exception {
-		handleApplyUser(courseId, userId, null);
-	}
-
-	@Override
-	protected void handleApplyUser(Long courseId, Long userId, String password) throws Exception {
-		Validate.notNull(courseId, "Parameter courseId must not be null");
-		Validate.notNull(userId, "Parameter userId must not be null");
-		
-		Course course = getCourseDao().load(courseId);
-		User user = getSecurityService().getUserObject(userId);
-		
-		if (course == null || user == null) {
-			throw new CourseServiceException("Course not found with id "+courseId);
-		}
-		
-		if (course.getAccessType() == AccessType.OPEN) {
-			addParticipant(course, user);
-		} else if (course.getAccessType() == AccessType.PASSWORD ) {
-			if (course.getAccessType() == AccessType.PASSWORD && course.isPasswordCorrect(password)) {
-				addParticipant(course, user);
-			} else {
-				throw new CourseApplicationException("message_error_password_is_not_correct");
-			}
-		} else if (course.getAccessType() == AccessType.APPLICATION) {
-			sendApplicationNotificationToAssistants(course);
-			addAspirant(course, user);
-		} else {
-			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
-		}
-
-	}
-
-	private void sendApplicationNotificationToAssistants(Course course) {
-		List<CourseMemberInfo> assistants = getAssistants(course);
-		List<User> recipients = new ArrayList<User>();
-		if (assistants != null && !assistants.isEmpty()) {
-			for (CourseMemberInfo member : assistants) {
-				recipients.add(getSecurityService().getUserObject(member.getUserId()));
-			}
-			String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
-			link += "/views/secured/course/courseaspirants.faces?course=" + course.getId();
-			Map<String, String> parameters = new HashMap<String, String>();
-			parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
-			parameters.put("courseapplicantlink", link);
-			getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication", parameters, recipients);
-		}
-	}
-
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List<CourseMemberInfo> handleGetAspirants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASPIRANT);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List<CourseMemberInfo> handleGetAssistants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASSISTANT);
-	}
-
-	@Override
-	protected CourseMemberInfo handleGetMemberInfo(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
-		Course course = getCourseDao().courseInfoToEntity(courseInfo);
-		User user = getSecurityService().getUserObject(userInfo);
-		
-		CourseMemberPK pk = createPK(course, user);
-		
-		
-		return (CourseMemberInfo) getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,	pk);
-	}
-
-	private CourseMemberPK createPK(Course course, User user) {
-		CourseMemberPK pk = new CourseMemberPK();
-		pk.setCourse(course);
-		pk.setUser(user);
-		return pk;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected List<CourseMemberInfo> handleGetParticipants(CourseInfo course) throws Exception {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
-				getCourseDao().courseInfoToEntity(course), CourseMemberType.PARTICIPANT);
-	}
-
-	/**
-	 * Add aspirant to course
-	 */
-	private void addAspirant(Course course, User user) throws Exception {
-		CourseMember aspirant = retrieveCourseMember(course, user);
-		aspirant.setMemberType(CourseMemberType.ASPIRANT);
-		persistCourseMember(aspirant);
-	}
-
-	/**
-	 * Add participant to course
-	 */
-	private void addParticipant(Course course, User user) throws Exception {
-		CourseMember participant = retrieveCourseMember(course, user);
-		persistParticipantWithPermissions(participant);
-	}
-
-	private void defineCourseSecuritySettings(Course courseEntity, Group participantsGroup) {
-		getSecurityService().setPermissions(participantsGroup, courseEntity, LectureAclEntry.COURSE_PARTICIPANT);
-		updateAccessTypePermission(courseEntity);
-	}
-
-	/**
-	 * @see org.openuss.lecture.CourseService#getAssistants(org.openuss.lecture.Course)
-	 */
-	@SuppressWarnings("unchecked")
-	private List<CourseMemberInfo> getAssistants(final Course course) {
-		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course, CourseMemberType.ASSISTANT);
-	}
-
-	private Group getParticipantsGroup(Course course) {
-		Set<Group> groups = course.getGroups();
-		for (Group group : groups) {
-			if (group.getName().contains("PARTICIPANTS")) {
-				return group;
-			}
-		}
-		return null;
-	}
-
-	private void persistCourseMember(CourseMember member) {
-		if (member.getCourseMemberPk() == null) {
-			getCourseMemberDao().create(member);
-		} else {
-			getCourseMemberDao().update(member);
-		}
-	}
-
-	private void persistParticipantWithPermissions(CourseMember participant) {
-		participant.setMemberType(CourseMemberType.PARTICIPANT);
-		persistCourseMember(participant);
-		getSecurityService().addAuthorityToGroup(participant.getCourseMemberPk().getUser(), getParticipantsGroup(participant.getCourseMemberPk().getCourse()));
-		getSecurityService().saveUser(participant.getCourseMemberPk().getUser());
-	}
-
-	private CourseMember retrieveCourseMember(Course course, User user) {
-		CourseMember member = getCourseMemberDao().load(createPK(course,user));
-		if (member == null) {
-			member = CourseMember.Factory.newInstance();
-			course = getCourseDao().load(course.getId());
-			UserInfo userInfo = new UserInfo();
-			userInfo.setId(user.getId());
-			user = getSecurityService().getUserObject(userInfo);
-			member.setCourseMemberPk(createPK(course,user));
-		}
-		return member;
-	}
-
-	private void updateAccessTypePermission(Course course) {
-		logger.debug("changing course " + course.getName() + " (" + course.getId() + ") to " + course.getAccessType());
-		Group group = getParticipantsGroup(course);
-		if (course.getAccessType() == AccessType.ANONYMOUS) {
-			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.READ);
-		} else {
-			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
-		}
-
-		if (course.getAccessType() == AccessType.OPEN || course.getAccessType() == AccessType.ANONYMOUS) {
-			getSecurityService().addAuthorityToGroup(Roles.USER, group);
-		} else {
-			getSecurityService().removeAuthorityFromGroup(Roles.USER, group);
-		}
-	}
-
-	/**
-	 * Convenience method for isNonExisting methods.<br/> Checks whether or not
-	 * the found record is equal to self entry.
-	 * <ul>
-	 * <li>self == null AND found == null => <b>true</b></li>
-	 * <li>self == null AND found <> null => <b>false</b></li>
-	 * <li>self <> null AND found == null => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
-	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
-	 * </ul>
-	 * 
-	 * @param self
-	 *            current record
-	 * @param found
-	 *            in database
-	 * @return true or false
-	 */
-	private boolean isEqualOrNull(Object self, Object found) {
-		if (self == null || found == null) {
-			return found == null;
-		} else {
-			return self.equals(found);
-		}
+	
+		return courses;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -680,7 +346,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(onlyEnabled, "onlyEnabled cannot be null.");
 		final Department department = getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
-
+	
 		final List<CourseInfo> courseList = new ArrayList<CourseInfo>();
 		final List<InstituteInfo> instituteInfos = new ArrayList<InstituteInfo>();
 		for (Institute institute : department.getInstitutes()) {
@@ -708,7 +374,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 		Validate.notNull(departmentId, "departmentId cannot be null.");
 		final Department department = this.getDepartmentDao().load(departmentId);
 		Validate.notNull(department, "No department could be found with the departmentId " + departmentId);
-
+	
 		final List<CourseInfo> courseList = new ArrayList<CourseInfo>();
 		final List<InstituteInfo> instituteInfos = new ArrayList<InstituteInfo>();
 		for (Institute institute : department.getInstitutes()) {
@@ -720,5 +386,337 @@ public class CourseServiceImpl extends CourseServiceBase {
 		}
 		
 		return courseList;
+	}
+
+	@Override
+	protected boolean handleIsNoneExistingCourseShortcut(CourseInfo self, String shortcut) {
+		logger.error("IsNoneExistingCourseShortcut is called!");
+		Course found = getCourseDao().findByShortcut(shortcut);
+		CourseInfo foundInfo = null;
+		if (found != null) {
+			foundInfo = this.getCourseDao().toCourseInfo(found);
+		}
+		return isEqualOrNull(self, foundInfo);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<CourseMemberInfo> handleGetAspirants(CourseInfo course) throws Exception {
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASPIRANT);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<CourseMemberInfo> handleGetAssistants(CourseInfo course) throws Exception {
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.ASSISTANT);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<CourseMemberInfo> handleGetParticipants(CourseInfo course) throws Exception {
+		return getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,
+				getCourseDao().courseInfoToEntity(course), CourseMemberType.PARTICIPANT);
+	}
+
+	@Override
+	protected CourseMemberInfo handleGetMemberInfo(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		Course course = getCourseDao().courseInfoToEntity(courseInfo);
+		User user = getSecurityService().getUserObject(userInfo);
+		
+		CourseMemberPK pk = createMemberPk(course, user);
+		
+		
+		return (CourseMemberInfo) getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,	pk);
+	}
+
+	@Override
+	protected void handleAcceptAspirant(CourseMemberInfo memberInfo) throws Exception {
+		CourseMemberPK pk = memberInfoToPK(memberInfo);
+		
+		CourseMember member = getCourseMemberDao().load(pk);
+		if (member.getMemberType() == CourseMemberType.ASPIRANT) {
+			member.setMemberType(CourseMemberType.PARTICIPANT);
+			getCourseMemberDao().update(member);
+			defineParticipantsPermission(member);
+		
+			Map<String, String> parameters = new HashMap<String, String>();
+			
+			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+			UserInfo userInfo = new UserInfo();
+			userInfo.setId(user.getId());
+			
+			parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
+			getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
+					"course.application.subject", "courseapplicationapply", parameters, userInfo);
+		}
+	}
+
+	@Override
+	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
+		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
+		if (member != null) {
+			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+
+			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
+			getCourseMemberDao().remove(member);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void handleRemoveAspirants(CourseInfo courseInfo) throws Exception {
+		Course course = retrieveCourse(courseInfo);
+		List<CourseMember> members = getCourseMemberDao().findByType(course, CourseMemberType.ASPIRANT);
+		getCourseMemberDao().remove(members);
+	}
+
+	@Override
+	protected void handleRejectAspirant(CourseMemberInfo memberInfo) throws Exception {
+		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
+		if (member != null) {
+			removeMember(memberInfo);
+			Map<String, String> parameters = new HashMap<String, String>();
+			
+			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+			UserInfo userInfo = new UserInfo();
+			userInfo.setId(user.getId());
+			
+			parameters.put("coursename", "" + course.getName() + "(" + course.getShortcut() + ")");
+			getMessageService().sendMessage(course.getName() + "(" + course.getShortcut() + ")",
+					"course.application.subject", "courseapplicationreject", parameters, userInfo);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void handleApplyUser(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		handleApplyUser(courseInfo, userInfo, null);
+	}
+
+	@Override
+	protected void handleApplyUser(CourseInfo courseInfo, UserInfo userInfo, String password) throws Exception {
+		Course course = retrieveCourse(courseInfo);
+		User user = retrieveUser(userInfo);
+	
+		if (course.getAccessType() == AccessType.OPEN) {
+			addCourseMember(course, user, CourseMemberType.PARTICIPANT);
+		} else if (course.getAccessType() == AccessType.PASSWORD ) {
+			if (course.getAccessType() == AccessType.PASSWORD && course.isPasswordCorrect(password)) {
+				addCourseMember(course, user, CourseMemberType.PARTICIPANT);
+			} else {
+				throw new CourseApplicationException("message_error_password_is_not_correct");
+			}
+		} else if (course.getAccessType() == AccessType.APPLICATION) {
+			addCourseMember(course, user, CourseMemberType.ASPIRANT);
+			sendApplicationNotificationToAssistants(course);
+		} else {
+			throw new CourseApplicationException("message_error_course_accesstype_is_not_application");
+		}
+	}
+
+	@Override
+	protected void handleAddAspirant(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		addCourseMember(retrieveCourse(courseInfo), retrieveUser(userInfo), CourseMemberType.ASPIRANT);		
+	}
+
+	@Override
+	protected void handleAddAssistant(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		addCourseMember(retrieveCourse(courseInfo), retrieveUser(userInfo), CourseMemberType.ASSISTANT);
+	}
+
+	@Override
+	protected void handleAddParticipant(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
+		addCourseMember(retrieveCourse(courseInfo), retrieveUser(userInfo), CourseMemberType.PARTICIPANT);
+	}
+	
+	/**
+	 * Create a course member and define needed permissions.
+	 * @param course - Course entity
+	 * @param user - User entity 
+	 * @param type - CourseMemberType
+	 * @return CourseMember entity
+	 */
+	private CourseMember addCourseMember(Course course, User user, CourseMemberType type) {
+		CourseMember member = persistCourseMember(course, user, type);
+		if (CourseMemberType.ASSISTANT == type) {
+			CourseMemberPK pk = member.getCourseMemberPk();
+			getSecurityService().setPermissions(pk.getUser(), pk.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
+		} else if (CourseMemberType.PARTICIPANT == type) {
+			defineParticipantsPermission(member);
+		}
+		return member;
+	}
+
+	/**
+	 * Create a CourseMemberPK from Course and User entities
+	 * @param course
+	 * @param user
+	 * @return CourseMemberPK
+	 */
+	private CourseMemberPK createMemberPk(Course course, User user) {
+		CourseMemberPK pk = new CourseMemberPK();
+		pk.setCourse(course);
+		pk.setUser(user);
+		return pk;
+	}
+
+	/**
+	 * Define the permissions for a new participant.
+	 * @param participant - CourseMember entity
+	 */
+	private void defineParticipantsPermission(CourseMember participant) {
+		CourseMemberPK pk = participant.getCourseMemberPk();
+		getSecurityService().addAuthorityToGroup(pk.getUser(), getParticipantsGroup(pk.getCourse()));
+		getSecurityService().saveUser(participant.getCourseMemberPk().getUser());
+	}
+
+	/**
+	 * Retrieve Group of Participants
+	 * @param course - ntity of course
+	 * @return Group if group exists or null
+	 */
+	private Group getParticipantsGroup(Course course) {
+		Set<Group> groups = course.getGroups();
+		for (Group group : groups) {
+			if (group.getName().contains("PARTICIPANTS")) {
+				return group;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Convenience method for isNonExisting methods.<br/> Checks whether or not
+	 * the found record is equal to self entry.
+	 * <ul>
+	 * <li>self == null AND found == null => <b>true</b></li>
+	 * <li>self == null AND found <> null => <b>false</b></li>
+	 * <li>self <> null AND found == null => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self == found => <b>true</b></li>
+	 * <li>self <> null AND found <> null AND self <> found => <b>false</b></li>
+	 * </ul>
+	 * 
+	 * @param self
+	 *            current record
+	 * @param found
+	 *            in database
+	 * @return true or false
+	 */
+	private boolean isEqualOrNull(Object self, Object found) {
+		if (self == null || found == null) {
+			return found == null;
+		} else {
+			return self.equals(found);
+		}
+	}
+
+	/**
+	 * Transform MemberInfo into CourseMemberPK
+	 * @param memberInfo
+	 * @return CourseMemberPK
+	 */
+	private CourseMemberPK memberInfoToPK(CourseMemberInfo memberInfo) {
+		CourseMemberPK pk = new CourseMemberPK();
+		pk.setCourse(Course.Factory.newInstance(memberInfo.getCourseId()));
+		pk.setUser(User.Factory.newInstance(memberInfo.getUserId()));
+		return pk;
+	}
+
+	/**
+	 * This method persist the course member based on user, course, and type.
+	 * If the user is already a member of the course,  the membership will be updated. 
+	 * Otherwise a new membership entity will be created.
+	 * 
+	 * @param user - User entity
+	 * @param course - Course entity
+	 * @param memberType - type of membership
+	 * @return CourseMember 
+	 */
+	private CourseMember persistCourseMember(Course course, User user, CourseMemberType memberType) {
+		CourseMember member = getCourseMemberDao().load(createMemberPk(course,user));
+		if (member == null) {
+			member = CourseMember.Factory.newInstance();
+			member.setCourseMemberPk(createMemberPk(course,user));
+			member.setMemberType(memberType);
+			getCourseMemberDao().create(member);
+		} else {
+			member.setMemberType(memberType);
+			getCourseMemberDao().update(member);
+		}
+		return member;
+	}
+
+	/**
+	 * Convert CourseInfo into course entity.
+	 * @param courseInfo
+	 * @return Course 
+	 */
+	private Course retrieveCourse(CourseInfo courseInfo) {
+		Validate.notNull(courseInfo, "Parameter courseInfo must not be null");
+		Validate.notNull(courseInfo.getId(), "Parameter courseInfo must contain a valid id");
+		Course course = getCourseDao().load(courseInfo.getId());
+		if (course == null) {
+			throw new CourseServiceException("course_not_found");
+		}
+		return course;
+	}
+
+	/**
+	 * Convert UserInfo into user entity.
+	 * @param userInfo
+	 * @return User
+	 */
+	private User retrieveUser(UserInfo userInfo) {
+		Validate.notNull(userInfo, "Parameter userInfo must not be null");
+		Validate.notNull(userInfo.getId(), "Parameter userInfo must contain a valid id");
+		User user = getSecurityService().getUserObject(userInfo);
+		if (user == null) {
+			throw new CourseServiceException("user_not_found");
+		}
+		return user;
+	}
+
+
+	private void sendApplicationNotificationToAssistants(Course course) {
+		List<CourseMemberInfo> assistants = getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course, CourseMemberType.ASSISTANT);
+		List<User> recipients = new ArrayList<User>();
+		if (assistants != null && !assistants.isEmpty()) {
+			for (CourseMemberInfo member : assistants) {
+				recipients.add(getSecurityService().getUserObject(member.getUserId()));
+			}
+			String link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+			link += "/views/secured/course/courseaspirants.faces?course=" + course.getId();
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("coursename", course.getName() + "(" + course.getShortcut() + ")");
+			parameters.put("courseapplicantlink", link);
+			getMessageService().sendMessage(course.getName(), "course.application.subject", "courseapplication", parameters, recipients);
+		}
+	}
+
+
+	/**
+	 * Update access type permission of course. After changing the access type of a course, 
+	 * this method will update the permission settings of the course.  
+	 * @param course - entity
+	 */
+	private void updateAccessTypePermission(Course course) {
+		logger.debug("changing course " + course.getName() + " (" + course.getId() + ") to " + course.getAccessType());
+		Group group = getParticipantsGroup(course);
+		if (course.getAccessType() == AccessType.ANONYMOUS) {
+			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.READ);
+		} else {
+			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
+		}
+
+		if (course.getAccessType() == AccessType.OPEN || course.getAccessType() == AccessType.ANONYMOUS) {
+			getSecurityService().addAuthorityToGroup(Roles.USER, group);
+		} else {
+			getSecurityService().removeAuthorityFromGroup(Roles.USER, group);
+		}
 	}
 }

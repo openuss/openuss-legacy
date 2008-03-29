@@ -13,6 +13,7 @@ import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 
 /**
  * JUnit Test for Spring Hibernate CourseService class.
@@ -262,7 +263,11 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 
 	public void testRejectAspirant() {
-		courseService.applyUser(courseInfo.getId(), user.getId());
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(user.getId());
+		
+		courseService.applyUser(courseInfo, userInfo);
+		flush();
 		
 		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
 		assertEquals(1, aspirants.size());

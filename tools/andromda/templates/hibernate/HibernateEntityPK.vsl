@@ -32,6 +32,8 @@ public class $primaryKeyType implements java.io.Serializable {
 
 #end
 #end
+## Do not generate identifier properties if using identifier ids.
+#if ($entity.identifierAssociationEnds.empty)
 #foreach ( $identifier in $entity.identifiers )
 #set ($typeName = $identifier.type.fullyQualifiedName)
     private $typeName $identifier.name;
@@ -50,6 +52,7 @@ $identifier.getDocumentation("     * ")
     }
 
 #end
+#end
     public boolean equals(Object object)
     {
         if (this == object)
@@ -67,8 +70,10 @@ $identifier.getDocumentation("     * ")
             .append(this.${associationEnd.otherEnd.getterName}(),that.${associationEnd.otherEnd.getterName}())
 #end
 #end
+#if ($entity.identifierAssociationEnds.empty)
 #foreach ( $identifier in $entity.identifiers )
             .append(this.${identifier.getterName}(), that.${identifier.getterName}())
+#end
 #end
             .isEquals();
     }
@@ -81,8 +86,10 @@ $identifier.getDocumentation("     * ")
             .append(${associationEnd.otherEnd.getterName}())
 #end
 #end
+#if ($entity.identifierAssociationEnds.empty)
 #foreach ( $identifier in $entity.identifiers )
             .append(${identifier.getterName}())    
+#end
 #end
             .toHashCode();
     }

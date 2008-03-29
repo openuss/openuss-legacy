@@ -5,6 +5,7 @@ import org.hibernate.ScrollableResults;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseMember;
 import org.openuss.lecture.CourseMemberDao;
+import org.openuss.lecture.CourseMemberPK;
 import org.openuss.lecture.CourseMemberType;
 import org.openuss.migration.legacy.dao.LegacyDao;
 import org.openuss.migration.legacy.domain.Enrollment2;
@@ -72,8 +73,10 @@ public class CourseMemberImport extends DefaultImport {
 
 	private void createMembership(Enrollmentaccesslist2 access, Course course, User user) {
 		CourseMember member = CourseMember.Factory.newInstance();
-		member.setCourse(course);
-		member.setUser(user);
+		CourseMemberPK pk = new CourseMemberPK();
+		pk.setCourse(course);
+		pk.setUser(user);
+		member.setCourseMemberPk(pk);
 		if (ImportUtil.toBoolean(access.getAccepted())) {
 			storePermission(course, user);
 			member.setMemberType(CourseMemberType.PARTICIPANT);

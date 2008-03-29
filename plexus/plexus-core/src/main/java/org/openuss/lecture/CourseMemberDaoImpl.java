@@ -91,6 +91,7 @@ public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 	 * @see org.openuss.lecture.CourseMemberDao#findByCourse(int,
 	 *      org.openuss.lecture.Course)
 	 */
+	@Override
 	public List findByCourse(final int transform, final Course course) {
 		return this.findByCourse(transform,	
 				"from org.openuss.lecture.CourseMember as courseMember where courseMember.courseMemberPk.course = ?", course);
@@ -100,6 +101,7 @@ public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 	 * @see org.openuss.lecture.CourseMemberDao#findByType(int,
 	 *      org.openuss.lecture.Course, org.openuss.lecture.CourseMemberType)
 	 */
+	@Override
 	public List findByType(final int transform, final Course course, final CourseMemberType memberType) {
 		return this
 				.findByType(

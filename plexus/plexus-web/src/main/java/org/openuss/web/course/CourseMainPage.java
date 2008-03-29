@@ -67,14 +67,14 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public String applyWithPassword() throws CourseApplicationException {
 		logger.debug("course entry with password applied");
-		courseService.applyUser(courseInfo.getId(), user.getId(), password);
+		courseService.applyUser(courseInfo, user, password);
 		addMessage(i18n("message_course_password_accepted"));
 		return Constants.SUCCESS;
 	}
 
 	public String apply() throws CourseApplicationException {
 		logger.debug("course entry applied");
-		courseService.applyUser(courseInfo.getId(), user.getId());
+		courseService.applyUser(courseInfo, user);
 		addMessage(i18n("message_course_send_application"));
 		return Constants.SUCCESS;
 	}
