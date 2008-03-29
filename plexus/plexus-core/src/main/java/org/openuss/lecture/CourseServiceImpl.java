@@ -422,12 +422,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 
 	@Override
 	protected CourseMemberInfo handleGetMemberInfo(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
-		Course course = getCourseDao().courseInfoToEntity(courseInfo);
-		User user = getSecurityService().getUserObject(userInfo);
-		
-		CourseMemberPK pk = createMemberPk(course, user);
-		
-		
+		CourseMemberPK pk = createMemberPk(retrieveCourse(courseInfo), retrieveUser(userInfo));
 		return (CourseMemberInfo) getCourseMemberDao().load(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO,	pk);
 	}
 
@@ -458,7 +453,9 @@ public class CourseServiceImpl extends CourseServiceBase {
 	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
 		if (member != null) {
-			Course course = member.getCourseMemberPk().getCourse();
+			// Hibernate doesn't load or proxy group association if course is loaded as composite key.
+			Course course = getCourseDao().load(member.getCourseMemberPk().getCourse().getId());
+//			Course course = member.getCourseMemberPk().getCourse();
 			User user = member.getCourseMemberPk().getUser();
 
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
