@@ -122,6 +122,7 @@ public class MyUniPage extends BasePage {
 			myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
 		} catch (Exception e) {
 			logger.error(e);
+			addError(i18n("message_error_no_desktop_found"));
 		}
 		// Load data into the list components
 		loadValuesForTabs(tabs);

@@ -1,4 +1,3 @@
-drop PROCEDURE delete_double_forumwatch;
 create procedure delete_double_forumwatch
 as
 declare variable userId bigint;
@@ -20,8 +19,31 @@ begin
      end
 end;
 execute procedure delete_double_forumwatch;
+drop PROCEDURE delete_double_forumwatch;
 
-drop PROCEDURE delete_double_subscriber;
+create procedure delete_double_topicwatch
+as
+declare variable userId bigint;
+declare variable topicId bigint;
+begin
+    for
+        SELECT userId, topicId
+        FROM (SELECT user_fk as userId, topic_fk as topicId, count(id) as total
+            FROM DISCUSSION_topicWATCH
+            GROUP BY user_fk, topic_fk) WHERE total > 1
+    into
+        :userId, :topicId do
+    begin
+        DELETE FROM DISCUSSION_topicWATCH WHERE user_fk = :userId and topic_fk = :topicId;
+
+        INSERT INTO DISCUSSION_topicWATCH
+            (ID, USER_FK, topic_FK)
+            VALUES (gen_id(GLOBAL_SEQUENCE,1),:userId,:topicId);
+     end
+end;
+execute procedure delete_double_topicwatch;
+drop PROCEDURE delete_double_topicwatch;
+
 create procedure delete_double_subscriber
 as
 declare variable userId bigint;
@@ -43,3 +65,4 @@ begin
      end
 end;
 execute procedure delete_double_subscriber;
+drop PROCEDURE delete_double_subscriber;
