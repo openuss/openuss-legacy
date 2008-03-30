@@ -37,22 +37,21 @@
   		
 			<h:form id="discussionThreadTableView" enctype="multipart/form-data">
 	  			<o:block label="#{msg.discussion_search}" styleClass="form_box">
-
 					<h:panelGrid border="0" columns="2" footerClass="footer_left">
 						<h:outputText value="#{msg.extended_search_search_term}" styleClass="field_label" style="vertical-align:top;" />
 					 	<h:inputText id="discussion_search_search_term" styleClass="field_inline" value="#{discussion_search_results.textToSearch}" />
 						
 						<h:outputText value=" "/>
-						<h:panelGrid border="0" columns="1">
-					 		<h:panelGroup>
-					 			<h:selectBooleanCheckbox id="discussion_search_title_only" value="#{discussion_search_results.titleOnly}"/>
-								<h:outputText value="#{msg.discussion_search_title_only}"/>
-								<t:htmlTag value="br" />
-					 			<h:selectBooleanCheckbox id="discussion_search_fuzzy_search" value="#{discussion_search_results.isFuzzy}"/>
-								<h:outputText value="#{msg.discussion_search_search_fuzzy}"/>								
-								<t:htmlTag value="br" />
-					 		</h:panelGroup>
-					 	</h:panelGrid>
+						<h:panelGroup>
+				 			<label class="field_label">
+				 				<h:selectBooleanCheckbox id="discussion_search_title_only" value="#{discussion_search_results.titleOnly}" styleClass="fieldCheckBox"/>
+								#{msg.discussion_search_title_only}
+							</label>
+							<label class="field_label">
+				 				<h:selectBooleanCheckbox id="discussion_search_fuzzy_search" value="#{discussion_search_results.fuzzy}" styleClass="fieldCheckBox"/>
+								#{msg.discussion_search_search_fuzzy}"
+							</label>								
+						</h:panelGroup>
 						
 						<h:outputText value="#{msg.discussion_search_and_or}" styleClass="field_label"/>
 						<h:panelGroup>
@@ -61,11 +60,7 @@
 
 						<h:outputText value="#{msg.discussion_search_submitter}" styleClass="field_label"/>	
 					 	<h:inputText id="discussion_search_submitter" styleClass="field_inline" value="#{discussion_search_results.submitter}"/>
-										
-						<h:outputText value=" "/>
-
 					</h:panelGrid>
-
 				</o:block>
 				
 				<o:block>

@@ -33,13 +33,9 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 
 	@Override
 	protected Query constructSearchQuery(String textToSearch) throws ParseException {
-		
 		QueryParser parser = new QueryParser(DomainIndexer.CONTENT, getTemplate().getAnalyzer());
-		// allows wildcards at the beginning of a search phrase
 		parser.setAllowLeadingWildcard(true);
-		
 		parser.setDefaultOperator(Operator.AND);
-		
 		return parser.parse(textToSearch);
 	}
 	

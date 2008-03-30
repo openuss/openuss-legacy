@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -71,7 +72,7 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 								discussionSearchResults.getTextToSearch(),
 								discussionSearchResults.getCourseInfo().getId(),
 								discussionSearchResults.isTitleOnly(),
-								discussionSearchResults.getIsFuzzy(),
+								discussionSearchResults.isFuzzy(),
 								discussionSearchResults.getSubmitter()
 							);
 							discussionSearchResults.setHits(searchResult);
@@ -82,7 +83,7 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 			} catch (LuceneSearchException ex) {
 				logger.error(ex);
 				// search index file is not available (maybe the index was not created)
-				if(ex.getCause().getClass().equals(FileNotFoundException.class)){
+				if (ex.getCause() instanceof FileNotFoundException) {
 					addError(i18n("search_error_index_not_found"));
 				// unspecified Lucene error
 				} else {
@@ -90,11 +91,11 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 				}
 			} catch (Exception ex){
 				logger.error(ex);
-				// too many search results
-				if(ex.toString().equals("org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024")){
+				if(ex instanceof BooleanQuery.TooManyClauses) {
+					// too many search results
 					addError(i18n("search_error_too_many_results"));
-				// unspecified error
 				} else {
+					// unspecified error
 					addError(i18n("search_text_error"));
 				}
 			}

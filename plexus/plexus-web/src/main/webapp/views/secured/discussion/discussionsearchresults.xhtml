@@ -14,7 +14,7 @@
 		<plexus:dataTable
 			id="discussion_search_result_table" label="#{msg.search_result_header}" 
 			value="views$secured$discussion$discussionsearch.resultProvider" var="result"
-			rendered="#{discussion_search_results.visibilityResultTable}"
+			rendered="#{not empty discussion_search_results.hits}"
 			columnClasses="col_min_center, col_max_left, col_min_left, col_max_left, col_max_left, col_min_left"
 			rows="20">
 
