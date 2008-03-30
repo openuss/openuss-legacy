@@ -12,26 +12,24 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
 
 /**
+ * @author Ingo Düppe
+ * 
  * @see org.openuss.lecture.Period
  */
 public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.openuss.lecture.Period {
-	/**
-	 * The serial version UID of this class. Needed for serialization.
-	 */
+
 	private static final long serialVersionUID = 9086031628022698697L;
 
 	@Override
 	public void add(Course course) {
 		Validate.notNull(course, "Period.add(Course) - course cannot be null");
 
-		if (!this.getCourses().contains(course)) {
-			this.getCourses().add(course);
-			course.setPeriod(this);
-		} else {
-			course.setPeriod(this);
-			throw new IllegalArgumentException(
-			"University.add(Course) - the Course has already been in the List");
-		}	
+		if (this.getCourses().contains(course)) {
+			throw new IllegalStateException("The Course has already been in the List.");
+		} 
+
+		this.getCourses().add(course);
+		course.setPeriod(this);
 	}
 
 	@Override
@@ -42,10 +40,7 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 	@Override 
 	public boolean isActive() {
 		Date now = new Date();
-		if (this.getStartdate().before((now)) && this.getEnddate().after(now))
-			return true;
-		else
-			return false;
+		return this.getStartdate().before(now) && this.getEnddate().after(now);
 	}
 
 	@Override
@@ -57,6 +52,4 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 	public void setStartdate(Date startdate) {
 		super.setStartdate(DateUtils.truncate(startdate, Calendar.DATE));
 	}
-	
-	
 }

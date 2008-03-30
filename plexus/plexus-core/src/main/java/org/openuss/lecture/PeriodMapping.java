@@ -8,7 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 
 /**
- * 
+ * This Methods generate a mapping between to collections of periods.
  * @author Ingo Dueppe
  */
 public class PeriodMapping {
