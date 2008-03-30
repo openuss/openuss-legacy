@@ -10,6 +10,6 @@ import org.openuss.search.DomainResult;
  */
 public interface LectureSearcher {
 	
-	public List<DomainResult> search(String textToSearch);
+	public List<DomainResult> search(String textToSearch, boolean fuzzy);
 
 }

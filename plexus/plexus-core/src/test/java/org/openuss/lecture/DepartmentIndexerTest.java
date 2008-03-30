@@ -45,7 +45,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.clas
 	public void testIndexingAndSearching() {
 		logger.debug("Method testIndexingAndSearching: Started");
 		
-		List<DomainResult> results = lectureSearcher.search(department.getDescription());
+		List<DomainResult> results = lectureSearcher.search(department.getDescription(), false);
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
@@ -61,7 +61,7 @@ private static final Logger logger = Logger.getLogger(DepartmentIndexerTest.clas
 		department.setDescription("test "+description+" test");
 		departmentIndexer.update();
 		
-		List<DomainResult> results = lectureSearcher.search(description);
+		List<DomainResult> results = lectureSearcher.search(description, false);
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
