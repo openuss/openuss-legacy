@@ -1291,4 +1291,34 @@ public class DesktopService2Impl extends DesktopService2Base {
 			
 		}
 	}
+
+
+
+	@Override
+	protected boolean handleIsSeminarpoolBookmarked(Long desktopId,
+			Long seminarpoolId) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void handleLinkSeminarpool(Long desktopId, Long seminarpoolId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleUnlinkAllFromSeminarpool(Long seminarpoolId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleUnlinkSeminarpool(Long desktopId, Long seminarpoolId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

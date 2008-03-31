@@ -6,6 +6,7 @@
 package org.openuss.desktop;
 
 import org.openuss.lecture.CourseType;
+import org.openuss.seminarpool.Seminarpool;
 
 /**
  * @see org.openuss.desktop.Desktop
@@ -67,6 +68,18 @@ public class DesktopImpl extends org.openuss.desktop.DesktopBase implements org.
 	@Override
 	public void unlinkCourseType(CourseType courseType) {
 		getCourseTypes().remove(courseType);
+	}
+
+	@Override
+	public void linkSeminarpool(Seminarpool seminarpool) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unlinkSeminarpool(Seminarpool seminarpool) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
