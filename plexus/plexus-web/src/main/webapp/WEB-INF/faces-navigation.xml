@@ -176,7 +176,34 @@
 			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
 		</navigation-case>
 		
-		
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	W e b D A V  - R u l e s
+ 	   - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<navigation-case>
+			<from-outcome>webdav_guide</from-outcome>
+			<to-view-id>/views/secured/webdav/guide.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_win_xp</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_winxp.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_win_vista</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_winvista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_kde</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_kde.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_gnome</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_gnome.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_mac</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_macosx.xhtml</to-view-id>
+		</navigation-case>
 		
 	</navigation-rule>
 	

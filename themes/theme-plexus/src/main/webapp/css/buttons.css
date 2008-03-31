@@ -702,6 +702,10 @@ ul.action_list li.register_department a span{
   background-image:url(../img/buttons/add_department_icon.png);
 }
 
+ul.action_list li.webdav_guide a span{
+  background-image:url(../img/buttons/webdav_guide.png);
+}
+
 ul.action_list li.wiki_create_new a span {
   background-image:url(../img/buttons/edit_icon.png);
 }
