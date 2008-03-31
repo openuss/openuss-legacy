@@ -1083,8 +1083,8 @@ p.header_font_normal,span.header_font_normal {
 
 .userphoto {
 	/*display: run-in;*/
-	width: 60px;
-	height: 60px;
+	max-width: 100px;
+	max-height: 100px;
 }
 
 .organisation_logo {
