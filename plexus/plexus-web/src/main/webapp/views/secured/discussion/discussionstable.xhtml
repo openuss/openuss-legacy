@@ -39,7 +39,11 @@
 		</t:column>
 		<t:column>
 			<plexus:commandSortHeader columnName="lastPost"> #{msg['discussion_main_column_lastentry']} </plexus:commandSortHeader>
-			<h:outputText value="#{topic.lastPost} - #{topic.lastPostSubmitterName}" />
+			<h:outputText id="sendDate" value="#{topic.lastPost}">
+				<f:convertDateTime type="both" dateStyle="medium" timeStyle="short" timeZone="#{visit.timeZone}"/>
+			</h:outputText>
+			<br />	
+			<h:outputText value="#{topic.lastPostSubmitterName}" />
 		</t:column>
 		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 			<t:column>

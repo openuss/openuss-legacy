@@ -196,7 +196,7 @@ public class LectureWebServiceImpl implements LectureWebService {
 
 		CourseMemberInfo member = courseService.getMemberInfo(course, user);
 		if (member != null) {
-			courseService.removeMember(member.getId());
+			courseService.removeMember(member);
 		}
 		return member != null;
 	}

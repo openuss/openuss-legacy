@@ -37,16 +37,19 @@ import org.springframework.beans.support.PropertyComparator;
  * @author Matthias Krieft
  * @author Christian Peters
  * @author Adrian Schmidt
+ * @author Ingo Düppe
  * 
  */
 @Bean(name = "views$public$department$allcoursesbydepartment", scope = Scope.REQUEST)
 @View
 public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
+
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(AllCoursesByDepartmentPage.class);
 	
+	private static final String MSGKEY_ALL_ACTIVE_PERIODS = "all_active_periods";
 	/**
 	 * This is the paged table with all relevant courses.
 	 * 
@@ -82,15 +85,15 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do nothing. Remain selected!
 				if(!periodInfo.getId().equals(Constants.COURSES_ALL_PERIODS) && !periodInfo.getId().equals(Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 					periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-					periodInfo.setName(i18n("all_active_periods"));
+					periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 				}
 			}
 		
 			// Suppose the case you initially starting the application no periods are selected --> no periodInfo VO was initiated.
 			// Set default selection to ALL_ACTIVE_PERIODS
-			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
+			if ((periodInfo.getId() == null) && (!periodInfos.isEmpty())) {
 				periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-				periodInfo.setName(i18n("all_active_periods"));
+				periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 			}
 			
 			if (periodInfos.size() < 1) {
@@ -99,7 +102,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			}
 		}
 		
-		setSessionBean(Constants.PERIOD_INFO, periodInfo);		
+		setBean(Constants.PERIOD_INFO, periodInfo);		
 		addBreadCrumbs();
 	}
 	
@@ -117,22 +120,21 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		
 		final List<SelectItem> universityPeriodItems = new ArrayList<SelectItem>();
 		
-		departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
+		departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
 		final Long universityId = departmentInfo.getUniversityId();
 		universityInfo = universityService.findUniversity(universityId);
 		//Only periods with courses are found, not the active ones without courses
 		final List<PeriodInfo> universityPeriods = universityService.findPeriodsByUniversityWithCourses(universityId);
 		
 		//create item in combobox displaying all active periods
-		final SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n("all_active_periods"));
+		final SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 		universityPeriodItems.add(itemAllActivePeriods);
 		//create item in combobox displaying all periods
 		final SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n("all_periods"));
 		universityPeriodItems.add(itemAllPeriods);
 		
 		for(PeriodInfo period : universityPeriods) {
-			SelectItem item = new SelectItem(period.getId(),period.getName());
-			universityPeriodItems.add(item);
+			universityPeriodItems.add(new SelectItem(period.getId(),period.getName()));
 		}
 		
 		return universityPeriodItems;
@@ -143,15 +145,15 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	 * 
 	 * @param event
 	 */
-	public void processPeriodSelectChanged(ValueChangeEvent event) {
+	public void processPeriodSelectChanged(final ValueChangeEvent event) {
 		final Long periodId = (Long) event.getNewValue();
 		if (periodId.equals(Constants.COURSES_ALL_PERIODS)) {
 			periodInfo.setName(i18n("all_periods"));
 		} else if (periodId.equals(Constants.COURSES_ALL_ACTIVE_PERIODS)) {
-			periodInfo.setName(i18n("all_active_periods"));
+			periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 		} else {
 			periodInfo = universityService.findPeriod(periodId);
-			setSessionBean(Constants.PERIOD_INFO, periodInfo);
+			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
 	
@@ -201,7 +203,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return instituteService;
 	}
 
-	public void setInstituteService(InstituteService instituteService) {
+	public void setInstituteService(final InstituteService instituteService) {
 		this.instituteService = instituteService;
 	}
 
@@ -209,7 +211,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return courseService;
 	}
 
-	public void setCourseService(CourseService courseService) {
+	public void setCourseService(final CourseService courseService) {
 		this.courseService = courseService;
 	}
 	
@@ -217,7 +219,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return allCoursesTable;
 	}
 
-	public void setAllCoursesTable(AllCoursesTable allCoursesTable) {
+	public void setAllCoursesTable(final AllCoursesTable allCoursesTable) {
 		this.allCoursesTable = allCoursesTable;
 	}
 
@@ -225,7 +227,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return universityInfo;
 	}
 
-	public void setUniversityInfo(UniversityInfo universityInfo) {
+	public void setUniversityInfo(final UniversityInfo universityInfo) {
 		this.universityInfo = universityInfo;
 	}
 
@@ -233,7 +235,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return instituteInfo;
 	}
 
-	public void setInstituteInfo(InstituteInfo instituteInfo) {
+	public void setInstituteInfo(final InstituteInfo instituteInfo) {
 		this.instituteInfo = instituteInfo;
 	}
 
@@ -241,7 +243,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		return periodInfo;
 	}
 
-	public void setPeriodInfo(PeriodInfo periodInfo) {
+	public void setPeriodInfo(final PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
 	}
 	
@@ -258,12 +260,11 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			
 			if (dataPage == null) {
-				DepartmentInfo departmentInfo = (DepartmentInfo) getSessionBean(Constants.DEPARTMENT_INFO);
-				
 				if (periodInfo != null) {
+					DepartmentInfo departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
 					if(periodInfo.getId() == null){
 						periodInfo = universityService.findPeriod(Constants.COURSES_ALL_ACTIVE_PERIODS);
-						periodInfo.setName(i18n("all_active_periods"));
+						periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 					}
 					if (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) {
 						courseList = getCourseService().findAllCoursesByDepartment(departmentInfo.getId(), false, true);

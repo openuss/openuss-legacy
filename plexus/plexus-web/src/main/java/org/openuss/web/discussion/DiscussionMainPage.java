@@ -23,7 +23,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 
 	public boolean forumReadOnly;
 
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
@@ -33,9 +32,6 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 		if (courseInfo!=null){
 			forumWatchState = discussionService.watchesForum(getForum());
 			forumReadOnly = getForum().isReadOnly();
-		}
-		if (forumReadOnly){
-			addMessage(i18n("discussion_forum_readonly_true_simple"));
 		}
 	}
 
@@ -78,6 +74,10 @@ public class DiscussionMainPage extends AbstractDiscussionPage {
 		TopicInfo topicInfo = this.data.getRowData();
 		setBean(Constants.DISCUSSION_TOPIC, topicInfo);
 		return Constants.DISCUSSION_REMOVETHREAD;
+	}
+	
+	public String search(){
+		return Constants.DISCUSSION_SEARCH;
 	}
 
 	public String changeWatchState() {

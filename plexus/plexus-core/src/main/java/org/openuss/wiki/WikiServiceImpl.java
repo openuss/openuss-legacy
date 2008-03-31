@@ -532,17 +532,19 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	}
 	
 	/**
-	 * Revoves all Courses that dont have a wiki
-	 * @param availableCourses List of courses to check
-	 * @return List of courses that have a wiki
+	 * Revoves all Courses that do not have a Wiki.
+	 * @param availableCourses List of courses to check.
+	 * @return List of Courses that have a Wiki.
 	 */
 	private List<CourseInfo> removeNoWiki(List<CourseInfo> availableCourses){
 		final List<CourseInfo> coursesWithWiki = new LinkedList<CourseInfo>();
 		
 		for (CourseInfo availableCourse : availableCourses) {
-			WikiSiteContentInfo version = this.findWikiSiteContentByDomainObjectAndName(availableCourse.getId(), "index");
-			if(version != null){
-				coursesWithWiki.add(availableCourse);
+			if (availableCourse.isWiki()) {
+				WikiSiteContentInfo version = this.findWikiSiteContentByDomainObjectAndName(availableCourse.getId(), WIKI_STARTSITE_NAME);
+				if (version != null) {
+					coursesWithWiki.add(availableCourse);
+				}
 			}
 		}
 		
@@ -555,7 +557,7 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	 * @see org.openuss.wiki.WikiService
 	 * 
 	 */
-	private class ImageImportAllocation {
+	private static class ImageImportAllocation {
 		
 		private final Long importId;
 		

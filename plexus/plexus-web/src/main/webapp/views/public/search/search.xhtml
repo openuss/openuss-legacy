@@ -30,10 +30,14 @@
 		  			<p class="content_font_normal">
 		  				<h:outputLabel value="#{msg['search']}" for="search_input" styleClass="field_label"></h:outputLabel>
 		  				<h:inputText id="search_input" value="#{search_results.textToSearch}" styleClass="field"/>
+		  				<label class="field_label">
+		  					<t:selectBooleanCheckbox id="search_fuzzy_search" forceId="true" value="#{search_results.fuzzy}" styleClass="fieldCheckBox"/>
+	  						#{msg.discussion_search_search_fuzzy}
+		  				</label>
 		  				<br/>
 				  		<ul>
 				  			<li>
-				  				<img src="/theme-plexus/img/link_int.png" title="arrow" alt="go" />
+				  				<img src="#{theme.imagesPath}/link_int.png" title="arrow" alt="go" />
 				  				<span class="extended_search_link_padding">
 									<h:commandLink class="extended_seach_link" action="#{views$public$search$extendedsearch.initSearchForm}" value="${msg.extended_search_link}"></h:commandLink>
 					  			</span>

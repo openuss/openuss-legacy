@@ -53,7 +53,7 @@
 			      
 					<t:column>
 			            <plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
-			            <h:outputLink onclick="SelectFile('/plexus-web/files/#{entry.fileName}?fileid=#{entry.id}');" title="#{entry.description}" rendered="${!entry.folder}">
+			            <h:outputLink onclick="SelectFile('#{facesContext.externalContext.requestContextPath}/files/#{entry.fileName}?fileid=#{entry.id}');" title="#{entry.description}" rendered="${!entry.folder}">
 			                <h:outputText value="#{entry.name}"/>
 			            </h:outputLink>
 			        </t:column>

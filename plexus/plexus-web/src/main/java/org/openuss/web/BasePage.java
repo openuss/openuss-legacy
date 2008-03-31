@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
-import org.openuss.desktop.DesktopDao;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
@@ -29,9 +28,6 @@ public abstract class BasePage extends BaseBean {
 
 	@Property(value = "#{desktopService2}")
 	protected DesktopService2 desktopService2;
-
-	@Property(value = "#{desktopDao}")
-	protected DesktopDao desktopDao;
 
 	@Property(value = "#{user}")
 	protected UserInfo user;
@@ -110,14 +106,6 @@ public abstract class BasePage extends BaseBean {
 
 	public void setUser(UserInfo user) {
 		this.user = user;
-	}
-
-	public DesktopDao getDesktopDao() {
-		return desktopDao;
-	}
-
-	public void setDesktopDao(DesktopDao desktopDao) {
-		this.desktopDao = desktopDao;
 	}
 
 	public BreadCrumbs getBreadcrumbs() {

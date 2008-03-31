@@ -29,7 +29,6 @@ import org.openuss.security.acl.LectureAclEntry;
 public class PaperSubmissionServiceImpl
     extends org.openuss.paperSubmission.PaperSubmissionServiceBase
 {
-
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionServiceImpl.class);
 
 	@Override
@@ -143,8 +142,10 @@ public class PaperSubmissionServiceImpl
 	protected ExamInfo handleGetExam(Long examId) {
 		Validate.notNull(examId, "examId cannot be null."); // NOPMD
 		
-		final ExamInfo examInfo = (ExamInfo) getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
-		if (examInfo == null) {
+		ExamInfo examInfo = null;
+		examInfo = (ExamInfo) getExamDao().load(ExamDao.TRANSFORM_EXAMINFO, examId);
+		
+		if(examInfo == null){
 			return null;
 		}
 		final List<FileInfo> attachments = getDocumentService().getFileEntries(examInfo);
@@ -157,8 +158,10 @@ public class PaperSubmissionServiceImpl
 	protected PaperSubmissionInfo handleGetPaperSubmission(Long paperSubmissionId) {
 		Validate.notNull(paperSubmissionId, "paperSubmissionId cannot be null");
 		
-		final PaperSubmissionInfo submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
-		if (submission == null) {
+		PaperSubmissionInfo submission = null;
+		submission = (PaperSubmissionInfo)getPaperSubmissionDao().load(PaperSubmissionDao.TRANSFORM_PAPERSUBMISSIONINFO, paperSubmissionId);
+		
+		if(submission == null){
 			return null;
 		}
 		final Exam exam = getExamDao().load(submission.getExamId());
@@ -208,34 +211,42 @@ public class PaperSubmissionServiceImpl
 		
 		getExamDao().toExamInfo(examEntity, examInfo);
 	}
-
+	
 	@Override
-	protected PaperSubmissionInfo handleUpdatePaperSubmission(PaperSubmissionInfo paperSubmissionInfo) {
-		LOGGER.debug("Starting method handleUpdatePaperSubmission");
-		Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
-		Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
-		
-		final ExamInfo exam = getExam(paperSubmissionInfo.getExamId());
-		
-		paperSubmissionInfo.setDeliverDate(new Date());		
-		if (paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.IN_TIME) && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())) {
-			//Creating a new exam which delivery date is not in time
-			final PaperSubmissionInfo newSubmissionInfo = new PaperSubmissionInfo();			
-			newSubmissionInfo.setDeliverDate(paperSubmissionInfo.getDeliverDate());
-			newSubmissionInfo.setExamId(paperSubmissionInfo.getExamId());
-			newSubmissionInfo.setUserId(paperSubmissionInfo.getUserId());
-			this.createPaperSubmission(newSubmissionInfo);
+	protected PaperSubmissionInfo handleUpdatePaperSubmission(
+			PaperSubmissionInfo paperSubmissionInfo, boolean changeDeliverDate)
+			throws Exception {
+		if(changeDeliverDate) {		
+			LOGGER.debug("Starting method handleUpdatePaperSubmission");
+			Validate.notNull(paperSubmissionInfo, "paperSubmissionInfo cannot be null");
+			Validate.notNull(paperSubmissionInfo.getId(), "Parameter paperSubmissionInfo must contain a valid id");
 			
-			return newSubmissionInfo;
+			final ExamInfo exam = getExam(paperSubmissionInfo.getExamId());
+			
+			paperSubmissionInfo.setDeliverDate(new Date());		
+			if (paperSubmissionInfo.getSubmissionStatus().equals(SubmissionStatus.IN_TIME) && exam.getDeadline().before(paperSubmissionInfo.getDeliverDate())) {
+				//Creating a new exam which delivery date is not in time
+				paperSubmissionInfo.setComment(null);
+				paperSubmissionInfo.setId(null);
+				this.createPaperSubmission(paperSubmissionInfo);
+				
+				return paperSubmissionInfo;
+			} 
+			else {
+				//PaperSubmission is still in time and will be updated
+				final PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
+				
+				getPaperSubmissionDao().update(paperSubmissionEntity);
+				
+				return paperSubmissionInfo;
+			}
 		} else {
-			//PaperSubmission is still in time and will be updated
 			final PaperSubmission paperSubmissionEntity =  getPaperSubmissionDao().paperSubmissionInfoToEntity(paperSubmissionInfo);
 			
 			getPaperSubmissionDao().update(paperSubmissionEntity);
 			
 			return paperSubmissionInfo;
-		}
-		
+		}		
 	}
 
 	/** 
@@ -398,5 +409,7 @@ public class PaperSubmissionServiceImpl
 	private Group getParticipantsGroup(Long domainId) {
 		return getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
 	}
+
+	
 
 }

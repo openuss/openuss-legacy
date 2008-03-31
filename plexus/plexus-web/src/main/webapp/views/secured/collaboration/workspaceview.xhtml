@@ -32,6 +32,9 @@
   			<s:acl domainObject="#{workspaceInfo}" hasPermission="#{ACL.UPDATE}" ifNot="error"/>
   			
   			<h:form id="workspace">
+  						<t:saveState value="#{documents_entry_selection}"/>
+				<t:saveState value="#{views$secured$collaboration$workspaceview.moveMode}"/>
+  			
  	  			<ui:include src="workspaceentriestable.xhtml"/> 
  	  			
  	  			<o:block rendered="#{!views$secured$collaboration$workspaceview.moveMode}">
@@ -59,6 +62,13 @@
 						value="#{msg.documents_main_button_newfolder}" 
 						title="#{msg.documents_main_button_newfolder}"
 						styleClass="button_add"/>
+					<h:commandButton
+						id="move"
+						forceId="true"
+						value="#{msg.documents_move}"
+						title="#{msg.documents_move}"
+						action="#{views$secured$collaboration$workspaceview.switchToMoveMode}"
+						styleClass="button_add"/>						
 					<t:commandButton 
 					    id="delete" forceId="true"
 						action="#{views$secured$collaboration$workspaceview.delete}" 
@@ -66,6 +76,25 @@
 						title="#{msg.documents_main_button_delete}"
 						styleClass="button_add"/>
 				</o:block>
+				<o:block rendered="#{views$secured$collaboration$workspaceview.moveMode}">
+					<h:outputText value="#{msg['documents_choose_target']}" styleClass="field_label"/>
+					
+					<h:selectOneMenu id="targetFolder" value="#{views$secured$collaboration$workspaceview.targetFolder}" styleClass="pulldown_inline">
+					   	<f:selectItems value="#{views$secured$collaboration$workspaceview.folderList}"/>
+						<f:converter converterId="folderInfoConverter" />
+					</h:selectOneMenu><br/>
+				</o:block>
+				<o:block rendered="#{views$secured$collaboration$workspaceview.moveMode}">
+					<h:commandButton 
+							action="#{views$secured$collaboration$workspaceview.moveFolderEntriesToTarget}"
+							value="#{msg.documents_move}"
+							styleClass="button_add" />
+					<h:commandButton 
+							action="#{views$secured$collaboration$workspaceview.cancelMove}" 
+							immediate="true"
+							value="#{msg['newdocument_button_cancel']}"
+							styleClass="button_cancel" />
+				</o:block>				
  	  		</h:form>
   		</ui:define>
 	</ui:composition>

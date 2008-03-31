@@ -16,7 +16,6 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.desktop.DesktopException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
@@ -64,6 +63,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		
 		if (!isPostBack() && examInfo != null && examInfo.getId() != null){
 			setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		}
 		if (examInfo != null && examInfo.getDeadline() == null){
@@ -92,6 +92,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public String addExam() {
 		editing = true;
 		examInfo = new ExamInfo();
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		return Constants.SUCCESS;
 	}
@@ -109,6 +110,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		} else if (examInfo.getId()!=null) {
 			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		
 		if (examInfo == null) {
@@ -134,6 +136,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		}else if (examInfo.getId()!=null){
 			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
 			addWarning(i18n("papersubmission_error_exam_not_found"));
@@ -195,6 +198,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		final ExamInfo currentExam = currentActiveExam();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
@@ -211,6 +215,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		final ExamInfo currentExam = currentInactiveExam();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
@@ -221,6 +226,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		final ExamInfo currentExam = currentActiveExam();
 		LOGGER.debug("Returning to method selectExam");
 		LOGGER.debug(currentExam.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
@@ -231,6 +237,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		ExamInfo currentExam = currentInactiveExam();
 		LOGGER.debug("Returning to method selectExam");
 		LOGGER.debug(currentExam.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;

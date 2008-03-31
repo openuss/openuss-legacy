@@ -771,6 +771,16 @@
 				<to-view-id>/views/secured/discussion/removethread.xhtml</to-view-id>				
 			</navigation-case>			
 			
+			<navigation-case>
+				<from-outcome>discussion_search</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>		
+			
+			<navigation-case>
+				<from-outcome>discussion_search_result</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>			
+			
 			<!--  Wiki  -->
 			<navigation-case>
 				<from-outcome>course_wiki</from-outcome>

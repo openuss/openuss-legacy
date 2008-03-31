@@ -60,6 +60,9 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
 	private PaperSubmissionSelection paperSelection;
 	
+	//@Property(value = "#{paperSubmissionComment")
+	private String comment;
+	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
@@ -67,12 +70,22 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		super.prerender();
 		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
 			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		} 
 		paperSelection.processSwitch();
 		addPageCrumbs();
 		paperSubmissionInfo = getCurrentPaperSubmission();
 		
+		StringBuilder commentString = new StringBuilder();
+		List<PaperSubmissionInfo> submissionList = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
+		for(PaperSubmissionInfo submission : submissionList){
+			if(!submission.getComment().isEmpty()){
+				commentString.append(submission.getComment());
+				commentString.append("<br/>");
+			}
+		}
+		comment = commentString.toString();
 	}
 
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
@@ -83,6 +96,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		
 		if(!paperInfos.isEmpty()){
 			paperSubmissionInfo = paperInfos.get(paperInfos.size()-1);
+			// FIXME Do not use session bean for navigation
 			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 			return paperSubmissionInfo;
 		}
@@ -97,7 +111,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	 */
 	private void addPageCrumbs() {
 		BreadCrumb crumb = new BreadCrumb();
-		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM);
+		crumb.setLink(PageLinks.PAPERSUBMISSION_EXAM + "?course=" + courseInfo.getId());
 		crumb.setName(i18n("papersubmission_paperlist_header"));
 		crumb.setHint(i18n("papersubmission_paperlist_header"));
 
@@ -291,6 +305,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		PaperSubmissionInfo currentSubmission = currentSubmission();
 		LOGGER.debug("Returning to method selectSubmission");
 		LOGGER.debug(currentSubmission.getId());
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
 		
 		if(currentSubmission.getId()==null){
@@ -448,5 +463,13 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			}
 			
 		};	
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}	
 }

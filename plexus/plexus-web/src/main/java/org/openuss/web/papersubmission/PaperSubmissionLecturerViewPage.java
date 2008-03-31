@@ -57,6 +57,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		super.prerender();
 		
 		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
+		paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 		paperFileSelection.processSwitch();
 	
 		addPageCrumbs();
@@ -134,6 +135,14 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		} else {
 			addError(i18n("messages_error_no_documents_selected"));
 		}
+		return Constants.SUCCESS;
+	}
+	
+	public String saveComment() {
+		List<PaperSubmissionInfo> submissionList = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), paperSubmissionInfo.getUserId());
+		submissionList.get(submissionList.size()-1).setComment(paperSubmissionInfo.getComment());
+		paperSubmissionService.updatePaperSubmission(submissionList.get(submissionList.size()-1), false);
+		addMessage(i18n("papersubmission_message_comment_added"));
 		return Constants.SUCCESS;
 	}
 	

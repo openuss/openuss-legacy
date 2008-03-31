@@ -119,9 +119,12 @@ public class MyUniPage extends BasePage {
 		handleSubscriptions();
 		// Load myUni data
 		try {
-			myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
+			if (user.getId() != null) {
+				myUniData = (Map<Long, MyUniInfo>) desktopService2.getMyUniInfo(user.getId());
+			}
 		} catch (Exception e) {
 			logger.error(e);
+			addError(i18n("message_error_no_desktop_found"));
 		}
 		// Load data into the list components
 		loadValuesForTabs(tabs);

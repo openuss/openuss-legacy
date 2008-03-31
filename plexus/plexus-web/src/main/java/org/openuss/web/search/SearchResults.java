@@ -9,6 +9,7 @@ import org.openuss.search.DomainResult;
 
 /**
  * Search Result Container 
+ * 
  * @author Ingo Dueppe
  */
 @Bean(name="search_results", scope=Scope.SESSION)
@@ -17,6 +18,8 @@ public class SearchResults implements Serializable{
 	private static final long serialVersionUID = 2703663123055519715L;
 
 	private List<DomainResult> hits;
+	
+	private boolean fuzzy = true;
 	
 	private String textToSearch;
 
@@ -38,6 +41,14 @@ public class SearchResults implements Serializable{
 
 	public int getHitCounts() {
 		return hits != null ? hits.size() : 0;
+	}
+
+	public boolean isFuzzy() {
+		return fuzzy;
+	}
+
+	public void setFuzzy(boolean fuzzy) {
+		this.fuzzy = fuzzy;
 	}
 	
 }

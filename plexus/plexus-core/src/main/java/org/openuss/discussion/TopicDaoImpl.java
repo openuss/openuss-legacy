@@ -139,8 +139,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			" FROM UserImpl u, TopicImpl as t, DomainViewStateImpl as v, DiscussionWatchImpl as tw" +
 			" WHERE"+
 			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
-			" and tw.topic.id = v.domainViewStatePk.domainIdentifier and tw.user.id = v.domainViewStatePk.userIdentifier" +
-			" and u = tw.user";			
+			" and tw.discussionWatchPk.topic.id = v.domainViewStatePk.domainIdentifier and tw.discussionWatchPk.user.id = v.domainViewStatePk.userIdentifier" +
+			" and u = tw.discussionWatchPk.user";			
 		return (List) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createQuery(queryString);
@@ -166,8 +166,8 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 			" FROM UserImpl as u, TopicImpl as t, DomainViewStateImpl as v, ForumWatchImpl as fw" +
 			" WHERE"+
 			" v.viewState = :viewStateRead and v.domainViewStatePk.domainIdentifier = :topicId"+
-			" and fw.user.id = v.domainViewStatePk.userIdentifier" +
-			" and u = fw.user and fw.forum.id = :forumId";
+			" and fw.forumWatchPk.user.id = v.domainViewStatePk.userIdentifier" +
+			" and u = fw.forumWatchPk.user and fw.forumWatchPk.forum.id = :forumId";
 		return (List) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.createQuery(queryString);

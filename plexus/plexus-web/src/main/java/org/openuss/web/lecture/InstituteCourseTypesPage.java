@@ -17,7 +17,6 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.AccessType;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
@@ -169,17 +168,9 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		courseInfo.setPeriodId(periodInfo.getId());
 		courseInfo.setPeriodName(periodInfo.getName());
 		courseInfo.setInstituteId(courseTypeInfo.getInstituteId());
-		// new course by default with the features newsletter, documents and
-		// discussion
-		//FIXME should not be defined in web layer 
-		courseInfo.setNewsletter(true);
-		courseInfo.setDocuments(true);
-		courseInfo.setDiscussion(true);
-
-		courseInfo.setAccessType(AccessType.CLOSED);
 		courseService.create(courseInfo);
 		addMessage(i18n("institute_message_persist_coursetype_succeed"));
-		setSessionBean(Constants.COURSE_INFO, courseInfo);
+		setBean(Constants.COURSE_INFO, courseInfo);
 		return Constants.COURSE_OPTIONS_PAGE;
 	}
 	
@@ -234,10 +225,9 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
-				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService
-						.findCourseTypesByInstitute(instituteInfo.getId()));
+				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
 				sort(courseTypes);
-				// FIXME courseCount should be set with the CourseTypeDaoImpl.toCourseTypeInfo()
+				// FIXME CourseCount should be calculated within the business layer
 				for( Iterator<CourseTypeInfo> i = courseTypes.iterator(); i.hasNext(); ) {
 					CourseTypeInfo cti = i.next();
 					cti.setCourseCount(Long.valueOf(getCourseService().findCoursesByCourseType(cti.getId()).size()));

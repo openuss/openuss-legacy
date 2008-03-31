@@ -189,6 +189,8 @@ public class Constants {
 	public static final String DISCUSSION_POST_NOT_FOUND = "discussion_post_not_found";
 	public static final String DISCUSSION_POST_NOT_AUTHOR = "discussion_post_not_author";
 	public static final String DISCUSSION_QUOTE_POST = "discussion_quote";
+	public static final String DISCUSSION_SEARCH = "discussion_search";
+	public static final String DISCUSSION_SEARCH_RESULT = "discussion_search_result";
 	
 	// news navigation outcomes and combobox long constants
 	public static final String COURSE_NEWS_EDIT_PAGE = "course_news_edit";

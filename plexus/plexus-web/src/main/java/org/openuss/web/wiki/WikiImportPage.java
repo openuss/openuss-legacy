@@ -60,7 +60,9 @@ public class WikiImportPage extends AbstractWikiPage {
 	 * @return Wiki Import Confirmation Page.
 	 */
 	public String importWikiSites() {
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES);
 		
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
@@ -71,7 +73,9 @@ public class WikiImportPage extends AbstractWikiPage {
 	 * @return Wiki Import Confirmation Page.
 	 */
 	public String importWikiVersions() {
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS);
 		
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;

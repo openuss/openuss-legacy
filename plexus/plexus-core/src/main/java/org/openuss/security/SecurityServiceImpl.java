@@ -25,6 +25,7 @@ import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.security.acegi.acl.EntityObjectIdentity;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.Permission;
+import org.openuss.security.acl.PermissionPK;
 
 /**
  * @see org.openuss.security.SecurityService
@@ -332,7 +333,10 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		Permission permission = getPermissionDao().findPermission(objectIdentity, authority);
 		if (permission == null) {
 			// permission does not exist, create a new one
-			permission = Permission.Factory.newInstance(mask, objectIdentity, authority);
+			permission = Permission.Factory.newInstance(mask);
+			permission.setPermissionPk(new PermissionPK());
+			permission.getPermissionPk().setAclObjectIdentity(objectIdentity);
+			permission.getPermissionPk().setRecipient(authority);
 			getPermissionDao().create(permission);
 		} else {
 			permission.setMask(mask);
@@ -379,10 +383,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			if (logger.isDebugEnabled()) {
 				logger.debug("removing permission for authority " + authority + " for " + object);
 			}
-			ObjectIdentity objectIdentity = permission.getAclObjectIdentity();
-			permission.setRecipient(null);
-			objectIdentity.removePermission(permission);
-			getObjectIdentityDao().update(objectIdentity);
 			getPermissionDao().remove(permission);
 		} else {
 			logger.debug("Permission entity for authority " + authority + " for " + object + " not found!");
@@ -398,10 +398,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		List<Permission> permissions = getPermissionDao().findPermissions(objectIdentity);
 
 		for (Permission permission : permissions) {
-			ObjectIdentity aclObjectIdentity = permission.getAclObjectIdentity();
-			permission.setRecipient(null);
-			aclObjectIdentity.removePermission(permission);
-			getObjectIdentityDao().update(aclObjectIdentity);
 			getPermissionDao().remove(permission);
 		}
 	}
@@ -429,8 +425,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		if (context == null || context.getAuthentication() == null) {
 			return null;
 		}
-		String name = context.getAuthentication().getName();
-		return getUserByName(name);
+		Object principal = context.getAuthentication().getPrincipal();
+		if (principal instanceof UserInfo) {
+			return (UserInfo) principal;
+		} else {
+			String name = context.getAuthentication().getName();
+			return getUserByName(name);
+		}
 	}
 
 	@Override

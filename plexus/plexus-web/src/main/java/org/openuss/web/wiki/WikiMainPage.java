@@ -47,7 +47,9 @@ public class WikiMainPage extends AbstractWikiPage {
 			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
 			
 			if (version == null) {
+				// FIXME Do not use session bean for navigation
 				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, this.siteVersionInfo);
+				// FIXME Do not use session bean for navigation
 				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
 				this.siteVersionInfo = null;
 				this.siteName = null;
@@ -55,7 +57,7 @@ public class WikiMainPage extends AbstractWikiPage {
 				this.siteVersionInfo = version;
 			}
 		}
-		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 				
 		super.prerender();

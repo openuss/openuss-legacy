@@ -39,7 +39,7 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 		Permission found = permissionDao.findPermission(objectIdentity, user);
 		assertNotNull(found);
 		assertEquals(permission, found);
-		assertEquals(objectIdentity, permission.getAclObjectIdentity());
+		assertEquals(objectIdentity, permission.getPermissionPk().getAclObjectIdentity());
 	}
 	
 	public void testFindPermissionWithRecipient() {
@@ -62,13 +62,12 @@ public class PermissionDaoTest extends PermissionDaoTestBase {
 
 	private Permission createAndTestPermission(User user, ObjectIdentity objectIdentity) {
 		Permission permission = Permission.Factory.newInstance();
+		permission.setPermissionPk(new PermissionPK());
 		permission.setMask(2);
-		permission.setRecipient(user);
-		permission.setAclObjectIdentity(objectIdentity);
+		permission.getPermissionPk().setRecipient(user);
+		permission.getPermissionPk().setAclObjectIdentity(objectIdentity);
 		objectIdentity.addPermission(permission);
-		assertNull(permission.getId());
 		permissionDao.create(permission);
-		assertNotNull(permission.getId());
 		return permission;
 	}
 

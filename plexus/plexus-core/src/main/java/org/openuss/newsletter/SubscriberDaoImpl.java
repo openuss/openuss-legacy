@@ -5,6 +5,8 @@
  */
 package org.openuss.newsletter;
 
+import org.openuss.security.User;
+
 /**
  * @see org.openuss.newsletter.Subscriber
  */
@@ -15,9 +17,10 @@ public class SubscriberDaoImpl extends SubscriberDaoBase {
 	 */
 	public void toSubscriberInfo(Subscriber sourceEntity, SubscriberInfo targetVO) {
 		super.toSubscriberInfo(sourceEntity, targetVO);
-		targetVO.setDisplayName(sourceEntity.getUser().getDisplayName());
-		targetVO.setEmail(sourceEntity.getUser().getEmail());
-		targetVO.setUserId(sourceEntity.getUser().getId());
+		targetVO.setDisplayName(sourceEntity.getSubscriberPk().getUser().getDisplayName());
+		targetVO.setEmail(sourceEntity.getSubscriberPk().getUser().getEmail());
+		targetVO.setUserId(sourceEntity.getSubscriberPk().getUser().getId());
+		targetVO.setNewsletterId(sourceEntity.getSubscriberPk().getNewsletter().getId());
 	}
 
 	/**
@@ -36,10 +39,13 @@ public class SubscriberDaoImpl extends SubscriberDaoBase {
 	 */
 	private Subscriber loadSubscriberFromSubscriberInfo(SubscriberInfo subscriberInfo) {
 		Subscriber subscriber;
-		if (subscriberInfo.getId() == null) {
+		if (subscriberInfo.getUserId() == null || subscriberInfo.getNewsletterId() == null) {
 			return Subscriber.Factory.newInstance();
 		}
-		subscriber = this.load(subscriberInfo.getId());
+		SubscriberPK pk = new SubscriberPK();
+		pk.setUser(User.Factory.newInstance(subscriberInfo.getUserId()));
+		pk.setNewsletter(Newsletter.Factory.newInstance(subscriberInfo.getNewsletterId()));
+		subscriber = this.load(pk);
 		if (subscriber == null) {
 			subscriber = Subscriber.Factory.newInstance();
 		}
@@ -64,4 +70,40 @@ public class SubscriberDaoImpl extends SubscriberDaoBase {
 		super.subscriberInfoToEntity(sourceVO, targetEntity, copyIfNull);
 	}
 
+    /**
+     * @see org.openuss.newsletter.SubscriberDao#findByNewsletter(int, org.openuss.newsletter.Newsletter, boolean)
+     */
+	@Override
+    public java.util.List findByNewsletter(final int transform, final org.openuss.newsletter.Newsletter newsletter, final boolean blocked)
+    {
+        return this.findByNewsletter(transform, "from org.openuss.newsletter.Subscriber as subscriber where subscriber.subscriberPk.newsletter = ? and subscriber.blocked = ?", newsletter, blocked);
+    }
+	
+    /**
+     * @see org.openuss.newsletter.SubscriberDao#findByUser(int, org.openuss.security.User)
+     */
+	@Override
+    public java.util.List findByUser(final int transform, final org.openuss.security.User user)
+    {
+        return this.findByUser(transform, "from org.openuss.newsletter.Subscriber as subscriber where subscriber.subscriberPk.user = ?", user);
+    }
+    
+    /**
+     * @see org.openuss.newsletter.SubscriberDao#findByUserAndNewsletter(int, org.openuss.security.User, org.openuss.newsletter.Newsletter)
+     */
+	@Override
+    public java.lang.Object findByUserAndNewsletter(final int transform, final org.openuss.security.User user, final org.openuss.newsletter.Newsletter newsletter)
+    {
+        return this.findByUserAndNewsletter(transform, "from org.openuss.newsletter.Subscriber as subscriber where subscriber.subscriberPk.user = ? and subscriber.subscriberPk.newsletter = ?", user, newsletter);
+    }
+
+    /**
+     * @see org.openuss.newsletter.SubscriberDao#findByNewsletter(int, org.openuss.newsletter.Newsletter)
+     */
+	@Override
+    public java.util.List findByNewsletter(final int transform, final org.openuss.newsletter.Newsletter newsletter)
+    {
+        return this.findByNewsletter(transform, "from org.openuss.newsletter.Subscriber as subscriber where subscriber.subscriberPk.newsletter = ?", newsletter);
+    }
+    
 }

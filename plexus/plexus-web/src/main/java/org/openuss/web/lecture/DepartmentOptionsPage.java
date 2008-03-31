@@ -117,6 +117,7 @@ public class DepartmentOptionsPage extends AbstractDepartmentPage {
 			documentService.removeFolderEntry(fileId);
 		}
 		departmentService.update(departmentInfo);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 	

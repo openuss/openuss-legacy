@@ -13,6 +13,7 @@ import org.openuss.discussion.Forum;
 import org.openuss.discussion.ForumDao;
 import org.openuss.discussion.ForumWatch;
 import org.openuss.discussion.ForumWatchDao;
+import org.openuss.discussion.ForumWatchPK;
 import org.openuss.discussion.Post;
 import org.openuss.discussion.PostDao;
 import org.openuss.discussion.Topic;
@@ -106,8 +107,9 @@ public class DiscussionImport extends DefaultImport {
 				if (submitter != null) {
 					logger.info("create forum watch for user " + submitter.getDisplayName());
 					ForumWatch forumWatch = ForumWatch.Factory.newInstance();
-					forumWatch.setForum(forum);
-					forumWatch.setUser(submitter);
+					forumWatch.setForumWatchPk(new ForumWatchPK());
+					forumWatch.getForumWatchPk().setForum(forum);
+					forumWatch.getForumWatchPk().setUser(submitter);
 					forumWatchDao.create(forumWatch);
 				} else {
 					logger.info("submitter is null");

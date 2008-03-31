@@ -87,8 +87,12 @@ public class CourseMemberDaoTest extends CourseMemberDaoTestBase {
 
 	private CourseMember createCourseMember(User user, Course course) {
 		CourseMember member = CourseMember.Factory.newInstance();
-		member.setCourse(course);
-		member.setUser(user);
+		
+		CourseMemberPK pk = new CourseMemberPK();
+				
+		pk.setCourse(course);
+		pk.setUser(user);
+		member.setCourseMemberPk(pk);
 		return member;
 	}
 

@@ -22,7 +22,7 @@ public class MailSendingCommand extends AbstractDomainCommand implements DomainC
 			Iterator i = recipients.iterator();
 			List<User> users = new ArrayList<User>();
 			while (i.hasNext()){
-				users.add(((Subscriber)i.next()).getUser());
+				users.add(((Subscriber)i.next()).getSubscriberPk().getUser());
 			}
 			Long messageId = getMessageService().sendMessage(mail.getNewsletter().getName(), "["+mail.getNewsletter().getName()+"] "+mail.getSubject(), mail.getText(), mail.isSms(), users);
 			mail.setStatus(MailingStatus.INQUEUE);

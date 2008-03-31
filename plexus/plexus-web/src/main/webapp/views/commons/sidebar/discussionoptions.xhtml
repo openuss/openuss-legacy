@@ -29,15 +29,15 @@
 					</ul>
 					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
 						
-						<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
-						<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumReadOnly}" escape="false"/>
+						<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{discussion_forum.readOnly}" escape="false"/>
+						<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not discussion_forum.readOnly}" escape="false"/>
 						<ul class="action_list">
-							<c:if test="#{views$secured$discussion$discussions.forumReadOnly}">
+							<c:if test="#{discussion_forum.readOnly}">
 								<li class="forum_unlock">
 									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_unlock']}</h:commandLink>
 								</li>
 							</c:if>
-							<c:if test="#{not views$secured$discussion$discussions.forumReadOnly}">
+							<c:if test="#{not discussion_forum.readOnly}">
 								<li class="forum_lock">
 									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_lock']}</h:commandLink>
 								</li>

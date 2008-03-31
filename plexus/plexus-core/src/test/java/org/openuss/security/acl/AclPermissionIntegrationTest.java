@@ -73,9 +73,10 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
-		permission.setAclObjectIdentity(oi);
+		permission.setPermissionPk(new PermissionPK());
+		permission.getPermissionPk().setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(roleUser);
+		permission.getPermissionPk().setRecipient(roleUser);
 
 		objectIdentityDao.create(oi);
 
@@ -108,9 +109,10 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
-		permission.setAclObjectIdentity(oi);
+		permission.setPermissionPk(new PermissionPK());
+		permission.getPermissionPk().setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(roleUser);
+		permission.getPermissionPk().setRecipient(roleUser);
 
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);
@@ -143,9 +145,10 @@ public class AclPermissionIntegrationTest extends AbstractTransactionalDataSourc
 		oi.setId(instituteTestID);
 
 		Permission permission = Permission.Factory.newInstance();
-		permission.setAclObjectIdentity(oi);
+		permission.setPermissionPk(new PermissionPK());
+		permission.getPermissionPk().setAclObjectIdentity(oi);
 		permission.setMask(SimpleAclEntry.READ | SimpleAclEntry.ADMINISTRATION);
-		permission.setRecipient(groupInstitute);
+		permission.getPermissionPk().setRecipient(groupInstitute);
 
 		objectIdentityDao.create(oi);
 		oi.addPermission(permission);

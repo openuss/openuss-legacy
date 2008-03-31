@@ -36,7 +36,7 @@ public class Selection<T> implements Serializable{
 	public void setEntries(List<T> entries) {
 		Map<T, Boolean> newMap = new HashMap<T, Boolean>();
 		for (T entry: entries) {
-			if (!map.containsKey(entry)) {
+			if (map.containsKey(entry)) {
 				newMap.put(entry, map.get(entry));
 			} else {
 				newMap.put(entry, state);

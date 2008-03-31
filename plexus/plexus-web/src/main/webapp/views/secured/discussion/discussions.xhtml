@@ -51,6 +51,13 @@
 						action="#{views$secured$discussion$discussions.newTopic}"
 						value="#{msg['discussion_new']}"
 						title="#{msg['discussion_new']}"
+						styleClass="button"/>
+					<h:commandButton
+						id="discussionSearchButton"
+						action="#{views$secured$discussion$discussions.search}"
+						value="#{msg['discussion_search']}"
+						title="#{msg['discussion_search']}"
+						immediate="true"
 						styleClass="button"/>				
 				</o:block>
 			</s:acl>
@@ -62,6 +69,12 @@
 						value="#{msg['discussion_new']}"
 						title="#{msg['discussion_new']}"
 						styleClass="button"/>				
+					<h:commandButton
+						id="discussionSearchButton"
+						action="#{views$secured$discussion$discussions.search}"
+						value="#{msg['discussion_search']}"
+						title="#{msg['discussion_search']}"
+						styleClass="button"/>			
 				</o:block>
 			</s:acl>
 		</h:form>

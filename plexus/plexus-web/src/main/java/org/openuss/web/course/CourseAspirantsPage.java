@@ -60,7 +60,7 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 	private void rejectAspirants() {
 		for (CourseMemberInfo aspirants: rejectAspirants) {
 			try {
-				courseService.rejectAspirant(aspirants.getId());
+				courseService.rejectAspirant(aspirants);
 				addMessage(i18n("course_aspirant_reject", aspirants.getUsername()));
 			} catch (CourseServiceException e) {
 				logger.error(e);
@@ -72,7 +72,7 @@ public class CourseAspirantsPage extends AbstractCoursePage {
 	private void acceptAspirants() {
 		for (CourseMemberInfo aspirants: acceptAspirants) {
 			try {
-				courseService.acceptAspirant(aspirants.getId());
+				courseService.acceptAspirant(aspirants);
 				addMessage(i18n("course_aspirant_accepted", aspirants.getUsername()));
 			} catch (CourseServiceException e) {
 				logger.error(e);

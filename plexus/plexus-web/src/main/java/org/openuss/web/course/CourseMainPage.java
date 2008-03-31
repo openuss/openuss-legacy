@@ -21,6 +21,7 @@ import org.openuss.lecture.CourseMemberType;
 import org.openuss.web.Constants;
 
 /**
+ * Page class of Course Main Page.
  * 
  * @author Ingo Dueppe
  * @author Sebastian Roekens
@@ -66,7 +67,7 @@ public class CourseMainPage extends AbstractCoursePage {
 
 	public String applyWithPassword() throws CourseApplicationException {
 		logger.debug("course entry with password applied");
-		courseService.applyUserByPassword(password, courseInfo, user);
+		courseService.applyUser(courseInfo, user, password);
 		addMessage(i18n("message_course_password_accepted"));
 		return Constants.SUCCESS;
 	}

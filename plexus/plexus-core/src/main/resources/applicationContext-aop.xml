@@ -82,6 +82,15 @@
 			expression="execution(* org..LectureServiceBase.persist(org.openuss.lecture.Period)) and args(period)" />
 -->
 
+        <!-- Additional pointcuts for Discussion Search -->
+        
+		<aop:pointcut id="DiscussionServiceCreatePointcut"
+			expression="(execution(* org..DiscussionServiceBase.addPost(org.openuss.discussion.PostInfo, org.openuss.discussion.TopicInfo)) and args(postInfo, ..)) or (execution(* org..DiscussionServiceBase.createTopic(org.openuss.discussion.PostInfo, org.openuss.discussion.ForumInfo)) and args(postInfo, ..))" />
+		<aop:pointcut id="DiscussionServiceDeletePointcut"
+			expression="execution(* org..DiscussionServiceBase.deletePost(org.openuss.discussion.PostInfo)) and args(postInfo)" />
+		<aop:pointcut id="DiscussionServiceUpdatePointcut"
+			expression="execution(* org..DiscussionServiceBase.updatePost(org.openuss.discussion.PostInfo)) and args(postInfo)" />
+		
 		<!-- Aspect Definitions -->
 		<aop:aspect id="applicationConfirmationAspect"
 			ref="applicationConfirmationAspectBean">
@@ -286,6 +295,21 @@
 				pointcut="execution(* org..MessageJobDaoBase.update(org.openuss.messaging.MessageJob)) and args(messageJob)"
 				arg-names="messageJob" />
 		</aop:aspect>
+		
+		<!-- Addititional aspect for Discussion Search -->
+		
+		<aop:aspect id="discussionIndexAspect"
+			ref="discussionIndexAspectBean">
+			<aop:after-returning method="createPostIndex"
+				pointcut-ref="DiscussionServiceCreatePointcut"
+				arg-names="postInfo" />
+			<aop:after-returning method="updatePostIndex"
+				pointcut-ref="DiscussionServiceUpdatePointcut"
+				arg-names="postInfo" />
+			<aop:before method="deletePostIndex"
+				pointcut-ref="DiscussionServiceDeletePointcut"
+				arg-names="postInfo" />
+		</aop:aspect>
 
 	</aop:config>
 
@@ -375,5 +399,13 @@
 		<property name="courseDao" ref="courseDao" />
 	</bean>
  -->
+	
+    <!-- Addititional bean for Discussion Search -->
+	
+	<bean id="discussionIndexAspectBean"
+		class="org.openuss.aop.DiscussionIndexingAspect">
+		<property name="indexerService" ref="indexerService" />
+		<property name="postDao" ref="postDao" />
+	</bean>
 
 </beans>

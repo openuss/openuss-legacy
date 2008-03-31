@@ -141,12 +141,16 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			}
 		}
 	}
+	
+	public String cancelMove() {
+		moveMode = false;
+		return Constants.SUCCESS;
+	}
 
-	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			//Storing the zip file name into the session 
 			String fileName = courseInfo.getName() + "_documents_" + new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 			setSessionBean(Constants.ZIP_FILE_NAME, fileName);
@@ -164,7 +168,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public String delete() {
 		List<FolderEntryInfo> entries = selectedEntries();
-		if (entries.size() > 0) {
+		if (!entries.isEmpty()) {
 			logger.debug("deleting documents:");
 			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, entries);
 			entrySelection.getMap().clear();
@@ -218,15 +222,17 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		this.entrySelection = selectedEntries;
 	}
 
-	public synchronized Map<String, Boolean> getAvailableExtensions() {
+	public Map<String, Boolean> getAvailableExtensions() {
 		if (avaliableExtensions == null) {
-			avaliableExtensions = new HashMap<String, Boolean>();
-			File extImgFolder = new File(getServletContext().getRealPath("/images/filetypes"));
-			File files[] = extImgFolder.listFiles();
-			for (File file : files) {
-				String name = file.getName();
-				name = name.substring(0, name.indexOf('.'));
-				avaliableExtensions.put(name, true);
+			synchronized (DocumentsMainPage.class) {
+				avaliableExtensions = new HashMap<String, Boolean>();
+				File extImgFolder = new File(getServletContext().getRealPath("/images/filetypes"));
+				File files[] = extImgFolder.listFiles();
+				for (File file : files) {
+					String name = file.getName();
+					name = name.substring(0, name.indexOf('.'));
+					avaliableExtensions.put(name, true);
+				}
 			}
 		}
 		return avaliableExtensions;
@@ -235,25 +241,19 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
-			//get Folder List from Document Service
-
-			List<FolderInfo> allFolderInfos;
-			
-			if (courseInfo.getId() != null) {
-				allFolderInfos = super.documentService.getAllSubfolders(courseInfo);
-			}
-			else allFolderInfos = new ArrayList<FolderInfo>();
+			//Get folder list from document service
+			List<FolderInfo> allFolderInfos = documentService.getAllSubfolders(courseInfo);
 			
 			folderList = new ArrayList<SelectItem>();
 			for(FolderInfo info: allFolderInfos) {
 				if (info != null) {
-					String depth = "";
 					//check depth
-					List path = super.documentService.getFolderPath(info);
-					for(int i = 0; i < path.size(); i++)
-						depth = depth + "> ";
-					//@TODO implement check wether element is root. Change name if so.
-					String name = info.getName() == null ? "Root" : info.getName();
+					StringBuilder depth = new StringBuilder();
+					List path = documentService.getFolderPath(info);
+					for(int i = 0; i < path.size(); i++) {
+						depth = depth.append("/ ");
+					}
+					String name = info.isRoot() ? i18n("documents_root_folder") : info.getName();
 					folderList.add(new SelectItem(info,depth + name ));
 				} else {
 					SelectItem item = new SelectItem("--");
@@ -272,13 +272,16 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	 * @throws DocumentApplicationException 
 	 */
 	public String moveFolderEntriesToTarget() throws Exception{
-		
-		if (courseInfo.getId() != null) {
+		logger.debug("moving file entries");
+		List<FolderEntryInfo> selection = selectedEntries();
+		if (selection.isEmpty()) {
+			addError(i18n("messages_error_no_documents_selected"));
+		} else {
 			documentService.moveFolderEntries(courseInfo, targetFolder, selectedEntries() );
 			addMessage(i18n("documents_move_files"));
+			moveMode = false;
+			entries = null; 
 		}
-		//reload table
-		//TODO: Reload table
 		return Constants.DOCUMENTS_MAIN_PAGE;
 	}
 

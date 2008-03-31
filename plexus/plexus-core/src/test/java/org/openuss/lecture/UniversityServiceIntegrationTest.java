@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.acegisecurity.AccessDeniedException;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.Desktop;
 import org.openuss.desktop.DesktopDao;
@@ -221,12 +222,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		assertTrue(periodInfo.getDescription().compareTo(period.getDescription()) == 0);
 		assertTrue(periodInfo.getUniversityId().longValue() == period.getUniversity().getId().longValue());
 		assertTrue(periodInfo.getStartdate().getTime() == period.getStartdate().getTime());
-		assertTrue(periodInfo.getEnddate().getTime() == period.getEnddate().getTime());
+		assertEquals(truncate(periodInfo.getEnddate()), truncate(period.getEnddate()));
 
+		
 		// Synchronize with Database
 		flush();
 
 		logger.info("----> END access to update(Period) test");
+	}
+	
+	private Date truncate(Date date) {
+		return DateUtils.truncate(date, Calendar.DATE);
 	}
 
 	public void testRemovePeriod() {

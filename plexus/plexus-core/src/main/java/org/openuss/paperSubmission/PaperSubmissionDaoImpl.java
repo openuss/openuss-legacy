@@ -22,6 +22,7 @@ public class PaperSubmissionDaoImpl extends org.openuss.paperSubmission.PaperSub
     	targetVO.setExamId(sourceEntity.getExam().getId());
     	targetVO.setUserId(sourceEntity.getSender().getId());
         targetVO.setDeliverDate(sourceEntity.getDeliverDate());
+        targetVO.setComment(sourceEntity.getComment());
               
     }
 

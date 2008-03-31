@@ -43,6 +43,7 @@ public class CourseIndexingEventListenerTest extends AbstractTransactionalDataSo
 			
 		//Create CourseInfo
 		CourseInfo courseInfo = new CourseInfo();
+		courseInfo.setEnabled(true);
 		courseInfo.setName(testUtility.unique("name"));
 		courseInfo.setShortcut(testUtility.unique("course"));
 		courseInfo.setDescription(testUtility.unique("description"));

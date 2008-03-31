@@ -28,16 +28,21 @@ FCKConfig.LinkDlgHideTarget = true;
 FCKConfig.LinkUpload = false;
 FCKConfig.LinkDlgHideAdvanced = true;
 
+basePath = FCKConfig.BasePath.substring(0, FCKConfig.BasePath.indexOf("/", 1));
+
 // only working in wiki!!
 if (window.document.location.href.match(/Wiki/)) {
 
-    FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
+	// get parameters from hidden fields in xhtml. these must be present!!
+	openussCourseId = top.document.getElementById('openussCourseId').value;
+
+	FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
 
     // Wiki link plugin
     var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
     FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
-    FCKConfig.ImageBrowserURL = '/plexus-web/views/secured/wiki/wikichooseimage.faces' ;
+    FCKConfig.ImageBrowserURL = basePath + '/views/secured/wiki/wikichooseimage.faces?course=' + openussCourseId;
     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
@@ -49,7 +54,7 @@ if (window.document.location.href.match(/Wiki/)) {
 	
 	// --- config settings for the ajaxAutoSave plugin ---
 	// URL to post to
-	FCKConfig.ajaxAutoSaveTargetUrl = '/plexus-web/fckfaces/FCKeditor/editor/savedraft' ;
+	FCKConfig.ajaxAutoSaveTargetUrl = basePath + '/fckfaces/FCKeditor/editor/savedraft' ;
 	
 	// Enable / Disable Plugin onBeforeUpdate Action 
 	FCKConfig.ajaxAutoSaveBeforeUpdateEnabled = true;

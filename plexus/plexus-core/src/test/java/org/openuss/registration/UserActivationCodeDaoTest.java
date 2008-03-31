@@ -32,7 +32,7 @@ public class UserActivationCodeDaoTest extends UserActivationCodeDaoTestBase {
 	public void testUserActivationCodeDaoCreate() {
 		UserActivationCode userActivationCode = new UserActivationCodeImpl();
 		userActivationCode.setCode("code");
-		userActivationCode.setUser(testUtility.createUserInDB());
+		userActivationCode.setUser(testUtility.createUniqueUserInDB());
 		userActivationCode.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		assertNull(userActivationCode.getId());
 		userActivationCodeDao.create(userActivationCode);
@@ -41,7 +41,7 @@ public class UserActivationCodeDaoTest extends UserActivationCodeDaoTestBase {
 	
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
-		user = testUtility.createDefaultUser();
+		user = testUtility.createUniqueUser();
 		assertNull(user.getId());
 
 		registrationCode = UserActivationCode.Factory.newInstance();

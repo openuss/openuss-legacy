@@ -21,16 +21,18 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 	 *      java.util.Date)
 	 */
 	protected Long handleLogSessionStart(Long sessionId) throws Exception {
-		User user = getSecurityService().getUserObject(getSecurityService().getCurrentUser());
-		OnlineSession session;
+		OnlineSession session = null;
 		
-		if (sessionId == null) {
-			session = OnlineSession.Factory.newInstance();
-			session.setStartTime(new Date());
-		} else {
+		if (sessionId != null) {
 			session = getOnlineSessionDao().load(sessionId);
 		}
+		
+		if (session == null) {
+			session = OnlineSession.Factory.newInstance();
+			session.setStartTime(new Date());
+		} 
 
+		User user = getSecurityService().getUserObject(getSecurityService().getCurrentUser());
 		if (user != null) {
 			session.setUser(user);
 			closeOtherActiveUserSessions(user, session);

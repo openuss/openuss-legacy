@@ -41,7 +41,7 @@
 				<tr>
 					<td class="col_post_date">
 						<h:outputText value="#{post.created}" styleClass="content_font_header">	
-							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+							<f:convertDateTime type="both" dateStyle="medium" timeStyle="short" timeZone="#{visit.timeZone}"/>
 						</h:outputText> 
 					</td>
 					<td class="col_post_title">

@@ -47,7 +47,7 @@ public class WikiSiteRemoveConfirmationPage extends AbstractWikiPage {
 		final WikiSiteInfo site = (WikiSiteInfo) getSessionBean(Constants.WIKI_SITE_TO_REMOVE);
 		LOGGER.debug("Removing Site " + site.getName() + ".");
 		getWikiService().deleteWikiSite(site.getWikiSiteId());
-		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, null);
 		
 		addMessage(i18n("wiki_site_removed_succeed"));

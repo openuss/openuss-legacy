@@ -50,7 +50,7 @@ private static final Logger logger = Logger.getLogger(UniversityIndexerTest.clas
 	public void testIndexingAndSearching() {
 		logger.debug("Method testIndexingAndSearching: Started");
 		
-		List<DomainResult> results = lectureSearcher.search("A unique University");
+		List<DomainResult> results = lectureSearcher.search("A unique University", false);
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());
@@ -66,7 +66,7 @@ private static final Logger logger = Logger.getLogger(UniversityIndexerTest.clas
 		
 		universityIndexer.update();
 		
-		List<DomainResult> results = lectureSearcher.search("pathetic");
+		List<DomainResult> results = lectureSearcher.search("pathetic", false);
 		DomainResult[] resultObjs = (DomainResult[]) results.toArray(new DomainResult[results.size()]);
 		logger.debug("--- RESULTS ---> "+ArrayUtils.toString(resultObjs));
 		logger.debug(" Result size is: "+results.size());

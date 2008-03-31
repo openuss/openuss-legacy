@@ -140,13 +140,12 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		Long oldId = paperSubmissionInfo.getId();
 		Date oldDate = paperSubmissionInfo.getDeliverDate();
 		paperSubmissionInfo.setDeliverDate(new Date());
-		paperSubmissionService.updatePaperSubmission(paperSubmissionInfo);
+		paperSubmissionService.updatePaperSubmission(paperSubmissionInfo,true);
 		extractedSubmissionInfo = new PaperSubmissionInfo();
 		extractedSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionId);
 		assertNotNull(extractedSubmissionInfo);
 		assertEquals(extractedSubmissionInfo.getId(), oldId);
 		assertNotSame(extractedSubmissionInfo.getDeliverDate(), oldDate);
-		
 		
 		paperSubmissionInfo = new PaperSubmissionInfo();
 		
@@ -158,9 +157,6 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		
 	}
 		
-	
-	
-
 	public void testRemoveExam(){
 		ExamInfo examInfo = createExamInfo("name");
 		getPaperSubmissionService().createExam(examInfo);

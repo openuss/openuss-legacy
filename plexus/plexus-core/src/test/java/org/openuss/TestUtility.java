@@ -81,75 +81,80 @@ public class TestUtility {
 
 	private Institute defaultInstitute;
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
-	 */
-	public User createDefaultUserInDB() {
-		defaultUser.setUsername(unique(USERNAME));
-		defaultUser.setGroups(new ArrayList<Group>());
-		userDao.create(defaultUser);
-		return defaultUser;
-	}
+	// /**
+	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	// <code>TestUtility.createUniqueUserInDB()</code>.
+	// */
+	// public User createDefaultUserInDB() {
+	// defaultUser.setUsername(unique(USERNAME));
+	// defaultUser.setGroups(new ArrayList<Group>());
+	// userDao.create(defaultUser);
+	// return defaultUser;
+	// }
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
-	 */
-	public User createUserInDB() {
-		User user = createDefaultUser();
-		userDao.create(user);
-		return user;
-	}
+	// /**
+	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	// <code>TestUtility.createUniqueUserInDB()</code>.
+	// */
+	// public User createUserInDB() {
+	// User user = createDefaultUser();
+	// userDao.create(user);
+	// return user;
+	// }
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1
-	 */
-	public void removeUser() {
+	public void removeDefaultUser() {
 		removeUser(defaultUser);
 	}
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1
-	 */
 	public void updateUser(User user) {
 		userDao.update(user);
 	}
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1
-	 */
 	public void removeUser(User user) {
 		user = userDao.load(user.getId());
 		userDao.remove(user);
 	}
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
-	 */
-	public Institute createPersistInstituteWithDefaultUser() {
-		defaultUser.setUsername(unique(USERNAME));
-		defaultUser.setFirstName("firstName");
-		defaultUser.setLastName("lastName");
-		defaultUser.setTitle("title");
-		defaultUser.setEmail(unique("email"));
-		defaultUser.setLocale("de_DE");
-		
-		userDao.create(defaultUser);
-		defaultInstitute.setName(unique("name"));
-		defaultInstitute.setShortcut(unique("shortcut"));
-		defaultInstitute.setEmail(unique("email"));
-		defaultInstitute.setLocale("de_DE");
-		defaultInstitute.setOwnerName("owner name");
-		defaultInstitute.setMembership(Membership.Factory.newInstance());
-		instituteDao.create(defaultInstitute);
-		return defaultInstitute;
-	}
+	// /**
+	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	// <code>TestUtility.createUniqueInstituteInDB()</code>.
+	// */
+	// public Institute createPersistInstituteWithDefaultUser() {
+	// defaultUser.setUsername(unique(USERNAME));
+	// defaultUser.setFirstName("firstName");
+	// defaultUser.setLastName("lastName");
+	// defaultUser.setTitle("title");
+	// defaultUser.setEmail(unique("email"));
+	// defaultUser.setLocale("de_DE");
+	//		
+	// userDao.create(defaultUser);
+	// defaultInstitute.setName(unique("name"));
+	// defaultInstitute.setShortcut(unique("shortcut"));
+	// defaultInstitute.setEmail(unique("email"));
+	// defaultInstitute.setLocale("de_DE");
+	// defaultInstitute.setOwnerName("owner name");
+	// defaultInstitute.setMembership(Membership.Factory.newInstance());
+	// instituteDao.create(defaultInstitute);
+	// return defaultInstitute;
+	// }
 
 	public User createUniqueUserInDB() {
+		User user = createUniqueUser();
+		userDao.create(user);
+		return user;
+	}
+
+	/**
+	 * Creates a unique user entity.
+	 * 
+	 * @return User
+	 */
+	public User createUniqueUser() {
 		// Create a unique User
 		User user = User.Factory.newInstance();
 		user.setUsername(unique(USERNAME));
 		user.setPassword("masterkey");
-		user.setEmail(unique("openuss") + "@e-learning.uni-muenster.de");
+		user.setEmail(unique("openuss") + "@openuss.de");
 		user.setEnabled(true);
 		user.setAccountExpired(false);
 		user.setCredentialsExpired(false);
@@ -157,7 +162,7 @@ public class TestUtility {
 
 		user.setFirstName("Unique");
 		user.setLastName("User");
-		user.setAddress("Leonardo Campus 5");
+		user.setAddress("Leonardo Campus 3");
 		user.setCity("Münster");
 		user.setCountry("Germany");
 		user.setPostcode("48149");
@@ -165,11 +170,8 @@ public class TestUtility {
 		user.setLocale("de");
 		user.setTheme("plexus");
 		user.setTimezone(TimeZone.getDefault().getID());
-		
+
 		user.setGroups(new ArrayList<Group>());
-
-		userDao.create(user);
-
 		return user;
 	}
 
@@ -418,7 +420,7 @@ public class TestUtility {
 		institute.setDepartment(department);
 
 		instituteDao.create(institute);
-		
+
 		// Create Application
 		Application application = Application.Factory.newInstance();
 		application.setApplicationDate(new Date());
@@ -430,7 +432,7 @@ public class TestUtility {
 		application.add(institute);
 		application.add(department);
 		this.getApplicationDao().create(application);
-		
+
 		// Create default Groups for Institute
 		GroupItem admins = new GroupItem();
 		admins.setName("INSTITUTE_" + institute.getId() + "_ADMINS");
@@ -506,9 +508,9 @@ public class TestUtility {
 		period.add(course);
 		courseType.add(course);
 		Group group = Group.Factory.newInstance();
-		group.setLabel("COURSE_"+course.getShortcut()+"_PARTICIPANTS");
-		group.setName("COURSE_"+course.getShortcut()+"_PARTICIPANTS");
-		group.setPassword("");		
+		group.setLabel("COURSE_" + course.getShortcut() + "_PARTICIPANTS");
+		group.setName("COURSE_" + course.getShortcut() + "_PARTICIPANTS");
+		group.setPassword("");
 		getGroupDao().create(group);
 		Set<Group> groups = new HashSet<Group>();
 		groups.add(group);
@@ -607,9 +609,6 @@ public class TestUtility {
 		return period;
 	}
 
-	/**
-	 * @deprecated
-	 */
 	public Application createUniqueUnconfirmedApplicationInDB() {
 		// Create a complete Application
 		Application application = Application.Factory.newInstance();
@@ -634,17 +633,18 @@ public class TestUtility {
 		// userDao.remove(defaultInstitute.getOwner());
 	}
 
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueInstituteInDB()</code>.
-	 */
-	public Institute createdDefaultInstituteWithStoredUser() {
-		defaultUser.setUsername(unique(USERNAME));
-		userDao.create(defaultUser);
-		defaultInstitute.setName(unique("name"));
-		defaultInstitute.setShortcut(unique("shortcut"));
-		instituteDao.create(defaultInstitute);
-		return defaultInstitute;
-	}
+	// /**
+	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	// <code>TestUtility.createUniqueInstituteInDB()</code>.
+	// */
+	// public Institute createdDefaultInstituteWithStoredUser() {
+	// defaultUser.setUsername(unique(USERNAME));
+	// userDao.create(defaultUser);
+	// defaultInstitute.setName(unique("name"));
+	// defaultInstitute.setShortcut(unique("shortcut"));
+	// instituteDao.create(defaultInstitute);
+	// return defaultInstitute;
+	// }
 
 	public User createAnonymousSecureContext() {
 		return createSecureContext(Roles.ANONYMOUS_ID);
@@ -656,6 +656,10 @@ public class TestUtility {
 
 	public User createAdminSecureContext() {
 		return createSecureContext(Roles.ADMINISTRATOR_ID);
+	}
+
+	public void destroySecureContext() {
+		SecurityContextHolder.getContext().setAuthentication(null);
 	}
 
 	private User createSecureContext(Long roleId) {
@@ -678,35 +682,33 @@ public class TestUtility {
 		groupDao.update(group);
 
 		final UsernamePasswordAuthenticationToken authentication;
-		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user).getAuthorities());
+		authentication = new UsernamePasswordAuthenticationToken(user, "[Protected]", ((UserImpl) user)
+				.getAuthorities());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
 	}
 
-	public void destroySecureContext() {
-		SecurityContextHolder.getContext().setAuthentication(null);
-	}
-
-	/**
-	 * @deprecated As of OpenUSS 3.0 RC1, replaced by <code>TestUtility.createUniqueUserInDB()</code>.
-	 */
-	public User createDefaultUser() {
-		User user = User.Factory.newInstance();
-		user.setUsername(unique(USERNAME));
-		user.setFirstName("firstName");
-		user.setLastName("lastName");
-		user.setPassword("password");
-		user.setEmail(unique("email"));
-		user.setEnabled(true);
-		user.setAccountExpired(true);
-		user.setCredentialsExpired(true);
-		user.setAccountLocked(true);
-		return user;
-	}
+	// /**
+	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
+	// <code>TestUtility.createUniqueUser()</code>.
+	// */
+	// public User createDefaultUser() {
+	// User user = User.Factory.newInstance();
+	// user.setUsername(unique(USERNAME));
+	// user.setFirstName("firstName");
+	// user.setLastName("lastName");
+	// user.setPassword("password");
+	// user.setEmail(unique("email"));
+	// user.setEnabled(true);
+	// user.setAccountExpired(true);
+	// user.setCredentialsExpired(true);
+	// user.setAccountLocked(true);
+	// return user;
+	// }
 
 	private static volatile long uniqueId = System.currentTimeMillis();
-	
+
 	public static synchronized long unique() {
 		return ++uniqueId;
 	}

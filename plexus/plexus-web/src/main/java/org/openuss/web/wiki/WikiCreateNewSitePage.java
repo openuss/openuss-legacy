@@ -73,7 +73,9 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 		
 		this.siteName = createNewSiteName;
 		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_NEW_SITE_NAME, createNewSiteName);
 		
 		return Constants.WIKI_EDIT_PAGE;
@@ -88,7 +90,9 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 		
 		this.addMessage(i18n("wiki_new_site_already_exists_message", createNewSiteName));
 		
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_NEW_SITE_NAME, createNewSiteName);
 		
 		return Constants.WIKI_MAIN_PAGE;

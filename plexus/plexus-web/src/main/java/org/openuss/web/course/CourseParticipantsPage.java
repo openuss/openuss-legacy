@@ -69,7 +69,7 @@ public class CourseParticipantsPage extends AbstractCoursePage {
 	public String delete() {
 		logger.info("course participant deleted");
 		CourseMemberInfo participant = data.getRowData();
-		courseService.removeMember(participant.getId());
+		courseService.removeMember(participant);
 		addMessage(i18n("message_course_removed_participant",participant.getUsername()));
 		return Constants.SUCCESS;
 	}
