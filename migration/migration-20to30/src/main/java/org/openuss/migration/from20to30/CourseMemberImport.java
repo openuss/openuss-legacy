@@ -18,6 +18,7 @@ import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
 import org.openuss.security.acl.Permission;
 import org.openuss.security.acl.PermissionDao;
+import org.openuss.security.acl.PermissionPK;
 
 /**
  * Import Course Members from Enrollment Access List
@@ -73,10 +74,9 @@ public class CourseMemberImport extends DefaultImport {
 
 	private void createMembership(Enrollmentaccesslist2 access, Course course, User user) {
 		CourseMember member = CourseMember.Factory.newInstance();
-		CourseMemberPK pk = new CourseMemberPK();
-		pk.setCourse(course);
-		pk.setUser(user);
-		member.setCourseMemberPk(pk);
+		member.setCourseMemberPk(new CourseMemberPK());
+		member.getCourseMemberPk().setCourse(course);
+		member.getCourseMemberPk().setUser(user);
 		if (ImportUtil.toBoolean(access.getAccepted())) {
 			storePermission(course, user);
 			member.setMemberType(CourseMemberType.PARTICIPANT);
@@ -88,7 +88,12 @@ public class CourseMemberImport extends DefaultImport {
 
 	private void storePermission(Course course, User user) {
 		ObjectIdentity objectIdentity = objectIdentityDao.load(course.getId());
-		Permission permission = Permission.Factory.newInstance(LectureAclEntry.COURSE_PARTICIPANT,objectIdentity,user);
+		Permission permission = Permission.Factory.newInstance();
+		permission.setPermissionPk(new PermissionPK());
+		permission.getPermissionPk().setAclObjectIdentity(objectIdentity);
+		permission.getPermissionPk().setRecipient(user);
+		permission.setMask(LectureAclEntry.COURSE_PARTICIPANT);				
+		
 		permissionDao.create(permission);
 	}
 

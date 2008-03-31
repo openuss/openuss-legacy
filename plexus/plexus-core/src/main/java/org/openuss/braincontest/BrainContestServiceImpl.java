@@ -179,8 +179,8 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 
 		// TODO findByContestAndSolver should only return one instance
 		// There fore the answer id is a composite id of contest and solver
-		List<Answer> checkIfAnswered = getAnswerDao().findByContestAndSolver(getSecurityService().getUserObject(user), brainContest);
-		if (!checkIfAnswered.isEmpty()) {
+		Answer checkIfAnswered = getAnswerDao().findByContestAndSolver(user.getId(), brainContest.getId());
+		if (checkIfAnswered!=null) {
 			throw new BrainContestApplicationException("braincontest_message_user_correct_answer");
 		}
 
@@ -189,7 +189,9 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		if (valid && topList) {
 			Answer answerObject = Answer.Factory.newInstance();
 			answerObject.setAnsweredAt(new Date(System.currentTimeMillis()));
-			answerObject.setSolver(getSecurityService().getUserObject(user));
+			answerObject.setAnswerPk(new AnswerPK());
+			answerObject.getAnswerPk().setSolver(getSecurityService().getUserObject(user));
+			answerObject.getAnswerPk().setContest(brainContest);
 			brainContest.addAnswer(answerObject);
 		}
 		getBrainContestDao().update(brainContest);

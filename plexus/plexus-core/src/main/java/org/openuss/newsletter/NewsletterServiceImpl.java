@@ -45,8 +45,9 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(userObject, ml);
 		if (subscriber == null) {
 			subscriber = Subscriber.Factory.newInstance();
-			subscriber.setNewsletter(ml);
-			subscriber.setUser(userObject);
+			subscriber.setSubscriberPk(new SubscriberPK());
+			subscriber.getSubscriberPk().setNewsletter(ml);
+			subscriber.getSubscriberPk().setUser(userObject);
 		}
 		getSubscriberDao().create(subscriber);
 	}
@@ -259,7 +260,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		String subscriberList = "";
 		while (i.hasNext()) {
 			Subscriber s = i.next();
-			subscriberList = subscriberList + s.getUser().getEmail();
+			subscriberList = subscriberList + s.getSubscriberPk().getUser().getEmail();
 			if (i.hasNext())
 				subscriberList = subscriberList + "; ";
 		}

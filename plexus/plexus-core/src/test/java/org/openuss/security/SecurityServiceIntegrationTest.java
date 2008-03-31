@@ -57,7 +57,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertNotNull(found);
 		securityService.removePermission(user, bean);
 		
-		flush();
+//		flush();
 
 		assertNull(securityService.getPermissions(user, bean));
 	}

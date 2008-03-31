@@ -71,7 +71,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
 		List<User> emails = new ArrayList<User>();
 		for (ForumWatch watch : watches) {
-			emails.add(watch.getUser());
+			emails.add(watch.getForumWatchPk().getUser());
 		}
 		logEmailAdresses(emails);
 		sendNotificationEmail(emails, topic);
@@ -277,8 +277,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(topic.getId());
 		if (!watchesTopic(topic)){
 			DiscussionWatch watch = DiscussionWatch.Factory.newInstance();
-			watch.setTopic(getTopicDao().load(topic.getId()));
-			watch.setUser(getCurrentUserObject());
+			watch.setDiscussionWatchPk(new DiscussionWatchPK());
+			watch.getDiscussionWatchPk().setTopic(getTopicDao().load(topic.getId()));
+			watch.getDiscussionWatchPk().setUser(getCurrentUserObject());
 			getDiscussionWatchDao().create(watch);
 		}
 	}
@@ -291,8 +292,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(forum.getId());
 		if (!watchesForum(forum)){
 			ForumWatch watch = ForumWatch.Factory.newInstance();
-			watch.setForum(getForumDao().load(forum.getId()));
-			watch.setUser(getCurrentUserObject());
+			watch.setForumWatchPk(new ForumWatchPK());
+			watch.getForumWatchPk().setForum(getForumDao().load(forum.getId()));
+			watch.getForumWatchPk().setUser(getCurrentUserObject());
 			getForumWatchDao().create(watch);
 		}
 	}

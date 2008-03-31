@@ -32,6 +32,7 @@ import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.ObjectIdentityDao;
 import org.openuss.security.acl.Permission;
+import org.openuss.security.acl.PermissionPK;
 
 /**
  * This Service migrate data from openuss 2.0 to openuss-plexus 3.0
@@ -293,9 +294,27 @@ public class LectureImport extends DefaultImport {
 		}
 		
 		// create group permissions
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ADMINISTRATION, instituteObjId, groupAdmins));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_ASSIST, instituteObjId, groupAssistants));
-		instituteObjId.addPermission(Permission.Factory.newInstance(LectureAclEntry.INSTITUTE_TUTOR, instituteObjId, groupTutors));
+		Permission instituteAdministration = Permission.Factory.newInstance();
+		instituteAdministration.setPermissionPk(new PermissionPK());
+		instituteAdministration.getPermissionPk().setAclObjectIdentity(instituteObjId);
+		instituteAdministration.getPermissionPk().setRecipient(groupAdmins);
+		instituteAdministration.setMask(LectureAclEntry.INSTITUTE_ADMINISTRATION);
+
+		Permission instituteAssist = Permission.Factory.newInstance();
+		instituteAssist.setPermissionPk(new PermissionPK());
+		instituteAssist.getPermissionPk().setAclObjectIdentity(instituteObjId);
+		instituteAssist.getPermissionPk().setRecipient(groupAssistants);
+		instituteAssist.setMask(LectureAclEntry.INSTITUTE_ASSIST);
+		
+		Permission instituteTutor = Permission.Factory.newInstance();
+		instituteTutor.setPermissionPk(new PermissionPK());
+		instituteTutor.getPermissionPk().setAclObjectIdentity(instituteObjId);
+		instituteTutor.getPermissionPk().setRecipient(groupTutors);
+		instituteTutor.setMask(LectureAclEntry.INSTITUTE_TUTOR);
+		
+		instituteObjId.addPermission(instituteAdministration);
+		instituteObjId.addPermission(instituteAssist);
+		instituteObjId.addPermission(instituteTutor);
 	}
 
 	private void buildInstituteMembers(Faculty2 faculty2, Institute institute, Group groupAdmins, Group groupAssistants) {

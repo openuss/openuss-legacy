@@ -21,11 +21,11 @@ public class PermissionDaoImpl extends PermissionDaoBase {
 	public List findPermissionsWithRecipient(final int transform, final ObjectIdentity objectIdentity) {
 		return this.findPermissionsWithRecipient(transform,
 				"select " +
-				"	p.recipient.name as recipient," +
+				"	p.permissionPk.recipient.name as recipient," +
 				"   p.mask as mask," +
-				"   p.aclObjectIdentity.id as aclObjectIdentity," +
-				"   p.aclObjectIdentity.parent.id as aclObjectParentIdentity" +
-				" from org.openuss.security.acl.Permission as p where p.aclObjectIdentity = ?",
+				"   p.permissionPk.aclObjectIdentity.id as aclObjectIdentity," +
+				"   p.permissionPk.aclObjectIdentity.parent.id as aclObjectParentIdentity" +
+				" from org.openuss.security.acl.Permission as p where p.permissionPk.aclObjectIdentity = ?",
 				objectIdentity);
 	}
 
@@ -53,6 +53,33 @@ public class PermissionDaoImpl extends PermissionDaoBase {
 			return new AclPermissionAdapter((String)objs[0],(Integer)objs[1],(Long)objs[2],(Long)objs[3]);
 		}
 	}
+	
+	
+    /**
+     * @see org.openuss.security.acl.PermissionDao#findPermission(int, org.openuss.security.acl.ObjectIdentity, org.openuss.security.Authority)
+     */
+	@Override
+    public java.lang.Object findPermission(final int transform, final org.openuss.security.acl.ObjectIdentity aclObjectIdentity, final org.openuss.security.Authority recipient)
+    {
+        return this.findPermission(transform, "from org.openuss.security.acl.Permission as permission where permission.permissionPk.aclObjectIdentity = ? and permission.permissionPk.recipient = ?", aclObjectIdentity, recipient);
+    }
 
-
+    /**
+     * @see org.openuss.security.acl.PermissionDao#findPermissions(int, org.openuss.security.acl.ObjectIdentity)
+     */
+	@Override
+    public java.util.List findPermissions(final int transform, final org.openuss.security.acl.ObjectIdentity aclObjectIdentity)
+    {
+        return this.findPermissions(transform, "from org.openuss.security.acl.Permission as permission where permission.permissionPk.aclObjectIdentity = ?", aclObjectIdentity);
+    }
+    
+    /**
+     * @see org.openuss.security.acl.PermissionDao#findPermissionsByAuthority(int, org.openuss.security.Authority)
+     */
+	@Override
+    public java.util.List findPermissionsByAuthority(final int transform, final org.openuss.security.Authority recipient)
+    {
+        return this.findPermissionsByAuthority(transform, "from org.openuss.security.acl.Permission as permission where permission.permissionPk.recipient = ?", recipient);
+    }
+    
 }

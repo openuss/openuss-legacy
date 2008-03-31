@@ -20,10 +20,10 @@ public class AnswerImpl extends org.openuss.braincontest.AnswerBase implements o
 	 * @see org.openuss.braincontest.Answer#getDisplayName()
 	 */
 	public java.lang.String getDisplayName() {
-		if (getSolver() == null) {
+		if (getAnswerPk() == null || getAnswerPk().getSolver() == null) {
 			return null;
 		}
-		User solver = getSolver();
+		User solver = getAnswerPk().getSolver();
 		return solver.getDisplayName()+" ("+solver.getUsername()+")";
 	}
 
@@ -31,8 +31,8 @@ public class AnswerImpl extends org.openuss.braincontest.AnswerBase implements o
 	 * @see org.openuss.braincontest.Answer#getImageId()
 	 */
 	public java.lang.Long getImageId() {
-		if (getSolver() != null) {
-			return getSolver().getImageId();
+		if (getAnswerPk() == null || getAnswerPk().getSolver() != null) {
+			return getAnswerPk().getSolver().getImageId();
 		} else {
 			return null;
 		}

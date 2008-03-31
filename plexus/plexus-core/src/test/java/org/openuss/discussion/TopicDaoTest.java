@@ -100,8 +100,9 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		Topic topic1 = createTopic(user, forum);
 		
 		DiscussionWatch dw = DiscussionWatch.Factory.newInstance();
-		dw.setTopic(topic1);
-		dw.setUser(user);
+		dw.setDiscussionWatchPk(new DiscussionWatchPK());
+		dw.getDiscussionWatchPk().setTopic(topic1);
+		dw.getDiscussionWatchPk().setUser(user);
 		getDiscussionWatchDao().create(dw);
 		flush();
 		getTrackingService().setRead(topic1);
@@ -122,8 +123,9 @@ public class TopicDaoTest extends TopicDaoTestBase {
 		Topic topic1 = createTopic(user, forum);
 		
 		ForumWatch fw = ForumWatch.Factory.newInstance();
-		fw.setForum(forum);
-		fw.setUser(user);
+		fw.setForumWatchPk(new ForumWatchPK());
+		fw.getForumWatchPk().setForum(forum);
+		fw.getForumWatchPk().setUser(user);
 		getForumWatchDao().create(fw);
 		
 		flush();

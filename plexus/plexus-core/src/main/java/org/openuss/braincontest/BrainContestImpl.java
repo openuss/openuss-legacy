@@ -38,7 +38,7 @@ public class BrainContestImpl extends BrainContestBase implements BrainContest {
 	public void addAnswer(Answer answer) {
 		if (getAnswers() != null && answer != null) {
 			getAnswers().add(answer);
-			answer.setContest(this);
+			answer.getAnswerPk().setContest(this);
 		}
 	}
 	
