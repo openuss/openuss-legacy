@@ -45,7 +45,11 @@ public class PeriodImpl extends org.openuss.lecture.PeriodBase implements org.op
 
 	@Override
 	public void setEnddate(Date enddate) {
-		super.setEnddate(DateUtils.truncate(enddate, Calendar.DATE));
+		// switch to date 23:59:59
+		Date date = DateUtils.truncate(enddate, Calendar.DATE);
+		date = DateUtils.addDays(date, 1);
+		date = DateUtils.addMilliseconds(date, -1);
+		super.setEnddate(date);
 	}
 
 	@Override
