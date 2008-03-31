@@ -133,7 +133,7 @@ $operation.getDocumentation("     * ")
          * Constructs a new instance of {@link ${entity.fullyQualifiedName}}, taking all required and/or
          * read-only properties as arguments.
          */
-        public static $entity.fullyQualifiedName newInstance(## no newline
+        public static $entity.fullyQualifiedName newInstanceByIdentifier(## no newline
 #set ($comma = "")
 #foreach ($identifier in $entity.identifiers)
 ${comma}${identifier.getterSetterTypeName} ${identifier.name}## no newline

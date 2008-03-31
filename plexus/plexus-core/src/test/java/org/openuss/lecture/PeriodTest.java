@@ -38,7 +38,7 @@ public class PeriodTest extends TestCase {
 	}
 	
 	public void testAddCourse() {
-		Course course = Course.Factory.newInstance(120L);
+		Course course = Course.Factory.newInstanceByIdentifier(120L);
 		Period period = Period.Factory.newInstance();
 		
 		period.add(course);

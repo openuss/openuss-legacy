@@ -619,8 +619,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 	 */
 	private CourseMemberPK memberInfoToPK(CourseMemberInfo memberInfo) {
 		CourseMemberPK pk = new CourseMemberPK();
-		pk.setCourse(Course.Factory.newInstance(memberInfo.getCourseId()));
-		pk.setUser(User.Factory.newInstance(memberInfo.getUserId()));
+		pk.setCourse(Course.Factory.newInstanceByIdentifier(memberInfo.getCourseId()));
+		pk.setUser(User.Factory.newInstanceByIdentifier(memberInfo.getUserId()));
 		return pk;
 	}
 
