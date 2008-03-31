@@ -11,7 +11,6 @@ import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
-import org.openuss.groups.UserGroupTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.messaging.MessagingTests;
 import org.openuss.news.NewsTests;
@@ -23,7 +22,6 @@ import org.openuss.security.SecurityTests;
 import org.openuss.statistics.StatisticsTests;
 import org.openuss.system.SystemTests;
 import org.openuss.viewtracking.ViewTrackingTests;
-import org.openuss.wiki.WikiTests;
 
 /**
  * JUnit Testsuite for all core tests. 
@@ -41,7 +39,6 @@ public class AllTests {
 		suite.addTest(DiscussionTests.suite());
 		suite.addTest(DocumentTests.suite());
 		suite.addTest(CourseNewsletterTests.suite());
-		suite.addTest(UserGroupTests.suite());
 		suite.addTest(LectureTests.suite());
 		suite.addTest(NewsletterTests.suite());
 		suite.addTest(MessagingTests.suite());
@@ -52,7 +49,6 @@ public class AllTests {
 		suite.addTest(SecurityTests.suite());
 		suite.addTest(SystemTests.suite());
 		suite.addTest(ViewTrackingTests.suite());
-		suite.addTest(WikiTests.suite());
 		suite.addTest(StatisticsTests.suite());
 		suite.addTest(ChatTests.suite());
 		// $JUnit-END$

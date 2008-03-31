@@ -12,11 +12,6 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
 import org.apache.commons.lang.Validate;
-import org.openuss.groups.GroupAccessType;
-import org.openuss.groups.GroupService;
-import org.openuss.groups.GroupServiceImpl;
-import org.openuss.groups.UserGroup;
-import org.openuss.groups.UserGroupDao;
 import org.openuss.lecture.AccessType;
 import org.openuss.lecture.Application;
 import org.openuss.lecture.ApplicationDao;
@@ -101,8 +96,6 @@ public class TestUtility {
 	private ApplicationDao applicationDao;
 
 	private PeriodDao periodDao;
-
-	private UserGroupDao userGroupDao;
 
 	private SecurityService securityService;
 	
@@ -875,37 +868,6 @@ public class TestUtility {
 		return seminarCondition;
 	}
 		
-	public UserGroup createUniqueUserGroupInDB() {
-
-		// Create a unique CourseType
-		UserGroup userGroup = UserGroup.Factory.newInstance();
-		userGroup.setName("UserGroup");
-		userGroup.setShortcut(unique("group"));
-		userGroup.setCreator(createUniqueUserInDB());
-		Group mod = Group.Factory.newInstance();
-		mod.setName(unique("moderator"));
-		mod.setGroupType(GroupType.MODERATOR);
-		getGroupDao().create(mod);
-		userGroup.setModeratorsGroup(mod);
-		Group mem = Group.Factory.newInstance();
-		mem.setName(unique("member"));
-		mem.setGroupType(GroupType.MEMBER);
-		getGroupDao().create(mem);
-		userGroup.setMembersGroup(mem);
-		userGroup.setMembership(Membership.Factory.newInstance());
-		userGroup.setAccessType(GroupAccessType.OPEN);
-		userGroup.setForum(true);
-		userGroup.setNewsletter(true);
-		userGroup.setChat(false);
-		userGroup.setDescription("A UserGroup");
-		userGroup.setDocuments(true);
-		userGroup.setCalendar(true);
-		this.getUserGroupDao().create(userGroup);
-		this.getSecurityService().createObjectIdentity(userGroup, null);
-
-		return userGroup;
-	}
-
 	public static synchronized long unique() {
 		return ++uniqueId;
 	}
@@ -1050,13 +1012,6 @@ public class TestUtility {
 		this.organisationService = organisationService;
 	}
 
-	public void setUserGroupDao(UserGroupDao userGroupDao) {
-		this.userGroupDao = userGroupDao;
-	}
-
-	public UserGroupDao getUserGroupDao() {
-		return userGroupDao;
-	}
 
 	public CourseSeminarpoolAllocationDao getCourseSeminarpoolAllocationDao() {
 		return courseSeminarpoolAllocationDao;
