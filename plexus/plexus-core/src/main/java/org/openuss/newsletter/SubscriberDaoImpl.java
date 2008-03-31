@@ -43,8 +43,8 @@ public class SubscriberDaoImpl extends SubscriberDaoBase {
 			return Subscriber.Factory.newInstance();
 		}
 		SubscriberPK pk = new SubscriberPK();
-		pk.setUser(User.Factory.newInstance(subscriberInfo.getUserId()));
-		pk.setNewsletter(Newsletter.Factory.newInstance(subscriberInfo.getNewsletterId()));
+		pk.setUser(User.Factory.newInstanceByIdentifier(subscriberInfo.getUserId()));
+		pk.setNewsletter(Newsletter.Factory.newInstanceByIdentifier(subscriberInfo.getNewsletterId()));
 		subscriber = this.load(pk);
 		if (subscriber == null) {
 			subscriber = Subscriber.Factory.newInstance();
