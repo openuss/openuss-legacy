@@ -140,9 +140,13 @@ public class PeriodDaoTest extends PeriodDaoTestBase {
 		assertEquals(periodInfo.getId(), period.getId());
 		assertEquals(periodInfo.getName(), period.getName());
 		assertEquals(periodInfo.getDescription(), period.getDescription());
-		assertEquals(DateUtils.truncate(periodInfo.getStartdate(), Calendar.DATE).getTime(), period.getStartdate().getTime());
-		assertEquals(DateUtils.truncate(periodInfo.getEnddate(),Calendar.DATE).getTime(), period.getEnddate().getTime());
+		assertEquals(truncate(periodInfo.getStartdate()),truncate(period.getStartdate()));
+		assertEquals(truncate(periodInfo.getEnddate()), truncate(period.getEnddate()));
 		assertEquals(periodInfo.getUniversityId(), period.getUniversity().getId());
+	}
+	
+	private Date truncate(Date date) {
+		return DateUtils.truncate(date, Calendar.DATE);
 	}
 	
 	public void testPeriodFactory() {
