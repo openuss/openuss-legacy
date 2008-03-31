@@ -1,5 +1,6 @@
 package org.openuss.web.security.profile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.faces.event.ActionEvent;
@@ -14,6 +15,7 @@ import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.DocumentService;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
+import org.openuss.framework.utilities.ImageUtils;
 import org.openuss.framework.web.xss.HtmlInputFilter;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
@@ -87,8 +89,11 @@ public class UserProfilePage extends BasePage{
 			imageFile.setName(Constants.USER_IMAGE_NAME);
 			imageFile.setFileName(uploaded.getFileName());
 			imageFile.setContentType(uploaded.getContentType());
-			imageFile.setFileSize(uploaded.getFileSize());
-			imageFile.setInputStream(uploaded.getInputStream());
+
+			// resize image
+			byte[] image = ImageUtils.resizeImageToByteArray(uploaded.getInputStream(), ImageUtils.IMAGE_UNKNOWN, 100, 100);
+			imageFile.setFileSize(image.length);
+			imageFile.setInputStream(new ByteArrayInputStream(image));
 			
 			FolderInfo folder = documentService.getFolder(user);
 			documentService.createFileEntry(imageFile, folder);
