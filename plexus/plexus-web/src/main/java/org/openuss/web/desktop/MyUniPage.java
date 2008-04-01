@@ -47,7 +47,7 @@ import org.openuss.web.BasePage;
  */
 @Bean(name = "views$secured$myuni$myuni", scope = Scope.REQUEST)
 public class MyUniPage extends BasePage {
-	private static final Logger logger = Logger.getLogger(DesktopPage.class);
+	private static final Logger logger = Logger.getLogger(MyUniPage.class);
 
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
