@@ -48,10 +48,7 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 	 */
 	public String overwriteSite()  {
 		siteVersionInfo.setId(null);
-		if (siteVersionInfo.getName() == null) {
-			siteVersionInfo.setName((String) getSessionBean(Constants.WIKI_NEW_SITE_NAME));
-		}
-		
+
 		Date creationDate = new Date();
 		
 		LOGGER.debug("Overwrting Site " + siteVersionInfo.getName() + ", (Version: " + SimpleDateFormat.getInstance().format(creationDate) + ").");

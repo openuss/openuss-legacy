@@ -24,17 +24,11 @@ public class WikiEditPage extends AbstractWikiPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
-		
 		if (this.siteVersionInfo != null && this.siteVersionInfo.getId() != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(this.siteVersionInfo.getId());
 		} else {
 			siteVersionInfo.setDomainId(this.courseInfo.getId());
-	
-			if (siteVersionInfo.getName() == null) {
-				siteVersionInfo.setName((String)getSessionBean(Constants.WIKI_NEW_SITE_NAME));
-			}
 		}
-		
 		siteVersionInfo.setNote(null);
 	}
 	
@@ -43,6 +37,7 @@ public class WikiEditPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String save() {		
+		// TODO This should be handled by business methods. Throw ConcurrentModificationException
 		if (hasConcurrentModifcation()) {
 			return Constants.WIKI_OVERWRITE_PAGE;
 		}
@@ -53,19 +48,14 @@ public class WikiEditPage extends AbstractWikiPage {
 		
 		siteVersionInfo.setCreationDate(creationDate);
 		siteVersionInfo.setAuthorId(user.getId());
-		siteVersionInfo.setDomainId(this.courseInfo.getId());
+		siteVersionInfo.setDomainId(courseInfo.getId());
 		siteVersionInfo.setDeleted(false);
 		siteVersionInfo.setReadOnly(false);
 		siteVersionInfo.setStable(false);
 		
-		getWikiService().saveWikiSite(this.siteVersionInfo);
-		setRequestBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-
+		getWikiService().saveWikiSite(siteVersionInfo);
+		
 		addMessage(i18n(Constants.WIKI_SITE_SAVE_SUCCEEDED));
-		
-		removeSessionBean(Constants.WIKI_NEW_SITE_BACKUP);
-		removeSessionBean(Constants.WIKI_NEW_SITE_NAME);
-		
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}
@@ -75,10 +65,10 @@ public class WikiEditPage extends AbstractWikiPage {
 	 * @return <code>true</code> if modification was made while editing, otherwise <code>false</code>.
 	 */
 	private boolean hasConcurrentModifcation() {
-		if (this.siteVersionInfo.getWikiSiteId() != null && this.siteVersionInfo.getWikiSiteId() != 0) {
-			final Long newestId = this.wikiService.getNewestWikiSite(this.siteVersionInfo.getWikiSiteId()).getId();
-			if (newestId > this.siteVersionInfo.getId()) {
-				LOGGER.debug("Saving Site " + this.siteVersionInfo.getName() + ". Concurrent modifications found.");
+		if (siteVersionInfo.getWikiSiteId() != null && siteVersionInfo.getWikiSiteId() != 0) {
+			final Long newestId = wikiService.getNewestWikiSite(siteVersionInfo.getWikiSiteId()).getId();
+			if (newestId > siteVersionInfo.getId()) {
+				LOGGER.debug("Saving Site " + siteVersionInfo.getName() + ". Concurrent modifications found.");
 				return true;
 			}
 		}
@@ -100,7 +90,7 @@ public class WikiEditPage extends AbstractWikiPage {
 	 */
 	public String cancelCreate() {
 		this.siteVersionInfo = null;
-		setRequestBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
+		setBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}

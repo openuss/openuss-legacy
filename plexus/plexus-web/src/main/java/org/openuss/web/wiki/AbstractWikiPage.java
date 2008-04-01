@@ -33,10 +33,6 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	
 	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
 
-	/*protected String siteName;
-	
-	protected Long siteVersionId;*/
-	
 	private final DateFormat dateFormat = new SimpleDateFormat();
 	
 	@Override
@@ -44,9 +40,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		if (!checkSession()) {
 			return;
 		}
-		
 		super.prerender();
-		
 		addBreadCrumbs();
 	}
 	

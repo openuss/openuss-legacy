@@ -37,12 +37,12 @@
 	  					<span>
 							<h:outputText value="#{msg.wiki_site_remove_text}" styleClass="warning"/>
 						</span><br/>
-						<strong>#{wiki_site_to_remove.name}	</strong><br/> 
+						<strong>#{wiki_site_to_remove.name}</strong><br/> 
 						<br/>
 					</p>
 					<p class="content_font_normal">
 	   					<t:selectBooleanCheckbox id="checkConfirmation" forceId="true"
-	   						validator="#{views$secured$wiki$wikiremovesite.validateRemoveConfirmation}" 
+	   						validator="#{views$secured$wiki$wikisiteremoveconfirmation.validateRemoveConfirmation}" 
 	   						styleClass="checkbox" 
 	   						required="true"/>
 	   					<h:outputLabel value="#{msg.wiki_site_remove_confirmation_flag}" for="checkConfirmation"/>
@@ -52,7 +52,7 @@
 					
 				</o:block>
 				<o:block>
-					<t:commandButton id="remove" forceId="true" value="${msg.remove}" action="#{views$secured$wiki$wikiremovesite.removeSite}" styleClass="button_warning"/>
+					<t:commandButton id="remove" forceId="true" value="${msg.remove}" action="#{views$secured$wiki$wikisiteremoveconfirmation.removeSite}" styleClass="button_warning"/>
 					<t:commandButton id="cancel" forceId="true" value="${msg.cancel}" action="course_wiki" styleClass="button_cancel" immediate="true"/>				
 				</o:block>
 			</h:form>

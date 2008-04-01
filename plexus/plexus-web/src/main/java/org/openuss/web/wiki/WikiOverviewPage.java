@@ -26,7 +26,6 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:59
 		super.prerender();
-		
 		addBreadCrumbs();
 	}
 	
@@ -54,9 +53,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 	 * @return Wiki Remove Site Page.
 	 */
 	public String removeSite() {
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_SITE_TO_REMOVE, getData().getRowData());
-		
+		setBean(Constants.WIKI_SITE_TO_REMOVE, getData().getRowData());
 		return Constants.WIKI_REMOVE_SITE_PAGE;
 	}
 	

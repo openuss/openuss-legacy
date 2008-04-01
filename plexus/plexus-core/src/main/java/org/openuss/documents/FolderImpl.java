@@ -68,7 +68,6 @@ public class FolderImpl extends org.openuss.documents.FolderBase implements org.
 	@Override
 	public Date getModified() {
 		Date modified = getCreated();
-		// TODO ATTENTION - Don't know what the performance this will be! - it's recursivly
 		for (FolderEntry entry : getEntries()) {
 			if (modified.before(entry.getModified())) {
 				modified = entry.getModified();

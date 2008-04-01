@@ -8,6 +8,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.web.Constants;
 import org.openuss.web.PageLinks;
+import org.openuss.wiki.WikiSiteContentInfo;
 
 /**
  * Backing Bean for wikicreatesite.xhtml.
@@ -24,7 +25,6 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
-		
 		addBreadCrumbs();
 	}
 	
@@ -53,40 +53,15 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	 * @return Wiki Edit Page or Wiki Main Page.
 	 */
 	public String createNewSite() {
-		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), this.siteVersionInfo.getName());
-		
-		if (this.siteVersionInfo == null) {
-			return handleSiteDoesNotExist();
+		WikiSiteContentInfo site = wikiService.findWikiSiteContentByDomainObjectAndName(courseInfo.getId(), siteVersionInfo.getName());
+		if (site == null) {
+			LOGGER.debug("Site '" + siteVersionInfo.getName() + "' does not exist. Opening Create New Site Page.");			
+			return Constants.WIKI_EDIT_PAGE;
 		} else {
-			return handleSiteAlreadyExists();
+			LOGGER.debug("Site '" + siteVersionInfo.getName() + "' does already exist. Opening Edit Site Page.");
+			this.addMessage(i18n("wiki_new_site_already_exists_message", siteVersionInfo.getName()));
+			return Constants.WIKI_MAIN_PAGE;
 		}
 	}
 	
-	/**
-	 * Returns Wiki Edit Page.
-	 * @return Wiki Edit Page.
-	 */
-	private String handleSiteDoesNotExist() {
-		LOGGER.debug("Site '" + this.siteVersionInfo.getName() + "' does not exist. Opening Create New Site Page.");			
-		
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_NEW_SITE_NAME, this.siteVersionInfo.getName());
-		
-		return Constants.WIKI_EDIT_PAGE;
-	}
-	
-	/**
-	 * Returns Wiki Main Page.
-	 * @return Wiki Main Page.
-	 */
-	private String handleSiteAlreadyExists() {
-		LOGGER.debug("Site '" + this.siteVersionInfo.getName() + "' does already exist. Opening Edit Site Page.");
-		
-		this.addMessage(i18n("wiki_new_site_already_exists_message", this.siteVersionInfo.getName()));
-		
-		return Constants.WIKI_MAIN_PAGE;
-	}
-
 }

@@ -290,6 +290,12 @@
         <managed-bean-class>org.openuss.wiki.WikiSiteContentInfo</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>wiki_site_to_remove</managed-bean-name>
+        <managed-bean-class>org.openuss.wiki.WikiSiteInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
     
  	<managed-bean>
  		<managed-bean-name>coursenews_attachments</managed-bean-name>

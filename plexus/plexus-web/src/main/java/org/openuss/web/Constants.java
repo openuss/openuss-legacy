@@ -310,7 +310,6 @@ public class Constants {
 	public static final String WIKI_IMAGE_REMOVE_HEADER = "wiki_image_remove_header";
 	public static final String WIKI_IMAGE_REMOVE_SUCCEEDED = "wiki_image_removed_succeed";
 	public static final String WIKI_IMAGE_CANNOT_BE_REMOVED = "wiki_image_cannot_be_removed";
-	public static final String WIKI_NEW_SITE_BACKUP = "wiki_create_backup";
 
 	
 }

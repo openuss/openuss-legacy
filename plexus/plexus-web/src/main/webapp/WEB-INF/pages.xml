@@ -310,8 +310,12 @@
     <page view-id="/views/secured/wiki/*">
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="page" value="#{wiki_current_site_version.name}"/>
+    	<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long"/>
+    	<parameter name="remove" value="#{wiki_site_to_remove.wikiSiteId}" converterId="javax.faces.Long"/>
     </page>
 
+<!-- 
    	<page view-id="/views/secured/wiki/wikimain.xhtml">
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
@@ -323,6 +327,11 @@
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
     	<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}"/>
     	<parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+ -->
+    
+    <page view-id="/views/secured/wiki/wikisiteremoveconfirmation.xhtml">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.DELETE}"/>
     </page>
     
     <page view-id="/views/secured/wiki/wikiversion.xhtml">
