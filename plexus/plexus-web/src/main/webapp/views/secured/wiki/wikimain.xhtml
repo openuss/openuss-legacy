@@ -46,7 +46,7 @@
 								title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</t:commandLink>
 						</li>
 					
-						<c:if test="${wiki_current_site_version.deleted}">
+						<c:if test="${views$secured$wiki$wikimain.siteVersionInfo.deleted}">
 							<li class="wiki_versions">
 								<t:commandLink id="wiki_version" forceId="true"
 									value=""
@@ -162,8 +162,8 @@
 		            </s:acl>
 	            </c:if>
 	            
-	            <c:if test="${not wiki_current_site_version.deleted}">
-	            	<c:if test="${empty wiki_current_site_version.text}">
+	            <c:if test="${not views$secured$wiki$wikimain.siteVersionInfo.deleted}">
+	            	<c:if test="${empty views$secured$wiki$wikimain.siteVersionInfo.text}">
 		  				<o:block label="#{msg.wiki_create_site_header}" styleClass="form_box">
 		  					<p class="content_font_normal">
 		  						<h:outputFormat value="#{msg.wiki_edit_create_msg}" styleClass="content_font_normal">
@@ -183,12 +183,12 @@
 						</o:block>
 		  			</c:if>
 		  			
-		  			<c:if test="${not empty wiki_current_site_version.text}">
-            			<o:block rendered="#{wiki_current_site_version.readOnly}" styleClass="status_box">							
+		  			<c:if test="${not empty views$secured$wiki$wikimain.siteVersionInfo.text}">
+            			<o:block rendered="#{views$secured$wiki$wikimain.siteVersionInfo.readOnly}" styleClass="status_box">							
   								<h:outputFormat value="#{msg.wiki_main_header_site_read_only_detail}" styleClass="content_font_normal" />
    						</o:block>
 	  					
-            			<o:block rendered="#{wiki_current_site_version.stable}" styleClass="status_box">								
+            			<o:block rendered="#{views$secured$wiki$wikimain.siteVersionInfo.stable}" styleClass="status_box">								
   							<h:outputFormat value="#{msg.wiki_main_header_site_stable_detail}" styleClass="content_font_normal" />
   						</o:block>
 		  				
@@ -215,7 +215,8 @@
 	                        		immediate="true" 
 	                        		styleClass="button" 
 	                        		title="#{msg.wiki_main_button_edit_hint}"
-	                        		rendered="#{not wiki_current_site_version.readOnly}" />
+	                        		rendered="#{not views$secured$wiki$wikimain.siteVersionInfo.readOnly}" >
+	                        	</t:commandButton>
 	                       	</s:acl>								
 		                </o:block>
 		        	</c:if>

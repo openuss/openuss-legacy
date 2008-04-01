@@ -76,31 +76,31 @@
 					
 					<plexus:column header="#{msg.wiki_version_column_actions}">
 						<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
-						 <c:if test="#{sessionScope.wiki_current_site_version.readOnly == false}">
+						 <c:if test="#{not sessionScope.wiki_current_site_version.readOnly}">
 							<plexus:command 
-					    	bean="#{views$secured$wiki$wikiversion}"
-							action="editWikiVersion" 
-							label="#{msg.wiki_version_button_edit}" 
-							title="#{msg.wiki_version_button_edit}"
-							styleClass="icon_edit" />
+						    	bean="#{views$secured$wiki$wikiversion}"
+								action="editWikiVersion" 
+								label="#{msg.wiki_version_button_edit}" 
+								title="#{msg.wiki_version_button_edit}"
+								styleClass="icon_edit"/>
 						 </c:if>				
 						</s:acl>
 						
 						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 							<plexus:command 
-					    	bean="#{views$secured$wiki$wikiversion}"
-							action="editWikiVersion" 
-							label="#{msg.wiki_version_button_edit}" 
-							title="#{msg.wiki_version_button_edit}"
-							styleClass="icon_edit"/>
+						    	bean="#{views$secured$wiki$wikiversion}"
+								action="editWikiVersion" 
+								label="#{msg.wiki_version_button_edit}" 
+								title="#{msg.wiki_version_button_edit}"
+								styleClass="icon_edit" immediate="true"/>
 						
 							<plexus:command 
-						    bean="#{views$secured$wiki$wikiversion}"
-							action="deleteWikiVersion" 
-							label="#{msg.wiki_version_button_delete}" 
-							title="#{msg.wiki_version_button_delete}"
-							onclick="if (!confirm('#{msg.wiki_version_button_delete_confirmation}')) return false"
-							styleClass="icon_remove"/>
+							    bean="#{views$secured$wiki$wikiversion}"
+								action="deleteWikiVersion" 
+								label="#{msg.wiki_version_button_delete}" 
+								title="#{msg.wiki_version_button_delete}"
+								onclick="if (!confirm('#{msg.wiki_version_button_delete_confirmation}')) return false"
+								styleClass="icon_remove"/>
 						</s:acl>
 					</plexus:column>
 					

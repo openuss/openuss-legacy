@@ -20,8 +20,6 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(WikiEditPage.class);
 	
-	private String createNewSiteName;
-	
 	@Override
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
@@ -55,7 +53,7 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	 * @return Wiki Edit Page or Wiki Main Page.
 	 */
 	public String createNewSite() {
-		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), createNewSiteName);
+		this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), this.siteVersionInfo.getName());
 		
 		if (this.siteVersionInfo == null) {
 			return handleSiteDoesNotExist();
@@ -69,14 +67,12 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	 * @return Wiki Edit Page.
 	 */
 	private String handleSiteDoesNotExist() {
-		LOGGER.debug("Site '" + createNewSiteName + "' does not exist. Opening Create New Site Page.");			
-		
-		this.siteName = createNewSiteName;
+		LOGGER.debug("Site '" + this.siteVersionInfo.getName() + "' does not exist. Opening Create New Site Page.");			
 		
 		// FIXME Do not use session bean for navigation
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_NEW_SITE_NAME, createNewSiteName);
+		setSessionBean(Constants.WIKI_NEW_SITE_NAME, this.siteVersionInfo.getName());
 		
 		return Constants.WIKI_EDIT_PAGE;
 	}
@@ -86,24 +82,11 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	private String handleSiteAlreadyExists() {
-		LOGGER.debug("Site '" + createNewSiteName + "' does already exist. Opening Edit Site Page.");
+		LOGGER.debug("Site '" + this.siteVersionInfo.getName() + "' does already exist. Opening Edit Site Page.");
 		
-		this.addMessage(i18n("wiki_new_site_already_exists_message", createNewSiteName));
-		
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_NEW_SITE_NAME, createNewSiteName);
+		this.addMessage(i18n("wiki_new_site_already_exists_message", this.siteVersionInfo.getName()));
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}
 
-	public String getCreateNewSiteName() {
-		return createNewSiteName;
-	}
-
-	public void setCreateNewSiteName(final String createNewSiteName) {
-		this.createNewSiteName = createNewSiteName;
-	}
-	
 }

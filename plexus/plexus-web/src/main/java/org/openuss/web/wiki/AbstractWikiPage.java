@@ -3,10 +3,12 @@ package org.openuss.web.wiki;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.managed.Property;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -31,9 +33,9 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	
 	private WikiOverviewDataProvider data = new WikiOverviewDataProvider();
 
-	protected String siteName;
+	/*protected String siteName;
 	
-	protected Long siteVersionId;
+	protected Long siteVersionId;*/
 	
 	private final DateFormat dateFormat = new SimpleDateFormat();
 	
@@ -99,7 +101,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	 */
 	public String getSiteTitle() {
 		if (siteVersionInfo.getName() == null) {
-			return this.siteName;
+			return "--";
 		}
 		
 		final StringBuilder siteTitle = new StringBuilder(readablePageName(siteVersionInfo.getName()));
@@ -133,6 +135,31 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		}
 	}	
 	
+	/**
+	 * Checks if the site name is valid.
+	 * @return <code>true</code> if the site name is valid, otherwise <code>false</code>.
+	 */
+	protected boolean isValidWikiSiteName(String siteName) {		
+		final Matcher matcher = WikiSiteNameValidator.ALLOWED_CHARACTERS_PATTERN.matcher(siteName);
+		
+		return matcher.matches();
+	}
+	
+	/**
+	 * Formats the Site Name.
+	 * @param siteName Site Name to format.
+	 * @return Formated Site Name.
+	 */
+	protected String formatPageName(String siteName) {
+		if (siteName != null) {
+			return URLUTF8Encoder.decode(siteName);
+		} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
+			return this.siteVersionInfo.getName();
+		} else {
+			return Constants.WIKI_STARTSITE_NAME;
+		}
+	}
+	
 	public WikiService getWikiService() {
 		return wikiService;
 	}
@@ -156,7 +183,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	public void setData(WikiOverviewDataProvider data) {
 		this.data = data;
 	}
-	
+	/*
 	public void setSiteName(String siteName) {
 		this.siteName = siteName;
 	}
@@ -172,5 +199,5 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	public Long getSiteVersionId() {
 		return siteVersionId;
 	}
-	
+	*/
 }

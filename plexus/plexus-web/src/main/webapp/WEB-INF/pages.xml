@@ -311,10 +311,24 @@
         <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
     </page>
-    
+
    	<page view-id="/views/secured/wiki/wikimain.xhtml">
-        <parameter name="page" value="#{views$secured$wiki$wikimain.siteName}"/>
-        <parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionId}" converterId="javax.faces.Long"/>
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}"/>
+    	<parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    <page view-id="/views/secured/wiki/wikiedit.xhtml">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}"/>
+    	<parameter name="versionId" value="#{views$secured$wiki$wikimain.siteVersionInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    
+    <page view-id="/views/secured/wiki/wikiversion.xhtml">
+        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
+    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}"/>
     </page>
     
     <page view-id="/views/secured/wiki/wikiimport.xhtml">

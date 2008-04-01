@@ -32,6 +32,21 @@ public class WikiVersionPage extends AbstractWikiPage{
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
 		
+		if (this.siteVersionInfo.getName() != null) {
+			String siteName = this.siteVersionInfo.getName().trim();
+			
+			if (!isValidWikiSiteName(siteName)) {
+				addError(i18n("wiki_error_illegal_site_name"));
+				return;
+			}
+
+			siteName = formatPageName(siteName);
+
+			this.siteVersionInfo = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), siteName);
+		} else {
+			addError("site version id not set!");
+		}
+		
 		addBreadCrumbs();
 	}
 	
@@ -70,11 +85,19 @@ public class WikiVersionPage extends AbstractWikiPage{
 	 */
 	public String editWikiVersion() {
 		LOGGER.debug("editing WikiSiteVersion");
-		WikiSiteInfo entry = data.getRowData();
-		siteVersionInfo = wikiService.getWikiSiteContent(entry.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
-		return Constants.WIKI_EDIT_PAGE;
+		WikiSiteInfo siteInfo = data.getRowData();
+		if (siteInfo == null) {
+			return Constants.FAILURE;
+		}
+		siteVersionInfo = wikiService.getWikiSiteContent(siteInfo.getId());
+		setRequestBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
+		if (siteVersionInfo == null) {
+			addWarning(i18n("error_wikisite_not_found"));
+			return Constants.FAILURE;
+		} else {
+			LOGGER.debug("selected siteVersionInfo " + siteVersionInfo.getName());
+			return Constants.WIKI_EDIT_PAGE;
+		}
 	}
 	
 	/**

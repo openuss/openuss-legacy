@@ -65,8 +65,6 @@ public class WikiSiteOverwriteConfirmationPage extends AbstractWikiPage {
 		
 		getWikiService().saveWikiSite(siteVersionInfo);
 		
-		setSiteVersionId(null);
-		
 		addMessage(i18n("wiki_site_save_succeeded"));
 		return Constants.WIKI_MAIN_PAGE;
 	}

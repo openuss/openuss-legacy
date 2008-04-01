@@ -25,8 +25,8 @@ public class WikiEditPage extends AbstractWikiPage {
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
 		
-		if (siteVersionId != null) {
-			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
+		if (this.siteVersionInfo != null && this.siteVersionInfo.getId() != null) {
+			siteVersionInfo = wikiService.getWikiSiteContent(this.siteVersionInfo.getId());
 		} else {
 			siteVersionInfo.setDomainId(this.courseInfo.getId());
 	
@@ -59,8 +59,7 @@ public class WikiEditPage extends AbstractWikiPage {
 		siteVersionInfo.setStable(false);
 		
 		getWikiService().saveWikiSite(this.siteVersionInfo);
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+		setRequestBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 
 		addMessage(i18n(Constants.WIKI_SITE_SAVE_SUCCEEDED));
 		
@@ -100,16 +99,8 @@ public class WikiEditPage extends AbstractWikiPage {
 	 * @return Wiki Main Page.
 	 */
 	public String cancelCreate() {
-//		this.siteVersionInfo = (WikiSiteContentInfo) getSessionBean(Constants.WIKI_NEW_SITE_BACKUP);
-//		removeSessionBean(Constants.WIKI_NEW_SITE_BACKUP);
-//		removeSessionBean(Constants.WIKI_NEW_SITE_NAME);
-		
 		this.siteVersionInfo = null;
-		this.siteName = null;
-		this.siteVersionId = null;
-		removeSessionBean(Constants.WIKI_NEW_SITE_BACKUP);
-		removeSessionBean(Constants.WIKI_NEW_SITE_NAME);
-		removeSessionBean(Constants.WIKI_CURRENT_SITE_VERSION);
+		setRequestBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}

@@ -1,13 +1,10 @@
 package org.openuss.web.wiki;
 
-import java.util.regex.Matcher;
-
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
-import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteContentInfo;
 import org.openuss.wiki.WikiSiteInfo;
@@ -30,62 +27,36 @@ public class WikiMainPage extends AbstractWikiPage {
 			return;
 		}
 		
-		if (siteName != null) {
-			siteName = siteName.trim();
-			
-			if (!isValidWikiSiteName()) {
-				addError(i18n("wiki_error_illegal_site_name"));
-				return;
-			}
-		}
-		
-		if (this.siteVersionId != null) {
-			siteVersionInfo = wikiService.getWikiSiteContent(siteVersionId);
+		if (this.siteVersionInfo.getId() != null) {
+			siteVersionInfo = wikiService.getWikiSiteContent(this.siteVersionInfo.getId());
 		} else {
-			String name = formatPageName(this.siteName);
+			String siteName = null;
+			if (this.siteVersionInfo.getName() != null) {
+				siteName = this.siteVersionInfo.getName().trim();
+				
+				if (!isValidWikiSiteName(siteName)) {
+					addError(i18n("wiki_error_illegal_site_name"));
+					return;
+				}
+	
+				siteName = formatPageName(siteName);
+			} else {
+				siteName = Constants.WIKI_STARTSITE_NAME;
+			}
 
-			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), name);
+			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), siteName);
 			
 			if (version == null) {
-				// FIXME Do not use session bean for navigation
-				setSessionBean(Constants.WIKI_NEW_SITE_BACKUP, this.siteVersionInfo);
-				// FIXME Do not use session bean for navigation
-				setSessionBean(Constants.WIKI_NEW_SITE_NAME, name);
 				this.siteVersionInfo = null;
-				this.siteName = null;
+				setBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
 			} else {
 				this.siteVersionInfo = version;
 			}
 		}
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
+
+		setBean(Constants.WIKI_CURRENT_SITE_VERSION, this.siteVersionInfo);
 				
 		super.prerender();
-	}
-	
-	/**
-	 * Checks if the site name is valid.
-	 * @return <code>true</code> if the site name is valid, otherwise <code>false</code>.
-	 */
-	private boolean isValidWikiSiteName() {		
-		final Matcher matcher = WikiSiteNameValidator.ALLOWED_CHARACTERS_PATTERN.matcher(siteName);
-		
-		return matcher.matches();
-	}
-	
-	/**
-	 * Formats the Site Name.
-	 * @param siteName Site Name to format.
-	 * @return Formated Site Name.
-	 */
-	private String formatPageName(String siteName) {
-		if (siteName != null) {
-			return URLUTF8Encoder.decode(siteName);
-		} else if (this.siteVersionInfo != null && this.siteVersionInfo.getName() != null) {
-			return this.siteVersionInfo.getName();
-		} else {
-			return Constants.WIKI_STARTSITE_NAME;
-		}
 	}
 
 	/**
@@ -167,7 +138,6 @@ public class WikiMainPage extends AbstractWikiPage {
 		}
 		
 		siteVersionInfo = wikiSiteContentInfo;
-		siteVersionId = siteVersionInfo.getId();
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}
@@ -211,8 +181,6 @@ public class WikiMainPage extends AbstractWikiPage {
 	 */
 	public String showStartPage() {
 		siteVersionInfo = null;
-		siteVersionId = null;
-		siteName = null;
 		
 		setSessionBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
 		
@@ -220,10 +188,6 @@ public class WikiMainPage extends AbstractWikiPage {
 	}
 	
 	public String getSiteTitleNoVersion() {
-		if (siteVersionInfo.getName() == null) {
-			return siteName;
-		}
-		
 		return readablePageName(siteVersionInfo.getName());
 	}
 	

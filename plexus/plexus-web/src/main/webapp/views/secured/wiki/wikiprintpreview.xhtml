@@ -25,18 +25,18 @@
 	<!-- text above will be ignored -->
 	
 	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
-           	<c:if test="${wiki_current_site_version.deleted}">
+           	<c:if test="${views$secured$wiki$wikimain.siteVersionInfo.deleted}">
            		<o:block label="#{msg.wiki_main_header_site_deleted}" styleClass="form_box">
   					<p class="content_font_normal">
   						<h:outputFormat value="#{msg.wiki_main_site_deleted_detail}" styleClass="content_font_normal">
-							<f:param value="#{wiki_current_site_version.name}" />
+							<f:param value="#{views$secured$wiki$wikimain.siteVersionInfo.name}" />
 						</h:outputFormat>
 					</p>
   				</o:block>
             </c:if>
             
-            <c:if test="${not wiki_current_site_version.deleted}">
-            	<c:if test="${empty wiki_current_site_version.text}">
+            <c:if test="${not views$secured$wiki$wikimain.siteVersionInfo.deleted}">
+            	<c:if test="${empty views$secured$wiki$wikimain.siteVersionInfo.text}">
   					<p class="content_font_normal">
   						<h:outputFormat value="#{msg.wiki_edit_create_msg}" styleClass="content_font_normal">
 							<f:param value="#{wiki_new_site_name}" />
@@ -44,8 +44,8 @@
 					</p>
 	        	</c:if>
 	        	
-	        	<c:if test="${not empty wiki_current_site_version.text}">
-	        	  <div class="wiki_content"><h:outputText escape="false" value="#{wiki_current_site_version.text}" class="content_font_normal"></h:outputText></div>
+	        	<c:if test="${not empty views$secured$wiki$wikimain.siteVersionInfo.text}">
+	        	  <div class="wiki_content"><h:outputText escape="false" value="#{views$secured$wiki$wikimain.siteVersionInfo.text}" class="content_font_normal"></h:outputText></div>
 	        	</c:if>
         	</c:if>
 	<!-- text above will be ignored -->

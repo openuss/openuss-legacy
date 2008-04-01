@@ -288,15 +288,9 @@
     <managed-bean>
         <managed-bean-name>wiki_current_site_version</managed-bean-name>
         <managed-bean-class>org.openuss.wiki.WikiSiteContentInfo</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
-    <managed-bean>
-        <managed-bean-name>wikiSiteInfo</managed-bean-name>
-        <managed-bean-class>org.openuss.wiki.WikiSiteInfo</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-
  	<managed-bean>
  		<managed-bean-name>coursenews_attachments</managed-bean-name>
  		<managed-bean-class>java.util.ArrayList</managed-bean-class>
