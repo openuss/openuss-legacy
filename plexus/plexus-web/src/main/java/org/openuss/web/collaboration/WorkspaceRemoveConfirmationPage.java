@@ -47,8 +47,6 @@ public class WorkspaceRemoveConfirmationPage extends AbstractCollaborationPage {
 	public String removeWorkspace() throws LectureException {
 		try {
 			workspaceService.removeWorkspace(workspaceInfo.getId());
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
 			addMessage(i18n("collaboration_workspace_removed_succeed"));
 			return Constants.COLLABORATION_MAIN_PAGE;
 		} catch (Exception e) {

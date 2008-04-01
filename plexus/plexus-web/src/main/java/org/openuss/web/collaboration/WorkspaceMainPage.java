@@ -83,11 +83,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		this.workspaceInfo = null;
 		this.currentFolder = null;
 		
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, null);
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.COLLABORATION_CURRENT_FOLDER, null);
-		
 		return Constants.COLLABORATION_MAIN_PAGE;
 	}
 	
@@ -98,8 +93,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	public String addWorkspace() {
 		editing = true;
 		workspaceInfo = new WorkspaceInfo();
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspaceInfo);
 		return Constants.SUCCESS;
 	}
 	
@@ -208,8 +201,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		WorkspaceInfo currentWorkspace = currentWorkspace();
 		LOGGER.debug("Returning to method selectWorkspaceAndConfirmRemove");
 		LOGGER.debug(currentWorkspace.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, currentWorkspace);
 
 		return Constants.COLLABORATION_CONFIRM_REMOVE_PAGE;
 	}
@@ -224,8 +215,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		WorkspaceInfo workspace = currentWorkspace();
 		LOGGER.debug("Returning to method selectWorkspace");
 		LOGGER.debug(workspace.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.COLLABORATION_WORKSPACE_INFO, workspace);
 
 		return Constants.COLLABORATION_WORKSPACE_PAGE;
 	}
