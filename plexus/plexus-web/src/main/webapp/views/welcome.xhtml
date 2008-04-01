@@ -120,6 +120,13 @@
 					<o:block styleClass="status_box">								
 						<h:outputFormat value="#{msg.myuni_empty_page_explanation}" styleClass="content_font_normal"/>
 					</o:block>
+					
+					<o:block styleClass="status_box">
+						<h:outputFormat value="#{msg.myuni_empty_page_first_steps}" styleClass="content_font_normal"/>
+						<h:form id="actionsForm">
+							<h:commandLink value="" action="institute_registration_start" ><span />#{msg.institute_command_add_institute}</h:commandLink>
+						</h:form>
+					</o:block>
 			  			
 					<h:form id="universitiesForm">
 						<ui:include src="/views/commons/university/universitiestablewelcome.xhtml"/>
