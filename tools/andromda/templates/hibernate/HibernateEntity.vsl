@@ -66,15 +66,18 @@ $attribute.getDocumentation("     * ")
 ## Generate the associations
 #foreach ($associationEnd in $entity.associationEnds)
 #set ($target = $associationEnd.otherEnd)
+#if (!$entity.identifierAssociationEnds.contains($associationEnd))
 #if ($target.navigable || ($associationEnd.child && $entity.foreignHibernateGeneratorClass))
 
     /**
+	 * Modified
 $target.getDocumentation("     * ")
      */
     public $target.getterSetterTypeName ${target.getterName}();
 
     public void ${target.setterName}($target.getterSetterTypeName ${target.name});
 
+#end
 #end
 #end
 #foreach ($operation in $entity.businessOperations)
@@ -188,17 +191,21 @@ ${comma}${property.getterSetterTypeName} ${property.name}## no newline
         public static $entity.fullyQualifiedName newInstance(## no newline
 #set ($comma = "")
 #foreach ($property in $entity.allProperties)
+#if (!$entity.identifierAssociationEnds.contains($property.otherEnd))	
 #if ($entity.usingForeignIdentifier || !$property.identifier)
 ${comma}${property.getterSetterTypeName} ${property.name}## no newline
 #set ($comma = ", ")
+#end
 #end
 #end
 )
         {
             final ${entity.fullyQualifiedName} entity = getFactory().create${entity.entityName}();
 #foreach ($property in $entity.allProperties)
+#if (!$entity.identifierAssociationEnds.contains($property.otherEnd))	
 #if ($entity.usingForeignIdentifier || !$property.identifier)
             entity.${property.setterName}(${property.name});
+#end
 #end
 #end
             return entity;

@@ -89,6 +89,7 @@ public abstract class ${entity.entityName}Base
 #end
 ## Generate the associations
 #foreach ($associationEnd in $entity.associationEnds)
+#if (!$entity.identifierAssociationEnds.contains($associationEnd))		
 #set ($target = $associationEnd.otherEnd)
 #if ($target.navigable || ($associationEnd.child && $entity.foreignHibernateGeneratorClass))
 #if ($target.many)
@@ -110,6 +111,7 @@ $target.getDocumentation("     * ")
         this.${target.name} = ${target.name};
     }
 
+#end
 #end
 #end
 #foreach ($operation in $entity.businessOperations)

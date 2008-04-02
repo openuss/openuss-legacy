@@ -47,7 +47,7 @@
                 <property name="maxSqlNameLength">30</property>
                 <property name="foreignKeySuffix">_FK</property>
 
-                
+				<property name="enableDaoPropertiesCreateMethod">false</property>                
                 <property name="enableTemplating">true</property>
                 <property name="defaultCollectionInterfaces">java.util.List</property>
                 <property name="specificCollectionInterfaces">true</property>

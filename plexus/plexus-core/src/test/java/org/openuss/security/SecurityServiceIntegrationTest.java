@@ -13,6 +13,7 @@ import org.openuss.TestUtility;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.University;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.security.acl.ObjectIdentity;
 import org.openuss.security.acl.Permission;
 
 /**
@@ -46,20 +47,34 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 	public void testPermission() {
 		User user = testUtility.createUniqueUserInDB();
 		TestBean bean = new TestBean(TestUtility.unique(), "test get permission");
-
 		securityService.createObjectIdentity(bean, null);
-
 		securityService.setPermissions(user, bean, LectureAclEntry.INSTITUTE_OWN);
-
 		flush();
-
 		Permission found = securityService.getPermissions(user, bean);
 		assertNotNull(found);
 		securityService.removePermission(user, bean);
-		
 //		flush();
-
 		assertNull(securityService.getPermissions(user, bean));
+	}
+	
+	public void testRemovingObjectIdentity() {
+		User user = testUtility.createUniqueUserInDB();
+		TestBean bean = new TestBean(TestUtility.unique(), "test removing objectidentity");
+		ObjectIdentity objectIdentity = securityService.createObjectIdentity(bean, null);
+		securityService.setPermissions(user, bean, LectureAclEntry.READ);
+		flush();
+		assertNotNull(securityService.getPermissions(user, bean));
+		assertNotNull(objectIdentity);
+		assertNotNull(objectIdentity.getId());
+		commit();
+		securityService.removeObjectIdentity(bean);
+		commit();
+		try {
+			securityService.getPermissions(user, bean);
+			fail("SecurityServiceException expected");
+		} catch (SecurityServiceException sse) {
+			assertNotNull(sse);
+		}
 	}
 
 	public void testAclGrants() {
