@@ -140,6 +140,11 @@
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
 	</page>
+
+	<page view-id="/views/secured/lecture/instituteremoveconfirmation.xhtml">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.GRANT}"/> 
+	</page>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Courses

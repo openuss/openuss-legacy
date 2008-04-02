@@ -48,7 +48,7 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 			return Constants.OUTCOME_BACKWARD;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("message_institute_cannot_be_removed"));
+			addError(i18n("message_institute_cannot_be_removed"));
 			return Constants.OUTCOME_BACKWARD;
 		}
 	}	
