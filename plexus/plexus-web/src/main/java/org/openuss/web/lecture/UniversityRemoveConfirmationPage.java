@@ -50,7 +50,7 @@ public class UniversityRemoveConfirmationPage extends AbstractUniversityPage {
 			return Constants.UNIVERSITIES_ADMIN_PAGE;
 		} catch (Exception e) {
 			e.printStackTrace();
-			addMessage(i18n("message_university_cannot_be_removed"));
+			addError(i18n("message_university_cannot_be_removed"));
 			return Constants.UNIVERSITIES_ADMIN_PAGE;
 		}
 		
