@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
@@ -19,7 +20,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
 
@@ -61,9 +61,15 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	@Property(value = "#{" + Constants.COURSE_MOVE_INFO + "}")
 	protected CourseInfo courseMoveInfo;
 
+	
+	@Preprocess
+	public void preprocess() throws Exception{
+		super.preprocess();
+	}
+	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception{
 		super.prerender();
 		if (isRedirected()) {
 			return;
@@ -234,7 +240,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	public String shortcutCourse() {
 		try {
 			CourseInfo currentCourse = currentCourse();
-			if (desktopInfo == null) {
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -249,7 +255,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 	public String removeCourseShortcut() {
 		try {
-			if (desktopInfo == null) {
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
@@ -263,13 +269,17 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			CourseInfo currentCourse = currentCourse();
-			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		if (dataCourses == null || dataCourses.page == null || dataCourses.page.getData().size()==0){
+			//prevent errors in preprocess phase
+			return true;
+		}
+		return desktopInfo.getCourseInfos().contains(currentCourse());
 	}
 
 	public LocalDataModelCourses getDataCourses() {

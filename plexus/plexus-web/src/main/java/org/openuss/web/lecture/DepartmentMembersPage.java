@@ -60,7 +60,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 		
 	}
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;
@@ -155,7 +155,7 @@ public class DepartmentMembersPage extends AbstractDepartmentPage {
 			logger.debug(e.getMessage());
 			addError(i18n("organisation_error_apply_member_at_department"));
 		} try{
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			DesktopInfo desktopInfo = desktopService2.findDesktopByUser(user.getId());

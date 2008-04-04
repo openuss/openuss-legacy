@@ -4,7 +4,6 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.apache.shale.tiger.view.Prerender;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 @Bean(name = "views$public$department$department", scope = Scope.REQUEST)
@@ -12,7 +11,7 @@ import org.openuss.web.Constants;
 public class DepartmentPage extends AbstractDepartmentPage {
 
 	@Prerender
-	public void prerender() throws LectureException 
+	public void prerender() throws Exception 
 	{
 		super.prerender();
 		if (isRedirected()){
@@ -35,7 +34,7 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public String addShortcut()
 	{
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.linkDepartment(desktopInfo.getId(), departmentInfo.getId());
@@ -55,7 +54,7 @@ public class DepartmentPage extends AbstractDepartmentPage {
 	public String removeShortcut()
 	{
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.unlinkDepartment(desktopInfo.getId(), departmentInfo.getId());

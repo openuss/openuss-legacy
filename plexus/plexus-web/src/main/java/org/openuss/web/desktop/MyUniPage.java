@@ -30,7 +30,6 @@ import org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
-import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
@@ -54,9 +53,6 @@ public class MyUniPage extends BasePage {
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
-	
-	@Property(value = "#{courseDao}")
-	protected CourseDao courseDao;
 	
 	@Property(value ="#{securityService}")
 	protected SecurityService securityService;
@@ -97,7 +93,7 @@ public class MyUniPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
-//		super.prerender();
+		super.prerender();
 		logger.debug("Prerender MyUni-Page");
 		prerenderCalled = true;
 		
@@ -245,11 +241,9 @@ public class MyUniPage extends BasePage {
 	 * Handles newsletter and forum subscriptions
 	 */
 	private void handleSubscriptions(){
-		// FIXME Do not use DAO objects in web layer
-		UserInfo user = getSecurityService().getCurrentUser();
 		if (paramSubscribeNewsletter != null){
 			try {
-				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeNewsletter));
+				CourseInfo ci = loadCourseInfoFromDesktopInfo(paramSubscribeNewsletter);
 				getCourseNewsletterService().subscribe(ci, user);
 				addMessage(i18n("newsletter_subscribe_success"));
 			} catch (RuntimeException e) {
@@ -260,7 +254,7 @@ public class MyUniPage extends BasePage {
 		}
 		if (paramUnsubscribeNewsletter != null){
 			try {
-				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeNewsletter));
+				CourseInfo ci = loadCourseInfoFromDesktopInfo(paramUnsubscribeNewsletter);
 				getCourseNewsletterService().unsubscribe(ci, user);
 				addMessage(i18n("newsletter_unsubscribe_success"));
 			} catch (RuntimeException e) {
@@ -270,7 +264,7 @@ public class MyUniPage extends BasePage {
 		}
 		if (paramSubscribeForum != null){
 			try {
-				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramSubscribeForum));
+				CourseInfo ci = loadCourseInfoFromDesktopInfo(paramSubscribeForum);
 				ForumInfo forum = getDiscussionService().getForum(ci);
 				if (!getDiscussionService().watchesForum(forum)) {
 					getDiscussionService().addForumWatch(forum);
@@ -286,7 +280,7 @@ public class MyUniPage extends BasePage {
 		}
 		if (paramUnsubscribeForum != null){
 			try {
-				CourseInfo ci = getCourseDao().toCourseInfo(getCourseDao().load(paramUnsubscribeForum));
+				CourseInfo ci = loadCourseInfoFromDesktopInfo(paramUnsubscribeForum);
 				ForumInfo forum = getDiscussionService().getForum(ci);
 				getDiscussionService().removeForumWatch(forum);
 				addMessage(i18n("discussion_unsubscribe_success"));
@@ -743,6 +737,14 @@ public class MyUniPage extends BasePage {
 		loadValuesForTabs(tabs);
 	}
 	
+	@SuppressWarnings("unchecked")
+	private CourseInfo loadCourseInfoFromDesktopInfo(Long courseId){
+		for (CourseInfo course: (List<CourseInfo>) desktopInfo.getCourseInfos()){
+			if (course.getId().equals(courseId)) return course;
+		}
+		return null;
+	}
+	
 	public DiscussionService getDiscussionService() {
 		return discussionService;
 	}
@@ -758,14 +760,6 @@ public class MyUniPage extends BasePage {
 	public void setCourseNewsletterService(
 			CourseNewsletterService courseNewsletterService) {
 		this.courseNewsletterService = courseNewsletterService;
-	}
-
-	public CourseDao getCourseDao() {
-		return courseDao;
-	}
-
-	public void setCourseDao(CourseDao courseDao) {
-		this.courseDao = courseDao;
 	}
 
 	public SecurityService getSecurityService() {

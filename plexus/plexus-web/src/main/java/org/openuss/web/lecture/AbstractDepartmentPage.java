@@ -6,7 +6,6 @@ import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.lecture.UniversityService;
 import org.openuss.web.BasePage;
@@ -52,7 +51,8 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	}
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
+		super.prerender();
 		logger.debug("prerender - refreshing department session object");
 		refreshDepartment();
 		if (departmentInfo == null || departmentInfo.getId() == null) {
@@ -70,13 +70,13 @@ public abstract class AbstractDepartmentPage extends BasePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			return desktopService2.isDepartmentBookmarked(departmentInfo.getId(), user.getId());
-		} catch (Exception e) {
-
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		return desktopInfo.getDepartmentInfos().contains(departmentInfo);
 	}
 
 	public DepartmentInfo getDepartmentInfo() {

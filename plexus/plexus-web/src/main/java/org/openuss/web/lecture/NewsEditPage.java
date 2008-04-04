@@ -19,7 +19,6 @@ import org.openuss.braincontest.BrainContestApplicationException;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsCategory;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
@@ -57,7 +56,7 @@ public class NewsEditPage extends AbstractLecturePage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws LectureException{
+	public void prerender() throws Exception{
 		super.prerender();
 		if (isRedirected()){
 			return;

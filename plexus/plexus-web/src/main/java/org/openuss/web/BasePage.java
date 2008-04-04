@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
+import org.apache.shale.tiger.view.Prerender;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
@@ -43,13 +44,17 @@ public abstract class BasePage extends BaseBean {
 	@Preprocess
 	public void preprocess() throws Exception {
 		logger.debug("Starting method preprocess");
-
+		refreshDesktop();
+	}
+	
+	@Prerender
+	public void prerender() throws Exception {
 		refreshDesktop();
 	}
 
 
 	protected void refreshDesktop() {
-		if (desktopInfo == null && user != null && user.getId() != null) {
+		if (user != null && user.getId() != null) {
 				logger.debug("refrehsing desktop object");
 				try{
 					desktopInfo = desktopService2.findDesktopByUser(user.getId());
@@ -59,7 +64,7 @@ public abstract class BasePage extends BaseBean {
 				}
 				logger.debug(desktopInfo.getId());
 				setBean(Constants.DESKTOP_INFO, desktopInfo);
-				if (desktopInfo == null) {
+				if (desktopInfo == null || desktopInfo.getId() == null) {
 					logger.error("could not find desktop for user " + user);
 					addError(i18n("message_error_no_desktop_found"));
 					redirect(Constants.HOME);

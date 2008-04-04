@@ -73,7 +73,7 @@ public class InstitutesOverviewPage extends BasePage {
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		// desktopService.linkInstitute(desktop, currentInstitute);
-		if (desktopInfo==null){
+		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
@@ -83,20 +83,23 @@ public class InstitutesOverviewPage extends BasePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			InstituteInfo currentInstitute = currentInstitute();
-			return desktopService2.isInstituteBookmarked(currentInstitute.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		if (institutesOverview == null || institutesOverview.dataPage == null || institutesOverview.dataPage.getData().size()==0){
+			//prevent errors in preprocess phase
+			return true;
+		}		
+		return desktopInfo.getInstituteInfos().contains(currentInstitute());
 	}
 
 	public String removeShortcut() {
 		try {
 			InstituteInfo currentInstitute = currentInstitute();
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
@@ -112,12 +115,7 @@ public class InstitutesOverviewPage extends BasePage {
 	private InstituteInfo currentInstitute() {
 		logger.debug("Starting method currentInstitute");
 		InstituteInfo instituteDetails = institutesOverview.getRowData();
-		// logger.debug(instituteDetails.getName());
-		// logger.debug(instituteDetails.getOwnerName());
-		// logger.debug(instituteDetails.getId());
-		// Institute institute = Institute.Factory.newInstance();
 		InstituteInfo newInstituteInfo = new InstituteInfo();
-		// institute.setId(details.getId());
 		newInstituteInfo.setId(instituteDetails.getId());
 		return newInstituteInfo;
 	}

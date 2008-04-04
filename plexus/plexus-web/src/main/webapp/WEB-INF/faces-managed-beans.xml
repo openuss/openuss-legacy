@@ -20,6 +20,12 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	
+	<managed-bean>
+		<managed-bean-name>desktopInfo</managed-bean-name>
+		<managed-bean-class>org.openuss.desktop.DesktopInfo</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
 	<!-- DataTableModels -->
  	<managed-bean>
  		<managed-bean-name>applicationInfo</managed-bean-name>

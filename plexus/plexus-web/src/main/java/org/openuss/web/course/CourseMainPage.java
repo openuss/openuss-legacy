@@ -85,12 +85,13 @@ public class CourseMainPage extends AbstractCoursePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			return desktopService2.isCourseBookmarked(courseInfo.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
+		}
+		if (desktopInfo == null || desktopInfo.getId() == null){
 			return false;
 		}
+		return desktopInfo.getCourseInfos().contains(courseInfo);
 	}
 	
 	/**
@@ -100,7 +101,7 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String shortcutCourse() {
 		//courseInfo = courseData.getRowData();
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());

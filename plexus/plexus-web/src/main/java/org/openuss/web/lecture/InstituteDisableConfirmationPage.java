@@ -5,7 +5,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /** Backing bean for the institutedisableconfirmation.xhtml view.
@@ -21,7 +20,7 @@ public class InstituteDisableConfirmationPage extends AbstractLecturePage {
 	private static final long serialVersionUID = -202671219652111170L;
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

@@ -13,7 +13,6 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentService;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationService;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
@@ -95,7 +94,8 @@ public abstract class AbstractLecturePage extends BasePage {
 	}
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
+		super.prerender();
 		logger.debug("prerender - refreshing institute session object");
 		refreshInstitute();
 		refreshDepartment();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.apache.shale.tiger.view.Preprocess;
 import org.apache.shale.tiger.view.Prerender;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -48,8 +49,14 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	@Property(value = "#{organisationService}")
 	protected OrganisationService organisationService;
 
+	@Preprocess
+	public void preprocess() throws Exception {
+		super.preprocess();
+	}
+
 	@Prerender
-	public void prerender() {
+	public void prerender() throws Exception {
+		super.prerender();
 	}
 
 	protected DepartmentInfo currentDepartment() {
@@ -127,7 +134,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	public String shortcutDepartment() throws DesktopException {
 		logger.debug("Starting method shortcutDepartment");
 		DepartmentInfo currentDepartment = currentDepartment();
-		if (desktopInfo==null){
+		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
 		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
@@ -138,21 +145,22 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			DepartmentInfo currentDepartment = currentDepartment();
-			return desktopService2.isDepartmentBookmarked(currentDepartment
-					.getId(), user.getId());
-		} catch (Exception e) {
-
+		if (desktopInfo  == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		if (departments == null || departments.page == null || departments.page.getData().size()==0){
+			return true;
+		}
+		return desktopInfo.getDepartmentInfos().contains(currentDepartment());
 	}
 
 	public String removeShortcut() {
 		try {
 			DepartmentInfo currentDepartment = currentDepartment();
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.unlinkDepartment(desktopInfo.getId(),

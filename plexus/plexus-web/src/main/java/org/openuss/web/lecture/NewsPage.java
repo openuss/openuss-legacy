@@ -11,7 +11,6 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
-import org.openuss.lecture.LectureException;
 import org.openuss.news.NewsItemInfo;
 import org.openuss.news.NewsService;
 import org.openuss.web.Constants;
@@ -35,7 +34,7 @@ public class NewsPage extends AbstractLecturePage {
 	private NewsDataProvider data = new NewsDataProvider();
 	
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

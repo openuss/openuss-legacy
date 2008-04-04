@@ -54,7 +54,7 @@ public class InstitutePage extends AbstractLecturePage {
 	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;
@@ -125,25 +125,25 @@ public class InstitutePage extends AbstractLecturePage {
 	
 	public Boolean getBookmarked()
 	{
-		try {
-			return desktopService2.isInstituteBookmarked(instituteInfo.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-		
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		return desktopInfo.getInstituteInfos().contains(instituteInfo);
 	}
-
+	
+	//FIXME refactor unclear naming
 	public Boolean getBookmarked2()
 	{
-		try {
-			CourseInfo currentCourse = currentCourse();
-			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-		
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		return desktopInfo.getCourseInfos().contains(courseInfo);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class InstitutePage extends AbstractLecturePage {
 		//courseInfo = courseData.getRowData();
 		try {
 			CourseInfo currentCourse = currentCourse();
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -186,7 +186,7 @@ public class InstitutePage extends AbstractLecturePage {
 		try {
 			//courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -207,7 +207,7 @@ public class InstitutePage extends AbstractLecturePage {
 	public String addShortcut()
 	{
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
@@ -227,7 +227,7 @@ public class InstitutePage extends AbstractLecturePage {
 	public String removeShortcut()
 	{
 		try {
-			if (desktopInfo==null){
+			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());

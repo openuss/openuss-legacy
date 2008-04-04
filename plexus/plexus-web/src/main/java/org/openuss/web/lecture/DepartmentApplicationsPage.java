@@ -12,7 +12,6 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.InstituteInfo;
-import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
 /**
@@ -30,7 +29,7 @@ public class DepartmentApplicationsPage extends AbstractDepartmentPage {
 	private ApplicationsTable applications = new ApplicationsTable();
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

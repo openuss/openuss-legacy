@@ -21,7 +21,7 @@ public class InstituteRemoveConfirmationPage extends AbstractLecturePage {
 	private static final long serialVersionUID = -202671219652000070L;
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

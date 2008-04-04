@@ -66,7 +66,7 @@ public class InstituteMembersPage extends AbstractLecturePage {
 	private String username;
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

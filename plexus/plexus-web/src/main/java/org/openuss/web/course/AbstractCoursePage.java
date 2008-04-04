@@ -61,6 +61,7 @@ public class AbstractCoursePage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
+		super.prerender();
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
 		}

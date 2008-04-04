@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
+import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.DepartmentType;
@@ -17,6 +18,11 @@ import org.openuss.lecture.DepartmentType;
 @Bean(name = "views$public$department$officialDepartments", scope = Scope.REQUEST)
 @View
 public class OfficialDepartmentsPage extends AbstractDepartmentsOverviewPage{
+	
+	@Prerender
+	public void prerender() throws Exception {
+		super.prerender();
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<DepartmentInfo> fetchDepartmentList(int startRow, int pageSize) {

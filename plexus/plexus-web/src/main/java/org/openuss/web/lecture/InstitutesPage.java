@@ -48,6 +48,7 @@ public class InstitutesPage extends BasePage {
 
 	@Prerender
 	public void prerender() throws Exception {
+		super.prerender();
 		if (departmentInfo != null && departmentInfo.getId() != null){
 			departmentInfo = departmentService.findDepartment(departmentInfo.getId());
 			setBean(Constants.DEPARTMENT_INFO, departmentInfo);
@@ -74,7 +75,7 @@ public class InstitutesPage extends BasePage {
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
 		// desktopService.linkInstitute(desktop, currentInstitute);
-		if (desktopInfo==null){
+		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
@@ -84,14 +85,16 @@ public class InstitutesPage extends BasePage {
 	}
 
 	public Boolean getBookmarked() {
-		try {
-			InstituteInfo currentInstitute = currentInstitute();
-			return desktopService2.isInstituteBookmarked(currentInstitute.getId(), user.getId());
-		} catch (Exception e) {
-
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		if (institutes == null || institutes.dataPage == null || institutes.dataPage.getData().size()==0){
+			return true;
+		}
+		return desktopInfo.getInstituteInfos().contains(currentInstitute());
 	}
 
 	public String removeShortcut() {
@@ -116,9 +119,7 @@ public class InstitutesPage extends BasePage {
 		logger.debug(instituteDetails.getName());
 		logger.debug(instituteDetails.getOwnerName());
 		logger.debug(instituteDetails.getId());
-		// Institute institute = Institute.Factory.newInstance();
 		InstituteInfo newInstituteInfo = new InstituteInfo();
-		// institute.setId(details.getId());
 		newInstituteInfo.setId(instituteDetails.getId());
 		return newInstituteInfo;
 	}

@@ -52,7 +52,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

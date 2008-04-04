@@ -63,7 +63,7 @@ public class DesktopPage extends BasePage {
 		logger.debug("starting method remove institute");
 		InstituteInfo instituteInfo = institutesProvider.getRowData();
 		// desktopService.unlinkInstitute(desktop, institute);
-		if (desktopInfo == null) {
+		if (desktopInfo == null || desktopInfo.getId() == null) {
 			refreshDesktop();
 		}
 		desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());

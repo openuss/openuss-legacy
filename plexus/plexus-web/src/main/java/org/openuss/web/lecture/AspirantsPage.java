@@ -43,7 +43,7 @@ public class AspirantsPage extends AbstractLecturePage {
 	private transient Set<UserInfo> rejectAspirants = new HashSet<UserInfo>();
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

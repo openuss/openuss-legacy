@@ -49,7 +49,7 @@ public class DepartmentOptionsPage extends AbstractDepartmentPage {
 	private UploadFileManager uploadFileManager;
 	
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

@@ -22,7 +22,7 @@ public class DepartmentRemoveConfirmationPage extends AbstractDepartmentPage {
 	private static final long serialVersionUID = -202671219652888870L;
 
 	@Prerender
-	public void prerender() throws LectureException {
+	public void prerender() throws Exception {
 		super.prerender();
 		if (isRedirected()){
 			return;

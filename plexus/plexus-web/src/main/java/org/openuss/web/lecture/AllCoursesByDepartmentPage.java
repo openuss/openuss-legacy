@@ -1,7 +1,5 @@
 package org.openuss.web.lecture;
 
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +22,6 @@ import org.openuss.lecture.CourseService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
-import org.openuss.lecture.LectureException;
 import org.openuss.lecture.PeriodInfo;
 import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
@@ -47,7 +44,6 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(AllCoursesByDepartmentPage.class);
 	
 	private static final String MSGKEY_ALL_ACTIVE_PERIODS = "all_active_periods";
 	/**
@@ -74,8 +70,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
-	public void prerender() throws LectureException {
-		
+	public void prerender() throws Exception {
 		super.prerender();
 		final Long universityId = departmentInfo.getUniversityId();
 		final List<PeriodInfo> periodInfos = universityService.findPeriodsByUniversity(universityId);
@@ -159,13 +154,13 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	
     //// bookmark - functions ///////////////////////////////////////
 	public Boolean getBookmarkedCourse() {
-		try {
-			CourseInfo currentCourse = allCoursesTable.getRowData();
-			return desktopService2.isCourseBookmarked(currentCourse.getId(), user.getId());
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			refreshDesktop();
 		}
-		return false;
+		if (desktopInfo == null || desktopInfo.getId() == null){
+			return false;
+		}
+		return desktopInfo.getCourseInfos().contains(allCoursesTable.getRowData());
 	}
 	
 	/**

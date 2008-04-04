@@ -242,7 +242,7 @@ public class MyUniResource extends CollisionAvoidingSimpleWebDAVResource{
 	}
 
 	protected DesktopInfo getDesktopInfo() {
-		if (desktopInfo == null) {
+		if (desktopInfo == null || desktopInfo.getId() == null) {
 			try {
 				desktopInfo = desktopService.findDesktopByUser(getCurrentUserId());
 			} catch (DesktopException e) {
