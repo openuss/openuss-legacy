@@ -573,6 +573,7 @@ $xmlIndent        return transformEntity(transform, ($entity.fullyQualifiedName)
         try
         {
             ${hibernateUtils.basePackage}.Query queryObject = super.getSession(false).createQuery(queryString);
+			queryObject.setCacheable(true);
 #foreach($argument in $finder.arguments)
 #set ($count = $velocityCount - 1)
 #set ($argumentValue = $argument.name)

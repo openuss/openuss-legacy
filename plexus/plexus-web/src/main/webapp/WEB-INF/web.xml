@@ -28,6 +28,7 @@
 			classpath*:applicationContext-aop.xml,
 			classpath*:applicationContext-events.xml,
 			classpath*:applicationContext-remote.xml,
+			classpath*:applicationContext-jmx.xml,
 			/WEB-INF/applicationContext-webservice.xml,
 			/WEB-INF/applicationContext-i18n.xml,
 			/WEB-INF/security.xml,

@@ -59,9 +59,10 @@
                 <property name="hibernateEhCacheDiskStore">java.io.tmpdir/hibernate</property>
                 <property name="hibernateCacheProvider">org.hibernate.cache.EhCacheProvider</property>                
                 <property name="hibernateEntityCache">none</property>
-                <property name="hibernateAssociationCache">read-write</property>
+                <property name="hibernateEnableAssociationsCache">true</property>
+                <property name="hibernateAssociationCache">nonstrict-read-write</property>
                 <property name="hibernateQueryCacheFactory">org.hibernate.cache.StandardQueryCacheFactory</property>
-                <property name="hibernateUseQueryCache">true</property>
+                <property name="hibernateUseQueryCache">nonstrict-read-write</property>
                 <property name="ehCacheMaxElementsInMemory">10000</property>
                 <property name="ehCacheEternal">false</property>
                 <property name="ehCacheTimeToIdleSeconds">240</property>
@@ -118,6 +119,10 @@
                 <!-- Spring Security Configuration -->
                 <property name="acegiServiceSecurity">true</property>
                 <property name="acegiAuthenticationManager">authenticationManager</property>
+                
+                <!-- Spring Transaction Configuration 
+                <property name="serviceOperationTransactionType">PROPAGATION_REQUIRED</property>
+                -->
 
             </properties>
         </namespace>

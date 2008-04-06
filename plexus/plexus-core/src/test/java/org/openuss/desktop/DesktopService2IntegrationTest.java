@@ -188,14 +188,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to linkInstitute test");
 	}
 
-	public void testLinkCourseType() throws Exception {
-		logger.info("----> BEGIN access to linkCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to linkCourseType test");
-	}
-
 	public void testLinkCourse() throws Exception {
 		logger.info("----> BEGIN access to unlinkCourse test");
 
@@ -262,14 +254,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		// TODO Implement me!
 
 		logger.info("----> END access to unlinkInstitute test");
-	}
-
-	public void testUnlinkCourseType() throws Exception {
-		logger.info("----> BEGIN access to unlinkCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkCourseType test");
 	}
 
 	public void testUnlinkCourse() throws Exception {
@@ -686,14 +670,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		// TODO Implement me!
 
 		logger.info("----> END access to unlinkAllFromInstitute test");
-	}
-
-	public void testUnlinkAllFromCourseType() throws Exception {
-		logger.info("----> BEGIN access to unlinkAllFromCourseType test");
-
-		// TODO Implement me!
-
-		logger.info("----> END access to unlinkAllFromCourseType test");
 	}
 
 	public void testUnlinkAllFromCourse() throws Exception {

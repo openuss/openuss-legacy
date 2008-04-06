@@ -35,7 +35,6 @@ import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.security.SecurityService;
-import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
 
 /**

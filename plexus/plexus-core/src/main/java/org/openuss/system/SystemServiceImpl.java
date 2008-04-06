@@ -5,18 +5,19 @@
  */
 package org.openuss.system;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @see org.openuss.system.SystemService
  * @author Ingo Dueppe
  */
-public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
+public class SystemServiceImpl extends SystemServiceBase implements InitializingBean {
 
 	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
@@ -90,6 +91,11 @@ public class SystemServiceImpl extends org.openuss.system.SystemServiceBase {
 	@Override
 	protected SystemProperty handleGetProperty(Long id) throws Exception {
 		return getSystemPropertyDao().load(id);
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		getSystemPropertyDao().loadAll();
 	}
 
 }
