@@ -709,11 +709,5 @@ public class CourseServiceImpl extends CourseServiceBase {
 		} else {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
 		}
-
-		if (course.getAccessType() == AccessType.OPEN || course.getAccessType() == AccessType.ANONYMOUS) {
-			getSecurityService().addAuthorityToGroup(Roles.USER, group);
-		} else {
-			getSecurityService().removeAuthorityFromGroup(Roles.USER, group);
-		}
 	}
 }

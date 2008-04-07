@@ -90,9 +90,9 @@ public class InstitutesPage extends BasePage {
 		}
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			return false;
-		}
-		if (institutes == null || institutes.dataPage == null || institutes.dataPage.getData().size()==0){
-			return true;
+		}		
+		if (institutes == null || institutes.dataPage == null || institutes.dataPage.getData().size()==0 || institutes.getRowIndex() == -1){
+			return false;
 		}
 		return desktopInfo.getInstituteInfos().contains(currentInstitute());
 	}

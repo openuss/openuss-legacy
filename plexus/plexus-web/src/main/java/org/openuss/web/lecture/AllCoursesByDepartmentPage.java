@@ -160,6 +160,9 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			return false;
 		}
+		if (allCoursesTable == null || allCoursesTable.dataPage == null || allCoursesTable.dataPage.getData().size() == 0 || allCoursesTable.getRowIndex() == -1){
+			return false;
+		}
 		return desktopInfo.getCourseInfos().contains(allCoursesTable.getRowData());
 	}
 	

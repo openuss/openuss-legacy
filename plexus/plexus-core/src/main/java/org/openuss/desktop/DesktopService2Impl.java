@@ -287,8 +287,10 @@ public class DesktopService2Impl extends DesktopService2Base {
 		getCourseNewsletterService().unsubscribe(courseInfo, userInfo);
 		getDiscussionService().removeForumWatch(getDiscussionService().getForum(courseInfo));
 		
-		if(memberInfo != null)
+		if(memberInfo != null){
 			this.getCourseService().removeMember(memberInfo);
+		}
+		
 	}
 
 	/**

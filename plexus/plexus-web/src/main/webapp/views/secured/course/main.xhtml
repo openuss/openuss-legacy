@@ -97,6 +97,22 @@
 							</h:form>
 						</c:if>
 					</c:if> 
+					
+					
+					<!-- check if access type is AccessType.OPEN -->
+					<c:if test="#{courseInfo.accessType.value == 1}">
+						<h:form id="course_main_apply_form">
+							<o:block label="#{msg.course_main_access}" styleClass="status_box">
+								<h:outputText value="#{msg.course_main_access_opentext}" styleClass="content_font_normal"/>
+							</o:block>
+							<o:block>
+								<h:commandButton action="#{views$secured$course$main.approve}"
+									value="#{msg['course_main_access_openbutton']}"
+									title="#{msg['course_main_access_openbutton']}"
+									styleClass="button" />
+							</o:block>
+						</h:form>
+					</c:if> 
 				</s:acl>
 		</s:authorize>
 		

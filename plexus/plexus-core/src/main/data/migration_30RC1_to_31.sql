@@ -479,6 +479,82 @@ SELECT * FROM PERMISSION;
 DROP TABLE PERMISSION;
 
 
+-- migrate course membership handling
 
+create procedure refactor_course_security
+as
+declare variable courseid bigint;
+declare variable userid bigint;
+declare variable desktopid bigint;
+declare variable groupid bigint;
+declare variable courseuserid bigint;
+begin
+    -- traverse all courses which are open
+    for
+        select course.id
+        from lecture_course course
+        where course.access_type=1
+        into :courseid do
+    begin
+        -- everybody that has a link to current course is added as a member
+        -- if he is not an assistant
+        for
+            select distinct(d.user_fk)
+            from desktop_desktop d, desktop_desktop_course dc
+            where d.id=dc.desktops_fk and dc.courses_fk=:courseid
+            into :userid do
+        begin
+            delete from lecture_course_member lcm
+                   where lcm.course_id = :courseid and lcm.user_id = :userid and lcm.member_type!=0;
+
+            if (not exists(select lcm2.user_id
+                     from lecture_course_member lcm2
+                     where lcm2.course_id = :courseid and lcm2.user_id=:userid and lcm2.member_type=0))
+            then
+                    insert into lecture_course_member (course_id, user_id, member_type)
+                    values (:courseid, :userid, 1);
+
+        end
+
+        -- every course member gets a link to that course
+        for
+            select distinct(lcm3.user_id)
+            from lecture_course_member lcm3
+            where lcm3.course_id=:courseid
+            into :userid do
+        begin
+            select desk.id
+            from desktop_desktop desk
+            where desk.user_fk = :userid
+            into :desktopid;
+            delete from desktop_desktop_course ddc
+                   where (ddc.desktops_fk=:desktopid and ddc.courses_fk=:courseid);
+            insert into desktop_desktop_course (desktops_fk, courses_fk)
+                   values (:desktopid, :courseid);
+        end
+        -- remove permission of Role.USER to course
+        delete from security_permission perm
+               where perm.aclobjectidentity_id = :courseid and perm.recipient_id = -2;
+        -- get participants group
+        select c2g.groups_fk
+        from courses2groups c2g
+        where c2g.courses_fk=:courseid
+        into :groupid;
+        -- add all course members as members of participant group
+        for
+            select lcm4.user_id
+            from lecture_course_member lcm4
+            where (lcm4.course_id = :courseid and lcm4.member_type=1)
+            into :userid do
+        begin
+            insert into security_group2authority (members_fk, groups_fk)
+                   values (:userid, :groupid);
+        end
+    end
+end;
+
+execute procedure refactor_course_security;
+
+drop procedure refactor_course_security;
 
 

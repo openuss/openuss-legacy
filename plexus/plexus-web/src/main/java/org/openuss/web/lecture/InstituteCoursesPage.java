@@ -275,7 +275,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			return false;
 		}
-		if (dataCourses == null || dataCourses.page == null || dataCourses.page.getData().size()==0){
+		if (dataCourses == null || dataCourses.page == null || dataCourses.page.getData().size()==0 || dataCourses.getRowIndex() == -1){
 			//prevent errors in preprocess phase
 			return true;
 		}
@@ -390,7 +390,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		@SuppressWarnings( { "unchecked" })
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			List<CourseInfo> courses = new ArrayList<CourseInfo>();
-			if (page == null) {
+//			if (page == null) {
 				if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() != Constants.COURSES_ALL_PERIODS)
 						&& (periodInfo.getId().longValue() != Constants.COURSES_ALL_ACTIVE_PERIODS)) {
 					List<CourseInfo> coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstitute(
@@ -402,7 +402,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 					logger.error("institute page - no period selected!");
 				}
 				page = new DataPage<CourseInfo>(courses.size(), 0, courses);
-			}
+//			}
 			sort(courses);
 			return page;
 		}

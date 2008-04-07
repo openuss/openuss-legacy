@@ -22,7 +22,7 @@ public class DepartmentDaoImpl extends DepartmentDaoBase {
 		super.toDepartmentInfo(sourceEntity, targetVO);
 		if (sourceEntity.getUniversity() != null) {
 			targetVO.setUniversityId(sourceEntity.getUniversity().getId());
-		}
+		}		
 	}
 
 	/**

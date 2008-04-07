@@ -75,7 +75,25 @@ public class CourseMainPage extends AbstractCoursePage {
 	public String apply() throws CourseApplicationException {
 		logger.debug("course entry applied");
 		courseService.applyUser(courseInfo, user);
+		try {
+			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+		} catch (DesktopException e) {
+			//should not occur
+			logger.error(e.getMessage());
+		}
 		addMessage(i18n("message_course_send_application"));
+		return Constants.SUCCESS;
+	}
+	
+	public String approve(){
+		addMessage(i18n("message_course_open_approve"));
+		courseService.applyUser(courseInfo, user);
+		try {
+			desktopService2.linkCourse(desktopInfo.getId(), courseInfo.getId());
+		} catch (DesktopException e) {
+			//should not occur
+			logger.error(e.getMessage());
+		}
 		return Constants.SUCCESS;
 	}
 
