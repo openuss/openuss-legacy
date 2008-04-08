@@ -272,12 +272,9 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
-		if (dataCourses == null || dataCourses.page == null || dataCourses.page.getData().size()==0 || dataCourses.getRowIndex() == -1){
+		if (dataCourses == null || dataCourses.getRowIndex() == -1){
 			//prevent errors in preprocess phase
-			return true;
+			return false;
 		}
 		return desktopInfo.getCourseInfos().contains(currentCourse());
 	}

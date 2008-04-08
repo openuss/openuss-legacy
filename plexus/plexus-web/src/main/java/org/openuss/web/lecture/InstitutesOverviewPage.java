@@ -86,10 +86,7 @@ public class InstitutesOverviewPage extends BasePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
-		if (institutesOverview == null || institutesOverview.dataPage == null || institutesOverview.dataPage.getData().size()==0 || institutesOverview.getRowIndex() == -1){
+		if (institutesOverview == null || institutesOverview.getRowIndex() == -1){
 			//prevent errors in preprocess phase
 			return false;
 		}		

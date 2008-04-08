@@ -148,10 +148,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 		if (desktopInfo  == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
-		if (departments == null || departments.page == null || departments.page.getData().size()==0 || departments.getRowIndex() == -1){
+		if (departments == null || departments.getRowIndex() == -1){
 			return false;
 		}
 		return desktopInfo.getDepartmentInfos().contains(currentDepartment());

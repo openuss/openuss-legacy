@@ -128,9 +128,6 @@ public class InstitutePage extends AbstractLecturePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
 		return desktopInfo.getInstituteInfos().contains(instituteInfo);
 	}
 	

@@ -106,9 +106,6 @@ public class CourseMainPage extends AbstractCoursePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
 		return desktopInfo.getCourseInfos().contains(courseInfo);
 	}
 	
