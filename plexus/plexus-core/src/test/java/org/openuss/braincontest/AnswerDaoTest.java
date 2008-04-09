@@ -25,7 +25,6 @@ public class AnswerDaoTest extends AnswerDaoTestBase {
 	}
 
 	public void testAnswerDaoCreate() {
-		logger.debug(""+ (1 << 0));
 		// TODO create braincontest object
 //		Answer answer = new AnswerImpl();
 //		answer.setAnsweredAt(new Date());
