@@ -172,6 +172,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			CourseInfo currentCourse = allCoursesTable.getRowData();
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
 			addMessage(i18n("desktop_command_add_course_succeed"));
+			refreshDesktop();
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
 			addError(i18n(e.getMessage()));
@@ -184,6 +185,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		try {
 			CourseInfo currentCourse = allCoursesTable.getRowData();
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("course_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;

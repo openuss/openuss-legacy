@@ -137,10 +137,7 @@ public class InstitutePage extends AbstractLecturePage {
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
-		if (desktopInfo == null || desktopInfo.getId() == null){
-			return false;
-		}
-		if (courseData == null || courseData.page == null || courseData.page.getData().size()==0 || courseData.getRowIndex() == -1){
+		if (courseData == null || courseData.getRowIndex() == -1){
 			//prevent errors in preprocess phase
 			return false;
 		}
@@ -173,6 +170,7 @@ public class InstitutePage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
+			refreshDesktop();
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -191,6 +189,7 @@ public class InstitutePage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
@@ -212,6 +211,7 @@ public class InstitutePage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_shortcut"), e.getMessage());
 			return Constants.FAILURE;
@@ -232,6 +232,7 @@ public class InstitutePage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;

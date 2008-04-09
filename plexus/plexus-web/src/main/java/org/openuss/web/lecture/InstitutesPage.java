@@ -74,12 +74,11 @@ public class InstitutesPage extends BasePage {
 	public String shortcutInstitute() throws DesktopException {
 		logger.debug("Starting method shortcutInstitute");
 		InstituteInfo currentInstitute = currentInstitute();
-		// desktopService.linkInstitute(desktop, currentInstitute);
 		if (desktopInfo == null || desktopInfo.getId() == null){
 			refreshDesktop();
 		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
-
+		refreshDesktop();
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;
 	}
@@ -101,6 +100,7 @@ public class InstitutesPage extends BasePage {
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;

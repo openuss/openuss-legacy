@@ -244,6 +244,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
+			refreshDesktop();
 			addMessage(i18n("desktop_command_add_course_succeed"));
 			return Constants.SUCCESS;
 		} catch (DesktopException e) {
@@ -259,6 +260,7 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;

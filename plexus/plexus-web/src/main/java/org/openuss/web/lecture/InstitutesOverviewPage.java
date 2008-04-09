@@ -77,7 +77,7 @@ public class InstitutesOverviewPage extends BasePage {
 			refreshDesktop();
 		}
 		desktopService2.linkInstitute(desktopInfo.getId(), currentInstitute.getId());
-
+		refreshDesktop();
 		addMessage(i18n("message_institute_shortcut_created"));
 		return Constants.SUCCESS;
 	}
@@ -100,6 +100,7 @@ public class InstitutesOverviewPage extends BasePage {
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), currentInstitute.getId());
+			refreshDesktop();
 		} catch (Exception e) {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;

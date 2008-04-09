@@ -139,7 +139,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 		}
 		desktopService2.linkDepartment(desktopInfo.getId(), currentDepartment
 				.getId());
-
+		refreshDesktop();
 		addMessage(i18n("message_department_shortcut_created"));
 		return Constants.SUCCESS;
 	}
@@ -166,7 +166,7 @@ public abstract class AbstractDepartmentsOverviewPage extends BasePage {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
-
+		refreshDesktop();
 		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
