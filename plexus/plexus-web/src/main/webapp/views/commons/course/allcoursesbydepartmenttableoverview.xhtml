@@ -9,6 +9,8 @@
       xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:c="http://java.sun.com/jstl/core">
     
+    <t:saveState value="#{periodInfo}" id="periodInfo"/>
+    
  	<o:block>
 		<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
 		<h:selectOneMenu id="periodSelection" 

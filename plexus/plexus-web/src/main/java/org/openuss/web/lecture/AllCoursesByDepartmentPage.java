@@ -41,16 +41,10 @@ import org.springframework.beans.support.PropertyComparator;
 @View
 public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 
-	/**
-	 * Logger for this class
-	 */
-	
+	private static final String ALL_PERIODS = "all_periods";
+
 	private static final String MSGKEY_ALL_ACTIVE_PERIODS = "all_active_periods";
-	/**
-	 * This is the paged table with all relevant courses.
-	 * 
-	 * @see AllCoursesTable (subclass)
-	 */
+
 	private AllCoursesTable allCoursesTable = new AllCoursesTable();
 	
 	@Property(value = "#{universityInfo}")
@@ -125,7 +119,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		final SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 		universityPeriodItems.add(itemAllActivePeriods);
 		//create item in combobox displaying all periods
-		final SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n("all_periods"));
+		final SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n(AllCoursesByDepartmentPage.ALL_PERIODS));
 		universityPeriodItems.add(itemAllPeriods);
 		
 		for(PeriodInfo period : universityPeriods) {
@@ -141,13 +135,13 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	 * @param event
 	 */
 	public void processPeriodSelectChanged(final ValueChangeEvent event) {
-		final Long periodId = (Long) event.getNewValue();
-		if (periodId.equals(Constants.COURSES_ALL_PERIODS)) {
-			periodInfo.setName(i18n("all_periods"));
-		} else if (periodId.equals(Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+		periodInfo.setId( (Long) event.getNewValue());
+		if (periodInfo.getId() == Constants.COURSES_ALL_PERIODS) {
+			periodInfo.setName(i18n(AllCoursesByDepartmentPage.ALL_PERIODS));
+		} else if (periodInfo.getId() == Constants.COURSES_ALL_ACTIVE_PERIODS) {
 			periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
 		} else {
-			periodInfo = universityService.findPeriod(periodId);
+			periodInfo = universityService.findPeriod(periodInfo.getId());
 			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
@@ -191,7 +185,7 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			return Constants.FAILURE;
 		}
 		
-		addMessage(i18n("institute_success_remove_shortcut"));
+		addMessage(i18n("desktop_mesage_removed_course_succeed"));
 		return Constants.SUCCESS;
 	}
 	
