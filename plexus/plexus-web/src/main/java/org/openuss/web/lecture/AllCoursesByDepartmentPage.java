@@ -15,6 +15,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
+import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
@@ -23,13 +24,13 @@ import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.PeriodInfo;
-import org.openuss.lecture.UniversityInfo;
 import org.openuss.web.Constants;
 import org.springframework.beans.support.PropertyComparator;
 
 /**
  * 
- * Backing Bean for the view allcoursesbydepartment.xhtml and allcoursesbydepartmenttableoverview.xhtml.
+ * Backing Bean for the view allcoursesbydepartment.xhtml and
+ * allcoursesbydepartmenttableoverview.xhtml.
  * 
  * @author Matthias Krieft
  * @author Christian Peters
@@ -39,64 +40,71 @@ import org.springframework.beans.support.PropertyComparator;
  */
 @Bean(name = "views$public$department$allcoursesbydepartment", scope = Scope.REQUEST)
 @View
-public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
+public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 
 	private static final String ALL_PERIODS = "all_periods";
 
-	private static final String MSGKEY_ALL_ACTIVE_PERIODS = "all_active_periods";
+	private static final String ALL_ACTIVE_PERIODS = "all_active_periods";
 
 	private AllCoursesTable allCoursesTable = new AllCoursesTable();
-	
-	@Property(value = "#{universityInfo}")
-	protected UniversityInfo universityInfo;
-	
+
 	@Property(value = "#{instituteInfo}")
 	protected InstituteInfo instituteInfo;
-		
+
 	@Property(value = "#{instituteService}")
 	private InstituteService instituteService;
-	
+
 	@Property(value = "#{courseService}")
 	private CourseService courseService;
-	
+
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
-	
+
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws Exception {
 		super.prerender();
 		final Long universityId = departmentInfo.getUniversityId();
 		final List<PeriodInfo> periodInfos = universityService.findPeriodsByUniversity(universityId);
-		
+
 		if (periodInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
-				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do nothing. Remain selected!
-				if(!periodInfo.getId().equals(Constants.COURSES_ALL_PERIODS) && !periodInfo.getId().equals(Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do
+				// nothing. Remain selected!
+				if (periodInfo.getId() != Constants.COURSES_ALL_PERIODS
+						&& periodInfo.getId() != Constants.COURSES_ALL_ACTIVE_PERIODS) {
 					periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-					periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
+					periodInfo.setName(i18n(ALL_ACTIVE_PERIODS));
 				}
 			}
-		
-			// Suppose the case you initially starting the application no periods are selected --> no periodInfo VO was initiated.
+
+			// Suppose the case you initially starting the application no
+			// periods are selected --> no periodInfo VO was initiated.
 			// Set default selection to ALL_ACTIVE_PERIODS
 			if ((periodInfo.getId() == null) && (!periodInfos.isEmpty())) {
 				periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
-				periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
+				periodInfo.setName(i18n(ALL_ACTIVE_PERIODS));
 			}
-			
+
 			if (periodInfos.size() < 1) {
-				// normally this should never happen due to the fact that each university has a standard period!
-				periodInfo = new PeriodInfo();	
+				// normally this should never happen due to the fact that each
+				// university has a standard period!
+				periodInfo = new PeriodInfo();
 			}
 		}
-		
-		setBean(Constants.PERIOD_INFO, periodInfo);		
+
+		setBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}
-	
+
 	private void addBreadCrumbs() {
 		breadcrumbs.loadDepartmentCrumbs(departmentInfo);
+
+		BreadCrumb crumb = new BreadCrumb();
+		crumb.setName(i18n("department_navigation_allcourses_link"));
+		crumb.setHint(i18n("department_navigation_allcourses_link_hint"));
+
+		breadcrumbs.addCrumb(crumb);
 	}
 
 	/**
@@ -106,59 +114,54 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getBelongingUniversityPeriods() {
-		
 		final List<SelectItem> universityPeriodItems = new ArrayList<SelectItem>();
-		
-		departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
+
 		final Long universityId = departmentInfo.getUniversityId();
-		universityInfo = universityService.findUniversity(universityId);
-		//Only periods with courses are found, not the active ones without courses
 		final List<PeriodInfo> universityPeriods = universityService.findPeriodsByUniversityWithCourses(universityId);
-		
-		//create item in combobox displaying all active periods
-		final SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n(MSGKEY_ALL_ACTIVE_PERIODS));
-		universityPeriodItems.add(itemAllActivePeriods);
-		//create item in combobox displaying all periods
-		final SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n(AllCoursesByDepartmentPage.ALL_PERIODS));
-		universityPeriodItems.add(itemAllPeriods);
-		
-		for(PeriodInfo period : universityPeriods) {
-			universityPeriodItems.add(new SelectItem(period.getId(),period.getName()));
+
+		// create item in combobox displaying all active periods
+		universityPeriodItems.add(new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n(ALL_ACTIVE_PERIODS)));
+		// create item in combobox displaying all periods
+		universityPeriodItems.add(new SelectItem(Constants.COURSES_ALL_PERIODS, i18n(ALL_PERIODS)));
+
+		for (PeriodInfo period : universityPeriods) {
+			universityPeriodItems.add(new SelectItem(period.getId(), period.getName()));
 		}
-		
+
 		return universityPeriodItems;
 	}
-	
+
 	/**
 	 * Value Change Listener to change name of data table.
 	 * 
 	 * @param event
 	 */
 	public void processPeriodSelectChanged(final ValueChangeEvent event) {
-		periodInfo.setId( (Long) event.getNewValue());
+		periodInfo.setId((Long) event.getNewValue());
 		if (periodInfo.getId() == Constants.COURSES_ALL_PERIODS) {
 			periodInfo.setName(i18n(AllCoursesByDepartmentPage.ALL_PERIODS));
 		} else if (periodInfo.getId() == Constants.COURSES_ALL_ACTIVE_PERIODS) {
-			periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
+			periodInfo.setName(i18n(ALL_ACTIVE_PERIODS));
 		} else {
 			periodInfo = universityService.findPeriod(periodInfo.getId());
 			setBean(Constants.PERIOD_INFO, periodInfo);
 		}
 	}
-	
-    //// bookmark - functions ///////////////////////////////////////
+
+	// // bookmark - functions ///////////////////////////////////////
 	public Boolean getBookmarkedCourse() {
-		if (desktopInfo == null || desktopInfo.getId() == null){
+		if (desktopInfo == null || desktopInfo.getId() == null) {
 			refreshDesktop();
 		}
-		if (allCoursesTable == null || allCoursesTable.getRowIndex() == -1){
+		if (allCoursesTable == null || allCoursesTable.getRowIndex() == -1) {
 			return false;
 		}
 		return desktopInfo.getCourseInfos().contains(allCoursesTable.getRowData());
 	}
-	
+
 	/**
 	 * Bookmarks the selected course on the MyUni Page.
+	 * 
 	 * @return Outcome
 	 */
 	public String bookmarkCourse() {
@@ -173,9 +176,8 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			return Constants.FAILURE;
 		}
 	}
-	
-	public String removeCourseBookmark()
-	{
+
+	public String removeCourseBookmark() {
 		try {
 			CourseInfo currentCourse = allCoursesTable.getRowData();
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -184,12 +186,12 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 			addError(i18n("course_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
-		
+
 		addMessage(i18n("desktop_mesage_removed_course_succeed"));
 		return Constants.SUCCESS;
 	}
-	
-	//// getter/setter methods ////////////////////////////////////////////////	
+
+	// // getter/setter methods ////////////////////////////////////////////////
 	public InstituteService getInstituteService() {
 		return instituteService;
 	}
@@ -205,21 +207,13 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	public void setCourseService(final CourseService courseService) {
 		this.courseService = courseService;
 	}
-	
+
 	public AllCoursesTable getAllCoursesTable() {
 		return allCoursesTable;
 	}
 
 	public void setAllCoursesTable(final AllCoursesTable allCoursesTable) {
 		this.allCoursesTable = allCoursesTable;
-	}
-
-	public UniversityInfo getUniversityInfo() {
-		return universityInfo;
-	}
-
-	public void setUniversityInfo(final UniversityInfo universityInfo) {
-		this.universityInfo = universityInfo;
 	}
 
 	public InstituteInfo getInstituteInfo() {
@@ -237,41 +231,39 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 	public void setPeriodInfo(final PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
 	}
-	
-	
-	/////// Inner classes ////////////////////////////////////////////////////
+
+	// ///// Inner classes ////////////////////////////////////////////////////
 	private class AllCoursesTable extends AbstractPagedTable<CourseInfo> {
-		
+
 		private DataPage<CourseInfo> dataPage;
 		private List<CourseInfo> courseList = new ArrayList<CourseInfo>();
 
-		
 		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
-			
 			if (dataPage == null) {
 				if (periodInfo != null) {
 					DepartmentInfo departmentInfo = (DepartmentInfo) getBean(Constants.DEPARTMENT_INFO);
-					if(periodInfo.getId() == null){
+					if (periodInfo.getId() == null) {
 						periodInfo = universityService.findPeriod(Constants.COURSES_ALL_ACTIVE_PERIODS);
-						periodInfo.setName(i18n(MSGKEY_ALL_ACTIVE_PERIODS));
+						periodInfo.setName(i18n(ALL_ACTIVE_PERIODS));
 					}
-					if (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) {
-						courseList = getCourseService().findAllCoursesByDepartment(departmentInfo.getId(), false, true);
-					} else if (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS){
-						courseList = getCourseService().findAllCoursesByDepartment(departmentInfo.getId(), true, true);
+					if (periodInfo.getId() == Constants.COURSES_ALL_PERIODS) {
+						courseList = courseService.findAllCoursesByDepartment(departmentInfo.getId(), false, true);
+					} else if (periodInfo.getId() == Constants.COURSES_ALL_ACTIVE_PERIODS) {
+						courseList = courseService.findAllCoursesByDepartment(departmentInfo.getId(), true, true);
 					} else {
-						courseList = getCourseService().findAllCoursesByDepartmentAndPeriod(departmentInfo.getId(), periodInfo.getId(), true);
-					}			
+						courseList = courseService.findAllCoursesByDepartmentAndPeriod(departmentInfo.getId(),
+								periodInfo.getId(), true);
+					}
 				}
 				sort(courseList);
 				dataPage = new DataPage<CourseInfo>(courseList.size(), 0, courseList);
 			}
-			
+
 			return dataPage;
 		}
-		
+
 		/**
 		 * Default property sort method
 		 * 
@@ -281,7 +273,6 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage{
 		@Override
 		protected void sort(List<CourseInfo> list) {
 			ComparatorChain chain = new ComparatorChain();
-								
 			if (StringUtils.isNotBlank(getSortColumn())) {
 				chain.addComparator(new PropertyComparator(getSortColumn(), true, isAscending()));
 			} else {
