@@ -703,7 +703,6 @@ public class CourseServiceImpl extends CourseServiceBase {
 	 */
 	private void updateAccessTypePermission(Course course) {
 		logger.debug("changing course " + course.getName() + " (" + course.getId() + ") to " + course.getAccessType());
-		Group group = getParticipantsGroup(course);
 		if (course.getAccessType() == AccessType.ANONYMOUS) {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.READ);
 		} else {
