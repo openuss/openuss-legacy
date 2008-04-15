@@ -392,18 +392,41 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 
 	private void removeFolderEntry(FolderEntry folderEntry) throws Exception {
 		if (folderEntry instanceof FileEntry) {
-			getFolderEntryDao().remove(folderEntry.getId());
 			getRepositoryService().removeContent(folderEntry.getId());
-			getSecurityService().removeObjectIdentity(folderEntry);
 		} else if (folderEntry instanceof Folder) {
 			Folder folder = (Folder) folderEntry;
-			for (FolderEntry entry : folder.getEntries()) {
-				removeFolderEntry(entry);
+			while (!folder.getEntries().isEmpty()) {
+				removeFolderEntry(folder.getEntries().get(0));
 			}
-			getFolderEntryDao().remove(folder);
-			getSecurityService().removeObjectIdentity(folderEntry);
 		}
+		getSecurityService().removeObjectIdentity(folderEntry);
+		Folder parent = folderEntry.getParent();
+		if (parent != null) {
+			parent.removeFolderEntry(folderEntry);
+			getFolderEntryDao().update(parent);
+		} 
+		getFolderEntryDao().remove(folderEntry);
 	}
+		
+//			for (FolderEntry entry : ((Folder)folderEntry).getEntries()) {
+//				removeFolderEntry(entry);
+//			}
+//		Folder parent = folderEntry.getParent();
+//		if (folderEntry instanceof FileEntry) {
+//			getFolderEntryDao().remove(folderEntry.getId());
+//			getRepositoryService().removeContent(folderEntry.getId());
+//			getSecurityService().removeObjectIdentity(folderEntry);
+//		} else if (folderEntry instanceof Folder) {
+//			Folder folder = (Folder) folderEntry;
+//			for (FolderEntry entry : folder.getEntries()) {
+//				removeFolderEntry(entry);
+//			}
+//			getFolderEntryDao().remove(folder);
+//			getSecurityService().removeObjectIdentity(folderEntry);
+//		}
+//		parent.removeFolderEntry(folderEntry);
+//		getFolderEntryDao().update(parent);
+//	}
 
 	@Override
 	protected void handleDiffSave(DomainObject domainObject, List files) throws Exception {
@@ -429,7 +452,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	protected void handleRemove(DomainObject domainObject) throws Exception {
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
 		Folder root = getRootFolderForDomainObject(domainObject);
-		removeFolderEntry(root.getId());
+		handleRemoveFolderEntry(root.getId());
 	}
 
 	@Override

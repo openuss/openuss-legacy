@@ -7,7 +7,7 @@
     
 	<!-- Local DataSource that works in any environment -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="maxActive" value="1"></property>
+		<property name="maxActive" value="2"></property>
         <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
         <property name="username"><value>sysdba</value></property>
         <property name="password"><value>masterkey</value></property>

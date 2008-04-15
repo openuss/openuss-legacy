@@ -40,18 +40,18 @@ public class DocumentServiceIntegrationTest extends
 
 	private SecurityService securityService;
 
-	private DefaultDomainObject defaultDomainObject;
+	private DefaultDomainObject domainObject;
 
 	@Override
 	protected void onSetUpInTransaction() throws Exception {
 		AcegiUtils.setAclManager(aclManager);
 		testUtility.createUserSecureContext();
-		defaultDomainObject = createDomainObject();
+		domainObject = createDomainObject();
 		super.onSetUpInTransaction();
 	}
 
 	public void testNotReleasedFiles() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		FileInfo fileOne = createFileInfo("readme.txt");
 		fileOne
@@ -68,7 +68,7 @@ public class DocumentServiceIntegrationTest extends
 		assertTrue(fileTwo.isReleased());
 
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, null);
+				domainObject, null);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 
@@ -76,11 +76,11 @@ public class DocumentServiceIntegrationTest extends
 
 	public void testFolderEntries() throws DocumentApplicationException {
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, null);
+				domainObject, null);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 		assertNotNull(root);
 		assertEquals("", root.getName());
 		assertTrue(root.isRoot());
@@ -94,7 +94,7 @@ public class DocumentServiceIntegrationTest extends
 		assertEquals("", folder.getPath());
 
 		flush();
-		entries = documentService.getFolderEntries(defaultDomainObject, root);
+		entries = documentService.getFolderEntries(domainObject, root);
 		assertNotNull(entries);
 		// FIXME this asserts cause under some circustances trouble
 		// I guess it has something todo with the security cache
@@ -110,13 +110,13 @@ public class DocumentServiceIntegrationTest extends
 		assertEquals(folder.getCreated(), info.getReleaseDate());
 		assertTrue(info.isReleased());
 
-		entries = documentService.getFolderEntries(defaultDomainObject, folder);
+		entries = documentService.getFolderEntries(domainObject, folder);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 	}
 
 	public void testFolderPath() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		FolderInfo subFolder1 = createSubFolder();
 		FolderInfo subFolder2 = createSubFolder();
@@ -138,9 +138,9 @@ public class DocumentServiceIntegrationTest extends
 		assertEquals(subFolder2, folderPath.get(2));
 		assertEquals(subFolder3, folderPath.get(3));
 	}
-
+	
 	public void testFolderAddRemoving() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		FolderInfo subFolder1 = createSubFolder();
 		FolderInfo subFolder2 = createSubFolder();
@@ -162,8 +162,7 @@ public class DocumentServiceIntegrationTest extends
 		assertNotNull(subFolder3.getId());
 		assertNotNull(subFolder4.getId());
 
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, subFolder2);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, subFolder2);
 		assertNotNull(entries);
 		assertEquals(2, entries.size());
 
@@ -171,19 +170,18 @@ public class DocumentServiceIntegrationTest extends
 		FolderEntryInfo infoB = entries.get(1);
 
 		assertTrue(!infoA.getId().equals(infoB.getId()));
-		assertTrue(infoA.getId().equals(subFolder3.getId())
-				|| infoA.getId().equals(subFolder4.getId()));
-		assertTrue(infoB.getId().equals(subFolder3.getId())
-				|| infoB.getId().equals(subFolder4.getId()));
+		assertTrue(infoA.getId().equals(subFolder3.getId()) || infoA.getId().equals(subFolder4.getId()));
+		assertTrue(infoB.getId().equals(subFolder3.getId())	|| infoB.getId().equals(subFolder4.getId()));
 
-		flush();
+		commit();
 
 		FolderEntryInfo info = new FolderEntryInfo();
 		info.setId(subFolder2.getId());
 
-		documentService.removeFolderEntry(info.getId());
-		entries = documentService.getFolderEntries(defaultDomainObject,
-				subFolder1);
+ 		documentService.removeFolderEntry(info.getId());
+		commit();
+		
+		entries = documentService.getFolderEntries(domainObject,subFolder1);
 		assertNotNull(entries);
 		assertEquals(0, entries.size());
 
@@ -194,7 +192,7 @@ public class DocumentServiceIntegrationTest extends
 
 	public void testCreateFileInfo() throws DocumentApplicationException,
 			IOException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		String name = "/dummy/readme.txt";
 
@@ -220,7 +218,7 @@ public class DocumentServiceIntegrationTest extends
 
 	public void testCreateFileByFileInfo() throws DocumentApplicationException,
 			IOException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		String name = "/dummy/readme.txt";
 
@@ -233,14 +231,14 @@ public class DocumentServiceIntegrationTest extends
 		flush();
 
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, null);
+				domainObject, null);
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
 
 		FolderEntryInfo dummyFolder = entries.get(0);
 		assertEquals("dummy", dummyFolder.getName());
 
-		entries = documentService.getFolderEntries(defaultDomainObject,
+		entries = documentService.getFolderEntries(domainObject,
 				documentService.getFolder(dummyFolder));
 		assertNotNull(entries);
 		assertEquals(1, entries.size());
@@ -275,7 +273,7 @@ public class DocumentServiceIntegrationTest extends
 	}
 
 	public void testCreateFileEntries() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		FolderInfo subfolder = createSubFolder();
 		subfolder.setName("subfolder");
@@ -293,7 +291,7 @@ public class DocumentServiceIntegrationTest extends
 		flush();
 
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, subfolder);
+				domainObject, subfolder);
 		assertNotNull(entries);
 		assertEquals(3, entries.size());
 		FolderEntryInfo entry = entries.get(0);
@@ -310,7 +308,7 @@ public class DocumentServiceIntegrationTest extends
 	}
 
 	public void testGetFileEntry() throws DocumentApplicationException {
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 
 		FileInfo info = createFileInfo("readme.txt");
 
@@ -318,7 +316,7 @@ public class DocumentServiceIntegrationTest extends
 		flush();
 
 		List<FolderEntryInfo> entries = documentService.getFolderEntries(
-				defaultDomainObject, null);
+				domainObject, null);
 		FolderEntryInfo entry = entries.get(0);
 
 		FileInfo file = documentService.getFileEntry(entry.getId(), false);
@@ -331,7 +329,7 @@ public class DocumentServiceIntegrationTest extends
 	
 	public void testMoveFolderEntriesOne() throws Exception{
 		// Create a file in the root directory
-		FolderInfo root = documentService.getFolder(defaultDomainObject);
+		FolderInfo root = documentService.getFolder(domainObject);
 		FileInfo file1 = createFileInfo("file1.txt");
 		documentService.createFileEntry(file1, root);
 
@@ -342,11 +340,11 @@ public class DocumentServiceIntegrationTest extends
 		documentService.createFileEntry(createFileInfo("2.txt"),subfolder);
 		
 		// Test subfolder content
-		List<FolderEntryInfo> test = documentService.getFolderEntries(defaultDomainObject, subfolder);
+		List<FolderEntryInfo> test = documentService.getFolderEntries(domainObject, subfolder);
 		assertEquals(1, test.size());
 		
 		// Test root folder content
-		List<FolderEntryInfo> entries = documentService.getFolderEntries(defaultDomainObject, root);
+		List<FolderEntryInfo> entries = documentService.getFolderEntries(domainObject, root);
 		assertNotNull(entries);
 		assertEquals(2, entries.size());
 		
@@ -354,18 +352,18 @@ public class DocumentServiceIntegrationTest extends
 		List<FolderEntryInfo> toMove = new ArrayList<FolderEntryInfo>();
 		toMove.add(entries.get(0));
 		assertEquals("file1.txt", toMove.get(0).getFileName());
-		documentService.moveFolderEntries(defaultDomainObject, subfolder, toMove);
+		documentService.moveFolderEntries(domainObject, subfolder, toMove);
 		
 		// Test subfolder content
-		List<FolderEntryInfo> test2 = documentService.getFolderEntries(defaultDomainObject, subfolder);
+		List<FolderEntryInfo> test2 = documentService.getFolderEntries(domainObject, subfolder);
 		assertEquals(2,test2.size());
 		assertEquals(test2.get(1).getPath(), "subfolder");
-		assertEquals(1, documentService.getFolderEntries(defaultDomainObject,root).size());
+		assertEquals(1, documentService.getFolderEntries(domainObject,root).size());
 	}
 	
 	public void testMoveFolderEntriesMany() throws Exception{
 		// Create root
-		FolderInfo rootFolderInfo = documentService.getFolder(defaultDomainObject);
+		FolderInfo rootFolderInfo = documentService.getFolder(domainObject);
 		
 		// Choose file names
 		String testFn1 = "f1";
@@ -381,10 +379,10 @@ public class DocumentServiceIntegrationTest extends
 		documentService.createFolder(subFolderInfo, rootFolderInfo);
 		
 		// Test content of root
-		assertEquals(3, documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		assertEquals(3, documentService.getFolderEntries(domainObject,rootFolderInfo).size());
 		
 		// Test content of subfolder
-		assertEquals(0, documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		assertEquals(0, documentService.getFolderEntries(domainObject,subFolderInfo).size());
 		
 		// Move both documents to subfolder
 		List<FolderEntryInfo> subFolderEntries = new ArrayList<FolderEntryInfo>();
@@ -395,12 +393,12 @@ public class DocumentServiceIntegrationTest extends
 		FolderEntryInfo fei2 = folderEntryDao.toFolderEntryInfo(rootFolder.getFolderEntryByName(testFn2));
 		assertNotNull(fei2);
 		subFolderEntries.add(fei2);
-		documentService.moveFolderEntries(defaultDomainObject, subFolderInfo, subFolderEntries);
+		documentService.moveFolderEntries(domainObject, subFolderInfo, subFolderEntries);
 
 		// Test content of root
-		assertEquals(1,documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		assertEquals(1,documentService.getFolderEntries(domainObject,rootFolderInfo).size());
 		// Test content of subfolder
-		assertEquals(subFolderEntries.size(), documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		assertEquals(subFolderEntries.size(), documentService.getFolderEntries(domainObject,subFolderInfo).size());
 		
 		// Move both documents back to root
 		List<FolderEntryInfo> toMoveEntries = new ArrayList<FolderEntryInfo>();
@@ -411,18 +409,18 @@ public class DocumentServiceIntegrationTest extends
 		fei2 = folderEntryDao.toFolderEntryInfo(subFolder.getFolderEntryByName(testFn2));
 		assertNotNull(fei2);
 		toMoveEntries.add(fei2);
-		documentService.moveFolderEntries(defaultDomainObject, rootFolderInfo, toMoveEntries);
+		documentService.moveFolderEntries(domainObject, rootFolderInfo, toMoveEntries);
 		
 		// Test content of root
-		assertEquals(1 + toMoveEntries.size(),documentService.getFolderEntries(defaultDomainObject,rootFolderInfo).size());
+		assertEquals(1 + toMoveEntries.size(),documentService.getFolderEntries(domainObject,rootFolderInfo).size());
 		// Test content of subfolder
-		assertEquals(0, documentService.getFolderEntries(defaultDomainObject,subFolderInfo).size());
+		assertEquals(0, documentService.getFolderEntries(domainObject,subFolderInfo).size());
 	}
 
 	public void testMoveFolderEntriesIllegalTarget() throws Exception {
 		// create root
 		FolderInfo folderInfoRoot = documentService
-				.getFolder(defaultDomainObject);
+				.getFolder(domainObject);
 		// create subfolder
 		FolderInfo subfolder = createSubFolder();
 		subfolder.setName("subfolder");
@@ -432,7 +430,7 @@ public class DocumentServiceIntegrationTest extends
 		chosen.add(getFolderDao().toFolderEntryInfo(
 				getFolderDao().folderInfoToEntity(subfolder)));
 		try {
-			documentService.moveFolderEntries(defaultDomainObject, subfolder,
+			documentService.moveFolderEntries(domainObject, subfolder,
 					chosen);
 			assertTrue(false);
 		} catch (Exception e) {
@@ -443,7 +441,7 @@ public class DocumentServiceIntegrationTest extends
 		chosen.add(getFolderDao().toFolderEntryInfo(
 				getFolderDao().folderInfoToEntity(folderInfoRoot)));
 		try {
-			documentService.moveFolderEntries(defaultDomainObject, subfolder,
+			documentService.moveFolderEntries(domainObject, subfolder,
 					chosen);
 			assertTrue(false);
 
@@ -458,7 +456,7 @@ public class DocumentServiceIntegrationTest extends
 		chosen.add(getFolderDao().toFolderEntryInfo(
 				getFolderDao().folderInfoToEntity(subfolder)));
 		try {
-			documentService.moveFolderEntries(defaultDomainObject,
+			documentService.moveFolderEntries(domainObject,
 					subsubfolder, chosen);
 			assertTrue(false);
 

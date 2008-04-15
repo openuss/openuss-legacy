@@ -9,6 +9,7 @@ public class DocumentTests {
 		TestSuite suite = new TestSuite("Test for org.openuss.documents");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(DocumentServiceIntegrationTest.class);
+		suite.addTestSuite(DocumentServiceIntegrationNonTransactionalTest.class);
 		suite.addTestSuite(FileEntryDaoTest.class);
 		suite.addTestSuite(FolderDaoTest.class);
 		suite.addTestSuite(FolderEntryDaoTest.class);
