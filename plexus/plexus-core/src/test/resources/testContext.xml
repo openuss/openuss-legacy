@@ -69,6 +69,18 @@
 		<property name="organisationService">
 			<ref bean="organisationService" />
 		</property>
+		<property name="serialAppointmentDao">
+			<ref bean="serialAppointmentDao" />
+		</property>
+		<property name="calendarDao">
+			<ref bean="calendarDao" />
+		</property>
+		<property name="appointmentDao">
+			<ref bean="appointmentDao" />
+		</property>
+		<property name="appointmentTypeDao">
+			<ref bean="appointmentTypeDao" />
+		</property>
 	</bean>
 
 	<bean id="lectureBuilder"

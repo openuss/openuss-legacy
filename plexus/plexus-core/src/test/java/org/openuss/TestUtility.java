@@ -1,16 +1,26 @@
 package org.openuss;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.encoding.Md5PasswordEncoder;
+import org.openuss.calendar.Appointment;
+import org.openuss.calendar.AppointmentDao;
+import org.openuss.calendar.AppointmentInfo;
+import org.openuss.calendar.AppointmentType;
+import org.openuss.calendar.AppointmentTypeDao;
+import org.openuss.calendar.RecurrenceType;
+import org.openuss.calendar.SerialAppointment;
+import org.openuss.calendar.SerialAppointmentDao;
 import org.openuss.groups.GroupAccessType;
 import org.openuss.groups.UserGroup;
 import org.openuss.groups.UserGroupDao;
@@ -85,6 +95,14 @@ public class TestUtility {
 	private User defaultUser;
 
 	private Institute defaultInstitute;
+
+	private AppointmentTypeDao appointmentTypeDao;
+	
+	private AppointmentDao appointmentDao;
+	
+	private SerialAppointmentDao serialAppointmentDao;
+	
+	private org.openuss.calendar.CalendarDao calendarDao;
 
 	// /**
 	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
@@ -898,4 +916,121 @@ public class TestUtility {
 		this.userGroupDao = userGroupDao;
 	}
 
+		/***************************** Calendar *************************/
+	
+	public AppointmentType createAppointmentTypeInDB(String name) {
+		AppointmentType appointmentType = AppointmentType.Factory.newInstance();
+		appointmentType.setName(this.unique(name));
+		this.getAppointmentTypeDao().create(appointmentType);
+		return appointmentType;
+	}
+	
+	public AppointmentInfo getTestAppointmentInfo(AppointmentType appType) {
+		
+		Date start = new Date();
+		Date end = new Date();
+
+		AppointmentInfo appInfo = new AppointmentInfo();
+		appInfo.setSubject("Subject");
+		appInfo.setDescription("Description");
+		appInfo.setLocation("Location");
+		appInfo.setStarttime(new Timestamp(start.getTime()));
+		appInfo.setEndtime(new Timestamp(end.getTime()));
+		appInfo.setAppointmentTypeInfo(appointmentTypeDao
+				.toAppointmentTypeInfo(appType));
+
+		// TODO isSerial setzen beim Erzeugen eines Termins
+		appInfo.setSerial(false);
+
+		return appInfo;
+	}
+	
+	public void createUniqueAppointmentForCalendarInDB(org.openuss.calendar.CalendarInfo calInfo) {
+//		Appointment app = Appointment.Factory.newInstance();
+//		app.setAppointmentType(appType);
+//		app.setDescription("description");
+//		app.setLocation("location");
+//		app.setSubject(unique("subject"));
+//		app.setSerial(false);
+		AppointmentType appType = this.createAppointmentTypeInDB("standard");
+		Random rnd = new Random();
+		Long randomLong = rnd.nextLong();
+		Timestamp start = new Timestamp(randomLong);
+		Timestamp end = new Timestamp(randomLong + (60*60*60)); // 1 h later
+		System.out.println("startzeitpunkt: " + start.toGMTString());
+		System.out.println("endzeitpunkt: " + end.toGMTString());
+//		app.setStarttime(start);
+//		app.setEndtime(end);
+		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
+		Appointment app = appointmentDao.create(appType, "description", end, "location", false, cal, start, unique("subject"),true);
+		
+		cal.addAppointment(app);
+		calendarDao.update(cal);
+	}
+	
+	public void createUniqueSeriallAppForCalendarInDB(org.openuss.calendar.CalendarInfo calInfo) {
+		org.openuss.calendar.Calendar cal = calendarDao.load(calInfo.getId());
+		AppointmentType appType = this.createAppointmentTypeInDB("standard");
+		Random rnd = new Random();
+		Long randomLong = rnd.nextLong();
+		System.out.println("lomng: " + randomLong);
+		Timestamp start = new Timestamp(randomLong);
+		Timestamp end = new Timestamp(randomLong + (60*60*60)); // 1 h later
+		Timestamp recurEnd = new Timestamp(randomLong + (60*60*60*24*60)); // 2 months later
+		SerialAppointment serialAppointment = serialAppointmentDao.create(
+				appType,
+				"description",
+				end,
+				"location",
+				recurEnd,
+				1,
+				RecurrenceType.weekly, true, cal,
+				start,
+				unique("subject"), true);
+
+		cal.addSerialAppointment(serialAppointment);
+		
+		// make changes persistent for the source calendar
+		getCalendarDao().update(cal);
+
+		// make changes persistent for the subscribed calendars
+		Set<org.openuss.calendar.Calendar> subscribedCals = cal.getSubscribedCalendars();
+		if (!subscribedCals.isEmpty()) {
+			for (org.openuss.calendar.Calendar subscribedCal : subscribedCals) {
+				getCalendarDao().update(subscribedCal);
+			}
+		}
+	}
+
+	public AppointmentTypeDao getAppointmentTypeDao() {
+		return appointmentTypeDao;
+	}
+
+	public void setAppointmentTypeDao(AppointmentTypeDao appointmentTypeDao) {
+		this.appointmentTypeDao = appointmentTypeDao;
+	}
+
+	public AppointmentDao getAppointmentDao() {
+		return appointmentDao;
+	}
+
+	public void setAppointmentDao(AppointmentDao appointmentDao) {
+		this.appointmentDao = appointmentDao;
+	}
+
+	public SerialAppointmentDao getSerialAppointmentDao() {
+		return serialAppointmentDao;
+	}
+
+	public void setSerialAppointmentDao(SerialAppointmentDao serialAppointmentDao) {
+		this.serialAppointmentDao = serialAppointmentDao;
+	}
+
+	public org.openuss.calendar.CalendarDao getCalendarDao() {
+		return calendarDao;
+	}
+
+	public void setCalendarDao(org.openuss.calendar.CalendarDao calendarDao) {
+		this.calendarDao = calendarDao;
+	}
 }

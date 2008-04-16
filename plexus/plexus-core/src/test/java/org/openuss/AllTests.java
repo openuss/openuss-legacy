@@ -5,12 +5,14 @@ import junit.framework.TestSuite;
 
 import org.openuss.aop.AopTests;
 import org.openuss.braincontest.BrainContestTests;
+import org.openuss.calendar.CalendarTests;
 import org.openuss.chat.ChatTests;
 import org.openuss.commands.CommandTests;
 import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
+import org.openuss.internationalisation.InternationalisationTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.messaging.MessagingTests;
 import org.openuss.news.NewsTests;
@@ -53,6 +55,8 @@ public class AllTests {
 		suite.addTest(WikiTests.suite());
 		suite.addTest(StatisticsTests.suite());
 		suite.addTest(ChatTests.suite());
+		suite.addTest(CalendarTests.suite());
+		suite.addTest(InternationalisationTests.suite());
 		// $JUnit-END$
 		return suite;
 	}
