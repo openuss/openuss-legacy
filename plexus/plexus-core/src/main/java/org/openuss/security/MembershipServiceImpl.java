@@ -130,7 +130,8 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 				}
 			}
 		}     //size == 0 should not occur
-		if ((members.size()==0)||(members.size()==1&&members.iterator().next().getId().equals(user.getId()))) {
+		// size == 0 occurs in group tests
+		if (/*(members.size()==0)||*/(members.size()==1&&members.iterator().next().getId().equals(user.getId()))) {
 			throw new IllegalArgumentException("MembershipService.handleRemoveMember - the User " + user.getUsername()
 					+ " couldn't be removed.");
 		}
