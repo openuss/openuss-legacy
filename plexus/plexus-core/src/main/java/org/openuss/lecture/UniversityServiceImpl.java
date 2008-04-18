@@ -8,6 +8,7 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ import org.openuss.security.GroupType;
 import org.openuss.security.Membership;
 import org.openuss.security.User;
 import org.openuss.security.acl.LectureAclEntry;
+import org.springframework.beans.support.PropertyComparator;
 
 /**
  * @see org.openuss.lecture.UniversityService
@@ -35,7 +37,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#createUniversity(org.openuss.lecture.UniversityInfo, java.lang.Long)
 	 */
-	protected java.lang.Long handleCreateUniversity(org.openuss.lecture.UniversityInfo university, java.lang.Long userId) {
+	protected Long handleCreateUniversity(UniversityInfo university, Long userId) {
 
 		logger.debug("Starting method handleCreateUniversity(UniversityInfo, Long)");
 
@@ -140,7 +142,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#create(org.openuss.lecture.PeriodInfo)
 	 */
-	protected java.lang.Long handleCreatePeriod(org.openuss.lecture.PeriodInfo period) throws java.lang.Exception {
+	protected Long handleCreatePeriod(PeriodInfo period) throws Exception {
 
 		Validate.notNull(period, "UniversityService.handleCreatePeriod - the period cannot be null");
 		Validate.isTrue(!period.isDefaultPeriod(),
@@ -165,7 +167,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#update(org.openuss.lecture.UniversityInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.UniversityInfo university) throws java.lang.Exception {
+	protected void handleUpdate(UniversityInfo university) throws Exception {
 
 		Validate.notNull(university, "UniversityService.handleUpdate - the University cannot be null");
 		Validate.notNull(university.getId(), "UniversityService.handleUpdate - the University must have a valid ID");
@@ -182,7 +184,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#update(org.openuss.lecture.PeriodInfo)
 	 */
-	protected void handleUpdate(org.openuss.lecture.PeriodInfo periodInfo) throws java.lang.Exception {
+	protected void handleUpdate(PeriodInfo periodInfo) throws Exception {
 
 		Validate.notNull(periodInfo, "UniversityService.handleUpdate - the Period cannot be null");
 
@@ -277,7 +279,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#removePeriod(java.lang.Long)
 	 */
-	protected void handleRemovePeriod(java.lang.Long periodId) throws java.lang.Exception {
+	protected void handleRemovePeriod(Long periodId) throws Exception {
 
 		Validate.notNull(periodId, "UniversityService.handleRemovePeriod - the PeriodID cannot be null");
 		Period period = this.getPeriodDao().load(periodId);
@@ -299,8 +301,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#findUniversity(java.lang.Long)
 	 */
-	protected org.openuss.lecture.UniversityInfo handleFindUniversity(java.lang.Long universityId)
-			throws java.lang.Exception {
+	protected UniversityInfo handleFindUniversity(Long universityId) throws Exception {
 
 		Validate.notNull(universityId, "UniversityService.handleFindUniversity - the UniversityID cannot be null");
 
@@ -311,7 +312,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findAllUniversities()
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindAllUniversities() throws java.lang.Exception {
+	protected List handleFindAllUniversities() throws Exception {
 
 		Collection<University> universities = this.getUniversityDao().loadAll();
 
@@ -327,8 +328,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findUniversitiesByUser(Long, Boolean)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindUniversitiesByMemberAndEnabled(Long userId, boolean enabled)
-			throws java.lang.Exception {
+	protected List handleFindUniversitiesByMemberAndEnabled(Long userId, boolean enabled) throws Exception {
 
 		Validate.notNull(userId, "UniversityServiceImpl.findUniversitiesByUser - userId cannot be null.");
 
@@ -352,7 +352,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	/**
 	 * @see org.openuss.lecture.UniversityService#findPeriod(java.lang.Long)
 	 */
-	protected org.openuss.lecture.PeriodInfo handleFindPeriod(java.lang.Long periodId) throws java.lang.Exception {
+	protected PeriodInfo handleFindPeriod(Long periodId) throws Exception {
 
 		Validate.notNull(periodId, "UniversityService.handleFindPeriod - the PeriodID cannot be null");
 		return (PeriodInfo) getPeriodDao().load(PeriodDao.TRANSFORM_PERIODINFO, periodId);
@@ -362,7 +362,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findPeriodsByUniversity(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected java.util.List handleFindPeriodsByUniversity(java.lang.Long universityId) throws java.lang.Exception {
+	protected List handleFindPeriodsByUniversity(Long universityId) throws Exception {
 
 		Validate.notNull(universityId,
 				"UniversityService.handleFindPeriodsByUniversity - the universityID cannot be null");
@@ -376,8 +376,12 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		for (Period period : university.getPeriods()) {
 			periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
 		}
-
+		sortPeriodsByStartDate(periodInfos);
 		return periodInfos;
+	}
+
+	private void sortPeriodsByStartDate(List periodInfos) {
+		Collections.sort(periodInfos, new PropertyComparator("startdate", true, false));
 	}
 
 	
@@ -386,7 +390,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	 * @see org.openuss.lecture.UniversityService#findActivePeriodsByUniversity(java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected List handleFindPeriodsByUniversityAndActivation(java.lang.Long universityId, boolean active) throws java.lang.Exception {
+	protected List handleFindPeriodsByUniversityAndActivation(Long universityId, boolean active) throws Exception {
 
 		Validate.notNull(universityId,
 				"UniversityService.handleFindActivePeriodByUniversity - the universityID cannot be null");
@@ -402,7 +406,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 				periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
 			}
 		}
-
+		sortPeriodsByStartDate(periodInfos);
 		return periodInfos;
 	}
 
@@ -434,6 +438,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 				periodInfos.add(this.getPeriodDao().toPeriodInfo(period));
 			}
 		}
+		sortPeriodsByStartDate(periodInfos);
 		return periodInfos;
 	}
 
@@ -565,7 +570,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 				}
 			}
 		}
-
+		sortPeriodsByStartDate(periodsWithActiveCourses);
 		return periodsWithActiveCourses;
 	}
 	

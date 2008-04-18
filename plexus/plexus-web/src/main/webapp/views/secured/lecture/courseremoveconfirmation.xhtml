@@ -34,6 +34,7 @@
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
 		</ui:define>
   		<ui:define name="content">
+  			<t:saveState value="#{courseInfo}"/>
   			<h:form id="removeCourseConfirmation">
 				<o:block label="#{msg.warning_attention_dataloss}- #{msg.course_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">

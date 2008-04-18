@@ -6,6 +6,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseServiceException;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.LectureException;
@@ -51,6 +52,7 @@ public class CourseRemoveConfirmationPage extends AbstractCoursePage {
 	 * @throws LectureException
 	 */
 	public String removeCourse() {
+		courseInfo = (CourseInfo) getBean(Constants.COURSE_INFO);
 		try {
 			courseService.removeCourse(courseInfo.getId());
 			instituteInfo = new InstituteInfo();

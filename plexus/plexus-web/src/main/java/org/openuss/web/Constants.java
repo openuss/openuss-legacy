@@ -311,5 +311,8 @@ public class Constants {
 	public static final String WIKI_IMAGE_REMOVE_SUCCEEDED = "wiki_image_removed_succeed";
 	public static final String WIKI_IMAGE_CANNOT_BE_REMOVED = "wiki_image_cannot_be_removed";
 
+	/** Special constants to mark the "choose a period" option within a dropdown box */ 
+	public static final long CHOOSE_PERIODID = -100L;
+
 	
 }

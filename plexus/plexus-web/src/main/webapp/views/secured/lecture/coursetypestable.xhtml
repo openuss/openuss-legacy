@@ -14,13 +14,13 @@
      	value="views$secured$lecture$institutecoursetypes.dataCourseTypes" 
      	columnClasses="col_max_left, col_min_center, col_commands"
      	var="bean" 
-     	rows="20"
+     	rows="10"
      	infoText="#{msg.table_info_text_coursetypes}">  
    
 		<t:column>
 		
 			<plexus:commandSortHeader columnName="name">#{msg.coursetype_colheader_name}</plexus:commandSortHeader> 
-			<strong><h:outputText value="#{bean.name} (#{bean.shortcut})"/></strong>
+			<h:outputText value="#{bean.name} (#{bean.shortcut})"/>
 			<br></br>
 			<small><h:outputText value="#{bean.description}"/></small>
 			

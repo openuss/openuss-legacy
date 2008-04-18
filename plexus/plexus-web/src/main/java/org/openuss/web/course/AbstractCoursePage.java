@@ -73,10 +73,8 @@ public class AbstractCoursePage extends BasePage {
 			if (courseInfo.getCourseTypeId()==null){
 				courseInfo = getCourseService().findCourse(courseInfo.getId());
 			}
-			courseTypeInfo = courseTypeService.findCourseType(courseInfo
-					.getCourseTypeId());
-			instituteInfo = instituteService.findInstitute(courseTypeInfo
-					.getInstituteId());
+			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
+			instituteInfo = instituteService.findInstitute(courseTypeInfo.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
 			setBean(Constants.COURSE_INFO, courseInfo);
 			setBean(Constants.INSTITUTE_INFO, instituteInfo);

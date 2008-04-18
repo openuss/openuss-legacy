@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -20,6 +21,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.LectureException;
+import org.openuss.lecture.PeriodInfo;
 import org.openuss.web.Constants;
 
 
@@ -41,9 +43,6 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	/** currently editing course type */
 	private Boolean editing = false;
 
-	/** period selection and instantiation of a course type */
-	private Boolean instantiate = true;
-	
 	private UIComponent component;
 	
 	/** course type info */
@@ -109,13 +108,20 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		}
 	}
 	
-	public void processInstantiateBooleanChanged(ValueChangeEvent event) {
-		logger.debug("InstantiateBooleanChanged() processed");
-		//final Long periodId = (Long) event.getNewValue();
-		//periodInfo = universityService.findPeriod(periodId);
-		//setSessionBean(Constants.PERIOD_INFO, periodInfo);
+	public void processPeriodSelectChanged(ValueChangeEvent event) {
+		logger.debug("selected period");
+		if (event.getNewValue() instanceof Long) {
+			Long periodId = (Long) event.getNewValue();
+			if (periodId > -1) {
+				periodInfo = universityService.findPeriod((Long)event.getNewValue());
+			} else {
+				periodInfo.setId(periodId);
+			}
+			setBean("periodInfo", periodInfo);
+		} 
 	}
 
+	
 	/**
 	 * Saves new courseType or updates changes to courseType Removed current
 	 * courseType selection from session scope
@@ -124,38 +130,29 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 	 */
 	public String saveCourseType() throws DesktopException, LectureException {
 		logger.debug("Starting method saveCourseType()");
-		if(instantiate && ((periodInfo.getId().longValue() == Constants.PERIODS_ACTIVE) || (periodInfo.getId().longValue() == Constants.PERIODS_PASSIVE))) {
-			//((UIInput) component).setValid(false);
-			//addError(component.getClientId(FacesContext.getCurrentInstance()), i18n("error_choose_a_valid_period"),null);
-			//addError("periodSelection", i18n("error_choose_a_valid_period"),null);
-			addError(i18n("error_choose_a_valid_period"),null);
-			return Constants.FAILURE;
+		courseTypeInfo = (CourseTypeInfo) getBean(Constants.COURSE_TYPE_INFO);
+		// save updateed course type
+		if (courseTypeInfo.getId() != null) {
+			courseTypeService.update(courseTypeInfo);
+			addMessage(i18n("institute_message_persist_coursetype_succeed"));
+			setBean(Constants.COURSE_TYPE_INFO, null);
+			courseTypeInfo = null;
+			editing = false;
+			return Constants.SUCCESS;
 		} else {
-			if (courseTypeInfo.getId() == null) {
-				
-				courseTypeInfo.setInstituteId(instituteInfo.getId());
-				courseTypeService.create(courseTypeInfo);
-				
-				if(instantiate)
-					addCourse();
-				
-				addMessage(i18n("institute_message_add_coursetype_succeed"));
-				courseTypeInfo = null;
-				editing = false;
-				return Constants.SUCCESS;
-			} else {
-				courseTypeService.update(courseTypeInfo);
-				addMessage(i18n("institute_message_persist_coursetype_succeed"));
-				removeSessionBean(Constants.COURSE_TYPE_INFO);
-				courseTypeInfo = null;
-				editing = false;
-				return Constants.SUCCESS;
-			}	
+			courseTypeInfo.setInstituteId(instituteInfo.getId());
+			courseTypeService.create(courseTypeInfo);
+			addMessage(i18n("institute_message_add_coursetype_succeed"));
+			if (periodInfo.getId() != null && periodInfo.getId() != Constants.CHOOSE_PERIODID) {
+				addCourse();
+			}
+			courseTypeInfo = null;
+			editing = false;
+			return Constants.SUCCESS;
 		}
 	}
 	
 	public String saveCourseTypeAndGoToSettings() throws DesktopException, LectureException {
-		instantiate = true;
 		this.saveCourseType();
 		return Constants.COURSE_OPTIONS_PAGE;
 	}
@@ -203,10 +200,35 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		logger.debug("Returning to method selectCourseTypeAndConfirmRemove");
 		logger.debug(currentCourseType.getId());
 		setBean(Constants.COURSE_TYPE_INFO, currentCourseType);
-
 		return Constants.COURSE_TYPE_CONFIRM_REMOVE_PAGE;
-
 	}
+	
+	/**
+	 * Gets all periods of the institute.
+	 * 
+	 * @return outcome
+	 */
+	@SuppressWarnings( { "unchecked" })
+	public List<SelectItem> getAllPeriods() {
+
+		List<SelectItem> periodSelectItems = new ArrayList<SelectItem>();
+
+		if (instituteInfo != null) {
+			Long departmentId = instituteInfo.getDepartmentId();
+			departmentInfo = departmentService.findDepartment(departmentId);
+			Long universityId = departmentInfo.getUniversityId();
+			// gets all periods of the institute (resp. the university)
+			List<PeriodInfo> periods = universityService.findPeriodsByUniversity(universityId);
+
+			periodSelectItems.add(new SelectItem(-1L, i18n("lecture_coursetypes_choose_a_period")));
+			for (PeriodInfo period : periods) {
+				periodSelectItems.add(new SelectItem(period.getId(),period.getName()));
+			}
+		}
+
+		return periodSelectItems;
+	}
+
 
 	public void setDataCourseTypes(LocalDataModelCourseTypes dataCourseTypes) {
 		this.dataCourseTypes = dataCourseTypes;
@@ -226,12 +248,12 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
-				sort(courseTypes);
 				// FIXME CourseCount should be calculated within the business layer
 				for( Iterator<CourseTypeInfo> i = courseTypes.iterator(); i.hasNext(); ) {
 					CourseTypeInfo cti = i.next();
 					cti.setCourseCount(Long.valueOf(getCourseService().findCoursesByCourseType(cti.getId()).size()));
 				}
+				sort(courseTypes);
 				page = new DataPage<CourseTypeInfo>(courseTypes.size(), 0, courseTypes);
 			}
 			return page;
@@ -253,14 +275,6 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 
 	public void setCourseTypeInfo(CourseTypeInfo courseTypeInfo) {
 		this.courseTypeInfo = courseTypeInfo;
-	}
-
-	public Boolean getInstantiate() {
-		return instantiate;
-	}
-
-	public void setInstantiate(Boolean instantiate) {
-		this.instantiate = instantiate;
 	}
 
 	public UIComponent getComponent() {

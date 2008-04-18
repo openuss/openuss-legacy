@@ -1,5 +1,9 @@
 <pages>
 
+	<page view-id="/views/*">
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+	</page>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 			Universities
 	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
@@ -106,6 +110,12 @@
 	<page view-id="/views/secured/lecture/institutecoursetypes.xhtml">
 		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
 		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
+	</page>
+
+	<page view-id="/views/secured/lecture/courseremoveconfirmation.xhtml">
+		<securityConstraint domainObject="#{instituteInfo}" permissions="#{ACL.MANAGE_COURSES}"/>
+		<parameter name="institute" value="#{instituteInfo.id}" converterId="javax.faces.Long"/>
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
 	</page>
 
 	<page view-id="/views/secured/lecture/coursetyperemoveconfirmation.xhtml">
