@@ -16,15 +16,14 @@ import org.apache.commons.lang.Validate;
  * @see org.openuss.security.MembershipService
  * @author Ron Haus
  */
-public class MembershipServiceImpl extends org.openuss.security.MembershipServiceBase {
+public class MembershipServiceImpl extends MembershipServiceBase {
 
 	/**
 	 * @see org.openuss.security.MembershipService#acceptAspirant(org.openuss.security.Membership,
 	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAcceptAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
-			throws java.lang.Exception {
+	protected void handleAcceptAspirant(Membership membership, User user) throws Exception {
 		// TODO Check Security
 
 		Validate.notNull(user, "MembershipService.handleAcceptAspirant - User cannot be null");
@@ -54,8 +53,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 *      org.openuss.security.User, org.openuss.security.MembershipParameters)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleRejectAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
-			throws java.lang.Exception {
+	protected void handleRejectAspirant(Membership membership, User user) throws Exception {
 
 		// TODO Check Security
 
@@ -79,8 +77,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addMember(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddMember(org.openuss.security.Membership membership, org.openuss.security.User user)
-			throws java.lang.Exception {
+	protected void handleAddMember(Membership membership, User user) throws Exception {
 
 		// TODO Check Security
 
@@ -150,8 +147,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#addAspirant(org.openuss.security.Membership, java.lang.Long)
 	 */
 	@SuppressWarnings( { "unchecked" })
-	protected void handleAddAspirant(org.openuss.security.Membership membership, org.openuss.security.User user)
-			throws java.lang.Exception {
+	protected void handleAddAspirant(Membership membership, User user) throws Exception {
 
 		// TODO Check Security
 
@@ -182,8 +178,7 @@ public class MembershipServiceImpl extends org.openuss.security.MembershipServic
 	 * @see org.openuss.security.MembershipService#findAllAspirants(org.openuss.security.Membership,
 	 *      org.openuss.security.GroupItem)
 	 */
-	protected org.openuss.security.Group handleCreateGroup(org.openuss.security.Membership membership,
-			org.openuss.security.Group group) throws java.lang.Exception {
+	protected Group handleCreateGroup(Membership membership, Group group) throws Exception {
 
 		Validate.notNull(membership, "MembershipService.handleCreateGroup - Membership cannot be null");
 		Validate.notNull(membership.getId(), "MembershipService.handleCreateGroup - Membership must have a valid ID");

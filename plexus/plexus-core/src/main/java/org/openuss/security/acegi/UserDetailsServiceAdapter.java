@@ -8,8 +8,6 @@ import org.openuss.security.UserInfo;
 import org.springframework.dao.DataAccessException;
 
 /**
- * FIXME this class produce package cycle!  
- * 
  * @author Ingo Dueppe
  *
  */

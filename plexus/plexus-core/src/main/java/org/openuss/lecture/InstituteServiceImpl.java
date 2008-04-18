@@ -403,7 +403,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		Institute institute = this.getInstituteDao().load(instituteInfo.getId());
 		Validate.notNull(institute, "No institute found with the instiuteId " + instituteInfo.getId());
 	
-		// Do not delete this method although it seems that id does nothing.
+		// Do not delete this method although it seems that it does nothing.
 		// When this stub is called an aspect starts to send an email.
 	}
 

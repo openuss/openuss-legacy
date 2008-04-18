@@ -53,24 +53,21 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 13:05
+	public void prerender() throws Exception {
 		super.prerender();
 		refreshExamInfoBean();
 		refreshPaperInfoBean();
-		// FIXME Do not use session bean for navigation
 		paperSubmissionInfo = (PaperSubmissionInfo)getBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 		paperFileSelection.processSwitch();
-	
 		addPageCrumbs();
 	}
 	
-	/** Adds additional breadcrumbs to the course-crumbs.
-	 * 
+	/** 
+	 * Adds additional breadcrumbs to the course-crumbs.
 	 */
-	private void addPageCrumbs() { // NOPMD by Administrator on 13.03.08 12:57
+	private void addPageCrumbs() {
 		breadcrumbs.loadCourseCrumbs(courseInfo);
-		
 		breadcrumbs.addCrumb(new BreadCrumb(PageLinks.PAPERSUBMISSION_EXAM, i18n("papersubmission_paperlist_header"), i18n("papersubmission_paperlist_header")));
 
 		if (this.examInfo != null && this.examInfo.getId() != null &&

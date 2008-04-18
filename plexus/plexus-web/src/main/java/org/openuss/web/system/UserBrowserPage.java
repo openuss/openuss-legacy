@@ -88,7 +88,6 @@ public class UserBrowserPage extends BasePage{
 		// FIXME use request parameters instead 
 		UserInfo userInfo = dataModel.getRowData();
 		userInfo = securityService.getUser(userInfo.getId());
-		// FIXME Do not use session bean for navigation
 		setSessionBean("showuser", userInfo);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}

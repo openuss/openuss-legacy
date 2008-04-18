@@ -65,13 +65,11 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			
 			//load the submission which has just been created into the session
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
-			// FIXME Do not use session bean for navigation
 			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		} else{
 			//either update or creating a new submission
 			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1), true);
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
-			// FIXME Do not use session bean for navigation
 			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
 		return paperSubmissionInfo;
