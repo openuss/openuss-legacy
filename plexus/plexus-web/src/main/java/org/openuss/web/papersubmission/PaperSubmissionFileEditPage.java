@@ -46,11 +46,13 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 13:00
 		super.prerender();
 		
+		refreshExamInfoBean();
+		refreshPaperInfoBean();
+		
 		if (!isPostBack()) {
 			if (selectedFile.getId() != null) {
 				selectedFile = documentService.getFileEntry(selectedFile.getId(), false);
-				// FIXME Do not use session bean for navigation
-				setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
+				setBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
 			}
 			if (selectedFile.getCreated() == null) {
 				selectedFile.setCreated(new Date());
@@ -92,7 +94,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 	 * @throws DocumentApplicationException
 	 * @throws IOException
 	 */
-	public String save() throws DocumentApplicationException, IOException{ // NOPMD by Administrator on 13.03.08 12:56
+	public String save() throws DocumentApplicationException, IOException{
 		LOGGER.debug("saving file");
 		paperSubmissionInfo = loadPaperSubmission();
 		if (isNewFile()) {
@@ -124,7 +126,7 @@ public class PaperSubmissionFileEditPage extends AbstractPaperSubmissionPage {
 		
 		checkSubmissionStatus(paperSubmissionInfo);
 		
-		removeSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY);
+		setBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY,null);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	

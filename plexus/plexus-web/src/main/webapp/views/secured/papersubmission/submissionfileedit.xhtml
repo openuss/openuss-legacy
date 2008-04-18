@@ -31,6 +31,8 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+		<t:saveState value="#{paperSubmissionInfo}"/>
+		<t:saveState value="#{papersubmission_selected_file}"/>
 		<h:form id="newDocumentForm" enctype="multipart/form-data">
 			<o:block label="#{msg.documents_file}" styleClass="form_box">
 				<o:input entity="papersubmission_selected_file" property="name" maxlength="100" />
@@ -38,7 +40,7 @@
 				
 				<f:subview rendered="${!empty papersubmission_selected_file.fileName}">
 					<div class="content_font_normal">
-						<h:graphicImage	value="/images/filetypes/#{sessionScope.papersubmission_selected_file.extension}.gif" />
+						<h:graphicImage	value="/images/filetypes/#{requestScope.papersubmission_selected_file.extension}.gif" />
 						&#160;<h:outputText value="#{papersubmission_selected_file.fileName}"/>
 					</div>
 				</f:subview>

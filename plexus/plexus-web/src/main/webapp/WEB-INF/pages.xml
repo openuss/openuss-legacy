@@ -302,17 +302,17 @@
     <page view-id="/views/secured/papersubmission/*">
     	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
     </page>
-
-    <page view-id="/views/secured/papersubmission/submissionview.xhtml">
-    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
+    
+    <page view-id="/views/secured/papersubmission/examremove.xhtml">
     	<parameter name="exam" value="#{examInfo.id}" converterId="javax.faces.Long"/>
+    </page>
+    
+    <page view-id="/views/secured/papersubmission/submission*">
     	<parameter name="paper" value="#{paperSubmissionInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="exam" value="#{examInfo.id}" converterId="javax.faces.Long"/>
+    	<parameter name="selected" value="#{papersubmission_selected_file.id}" converterId="javax.faces.Long"/>
     </page>
-    
-    <page view-id="/views/secured/papersubmission/examlist.xhtml">
-    	<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long"/>
-    </page>
-    
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
             Wiki
      - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->

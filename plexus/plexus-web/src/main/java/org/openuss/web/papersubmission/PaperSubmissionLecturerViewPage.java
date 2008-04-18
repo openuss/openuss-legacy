@@ -55,8 +55,10 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 13:05
 		super.prerender();
-		
-		paperSubmissionInfo = (PaperSubmissionInfo)getSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO);
+		refreshExamInfoBean();
+		refreshPaperInfoBean();
+		// FIXME Do not use session bean for navigation
+		paperSubmissionInfo = (PaperSubmissionInfo)getBean(Constants.PAPERSUBMISSION_PAPER_INFO);
 		paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 		paperFileSelection.processSwitch();
 	

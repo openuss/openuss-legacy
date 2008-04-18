@@ -28,40 +28,34 @@
 			<ui:include src="/views/commons/navigation/course.xhtml" />
 		</ui:define>
 		
-			
-		
-  		<ui:define name="content">
-
- 	  		<t:saveState id="papersubmission_editing" value="#{views$secured$papersubmission$examlist.editing}" />	  		
+  		<ui:define name="content">                             
+  			<t:saveState value="#{views$secured$papersubmission$examlist.editing}"/>
+  			<t:saveState value="#{examInfo.id}"/>
+  			<t:saveState value="#{examInfo.domainId}"/>
+  			<t:saveState value="#{examInfo.attachments}"/>
   			<h:form id="papersForm">
-  			
-	  		
 		  		<o:block label="#{msg.papersubmission_main_info}" styleClass="form_box">
 					<p class="content_font_normal">	  								
 						<h:outputFormat escape="false" value="#{msg.papersubmission_main_info_detail}" styleClass="content_font_normal" />
 					</p>
 				</o:block>
-		  		  			
   			
 				<ui:include src="examtable.xhtml"/>
 							
 				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-					<c:if test="#{!views$secured$papersubmission$examlist.editing}">	
-						<o:block>
-							<t:commandButton 
-							    id="addExam" forceId="true"
-								action="#{views$secured$papersubmission$examlist.addExam}" 
-								value="#{msg.papersubmission_exam_command_add}" 
-								title="#{msg.papersubmission_exam_command_add_hint}"
-								styleClass="button_big"/>
-						</o:block>
-					</c:if>
+					<o:block rendered="#{!views$secured$papersubmission$examlist.editing}">
+						<t:commandButton 
+						    id="addExam" 
+						    forceId="true"
+							action="#{views$secured$papersubmission$examlist.addExam}" 
+							value="#{msg.papersubmission_exam_command_add}" 
+							title="#{msg.papersubmission_exam_command_add_hint}"
+							styleClass="button_big"/>
+					</o:block>
 				</s:acl>
 			</h:form>
 			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
-				<c:if test="#{views$secured$papersubmission$examlist.editing}">
-					<ui:include src="examedit.xhtml"/>
-				</c:if>
+				<ui:include src="examedit.xhtml"/>
 			</s:acl>
 				
   		</ui:define>

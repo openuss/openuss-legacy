@@ -23,6 +23,7 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:56
 		super.prerender();
 		addPageCrumb();		
+		refreshExamInfoBean();
 	}
 	
 	private void addPageCrumb() {
@@ -41,10 +42,8 @@ public class PaperSubmissionExamRemovePage extends AbstractPaperSubmissionPage {
 	public String removeExam() {
 		try {
 			paperSubmissionService.removeExam(examInfo.getId());
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
+			setBean(Constants.PAPERSUBMISSION_EXAM_INFO, null);
+			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, null);
 			addMessage(i18n("papersubmission_removed_succeed"));
 			return Constants.PAPERSUBMISSION_EXAMLIST_PAGE;
 		} catch (Exception e) {

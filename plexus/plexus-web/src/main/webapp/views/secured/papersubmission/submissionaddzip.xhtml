@@ -31,6 +31,7 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+		<t:saveState value="#{paperSubmissionInfo}"/>
 		<h:form id="addZipForm" enctype="multipart/form-data">
 			<o:block label="#{msg.document_addzip_header}" styleClass="form_box">
 				<p class="content_font_normal">

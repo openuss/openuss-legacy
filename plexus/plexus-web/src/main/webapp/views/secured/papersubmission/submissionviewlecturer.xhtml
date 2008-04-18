@@ -30,6 +30,7 @@
         </ui:define>
         
         <ui:define name="content">
+        	<t:saveState value="#{paperSubmissionInfo}"/>
             <h:form id="submissionsTableView">
                 <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
 	                <!-- lecturer-view -->

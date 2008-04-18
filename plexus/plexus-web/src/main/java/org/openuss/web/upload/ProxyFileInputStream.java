@@ -10,20 +10,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /**
  * Proxy will first open the file input stream on the first access.
  * @author Ingo Dueppe
  */
-public class ProxyFileInputStream extends InputStream {
-	/**
-	 * Logger for this class
-	 */
+public class ProxyFileInputStream extends InputStream implements Serializable {
+	
+	private static final long serialVersionUID = 7511812835302763404L;
+
+	/** Logger for this class */
 	private static final Logger logger = Logger.getLogger(ProxyFileInputStream.class);
 
 	private File file;
 	
-	private FileInputStream inputStream;
+	private transient FileInputStream inputStream;
 	
 	public ProxyFileInputStream(File file) {
 		this.file = file;

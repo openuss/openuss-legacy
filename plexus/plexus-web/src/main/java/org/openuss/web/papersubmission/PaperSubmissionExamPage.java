@@ -2,6 +2,7 @@ package org.openuss.web.papersubmission;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.faces.component.UIData;
 
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -39,36 +41,33 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	
 	private static final Logger LOGGER = Logger.getLogger(PaperSubmissionExamPage.class);
 	
-	/** The datamodel for all papers. */
+	/** Data model for active papers. */
 	private LocalDataModelActiveExams dataActiveExams = new LocalDataModelActiveExams();
 	
+	/** Data model for inactive papers. */
 	private LocalDataModelInactiveExams dataInactiveExams = new LocalDataModelInactiveExams();
 	
 	@Property(value = "#{"+Constants.UPLOAD_FILE_MANAGER+"}")
 	private UploadFileManager uploadFileManager;
-	
+
+	/** File attachedment list for editing exam */
 	private UIData attachmentList;
 
 	/** If <code>true</code> the page is in editing mode. */
-	private Boolean editing = false;
-		
+	private boolean editing;
+	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 12:59
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:56
+	public void prerender() throws Exception {
 		super.prerender();
-		
 		addPageCrumbs();
-		
-		if (!isPostBack() && examInfo != null && examInfo.getId() != null){
+
+		if (!editing && examInfo != null && examInfo.getId() != null){
 			setExamInfo(paperSubmissionService.getExam(getExamInfo().getId()));
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-		}
-		if (examInfo != null && examInfo.getDeadline() == null){
-			examInfo.setDeadline(new Date());
-		}
+			setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		} 
+
 	}
 
 	/** 
@@ -92,8 +91,13 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	public String addExam() {
 		editing = true;
 		examInfo = new ExamInfo();
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		
+		Date deadline = DateUtils.truncate(new Date(), Calendar.DATE);
+		deadline = DateUtils.addWeeks(deadline, +2);
+		deadline = DateUtils.addSeconds(deadline, -1);
+		examInfo.setDeadline(deadline);
+		
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		return Constants.SUCCESS;
 	}
 	
@@ -104,14 +108,13 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @throws LectureException
 	 */
 	public String editActiveExam() throws LectureException {
-		examInfo = currentActiveExam();
+		examInfo = this.dataActiveExams.getRowData();
 		if (examInfo == null) {
 			return Constants.FAILURE;
-		} else if (examInfo.getId()!=null) {
+		} else if (examInfo.getId() != null) {
 			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		
 		if (examInfo == null) {
 			addWarning(i18n("papersubmission_error_exam_not_found"));
@@ -130,14 +133,14 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 * @throws LectureException
 	 */
 	public String editInactiveExam() throws LectureException {
-		examInfo = currentInactiveExam();
+		examInfo = this.dataInactiveExams.getRowData();
 		if (examInfo == null) {
 			return Constants.FAILURE;
 		}else if (examInfo.getId()!=null){
 			examInfo = paperSubmissionService.getExam(examInfo.getId());
 		}
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
+	
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		if (examInfo == null) {
 			addWarning(i18n("papersubmission_error_exam_not_found"));
 			return Constants.FAILURE;
@@ -156,21 +159,19 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String saveExam() throws DesktopException, LectureException {
 		LOGGER.debug("Starting method savePaper()");
-
+		
 		if (examInfo.getId() == null) {
 			examInfo.setDomainId(courseInfo.getId());
 			paperSubmissionService.createExam(examInfo);
-
 			addMessage(i18n("papersubmission_message_add_exam_succeed"));
 		} else {
 			paperSubmissionService.updateExam(examInfo);
-
 			addMessage(i18n("papersubmission_message_save_exam_succeed"));
 		}
 
-		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		examInfo = null;
 		editing = false;
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 
 		return Constants.SUCCESS;
 	}
@@ -182,8 +183,9 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String cancelExam() {
 		LOGGER.debug("cancelPaper()");
-		removeSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
-		this.editing = false;
+		examInfo = new ExamInfo();
+		editing = false;
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		return Constants.SUCCESS;
 	}
 	
@@ -195,11 +197,10 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String selectActiveExamAndConfirmRemove() {
 		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
-		final ExamInfo currentExam = currentActiveExam();
+		final ExamInfo currentExam = this.dataActiveExams.getRowData();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
 	}
@@ -212,38 +213,32 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 	 */
 	public String selectInactiveExamAndConfirmRemove() {
 		LOGGER.debug("Starting method selectPaperAndConfirmRemove");
-		final ExamInfo currentExam = currentInactiveExam();
+		final ExamInfo currentExam = this.dataInactiveExams.getRowData();
 		LOGGER.debug("Returning to method selectExamAndConfirmRemove");
 		LOGGER.debug(currentExam.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
-
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 		return Constants.PAPERSUBMISSION_EXAM_REMOVE_PAGE;
 	}
 	
 	public String selectActiveExam(){
 		LOGGER.debug("Starting method selectExam");
-		final ExamInfo currentExam = currentActiveExam();
+		final ExamInfo currentExam = this.dataActiveExams.getRowData();
 		LOGGER.debug("Returning to method selectExam");
 		LOGGER.debug(currentExam.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
-
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
 	public String selectInactiveExam(){
 		LOGGER.debug("Starting method selectExam");
-		ExamInfo currentExam = currentInactiveExam();
+		ExamInfo currentExam = this.dataInactiveExams.getRowData();
 		LOGGER.debug("Returning to method selectExam");
 		LOGGER.debug(currentExam.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
-
+		setBean(Constants.PAPERSUBMISSION_EXAM_INFO, currentExam);
 		return Constants.PAPERSUBMISSION_OVERVIEW_PAGE;
 	}
 	
-	public String removeAttachment() {
+	public String removeAttachment() { 
 		LOGGER.debug("exam attachment removed");
 		if (examInfo.getAttachments() != null) {
 			examInfo.getAttachments().remove((FileInfo) attachmentList.getRowData());
@@ -278,24 +273,12 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		return true;
 	}
 
-	private ExamInfo currentActiveExam() {
-		ExamInfo exam = this.dataActiveExams.getRowData();
-		
-		return exam;
-	}
-	
-	private ExamInfo currentInactiveExam() {
-		ExamInfo exam = this.dataInactiveExams.getRowData();
-		
-		return exam;
-	}
-	
-	public Boolean getEditing() {
+	public boolean getEditing() {
 		return editing;
 	}
 	
-	public void setEditing(Boolean editing) {
-		this.editing = editing;
+	public void setEditing(boolean editing) {
+		this.editing = editing; 
 	}
 	
 	public DocumentService getDocumentService() {
@@ -304,14 +287,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
-	}
-
-	public ExamInfo getExamInfo() {
-		return examInfo;
-	}
-
-	public void setExamInfo(ExamInfo examInfo) {
-		this.examInfo = examInfo;
 	}
 
 	public LocalDataModelInactiveExams getDataInactiveExams() {

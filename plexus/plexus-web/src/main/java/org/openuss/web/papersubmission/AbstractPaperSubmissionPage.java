@@ -23,30 +23,36 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 	@Property (value="#{securityService}")
 	private SecurityService securityService;
 
-	/** paper that is currently edited. */
+	/** paper that is currently selected paper. */
 	@Property(value="#{"+Constants.PAPERSUBMISSION_PAPER_INFO+"}")
-	protected PaperSubmissionInfo paperSubmissionInfo = null;
+	protected PaperSubmissionInfo paperSubmissionInfo;
 	
-	/** exam that is currently edited. */
+	/** exam that is currently selected exam */
 	@Property(value="#{"+Constants.PAPERSUBMISSION_EXAM_INFO+"}")
-	protected ExamInfo examInfo = null;
+	protected ExamInfo examInfo;
 	
 	@Override
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:56
+	public void prerender() throws Exception { 
 		super.prerender();
-		
-		if(this.paperSubmissionInfo!=null && this.paperSubmissionInfo.getId() != null){
-			this.paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
+	}
+
+	protected void refreshExamInfoBean() {
+		if (examInfo != null && examInfo.getId() != null) {
+			examInfo = paperSubmissionService.getExam(examInfo.getId());
+			setBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
 		}
-		
-		if (this.examInfo != null && this.examInfo.getId() != null) {
-			this.examInfo = paperSubmissionService.getExam(examInfo.getId());
+	}
+
+	protected void refreshPaperInfoBean() {
+		if(paperSubmissionInfo!=null && paperSubmissionInfo.getId() != null){
+			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
+			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected PaperSubmissionInfo loadPaperSubmission() {
-		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
+		examInfo = (ExamInfo) getBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 				
 		final List<PaperSubmissionInfo> paperInfos = (List<PaperSubmissionInfo>) paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
@@ -60,13 +66,13 @@ public abstract class AbstractPaperSubmissionPage extends AbstractCoursePage {
 			//load the submission which has just been created into the session
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(SubmissionInfo.getId());
 			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		} else{
 			//either update or creating a new submission
 			paperSubmissionInfo = paperSubmissionService.updatePaperSubmission(paperInfos.get(paperInfos.size()-1), true);
 			paperSubmissionInfo = paperSubmissionService.getPaperSubmission(paperSubmissionInfo.getId());
 			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 		}
 		return paperSubmissionInfo;
 	}

@@ -12,6 +12,7 @@
       xmlns:c="http://java.sun.com/jstl/core"      
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
+      <t:saveState value="#{papersubmission_submission_selection}"/>
       <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}"> 
             <!-- Assitant-view -->
             <plexus:dataTable   
@@ -20,7 +21,7 @@
 		        value="views$secured$papersubmission$submissionview.dataSubmissions" 
 		        columnClasses="col_min_center, col_min_center, col_max_center, col_min_left"
 		        var="bean" 
-		        rows="7">
+		        rows="30">
 		        
 		        <t:column>
 		            <h:selectBooleanCheckbox value="#{papersubmission_submission_selection.map[bean]}"/>
@@ -35,7 +36,6 @@
 		            <h:commandLink action="#{views$secured$papersubmission$submissionview.selectSubmission}" styleClass="command">
 							<h:outputText value="#{bean.displayName}"/>
 					</h:commandLink>
-		            
 		        </t:column>
 		        
 		       
@@ -144,8 +144,8 @@
 					<plexus:command 
 					    bean="#{views$secured$papersubmission$submissionview}"
 						action="selectFileAndConfirmRemove" 
-						label="#{msg.documents_main_button_change}" 
-						title="#{msg.documents_main_button_change}"
+						label="#{msg.documents_main_button_delete}" 
+						title="#{msg.documents_main_button_delete}"
 						styleClass="icon_remove"/>
 				</plexus:column>
 			</plexus:dataTable> 

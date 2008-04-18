@@ -29,7 +29,8 @@
         </ui:define>
         
         <ui:define name="content">
-    
+    		<t:saveState value="#{paperSubmissionInfo}"/>
+    		<t:saveState value="#{examInfo}"/>
 			<s:authorize ifAllGranted="ROLE_USER">
 				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
 					<!-- check if access type is AccessType.CLOSED -->
@@ -98,12 +99,12 @@
 	                </o:block> 
 	                
 								
-					<f:subview rendered="#{!(empty sessionScope.examInfo.attachments)}">
+					<f:subview rendered="#{!(empty requestScope.examInfo.attachments)}">
 						<o:block label="#{msg.papersubmission_materials}" styleClass="form_box">
 							<div class="content_font_normal">
 								<t:dataList 
 									var="attachment" 
-									value="#{sessionScope.examInfo.attachments}" >
+									value="#{requestScope.examInfo.attachments}" >
 									<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
 										<f:param value="#{attachment.id}" name="fileid" />
 										<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 

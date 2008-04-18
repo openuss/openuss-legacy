@@ -46,16 +46,14 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 
 	@Property(value = "#{" + Constants.DOCUMENTS_FOLDERENTRY_SELECTION + "}")
 	private FolderEntrySelection entrySelection;
-	/*
-	 * Target Folder to which selected Entries will be moved
-	 */
+	
+	/** Target Folder to which selected Entries will be moved */
 	private FolderInfo targetFolder;
 		
-		/*
-		 * Target folder list
-		 */
+	/** Target folder list */
 	private List<SelectItem> folderList;
-	 
+	
+	/** if <code>true</true> the page is in the move mode.*/
 	private boolean moveMode = false;
 
 	private List<FolderEntryInfo> entries;
@@ -204,6 +202,22 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 			setBean(Constants.DOCUMENTS_SELECTED_FILEENTRY, selectedFile);
 			return Constants.DOCUMENTS_EDIT_FILEENTRY_PAGE;
 		}
+	}
+	
+	public String removeFolderEntry() {
+		logger.debug("remove folder entry");
+		FolderEntryInfo entry = data.getRowData();
+		List<FolderEntryInfo> entries = new ArrayList<FolderEntryInfo>();
+		entries.add(entry);
+		if (!entries.isEmpty()) {
+			logger.debug("deleting documents:");
+			setSessionBean(Constants.DOCUMENTS_SELECTED_FOLDERENTRIES, entries);
+			entrySelection.getMap().clear();
+			return Constants.DOCUMENTS_REMOVE_FOLDERENTRY_PAGE;
+		} else {
+			addError(i18n("messages_error_no_documents_selected"));
+		}
+		return Constants.SUCCESS;
 	}
 
 	public DocumentDataProvider getData() {

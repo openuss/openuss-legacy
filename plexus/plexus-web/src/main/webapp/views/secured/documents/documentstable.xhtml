@@ -88,6 +88,13 @@
 					label="#{msg.documents_main_button_change}" 
 					title="#{msg.documents_main_button_change}"
 					styleClass="icon_edit"/>
+				<plexus:command 
+				    bean="#{views$secured$documents$documents}"
+					action="removeFolderEntry" 
+					label="#{msg.documents_main_button_delete}" 
+					title="#{msg.documents_main_button_delete}"
+					styleClass="icon_remove"/>					
+					
 			</plexus:column>
 		</s:acl>
 		

@@ -35,6 +35,8 @@ public class PaperSubmissionFileRemovePage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:57
 		super.prerender();
+		refreshExamInfoBean();
+		refreshPaperInfoBean();
 		addPageCrumb();
 	}
 	

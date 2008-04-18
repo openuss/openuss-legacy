@@ -31,6 +31,7 @@
 		<ui:include src="/views/commons/navigation/course.xhtml" />
 	</ui:define>
 	<ui:define name="content">
+		<t:saveState value="#{paperSubmissionInfo}"/>
 		<h:form id="remove_fileentries">
 	  			<o:block label="#{msg.warning_attention_dataloss}- #{msg.documents_remove_header}" styleClass="warning_box">
 	  				<p class="content_font_normal">

@@ -60,7 +60,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Property(value = "#{" + Constants.PAPERSUBMISSION_SUBMISSION_SELECTION + "}")
 	private PaperSubmissionSelection paperSelection;
 	
-	//@Property(value = "#{paperSubmissionComment")
 	private String comment;
 	
 	/** Prepares the information needed for rendering. 
@@ -68,11 +67,9 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:57
 		super.prerender();
-		if (!isPostBack() && examInfo != null && examInfo.getId() != null) {
-			setExamInfo(paperSubmissionService.getExam(examInfo.getId()));
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO, examInfo);
-		} 
+		refreshExamInfoBean();
+		refreshPaperInfoBean();
+		
 		paperSelection.processSwitch();
 		addPageCrumbs();
 		paperSubmissionInfo = getCurrentPaperSubmission();
@@ -91,13 +88,12 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:01
 	private PaperSubmissionInfo getCurrentPaperSubmission() {
 		final List<PaperSubmissionInfo> paperInfos;
-		examInfo = (ExamInfo) getSessionBean(Constants.PAPERSUBMISSION_EXAM_INFO);
+		examInfo = (ExamInfo) getBean(Constants.PAPERSUBMISSION_EXAM_INFO);
 		paperInfos = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		
 		if(!paperInfos.isEmpty()){
 			paperSubmissionInfo = paperInfos.get(paperInfos.size()-1);
-			// FIXME Do not use session bean for navigation
-			setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
+			setBean(Constants.PAPERSUBMISSION_PAPER_INFO, paperSubmissionInfo);
 			return paperSubmissionInfo;
 		}
 		else{
@@ -134,8 +130,6 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		}
 	}
 	
-	
-
 	private List<FolderEntryInfo> selectedEntries() {
 		List<FolderEntryInfo> selected = new ArrayList<FolderEntryInfo>(loadFileEntries());
 		CollectionUtils.filter(selected, new Predicate() {
@@ -256,13 +250,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		LOGGER.debug("editing folder entry");
 		FolderEntryInfo entry = dataSubmissionFiles.getRowData();
 		FileInfo selectedFile = documentService.getFileEntry(entry.getId(), false);
-		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
+		
+		setBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, selectedFile);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
 
 	public String delete() {
 		if ((paperSubmissionInfo == null) || (paperSubmissionInfo.getId() == null)) {
-			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:01
+			addError(i18n("messages_error_no_documents_selected")); 
 			return Constants.SUCCESS;
 		}
 		
@@ -273,14 +268,14 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 			paperSelection.getMap().clear();
 			return Constants.PAPERSUBMISSION_FILE_REMOVE_PAGE;
 		} else {
-			addError(i18n("messages_error_no_documents_selected")); // NOPMD by Administrator on 13.03.08 13:01
+			addError(i18n("messages_error_no_documents_selected"));
 		}
 		return Constants.SUCCESS;
 	}
 	
 	public String addFile() {
 		LOGGER.debug("create new file");
-		setSessionBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, new FileInfo());
+		setBean(Constants.PAPERSUBMISSION_SELECTED_FILEENTRY, new FileInfo());
 		removeSessionBean(Constants.UPLOADED_FILE);
 		return Constants.PAPERSUBMISSION_FILE_EDIT_PAGE;
 	}
@@ -305,8 +300,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		PaperSubmissionInfo currentSubmission = currentSubmission();
 		LOGGER.debug("Returning to method selectSubmission");
 		LOGGER.debug(currentSubmission.getId());
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
+		setBean(Constants.PAPERSUBMISSION_PAPER_INFO, currentSubmission);
 		
 		if(currentSubmission.getId()==null){
 			addError(i18n("papersubmission_message_submissiondoesnotexist"));
