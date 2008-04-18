@@ -57,6 +57,7 @@
 				action="delete"
 				label="#{msg['course_assistants_delete']}"
 				title="#{msg['course_assistants_delete_hint']}"
+			    onclick="if (!confirm('#{msg.message_course_remove_member_confirmation} #{assistant.username}')) return false"
 				styleClass="icon_remove" />
 		</plexus:column>
 		
