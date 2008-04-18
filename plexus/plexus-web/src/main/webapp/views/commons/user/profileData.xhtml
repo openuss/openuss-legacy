@@ -20,7 +20,7 @@
 		<s:authorize ifNotGranted="ROLE_USER">
 			<o:input id="password" forceId="true" entity="user" property="password" required="true"
 				type="password" redisplay="false">
-				<f:validateLength minimum="5" />
+				<f:validateLength minimum="6" />
 			</o:input>
 			<h:outputLabel value="#{msg.user_passwordconfirm}"
 				for="confirmPassword" styleClass="field_label" />
