@@ -28,7 +28,6 @@
 			<ui:include src="/views/commons/navigation/institute.xhtml" />
 		</ui:define>
   		<ui:define name="content">
-  		
           	<o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
   				<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
   			</o:block>
@@ -41,6 +40,19 @@
 					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="institute_members" styleClass="button_cancel" immediate="true"/>
 				</o:block>
 	  		</h:form>
+
+			
+  			<c:if test="#{views$secured$lecture$auth$aspirants.data.data.rowCount > 0}">
+			  	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
+				<h:form id="membersForm"> 
+					<ui:include src="aspirantstable.xhtml" />
+					<o:block>
+						<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$aspirants.save}" styleClass="button_save"/>
+						<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="institute_aspirants" styleClass="button_cancel" immediate="true"/>
+					</o:block>
+		  		</h:form>
+  			</c:if>
+
 	  		<h:form id="newMemberForm">
 	  			<o:block label="#{msg['institute_members_add_subheading']}" styleClass="form_box">
 					<o:input entity="views$secured$lecture$auth$institutemembers" property="username" required="true" label="#{msg['user_username']}" styleClass="field_inline">
@@ -49,6 +61,7 @@
 					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$institutemembers.addMember}" styleClass="button_save"/>
 				</o:block>
 			</h:form>	
+  		
   		</ui:define>
 	</ui:composition>
 	

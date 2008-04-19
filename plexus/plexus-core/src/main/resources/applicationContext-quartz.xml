@@ -11,7 +11,7 @@
 
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="applicationContextSchedulerContextKey" value="applicationContext"/>
-		<property name="autoStartup" value="false"/>
+		<property name="autoStartup" value="true"/>
  		<property name="startupDelay" value="180"/>
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
  		<property name="overwriteExistingJobs" value="true"/>
@@ -27,9 +27,9 @@
 				<!-- Job store -->
 				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
 				<prop key="org.quartz.jobStore.isClustered">true</prop>
-				<prop key="org.quartz.jobStore.clusterCheckinInterval">120000</prop>
+				<prop key="org.quartz.jobStore.clusterCheckinInterval">12000</prop>
 				<prop key="org.quartz.jobStore.tablePrefix">QUARTZ_</prop>
-				<prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
+				<prop key="org.quartz.jobStore.misfireThreshold">12000</prop>
 				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
 				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
 				<prop key="org.quartz.jobStore.useProperties">false</prop>

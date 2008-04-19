@@ -253,7 +253,7 @@ public class UserAdministrationMailSenderAspectImpl {
 		} else if (organisation instanceof Department) {
 			link += "departmentMembers.faces?department=";
 		} else if (organisation instanceof Institute) {
-			link += "aspirants.faces?institute=";
+			link += "institutemembers.faces?institute=";
 		}
 		return link + organisation.getId();
 	}

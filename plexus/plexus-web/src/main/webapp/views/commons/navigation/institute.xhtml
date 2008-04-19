@@ -39,19 +39,11 @@
 						</s:acl>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
 							<t:commandNavigation2
-								id="cmd_inst_authorisations" forceId="true"
-								value="#{msg['institute_command_authorisations']}"
-								action="institute_members">
-								<t:commandNavigation2 action="institute_members"
-									id="cmd_inst_members" forceId="true"
-									activeOnViewIds="/views/secured/lecture/auth/institutemembers.xhtml">
-									<h:outputText value="#{msg['institute_command_members']}"></h:outputText>
-								</t:commandNavigation2>
-								<t:commandNavigation2 action="institute_aspirants"
-								    id="cmd_inst_aspirants" forceId="true"
-									activeOnViewIds="/views/secured/lecture/auth/aspirants.xhtml">
-									<h:outputText value="#{msg['institute_command_aspirants']}"></h:outputText>
-								</t:commandNavigation2>
+								id="cmd_inst_authorisations" 
+								forceId="true"
+								action="institute_members"
+								activeOnViewIds="/views/secured/lecture/auth/institutemembers.xhtml">
+								<h:outputText value="#{msg['institute_command_authorisations']}"></h:outputText>
 							</t:commandNavigation2>
 						</s:acl>
 						<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}">
