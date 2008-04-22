@@ -11,9 +11,11 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.InstituteInfo;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 
@@ -83,6 +85,10 @@ public class DesktopPage extends BasePage {
 		return Constants.COURSE_PAGE;
 	}
 
+	private boolean isAssistant(CourseInfo courseInfo) {
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}
+	
 	/**
 	 * Remove course
 	 * 
@@ -91,8 +97,10 @@ public class DesktopPage extends BasePage {
 	public String removeCourse() {
 		logger.debug("starting method remove course");
 		CourseInfo courseInfo = coursesProvider.getRowData();
+		if (!isAssistant(courseInfo)){
+			return removeMembership(courseInfo);
+		}
 		try {
-			// desktopService.unlinkCourse(desktop, course);
 			if (desktopInfo == null) {
 				refreshDesktop();
 			}
@@ -103,6 +111,11 @@ public class DesktopPage extends BasePage {
 			addError(i18n(e.getMessage()));
 		}
 		return Constants.DESKTOP;
+	}
+
+	private String removeMembership(CourseInfo courseInfo) {
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;	
 	}
 
 	/**

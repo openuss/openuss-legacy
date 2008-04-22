@@ -15,16 +15,30 @@
 		<h:form id="actionsForm">
 		<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
 			<ul class="action_list">
-				<c:if test="#{not views$secured$course$main.bookmarked}">
-					<li class="course_bookmark">
-						<h:commandLink value="" action="#{views$secured$course$main.shortcutCourse}" ><span />#{msg.course_command_shortcut}</h:commandLink>
-					</li>
-							</c:if>
-			  	<c:if test="#{views$secured$course$main.bookmarked}">	
-					<li class="course_remove_bookmark">
-						<h:commandLink value="" action="#{views$secured$course$main.removeCourseShortcut}" ><span />#{msg.course_command_shortcut_remove}</h:commandLink>
-					</li>
-				</c:if>
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+					<c:if test="#{not views$secured$course$main.bookmarked}">
+						<li class="course_bookmark">
+							<h:commandLink value="" action="#{views$secured$course$main.shortcutCourse}" ><span />#{msg.course_command_shortcut}</h:commandLink>
+						</li>
+								</c:if>
+				  	<c:if test="#{views$secured$course$main.bookmarked}">	
+						<li class="course_remove_bookmark">
+							<h:commandLink value="" action="#{views$secured$course$main.removeCourseShortcut}" ><span />#{msg.course_command_shortcut_remove}</h:commandLink>
+						</li>
+					</c:if>
+				</s:acl>
+				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}" >
+					<c:if test="#{not views$secured$course$main.bookmarked}">
+						<li class="course_bookmark">
+							<h:commandLink value="" action="#{views$secured$course$main.shortcutCourse}" ><span />#{msg.course_command_shortcut}</h:commandLink>
+						</li>
+								</c:if>
+				  	<c:if test="#{views$secured$course$main.bookmarked}">	
+						<li class="course_remove_bookmark">
+							<h:commandLink value="" action="#{views$secured$course$main.removeMembership}" ><span />#{msg.membership_remove_header}</h:commandLink>
+						</li>
+					</c:if>
+				</s:acl>
 			</ul>
 		</o:block>
 		</h:form>

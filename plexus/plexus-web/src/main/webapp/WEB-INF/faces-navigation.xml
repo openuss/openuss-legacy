@@ -100,6 +100,11 @@
 			<from-outcome>course_main</from-outcome>
 			<to-view-id>/views/secured/course/main.xhtml</to-view-id>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>course_remove_member</from-outcome>
+			<to-view-id>/views/secured/course/confirmmembercancel.xhtml</to-view-id>
+		</navigation-case>
 		
 		<navigation-case>
 			<from-outcome>search_result</from-outcome>

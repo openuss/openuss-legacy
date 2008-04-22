@@ -15,9 +15,12 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseApplicationException;
+import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseMemberType;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
 /**
@@ -130,6 +133,9 @@ public class CourseMainPage extends AbstractCoursePage {
 	}
 
 	public String removeCourseShortcut() {
+		if (!isAssistant(courseInfo)){
+			return removeMembership();
+		}
 		try {
 			if (desktopInfo==null){
 				refreshDesktop();
@@ -142,6 +148,15 @@ public class CourseMainPage extends AbstractCoursePage {
 		
 		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
+	}
+
+	private boolean isAssistant(CourseInfo courseInfo) {
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}
+
+	public String removeMembership() {
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;	
 	}
 
 	public String getPassword() {

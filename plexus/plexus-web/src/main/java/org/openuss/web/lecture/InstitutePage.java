@@ -16,6 +16,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.LectureException;
@@ -179,12 +180,19 @@ public class InstitutePage extends AbstractLecturePage {
 			return Constants.FAILURE;
 		}
 	}
+	
+	private boolean isAssistant(CourseInfo courseInfo) {
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}
 
 	public String removeCourseShortcut()
 	{
 		try {
 			//courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
+			if (isAssistant(currentCourse)){
+				return removeMembership();
+			}
 			if (desktopInfo == null || desktopInfo.getId() == null){
 				refreshDesktop();
 			}
@@ -219,6 +227,13 @@ public class InstitutePage extends AbstractLecturePage {
 		
 		this.addMessage(i18n("institute_success_shortcut"));
 		return Constants.SUCCESS;
+	}
+
+	public String removeMembership()
+	{
+		courseInfo = this.courseData.getRowData();
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;
 	}
 	
 	/**

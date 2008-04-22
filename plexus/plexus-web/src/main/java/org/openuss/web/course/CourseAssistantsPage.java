@@ -125,7 +125,7 @@ public class CourseAssistantsPage extends AbstractCoursePage {
 	public String delete() {
 		logger.debug("course member deleted");
 		CourseMemberInfo assistant = data.getRowData();
-		courseService.removeMember(assistant);
+		courseService.removeAssistant(assistant);
 		addMessage(i18n("message_course_removed_assistant", assistant.getUsername()));
 		resetCachedData();
 		return Constants.SUCCESS;

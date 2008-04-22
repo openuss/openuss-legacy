@@ -452,7 +452,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	@Override
 	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
-		if (member != null) {
+		if (member != null && member.getMemberType()==CourseMemberType.PARTICIPANT) {
 			// Hibernate doesn't load or proxy group association if course is loaded as composite key.
 			Course course = getCourseDao().load(member.getCourseMemberPk().getCourse().getId());
 //			Course course = member.getCourseMemberPk().getCourse();
@@ -708,5 +708,20 @@ public class CourseServiceImpl extends CourseServiceBase {
 		} else {
 			getSecurityService().setPermissions(Roles.ANONYMOUS, course, LectureAclEntry.NOTHING);
 		}
+	}
+
+	@Override
+	protected void handleRemoveAssistant(CourseMemberInfo assistant) throws Exception {
+		CourseMember member = getCourseMemberDao().load(memberInfoToPK(assistant));
+		if (member != null && member.getMemberType()==CourseMemberType.ASSISTANT) {
+			// Hibernate doesn't load or proxy group association if course is loaded as composite key.
+			Course course = getCourseDao().load(member.getCourseMemberPk().getCourse().getId());
+//			Course course = member.getCourseMemberPk().getCourse();
+			User user = member.getCourseMemberPk().getUser();
+
+			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
+			getCourseMemberDao().remove(member);
+		}
+		
 	}
 }

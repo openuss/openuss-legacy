@@ -148,6 +148,7 @@ public class Constants {
 	public static final long   COURSE_CHOOSE_ASSISTANT = -120L;
 	public static final String COURSE_CHOSSE_ASSISTANT_TEXT = "course_assistants_select";
 	public static final String COURSE_CHOOSE_ERROR = "course_assistants_select_error";
+	public static final String COURSE_REMOVE_MEMBER = "course_remove_member";
 
 	// documents navigation outcomes and combobox long constants
 	public static final String DOCUMENTS_CURRENT_FOLDER = "documents_current_folder";

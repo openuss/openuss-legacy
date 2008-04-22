@@ -18,9 +18,11 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.PeriodInfo;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 
 /**
@@ -254,10 +256,17 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 		}
 	}
 
+	private boolean isAssistant(CourseInfo courseInfo) {
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}
+	
 	public String removeCourseShortcut() {
 		try {
 			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
+			}
+			if (!isAssistant(currentCourse())){
+				return removeMembership(); 
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse().getId());
 			refreshDesktop();
@@ -268,6 +277,12 @@ public class InstituteCoursesPage extends AbstractLecturePage {
 
 		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
+	}
+
+	public String removeMembership() {
+		courseInfo =  currentCourse();
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;
 	}
 
 	public Boolean getBookmarked() {

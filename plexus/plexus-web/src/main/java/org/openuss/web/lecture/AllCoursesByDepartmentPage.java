@@ -18,12 +18,14 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.lecture.InstituteService;
 import org.openuss.lecture.PeriodInfo;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.Constants;
 import org.springframework.beans.support.PropertyComparator;
 
@@ -60,6 +62,9 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
 
+	@Property(value = "#{courseInfo}")
+	protected CourseInfo courseInfo;
+	
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws Exception {
@@ -177,9 +182,16 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 		}
 	}
 
+	private boolean isAssistant(CourseInfo courseInfo) {
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}	
+	
 	public String removeCourseBookmark() {
 		try {
 			CourseInfo currentCourse = allCoursesTable.getRowData();
+			if (isAssistant(currentCourse)){
+				return removeMembership();
+			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
 			refreshDesktop();
 		} catch (Exception e) {
@@ -189,6 +201,13 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 
 		addMessage(i18n("desktop_mesage_removed_course_succeed"));
 		return Constants.SUCCESS;
+	}
+
+	public String removeMembership()
+	{
+		courseInfo = allCoursesTable.getRowData();
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;
 	}
 
 	// // getter/setter methods ////////////////////////////////////////////////
@@ -280,5 +299,14 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 			}
 			Collections.sort(list, chain);
 		}
+	}
+
+
+	public CourseInfo getCourseInfo() {
+		return courseInfo;
+	}
+
+	public void setCourseInfo(CourseInfo courseInfo) {
+		this.courseInfo = courseInfo;
 	}
 }

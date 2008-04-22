@@ -387,6 +387,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		} else {
 			logger.debug("Permission entity for authority " + authority + " for " + object + " not found!");
 		}
+		updateSecurityContext(authority);
 	}
 
 	/**

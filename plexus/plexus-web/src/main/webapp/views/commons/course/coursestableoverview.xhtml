@@ -31,7 +31,7 @@
 	
 	<plexus:dataTable 
 	    	id="courses" 
-	    	var="courseInfo" 
+	    	var="course" 
 	    	label="#{msg.period_table_head_of} #{periodInfo.name}"
 	    	value="views$public$institute$institute.courseData" 
 	    	columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
@@ -43,9 +43,9 @@
 			<plexus:commandSortHeader columnName="name">
 				<h:outputText value="#{msg.course_colheader_name}"/>
 			</plexus:commandSortHeader>
-			<o:link value="/views/secured/course/main.faces" title="#{courseInfo.description}">
-				<f:param value="#{courseInfo.id}" name="course" />
-				<h:outputText value="#{courseInfo.name} (#{courseInfo.shortcut})"/>
+			<o:link value="/views/secured/course/main.faces" title="#{course.description}">
+				<f:param value="#{course.id}" name="course" />
+				<h:outputText value="#{course.name} (#{course.shortcut})"/>
 			</o:link>
 		</t:column>
 		
@@ -54,12 +54,12 @@
 				<h:outputText value="#{msg.course_colheader_period}"/>
 			</plexus:commandSortHeader>
 		
-			<h:outputText value="#{courseInfo.periodName}"/>
+			<h:outputText value="#{course.periodName}"/>
 			
 		</t:column>
 		
 		<plexus:column header="#{msg.course_options_access_headline}">
-			<h:outputText value="#{courseInfo.accessType}">
+			<h:outputText value="#{course.accessType}">
 					<f:converter converterId="accessTypeLabelConverter" />
 			</h:outputText>
 		</plexus:column>
@@ -71,7 +71,7 @@
 						label="#{msg.course_command_edit}"
 						title="#{msg.course_command_edit_hint}"
 						styleClass="icon_settings">
-							<f:param value="#{courseInfo.id}" name="course" />
+							<f:param value="#{course.id}" name="course" />
 							<span></span>
 					</o:link>
 				</s:acl>
