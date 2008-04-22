@@ -299,7 +299,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
 		assertEquals(1, assistants.size());
 		
-		courseService.removeMember(assistants.get(0));
+		courseService.removeAssistant(assistants.get(0));
 		
 		Collection<CourseMember> emptyAssistant = courseService.getAssistants(courseInfo);
 		assertEquals(0, emptyAssistant.size());
