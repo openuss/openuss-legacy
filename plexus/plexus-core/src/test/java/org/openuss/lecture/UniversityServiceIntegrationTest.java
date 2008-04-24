@@ -761,7 +761,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		List<PeriodInfo> periods = this.getUniversityService().findPeriodsByUniversityWithCourses(university1.getId());
 		assertNotNull(periods);
 		assertEquals(2, periods.size());
-		assertEquals(university1.getPeriods().get(0).getName(), periods.get(0).getName());
+		assertEquals(university1.getPeriods().get(0).getName(), periods.get(1).getName());
+		assertEquals(university1.getPeriods().get(1).getName(), periods.get(0).getName());
 		
 		periods = this.getUniversityService().findPeriodsByUniversityWithCourses(university2.getId());
 		assertNotNull(periods);
@@ -820,7 +821,8 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 				instituteDao.toInstituteInfo(institute1));
 		assertNotNull(periods);
 		assertEquals(3, periods.size());
-		assertEquals(university1.getPeriods().get(0).getName(), periods.get(0).getName());
+		assertEquals(university1.getPeriods().get(0).getName(), periods.get(2).getName());
+		assertEquals(university1.getPeriods().get(1).getName(), periods.get(0).getName());
 		
 
 		logger.info("----> END access to findPeriodsByInstituteWithCoursesOrActive test");
