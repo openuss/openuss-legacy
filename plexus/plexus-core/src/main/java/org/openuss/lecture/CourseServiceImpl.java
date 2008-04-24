@@ -438,8 +438,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 		
 			Map<String, String> parameters = new HashMap<String, String>();
 			
-			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
+			Course course = courseOfPk(member.getCourseMemberPk());
+			User user = userOfPk(member.getCourseMemberPk());
 			UserInfo userInfo = new UserInfo();
 			userInfo.setId(user.getId());
 			
@@ -449,15 +449,30 @@ public class CourseServiceImpl extends CourseServiceBase {
 		}
 	}
 
+	/**
+	 * Workaround for Hibernate composite limitation
+	 * @param memberPk
+	 * @return Course object
+	 */
+	private Course courseOfPk(CourseMemberPK memberPk) {
+		return getCourseDao().load(memberPk.getCourse().getId());
+	}
+	
+	/**
+	 * Workaround for Hibernate composite limitation
+	 * @param memberPk
+	 * @return User Object
+	 */
+	private User userOfPk(CourseMemberPK memberPk) {
+		return getSecurityService().getUserObject(memberPk.getUser().getId());
+	}
+
 	@Override
 	protected void handleRemoveMember(CourseMemberInfo memberInfo) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberInfoToPK(memberInfo));
 		if (member != null && (member.getMemberType()==CourseMemberType.PARTICIPANT || member.getMemberType()==CourseMemberType.ASPIRANT)) {
-			// Hibernate doesn't load or proxy group association if course is loaded as composite key.
-			Course course = getCourseDao().load(member.getCourseMemberPk().getCourse().getId());
-//			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
-
+			Course course = courseOfPk(member.getCourseMemberPk());
+			User user = userOfPk(member.getCourseMemberPk());
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
 		}
@@ -478,8 +493,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 			removeMember(memberInfo);
 			Map<String, String> parameters = new HashMap<String, String>();
 			
-			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
+			Course course = courseOfPk(member.getCourseMemberPk());
+			User user = userOfPk(member.getCourseMemberPk());
 			UserInfo userInfo = new UserInfo();
 			userInfo.setId(user.getId());
 			
@@ -542,7 +557,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 		CourseMember member = persistCourseMember(course, user, type);
 		if (CourseMemberType.ASSISTANT == type) {
 			CourseMemberPK pk = member.getCourseMemberPk();
-			getSecurityService().setPermissions(pk.getUser(), pk.getCourse(), LectureAclEntry.INSTITUTE_TUTOR);
+			getSecurityService().setPermissions(userOfPk(pk), courseOfPk(pk), LectureAclEntry.INSTITUTE_TUTOR);
 		} else if (CourseMemberType.PARTICIPANT == type) {
 			defineParticipantsPermission(member);
 		}
@@ -568,8 +583,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 	 */
 	private void defineParticipantsPermission(CourseMember participant) {
 		CourseMemberPK pk = participant.getCourseMemberPk();
-		getSecurityService().addAuthorityToGroup(pk.getUser(), getParticipantsGroup(pk.getCourse()));
-		getSecurityService().saveUser(participant.getCourseMemberPk().getUser());
+		getSecurityService().addAuthorityToGroup(userOfPk(pk), getParticipantsGroup(courseOfPk(pk)));
+		getSecurityService().saveUser(userOfPk(participant.getCourseMemberPk()));
 	}
 
 	/**
@@ -714,10 +729,8 @@ public class CourseServiceImpl extends CourseServiceBase {
 	protected void handleRemoveAssistant(CourseMemberInfo assistant) throws Exception {
 		CourseMember member = getCourseMemberDao().load(memberInfoToPK(assistant));
 		if (member != null && member.getMemberType()==CourseMemberType.ASSISTANT) {
-			// Hibernate doesn't load or proxy group association if course is loaded as composite key.
-			Course course = getCourseDao().load(member.getCourseMemberPk().getCourse().getId());
-//			Course course = member.getCourseMemberPk().getCourse();
-			User user = member.getCourseMemberPk().getUser();
+			Course course = courseOfPk(member.getCourseMemberPk());
+			User user = userOfPk(member.getCourseMemberPk());
 
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
