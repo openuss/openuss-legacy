@@ -6,6 +6,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 import org.openuss.web.course.AbstractCoursePage;
@@ -45,7 +46,10 @@ public class RemoveCourseMembershipPage extends AbstractCoursePage {
 	 * @return outcome
 	 */
 	public String removeMembership() {
-		courseService.removeMember(courseService.getMemberInfo(courseInfo, user));
+		CourseMemberInfo cmi = new CourseMemberInfo();
+		cmi.setCourseId(courseInfo.getId());
+		cmi.setUserId(user.getId());
+		courseService.removeMember(cmi);
 		return Constants.DESKTOP;
 	}
 }

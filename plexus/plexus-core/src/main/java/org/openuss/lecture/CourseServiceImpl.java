@@ -475,7 +475,13 @@ public class CourseServiceImpl extends CourseServiceBase {
 			User user = userOfPk(member.getCourseMemberPk());
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
-		}
+
+			getCourseNewsletterService().unsubscribe(getCourseDao().toCourseInfo(course), getSecurityService().getUser(user.getId()));
+			getDiscussionService().removeForumWatch(getDiscussionService().getForum(getCourseDao().toCourseInfo(course)));
+			
+		}		
+		getDesktopService2().unlinkCourse(getDesktopService2().findDesktopByUser(memberInfo.getUserId()).getId(), memberInfo.getCourseId());
+		
 	}
 
 	@SuppressWarnings("unchecked")

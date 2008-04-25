@@ -30,12 +30,16 @@ import org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
+import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseService;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
 import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.security.SecurityService;
+import org.openuss.security.acl.LectureAclEntry;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -49,6 +53,9 @@ public class MyUniPage extends BasePage {
 
 	@Property(value = "#{discussionService}")
 	protected DiscussionService discussionService;
+	
+	@Property(value = "#{courseService}")
+	protected CourseService courseService;
 	
 	@Property(value = "#{courseNewsletterService}")
 	protected CourseNewsletterService courseNewsletterService;
@@ -227,6 +234,10 @@ public class MyUniPage extends BasePage {
 				// Remove course bookmark
 				if (paramRemoveCourse != null) {
 					try {
+						if (!isAssistant(paramRemoveCourse)){
+							redirect(removeMembership(paramRemoveCourse));
+							return;
+						}
 						desktopService2.unlinkCourse(desktopId, paramRemoveCourse);
 						addMessage(i18n("desktop_mesage_removed_course_succeed"));
 					} catch (Exception e) {
@@ -236,6 +247,17 @@ public class MyUniPage extends BasePage {
 			}
 		}
 	}
+	
+	public String removeMembership(Long id) {
+		CourseInfo courseInfo =  courseService.findCourse(id);
+		setBean(Constants.COURSE_INFO, courseInfo);
+		return Constants.COURSE_REMOVE_MEMBER;
+	}
+	
+	private boolean isAssistant(Long id) {
+		return AcegiUtils.hasPermission(id, new Integer[] {LectureAclEntry.ASSIST});
+	}
+	
 	/*
 	 * Handles newsletter and forum subscriptions
 	 */
@@ -784,6 +806,14 @@ public class MyUniPage extends BasePage {
 	public void setPaperSubmissionService(
 			PaperSubmissionService paperSubmissionService) {
 		this.paperSubmissionService = paperSubmissionService;
+	}
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 
 }

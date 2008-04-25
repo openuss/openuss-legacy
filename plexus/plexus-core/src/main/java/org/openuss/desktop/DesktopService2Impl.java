@@ -266,7 +266,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 	}
 
 	/**
-	 * Removes member of course if membership exists.
+	 * Removes course link
 	 * @see org.openuss.desktop.DesktopService2#unlinkCourse(java.lang.Long,
 	 *      java.lang.Long)
 	 */
@@ -280,17 +280,6 @@ public class DesktopService2Impl extends DesktopService2Base {
 
 		desktop.getCourses().remove(course);
 
-		UserInfo userInfo = this.getDesktopDao().toDesktopInfo(desktop).getUserInfo();
-		CourseInfo courseInfo = this.getCourseDao().toCourseInfo(course);
-		CourseMemberInfo memberInfo = this.getCourseService().getMemberInfo(courseInfo, userInfo);
-
-		getCourseNewsletterService().unsubscribe(courseInfo, userInfo);
-		getDiscussionService().removeForumWatch(getDiscussionService().getForum(courseInfo));
-		
-		if(memberInfo != null){
-			this.getCourseService().removeMember(memberInfo);
-		}
-		
 	}
 
 	/**
