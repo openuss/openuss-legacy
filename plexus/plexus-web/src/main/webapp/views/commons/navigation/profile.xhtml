@@ -3,7 +3,38 @@
 <ui:composition xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<ui:include src="desktop.xhtml"/>
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="profileNavigationForm">
+			<t:panelNavigation2 id="profile_navigation" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2 value="#{msg['desktop_command_userprofile']}"	open="false">
+					<t:commandNavigation2 action="#{views$secured$user$profile.profilePage}"
+						activeOnViewIds="/views/secured/user/userprofile.xhtml">
+						<h:outputText value="#{msg['user_profile_preview']}"></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="user_profile"
+						activeOnViewIds="/views/secured/user/profile.xhtml">
+						<h:outputText value="#{msg['user_profile_contact']}"></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="user_profile_personal"
+						activeOnViewIds="/views/secured/user/profilePersonal.xhtml">
+						<h:outputText value="#{msg['user_profile_personal']}"></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="user_profile_uni"
+						activeOnViewIds="/views/secured/user/profileUni.xhtml">
+						<h:outputText value="#{msg['user_profile_Uni']}"></h:outputText>
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="user_profile_preferences"
+						activeOnViewIds="/views/secured/user/profilePref.xhtml">
+						<h:outputText value="#{msg['user_profile_preferences_header']}"></h:outputText>
+					</t:commandNavigation2>
+				</t:commandNavigation2>
+			</t:panelNavigation2>
+		</h:form>
+	</s:authorize>
 </ui:composition>

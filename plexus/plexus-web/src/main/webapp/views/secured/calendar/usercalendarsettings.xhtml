@@ -18,6 +18,7 @@
 		</title>
 		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
 		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+
 	</head>
 
 	<body>
@@ -25,30 +26,33 @@
 	<!-- text above will be ignored -->
 	<ui:composition template="/views/layout/layout.xhtml">
   		<ui:define name="title">
-   			<h:outputFormat value="#{msg.user_profile_heading}">
-  				<f:param value="#{user.contact.firstName}"/>
-  				<f:param value="#{user.contact.lastName}"/>
-  			</h:outputFormat>
+			<h:outputText value="#{msg['openuss4us_navigation_header']}" />
   		</ui:define>
   		<ui:define name="navigation">  			
 			<ui:include src="/views/commons/navigation/desktop.xhtml" />
   		</ui:define>
   		<ui:define name="sidebar">  			
-			<ui:include src="/views/commons/sidebar/useroptions.xhtml" />
+			<ui:include src="/views/commons/sidebar/usercalendaroptions.xhtml" />
 			<ui:include src="/views/commons/sidebar/default.xhtml" />
+			
   		</ui:define>
   		<ui:define name="content">
-			<h:form id="profileForm" enctype="multipart/form-data">
-				<o:block label="#{msg['user_profile_heading_config']}" styleClass="form_box">
-					<ui:include src="/views/commons/user/profileDataContact.xhtml" />
+			<h:form id="openuss4us_usercalendar" enctype="multipart/form-data">
+				<o:block label="#{msg['openuss4us_usercalendar']}" styleClass="content_box">
+					<o:input entity="scheduleSettings" property="visibleStartHour" />
+					<o:input entity="scheduleSettings" property="visibleEndHour" />
+					<o:input entity="scheduleSettings" property="workingStartHour" />
+					<o:input entity="scheduleSettings" property="workingEndHour" />
+					<o:input entity="scheduleSettings" property="theme" />
+					<o:input entity="scheduleSettings" property="compactMonthRowHeight" />
+					<o:input entity="scheduleSettings" property="compactWeekRowHeight" />
+					<o:input entity="scheduleSettings" property="detailedRowHeight" />
+
+
    			 	</o:block>
-  		  		<o:block label="#{msg.privacy_endorsement_head}" styleClass="form_box">
-		  			<h:outputText value="#{msg.privacy_endorsement}" styleClass="content_font_normal"/>
-		  		</o:block> 
    			 	<o:block>
-	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
-	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button"/>
-					<h:commandButton action="#{views$secured$user$profile.profilePage}" value="#{msg.user_profile_preview}" styleClass="button" />
+					<h:commandButton 
+						value="refresh" title="refresh" action="refresh" styleClass="button" />
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

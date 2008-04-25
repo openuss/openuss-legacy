@@ -40,11 +40,8 @@
   		<ui:define name="content">
 			<h:form id="profileForm" enctype="multipart/form-data">
 				<o:block label="#{msg['user_profile_heading_config']}" styleClass="form_box">
-					<ui:include src="/views/commons/user/profileDataContact.xhtml" />
+					<ui:include src="/views/commons/user/profileDataUni.xhtml" />
    			 	</o:block>
-  		  		<o:block label="#{msg.privacy_endorsement_head}" styleClass="form_box">
-		  			<h:outputText value="#{msg.privacy_endorsement}" styleClass="content_font_normal"/>
-		  		</o:block> 
    			 	<o:block>
 	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
 	   			 	<h:commandButton action="secure_password_change" value="#{msg.user_profile_new_password}" styleClass="button"/>

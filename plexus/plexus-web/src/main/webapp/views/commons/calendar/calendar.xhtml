@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:sandbox="http://myfaces.apache.org/sandbox">
+
+	<f:subview>
+		<div id="schedule">
+	
+			<c:if test="#{scheduleHandler.model.mode == 0}" >
+				<h:panelGrid columns="2" border="0" columnClasses="col_30px_left, col_max_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_today}" />
+				</h:panelGrid>
+			</c:if>
+			
+			<c:if test="#{scheduleHandler.model.mode == 1}" >
+				<h:panelGrid columns="6" border="0" columnClasses="col_30px_left, col_20p_center, col_20p_center, col_20p_center, col_20p_center, col_20p_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_monday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_tuesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_wednesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_thursday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_friday}" />
+				</h:panelGrid>
+			</c:if>
+			
+			<c:if test="#{scheduleHandler.model.mode == 2}" >
+				<h:panelGrid columns="2" border="0" columnClasses="col_30px_left, col_max_center" >
+					<h:outputText value="" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_this_week}" />
+				</h:panelGrid>
+			</c:if>	
+					
+			<c:if test="#{scheduleHandler.model.mode == 3}" >
+				<h:panelGrid columns="6" border="0" styleClass="calendar_header" >
+					<h:outputText value="#{msg.openuss4us_calendar_header_monday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_tuesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_wednesday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_thursday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_friday}" />
+					<h:outputText value="#{msg.openuss4us_calendar_header_weekend}" />
+				</h:panelGrid>
+			</c:if>
+		
+			<sandbox:schedule value="#{scheduleHandler.model}" id="schedule1"
+							rendered="true" visibleEndHour="#{scheduleSettings.visibleEndHour}"
+							visibleStartHour="#{scheduleSettings.visibleStartHour}"
+							workingEndHour="#{scheduleSettings.workingEndHour}"
+							workingStartHour="#{scheduleSettings.workingStartHour}"
+							readonly="#{scheduleSettings.readonly}"
+							theme="#{scheduleSettings.theme}"
+							tooltip="#{scheduleSettings.tooltip}"
+							renderZeroLengthEntries="#{scheduleSettings.renderZeroLength}"
+							expandToFitEntries="#{scheduleSettings.expandToFitEntries}"
+							headerDateFormat="#{scheduleSettings.headerDateFormat}"
+							compactWeekRowHeight="#{scheduleSettings.compactWeekRowHeight}"
+							compactMonthRowHeight="#{scheduleSettings.compactMonthRowHeight}"
+							detailedRowHeight="#{scheduleSettings.detailedRowHeight}"
+							splitWeekend="true"
+							headerClass="header_font_normal"/> 
+			
+		</div>
+	
+	</f:subview>
+</ui:composition>

@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:s="http://www.openuss.org/jsf-security">
+					<br />
+				<!-- hidden profile information -->
+					<h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/> 
+					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
+					<o:input entity="user.profile" property="studies" maxlength="50"/>
+
+					<br />
+					<h:outputText value="#{msg.profile_hidden_header}" styleClass="header_font_normal"/><br/> 
+					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="content_font_normal"/>
+					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
+					<o:input entity="user.contact" property="smsEmail" maxlength="100">
+										<t:validateEmail/>
+					</o:input>
+
+				<br />
+</ui:composition>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/admin.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+			<h:form id="appointmentTypesAddForm">
+			<o:block label="#{appointmentTypeInfo.name}" styleClass="form_box">
+			<h:outputText value="#{msg.internationalisation_translation_appointmenttype}" styleClass="content_font_normal" />
+				<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
+				<h:selectOneMenu id="languageSelect" value="#{views$secured$system$translateappointmenttypes.chosenLocale}" 
+					valueChangeListener="#{views$secured$system$translateappointmenttypes.languageSelected}"
+					onchange="this.form.submit();" 
+					layout="pageDirection" 
+					styleClass="pulldown"
+					immediate="true">
+				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+				</h:selectOneMenu>
+				<o:input entity="views$secured$system$translateappointmenttypes" property="translationString"
+					id="appointmentTypeName" styleClass="field" maxlength="75" label="#{msg.internationalisation_translation}" title="#{msg.internationalisation_translation_hint}"
+					required="true" />
+			</o:block>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
+				<o:block>
+					<h:commandButton id="translate"
+						action="#{views$secured$system$translateappointmenttypes.translate}"
+						value="#{msg.internationalisation_save_translation}"
+						title="#{msg.internationalisation_save_translation_hint}"
+						styleClass="button" />
+					<h:commandButton action="view:backward" value="#{msg.back}"
+						styleClass="button_back" immediate="true" />
+				</o:block>
+			</s:authorize>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

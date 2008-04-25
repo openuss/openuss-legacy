@@ -1,0 +1,49 @@
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+
+	<h:form>
+		<o:block label="#{msg['openuss4us_calendar_sidebar_options_header']}" styleClass="option_box">
+			<h:outputText value="#{msg['openuss4us_calendar_sidebar_options_text']}" styleClass="content_font_normal" escape="false" />
+			<ul class="action_list">
+			
+				<li class="calendar_listview">
+					<h:commandLink action="openuss4us_usercalendar_list" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_list_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_daymode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToDayMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_day_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_workweekmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToWorkWeekMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_workweek_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_weekmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToWeekMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_week_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_monthmode">
+					<h:commandLink action="#{views$secured$calendar$usercalendar.changeToMonthMode}" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_month_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_upcomingmode">
+					<h:commandLink action="openuss4us_usercalendar_upcominglist" >
+					<span /> #{msg['openuss4us_calendar_sidebar_options_upcominglist_mode']} </h:commandLink>
+				</li>
+				<li class="calendar_subscriptionlistview">
+					<h:commandLink action="openuss4us_calendar_edit_subscriptions" >
+					<span /> #{msg['openuss4us_calendar_button_view_subscriptions']} </h:commandLink>
+				</li>
+			</ul>
+		</o:block>
+	</h:form>
+</f:subview>	

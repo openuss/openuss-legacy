@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+	<h:form id="openuss4us_calendaroverview" enctype="multipart/form-data">
+		<div id="appointmentbox">
+		<plexus:dataTable id="serialAppointmentTable"
+			value="views$secured$calendar$calendar.serialAppointmentData"
+			var="serialAppointment" rows="20"
+			label="#{msg.openuss4us_calendar_serial_appointments}"
+			columnClasses="col_left_min, col_left_max, col_left_max, col_left_max, col_left_max, col_left_max, col_left_max">
+			
+			<t:column>
+			<plexus:commandSortHeader columnName="serialAppointmentType"> #{msg['openuss4us_calendar_appointment_type_table']}</plexus:commandSortHeader>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'USER'}"
+			title="#{msg.openuss4us_calendar_appointment_type_private}">
+			<img src="#{theme.imagesPath}/icons/date_private.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'GROUP'}"
+			title="#{msg.openuss4us_calendar_appointment_type_group}">
+			<img src="#{theme.imagesPath}/icons/date_group.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.serialAppointmentDetails}"
+			rendered="#{serialAppointment.calendarType eq 'COURSE'}"
+			title="#{msg.openuss4us_calendar_appointment_type_course}">
+			<img src="#{theme.imagesPath}/icons/date_course.png"/>
+			</h:commandLink>
+			</t:column>
+		
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
+				
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
+					<h:outputText value="#{serialAppointment.subject}"
+						styleClass="appointmentheader" />
+				</h:commandLink>
+				
+				<br />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.serialAppointmentDetails}">
+					<h:outputText value="#{serialAppointment.description}"
+						styleClass="appointmentdetails" />
+				</h:commandLink>
+					<o:microformatCalendar appointmentInfo="#{serialAppointment}"/>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_first_occurence}</plexus:commandSortHeader>
+				<h:outputText value="#{serialAppointment.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
+				</h:outputText>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
+				<h:outputText value="#{serialAppointment.starttime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{serialAppointment.endtime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
+				<h:outputText value="#{serialAppointment.location}" />
+			</t:column>
+
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="recurrenceType">#{msg.openuss4us_calendar_recurrence}</plexus:commandSortHeader>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'DAILY') and (serialAppointment.recurrencePeriod eq 1)}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_day_nr}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'DAILY') and (not (serialAppointment.recurrencePeriod eq 1))}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_week}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'WEEKLY') and (serialAppointment.recurrencePeriod eq 1)}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_week_nr}"
+					escape="false"
+					rendered="#{(not (serialAppointment.recurrencePeriod eq 1)) and (serialAppointment.recurrenceType eq 'WEEKLY')}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_month}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'MONTHLY') and (serialAppointment.recurrencePeriod eq 1)}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_month_nr}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'MONTHLY') and (not (serialAppointment.recurrencePeriod eq 1))}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_year}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'YEARLY') and (serialAppointment.recurrencePeriod eq 1)}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.openuss4us_calendar_every_year_nr}"
+					escape="false"
+					rendered="#{(serialAppointment.recurrenceType eq 'YEARLY') and (not (serialAppointment.recurrencePeriod eq 1))}">
+					<f:param value="#{serialAppointment.recurrencePeriod}" />
+				</h:outputFormat>
+			</t:column>
+			<plexus:column header="#{msg.commands_header}"
+				styleClass="col_commands">
+				
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
+					<br />
+					<h:commandLink
+					action="#{views$secured$calendar$calendar.deleteSerialAppointment}"
+					title="#{msg.openuss4us_calendar_button_delete}"
+					class="icon_deleteappointment" />
+				</s:acl>
+				</plexus:column>
+		</plexus:dataTable>
+		</div>
+		<div id="appointmentbox">
+		<plexus:dataTable id="singleAppointmentTable"
+			value="views$secured$calendar$calendar.singleAppointmentData"
+			var="singleAppointment" rows="20"
+			label="#{msg.openuss4us_calendar_single_appointments}">
+			<t:column>
+			<plexus:commandSortHeader columnName="singleAppointmentType"> #{msg['openuss4us_calendar_appointment_type_table']}</plexus:commandSortHeader>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'USER'}"
+			title="#{msg.openuss4us_calendar_appointment_type_private}">
+			<img src="#{theme.imagesPath}/icons/date_private.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'GROUP'}"
+			title="#{msg.openuss4us_calendar_appointment_type_group}">
+			<img src="#{theme.imagesPath}/icons/date_group.png"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$calendar$calendar.singleAppointmentDetails}"
+			rendered="#{singleAppointment.calendarType eq 'COURSE'}"
+			title="#{msg.openuss4us_calendar_appointment_type_course}">
+			<img src="#{theme.imagesPath}/icons/date_course.png"/>
+			</h:commandLink>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="subject">#{msg.openuss4us_calendar_subject}</plexus:commandSortHeader>
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
+					<h:outputText value="#{singleAppointment.subject}"
+						styleClass="appointmentheader" />
+				</h:commandLink><br />
+				<h:commandLink value=""
+					action="#{views$secured$calendar$calendar.singleAppointmentDetails}">
+					<h:outputText value="#{singleAppointment.description}"
+						styleClass="appointmentdetails" />
+				</h:commandLink>
+					<o:microformatCalendar appointmentInfo="#{singleAppointment}"/>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_appointment_date}</plexus:commandSortHeader>
+				<h:outputText value="#{singleAppointment.starttime}">
+					<f:convertDateTime pattern="E, dd.MM.yyyy" timeZone="#{user.timezone}" />
+				</h:outputText>
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="starttime">#{msg.openuss4us_calendar_time}</plexus:commandSortHeader>
+				<h:outputText value="#{singleAppointment.starttime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{singleAppointment.endtime}">
+					<f:convertDateTime pattern="H:mm" timeZone="#{user.timezone}" />
+				</h:outputText>
+
+			</t:column>
+			<t:column styleClass="col_max_left">
+				<plexus:commandSortHeader columnName="location">#{msg.openuss4us_calendar_location}</plexus:commandSortHeader>
+				<h:outputText value="#{singleAppointment.location}" />
+			</t:column>
+
+			<plexus:column header="#{msg.commands_header}"
+				styleClass="col_commands">
+							
+				<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
+					<h:commandLink
+					action="#{views$secured$calendar$calendar.deleteSingleAppointment}"
+					title="#{msg.openuss4us_calendar_button_delete}"
+					class="icon_deleteappointment" />					
+				</s:acl>
+				</plexus:column>
+		</plexus:dataTable>
+		</div>
+		<o:block>
+			<s:acl domainObject="#{calendarInfo}" hasPermission="#{ACL.ASSIST}">
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_single_appointment}"
+					action="calendar_create_single_appointment" styleClass="button_big" />
+				<h:commandButton
+					value="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					title="#{msg.openuss4us_calendar_button_create_serial_appointment}"
+					action="calendar_create_serial_appointment" styleClass="button_big" />
+			</s:acl> 
+			<c:if test="#{user.id ne calendarInfo.domainIdentifier}">
+				<h:commandButton value="#{msg.openuss4us_calendar_subscribe}"
+					title="#{msg.openuss4us_calendar_subscribe_hint}"
+					rendered="#{not views$secured$calendar$calendar.subscribed}"
+					action="#{views$secured$calendar$calendar.changeSubscription}"
+					styleClass="button_big" />
+				<h:commandButton value="#{msg.openuss4us_calendar_subscribe_delete}"
+					title="#{msg.openuss4us_calendar_subscribe_delete_hint}"
+					rendered="#{views$secured$calendar$calendar.subscribed}"
+					action="#{views$secured$calendar$calendar.changeSubscription}"
+					styleClass="button_big" />
+			</c:if>
+		</o:block>
+	</h:form>
+</ui:composition>

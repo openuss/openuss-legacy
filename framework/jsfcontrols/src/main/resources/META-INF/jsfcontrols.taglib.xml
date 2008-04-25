@@ -102,4 +102,9 @@
          <renderer-type>org.openuss.framework.jsfcontrols.components.picklist.HtmlPicklistRenderer</renderer-type>
       </component>
    </tag>
+
+	<tag>
+		<tag-name>microformatCalendar</tag-name>
+		<source>../facelets/microformatCalendar.xhtml</source>
+	</tag>
 </facelet-taglib>

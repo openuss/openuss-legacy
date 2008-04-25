@@ -442,6 +442,14 @@ public class BreadCrumbs extends BaseBean {
 		return crumbs;
 	}
 
+	// Appointment Details Crumb Generation
+
+	private List<BreadCrumb> getAppointmentCrumbs() {
+		List<BreadCrumb> crumbs = newBaseCrumbs();
+		assert crumbs != null;
+		return crumbs;
+	}
+	
 	// Public loader methods to generate crumbs for the domain object types
 
 	public void loadUniversityCrumbs(final Long universityId) {
@@ -500,6 +508,10 @@ public class BreadCrumbs extends BaseBean {
 		setCrumbs(getAdministrationCrumbs());
 	}
 
+	public void loadAppointmentCrumbs() {
+		setCrumbs(getAppointmentCrumbs());
+	}
+	
 	public void addCrumb(final BreadCrumb newCrumb) {
 		if (newCrumb != null) {
 			getCrumbs().add(newCrumb);
@@ -577,6 +589,10 @@ public class BreadCrumbs extends BaseBean {
 		} else {
 			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
+	}
+
+	public void loadBaseCrumbs(){
+		setCrumbs(newBaseCrumbs());
 	}
 
 }

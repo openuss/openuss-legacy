@@ -18,21 +18,22 @@
 					open="true">
 					<t:commandNavigation2 value="#{msg.mainmenu_command_home}"
 						action="home" activeOnViewIds="/views/welcome.xhtml" />
-					<t:commandNavigation2 action="openuss4us_buddylist"
-						activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml,/views/secured/buddylist/usersearch.xhtml"
-						value="#{msg['openuss4us_command_buddylist']}"/>
-					<t:commandNavigation2 action="openuss4us_messagecenter"
-						activeOnViewIds="/views/secured/internalMessages/messagecenter.xhtml,/views/secured/internalMessages/newinternalmessage.xhtml,/views/secured/internalMessages/readmessage.xhtml"
-						value="#{msg['openuss4us_command_messagecenter']}"/>
 					<s:authorize ifAllGranted="ROLE_USER">
 						<t:commandNavigation2
-							value="#{msg['desktop_command_userprofile']}"
-							action="user_profile"
-							activeOnViewIds="/views/secured/user/profileData.xhtml">
+							action="#{views$secured$calendar$usercalendar.startCalendar}"
+							activeOnViewIds="/views/secured/calendar/usercalendar.xhtml,/views/secured/calendar/calendar.xhtml,/views/secured/calendar/usercalendarsettings.xhtml,/views/secured/calendar/calendarlist.xhtml,/views/secured/calendar/subscribedcalendars.xhtml">
+							<h:outputText value="#{msg['openuss4us_command_calendar']}"></h:outputText>
 						</t:commandNavigation2>
+						<t:commandNavigation2 action="openuss4us_buddylist"
+							activeOnViewIds="/views/secured/buddylist/buddylist.xhtml,/views/secured/buddylist/edittags.xhtml,/views/secured/buddylist/buddyrequest.xhtml,/views/secured/buddylist/usersearch.xhtml"
+							value="#{msg['openuss4us_command_buddylist']}"/>
+						<t:commandNavigation2 action="openuss4us_messagecenter"
+							activeOnViewIds="/views/secured/internalmessages/messagecenter.xhtml,/views/secured/internalmessages/newinternalmessage.xhtml,/views/secured/internalmessages/readmessage.xhtml"
+							value="#{msg['openuss4us_command_messagecenter']}"/>
 					</s:authorize>
 				</t:commandNavigation2>
 			</t:panelNavigation2>
 		</h:form>
+		<ui:include src="/views/commons/navigation/profile.xhtml" /> 
 	</s:authorize></div>
 </ui:composition>

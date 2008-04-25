@@ -31,31 +31,7 @@
 						<h:message for="confirmPassword" styleClass="field_error" />
 					</s:authorize>
 
-				<!-- public profile information -->
-					<br />
-					<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
-					<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
-					<o:input entity="user.contact" property="firstName" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="lastName" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="title" maxlength="100"/>
-					<o:input entity="user.contact" property="profession" maxlength="100"/>
-					
-				<!-- adress information -->
-					<br />
-					<h:outputText value="#{msg.profile_address_header}" styleClass="header_font_normal"/> <br />
-					<o:input entity="user.contact" property="address" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="postcode" maxlength="50" required="true"/>
-					<o:input entity="user.contact" property="city" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="country" maxlength="100" required="false"/>
-					
-				<!-- hidden profile information -->
-					<br />
-					<h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/> <br/> 
-					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="content_font_normal"/>
-					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
-					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
-					<o:input entity="user.profile" property="studies" maxlength="50"/>
-				
+			
 				<br />
 				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
 				<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
@@ -66,5 +42,29 @@
 				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
 				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
 				</h:selectOneListbox>
+				<s:authorize ifAllGranted="ROLE_USER">
+					<br />
+					<br />
+					<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
+					<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
+					<br />
+					<o:input entity="user.profile" property="newsletterSelected" required="false"/>
+					<o:input entity="user.profile" property="discussionSelected" required="false" /> 
+					<o:input entity="user.profile" property="subscribeCalenderEntries"/>
+					<br />
+
+					<!-- visibility -->
+					<br />
+					<h:outputText value="#{msg.profile_visibility_config}" styleClass="header_font_normal" /><br />
+					<p class="content_font_normal">
+					#{msg.profile_visibility_explain}
+					</p>
+					<o:input entity="user.profile" property="profileContactPublic"/>
+					<o:input entity="user.profile" property="telephonePublic"/>
+					<o:input entity="user.profile" property="addressPublic"/> 
+					<o:input entity="user.profile" property="emailPublic"/>
+					<o:input entity="user.profile" property="profilePersonalPublic"/>
+					<o:input entity="user.profile" property="profileUniPublic"/>
+				</s:authorize>
 
 </ui:composition>

@@ -25,15 +25,19 @@
 	<ui:composition template="/views/layout/dialog.xhtml">
   		<ui:define name="title">
    			<h:outputFormat value="#{msg.user_profile_heading}">
-  				<f:param value="#{showuser.firstName}"/>
-  				<f:param value="#{showuser.lastName}"/>
+  				<f:param value="#{showuser.contact.firstName}"/>
+  				<f:param value="#{showuser.contact.lastName}"/>
   			</h:outputFormat>
+  		</ui:define>
+  		<ui:define name="navigation">  			
+  		</ui:define>
+  		<ui:define name="sidebar">  			
   		</ui:define>
   		<ui:define name="content">
 			<ui:include src="/views/commons/user/profile.xhtml"/>
 			<h:form>
 				<o:block>
-					<h:commandButton action="#{views$secured$internalmessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalmessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
+					<h:commandButton action="#{views$secured$internalMessages$newinternalmessage.linkToSendMessage}" value="#{msg.user_send_internalmessage}" styleClass="button" rendered="#{views$secured$internalMessages$newinternalmessage.securityService.currentUser.id != showuser.id}"/>
 					<h:commandButton id="doit" action="openuss4us_addbuddy" value="#{msg.user_profile_addbuddy}" styleClass="button" rendered="#{views$secured$buddylist$addbuddy.allowAdd}"/>
 					<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button"/>
 				</o:block>

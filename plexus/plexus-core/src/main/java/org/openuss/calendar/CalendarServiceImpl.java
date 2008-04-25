@@ -822,9 +822,9 @@ public class CalendarServiceImpl extends
 		appTI
 				.setName(getTranslationService().getTranslation(
 						appTI.getId(),
-						appTI.getName(),
-						TranslationContext.getCurrentInstance().getLocale()
-								.toString()));
+						appTI.getName(), "de"));
+						// TODO: CORRECT THIS WORKAROUND!!! 
+						// TranslationContext.getCurrentInstance().getLocale().toString()));
 	}
 
 	private void sortAppointmentInfoList(List<AppointmentInfo> list) {
