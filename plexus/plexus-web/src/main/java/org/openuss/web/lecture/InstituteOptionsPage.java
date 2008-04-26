@@ -151,7 +151,6 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			getDocumentService().removeFolderEntry(fileId);
 		}
 		instituteService.update(instituteInfo);
-		setBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 
 	/** ***************************** begin application ******************** */

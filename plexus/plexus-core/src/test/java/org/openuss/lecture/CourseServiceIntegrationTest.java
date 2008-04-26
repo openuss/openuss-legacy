@@ -14,6 +14,8 @@ import org.openuss.desktop.DesktopDao;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 import org.openuss.security.UserInfo;
+import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.security.acl.Permission;
 
 /**
  * JUnit Test for Spring Hibernate CourseService class.
@@ -237,29 +239,24 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 	}
 	
 	public void testAspirantToParticipant() {
-//FIXME check if test fits new right situation in courses based on groups
-//		courseService.applyUser(courseInfo, getSecurityService().getUser(user.getId()));
-//	
-//		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
-//		assertEquals(1, aspirants.size());
-//		
-//		courseService.acceptAspirant(aspirants.get(0).getId());
-//
-//		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
-//		assertEquals(0, emptyAspirants.size());
-//		
-//		List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
-//		assertEquals(1, participants.size());
-//		
-//		flush();
-//		
-//		Permission permission = securityService.getPermissions(user, courseInfo);
-//		assertNotNull(permission);
-//		
-//		LectureAclEntry acl = new LectureAclEntry();
-//		acl.setMask(permission.getMask());
-//		
-//		assertTrue(acl.isPermitted(LectureAclEntry.COURSE_PARTICIPANT));
+		int numberOfGroups = user.getGroups().size();
+		courseService.applyUser(courseInfo, getSecurityService().getUser(user.getId()));
+		List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
+		assertEquals(1, aspirants.size());
+		courseService.acceptAspirant(aspirants.get(0));
+		Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
+		assertEquals(0, emptyAspirants.size());
+		List<CourseMemberInfo> participants = courseService.getParticipants(courseInfo);
+		assertEquals(1, participants.size());
+		flush();
+		User refreshedUser = securityService.getUserObject(user.getId());
+		assertTrue(numberOfGroups + 1 == refreshedUser.getGroups().size());
+		//FIXME Check if test fits new right situation in courses based on groups
+		//	Permission permission = securityService.getPermissions(user, courseInfo);
+		//	assertNotNull(permission);
+		//	LectureAclEntry acl = new LectureAclEntry();
+		//	acl.setMask(permission.getMask());
+		//	assertTrue(acl.isPermitted(LectureAclEntry.COURSE_PARTICIPANT));
 	}
 
 	public void testRejectAspirant() {

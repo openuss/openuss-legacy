@@ -17,7 +17,6 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 	}
 
 	public void testTextMessageSending() throws Exception {
-		// FIXME - Test doesn't work properly!
 		MessageJob job = createTextMessage();
 		jobDao.create(job);
 		messageSendingCommand.setDomainObject(job);
@@ -27,7 +26,6 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 	}
 	
 	public void testTemplateMessageSending() throws Exception {
-		// FIXME - Test doesn't work properly!
 		MessageJob job = createTemplateMessage();
 		jobDao.create(job);
 		messageSendingCommand.setDomainObject(job);

@@ -143,7 +143,6 @@ public class InstituteMembersPage extends AbstractLecturePage {
 		}
 
 		// FIXME Below code should be handled within the business layer
-		
 		Iterator<InstituteGroup> iter = member.getGroups().iterator();
 		InstituteGroup group;
 		while (iter.hasNext()) {

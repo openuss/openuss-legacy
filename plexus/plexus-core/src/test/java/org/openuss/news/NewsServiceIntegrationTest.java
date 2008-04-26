@@ -35,7 +35,7 @@ public class NewsServiceIntegrationTest extends NewsServiceIntegrationTestBase {
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
 		testUtility.createAdminSecureContext();
-		//FIXME aclUtility should be configured by dependency injection
+		//FIXME AclUtility should be configured by dependency injection
 		AcegiUtils.setAclManager(aclManager);
 	}
 

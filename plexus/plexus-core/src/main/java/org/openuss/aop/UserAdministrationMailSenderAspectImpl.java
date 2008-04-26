@@ -217,7 +217,7 @@ public class UserAdministrationMailSenderAspectImpl {
 
 	private List<User> prepareRecipientsMembers(Organisation organisation, User user) {
 		// Determine Administrator Recipients (Members of the University)
-		// TODO this should be done within the Membership.getAdministrators()
+		// TODO This should be done within the Membership.getAdministrators()
 		List<User> recipients1 = new ArrayList<User>();
 		for (Group group : organisation.getMembership().getGroups()){
 			if (group.getGroupType() == GroupType.ADMINISTRATOR){

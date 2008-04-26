@@ -182,17 +182,13 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 
 	public void testLinkInstitute() throws Exception {
 		logger.info("----> BEGIN access to linkInstitute test");
-
 		// TODO Implement me!
-
 		logger.info("----> END access to linkInstitute test");
 	}
 
 	public void testLinkCourse() throws Exception {
 		logger.info("----> BEGIN access to unlinkCourse test");
-
 		// TODO Implement me!
-
 		logger.info("----> END access to unlinkCourse test");
 	}
 

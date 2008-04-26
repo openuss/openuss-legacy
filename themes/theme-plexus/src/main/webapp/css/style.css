@@ -1089,8 +1089,8 @@ p.header_font_normal,span.header_font_normal {
 
 .organisation_logo {
 	/*display: run-in;*/
-	max-width: 240px;
-	max-height: 240px;
+	max-width: 400px;
+	max-height: 400px;
 }
 
 .content_normal .userimage .userphoto {

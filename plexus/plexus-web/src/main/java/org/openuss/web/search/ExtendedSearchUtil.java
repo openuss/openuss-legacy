@@ -33,9 +33,8 @@ public class ExtendedSearchUtil {
 			case Constants.EXTENDED_SEARCH_SCOPE_OTHER:
 				extension = "other";
 				break;
-			// invalid value
 			default:
-				// TODO throw exception
+				extension = "unknown";
 				break;
 		}
 		return extension;

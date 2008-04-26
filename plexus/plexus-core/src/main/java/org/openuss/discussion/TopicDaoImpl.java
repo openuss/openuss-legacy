@@ -88,13 +88,10 @@ public class TopicDaoImpl extends org.openuss.discussion.TopicDaoBase {
 
 	@Override
 	protected List handleLoadTopicsWithViewState(final Forum forum, final User user) throws Exception {
-		// FIXME - Need to extend andromda generator to support association classes
 		// Hibernate doesn't support left outer join on object that doesn't have a association.
 		// Therefore ViewState should be an associaction class between topic and user, but
 		// this isn't support by andromda 3.2 yet.
-		
 		// So the workaround are these two queries and the memory join.
-		
 		final String queryString = 
 			" SELECT topic.ID,  v.VIEW_STATE " +
 			" FROM DISCUSSION_TOPIC as topic LEFT OUTER JOIN TRACKING_VIEWSTATE as v " +

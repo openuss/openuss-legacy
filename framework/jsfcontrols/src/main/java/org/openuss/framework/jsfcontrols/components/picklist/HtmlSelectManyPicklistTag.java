@@ -18,6 +18,8 @@
  */
 package org.openuss.framework.jsfcontrols.components.picklist;
 
+import org.apache.log4j.Logger;
+
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectListboxTagBase;
 
 /**
@@ -26,6 +28,10 @@ import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectListboxTagBase;
  */
 public class HtmlSelectManyPicklistTag extends HtmlSelectListboxTagBase
 {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(HtmlSelectManyPicklistTag.class);
 
     public String getComponentType()
     {
@@ -38,10 +44,13 @@ public class HtmlSelectManyPicklistTag extends HtmlSelectListboxTagBase
     }
     
     public void setEnabledOnUserRole(String enabledOnUserrole) {
-        //TODO: please do something here, because it is referenced by the tld
+    	logger.error("EnabledOnUserRole is not supported by HtmlSelectManyPickList!");
+    	throw new UnsupportedOperationException("EnabledOnUserRole is not supported by HtmlSelectManyPickList!");
     }
+    
     public void setVisibleOnUserRole(String enabledOnUserrole) {
-        //TODO: please do something here, because it is referenced by the tld
+    	logger.error("VisibleOnUserRole is not supported by HtmlSelectManyPickList!");
+    	throw new UnsupportedOperationException("VisibleOnUserRole is not supported by HtmlSelectManyPickList!");
     }
     
 }

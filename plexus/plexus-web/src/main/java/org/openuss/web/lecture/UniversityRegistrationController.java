@@ -62,7 +62,6 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 	}
 
 	public String start() {
-
 		logger.debug("start registration process");
 		universityApplication = new UniversityInfo();
 		// FIXME Do not use session bean for navigation

@@ -43,6 +43,19 @@ public class UniversitiesWelcomePage extends BasePage {
 	
 	@Property(value = "#{organisationService}")
 	private OrganisationService organisationService;
+	
+	private List<UniversityInfo> universities;
+	
+	public List<UniversityInfo> getUniversities() {
+		if (universities == null) {
+			universities = getUniversityService().findAllUniversities();
+		}
+		return universities;
+	}
+	
+	public void setUniversities(List<UniversityInfo> universities) {
+		this.universities = universities;
+	}
 
 	@Prerender
 	public void prerender() throws Exception {

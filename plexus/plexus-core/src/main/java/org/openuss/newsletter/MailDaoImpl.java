@@ -127,15 +127,10 @@ public class MailDaoImpl extends MailDaoBase {
 	public void mailDetailToEntity(MailDetail sourceVO, Mail targetEntity, boolean copyIfNull) {
 		super.mailDetailToEntity(sourceVO, targetEntity, copyIfNull);
 	}
-	// FIXME - Need to extend andromda generator to support association
-	// classes
-	// Hibernate doesn't support left outer join on object that doesn't have
-	// a association.
-	// Therefore ViewState should be an associaction class between
-	// newsletter and user, but
-	// this isn't support by andromda 3.2 yet.
-	
 
+	// Hibernate doesn't support left outer join on object that doesn't have
+	// a association. Therefore ViewState should be an associaction class between
+	// newsletter and user, but this isn't support by andromda 3.2 yet.
 	@Override
 	protected List handleLoadAllMailInfos(final Newsletter newsletter, final User user) throws Exception {
 		return (List) getHibernateTemplate().execute(new HibernateCallback() {

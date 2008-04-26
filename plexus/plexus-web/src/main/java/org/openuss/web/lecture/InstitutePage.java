@@ -132,7 +132,7 @@ public class InstitutePage extends AbstractLecturePage {
 		return desktopInfo.getInstituteInfos().contains(instituteInfo);
 	}
 	
-	//FIXME refactor unclear naming
+	//FIXME Refactor unclear naming
 	public Boolean getBookmarked2()
 	{
 		if (desktopInfo == null || desktopInfo.getId() == null){

@@ -118,8 +118,6 @@ public class UniversityOptionsPage extends AbstractUniversityPage {
 			documentService.removeFolderEntry(fileId);
 		}
 		universityService.update(universityInfo);
-		// FIXME Do not use session bean for navigation
-		setSessionBean(Constants.LAST_VIEW, Constants.USER_PROFILE_VIEW_PAGE);
 	}
 	
 	/**

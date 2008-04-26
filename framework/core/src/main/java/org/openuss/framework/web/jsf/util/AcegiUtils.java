@@ -101,7 +101,7 @@ public class AcegiUtils {
 	private volatile static AclManager _aclManager;
 	
 	public static AclManager getAclManager() {
-		// FIXME remove dependency to java server faces
+		// FIXME Remove dependency to java server faces
 		if (_aclManager == null) {
 			synchronized (AcegiUtils.class) {
 				FacesContext facesContext = FacesUtils.getFacesContext();

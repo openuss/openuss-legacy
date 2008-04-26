@@ -449,7 +449,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			
 //			parameters.put("coursename", courseInfo.getName());
 			
-			// FIXME use forum name and an application event if course is updated
+			// FIXME Use forum name and an application event if course is updated
 			parameters.put("forumname", "ISSUE: Find domain name");
 			parameters.put("topiclink", link);
 

@@ -326,7 +326,7 @@ public class LectureImport extends DefaultImport {
 					// aspirant or member?
 					if (ImportUtil.toBoolean(assistantFaculty.getAactive())) {
 						// if (!institute.getOwner().equals(user)) {
-						// FIXME check for duplicated members
+						// check for duplicated members
 						institute.getMembership().getMembers().add(user);
 						// }
 						// is administrator or owner?

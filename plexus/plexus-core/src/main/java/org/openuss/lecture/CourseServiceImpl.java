@@ -476,6 +476,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
 
+			// FIXME Architecture break - do not use dependencies from lecture/course to course/modules like discussion or newsletter, use events instead 
 			getCourseNewsletterService().unsubscribe(getCourseDao().toCourseInfo(course), getSecurityService().getUser(user.getId()));
 			getDiscussionService().removeForumWatch(getDiscussionService().getForum(getCourseDao().toCourseInfo(course)));
 			
