@@ -20,20 +20,26 @@ public class PageLinks{
 	
 	public static final String COURSE_PAGE = "/views/secured/course/main.faces";
 	
+	public static final String GROUP_PAGE = "/views/secured/groups/components/main.faces";
+	
 	public static final String BRAINCONTEST_MAIN = "/views/secured/braincontest/braincontestmain.faces";
 	
 	public static final String COURSE_NEWS = "/views/secured/course/coursenews.faces";
-	
+	public static final String GROUP_NEWS = "/views/secured/groups/components/coursenews.faces";
+
 	public static final String DISCUSSION_MAIN = "/views/secured/discussion/discussions.faces";
-	
+	public static final String FORUM_MAIN = "/views/secured/discussion/groups/discussions.faces";
+
 	public static final String INSTITUTE_NEWS =  "/views/secured/lecture/news.faces";
 		
 	public static final String UNIVERSITY_PERIODS = "/views/secured/lecture/universityperiods.faces";
 	
 	public static final String COURSE_NEWSLETTER = "/views/secured/newsletter/newsletter.faces";
+	public static final String GROUP_NEWSLETTER = "/views/secured/newsletter/groups/newsletter.faces";
 
 	public static final String DOCUMENTS_MAIN = "/views/secured/documents/documents.faces";
-	
+	public static final String GROUP_DOCUMENTS_MAIN = "/views/secured/documents/groups/documents.faces";
+
 	public static final String COLLABORATION_MAIN = "/views/secured/collaboration/main.faces";
 	public static final String COLLABORATION_WORKSPACE = "/views/secured/collaboration/workspaceview.faces";
 	

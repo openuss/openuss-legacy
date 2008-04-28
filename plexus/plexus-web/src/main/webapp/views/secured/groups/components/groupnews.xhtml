@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form>
+			<plexus:dataTable label="#{msg.news_header}" id="newstable"
+				columnClasses="col_max_left, col_min_left, col_date, col_date, col_commands"
+				value="views$secured$groups$components$groupnews.data" var="item"
+				rows="20">
+
+				<t:column>
+					<plexus:commandSortHeader columnName="title">#{msg.news_colheader_name}</plexus:commandSortHeader>
+					<h:outputText value="#{item.title}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="author">#{msg.news_colheader_author}</plexus:commandSortHeader>
+					<h:outputText value="#{item.author}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="publishDate">#{msg.news_colheader_publish}</plexus:commandSortHeader>
+					<h:outputText id="publishDate" value="#{item.publishDate}">
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+					</h:outputText>
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="expireDate">#{msg.news_colheader_expire}</plexus:commandSortHeader>
+					<h:outputText id="expireDate" value="#{item.expireDate}">
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+					</h:outputText>
+				</t:column>
+
+				<plexus:column header="#{msg.commands_header}">
+					<plexus:command bean="#{views$secured$groups$components$groupnews}"
+						action="editNewsItem" label="#{msg.news_command_edit}"
+						hint="#{msg.news_command_edit_hint}" styleClass="icon_edit" />
+					<plexus:command bean="#{views$secured$groups$components$groupnews}"
+						action="removeNewsItem"
+						onclick="if (!confirm('#{msg.coursenews_confirm_delete}')) return false"
+						label="#{msg.news_command_remove}"
+						hint="#{msg.news_command_remove_hint}" styleClass="icon_remove" />
+				</plexus:column>
+
+			</plexus:dataTable>
+			<o:block>
+				<h:commandButton id="addNewsItem"
+					action="#{views$secured$groups$components$groupnews.addNewsItem}"
+					value="#{msg.news_command_add_newsitem}"
+					title="#{msg.news_command_add_newsitem_hint}" styleClass="button" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

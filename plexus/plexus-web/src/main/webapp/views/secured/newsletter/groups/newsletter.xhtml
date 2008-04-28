@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="header">
+		<link type="application/rss+xml" title="RSS-#{groupInfo.name}"
+			rel="alternate"
+			href="../../../rss/secured/newsletter.xml?group=#{groupInfo.id}" />
+	</ui:define>
+	<ui:define name="title">
+		<h:outputText value="#{msg['group_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<ui:include src="/views/commons/sidebar/groupnewsletteroptions.xhtml" />
+		<!--  
+		<ui:include
+			src="/views/commons/sidebar/feeds/groupnewsletterfeed.xhtml" />
+			-->
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="newsletterForm">
+
+			<plexus:dataTable id="newsletter" label="#{msg.newsletter_header}"
+				value="views$secured$newsletter$groups$newsletter.data"
+				columnClasses="col_max_left, col_min_center, col_min_center, col_commands"
+				var="mail" rows="20">
+
+				<t:column>
+					<plexus:commandSortHeader columnName="subject"> #{msg['newsletter_mailtitle']} </plexus:commandSortHeader>
+					<h:commandLink value="#{mail.subject}"
+						action="#{views$secured$newsletter$groups$newsletter.showMail}"
+						title="#{mail.subject}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="status"> #{msg['newsletter_status']}</plexus:commandSortHeader>
+					<h:outputText value="#{msg.mail_status_planned}"
+						rendered="#{mail.status.value==1}" />
+					<h:outputText value="#{msg.mail_status_draft}"
+						rendered="#{mail.status.value==2}" />
+					<h:outputText value="#{msg.mail_status_inqueue}"
+						rendered="#{mail.status.value==3}" />
+					<h:outputText value="#{msg.mail_status_send}"
+						rendered="#{mail.status.value==4}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="sendDate">#{msg['newsletter_sendingtime']}</plexus:commandSortHeader>
+					<h:outputText id="sendDate" value="#{mail.sendDate}">
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}" />
+					</h:outputText>
+				</t:column>
+
+
+
+				<plexus:column header="#{msg.newsletter_actions}">
+					<plexus:command
+						bean="#{views$secured$newsletter$groups$newsletter}"
+						action="sendMail" label="#{msg['newsletter_button_send']}"
+						title="#{msg['newsletter_button_send']}" styleClass="icon_send"
+						rendered="#{mail.status.value==2}" />
+					<plexus:command
+						bean="#{views$secured$newsletter$groups$newsletter}"
+						action="sendPlannedMailNow"
+						label="#{msg['newsletter_button_send']}"
+						title="#{msg['newsletter_button_send_hint']}"
+						styleClass="icon_sendnow" rendered="#{mail.status.value==1}" />
+					<plexus:command
+						bean="#{views$secured$newsletter$groups$newsletter}"
+						action="changeMail" label="#{msg['newsletter_button_change']}"
+						title="#{msg['newsletter_button_change_hint']}"
+						styleClass="icon_edit" rendered="#{(mail.status.value==2)}" />
+					<plexus:command
+						bean="#{views$secured$newsletter$groups$newsletter}"
+						action="stopMail" label="#{msg['newsletter_button_stop']}"
+						title="#{msg['newsletter_button_stop']}" styleClass="icon_cancel"
+						rendered="#{(mail.status.value==1)}" />
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+						<plexus:command
+							bean="#{views$secured$newsletter$groups$newsletter}"
+							action="delMail" label="#{msg['newsletter_button_delete']}"
+							title="#{msg['newsletter_button_delete_hint']}"
+							styleClass="icon_remove"
+							onclick="if (!confirm('#{msg.newsletter_remove_mail}')) return false"
+							rendered="#{not(mail.status.value==3)}" />
+					</s:acl>
+				</plexus:column>
+
+			</plexus:dataTable>
+
+			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<h:commandButton
+						action="#{views$secured$newsletter$groups$newsletter.newMail}"
+						value="#{msg['newsletter_button_newmail']}" styleClass="button" />
+				</o:block>
+			</s:acl>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

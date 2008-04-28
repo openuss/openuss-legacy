@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://www.openuss.org/jsf-security"  
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><ui:insert name="title" /></title>
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+		media="screen,screen" />
+	<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+		media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.group_main_title} - #{groupInfo.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar"> 
+		<ui:include src="/views/commons/sidebar/groupdiscussionoptions.xhtml" />
+	</ui:define>
+  		<ui:define name="content"> 
+			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}" ifNot="error"/>
+			<h:form id="removeThreadForm">
+	  			<o:block label="#{msg.warning_attention_dataloss} - #{msg.discussion_remove_topic_header}" styleClass="warning_box">
+	  				<p class="content_font_normal">
+						<span>
+							<h:outputText value="#{msg.discussion_thread_remove_text}" styleClass="warning"/><br/>
+							<strong>#{topic.title}</strong><br/>
+							<br/>
+							<h:selectBooleanCheckbox id="checkConfirmation" 
+	   						validator="#{views$secured$discussion$groups$removethread.validateRemoveConfirmation}"
+	   						styleClass="checkbox" 
+	   						required="true"/>
+		   					<h:outputLabel value="#{msg.discussion_removethread_confirmation_flag}" for="checkConfirmation"/>
+			   				<h:message for="checkConfirmation" styleClass="field_error"/>					
+						</span>
+					</p>
+				</o:block>
+				<o:block>
+					<h:commandButton value="${msg.cancel}" action="view:backward" immediate="true" styleClass="button_cancel"/>
+					<h:commandButton value="${msg.remove}" action="#{views$secured$discussion$groups$removethread.removeThread}" styleClass="button_warning"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

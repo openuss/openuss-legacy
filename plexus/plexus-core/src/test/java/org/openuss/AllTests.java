@@ -12,6 +12,7 @@ import org.openuss.course.newsletter.CourseNewsletterTests;
 import org.openuss.desktop.DesktopTests;
 import org.openuss.discussion.DiscussionTests;
 import org.openuss.documents.DocumentTests;
+import org.openuss.groups.UserGroupTests;
 import org.openuss.internationalisation.InternationalisationTests;
 import org.openuss.lecture.LectureTests;
 import org.openuss.messaging.MessagingTests;
@@ -55,6 +56,7 @@ public class AllTests {
 		suite.addTest(WikiTests.suite());
 		suite.addTest(StatisticsTests.suite());
 		suite.addTest(ChatTests.suite());
+		suite.addTest(UserGroupTests.suite());
 		suite.addTest(CalendarTests.suite());
 		suite.addTest(InternationalisationTests.suite());
 		// $JUnit-END$

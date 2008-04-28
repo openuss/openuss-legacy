@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<plexus:dataTable id="groups"
+		label="#{msg['openuss4us_aspirant_list_header']}"
+		value="views$secured$groups$components$groupaspirants.data"
+		columnClasses="col_max_left, col_max_left, col_max_left"
+		var="aspirant" rows="20">
+
+		<t:column>
+			<plexus:commandSortHeader columnName="username"> #{msg['user_username']} </plexus:commandSortHeader>
+			<h:commandLink value=""
+				action="#{views$secured$groups$components$groupaspirants.linkProfile}">
+				<h:outputText value="#{aspirant.username}" />
+			</h:commandLink>
+		</t:column>
+
+		<t:column>
+			<plexus:commandSortHeader columnName="firstname"> #{msg['user_contact_firstname']}</plexus:commandSortHeader>
+			<h:outputText value="#{aspirant.firstName}" />
+		</t:column>
+
+		<t:column>
+			<plexus:commandSortHeader columnName="lastname">#{msg['user_contact_lastname']}</plexus:commandSortHeader>
+			<h:outputText value="#{aspirant.lastName}" />
+		</t:column>
+
+		<plexus:column header="#{msg.commands_header}">
+			
+			<h:commandLink
+				action="#{views$secured$groups$components$groupaspirants.accept}"
+				title="#{msg['group_aspirants_accept_hint']}"
+				hint="#{msg['group_aspirants_accept_hint']}"
+				class="icon_acceptaspirant" />
+			<h:commandLink
+				action="#{views$secured$groups$components$groupaspirants.reject}"
+				title="#{msg['group_aspirants_reject_hint']}"
+				hint="#{msg['group_aspirants_reject_hint']}"
+				class="icon_rejectaspirant" />	
+			
+		</plexus:column>
+
+	</plexus:dataTable>
+</ui:composition>

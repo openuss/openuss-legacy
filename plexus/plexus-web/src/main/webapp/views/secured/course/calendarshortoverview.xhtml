@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<t:commandLink action="openuss4us_calendar_calendar"><h:outputText value="#{msg.openuss4us_calendar_serial_appointments}"
+		styleClass="field_label"
+		rendered="#{not empty views$secured$course$main.appointments}" /></t:commandLink>
+	<t:dataList id="serialappointments" var="serialapp"
+		value="#{views$secured$course$main.appointments}"
+		rendered="#{not empty views$secured$course$main.appointments}"
+		layout="unorderedList" rowCountVar="saRowCount" rowIndexVar="saIndex">
+		
+		<o:microformatCalendar appointmentInfo="#{serialapp}"/>
+		<h:outputText value="#{serialapp.subject}" />
+		<br />
+		<h:outputText value="#{msg.openuss4us_calendar_first_occurence}: " />
+		<h:outputText value="#{serialapp.starttime}">
+			<f:convertDateTime pattern="E, dd.MM.yyyy"  timeZone="#{user.timezone}" />
+		</h:outputText>
+		<br />
+		<h:outputText value="#{serialapp.starttime}">
+			<f:convertDateTime pattern="H:mm"  timeZone="#{user.timezone}" />
+		</h:outputText> <h:outputText value=" - " /><h:outputText value="#{serialapp.endtime}">
+			<f:convertDateTime pattern="H:mm"  timeZone="#{user.timezone}" />
+		</h:outputText><br/>
+		
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_day}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'DAILY') and (serialapp.recurrencePeriod eq 1)}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_day_nr}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'DAILY') and (not (serialapp.recurrencePeriod eq 1))}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_week}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'WEEKLY') and (serialapp.recurrencePeriod eq 1)}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_week_nr}"
+			escape="false"
+			rendered="#{(not (serialapp.recurrencePeriod eq 1)) and (serialapp.recurrenceType eq 'WEEKLY')}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_month}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'MONTHLY') and (serialapp.recurrencePeriod eq 1)}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_month_nr}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'MONTHLY') and (not (serialapp.recurrencePeriod eq 1))}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_year}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'YEARLY') and (serialapp.recurrencePeriod eq 1)}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<h:outputFormat value="#{msg.openuss4us_calendar_every_year_nr}"
+			escape="false"
+			rendered="#{(serialapp.recurrenceType eq 'YEARLY') and (not (serialapp.recurrencePeriod eq 1))}">
+			<f:param value="#{serialapp.recurrencePeriod}" />
+		</h:outputFormat>
+		<br/>
+		<h:outputText
+			value="#{msg.openuss4us_calendar_location}: #{serialapp.location}"
+			rendered="#{not empty serialapp.location}" />
+			<br /><br />
+	</t:dataList>
+
+</ui:composition>

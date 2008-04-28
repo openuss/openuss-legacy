@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['openuss4us_command_groups']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+			<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		</s:acl>
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>
+
+
+
+
+	<ui:define name="content">
+
+		<o:block label="#{msg['openuss4us_command_groups']}"
+			styleClass="form_box">
+
+			<p class="header_font_normal"><h:outputText
+				value="#{groupInfo.name} (#{groupInfo.shortcut})" /></p>
+			<div class="content_font_normal"><h:outputText
+				value="#{groupInfo.description}" escape="false" /></div>
+
+			<h:outputText
+				value="#{msg.openuss4us_group_command_options_moderators}"
+				styleClass="field_label"
+				rendered="#{not empty views$secured$groups$components$main.moderators}" />
+			<span class="content_font_normal"> <t:dataList id="moderators"
+				var="moderator"
+				value="#{views$secured$groups$components$main.moderators}"
+				rendered="#{not empty views$secured$groups$components$main.moderators}"
+				layout="unorderedList" rowCountVar="rowCount" rowIndexVar="index">
+				<o:link
+					value="/views/secured/user/userprofile.faces?showuser=#{moderator.userId}">
+					<h:outputText value="#{moderator.firstName} #{moderator.lastName}" />
+				</o:link>
+			</t:dataList> </span>
+		</o:block>
+
+		<s:authorize ifAllGranted="ROLE_USER">
+
+			<!-- check if access type is AccessType.OPEN-->
+			<c:if test="#{groupInfo.accessType.value == 0}">
+				<c:if test="#{!views$secured$groups$components$main.member}">
+					<h:form id="join_group_form">
+						<o:block label="#{msg.group_main_access}" styleClass="form_box">
+							<p class="content_font_normal"><h:outputText
+								value="#{msg['group_access_no_member']}"
+								styleClass="content_font_normal" /></p>
+						</o:block>
+						<o:block>
+							<h:commandButton
+								action="#{views$secured$groups$components$main.apply}"
+								value="#{msg['group_main_join']}"
+								hint="#{msg['group_main_join']}" styleClass="button" />
+						</o:block>
+					</h:form>
+				</c:if>
+			</c:if>
+
+			<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.READ}">
+
+				<!-- check if access type is AccessType.CLOSED -->
+				<c:if test="#{groupInfo.accessType.value == 1}">
+					<c:if test="#{views$secured$groups$components$main.aspirant}">
+						<h:form>
+							<o:block label="#{msg.group_main_access}" styleClass="form_box">
+								<p class="content_font_normal"><h:outputText
+									value="#{msg['group_access_aspirant_wait']}"
+									styleClass="content_font_normal" /></p>
+							</o:block>
+							<o:block>
+								<h:commandButton
+									action="#{views$secured$groups$components$main.rejectAspirant}"
+									value="#{msg['message_group_reject_aspirant_button']}"
+									hint="#{msg['message_group_reject_aspirant_button']}" styleClass="button_big" />
+							</o:block>
+						</h:form>
+					</c:if>
+					<c:if test="#{!views$secured$groups$components$main.aspirant}">
+						<h:form id="group_main_apply_form">
+							<o:block label="#{msg.group_main_access}" styleClass="form_box">
+								<p class="content_font_normal"><h:outputText
+									value="#{msg['group_access_no_aspirant']}"
+									styleClass="content_font_normal" /></p>
+							</o:block>
+							<o:block>
+								<h:commandButton
+									action="#{views$secured$groups$components$main.applyAsAspirant}"
+									value="#{msg['group_main_aspirant']}"
+									hint="#{msg['group_main_aspirant']}" styleClass="button_big" />
+							</o:block>
+						</h:form>
+					</c:if>
+
+				</c:if>
+
+				<!-- check if access type is AccessType.PASSWORD -->
+				<c:if test="#{groupInfo.accessType.value == 2}">
+					<h:form id="group_main_apply_password_form">
+						<o:block label="#{msg.group_main_access}" styleClass="form_box">
+							<p class="content_font_normal"><h:outputText
+								value="#{msg.group_main_access_passtext}" /></p>
+							<h:outputLabel for="group_password"
+								value="#{msg.group_main_access_password}"
+								styleClass="field_label" />
+							<h:inputSecret id="group_password"
+								value="#{views$secured$groups$components$main.password}"
+								styleClass="field"
+								validator="#{views$secured$groups$components$main.validatePassword}"
+								required="true">
+							</h:inputSecret>
+							<h:message for="group_password" styleClass="field_error"
+								showDetail="true" showSummary="false" />
+						</o:block>
+						<o:block>
+							<h:commandButton
+								action="#{views$secured$groups$components$main.applyWithPassword}"
+								value="#{msg['group_main_access']}"
+								hint="#{msg['group_main_access']}" styleClass="button" />
+						</o:block>
+					</h:form>
+				</c:if>
+
+			</s:acl>
+		</s:authorize>
+		<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+			<c:if test="#{groupInfo.calendar}">
+				<o:block label="#{msg.openuss4us_calendar_appointments}"
+					styleClass="teaser_blue_right">
+					<h:form id="news_tables">
+						<c:if
+							test="#{empty views$secured$groups$components$main.appointments}">
+							<p class="content_font_normal"><h:outputText
+								value="#{msg.group_no_appointments}" styleClass="news_title" /></p>
+						</c:if>
+						<ui:include
+							src="/views/secured/groups/components/calendarshortoverview.xhtml" />
+					</h:form>
+				</o:block>
+			</c:if>
+			<o:block label="#{msg.news_header}" styleClass="teaser_blue">
+				<h:form id="news_tables">
+					<c:if
+						test="#{empty views$secured$groups$components$groupnews.currentNews}">
+						<p class="content_font_normal"><h:outputText
+							value="#{msg.group_no_news}" styleClass="news_title" /></p>
+					</c:if>
+					<t:dataList id="news"
+						value="#{views$secured$groups$components$groupnews.currentNews}"
+						var="item" styleClass="news">
+						<p class="content_font_normal"><h:outputText
+							value="#{item.publishDate}" styleClass="news_date">
+							<oc:convertTimestamp timeZone="#{visit.timeZone}" type="both"
+								dateStyle="medium" timeStyle="short" />
+
+						</h:outputText> <h:outputText value="#{item.title}" styleClass="news_title" />
+						<div class="content_font_normal"><h:outputText
+							value="#{item.text}" escape="false" /></div>
+						</p>
+					</t:dataList>
+				</h:form>
+			</o:block>
+		</s:acl>
+
+
+
+
+	</ui:define>
+</ui:composition>
+</body>
+</html>

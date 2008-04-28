@@ -130,5 +130,56 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 		}
 		return queryString;
 	}
+	
+	public List<DiscussionSearchDomainResult> groupSearch(String textToSearch,
+			Long groupId, boolean onlyInTitle, boolean isFuzzy, String submitter) {
+		StringBuilder queryString = new StringBuilder();
+		
+		if(!textToSearch.isEmpty()) {
+			if(onlyInTitle){
+				queryString.append(DomainIndexer.POST_TITLE);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
+				queryString.append(")");			
+			} else {
+				queryString.append("(");				
+				queryString.append(DomainIndexer.POST_TITLE);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
+				queryString.append(")");
+							
+				queryString.append(" OR ");			
+				queryString.append(DomainIndexer.CONTENT);
+				queryString.append(":(");
+				queryString.append(textToSearch);
+				queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
+				queryString.append(")");				
+				queryString.append(")");
+			}			
+		}
+		
+		if(groupId != null && groupId > 0){
+			queryString.append(" ");
+			queryString.append(DomainIndexer.COURSE_IDENTIFIER);
+			queryString.append(":");
+			queryString.append(groupId.toString());
+		}
+				
+		if(submitter != null && !submitter.equals("")){
+			queryString.append(" ");
+			queryString.append(DomainIndexer.POST_SUBMITTER_NAME);
+			queryString.append(":(");
+			queryString.append(submitter);
+			queryString = addFuzzySuffixIfFuzzy(queryString, isFuzzy);
+			queryString.append(")");
+		}
+		
+		String searchQuery = queryString.toString();		
+		logger.debug("DiscussionSearchQuery.class - search query string: "+searchQuery);
+					
+		return this.search(searchQuery);
+	}
 
 }

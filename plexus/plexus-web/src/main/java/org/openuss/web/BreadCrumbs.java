@@ -10,6 +10,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -589,6 +590,31 @@ public class BreadCrumbs extends BaseBean {
 		} else {
 			return ResourceBundle.getBundle(getBundleName(), getFacesContext().getViewRoot().getLocale());
 		}
+	}
+
+	public void loadGroupCrumbs() {
+		setCrumbs(newBaseCrumbs());
+		
+	}
+	
+	private List<BreadCrumb> getGroupCrumbs(UserGroupInfo groupInfo) {
+		List<BreadCrumb> crumbs = newBaseCrumbs();
+		assert crumbs != null;
+		
+		//  group crumb
+		BreadCrumb groupCrumb = new BreadCrumb();
+		groupCrumb.setName(groupInfo.getShortcut());
+		groupCrumb.setHint(groupInfo.getName());
+		groupCrumb.setLink(PageLinks.GROUP_PAGE);
+		groupCrumb.addParameter("group",groupInfo.getId());
+		crumbs.add(groupCrumb);
+
+		return crumbs;
+	}
+	
+	public void loadGroupCrumbs(UserGroupInfo groupInfo) {
+		setCrumbs(getGroupCrumbs(groupInfo));
+		
 	}
 
 	public void loadBaseCrumbs(){

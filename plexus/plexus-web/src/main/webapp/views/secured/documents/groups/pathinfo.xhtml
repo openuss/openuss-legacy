@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+	<span class="content_font_normal"> 
+		<t:dataList var="folder" layout="list" value="#{views$secured$documents$groups$folder.path}">
+			<h:outputText value="#{msg.documents_root_folder}" rendered="#{folder.root}"/>
+			<h:outputText value="/ #{folder.name}" rendered="#{!folder.root}"/>
+		</t:dataList> 
+	</span>
+</ui:composition>

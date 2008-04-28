@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:fck="http://www.fck-faces.org/fck-faces">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+
+
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<ui:include src="/views/commons/sidebar/default.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="chatroomstable">
+			<script
+				src="${facesContext.externalContext.requestContextPath}/js/groupchat.js"
+				type="text/javascript"></script>
+			<plexus:dataTable id="chatrooms" label="#{msg.chat_rooms_subheading}"
+				value="views$secured$groups$components$chatmain.rooms"
+				columnClasses="col_max_left, col_min_left, col_min_left, col_commands"
+				var="room" rows="20">
+				<t:column>
+					<plexus:commandSortHeader columnName="name"> #{msg['chat_rooms_topic']} </plexus:commandSortHeader>
+					<a class="chat_room_enter" href="javascript:openChat(#{room.id});"
+						title="#{msg['chat_rooms_enter']}"> <h:outputText
+						value="#{room.topic}" /> </a>
+				</t:column>
+				<t:column>
+					<plexus:commandSortHeader columnName="onlineUsers">#{msg['chat_rooms_onlineusers']}</plexus:commandSortHeader>
+					<h:outputText value="#{room.onlineUsers}" />
+				</t:column>
+				<t:column>
+					<plexus:commandSortHeader columnName="messages">#{msg['chat_rooms_messages']}</plexus:commandSortHeader>
+					<h:outputText value="#{room.messages}" />
+				</t:column>
+				<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+					<plexus:column header="#{msg.commands_header}">
+						<plexus:command bean="#{views$secured$groups$components$chatmain}"
+							action="deleteRoom" label="#{msg['chat_rooms_delete']}"
+							title="#{msg['chat_rooms_delete_hint']}" styleClass="icon_remove" />
+					</plexus:column>
+				</s:acl>
+			</plexus:dataTable>
+		</h:form>
+
+		<h:form id="chatRoomCreate">
+			<o:block label="#{msg['chat_rooms_create']}" styleClass="form_box">
+				<o:input entity="views$secured$groups$components$chatmain"
+					property="roomTopic" required="true"
+					label="#{msg['chat_rooms_topic']}" />
+				<h:commandButton
+					action="#{views$secured$groups$components$chatmain.createRoom}"
+					value="#{msg['chat_rooms_create']}"
+					title="#{msg['chat_rooms_create_hint']}" styleClass="button_big" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

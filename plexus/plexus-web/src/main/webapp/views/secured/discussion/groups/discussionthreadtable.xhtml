@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <plexus:dataTable id="discussionsThreadTable" label="#{msg.discussion_main_header}" 
+    	value="views$secured$discussion$groups$discussionthread.data" var="post" rows="20">
+		<t:column styleClass="col_post_author">
+			<a name="#{post.id}"></a>
+			<f:facet name="header">  
+				#{msg['discussion_thread_column_author']} 
+			</f:facet>
+			<h:commandLink value="" action="#{views$secured$discussion$groups$discussionthread.linkProfile}">
+				<h:outputText value="#{post.submitter}" styleClass="user_name"/>
+			</h:commandLink>
+			<h:commandLink value="" action="#{views$secured$discussion$groups$discussionthread.linkProfile}">
+				<h:graphicImage styleClass="userphoto"
+					value="/files?fileid=#{post.submitterPicture}"
+					title="#{post.submitter}" rendered="#{not empty post.submitterPicture}" />
+				<h:graphicImage styleClass="userphoto"
+					value="/images/icons/no_pic.gif" 
+					alt="#{msg.user_profile_no_image}"
+					title="#{msg.user_profile_no_image}"
+					rendered="#{empty post.submitterPicture}" />
+				</h:commandLink>					
+		</t:column>
+		<t:column styleClass="col_post">
+			<f:facet name="header">
+				#{msg['discussion_thread_column_message']} 
+			</f:facet>
+			<table>
+				<tr>
+					<td class="col_post_date">
+						<h:outputText value="#{post.created}" styleClass="content_font_header">	
+							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+						</h:outputText> 
+					</td>
+					<td class="col_post_title">
+						<h:outputText value="#{post.title}" styleClass="header_font_normal" />
+					</td>
+					<td class="col_post_commands">
+						<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}" >
+							<h:commandButton 
+								id="removeButtonAssist"
+								action="#{views$secured$discussion$groups$discussionthread.removePost}"
+								onclick="if (!confirm('#{msg.discussion_confirm_delete_post}')) return false"
+								value="#{msg['discussion_thread_remove_post']}"
+								title="#{msg['discussion_thread_remove_post']}"
+								styleClass="button_remove"/>				
+							<h:commandButton 
+								id="editButtonAssist"
+								action="#{views$secured$discussion$groups$discussionthread.editPost}"
+								value="#{msg['discussion_thread_edit_post']}"
+								title="#{msg['discussion_thread_edit_post']}"
+								styleClass="button_remove"/>
+							<h:commandButton
+								id="quoteButtonAssist"
+								action="#{views$secured$discussion$groups$discussionthread.quote}"
+								value="#{msg['discussion_thread_quote']}"
+								title="#{msg['discussion_thread_quote']}"
+								styleClass="button_remove"/>  
+						</s:acl>
+						<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.CRUD}" >
+							<h:commandButton  
+								id="removeButton"
+								action="#{views$secured$discussion$groups$discussionthread.removePost}"
+								onclick="if (!confirm('#{msg.discussion_confirm_delete_post}')) return false"
+								value="#{msg['discussion_thread_remove_post']}"
+								title="#{msg['discussion_thread_remove_post']}"
+								styleClass="button_remove"
+								rendered="#{post.userIsSubmitter and not discussion_topic.readOnly and not discussion_forum.readOnly}"/>				
+							<h:commandButton 
+								id="editButton"
+								action="#{views$secured$discussion$groups$discussionthread.editPost}"
+								value="#{msg['discussion_thread_edit_post']}"
+								title="#{msg['discussion_thread_edit_post']}"
+								styleClass="button_remove" 
+								rendered="#{post.userIsSubmitter and not discussion_topic.readOnly and not discussion_forum.readOnly}"/>
+							<h:commandButton
+								id="quoteButton"
+								action="#{views$secured$discussion$groups$discussionthread.quote}"
+								value="#{msg['discussion_thread_quote']}"
+								title="#{msg['discussion_thread_quote']}"
+								styleClass="button_remove"
+								rendered="#{not discussion_topic.readOnly and not discussion_forum.readOnly}"/>  
+						</s:acl>
+					</td>
+				</tr>
+				<tr>
+					<td class="col_post_text" colspan="3">
+						<div class="content_font_normal">
+							<h:outputText value="#{post.text}" escape="false"/>
+						</div>	
+					</td>
+				</tr>
+				<tr>
+					<td class="col_post_attachments" colspan="3">
+						<h:outputText value="#{msg.discussion_post_edited} #{post.editor} #{msg.discussion_post_edited2} #{post.lastModification}" rendered="#{post.isEdited}">
+							<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+						</h:outputText>
+						<f:subview rendered="#{!(empty post.attachments)}">
+							<div class="content_font_normal">
+								<t:dataList 
+									var="attachment" 
+									value="#{post.attachments}" >
+									<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+										<f:param value="#{attachment.id}" name="fileid" />
+										<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+								  		#{attachment.fileName} 
+								  	</o:link> 
+									<br/>	
+								</t:dataList>
+							</div>
+						</f:subview>	
+					</td>
+				</tr>
+			</table>
+		</t:column>		
+	</plexus:dataTable>      
+</ui:composition>

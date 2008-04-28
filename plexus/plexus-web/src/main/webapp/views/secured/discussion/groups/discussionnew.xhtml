@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf"      
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/groups.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="newDiscussionEntryForm" enctype="multipart/form-data">
+	  			<o:block label="#{msg.discussion_new_discussion_entry}" styleClass="form_box">
+					<o:input entity="discussion_discussionentry" property="title" required="true" maxlength="250"></o:input>
+					
+					<h:outputText value="#{msg.discussion_discussionentry_text}" styleClass="field_label"/>					
+					<div class="content_iframe">
+						<fck:editor value="#{discussion_discussionentry.text}" id="textEditor" toolbarSet="Discussion" width="100%" height="200">
+							<f:converter converterId="xssFilter"/>
+						</fck:editor>	 				
+					</div>
+
+					<h:outputLabel value="#{msg.discussion_discussionentry_attachment}" for="attachmentUpload" styleClass="field_label" />
+					<f:subview rendered="#{!(empty sessionScope.discussion_discussionentry.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{sessionScope.discussion_discussionentry.attachments}" 
+								binding="${views$secured$discussion$groups$discussionnew.attachmentList}">
+						  		<h:commandButton value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
+									action="#{views$secured$discussion$groups$discussionnew.removeAttachment}"
+									immediate="true" styleClass="button_remove" />
+						  		&#160;
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<f:subview rendered="#{empty attachment.id}">
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</f:subview> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+	
+					<t:inputFileUpload 
+						id="attachmentUpload" 
+						storage="file" 
+						accept="*"
+						immediate="true" styleClass="uploadField">
+						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					</t:inputFileUpload>	 			
+
+					<h:commandButton value="#{msg.discussion_discussionentry_button_attachment}"
+						action="#{views$secured$discussion$groups$discussionnew.addAttachment}"
+						immediate="true"
+						styleClass="button"/> 
+					
+					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
+					
+						
+				</o:block>
+				<o:block>
+					<h:commandButton 
+						action="#{views$secured$discussion$groups$discussionnew.send}"
+						value="#{msg['discussion_discussionentry_button_send']}"
+						title="#{msg['discussion_discussionentry_button_send']}"
+						styleClass="button" />				
+					<h:commandButton 
+						value="${msg.cancel}" 
+						action="#{views$secured$discussion$groups$discussionnew.cancel}" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

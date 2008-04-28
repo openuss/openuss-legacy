@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText value="#{msg['group_main_title']}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="newDocumentForm" enctype="multipart/form-data">
+			<o:block label="#{msg.documents_file}" styleClass="form_box">
+				<h:outputText value="#{msg.documents_target_folder}" styleClass="field_label" />
+				<ui:include src="pathinfo.xhtml" />
+				
+				<o:input entity="documents_selected_file" property="name" maxlength="100" />
+				<o:input entity="documents_selected_file" property="description" type="textarea" />
+
+				<f:subview rendered="${!empty documents_selected_file.fileName}">
+					<div class="content_font_normal">
+						<h:graphicImage	value="/images/filetypes/#{sessionScope.documents_selected_file.extension}.gif" />
+						&#160;<h:outputText value="#{documents_selected_file.fileName}"/>
+					</div>
+				</f:subview>
+
+				<h:outputLabel value="#{msg.documents_selected_file_file}"
+					for="file" styleClass="field_label" />
+				<t:inputFileUpload 
+					id="file" 
+					storage="file" 
+					accept="*" 
+					immediate="true" 
+					styleClass="uploadField"
+					binding="#{views$secured$documents$groups$fileedit.fileUpload}">
+					<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+				</t:inputFileUpload>
+				<h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
+
+				<o:input entity="documents_selected_file" property="fileName" maxlength="100"/>
+				
+				<o:input entity="documents_selected_file" property="created" required="true" label="#{msg.documents_selected_file_release}" type="full"/>
+			</o:block>
+
+			<o:block>
+				<h:commandButton action="#{views$secured$documents$groups$fileedit.save}"
+					value="#{msg['newdocument_button_save']}"
+					title="#{msg['newdocument_button_save']}" 
+					styleClass="button_save" />
+				<h:commandButton action="view:backward" immediate="true"
+					value="#{msg['newdocument_button_cancel']}"
+					styleClass="button_cancel" />
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+<!-- text above will be ignored -->
+</body>
+</html>

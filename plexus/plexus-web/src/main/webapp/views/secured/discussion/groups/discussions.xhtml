@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="header">
+		<link type="application/rss+xml" title="RSS-#{groupInfo.name}"
+			rel="alternate"
+			href="../../../rss/secured/discussion.xml?group=#{groupInfo.id}" />
+	</ui:define>
+	<ui:define name="title">
+		<h:outputText value="#{msg.group_main_title} - #{groupInfo.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/groups.xhtml" />
+	</ui:define>
+	<ui:define name="sidebar">
+		<ui:include src="/views/commons/sidebar/useroptions_group.xhtml" />
+		<ui:include src="/views/commons/sidebar/groupdiscussionoptions.xhtml" />
+		<!-- 
+		<ui:include src="/views/commons/sidebar/feeds/groupdiscussionfeed.xhtml" />
+		 -->
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="discussionTableView">
+			<ui:include src="discussionstable.xhtml" />
+			<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<h:commandButton id="newTopicButtonAssist"
+						action="#{views$secured$discussion$groups$discussions.newTopic}"
+						value="#{msg['discussion_new']}" title="#{msg['discussion_new']}"
+						styleClass="button" />
+					<h:commandButton id="discussionSearchButton"
+						action="#{views$secured$discussion$groups$discussions.search}"
+						value="#{msg['discussion_search']}"
+						title="#{msg['discussion_search']}" immediate="true"
+						styleClass="button" />
+				</o:block>
+			</s:acl>
+			<s:acl domainObject="#{groupInfo}" hasNotPermission="#{ACL.ASSIST}">
+				<o:block rendered="#{not discussion_forum.readOnly}">
+					<h:commandButton id="newTopicButton"
+						action="#{views$secured$discussion$groups$discussions.newTopic}"
+						value="#{msg['discussion_new']}" title="#{msg['discussion_new']}"
+						styleClass="button" />
+					<h:commandButton id="discussionSearchButton"
+						action="#{views$secured$discussion$groups$discussions.search}"
+						value="#{msg['discussion_search']}"
+						title="#{msg['discussion_search']}" styleClass="button" />
+				</o:block>
+			</s:acl>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>
