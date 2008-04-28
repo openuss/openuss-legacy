@@ -27,9 +27,12 @@ import org.openuss.desktop.MyUniUniversityInfo;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList;
+import org.openuss.framework.jsfcontrols.components.flexlist.GroupUIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.ListItemDAO;
 import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
+import org.openuss.groups.GroupService;
+import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseDao;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.paperSubmission.ExamInfo;
@@ -38,6 +41,7 @@ import org.openuss.paperSubmission.PaperSubmissionService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.web.BasePage;
+import org.openuss.web.Constants;
 
 /**
  * Display of the Startpage, after the user logged in.
@@ -64,12 +68,16 @@ public class MyUniPage extends BasePage {
 	@Property(value = "#{paperSubmissionService}")
 	protected PaperSubmissionService paperSubmissionService;
 	
+	@Property(value = "#{groupService}")
+	protected GroupService groupService;
+	
 	private static final String universityBasePath = "/views/public/university/university.faces?university=";
 
 	private Long paramUniversity = null;
 	private Long paramRemoveDepartment = null;
 	private Long paramRemoveInstitute = null;
 	private Long paramRemoveCourse = null;
+	private Long paramLeaveGroup = null;
 	private Long paramSubscribeNewsletter = null;
 	private Long paramUnsubscribeNewsletter = null;
 	private Long paramSubscribeForum = null;
@@ -77,8 +85,11 @@ public class MyUniPage extends BasePage {
 	private UIFlexList departmentsList;
 	private UIFlexList institutesList;
 	private CourseUIFlexList coursesList;
+	private GroupUIFlexList groupsList;
 	private UIFlexList examsList;
 	private UITabs tabs;
+	
+	private List<UserGroupInfo> groups;
 
 	private boolean prerenderCalled = false;
 	private boolean tabDataLoaded = false;
@@ -94,6 +105,7 @@ public class MyUniPage extends BasePage {
 	private static final String institutesBasePath = "/views/public/institute/institute.faces";
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 	private static final String submissionBasePath = "/views/secured/papersubmission/submissionview.faces";
+	private static final String groupBasePath = "/views/secured/groups/components/main.faces?group=";
 
 	@Prerender
 	public void prerender() throws Exception {
@@ -132,6 +144,7 @@ public class MyUniPage extends BasePage {
 		loadValuesForInstituteList(institutesList);
 		loadValuesForCourseList(coursesList);
 		loadValuesForExamList(examsList);
+		loadValuesForGroupsList(groupsList);
 		breadcrumbs.loadMyUniCrumbs();
 	}
 
@@ -193,6 +206,12 @@ public class MyUniPage extends BasePage {
 		} catch (Exception e) {
 			paramUnsubscribeForum = null;
 		}
+		try {
+			String stringParamLeaveGroup = (String) params.get("leave_group");
+			paramLeaveGroup = Long.valueOf(stringParamLeaveGroup);
+		} catch (Exception e) {
+			paramLeaveGroup = null;
+		}
 	}
 
 	/*
@@ -237,6 +256,15 @@ public class MyUniPage extends BasePage {
 					} catch (Exception e) {
 						logger.error(e);
 					}
+				}
+				// Leave group
+				if (paramLeaveGroup != null) {
+					try {
+						leaveGroup(paramLeaveGroup);
+					} catch (Exception e) {
+						logger.error(e);
+					}
+
 				}
 			}
 		}
@@ -669,6 +697,97 @@ public class MyUniPage extends BasePage {
 		return null;
 	}
 
+	/* ----- groups flexlist ----- */
+
+	public GroupUIFlexList getGroupsList() {
+		return groupsList;
+	}
+
+	public void setGroupsList(GroupUIFlexList groupsList) {
+		logger.debug("Setting groups flexlist component");
+		this.groupsList = groupsList;
+		groupsList.getAttributes().put("title", i18n("flexlist_groups"));
+		groupsList.getAttributes().put("showButtonTitle",
+				i18n("flexlist_more_groups"));
+		groupsList.getAttributes().put("hideButtonTitle",
+				i18n("flexlist_less_groups"));
+		// groupsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
+		// i18n("flexlist_remove_bookmark"));
+		// Load values into the component
+		loadValuesForGroupsList(groupsList);
+	}
+
+	private void loadValuesForGroupsList(GroupUIFlexList groupsList) {
+		if (groupsList != null){
+			logger.debug("Loading data for groups flexlist");
+			System.out.println(groupsList);
+			groupsList.getAttributes().put("visibleItems", getGroupsListItems());
+		}
+	}
+
+	/*
+	 * Returns a list of ListItemDAOs that contain the information to be shown
+	 * by the groups flexlist
+	 */
+	public List<ListItemDAO> getGroupsListItems() {
+		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
+		ListItemDAO newItem;
+		Long universityId = chooseUniversity();
+		List<UserGroupInfo> groupInfos = getGroups();
+		for (UserGroupInfo groupInfo : groupInfos) {
+			newItem = new ListItemDAO();
+			newItem.setTitle(groupInfo.getName());
+			newItem.setUrl(contextPath() + groupBasePath + groupInfo.getId());
+			newItem.setLeaveGroupUrl(contextPath() + myUniBasePath
+					+ "?university=" + universityId + "&leave_group="
+					+ groupInfo.getId());
+			listItems.add(newItem);
+		}
+		return listItems;
+	}
+
+	private List<UserGroupInfo> getGroups() {
+		if (groups == null) {
+			groups = groupService.getGroupsByUser(user.getId());
+			logger.debug("User GROUPS: " + groups.size() + ", " + groups);
+			for (UserGroupInfo group : groups) {
+				logger.debug("Gruppe Creator:" + group.getCreator() + " - "
+						+ group.getCreatorName());
+			}
+		}
+		return groups;
+	}
+
+	public void leaveGroup(Long id) {
+		logger.debug("member leave group");
+		UserGroupInfo group = groupService.getGroupInfo(id);
+		if ((groupService.getModerators(group).size() == 1)
+				&& groupService.isModerator(group, user.getId())) {
+			if (groupService.getAllMembers(group).size() == 1) {
+				groupService.deleteUserGroup(group);
+				addMessage(i18n("message_group_deleted", group.getName()));
+			} else {
+				addError(i18n("group_last_moderator_error"));
+			}
+		} else {
+			groupService.removeMember(group, user.getId());
+			addMessage(i18n("message_group_left", group.getName()));
+		}
+		groups = null;
+	}
+
+	public boolean getGroupData() {
+		return (groupService.getGroupsByUser(user.getId()).size() == 0);
+	}
+	
+	public String createGroup() {
+		return Constants.OPENUSS4US_GROUPS_CREATE;
+	}
+	
+	public String joinGroup() {
+		return Constants.OPENUSS4US_GROUPS_JOIN;
+	}
+	
 	public UIFlexList getDepartmentsList() {
 		return departmentsList;
 	}
@@ -793,4 +912,12 @@ public class MyUniPage extends BasePage {
 		this.paperSubmissionService = paperSubmissionService;
 	}
 
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
+	public void setGroupService(GroupService groupService) {
+		this.groupService = groupService;
+	}
+	
 }

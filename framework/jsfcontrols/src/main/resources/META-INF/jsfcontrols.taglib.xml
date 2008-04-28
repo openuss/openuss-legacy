@@ -22,6 +22,12 @@
     	</component>
     </tag>
 
+	<tag>
+    	<tag-name>groupflexlist</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.groupflexlist</component-type>
+    	</component>
+    </tag>
     
     <tag>
     	<tag-name>flexlist_tabs</tag-name>

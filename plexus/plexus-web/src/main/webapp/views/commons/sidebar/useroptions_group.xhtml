@@ -1,0 +1,40 @@
+<!-- Default Sidebar -->
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+	xmlns:x="http://myfaces.apache.org/extensions">
+
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="actionsForm">
+			<o:block label="#{msg.user_options_sidebar_header}"
+				styleClass="option_box">
+				<ul class="int">
+					<c:if test="#{user.id ne calendarInfo.domainIdentifier}">
+						<c:if test="#{views$secured$calendar$calendar.subscribed}">
+							<li class="int"><h:commandLink
+								action="#{views$secured$calendar$calendar.changeSubscription}">
+								<span /> #{msg['openuss4us_calendar_subscribe_delete_hint']} </h:commandLink></li>
+						</c:if>
+						<c:if test="#{!views$secured$calendar$calendar.subscribed}">
+							<li class="int"><h:commandLink
+								action="#{views$secured$calendar$calendar.changeSubscription}">
+								<span /> #{msg['openuss4us_calendar_subscribe_hint']} </h:commandLink></li>
+						</c:if>
+					</c:if>
+					<li>
+			  			<h:commandLink action="#{views$secured$groups$components$main.leaveGroup}"
+			  			onclick="if (!confirm('#{msg.openuss4us_group_me__delete_confirm}')) return false">
+							<h:outputText value="#{msg.openuss4us_groups_button_leave}"/>
+						</h:commandLink>
+					</li>
+				</ul>
+			</o:block>
+		</h:form>
+	</s:authorize>
+</f:subview>

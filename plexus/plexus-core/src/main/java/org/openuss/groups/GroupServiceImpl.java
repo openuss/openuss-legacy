@@ -174,10 +174,11 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 				this.rejectAspirant(groupInfo, aspirant.getUserId());
 			}
 		}
-
 		// Remove Security
 		this.getSecurityService().removeAllPermissions(group);
+		this.getSecurityService().removeAllPermissions(groupInfo);
 		this.getSecurityService().removeObjectIdentity(group);
+		this.getSecurityService().removeAllPermissions(groupInfo);
 
 		// Remove Group
 		this.getUserGroupDao().remove(group.getId());
@@ -669,7 +670,7 @@ public class GroupServiceImpl extends org.openuss.groups.GroupServiceBase {
 		Validate.notNull(userList, "Parameter users must not be null.");
 		Validate.notNull(group, "Parameter group must not be null.");
 
-		List<User> users2 = new ArrayList<User>();	
+		List<User> users2 = new ArrayList<User>();
 		if ((userList.size() > 0) && (secGroups != null)) {
 			List<Authority> authorities = secGroups.getMembers();
 			for (User user : userList) {

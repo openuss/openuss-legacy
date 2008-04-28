@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+
+	<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.READ}">
+		<h:form id="courseNavigationForm">
+			<t:panelNavigation2 id="group_navigation" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<t:commandNavigation2
+					value="#{msg['openuss4us_group_navigation_header']}">
+					<t:commandNavigation2 action="group_main"
+						activeOnViewIds="/views/secured/groups/components/main.xhtml">
+						<h:outputText value="#{msg['course_command_overview']}" />
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="group_newsletter"
+						activeOnViewIds="/views/secured/newsletter/groups/newsletter.xhtml,/views/secured/newsletter/groups/newslettersubscribers.xhtml,/views/secured/newsletter/groups/exportedsubscribers.xhtml,/views/secured/newsletter/groups/showmail.xhtml,/views/secured/newsletter/groups/newmail.xhtml"
+						rendered="#{groupInfo.newsletter}">
+						<h:outputText value="#{msg['course_command_newsletter']}" />
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="group_documents_main"
+						activeOnViewIds="/views/secured/groups/components/groupdocuments.xhtml,/views/secured/documents/groups/documents.xhtml,/views/secured/documents/groups/fileedit.xhtml,/views/secured/documents/groups/addzip.xhtml,/views/secured/documents/groups/folderedit.xhtml,/views/secured/documents/groups/remove.xhtml"
+						rendered="#{groupInfo.documents}">
+						<h:outputText value="#{msg['course_command_documents']}" />
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="group_discussion"
+						activeOnViewIds="/views/secured/discussion/groups/discussions.xhtml,/views/secured/discussion/groups/discussionnew.xhtml,/views/secured/discussion/groups/discussionthread.xhtml,/views/secured/discussion/groups/discussionsearch.xhtml,/views/secured/discussion/groups/removethread.xhtml"
+						rendered="#{groupInfo.forum}">
+						<h:outputText value="#{msg['group_command_forum']}" />
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="group_chat"
+						activeOnViewIds="/views/secured/groups/components/chatmain.xhtml"
+						rendered="#{groupInfo.chat}">
+						<h:outputText value="#{msg['course_command_chat']}" />
+					</t:commandNavigation2>
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+						<t:commandNavigation2 action="group_news"
+							activeOnViewIds="/views/secured/groups/components/groupnews.xhtml,/views/secured/groups/components/groupnewsedit.xhtml">
+							<h:outputText value="#{msg['course_command_options_news']}" />
+						</t:commandNavigation2>
+					</s:acl>
+					<t:commandNavigation2 action="group_calendar"
+						activeOnViewIds="/views/secured/groups/components/calendar.xhtml"
+						rendered="#{groupInfo.calendar}">
+						<h:outputText value="#{msg['course_command_calendar']}" />
+					</t:commandNavigation2>
+					<t:commandNavigation2 action="group_options_moderators"
+						activeOnViewIds="/views/secured/groups/components/groupmoderators.xhtml">
+						<h:outputText
+							value="#{msg['openuss4us_group_command_options_participants']}" />
+					</t:commandNavigation2>
+					<s:acl domainObject="#{groupInfo}" hasPermission="#{ACL.CRUD}">
+						<t:commandNavigation2 action="group_options_config"
+							activeOnViewIds="/views/secured/groups/components/groupoptions.xhtml">
+							<h:outputText value="#{msg['course_command_options_config']}" />
+						</t:commandNavigation2>
+					</s:acl>
+				</t:commandNavigation2>
+			</t:panelNavigation2>
+		</h:form>
+	</s:acl>
+</ui:composition>

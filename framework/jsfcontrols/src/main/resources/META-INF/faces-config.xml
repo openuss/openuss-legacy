@@ -28,6 +28,10 @@
 		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList</component-class>
 	</component>
 
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.groupflexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.GroupUIFlexList</component-class>
+	</component>
 
 	<component>
 		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
