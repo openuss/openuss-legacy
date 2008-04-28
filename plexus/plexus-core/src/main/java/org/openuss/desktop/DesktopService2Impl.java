@@ -19,7 +19,6 @@ import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.lecture.Course;
 import org.openuss.lecture.CourseInfo;
-import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.CourseType;
 import org.openuss.lecture.Department;
 import org.openuss.lecture.DepartmentInfo;
