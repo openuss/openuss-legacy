@@ -76,7 +76,7 @@ oRegex.PopupFeatures = new RegExp('') ;
 oRegex.PopupFeatures.compile( '(?:^|,)([^=]+)=(\\d+|yes|no)', 'gi' ) ;
 
 oRegex.InnerWikiUrl = new RegExp('') ;
-oRegex.InnerWikiUrl.compile( 'wikimain\.faces\\?page=(.+)', 'gi' ) ;
+oRegex.InnerWikiUrl.compile( 'wikimain\.faces\\?course=(.+)&page=(.+)', 'gi' ) ;
 
 //#### Parser Functions
 
@@ -282,7 +282,7 @@ function LoadSelection()
     
     innerWikiMatch = oRegex.InnerWikiUrl.exec(sHRef);
     if (sType == 'url' && innerWikiMatch) {
-    	sHRef = innerWikiMatch[1];
+    	sHRef = innerWikiMatch[2];
     	
     	rdoNodes = document.forms['mainWikiForm']['mainWikiForm:rdoExistingPage'];
    		sPageId = '';
@@ -483,8 +483,7 @@ function Ok()
 	                return false ;
 	            }
 	        } 
-
-        	sUri = 'wikimain.faces?page=' + sPageId ;
+        	sUri = 'wikimain.faces?course='+openussCourseId.value+'&page=' + sPageId ;
             break ;
 
         case 'url' :
@@ -596,7 +595,7 @@ function Ok()
     SetAttribute( oLink, 'accesskey', GetE('txtAttAccessKey').value ) ;
     SetAttribute( oLink, 'tabindex' , ( GetE('txtAttTabIndex').value > 0 ? GetE('txtAttTabIndex').value : null ) ) ;
     SetAttribute( oLink, 'title'    , GetE('txtAttTitle').value ) ;
-    SetAttribute( oLink, 'type'     , GetE('txtAttContentType').value ) ;
+    SetAttribute( oLink, 'type'   , GetE('txtAttContentType').value ) ;
     SetAttribute( oLink, 'charset'  , GetE('txtAttCharSet').value ) ;
 
     if ( oEditor.FCKBrowserInfo.IsIE )

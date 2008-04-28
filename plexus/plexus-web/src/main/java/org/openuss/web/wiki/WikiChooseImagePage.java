@@ -57,7 +57,7 @@ public class WikiChooseImagePage extends AbstractWikiPage {
 	 */
 	public String deleteImage() {
 		FolderEntryInfo entry = data.getRowData();
-		// FIXME Do not use session bean for navigation
+		// FIXME Do not use session bean for navigation - WIKI_IMAGE delete
 		setSessionBean(Constants.WIKI_IMAGE, entry);
 		
 		return Constants.WIKI_REMOVE_IMAGE_PAGE;

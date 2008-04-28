@@ -98,7 +98,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		this.getPeriodDao().create(period);
 		Validate.notNull(universityEntity.getId(), "UniversityService.handleCreate - Couldn't create University");
 
-		// FIXME - Kai, Indexing should not base on VOs!
+		// FIXME AOP2Events - Kai, Indexing should not base on VOs!
 		// KAI: Do not delete this!!! Set id of university VO for indexing
 		university.setId(universityEntity.getId());
 
@@ -576,7 +576,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 	
 	@Override
 	public void handleRemovePeriodAndCourses (Long periodId) {
-		// FIXME Implement this method
+		// TODO Implement this method
 		throw new UnsupportedOperationException("Operation is not implemented yet!");
 	}
 

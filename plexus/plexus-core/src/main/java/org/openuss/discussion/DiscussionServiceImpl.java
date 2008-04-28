@@ -442,14 +442,12 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
 			
-//			FIXME Dependency from diskussion to lecture is not allowed
-			
+//			FIXME AOP2Events - Dependency from diskussion to lecture is not allowed
 //			Course course = getCourseDao().load(topic.getForum().getDomainIdentifier());
 //			CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
-			
 //			parameters.put("coursename", courseInfo.getName());
 			
-			// FIXME Use forum name and an application event if course is updated
+			// FIXME AOP2Events - Use forum name and an application event if course is updated
 			parameters.put("forumname", "ISSUE: Find domain name");
 			parameters.put("topiclink", link);
 

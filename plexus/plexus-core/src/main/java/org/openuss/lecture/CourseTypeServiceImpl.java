@@ -32,7 +32,7 @@ public class CourseTypeServiceImpl extends org.openuss.lecture.CourseTypeService
 		Validate.notNull(courseTypeEntity.getId(),
 				"CourseTypeServiceImpl.handleCreate - id of courseType cannot be null.");
 
-		// FIXME - Kai, Indexing should not base on VOs!
+		// FIXME AOP2Events - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of courseType VO for indexing.
 		courseTypeInfo.setId(courseTypeEntity.getId());
 

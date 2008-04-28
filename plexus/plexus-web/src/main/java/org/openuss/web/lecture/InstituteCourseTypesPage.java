@@ -248,7 +248,7 @@ public class InstituteCourseTypesPage extends AbstractLecturePage {
 		public DataPage<CourseTypeInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>(courseTypeService.findCourseTypesByInstitute(instituteInfo.getId()));
-				// FIXME CourseCount should be calculated within the business layer
+				// FIXME Should be done in business layer - CourseCount should be calculated within the business layer
 				for( Iterator<CourseTypeInfo> i = courseTypes.iterator(); i.hasNext(); ) {
 					CourseTypeInfo cti = i.next();
 					cti.setCourseCount(Long.valueOf(getCourseService().findCoursesByCourseType(cti.getId()).size()));

@@ -46,8 +46,7 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
 	private static final long serialVersionUID = -945294405900760483L;
 	private static final String WIKI_PREFIX = "/FCKeditorWiki/";
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		// search the resource in classloader
         String uri = request.getRequestURI();

@@ -25,14 +25,13 @@ public class ExtendedSearchTest extends AbstractTransactionalDataSourceSpringCon
 	@Override
 	protected void onSetUp() throws Exception {
 		super.onSetUp();
-//		university = 
-			testUtility.createUniqueUniversityInDB();
+//		university = testUtility.createUniqueUniversityInDB();
 	}
 	
 	
 	@SuppressWarnings( { "unchecked" })
 	public void testSearchforUniversities() throws Exception {
-		//  FIXME this test breaks the build
+		//  FIXME Tests - This test breaks the build
 //		logger.debug("Starting testSearchforUniversities");
 //		universityName = university.getName();
 //		

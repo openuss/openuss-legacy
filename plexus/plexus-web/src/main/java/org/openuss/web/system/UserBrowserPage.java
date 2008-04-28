@@ -52,7 +52,6 @@ public class UserBrowserPage extends BasePage{
 	public void prerender() {
 		logger.debug("prerender - refreshing users list");
 
-
 		BreadCrumb newCrumb = new BreadCrumb();
 		newCrumb.setName(i18n("admin_command_users"));
 		newCrumb.setLink(PageLinks.ADMIN_USERSBROWSER);
@@ -82,14 +81,6 @@ public class UserBrowserPage extends BasePage{
 			addMessage(i18n("system_message_changed_user_state",user.getUsername()));
 		}
 		return Constants.SUCCESS;
-	}
-	
-	public String showProfile() {
-		// FIXME Use request parameters instead 
-		UserInfo userInfo = dataModel.getRowData();
-		userInfo = securityService.getUser(userInfo.getId());
-		setSessionBean("showuser", userInfo);
-		return Constants.USER_PROFILE_VIEW_PAGE;
 	}
 	
 	@SuppressWarnings("unchecked")

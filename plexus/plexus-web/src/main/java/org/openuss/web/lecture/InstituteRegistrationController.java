@@ -70,21 +70,14 @@ public class InstituteRegistrationController extends AbstractLecturePage {
 
 	public String registrate() throws DesktopException, LectureException, DocumentApplicationException, IOException {
 		logger.debug("Starting method registrate");
-
 		// create institute
 		instituteInfo.setEnabled(false);
-
 		Long instituteId = instituteService.create(instituteInfo, user.getId());
 		instituteInfo.setId(instituteId);
-
-		// FIXME Should be done in business layer - automatically start the
-		// department application process
+		// FIXME Should be done in business layer - automatically start the department application process
 		instituteService.applyAtDepartment(instituteId, selectedDepartment, user.getId());
-
 		setBean(Constants.INSTITUTE_INFO, instituteInfo);
-		
 		addMessage(i18n("institute_registration_success"));
-		
 		return Constants.INSTITUTE_PAGE;
 	}
 

@@ -14,7 +14,7 @@ public class UserDetailsServiceAdapterTest extends TestCase {
 	 * Test wether or not the load by username wraps the user object correctly.
 	 */
 	public void testLoadUserByUsername() {
-		//FIXME not working, du to change from data object to vo.
+		//FIXME Tests - Doesn't work, due to change from data object to vo.
 //		User user = User.Factory.newInstance();
 //		user.setUsername("username");
 //		user.setId(4711L);

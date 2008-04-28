@@ -249,7 +249,7 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		flush();
 		User refreshedUser = securityService.getUserObject(user.getId());
 		assertTrue(numberOfGroups + 1 == refreshedUser.getGroups().size());
-		//FIXME Check if test fits new right situation in courses based on groups
+		//FIXME Tests - Check if test fits new right situation in courses based on groups
 		//	Permission permission = securityService.getPermissions(user, courseInfo);
 		//	assertNotNull(permission);
 		//	LectureAclEntry acl = new LectureAclEntry();

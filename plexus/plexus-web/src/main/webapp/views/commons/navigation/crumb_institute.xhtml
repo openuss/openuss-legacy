@@ -20,7 +20,7 @@
 							styleClass="icon_bookmark"
 							label="#{msg.institute_command_shortcut}"
 							title="#{msg.institute_command_shortcut}"
-							rendered="#{not views$public$institute$institute.bookmarked}">
+							rendered="#{not views$public$institute$institute.instituteBookmarked}">
 						  	<h:outputText value="#{msg.institute_command_shortcut}" />
 						</plexus:command>
 						<plexus:command 
@@ -29,7 +29,7 @@
 							label="#{msg.institute_command_remove_shortcut}"
 							title="#{msg.institute_command_remove_shortcut}"
 							styleClass="icon_bookmark_remove"
-							rendered="#{views$public$institute$institute.bookmarked}">
+							rendered="#{views$public$institute$institute.instituteBookmarked}">
 						  	<h:outputText value="#{msg.institute_command_remove_shortcut}" />
 						</plexus:command>
 					</div>

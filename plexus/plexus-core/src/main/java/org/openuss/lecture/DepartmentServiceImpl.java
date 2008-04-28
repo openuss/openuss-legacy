@@ -55,7 +55,7 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 		this.getDepartmentDao().create(departmentEntity);
 		Validate.notNull(departmentEntity.getId(), "DepartmentService.handleCreate - Couldn't create Department");
 
-		// FIXME - Kai, Indexing should not base on VOs!
+		// FIXME AOP2Events - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of department VO for indexing
 		department.setId(departmentEntity.getId());
 

@@ -3,7 +3,7 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
-// FIXME Mockup objects must not exist in production code.
+// FIXME Tests - Mockup objects must not exist in production code.
 public class CourseTypeServiceMock implements CourseTypeService {
 
 	public Long create(CourseTypeInfo courseTypeInfo) {

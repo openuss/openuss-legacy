@@ -15,12 +15,12 @@
 		<h:form id="actionsForm">
 		<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
 			<ul class="action_list">
-				<c:if test="#{not views$public$institute$institute.bookmarked}">
+				<c:if test="#{not views$public$institute$institute.instituteBookmarked}">
 					<li class="institute_add_bookmark">
 						<h:commandLink value="" action="#{views$public$institute$institute.addShortcut}" ><span />#{msg.institute_command_shortcut}</h:commandLink>
 					</li>
 				</c:if>
-				<c:if test="#{views$public$institute$institute.bookmarked}">
+				<c:if test="#{views$public$institute$institute.instituteBookmarked}">
 					<li class="institute_remove_bookmark">
 						<h:commandLink value="" action="#{views$public$institute$institute.removeShortcut}" ><span />#{msg.institute_command_remove_shortcut}</h:commandLink>
 					</li>

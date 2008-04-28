@@ -94,12 +94,8 @@
 						<f:convertDateTime timeZone="#{visit.timeZone}" type="both" dateStyle="medium" timeStyle="medium"/>
 					</h:outputText>
 				</t:column>			
-				<plexus:column header="#{msg.commands_header}"> 
-					<plexus:command 
-						title="#{msg['user_profile_command_show_profile_hint']}" 
-						bean="#{views$secured$system$userbrowser}" 
-						action="showProfile" 
-						styleClass="icon_profile"/>
+				<plexus:column header="#{msg.commands_header}">
+					<plexus:linkProfileIcon user="#{bean.id}"/> 
 				</plexus:column>
 			</plexus:dataTable>
 			<o:block>

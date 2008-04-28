@@ -142,11 +142,10 @@ public class InstituteMembersPage extends AbstractLecturePage {
 			return Constants.SUCCESS;
 		}
 
-		// FIXME Below code should be handled within the business layer
+		// FIXME Should be done in business layer - 
 		Iterator<InstituteGroup> iter = member.getGroups().iterator();
-		InstituteGroup group;
 		while (iter.hasNext()) {
-			group = iter.next();
+			InstituteGroup group = iter.next();
 			try {
 				organisationService.removeUserFromGroup(member.getId(), group.getId());
 			} catch (Exception e) {

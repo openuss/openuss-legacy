@@ -20,7 +20,7 @@ public class DomainIndexerFactory {
 	private Map<String, String> indexer = new HashMap<String, String>();
 
 	public String getIndexerName(DomainObject domainObject) {
-		// FIXME sooon - we don't need this anymore
+		// FIXME Soon - we don't need this anymore
 		
 		logger.debug("Starting method getIndexerName");
 		Validate.notNull(domainObject, "Parameter domainObject must not be null.");
@@ -30,7 +30,6 @@ public class DomainIndexerFactory {
 		logger.debug(domainObject.getClass().getInterfaces());
 		Class[] interfaces = domainObject.getClass().getInterfaces();
 		for (Class interfaceClass : interfaces) {
-			logger.debug("test loop");
 			logger.debug(interfaceClass.getName());
 			String name = indexer.get(interfaceClass.getName());
 			logger.debug(name);
@@ -43,7 +42,6 @@ public class DomainIndexerFactory {
 		// Maybe the domainObject is wrapped by a proxy - some trying the other way around.
 		for (String name : indexer.keySet()) {
 			//Just for debugging
-			logger.debug("test loop 2");
 			logger.debug(name);
 			try {
 				if (Class.forName(name).isAssignableFrom(domainObject.getClass())) {

@@ -280,7 +280,7 @@ public class DocumentServiceImpl extends org.openuss.documents.DocumentServiceBa
 	 * @param contests
 	 */
 	private void filterEntriesByPermission(Collection entries) {
-		// FIXME should be implemented as aspect
+		// FIXME ACEGI - Should be implemented as aspect
 		if (entries != null && entries.size() > 0) {
 			Object object = entries.iterator().next();
 			if (!AcegiUtils.hasPermission(object, new Integer[] { LectureAclEntry.ASSIST })) {

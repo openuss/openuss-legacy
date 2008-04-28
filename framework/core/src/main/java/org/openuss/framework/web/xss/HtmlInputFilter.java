@@ -234,10 +234,6 @@ public class HtmlInputFilter {
 		s = processRemoveBlanks(s);
 		logger.debug("processRemoveBlanks: " + s);
 
-//		//FIXME validateEntities doesn't work properly
-//		s = validateEntities(s);
-//		debug("    validateEntites: " + s);
-
 		logger.debug("************************************************\n\n");
 		return s;
 	}
@@ -476,32 +472,6 @@ public class HtmlInputFilter {
 		}
 		m.appendTail(buf);
 		s = buf.toString();
-
-		s = validateEntities(s);
-		return s;
-	}
-
-	protected String validateEntities(String s) {
-		// validate entities throughout the string
-		Pattern p = Pattern.compile("&([^&;]*)(?=(;|&|$))");
-		Matcher m = p.matcher(s);
-		if (m.find()) {
-			String one = m.group(1); // ([^&;]*)
-			String two = m.group(2); // (?=(;|&|$))
-			s = checkEntity(one, two);
-		}
-
-		// validate quotes outside of tags
-		p = Pattern.compile("(>|^)([^<]+?)(<|$)", Pattern.DOTALL);
-		m = p.matcher(s);
-		StringBuffer buf = new StringBuffer();
-		if (m.find()) {
-			String one = m.group(1); // (>|^)
-			String two = m.group(2); // ([^<]+?)
-			String three = m.group(3); // (<|$)
-			m.appendReplacement(buf, one + two.replaceAll("\"", "&quot;") + three);
-		}
-		m.appendTail(buf);
 
 		return s;
 	}

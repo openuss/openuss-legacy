@@ -167,7 +167,7 @@ public class LectureImport extends DefaultImport {
 			} else {
 				if (ImportUtil.toBoolean(faculty.getAactive())) {
 					Institute institute = createInstitute(faculty);
-					// FIXME OWNER IS NOT ACTIVE
+					// OWNER IS NOT ACTIVE
 					User owner = userImport.loadUserByLegacyId(faculty.getAssistant().getId());
 					if (owner != null) {
 						// institute.setOwner(owner);

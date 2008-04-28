@@ -96,7 +96,7 @@ public class DocumentServiceIntegrationTest extends
 		flush();
 		entries = documentService.getFolderEntries(domainObject, root);
 		assertNotNull(entries);
-		// FIXME This asserts cause under some circustances trouble
+		// FIXME This asserts cause under some circumstances trouble
 		// I guess it has something todo with the security cache
 		// neeed to be fixed soon -
 		assertEquals(1, entries.size());

@@ -81,7 +81,7 @@
 					label="#{msg.course_command_shortcut_remove}"
 					title="#{msg.course_command_shortcut_hint_remove}"
 					styleClass="icon_bookmark_remove"
-					rendered="#{views$public$institute$institute.bookmarked2}">
+					rendered="#{views$public$institute$institute.courseBookmarked}">
 				</plexus:command>
 				<plexus:command 
 					bean="#{views$public$institute$institute}"
@@ -89,7 +89,7 @@
 					label="#{msg.course_command_shortcut}"
 					title="#{msg.course_command_shortcut_hint}"
 					styleClass="icon_bookmark"
-					rendered="#{not views$public$institute$institute.bookmarked2}">
+					rendered="#{not views$public$institute$institute.courseBookmarked}">
 				</plexus:command>	
 			</plexus:column>
 		</s:authorize>

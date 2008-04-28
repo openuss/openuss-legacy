@@ -129,19 +129,15 @@ public class InstituteOptionsPage extends AbstractLecturePage {
 			FolderInfo folder = getDocumentService().getFolder(instituteInfo);
 			getDocumentService().createFileEntry(imageFile, folder);
 
-			permitRolesImageReadPermission(imageFile);
+			// FIXME Should be done in business layer - define an institute service method to define an institute logo
+			securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
+			securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 
 			instituteInfo.setImageId(imageFile.getId());
 
 			removeSessionBean(Constants.UPLOADED_FILE);
 			getUploadFileManager().removeDocument(uploaded);
 		}
-	}
-
-	private void permitRolesImageReadPermission(FileInfo imageFile) {
-		// FIXME Should be done within the business layer
-		securityService.setPermissions(Roles.ANONYMOUS, imageFile, LectureAclEntry.READ);
-		securityService.setPermissions(Roles.USER, imageFile, LectureAclEntry.READ);
 	}
 
 	public void removeImage(ActionEvent event) throws DocumentApplicationException {

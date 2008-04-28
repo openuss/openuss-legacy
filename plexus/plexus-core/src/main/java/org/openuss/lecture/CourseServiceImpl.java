@@ -65,7 +65,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 		this.getCourseDao().create(course);
 		Validate.notNull(course, "Id of course cannot be null.");
 
-		// FIXME - Kai, Indexing should not base on VOs!
+		// FIXME AOP2Events - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		// Update input parameter for aspects to get the right domain objects.
 		courseInfo.setId(course.getId());
@@ -476,7 +476,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 			getSecurityService().removeAuthorityFromGroup(user, getParticipantsGroup(course));
 			getCourseMemberDao().remove(member);
 
-			// FIXME Architecture break - do not use dependencies from lecture/course to course/modules like discussion or newsletter, use events instead 
+			// FIXME AOP2Events - Architecture Break - do not use dependencies from lecture/course to course/modules like discussion or newsletter, use events instead 
 			getCourseNewsletterService().unsubscribe(getCourseDao().toCourseInfo(course), getSecurityService().getUser(user.getId()));
 			getDiscussionService().removeForumWatch(getDiscussionService().getForum(getCourseDao().toCourseInfo(course)));
 			

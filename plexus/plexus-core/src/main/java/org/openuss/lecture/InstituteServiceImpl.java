@@ -59,7 +59,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		// Create the Institute
 		this.getInstituteDao().create(institute);
 
-		// FIXME - Kai, Indexing should not base on VOs!
+		// FIXME AOP2Events - Kai, Indexing should not base on VOs!
 		// Kai: Do not delete this!!! Set id of institute VO for indexing
 		instituteInfo.setId(institute.getId());
 
@@ -396,7 +396,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 		}
 	}
 
-	// FIXME Get rid of this method
+	// FIXME AOP2Events - Get rid of this method
 	protected void handleResendActivationCode(InstituteInfo instituteInfo, Long userId) {
 		Validate.notNull(instituteInfo, "InstituteInfo cannot be null.");
 		Validate.notNull(instituteInfo.getId(), "id cannot be null.");

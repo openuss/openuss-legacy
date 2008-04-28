@@ -437,7 +437,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected boolean handleHasPermission(Object domainObject, Integer[] permissions) throws Exception {
-		// FIXME make SecurityService independent from AcegiUtils
+		// FIXME ACEGI - Make SecurityService independent from AcegiUtils
 		return AcegiUtils.hasPermission(domainObject, permissions);
 	}
 

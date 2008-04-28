@@ -46,18 +46,18 @@ public class InstitutePage extends AbstractLecturePage {
 	private NewsService newsService;
 
 	private CourseDataModel courseData = new CourseDataModel();
-	
+
 	private List<PeriodInfo> periodInfos = null;
 	private Long universityId;
 	private Long departmentId;
 	private List<SelectItem> institutePeriodItems;
 	private List<PeriodInfo> institutePeriods;
-	
+
 	@Prerender
 	@SuppressWarnings( { "unchecked" })
 	public void prerender() throws Exception {
 		super.prerender();
-		if (isRedirected()){
+		if (isRedirected()) {
 			return;
 		}
 		if (instituteInfo != null) {
@@ -66,80 +66,83 @@ public class InstitutePage extends AbstractLecturePage {
 			universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
 			periodInfos = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
-			
-			Boolean hasPermission = securityService.hasPermission(instituteInfo,
-					new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });
-			if(hasPermission) {
-				List<ApplicationInfo> applications = instituteService.findApplicationsByInstitute(instituteInfo.getId());
-				Iterator<ApplicationInfo> iterApplication = applications.iterator();
-				while(iterApplication.hasNext()) {
-					ApplicationInfo currentApplication = iterApplication.next();
-					if (currentApplication.isConfirmed() == false) {
-						addMessage(i18n("application_pending_info", currentApplication.getDepartmentInfo().getName()));
-						addMessage(i18n("application_pending_responsible_info", currentApplication.getDepartmentInfo().getOwnerName()));
-					}
-				}
-			}
-		} 
-		
+
+			checkForApplicationMessage();
+		}
+
 		if (periodInfo != null && instituteInfo != null && !periodInfos.contains(periodInfo)) {
 			if (periodInfo.getId() != null) {
 				// if id of period is ALL_ACTIVE_PERIODS or ALL_PERIODS do nothing. Remain selected!
-				if((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS) || (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
-				// do nothing
-				// Suppose the case you switch the institute and in the old institute page there was a period selected which is not available
-				// in the new institute(this should be always!). --> The combobox value switches to ALL_ACTIVE_PERIODS
+				if ((periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)
+						|| (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+					// do nothing
+					// Suppose the case you switch the institute and in the old
+					// institute page there was a period selected which is not
+					// available in the new institute(this should be always!). 
+					// --> The combobox value switches to ALL_ACTIVE_PERIODS
 				} else {
 					periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
 					periodInfo.setName(i18n("all_active_periods"));
 				}
 			}
-			// Suppose the case you initially starting the application no periods are selected --> no periodInfo VO was initiated.
+			// Suppose the case you initially starting the application no
+			// periods are selected --> no periodInfo VO was initiated.
 			// Set default selection to ALL_ACTIVE_PERIODS
 			if ((periodInfo.getId() == null) && (periodInfos.size() > 0)) {
 				periodInfo.setId(Constants.COURSES_ALL_ACTIVE_PERIODS);
 				periodInfo.setName(i18n("all_active_periods"));
 			}
-			
+
 			if (periodInfos.size() < 1) {
-				// normally this should never happen due to the fact that each university has a standard period!
-				periodInfo = new PeriodInfo();	
+				// normally this should never happen due to the fact that each
+				// university has a standard period!
+				periodInfo = new PeriodInfo();
 			}
-		} 
-		
+		}
+
 		setBean(Constants.PERIOD_INFO, periodInfo);
 		addBreadCrumbs();
 	}
-	
-	
-	public void addBreadCrumbs()
-	{	
+
+	private void checkForApplicationMessage() {
+		// FIXME This should be done within the view. 
+		Boolean hasPermission = securityService.hasPermission(instituteInfo, new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });
+		
+		if (hasPermission) {
+			List<ApplicationInfo> applications = instituteService.findApplicationsByInstitute(instituteInfo.getId());
+			Iterator<ApplicationInfo> iterApplication = applications.iterator();
+			while (iterApplication.hasNext()) {
+				ApplicationInfo currentApplication = iterApplication.next();
+				if (currentApplication.isConfirmed() == false) {
+					addMessage(i18n("application_pending_info", currentApplication.getDepartmentInfo().getName()));
+					addMessage(i18n("application_pending_responsible_info", currentApplication.getDepartmentInfo().getOwnerName()));
+				}
+			}
+		}
+	}
+
+	public void addBreadCrumbs() {
 		breadcrumbs.loadInstituteCrumbs(instituteInfo);
 	}
-	
+
 	private CourseInfo currentCourse() {
-		
-		CourseInfo course = courseData.getRowData();
-		
-		return course;
+		return courseData.getRowData();
 	}
-	
-	public Boolean getBookmarked()
-	{
-		if (desktopInfo == null || desktopInfo.getId() == null){
+
+	public boolean getInstituteBookmarked() {
+		if (desktopInfo == null || desktopInfo.getId() == null) {
 			refreshDesktop();
 		}
 		return desktopInfo.getInstituteInfos().contains(instituteInfo);
 	}
-	
-	//FIXME Refactor unclear naming
-	public Boolean getBookmarked2()
-	{
-		if (desktopInfo == null || desktopInfo.getId() == null){
+
+	// FIXME Refactor unclear naming
+	public boolean isCourseBookmarked() {
+		if (desktopInfo == null || desktopInfo.getId() == null) {
 			refreshDesktop();
 		}
-		if (courseData == null || courseData.getRowIndex() == -1){
-			//prevent errors in preprocess phase
+		if (courseData == null || courseData.getRowIndex() == -1) {
+			// prevent errors in preprocess phase
 			return false;
 		}
 		return desktopInfo.getCourseInfos().contains(currentCourse());
@@ -147,27 +150,29 @@ public class InstitutePage extends AbstractLecturePage {
 
 	/**
 	 * Store the selected course into session scope and go to course main page.
+	 * 
 	 * @return Outcome
 	 */
 	public String selectCourse() {
 		logger.debug("Starting method selectCourse");
 		CourseInfo course = currentCourse();
 		logger.debug("Returning to method selectCourse");
-		logger.debug(course.getId());	
+		logger.debug(course.getId());
 		setBean(Constants.COURSE_INFO, course);
-		
+
 		return Constants.COURSE_PAGE;
 	}
-	
+
 	/**
 	 * Bookmarks the selected course on the MyUni Page.
+	 * 
 	 * @return Outcome
 	 */
 	public String shortcutCourse() {
-		//courseInfo = courseData.getRowData();
+		// courseInfo = courseData.getRowData();
 		try {
 			CourseInfo currentCourse = currentCourse();
-			if (desktopInfo == null || desktopInfo.getId() == null){
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.linkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -180,20 +185,19 @@ public class InstitutePage extends AbstractLecturePage {
 			return Constants.FAILURE;
 		}
 	}
-	
+
 	private boolean isAssistant(CourseInfo courseInfo) {
-		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] { LectureAclEntry.ASSIST });
 	}
 
-	public String removeCourseShortcut()
-	{
+	public String removeCourseShortcut() {
 		try {
-			//courseInfo = courseData.getRowData();
+			// courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
-			if (isAssistant(currentCourse)){
+			if (isAssistant(currentCourse)) {
 				return removeMembership();
 			}
-			if (desktopInfo == null || desktopInfo.getId() == null){
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());
@@ -202,20 +206,19 @@ public class InstitutePage extends AbstractLecturePage {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
-		
+
 		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
 
-		
 	/**
 	 * Adds a shortcut to the institute
+	 * 
 	 * @return
 	 */
-	public String addShortcut()
-	{
+	public String addShortcut() {
 		try {
-			if (desktopInfo == null || desktopInfo.getId() == null){
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.linkInstitute(desktopInfo.getId(), instituteInfo.getId());
@@ -224,26 +227,25 @@ public class InstitutePage extends AbstractLecturePage {
 			addError(i18n("institute_error_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
-		
+
 		this.addMessage(i18n("institute_success_shortcut"));
 		return Constants.SUCCESS;
 	}
 
-	public String removeMembership()
-	{
+	public String removeMembership() {
 		courseInfo = this.courseData.getRowData();
 		setBean(Constants.COURSE_INFO, courseInfo);
 		return Constants.COURSE_REMOVE_MEMBER;
 	}
-	
+
 	/**
 	 * Removes the shortcut to the institute
+	 * 
 	 * @return
 	 */
-	public String removeShortcut()
-	{
+	public String removeShortcut() {
 		try {
-			if (desktopInfo == null || desktopInfo.getId() == null){
+			if (desktopInfo == null || desktopInfo.getId() == null) {
 				refreshDesktop();
 			}
 			desktopService2.unlinkInstitute(desktopInfo.getId(), instituteInfo.getId());
@@ -252,45 +254,47 @@ public class InstitutePage extends AbstractLecturePage {
 			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
-		
+
 		addMessage(i18n("institute_success_remove_shortcut"));
 		return Constants.SUCCESS;
 	}
-	
+
 	@SuppressWarnings( { "unchecked" })
 	public List<SelectItem> getBelongingInstitutePeriods() {
-		
+
 		institutePeriodItems = new ArrayList<SelectItem>();
-		
+
 		if (instituteInfo != null) {
 			Long departmentId = instituteInfo.getDepartmentId();
 			departmentInfo = departmentService.findDepartment(departmentId);
 			Long universityId = departmentInfo.getUniversityId();
 			universityInfo = universityService.findUniversity(universityId);
-			//get all Period which are active and/or assigned to a course of the institute
+			// get all Period which are active and/or assigned to a course of
+			// the institute
 			institutePeriods = universityService.findPeriodsByInstituteWithCoursesOrActive(instituteInfo);
 
-			Iterator<PeriodInfo> iter =  institutePeriods.iterator();
+			Iterator<PeriodInfo> iter = institutePeriods.iterator();
 			PeriodInfo periodInfo;
-			
-			//create item in combobox displaying all active periods
-			SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS, i18n("all_active_periods"));
+
+			// create item in combobox displaying all active periods
+			SelectItem itemAllActivePeriods = new SelectItem(Constants.COURSES_ALL_ACTIVE_PERIODS,
+					i18n("all_active_periods"));
 			institutePeriodItems.add(itemAllActivePeriods);
-			//create item in combobox displaying all periods
+			// create item in combobox displaying all periods
 			SelectItem itemAllPeriods = new SelectItem(Constants.COURSES_ALL_PERIODS, i18n("all_periods"));
 			institutePeriodItems.add(itemAllPeriods);
-			
+
 			while (iter.hasNext()) {
 				periodInfo = iter.next();
-				SelectItem item = new SelectItem(periodInfo.getId(),periodInfo.getName());
+				SelectItem item = new SelectItem(periodInfo.getId(), periodInfo.getName());
 				institutePeriodItems.add(item);
 			}
-			
-		} 
-		
+
+		}
+
 		return institutePeriodItems;
 	}
-	
+
 	/**
 	 * Value Change Listener to change name of data table.
 	 * 
@@ -313,18 +317,18 @@ public class InstitutePage extends AbstractLecturePage {
 	 * 
 	 * @param event
 	 */
-	public String resendActivationMail(){
+	public String resendActivationMail() {
 		instituteService.resendActivationCode(instituteInfo, user.getId());
 		addMessage(i18n("institute_activationcode_send"));
 		return Constants.SUCCESS;
 	}
-	
+
 	private class CourseDataModel extends AbstractPagedTable<CourseInfo> {
 
 		private static final long serialVersionUID = 3682383483634321520L;
 
 		private DataPage<CourseInfo> page;
-		
+
 		private List<CourseInfo> courses = new ArrayList<CourseInfo>();
 		private List<CourseInfo> coursesByPeriodAndInstitute = null;
 
@@ -333,13 +337,18 @@ public class InstitutePage extends AbstractLecturePage {
 		public DataPage<CourseInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				if (periodInfo != null) {
-					if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)) {
-						coursesByPeriodAndInstitute = courseService.findCoursesByInstituteAndEnabled(instituteInfo.getId(), true);
-					} else if ((periodInfo.getId() != null) && (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
-						coursesByPeriodAndInstitute = courseService.findCoursesByActivePeriodsAndEnabled(instituteInfo.getId(), true);
+					if ((periodInfo.getId() != null)
+							&& (periodInfo.getId().longValue() == Constants.COURSES_ALL_PERIODS)) {
+						coursesByPeriodAndInstitute = courseService.findCoursesByInstituteAndEnabled(instituteInfo
+								.getId(), true);
+					} else if ((periodInfo.getId() != null)
+							&& (periodInfo.getId().longValue() == Constants.COURSES_ALL_ACTIVE_PERIODS)) {
+						coursesByPeriodAndInstitute = courseService.findCoursesByActivePeriodsAndEnabled(instituteInfo
+								.getId(), true);
 					} else {
-						coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstituteAndEnabled(periodInfo.getId(), instituteInfo.getId(), true);
-					}		
+						coursesByPeriodAndInstitute = courseService.findCoursesByPeriodAndInstituteAndEnabled(
+								periodInfo.getId(), instituteInfo.getId(), true);
+					}
 					if (coursesByPeriodAndInstitute != null) {
 						courses.addAll(coursesByPeriodAndInstitute);
 					}
@@ -352,11 +361,12 @@ public class InstitutePage extends AbstractLecturePage {
 			return page;
 		}
 	}
-	
+
 	/**
 	 * Apply for Membership.
+	 * 
 	 * @return outcome
-	 * @throws LectureException 
+	 * @throws LectureException
 	 */
 	public String applyForMembership() throws LectureException {
 		if (user != null && instituteInfo != null) {
@@ -366,7 +376,7 @@ public class InstitutePage extends AbstractLecturePage {
 			} catch (OrganisationServiceException e) {
 				logger.debug(e.getMessage());
 				addError(i18n("institute_error_apply_member_at_institute_already_applied_personal"));
-			} catch (Exception e){
+			} catch (Exception e) {
 				logger.debug(e.getMessage());
 				addError("institute_error_apply_member_at_institute_personal");
 			}

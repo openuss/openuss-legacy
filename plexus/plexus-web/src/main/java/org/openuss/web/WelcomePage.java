@@ -36,9 +36,8 @@ public class WelcomePage extends BasePage {
 		
 		myUniPage.prerender();
 
-		// FIXME Factory - why we are doing this?
+		// FIXME Refactory - why we are doing this?
 		if (user != null && user.getId() == null) {
-			logger.debug("in user if clause");
 			user = new UserInfo();
 			setSessionBean(Constants.USER, null);
 		}

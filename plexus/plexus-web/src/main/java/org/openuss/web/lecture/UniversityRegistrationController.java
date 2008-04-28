@@ -64,9 +64,8 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 	public String start() {
 		logger.debug("start registration process");
 		universityApplication = new UniversityInfo();
-		// FIXME Do not use session bean for navigation
+		// FIXME Do not use session bean for navigation - UniversityApplication define
 		setSessionBean(Constants.UNIVERSITY_APPLICATION, universityApplication);
-
 		return Constants.UNIVERSITY_REGISTRATION_STEP1_PAGE;
 	}
 
@@ -76,7 +75,7 @@ public class UniversityRegistrationController extends AbstractUniversityPage {
 		// create university
 		Long universityId = universityService.createUniversity(universityApplication, user.getId());
 		universityApplication.setId(universityId);
-		// FIXME Do not use session bean for navigation
+		// FIXME Do not use session bean for navigation - UniversityRegistration remove
 		setSessionBean(Constants.UNIVERSITY_APPLICATION, null);
 		universityInfo.setId(universityId);
 		addMessage(i18n("university_registration_success"));
