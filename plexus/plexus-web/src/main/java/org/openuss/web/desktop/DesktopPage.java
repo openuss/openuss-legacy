@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
+import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
@@ -13,6 +14,9 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.lecture.CourseMemberType;
+import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
 import org.openuss.lecture.InstituteInfo;
 import org.openuss.security.acl.LectureAclEntry;
@@ -37,6 +41,10 @@ public class DesktopPage extends BasePage {
 	private CourseTypeDataProvider courseTypesProvider = new CourseTypeDataProvider();
 	private InstituteDataProvider institutesProvider = new InstituteDataProvider();
 
+	@Property(value = "#{courseService}")
+	protected CourseService courseService;
+		
+	
 	@Prerender
 	public void prerender() throws Exception {
 		logger.debug("prerender desktop");
@@ -89,6 +97,14 @@ public class DesktopPage extends BasePage {
 		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
 	}
 	
+	private boolean isParticipant(CourseInfo course){
+		CourseMemberInfo courseMember = getCourseService().getMemberInfo(course, user);
+		if (courseMember != null){
+			return courseMember.getMemberType().equals(CourseMemberType.PARTICIPANT);
+		}
+		return false;
+	}
+	
 	/**
 	 * Remove course
 	 * 
@@ -97,7 +113,7 @@ public class DesktopPage extends BasePage {
 	public String removeCourse() {
 		logger.debug("starting method remove course");
 		CourseInfo courseInfo = coursesProvider.getRowData();
-		if (!isAssistant(courseInfo)){
+		if (!isAssistant(courseInfo) && isParticipant(courseInfo)){
 			return removeMembership(courseInfo);
 		}
 		try {
@@ -203,5 +219,13 @@ public class DesktopPage extends BasePage {
 
 	public void setCourseTypesProvider(CourseTypeDataProvider courseTypesProvider) {
 		this.courseTypesProvider = courseTypesProvider;
+	}
+
+	public CourseService getCourseService() {
+		return courseService;
+	}
+
+	public void setCourseService(CourseService courseService) {
+		this.courseService = courseService;
 	}
 }

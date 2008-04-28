@@ -32,6 +32,8 @@ import org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList;
 import org.openuss.framework.jsfcontrols.components.flexlist.UITabs;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.lecture.CourseMemberType;
 import org.openuss.lecture.CourseService;
 import org.openuss.paperSubmission.ExamInfo;
 import org.openuss.paperSubmission.PaperSubmissionInfo;
@@ -234,7 +236,7 @@ public class MyUniPage extends BasePage {
 				// Remove course bookmark
 				if (paramRemoveCourse != null) {
 					try {
-						if (!isAssistant(paramRemoveCourse)){
+						if (!isAssistant(paramRemoveCourse) && isParticipant(paramRemoveCourse)){
 							redirect(removeMembership(paramRemoveCourse));
 							return;
 						}
@@ -256,6 +258,15 @@ public class MyUniPage extends BasePage {
 	
 	private boolean isAssistant(Long id) {
 		return AcegiUtils.hasPermission(id, new Integer[] {LectureAclEntry.ASSIST});
+	}
+	
+	private boolean isParticipant(Long id){
+		CourseInfo course = getCourseService().findCourse(id);
+		CourseMemberInfo courseMember = getCourseService().getMemberInfo(course, user);
+		if (courseMember != null){
+			return courseMember.getMemberType().equals(CourseMemberType.PARTICIPANT);
+		}
+		return false;
 	}
 	
 	/*

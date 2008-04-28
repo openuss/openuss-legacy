@@ -19,6 +19,8 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.ApplicationInfo;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.lecture.CourseMemberType;
 import org.openuss.lecture.LectureException;
 import org.openuss.lecture.OrganisationServiceException;
 import org.openuss.lecture.PeriodInfo;
@@ -187,14 +189,22 @@ public class InstitutePage extends AbstractLecturePage {
 	}
 
 	private boolean isAssistant(CourseInfo courseInfo) {
-		return AcegiUtils.hasPermission(courseInfo, new Integer[] { LectureAclEntry.ASSIST });
+		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
+	}
+	
+	private boolean isParticipant(CourseInfo course){
+		CourseMemberInfo courseMember = getCourseService().getMemberInfo(course, user);
+		if (courseMember != null){
+			return courseMember.getMemberType().equals(CourseMemberType.PARTICIPANT);
+		}
+		return false;
 	}
 
 	public String removeCourseShortcut() {
 		try {
 			// courseInfo = courseData.getRowData();
 			CourseInfo currentCourse = currentCourse();
-			if (isAssistant(currentCourse)) {
+			if (isAssistant(currentCourse) && isParticipant(currentCourse)){
 				return removeMembership();
 			}
 			if (desktopInfo == null || desktopInfo.getId() == null) {

@@ -20,6 +20,8 @@ import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
 import org.openuss.lecture.CourseInfo;
+import org.openuss.lecture.CourseMemberInfo;
+import org.openuss.lecture.CourseMemberType;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.DepartmentInfo;
 import org.openuss.lecture.InstituteInfo;
@@ -186,10 +188,18 @@ public class AllCoursesByDepartmentPage extends AbstractDepartmentPage {
 		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
 	}	
 	
+	private boolean isParticipant(CourseInfo course){
+		CourseMemberInfo courseMember = getCourseService().getMemberInfo(course, user);
+		if (courseMember != null){
+			return courseMember.getMemberType().equals(CourseMemberType.PARTICIPANT);
+		}
+		return false;
+	}
+	
 	public String removeCourseBookmark() {
 		try {
 			CourseInfo currentCourse = allCoursesTable.getRowData();
-			if (isAssistant(currentCourse)){
+			if (isAssistant(currentCourse) && isParticipant(currentCourse)){
 				return removeMembership();
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), currentCourse.getId());

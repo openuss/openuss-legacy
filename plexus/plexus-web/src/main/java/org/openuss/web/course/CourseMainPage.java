@@ -133,7 +133,7 @@ public class CourseMainPage extends AbstractCoursePage {
 	}
 
 	public String removeCourseShortcut() {
-		if (!isAssistant(courseInfo)){
+		if (!isAssistant(courseInfo) && isParticipant(courseInfo)){
 			return removeMembership();
 		}
 		try {
@@ -153,6 +153,14 @@ public class CourseMainPage extends AbstractCoursePage {
 	private boolean isAssistant(CourseInfo courseInfo) {
 		return AcegiUtils.hasPermission(courseInfo, new Integer[] {LectureAclEntry.ASSIST});
 	}
+	
+	private boolean isParticipant(CourseInfo course){
+		CourseMemberInfo courseMember = getCourseService().getMemberInfo(course, user);
+		if (courseMember != null){
+			return courseMember.getMemberType().equals(CourseMemberType.PARTICIPANT);
+		}
+		return false;
+	}	
 
 	public String removeMembership() {
 		setBean(Constants.COURSE_INFO, courseInfo);
