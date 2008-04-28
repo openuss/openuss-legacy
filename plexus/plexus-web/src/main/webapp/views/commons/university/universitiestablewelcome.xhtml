@@ -10,28 +10,34 @@
       xmlns:c="http://java.sun.com/jstl/core">
    
     <o:block label="#{msg.universityList_header}">
-	    <t:dataList var="uni" value="#{views$public$university$universitiestablewelcome.universities}">
-		    	<o:link value="/views/public/university/university.faces">
-		    		<f:param name="university" value="#{uni.id}"/>
-					<h:graphicImage rendered="${not empty uni.imageId}"
+    		<table class="universities">
+    		<tr>
+   			<t:dataList var="uni" value="#{views$public$university$universitiestablewelcome.universities}">
+   					<td>
+   					<div class="unilink">
+				    	<o:link value="/views/public/university/university.faces">
+				    		<f:param name="university" value="#{uni.id}"/>
+							<h:graphicImage rendered="${not empty uni.imageId}"
 									value="/files?fileid=#{uni.imageId}"
-									title="#{msg.logo} #{uni.name}"/>
-<!-- 
-					<span>
-		    			<f:param name="university" value="#{uni.id}"/>
-					 	<h:outputText value="#{uni.shortName}" />
-						<h:outputText value="#{uni.address}" />
-						<h:outputText value="#{uni.postcode} #{uni.city}" />
-						<h:outputFormat value="#{msg.university_information_telephone}" rendered="#{!empty uni.telephone}" >
-							<f:param value="#{uni.telephone}" />
-						</h:outputFormat>
-						<h:outputFormat value="#{msg.university_information_telefax}" rendered="#{!empty uni.telefax}" >
-							<f:param value="#{uni.telefax}" />
-						</h:outputFormat>
-		    		</span>
- -->									
-				</o:link>
-	    </t:dataList>
+									title="#{msg.logo} #{uni.name}"
+									styleClass="logo"/>
+							<span class="info">
+							 	<h:outputText value="#{uni.shortName}" styleClass="content_font_normal"/>
+								<h:outputText value="#{uni.address}" styleClass="content_font_normal"/>
+								<h:outputText value="#{uni.postcode} #{uni.city}" styleClass="content_font_normal"/>
+								<h:outputFormat value="#{msg.university_information_telephone}" rendered="#{!empty uni.telephone}" styleClass="content_font_normal">								<f:param value="#{uni.telephone}" />
+								</h:outputFormat>
+								<h:outputFormat value="#{msg.university_information_telefax}" rendered="#{!empty uni.telefax}" styleClass="content_font_normal">
+									<f:param value="#{uni.telefax}" />
+								</h:outputFormat>
+							</span>
+						</o:link>
+					</div>
+					</td>
+	    	</t:dataList>
+	    	</tr>
+	       </table>
+		   
     </o:block>
 
 </ui:composition>

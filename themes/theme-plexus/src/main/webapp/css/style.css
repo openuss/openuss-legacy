@@ -68,6 +68,37 @@ p {
 	font-size: 8pt;
 }
 
+.universities {
+	with: 100%;
+}
+.universities div.unilink { 
+	display:inline;
+	padding:10px;
+}
+
+
+.universities div.unilink .logo {
+	display:inline;
+	float: left;
+	padding: 0px;
+}
+
+.universities div.unilink {
+	display:inline;
+	float: left;
+	padding: 0px 0px;
+}
+
+.universities div.unilink .info {
+	display:inline;
+	float: left;
+	padding: 10px 0px;
+}
+
+.universities div.unilink .content_font_normal {
+	display:inline;
+}
+
 
 @media all {
 	* html b\ody #left {
