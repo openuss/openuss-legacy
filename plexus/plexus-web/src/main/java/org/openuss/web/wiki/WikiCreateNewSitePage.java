@@ -55,7 +55,7 @@ public class WikiCreateNewSitePage extends AbstractWikiPage {
 	public String createNewSite() {
 		WikiSiteContentInfo site = wikiService.findWikiSiteContentByDomainObjectAndName(courseInfo.getId(), siteVersionInfo.getName());
 		if (site == null) {
-			LOGGER.debug("Site '" + siteVersionInfo.getName() + "' does not exist. Opening Create New Site Page.");			
+			LOGGER.debug("Site '" + siteVersionInfo.getName() + "' does not exist. Opening Create New Site Page.");	
 			return Constants.WIKI_EDIT_PAGE;
 		} else {
 			LOGGER.debug("Site '" + siteVersionInfo.getName() + "' does already exist. Opening Edit Site Page.");

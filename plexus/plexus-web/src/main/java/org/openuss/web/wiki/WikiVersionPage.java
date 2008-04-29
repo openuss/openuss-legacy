@@ -158,6 +158,5 @@ public class WikiVersionPage extends AbstractWikiPage{
 			}
 			return entries;
 		}
-	
 	}
 }

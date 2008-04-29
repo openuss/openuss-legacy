@@ -22,16 +22,18 @@ public class WikiMainPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:59
+	public void prerender() throws Exception { 
 		if (!checkSession()) {
 			return;
 		}
 		
-		if (this.siteVersionInfo.getId() != null) {
+		siteVersionInfo = (WikiSiteContentInfo) getBean(Constants.WIKI_CURRENT_SITE_VERSION);
+		
+		if (siteVersionInfo != null && siteVersionInfo.getId() != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(this.siteVersionInfo.getId());
 		} else {
 			String siteName = null;
-			if (this.siteVersionInfo.getName() != null) {
+			if (siteVersionInfo != null && siteVersionInfo.getName() != null) {
 				siteName = this.siteVersionInfo.getName().trim();
 				
 				if (!isValidWikiSiteName(siteName)) {
@@ -47,8 +49,9 @@ public class WikiMainPage extends AbstractWikiPage {
 			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), siteName);
 			
 			if (version == null) {
-				this.siteVersionInfo = null;
-				setBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
+				this.siteVersionInfo = new WikiSiteContentInfo();
+				siteVersionInfo.setName(siteName);
+				setBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
 			} else {
 				this.siteVersionInfo = version;
 			}
@@ -58,7 +61,7 @@ public class WikiMainPage extends AbstractWikiPage {
 				
 		super.prerender();
 	}
-
+	
 	/**
 	 * Returns the Wiki Overview Page.
 	 * @return Wiki Overview Page.

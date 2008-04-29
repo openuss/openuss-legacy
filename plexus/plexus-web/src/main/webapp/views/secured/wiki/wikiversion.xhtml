@@ -47,7 +47,7 @@
 						<plexus:commandSortHeader columnName="creationDate"> #{msg['wiki_version_column_create']} </plexus:commandSortHeader>
 						
 						<o:link value="/views/secured/wiki/wikimain.faces">
-							<f:param value="#{entry.id}" name="versionId" />
+							<f:param value="#{entry.id}" name="version" />
 							<f:param value="#{courseInfo.id}" name="course"/>
 							<h:outputText value="#{entry.creationDate}">
 								<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
@@ -58,7 +58,7 @@
 					<t:column>
 						<plexus:commandSortHeader columnName="note"> #{msg['wiki_version_column_note']} </plexus:commandSortHeader>
 						<o:link value="/views/secured/wiki/wikimain.faces">
-							<f:param value="#{entry.id}" name="versionId" />
+							<f:param value="#{entry.id}" name="version" />
 							<f:param value="#{courseInfo.id}" name="course"/>
 						<h:outputText value="#{entry.note}"/>
 						</o:link>

@@ -3,7 +3,6 @@ package org.openuss.web.wiki;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shale.tiger.managed.Property;
@@ -134,9 +133,7 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	 * @return <code>true</code> if the site name is valid, otherwise <code>false</code>.
 	 */
 	protected boolean isValidWikiSiteName(String siteName) {		
-		final Matcher matcher = WikiSiteNameValidator.ALLOWED_CHARACTERS_PATTERN.matcher(siteName);
-		
-		return matcher.matches();
+		return WikiSiteNameValidator.ALLOWED_CHARACTERS_PATTERN.matcher(siteName).matches();
 	}
 	
 	/**
