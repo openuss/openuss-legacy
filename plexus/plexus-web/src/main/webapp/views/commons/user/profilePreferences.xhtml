@@ -35,11 +35,11 @@
 				<br />
 				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
 				<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
-				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.preferences.locale}">
+				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.locale}">
 				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 				</h:selectOneListbox>
 				<h:outputLabel value="#{msg.user_preferences_timezone}" for="timeZoneSelect" styleClass="field_label"/>
-				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
+				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.timezone}" >
 				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
 				</h:selectOneListbox>
 				<s:authorize ifAllGranted="ROLE_USER">
@@ -48,9 +48,9 @@
 					<h:outputText value="#{msg.profile_newsletter_settings_header}" styleClass="header_font_normal"/> <br/> 
 					<h:outputText value="#{msg.profile_newsletter_settings_explain}" styleClass="content_font_normal"/>
 					<br />
-					<o:input entity="user.profile" property="newsletterSelected" required="false"/>
-					<o:input entity="user.profile" property="discussionSelected" required="false" /> 
-					<o:input entity="user.profile" property="subscribeCalenderEntries"/>
+					<o:input entity="user" property="newsletterSubscriptionEnabled" required="false"/>
+					<o:input entity="user" property="discussionSubscriptionEnabled" required="false" /> 
+					<o:input entity="user" property="subscribeCalendarEntries" required="false"/>
 					<br />
 
 					<!-- visibility -->
@@ -59,12 +59,12 @@
 					<p class="content_font_normal">
 					#{msg.profile_visibility_explain}
 					</p>
-					<o:input entity="user.profile" property="profileContactPublic"/>
-					<o:input entity="user.profile" property="telephonePublic"/>
-					<o:input entity="user.profile" property="addressPublic"/> 
-					<o:input entity="user.profile" property="emailPublic"/>
-					<o:input entity="user.profile" property="profilePersonalPublic"/>
-					<o:input entity="user.profile" property="profileUniPublic"/>
+					<o:input entity="user" property="profileContactPublic"/>
+					<o:input entity="user" property="telephonePublic"/>
+					<o:input entity="user" property="addressPublic"/> 
+					<o:input entity="user" property="emailPublic"/>
+					<o:input entity="user" property="profilePersonalPublic"/>
+					<o:input entity="user" property="profileUniPublic"/>
 				</s:authorize>
 
 </ui:composition>

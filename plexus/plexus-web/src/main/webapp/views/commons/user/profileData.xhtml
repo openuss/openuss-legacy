@@ -35,35 +35,35 @@
 					<br />
 					<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
 					<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
-					<o:input entity="user.contact" property="firstName" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="lastName" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="title" maxlength="100"/>
-					<o:input entity="user.contact" property="profession" maxlength="100"/>
+					<o:input entity="user" property="firstName" maxlength="100" required="true"/>
+					<o:input entity="user" property="lastName" maxlength="100" required="true"/>
+					<o:input entity="user" property="title" maxlength="100"/>
+					<o:input entity="user" property="profession" maxlength="100"/>
 					
 				<!-- adress information -->
 					<br />
 					<h:outputText value="#{msg.profile_address_header}" styleClass="header_font_normal"/> <br />
-					<o:input entity="user.contact" property="address" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="postcode" maxlength="50" required="true"/>
-					<o:input entity="user.contact" property="city" maxlength="100" required="true"/>
-					<o:input entity="user.contact" property="country" maxlength="100" required="false"/>
+					<o:input entity="user" property="address" maxlength="100" required="true"/>
+					<o:input entity="user" property="postcode" maxlength="50" required="true"/>
+					<o:input entity="user" property="city" maxlength="100" required="true"/>
+					<o:input entity="user" property="country" maxlength="100" required="false"/>
 					
 				<!-- hidden profile information -->
 					<br />
 					<h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/> <br/> 
 					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="content_font_normal"/>
-					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
-					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
-					<o:input entity="user.profile" property="studies" maxlength="50"/>
+					<o:input entity="user" property="ageGroup" maxlength="50"/>
+					<o:input entity="user" property="matriculation" maxlength="50"/>
+					<o:input entity="user" property="studies" maxlength="50"/>
 				
 				<br />
 				<h:outputText value="#{msg['user_profile_preferences_header']}" styleClass="header_font_normal" />
 				<h:outputLabel value="#{msg.user_preferences_locale}" for="languageSelect" styleClass="field_label"/>
-				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.preferences.locale}">
+				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{user.locale}">
 				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 				</h:selectOneListbox>
 				<h:outputLabel value="#{msg.user_preferences_timezone}" for="timeZoneSelect" styleClass="field_label"/>
-				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.preferences.timezone}" >
+				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown" value="#{user.timezone}" >
 				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
 				</h:selectOneListbox>
 

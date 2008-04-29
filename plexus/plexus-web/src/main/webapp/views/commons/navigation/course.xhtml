@@ -69,6 +69,12 @@
 								<h:outputText value="Freestyle Learning"/>
 							</t:commandNavigation2>	
 							
+							<t:commandNavigation2 action="course_calendar"
+							activeOnViewIds="/views/secured/course/calendar.xhtml"
+							rendered="#{courseInfo.calendar}">
+							<h:outputText value="#{msg['course_command_calendar']}" />
+							</t:commandNavigation2>
+							
 							<!-- ps bachelor collaboration -->
 							<t:commandNavigation2
 								id="cmd_papersubmission" forceId="true" 

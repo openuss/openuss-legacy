@@ -2,6 +2,8 @@ package org.openuss.web.course;
 
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Prerender;
+import org.openuss.calendar.CalendarInfo;
+import org.openuss.calendar.CalendarService;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.lecture.CourseTypeInfo;
@@ -59,10 +61,21 @@ public class AbstractCoursePage extends BasePage {
 	@Property(value = "#{periodInfo}")
 	protected PeriodInfo periodInfo;
 
+	
+	//added for course calendar support
+	@Property(value = "#{calendarService}")
+	private CalendarService calendarService;
+
+	@Property(value = "#{" + Constants.CALENDAR_INFO + "}")
+	private CalendarInfo calendarInfo;
+
 	@Prerender
 	public void prerender() throws Exception {
 		if (courseInfo != null && courseInfo.getId() != null) {
 			courseInfo = courseService.findCourse(courseInfo.getId());
+			calendarInfo = calendarService.getCalendar(courseInfo);
+			setSessionAttribute(Constants.CALENDAR_INFO, calendarInfo);
+
 		}
 		if (courseInfo == null) {
 			addError(i18n("message_error_course_page"));
@@ -77,6 +90,8 @@ public class AbstractCoursePage extends BasePage {
 			instituteInfo = instituteService.findInstitute(courseTypeInfo
 					.getInstituteId());
 			breadcrumbs.loadCourseCrumbs(courseInfo);
+			calendarInfo = calendarService.getCalendar(courseInfo);
+			setBean(Constants.CALENDAR_INFO, calendarInfo);
 			setBean(Constants.COURSE_INFO, courseInfo);
 			setBean(Constants.INSTITUTE_INFO, instituteInfo);
 		}
@@ -168,6 +183,22 @@ public class AbstractCoursePage extends BasePage {
 
 	public void setPeriodInfo(PeriodInfo periodInfo) {
 		this.periodInfo = periodInfo;
+	}
+
+	public CalendarService getCalendarService() {
+		return calendarService;
+	}
+
+	public void setCalendarService(CalendarService calendarService) {
+		this.calendarService = calendarService;
+	}
+
+	public CalendarInfo getCalendarInfo() {
+		return calendarInfo;
+	}
+
+	public void setCalendarInfo(CalendarInfo calendarInfo) {
+		this.calendarInfo = calendarInfo;
 	}
 
 }

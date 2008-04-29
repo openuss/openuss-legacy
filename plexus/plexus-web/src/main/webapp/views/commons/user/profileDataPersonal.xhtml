@@ -11,15 +11,15 @@
 				<!-- personal information -->
 					<br />
 					<h:outputText value="#{msg.profile_personal_header}" styleClass="header_font_normal"/> <br />
-					<o:input entity="user.contact" property="birthday" maxlength="16" required="false" type="date"/>
-					<o:input entity="user.contact" property="searching" maxlength="500" required="false"/>
-					<o:input entity="user.contact" property="providing" maxlength="500" required="false"/>
-					<o:input entity="user.contact" property="interests" maxlength="500" required="false"/>
+					<o:input entity="user" property="birthday" maxlength="16" required="false" type="date"/>
+					<o:input entity="user" property="searching" maxlength="500" required="false"/>
+					<o:input entity="user" property="providing" maxlength="500" required="false"/>
+					<o:input entity="user" property="interests" maxlength="500" required="false"/>
 					<!-- user portrait -->
 						<br />
 					  	<h:outputText value="#{msg.user_profile_portrait}" styleClass="header_font_normal"/>
 					  	<div class="content_iframe">
-							<fck:editor value="#{user.profile.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px">
+							<fck:editor value="#{user.portrait}" id="portraitEditor" toolbarSet="Portrait" width="100%"  height="200px">
 								<f:converter converterId="xssFilter"/>
 							</fck:editor>
 						</div>
@@ -39,8 +39,8 @@
 									<h:graphicImage styleClass="userphoto"
 										renderer="${not empty user.imageId}"
 										value="/files?fileid=#{user.imageId}"
-										alt="#{user.contact.firstName} #{user.contact.lastName}"
-										title="#{user.contact.firstName} #{user.contact.lastName}"/> 
+										alt="#{user.firstName} #{user.lastName}"
+										title="#{user.firstName} #{user.lastName}"/> 
 									&#160;
 							  		<h:commandLink 
 							  			actionListener="#{views$secured$user$profile.removeImage}" 

@@ -11,14 +11,14 @@
 					<br />
 				<!-- hidden profile information -->
 					<h:outputText value="#{msg.profile_uni_header}" styleClass="header_font_normal"/> 
-					<o:input entity="user.profile" property="ageGroup" maxlength="50"/>
-					<o:input entity="user.profile" property="studies" maxlength="50"/>
+					<o:input entity="user" property="ageGroup" maxlength="50"/>
+					<o:input entity="user" property="studies" maxlength="50"/>
 
 					<br />
 					<h:outputText value="#{msg.profile_hidden_header}" styleClass="header_font_normal"/><br/> 
 					<h:outputText value="#{msg.profile_hidden_explain}" styleClass="content_font_normal"/>
-					<o:input entity="user.profile" property="matriculation" maxlength="50"/>
-					<o:input entity="user.contact" property="smsEmail" maxlength="100">
+					<o:input entity="user" property="matriculation" maxlength="50"/>
+					<o:input entity="user" property="smsEmail" maxlength="100">
 										<t:validateEmail/>
 					</o:input>
 

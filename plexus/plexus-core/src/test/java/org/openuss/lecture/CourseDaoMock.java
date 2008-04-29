@@ -21,13 +21,13 @@ public class CourseDaoMock extends AbstractMockDao<Course> implements CourseDao 
 
 	public Object create(int transform, String shortcut, AccessType accessType, String password, Boolean documents,
 			Boolean discussion, Boolean newsletter, Boolean chat, Boolean freestylelearning,
-			Boolean braincontest, Boolean collaboration, Boolean papersubmission, Boolean wiki, String description, boolean enabled) {
+			Boolean braincontest, Boolean collaboration, Boolean papersubmission, Boolean wiki, String description, boolean enabled, Boolean calendar) {
 		return null;
 	}
 
 	public Course create(String shortcut, AccessType accessType, String password, Boolean documents,
 			Boolean discussion, Boolean newsletter, Boolean chat, Boolean freestylelearning,
-			Boolean braincontest, Boolean collaboration, Boolean papersubmission, Boolean wiki, String description, boolean enabled) {
+			Boolean braincontest, Boolean collaboration, Boolean papersubmission, Boolean wiki, String description, boolean enabled, Boolean calendar) {
 		return null;
 	}
 

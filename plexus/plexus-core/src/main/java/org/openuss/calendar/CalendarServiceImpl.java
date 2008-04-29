@@ -755,7 +755,7 @@ public class CalendarServiceImpl extends
 		List<Appointment> apps = cal.getSingleAppointments();
 		List<AppointmentInfo> appsAfterDate = new ArrayList<AppointmentInfo>();
 		for (Appointment appIt : apps) {
-			if (appIt.getEndtime().after(date)) {
+			if ((appIt.getEndtime().after(date)) && (appIt.isTakingPlace() == true)) {
 				AppointmentInfo appInfo = getAppointmentDao()
 						.toAppointmentInfo(appIt);
 				this.translate(appInfo.getAppointmentTypeInfo());
@@ -822,9 +822,9 @@ public class CalendarServiceImpl extends
 		appTI
 				.setName(getTranslationService().getTranslation(
 						appTI.getId(),
-						appTI.getName(), "de"));
+						appTI.getName(), "en" ));
 						// TODO: CORRECT THIS WORKAROUND!!! 
-						// TranslationContext.getCurrentInstance().getLocale().toString()));
+						// TranslationContext.getCurrentInstance().getLocale().toString()
 	}
 
 	private void sortAppointmentInfoList(List<AppointmentInfo> list) {

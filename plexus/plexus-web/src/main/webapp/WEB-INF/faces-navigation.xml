@@ -762,6 +762,11 @@
 				<from-outcome>freestyle_learning</from-outcome>
 				<to-view-id>/views/secured/course/fslinstall.xhtml</to-view-id>
 			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_calendar</from-outcome>
+				<to-view-id>/views/secured/course/calendar.xhtml</to-view-id>
+			</navigation-case>
 
 			<navigation-case>
 				<from-outcome>course_options</from-outcome>

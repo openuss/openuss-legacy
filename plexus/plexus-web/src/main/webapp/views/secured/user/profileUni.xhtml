@@ -26,8 +26,8 @@
 	<ui:composition template="/views/layout/layout.xhtml">
   		<ui:define name="title">
    			<h:outputFormat value="#{msg.user_profile_heading}">
-  				<f:param value="#{user.contact.firstName}"/>
-  				<f:param value="#{user.contact.lastName}"/>
+  				<f:param value="#{user.firstName}"/>
+  				<f:param value="#{user.lastName}"/>
   			</h:outputFormat>
   		</ui:define>
   		<ui:define name="navigation">  			

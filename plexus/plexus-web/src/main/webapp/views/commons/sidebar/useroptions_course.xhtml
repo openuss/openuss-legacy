@@ -25,6 +25,19 @@
 						<h:commandLink value="" action="#{views$secured$course$main.removeCourseShortcut}" ><span />#{msg.course_command_shortcut_remove}</h:commandLink>
 					</li>
 				</c:if>
+				
+				<c:if test="#{user.id ne calendarInfo.domainIdentifier}">
+						<c:if test="#{views$secured$calendar$calendar.subscribed}">
+							<li class="int"><h:commandLink
+								action="#{views$secured$calendar$calendar.changeSubscription}">
+								<span /> #{msg['openuss4us_calendar_subscribe_delete_hint']} </h:commandLink></li>
+						</c:if>
+						<c:if test="#{!views$secured$calendar$calendar.subscribed}">
+							<li class="int"><h:commandLink
+								action="#{views$secured$calendar$calendar.changeSubscription}">
+								<span /> #{msg['openuss4us_calendar_subscribe_hint']} </h:commandLink></li>
+						</c:if>
+				</c:if>
 			</ul>
 		</o:block>
 		</h:form>

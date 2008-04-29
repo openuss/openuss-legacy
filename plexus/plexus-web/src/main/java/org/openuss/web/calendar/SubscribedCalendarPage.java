@@ -17,6 +17,7 @@ import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.groups.UserGroupInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.security.User;
+import org.openuss.security.UserInfo;
 import org.openuss.web.Constants;
 
 /**
@@ -29,7 +30,7 @@ import org.openuss.web.Constants;
 public class SubscribedCalendarPage extends AbstractCalendarPage {
 
 	@Property(value="#{"+Constants.SHOW_USER_PROFILE+"}")
-	private User profile;
+	private UserInfo profile;
 	
 	private static final Logger logger = Logger
 			.getLogger(SubscribedCalendarPage.class);
@@ -122,11 +123,11 @@ public class SubscribedCalendarPage extends AbstractCalendarPage {
 		this.data = data;
 	}
 
-	public User getProfile() {
+	public UserInfo getProfile() {
 		return profile;
 	}
 
-	public void setProfile(User profile) {
+	public void setProfile(UserInfo profile) {
 		this.profile = profile;
 	}
 }
