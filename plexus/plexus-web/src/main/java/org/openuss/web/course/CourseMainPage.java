@@ -142,11 +142,11 @@ public class CourseMainPage extends AbstractCoursePage {
 			}
 			desktopService2.unlinkCourse(desktopInfo.getId(), courseInfo.getId());
 		} catch (Exception e) {
-			addError(i18n("institute_error_remove_shortcut"), e.getMessage());
+			addError(i18n("course_error_remove_shortcut"), e.getMessage());
 			return Constants.FAILURE;
 		}
 		
-		addMessage(i18n("institute_success_remove_shortcut"));
+		addMessage(i18n("desktop_mesage_removed_course_succeed"));
 		return Constants.SUCCESS;
 	}
 
