@@ -333,22 +333,18 @@
     </page>
     
     <page view-id="/views/secured/wiki/wikimain.xhtml">
-        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="page" value="#{wiki_current_site_version.name}"/>
     	<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long"/>
     </page>
     
     <page view-id="/views/secured/wiki/wikiversion.xhtml">
-        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}"/>
     </page>
 
     <page view-id="/views/secured/wiki/wikioverview.xhtml">
-        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     </page>
 
     <page view-id="/views/secured/wiki/wikiprintpreview.xhtml">
-        <securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.READ}"/>
     	<parameter name="page" value="#{wiki_current_site_version.name}"/>
     	<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long"/>
     </page>
@@ -373,6 +369,14 @@
 
     <page view-id="/views/secured/wiki/wikicreatenewsite.xhtml">
     	<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.CREATE}"/>
+    </page>
+
+    <page view-id="/views/secured/wiki/wikichooseimage.xhtml">
+    	<parameter name="version" value="#{wiki_current_site_version.id}"/>
+    </page>
+
+    <page view-id="/views/secured/wiki/wikiimageremoveconfirmation.xhtml">
+    	<parameter name="version" value="#{wiki_current_site_version.id}"/>
     </page>
 
     <page view-id="/views/secured/wiki/wikiedit.xhtml">

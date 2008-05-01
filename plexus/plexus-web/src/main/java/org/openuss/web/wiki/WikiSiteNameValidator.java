@@ -21,7 +21,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
 @FacesValidator(value="wikiSiteNameValidator")
 public class WikiSiteNameValidator extends BaseBean implements Validator {
 	
-	private static final String ALLOWED_CHARACTERS = "[a-zA-Z0-9הצüßִÜײ ]+";
+	private static final String ALLOWED_CHARACTERS = "[a-zA-Z0-9הצüßִÜײ \\-]+";
 	
 	private static final String ILLEGAL_SITE_NAME_MESSAGE = "wiki_error_illegal_site_name";
 

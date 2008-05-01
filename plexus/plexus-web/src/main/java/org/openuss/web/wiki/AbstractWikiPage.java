@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
+import org.openuss.foundation.ApplicationException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.utilities.URLUTF8Encoder;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
@@ -23,6 +25,8 @@ import org.openuss.wiki.WikiSiteInfo;
  *
  */
 public class AbstractWikiPage extends AbstractCoursePage {
+	
+	private static final Logger logger = Logger.getLogger(AbstractWikiPage.class);
 		
 	@Property(value = "#{wikiService}")
 	protected WikiService wikiService;
@@ -36,14 +40,14 @@ public class AbstractWikiPage extends AbstractCoursePage {
 	
 	@Override
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
-		if (!checkSession()) {
+		if (!checkCourseInfo()) {
 			return;
 		}
 		super.prerender();
 		addBreadCrumbs();
 	}
 	
-	protected boolean checkSession() {
+	protected boolean checkCourseInfo() {
 		if (courseInfo == null || courseInfo.getId() == null) {
 			addError(i18n("message_error_course_page"));
 			redirect(Constants.OUTCOME_BACKWARD);
@@ -75,6 +79,22 @@ public class AbstractWikiPage extends AbstractCoursePage {
 		}
 	}
 
+	/**
+	 * Reloads siteVersionInfo object from business layer 
+	 * @throws ApplicationException
+	 */
+	protected void reloadWikiSiteInfo() throws ApplicationException {
+		if (siteVersionInfo == null || siteVersionInfo.getId() == null) {
+			logger.error("Site version info incomplete!");
+			throw new ApplicationException("wiki_error_siteinfo_not_found");
+		}
+		siteVersionInfo = wikiService.getWikiSiteContent(siteVersionInfo.getId());
+		if (siteVersionInfo == null) {
+			logger.error("Site version info incomplete!");
+			throw new ApplicationException("wiki_error_siteinfo_not_found");
+		}
+	}
+	
 	/**
 	 * Capitalizes a page name.
 	 * @param pageName Page name.

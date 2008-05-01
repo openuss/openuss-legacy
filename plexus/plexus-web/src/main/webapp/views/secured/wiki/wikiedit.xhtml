@@ -38,6 +38,7 @@
 					<div class="content_iframe">
 						<!-- hidden field for fckeditor -->
 						<input type="hidden" id="openussCourseId" name="openussCourseId" value="#{param.course}"/>
+						<input type="hidden" id="wikiVersionId" name="wikiVersionId" value="#{param.version}"/>
 						
 						<!-- version-id:#{views$secured$wiki$wikiedit.siteVersionInfo.id} -->
 						<fck:editor value="#{views$secured$wiki$wikiedit.siteVersionInfo.text}" id="textEditor" toolbarSet="Wiki" width="100%" height="400" required="true">

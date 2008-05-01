@@ -1,10 +1,12 @@
 package org.openuss.web.wiki;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
+import org.openuss.foundation.ApplicationException;
 import org.openuss.web.Constants;
 import org.openuss.wiki.WikiSiteContentInfo;
 import org.openuss.wiki.WikiSiteInfo;
@@ -23,17 +25,17 @@ public class WikiMainPage extends AbstractWikiPage {
 	@Override
 	@Prerender
 	public void prerender() throws Exception { 
-		if (!checkSession()) {
+		if (!checkCourseInfo()) {
 			return;
 		}
 		
 		siteVersionInfo = (WikiSiteContentInfo) getBean(Constants.WIKI_CURRENT_SITE_VERSION);
 		
-		if (siteVersionInfo != null && siteVersionInfo.getId() != null) {
+		if (isPostBack() && siteVersionInfo != null && siteVersionInfo.getId() != null) {
 			siteVersionInfo = wikiService.getWikiSiteContent(this.siteVersionInfo.getId());
 		} else {
 			String siteName = null;
-			if (siteVersionInfo != null && siteVersionInfo.getName() != null) {
+			if (siteVersionInfo != null && StringUtils.isNotBlank(siteVersionInfo.getName())) {
 				siteName = this.siteVersionInfo.getName().trim();
 				
 				if (!isValidWikiSiteName(siteName)) {
@@ -46,7 +48,7 @@ public class WikiMainPage extends AbstractWikiPage {
 				siteName = Constants.WIKI_STARTSITE_NAME;
 			}
 
-			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(this.courseInfo.getId(), siteName);
+			WikiSiteContentInfo version = this.wikiService.findWikiSiteContentByDomainObjectAndName(courseInfo.getId(), siteName);
 			
 			if (version == null) {
 				this.siteVersionInfo = new WikiSiteContentInfo();
@@ -132,15 +134,18 @@ public class WikiMainPage extends AbstractWikiPage {
 	/**
 	 * Returns the stable Version of a Site.
 	 * @return Wiki Main Page.
+	 * @throws ApplicationException 
 	 */
-	public String showStable() {
-		WikiSiteContentInfo wikiSiteContentInfo = wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId());
-		
-		if (wikiSiteContentInfo == null) {
-			wikiSiteContentInfo = wikiService.getNewestWikiSiteContent(siteVersionInfo.getWikiSiteId());
+	public String showStable() throws ApplicationException {
+//		reloadWikiSiteInfo();
+
+		WikiSiteContentInfo site = wikiService.getNewestStableWikiSiteContent(siteVersionInfo.getWikiSiteId());
+		if (site == null) {
+			site = wikiService.getNewestWikiSiteContent(siteVersionInfo.getWikiSiteId());
 		}
 		
-		siteVersionInfo = wikiSiteContentInfo;
+		siteVersionInfo = site;
+		setBean(Constants.WIKI_CURRENT_SITE_VERSION, siteVersionInfo);
 		
 		return Constants.WIKI_MAIN_PAGE;
 	}
@@ -148,16 +153,12 @@ public class WikiMainPage extends AbstractWikiPage {
 	/**
 	 * Marks a Version as stable and returns the Wiki Main Page.
 	 * @return Wiki Main Page.
+	 * @throws ApplicationException 
 	 */
-	public String markStable() {
-		if (this.siteVersionInfo == null || this.siteVersionInfo.getDomainId() == null) {
-			LOGGER.error("Site version info incomplete!");
-			addError(i18n("wiki_error_siteinfo_not_found"));
-			return Constants.WIKI_MAIN_PAGE;
-		}
+	public String markStable() throws ApplicationException {
+		reloadWikiSiteInfo();
 		
 		LOGGER.debug("Marking Site " + siteVersionInfo.getName() + " stable.");
-		
 		siteVersionInfo.setStable(true);
 		wikiService.saveWikiSite(siteVersionInfo);
 		
@@ -168,8 +169,11 @@ public class WikiMainPage extends AbstractWikiPage {
 	/**
 	 * Unmarks a Version as stable and returns the Wiki Main Page.
 	 * @return Wiki Main Page.
+	 * @throws ApplicationException 
 	 */
-	public String unmarkStable() {
+	public String unmarkStable() throws ApplicationException {
+		reloadWikiSiteInfo();
+		
 		LOGGER.debug("Unmarking Site " + siteVersionInfo.getName() + " stable.");
 		siteVersionInfo.setStable(false);
 		wikiService.saveWikiSite(siteVersionInfo);

@@ -33,6 +33,7 @@
         
         <ui:define name="sidebar"> 
         	<h:form>
+        		<t:saveState value="#{wiki_current_site_version}"/>
 				<o:block styleClass="option_box" label="#{msg.options}">
 					<ul class="action_list">
 						<li class="wiki_create_new">

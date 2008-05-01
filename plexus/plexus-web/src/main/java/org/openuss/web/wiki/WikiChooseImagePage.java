@@ -12,6 +12,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderEntryInfo;
+import org.openuss.foundation.ApplicationException;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
 import org.openuss.web.Constants;
@@ -39,8 +40,10 @@ public class WikiChooseImagePage extends AbstractWikiPage {
 	 * Saves an Image and returns the Wiki Choose Image Page.
 	 * @return Wiki Choose Image Page.
 	 * @throws IOException Signals that an I/O exception of some sort has occurred.
+	 * @throws ApplicationException 
 	 */
-	public String save() throws IOException {		
+	public String save() throws IOException, ApplicationException {		
+		reloadWikiSiteInfo();
 		final FileInfo fileInfo = uploadFileManager.lastUploadAsFileInfo();
 		
 		if (fileInfo != null) {

@@ -35,6 +35,7 @@ if (window.document.location.href.match(/Wiki/)) {
 
 	// get parameters from hidden fields in xhtml. these must be present!!
 	openussCourseId = top.document.getElementById('openussCourseId').value;
+	wikiVersionId = top.document.getElementById('wikiVersionId').value;
 
 	FCKConfig.ContextMenu = ['Generic','Anchor','Image','Flash','Select','Textarea','Checkbox','Radio','TextField', 'HiddenField','ImageButton','Button','BulletedList','NumberedList','Form'] ;
 
@@ -42,8 +43,8 @@ if (window.document.location.href.match(/Wiki/)) {
     var sOtherPluginPath = FCKConfig.BasePath.substr(0, FCKConfig.BasePath.length - 7) + 'editor/plugins/' ;
     FCKConfig.Plugins.Add( 'wiki', 'de,en', sOtherPluginPath ) ;
 
-    FCKConfig.ImageBrowserURL = basePath + '/views/secured/wiki/wikichooseimage.faces?course=' + openussCourseId;
-    
+    FCKConfig.ImageBrowserURL = basePath + '/views/secured/wiki/wikichooseimage.faces?course=' + openussCourseId + '&version='+wikiVersionId;
+     
     FCKConfig.EditorAreaCSS = '/theme-plexus/css/style.css';
     FCKConfig.BodyClass = 'wiki_content';
     FCKConfig.BodyId = 'wiki_editor';

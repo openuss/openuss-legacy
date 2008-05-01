@@ -19,7 +19,7 @@ public class WikiPrintPreviewPage extends AbstractWikiPage {
 	@Override
 	@Prerender
 	public void prerender() throws Exception {
-		if (!checkSession()) {
+		if (!checkCourseInfo()) {
 			return;
 		}
 		

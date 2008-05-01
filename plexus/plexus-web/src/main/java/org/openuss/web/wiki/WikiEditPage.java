@@ -91,7 +91,6 @@ public class WikiEditPage extends AbstractWikiPage {
 	public String cancelCreate() {
 		this.siteVersionInfo = null;
 		setBean(Constants.WIKI_CURRENT_SITE_VERSION, null);
-		
 		return Constants.WIKI_MAIN_PAGE;
 	}
 	
