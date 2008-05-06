@@ -17,6 +17,7 @@ import org.openuss.web.PageLinks;
 /**
  * Backing Bean for wikiimport.xhtml.
  * @author Projektseminar WS 07/08, Team Collaboration
+ * @author Ingo Dueppe
  *
  */
 @Bean(name = "views$secured$wiki$wikiimport", scope = Scope.REQUEST)
@@ -31,9 +32,8 @@ public class WikiImportPage extends AbstractWikiPage {
 	
 	@Override
 	@Prerender
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:59
+	public void prerender() throws Exception { 
 		super.prerender();
-		
 		addBreadCrumbs();
 	}
 	
@@ -60,11 +60,7 @@ public class WikiImportPage extends AbstractWikiPage {
 	 * @return Wiki Import Confirmation Page.
 	 */
 	public String importWikiSites() {
-		// FIXME Do not use session bean for navigation - WIKI_IMPORT_COURSE define
-		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
-		// FIXME Do not use session bean for navigation - WIKI_IMPORT_TYPE
-		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES);
-		
+		setBean(Constants.WIKI_IMPORT_INFO, new WikiImportInfo(selectedCourseId, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES));
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 	
@@ -73,11 +69,7 @@ public class WikiImportPage extends AbstractWikiPage {
 	 * @return Wiki Import Confirmation Page.
 	 */
 	public String importWikiVersions() {
-		// FIXME Do not use session bean for navigation - WIKI_IMPORT_TYPE define
-		setSessionBean(Constants.WIKI_IMPORT_COURSE, selectedCourseId);
-		// FIXME Do not use session bean for navigation - WIKI_IMPORT_TYPE define
-		setSessionBean(Constants.WIKI_IMPORT_TYPE, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS);
-		
+		setBean(Constants.WIKI_IMPORT_INFO, new WikiImportInfo(selectedCourseId, Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS));
 		return Constants.WIKI_IMPORT_CONFIRMATION_PAGE;
 	}
 

@@ -31,9 +31,7 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:58
 		super.prerender();
-		
 		addBreadCrumbs();
-		
 		if (!isConfirmationRequired()) {
 			importWiki();
 			redirect(Constants.WIKI_OVERVIEW);
@@ -78,15 +76,14 @@ public class WikiImportConfirmationPage extends AbstractWikiPage {
 	 * @return Wiki Overview Page.
 	 */
 	public String importWiki() {
-		final Long selectedCourseId = (Long) getSessionBean(Constants.WIKI_IMPORT_COURSE); // NOPMD by Administrator on 13.03.08 12:58
-		final String importType = (String) getSessionBean(Constants.WIKI_IMPORT_TYPE);
+		final WikiImportInfo info = (WikiImportInfo) getBean(Constants.WIKI_IMPORT_INFO);  
 		
-		if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES.equals(importType)) {
-			LOGGER.debug("Importing WikiSiteVersions from DomainID " + selectedCourseId + ".");
-			wikiService.importWikiSites(courseInfo.getId(), selectedCourseId);
-		} else if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS.equals(importType)) {
-			LOGGER.debug("Importing WikiSites from DomainID " + selectedCourseId + ".");
-			wikiService.importWikiVersions(courseInfo.getId(), selectedCourseId);
+		if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES.equals(info.getType())) {
+			LOGGER.debug("Importing WikiSiteVersions from DomainID " + info.getCourseId() + ".");
+			wikiService.importWikiSites(courseInfo.getId(), info.getCourseId());
+		} else if (Constants.WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS.equals(info.getType())) {
+			LOGGER.debug("Importing WikiSites from DomainID " + info.getCourseId() + ".");
+			wikiService.importWikiVersions(courseInfo.getId(), info.getCourseId());
 		} else {
 			throw new WikiUnexpectedImportTypeException();
 		}

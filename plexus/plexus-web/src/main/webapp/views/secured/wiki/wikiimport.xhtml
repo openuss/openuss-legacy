@@ -36,33 +36,35 @@
 	
 	<ui:define name="content">
 		<h:form id="importWikiSelectCourseForm">
-			<o:block label="#{msg.wiki_import_select_course_headline}" styleClass="form_box">
+			<c:if test="#{empty views$secured$wiki$wikiimport.exportableWikiCourses}">
+				<o:block label="#{msg.wiki_import_select_course_headline}" styleClass="form_box">
+					<h:outputLabel value="#{msg.wiki_import_select_course_detail_no_course}" for="assistantSelectBox" styleClass="field_label" />
+				</o:block>
+			</c:if>
+			<c:if test="#{not empty views$secured$wiki$wikiimport.exportableWikiCourses}">
+				<o:block label="#{msg.wiki_import_select_course_headline}" styleClass="form_box">
 				<p class="content_font_normal">
-					<c:if test="#{not empty views$secured$wiki$wikiimport.exportableWikiCourses}">
-						<h:outputLabel value="#{msg.wiki_import_select_course_label}" for="assistantSelectBox" styleClass="field_label" />
-						<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$wiki$wikiimport.selectedCourseId}" required="true" styleClass="pulldown">
-							<f:selectItems value="#{views$secured$wiki$wikiimport.exportableWikiCourses}" />
-						</h:selectOneMenu>
-						<br />
-						<h:outputText value="#{msg.wiki_import_select_course_detail}" />
-						<br />
-						<h:commandButton id="importWikiSitesButton"
-							action="#{views$secured$wiki$wikiimport.importWikiSites}"
-							value="#{msg.wiki_import_newest_versions}"
-							title="#{msg.wiki_import_newest_versions_hint}"
-							styleClass="button_big" />
-						<h:commandButton id="importWikiVersionsButton"
-							action="#{views$secured$wiki$wikiimport.importWikiVersions}"
-							value="#{msg.wiki_import_all_versions}"
-							title="#{msg.wiki_import_all_versions_hint}"
-							styleClass="button_big" />
-					</c:if>
+					<h:outputText value="#{msg.wiki_import_select_course_detail}" styleClass="content_font_normal" />
+					<h:outputLabel value="#{msg.wiki_import_select_course_label}" for="assistantSelectBox" styleClass="field_label" />
+					<h:selectOneMenu id="assistantSelectBox" value="#{views$secured$wiki$wikiimport.selectedCourseId}" required="true" styleClass="pulldown">
+						<f:selectItems value="#{views$secured$wiki$wikiimport.exportableWikiCourses}" />
+					</h:selectOneMenu>
 				
-					<c:if test="#{empty views$secured$wiki$wikiimport.exportableWikiCourses}">
-						<h:outputLabel value="#{msg.wiki_import_select_course_detail_no_course}" for="assistantSelectBox" styleClass="field_label" />
-					</c:if>
 				</p>
-			</o:block>
+				</o:block>
+				<o:block>
+					<h:commandButton id="importWikiSitesButton"
+						action="#{views$secured$wiki$wikiimport.importWikiSites}"
+						value="#{msg.wiki_import_newest_versions}"
+						title="#{msg.wiki_import_newest_versions_hint}"
+						styleClass="button_big" />
+					<h:commandButton id="importWikiVersionsButton"
+						action="#{views$secured$wiki$wikiimport.importWikiVersions}"
+						value="#{msg.wiki_import_all_versions}"
+						title="#{msg.wiki_import_all_versions_hint}"
+						styleClass="button_big" />
+				</o:block>
+			</c:if>
 		</h:form>
 	</ui:define>
 	

@@ -297,10 +297,9 @@ public class Constants {
 	public static final String WIKI_VERSION_PAGE = "wiki_version";
 	public static final String WIKI_IMPORT_PAGE = "wiki_import";
 	public static final String WIKI_IMPORT_CONFIRMATION_PAGE = "wiki_import_confirmation";
-	public static final String WIKI_IMPORT_COURSE = "wiki_import_course";
-	public static final String WIKI_IMPORT_TYPE = "wiki_import_type";
-	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_import_wiki_sites";
-	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_import_wiki_versions";
+	public static final String WIKI_IMPORT_INFO = "wiki_import_info";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_SITES = "wiki_import_type_sites";
+	public static final String WIKI_IMPORT_TYPE_IMPORT_WIKI_VERSIONS = "wiki_import_type_versions";
 	public static final String WIKI_IMPORT_WIKI = "wiki_import_wiki";
 	public static final String WIKI_OVERVIEW_HEADER = "wiki_overview_header";
 	public static final String WIKI_OVERWRITE_PAGE = "wiki_overwrite";
