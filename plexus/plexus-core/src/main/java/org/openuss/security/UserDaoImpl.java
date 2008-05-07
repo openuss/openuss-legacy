@@ -87,6 +87,7 @@ public class UserDaoImpl extends UserDaoBase {
 		super.toUserInfo(source, target);
 		target.setUsername(source.getUsername());
 		target.setDisplayName(source.getDisplayName());
+		target.setCentralUser(source.isCentralUser());
 	}
 
 }

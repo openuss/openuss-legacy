@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~ AUTHENTICATION DEFINITIONS ~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- This authentication provider accepts any presented TestingAuthenticationToken -->
+	<bean id="testingAuthenticationProvider" class="org.acegisecurity.providers.TestingAuthenticationProvider"/>
+
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+			    <ref local="testingAuthenticationProvider"/>
+			    <ref local="ldapAuthProvider"/> 				
+			</list>
+		</property>
+	</bean>
+
+
+
+
+<!-- LDAP Authentification -->
+
+<bean id="initialDirContextFactory" class="org.acegisecurity.ldap.DefaultInitialDirContextFactory">
+	<constructor-arg value="ldap://localhost:10389/dc=example,dc=com"/>	
+	<property name="authenticationType"><value>simple</value></property>
+</bean>
+
+<bean id="ldapAuthProvider" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider">
+	<constructor-arg>
+		<bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
+			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
+			<property name="userDnPatterns"><list><value>uid={0},ou=myunit</value></list></property>
+		</bean>
+	</constructor-arg>	
+</bean>
+
+
+</beans>

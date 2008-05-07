@@ -19,13 +19,13 @@ import org.apache.commons.lang.StringUtils;
 public class UserImpl extends UserBase implements User, UserDetails {
 
 	private static final long serialVersionUID = 4562337137383225187L;
-	
+
 	public UserImpl() {
 		setLocale("de");
 		setTimezone("Europe/Berlin");
 		setTheme("plexus");
 	}
-	
+
 	public void setUsername(String username) {
 		setName(username);
 	}
@@ -33,17 +33,20 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public String getUsername() {
 		return super.getName();
 	}
-	
+
 	@Override
 	public void setName(String name) {
 		if (StringUtils.isNotBlank(name)) {
-			super.setName(name.toLowerCase(Locale.ENGLISH).trim());
+			if (StringUtils.isBlank(getName()) || !isCentralUser()) {
+				super.setName(name.toLowerCase(Locale.ENGLISH).trim());
+			}
 		} else {
-			super.setName("");
+			if (StringUtils.isBlank(getName()) || !isCentralUser()) {
+				super.setName("");
+			}
 		}
 	}
 
-	
 	@Override
 	public void setEmail(String email) {
 		super.setEmail(email.toLowerCase(Locale.ENGLISH).trim());
@@ -72,7 +75,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 		}
 		return super.equals(object);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();
@@ -134,7 +137,10 @@ public class UserImpl extends UserBase implements User, UserDetails {
 	public String getPortrait() {
 		return super.getPortrait() != null ? super.getPortrait() : "";
 	}
-	
-	
+
+	@Override
+	public boolean isCentralUser() {
+		return getUsername().contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER);
+	}
 
 }

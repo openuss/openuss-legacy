@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 import org.acegisecurity.Authentication;
@@ -62,25 +63,45 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected UserInfo handleCreateUser(UserInfo userInfo) throws Exception {
 		Validate.isTrue(userInfo.getId() == null, "User must not have an identifier!");
-		
+
 		validateUserInfoForRegistration(userInfo);
 
 		User user = getUserDao().userInfoToEntity(userInfo);
 		getUserDao().create(user);
+		if (user.isCentralUser()) {
+			user.setPassword(generateRandomPassword());
+		}
 		encodePassword(user);
 
-		// Define object identity and assign roles to user 
+		// Define object identity and assign roles to user
 		createObjectIdentity(user, null);
 		addAuthorityToGroup(user, Roles.USER);
-
 		getUserDao().update(user);
-
 		getUserDao().toUserInfo(user, userInfo);
 		return userInfo;
 	}
 
+	private String generateRandomPassword() {
+		// Generate random password, so that account is likely not to be used for login.
+		Random random = new Random();		
+		String password = String.valueOf(random.nextLong())+String.valueOf(random.nextLong());
+		return password;
+	}
+
 	private void validateUserInfoForRegistration(UserInfo userInfo) {
-		if (!isValidUserName(null, userInfo.getUsername())) {
+		String username = userInfo.getUsername();
+		if (username == null || username.startsWith(GROUP_PREFIX) || username.startsWith(ROLE_PREFIX)) {
+			throw new SecurityServiceException("Invalid username. Username contains group- or role-prefix.");
+		}
+		/* Check for valid username. 
+		   Ensure only centrally authenticated users (already enabled!) get usernames with special delimiter.
+		   Furthermore ensure that enabled users HAVE special delimiters in their username, i. e. are centrally authenticated users.
+		*/ 
+		if (userInfo.isCentralUser() && !username.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER) 
+				|| !userInfo.isCentralUser() && username.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER)) {
+			throw new SecurityServiceException("Invalid username. Invalid usages of domain delimiter.");
+		}
+		if (!isNonExistingUsername(null, username)) {
 			throw new SecurityServiceException("Invalid username. Maybe the username already exists.");
 		}
 		if (StringUtils.isBlank(userInfo.getPassword())) {
@@ -90,7 +111,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			throw new SecurityServiceException("Email must be defined");
 		}
 		if (isNonExistingEmailAddress(userInfo, userInfo.getEmail()) != null) {
-			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) " + userInfo.getEmail());
+			throw new SecurityServiceException("Email adress already in use (shold not occur -> validator bypassed?) "
+					+ userInfo.getEmail());
 		}
 	}
 
@@ -99,6 +121,9 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		Validate.notEmpty(password, "Password must not be empty");
 		Validate.isTrue(password.length() > 5, "Password must be longer then 5 characters");
 		User user = getUserDao().load(getCurrentUser().getId());
+		if (user.isCentralUser()) {
+			throw new SecurityServiceException("User is administrated by central identity management and may not change password locally.");
+		}
 		user.setPassword(password);
 		encodePassword(user);
 		getUserDao().update(user);
@@ -159,8 +184,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			if (auth != null && ObjectUtils.equals(auth.getPrincipal(), authority)) {
 				logger.debug("refresing current user security context.");
 				final UsernamePasswordAuthenticationToken authentication;
-				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(), "[Protected]",
-						((UserImpl) authority).getAuthorities());
+				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(),
+						"[Protected]", ((UserImpl) authority).getAuthorities());
 				securityContext.setAuthentication(authentication);
 			}
 		}
@@ -218,10 +243,16 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected boolean handleIsValidUserName(UserInfo self, String userName) throws Exception {
-		// username must not start with GROUP_ or ROLE_
-		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)) {
+		// username must not start with GROUP_ or ROLE_ 
+		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)
+				|| userName.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER)) {
 			return false;
 		}
+
+		return isNonExistingUsername(self, userName);
+	}
+
+	private boolean isNonExistingUsername(UserInfo self, String userName) {
 		UserInfo userInfo = (UserInfo) getUserDao().findUserByUsername(UserDao.TRANSFORM_USERINFO, userName);
 		if (self == null || userInfo == null) {
 			return userInfo == null;
@@ -266,13 +297,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected void handleRemoveGroup(Group group) throws Exception {
-		//remove members of group
-		for (Authority auth:group.getMembers()){
-			if (auth instanceof Group){
+		// remove members of group
+		for (Authority auth : group.getMembers()) {
+			if (auth instanceof Group) {
 				Group childGroup = (Group) auth;
 				childGroup.getGroups().remove(group);
 				getGroupDao().update(childGroup);
-			} else if (auth instanceof User){
+			} else if (auth instanceof User) {
 				User user = (User) auth;
 				user.getGroups().remove(group);
 				getUserDao().update(user);
@@ -459,7 +490,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		Validate.notNull(userInfo, "Parameter userInfo must not be null.");
 		User user = getUserDao().load(userInfo.getId());
 		if (user != null) {
-			return ((UserImpl) user).getGrantedAuthorities(); 
+			return ((UserImpl) user).getGrantedAuthorities();
 		} else {
 			return new String[0];
 		}

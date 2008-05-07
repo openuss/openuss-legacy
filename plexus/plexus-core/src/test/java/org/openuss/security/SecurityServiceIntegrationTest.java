@@ -5,6 +5,8 @@
  */
 package org.openuss.security;
 
+import java.util.TimeZone;
+
 import org.acegisecurity.acl.AclManager;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -34,6 +36,85 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 
 		securityService.removeUser(getSecurityService().getUser(user.getId()));
 	}
+	
+	public void testCreateUserForCentrallyAuthenticatedUser() {
+		String username = SecurityUtility.toUsername("exampledomain", testUtility.unique("username"));
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Centrally authenticated user must be enabled.
+		boolean enabled = true;
+		boolean centralUser = true;
+		
+		UserInfo userInfo = createUserInfo(username, password, email, firstName, lastName, enabled, centralUser);
+		
+		securityService.createUser(userInfo);
+		
+		UserInfo retrievedUser = securityService.getUserByName(username);
+		assertNotNull(retrievedUser);
+		assertEquals(retrievedUser.getUsername(),username);
+		assertTrue(retrievedUser.isCentralUser());
+		assertTrue(retrievedUser.isEnabled());
+	}
+
+	private UserInfo createUserInfo(String username, String password, String email, String firstName, String lastName,
+			boolean enabled, boolean centralUser) {
+		UserInfo user = new UserInfo();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setEnabled(enabled);
+		user.setCentralUser(centralUser);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setAccountExpired(false);
+		user.setAccountLocked(false);
+		user.setCredentialsExpired(false);
+		user.setTimezone(TimeZone.getDefault().getID());
+		return user;
+	}
+	
+	public void testCreateUserForCentrallyAuthenticatedUserWithInvalidUsername() {
+		String username = "exampledomaintester";
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Centrally authenticated user must be enabled.
+		boolean enabled = true;
+		boolean centralUser = true;
+		
+		UserInfo userInfo = createUserInfo(username, password, email, firstName, lastName, enabled, centralUser);
+		
+		try {
+			securityService.createUser(userInfo);
+			fail("SecurityServiceException expected because invalid usage of domain delimiter.");
+		} catch (SecurityServiceException sse) {
+			// Success
+		} 	
+	}
+	
+	public void testCreateUserForNonCentrallyAuthenticatedUserWithInvalidUsername() {
+		String username = SecurityUtility.toUsername("exampledomain", testUtility.unique("username"));
+		String password = "protected";
+		String email = "tester@testing.org";
+		String firstName = "joe";
+		String lastName = "sixpack";
+		// Non-centrally authenticated user must be disabled.
+		boolean enabled = false;
+		boolean centralUser = false;
+
+		UserInfo userInfo = createUserInfo(username, password, email, firstName, lastName, enabled, centralUser);
+		
+		try {
+			securityService.createUser(userInfo);
+			fail("SecurityServiceException expected because invalid usage of domain delimiter.");
+		} catch (SecurityServiceException sse) {
+			// Success
+		} 	
+	}
+
 
 	public void testIsNonExistingUserName() {
 		User user = testUtility.createUniqueUserInDB();
@@ -41,7 +122,6 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		assertTrue(securityService.isValidUserName(null, testUtility.unique("Name")));
 		assertFalse(securityService.isValidUserName(null, user.getUsername()));
 		assertTrue(securityService.isValidUserName(getSecurityService().getUser(user.getId()), user.getUsername()));
-
 	}
 
 	public void testPermission() {
