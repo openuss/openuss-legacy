@@ -140,7 +140,7 @@ public class UserImpl extends UserBase implements User, UserDetails {
 
 	@Override
 	public boolean isCentralUser() {
-		return getUsername().contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER);
+		return SecurityDomainUtility.containsDomain(getUsername());
 	}
 
 }

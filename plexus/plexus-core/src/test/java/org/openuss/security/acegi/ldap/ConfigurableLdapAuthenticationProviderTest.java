@@ -22,7 +22,7 @@ import org.acegisecurity.providers.dao.cache.NullUserCache;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.Roles;
-import org.openuss.security.SecurityConstants;
+import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.context.MessageSource;
@@ -410,11 +410,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		
 		ldapServerConfigurations.add(ldapServerConfiguration);
 		
-		String modifiedUsername = SecurityConstants.USERNAME_DOMAIN_DELIMITER+
-				   				  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
-				   				  ldapServerConfiguration.getAuthenticationDomainName()+
-				   				  SecurityConstants.USERNAME_DOMAIN_DELIMITER+
-				   				  username;
+		String modifiedUsername = SecurityDomainUtility.toUsername(ldapServerConfiguration.getAuthenticationDomainName(), username);
 		
 		LdapConfigurationService ldapConfigurationService = createStrictMock(LdapConfigurationService.class);
 		expect(ldapConfigurationService.getEnabledLdapServerConfigurations()).andReturn(ldapServerConfigurations);

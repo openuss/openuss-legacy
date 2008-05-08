@@ -31,9 +31,7 @@ import org.openuss.framework.web.jsf.util.Resources;
  * @author Ingo Dueppe
  */
 public class Pages {
-	/**
-	 * Logger for this class
-	 */
+
 	private static final Logger logger = Logger.getLogger(Pages.class);
 
 	private static final String PAGE_XML_SUFFIX = ".page.xml";
@@ -71,6 +69,9 @@ public class Pages {
 				instance = new Pages();
 			}
 		}
+		
+		instance = new Pages();
+		
 		return instance;
 	}
 

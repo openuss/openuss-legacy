@@ -38,7 +38,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 	}
 	
 	public void testCreateUserForCentrallyAuthenticatedUser() {
-		String username = SecurityUtility.toUsername("exampledomain", testUtility.unique("username"));
+		String username = SecurityDomainUtility.toUsername("exampledomain", testUtility.unique("username"));
 		String password = "protected";
 		String email = "tester@testing.org";
 		String firstName = "joe";
@@ -96,7 +96,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 	}
 	
 	public void testCreateUserForNonCentrallyAuthenticatedUserWithInvalidUsername() {
-		String username = SecurityUtility.toUsername("exampledomain", testUtility.unique("username"));
+		String username = SecurityDomainUtility.toUsername("exampledomain", testUtility.unique("username"));
 		String password = "protected";
 		String email = "tester@testing.org";
 		String firstName = "joe";

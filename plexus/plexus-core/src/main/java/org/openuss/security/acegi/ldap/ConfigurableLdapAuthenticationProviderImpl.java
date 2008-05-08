@@ -27,7 +27,7 @@ import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.Roles;
-import org.openuss.security.SecurityConstants;
+import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.context.MessageSource;
@@ -114,7 +114,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		
 		//Delete domain information from username
 		String username = (String) authentication.getPrincipal();			
-		username = username.substring(username.lastIndexOf(SecurityConstants.USERNAME_DOMAIN_DELIMITER)+1);
+		username = SecurityDomainUtility.extractUsername(username); 
 		UsernamePasswordAuthenticationToken modifiedAuthentication = new UsernamePasswordAuthenticationToken(username,authentication.getCredentials());
 		modifiedAuthentication.setDetails(authentication.getDetails());
 		authentication = modifiedAuthentication;

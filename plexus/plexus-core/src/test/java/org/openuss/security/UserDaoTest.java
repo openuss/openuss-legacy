@@ -82,7 +82,7 @@ public class UserDaoTest extends UserDaoTestBase {
 	
 	public void testUpdateUsernameOfCentrallyAuthenticatedUser() {
 		// Create a User
-		String username = SecurityConstants.USERNAME_DOMAIN_DELIMITER+"exampledomain"+SecurityConstants.USERNAME_DOMAIN_DELIMITER+"tester";
+		String username = SecurityDomainUtility.toUsername("exampledomain","tester");
 		User user = User.Factory.newInstance();
 		user.setUsername(username);
 		user.setEmail(testUtility.unique("openuss")+"@e-learning.uni-muenster.de");

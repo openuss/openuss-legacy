@@ -97,8 +97,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		   Ensure only centrally authenticated users (already enabled!) get usernames with special delimiter.
 		   Furthermore ensure that enabled users HAVE special delimiters in their username, i. e. are centrally authenticated users.
 		*/ 
-		if (userInfo.isCentralUser() && !username.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER) 
-				|| !userInfo.isCentralUser() && username.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER)) {
+		if (userInfo.isCentralUser() && !SecurityDomainUtility.containsDomain(username) 
+				|| !userInfo.isCentralUser() && SecurityDomainUtility.containsDomain(username)) {
 			throw new SecurityServiceException("Invalid username. Invalid usages of domain delimiter.");
 		}
 		if (!isNonExistingUsername(null, username)) {
@@ -242,14 +242,13 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected boolean handleIsValidUserName(UserInfo self, String userName) throws Exception {
-		// username must not start with GROUP_ or ROLE_ 
-		if (userName == null || userName.startsWith(GROUP_PREFIX) || userName.startsWith(ROLE_PREFIX)
-				|| userName.contains(SecurityConstants.USERNAME_DOMAIN_DELIMITER)) {
+	protected boolean handleIsValidUserName(UserInfo self, String username) throws Exception {
+		// username must not start with GROUP_ or ROLE_ or contain a domain name 
+		if (username == null || username.startsWith(GROUP_PREFIX) || username.startsWith(ROLE_PREFIX) || SecurityDomainUtility.containsDomain(username)) {
 			return false;
 		}
-
-		return isNonExistingUsername(self, userName);
+		// username must not already exists
+		return isNonExistingUsername(self, username);
 	}
 
 	private boolean isNonExistingUsername(UserInfo self, String userName) {
