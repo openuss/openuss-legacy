@@ -317,7 +317,7 @@ public class Constants {
 	
 	// ldap_domain navigation outcomes and combobox long constants
 	public static final String LDAP_DOMAIN_REGISTRATION_CONTROLLER = "ldapDomainRegistration";
-	public static final String LDAP_DOMAIN_REGISTRATION_STEP1_PAGE = "ldap_domain_registration_step1";
+	public static final String LDAP_DOMAIN_EDIT_PAGE = "ldap_domain_registration_edit";
 	public static final String AUTHENTICATIONDOMAIN_INFO = "authenticationDomainInfo";
 	public static final String LDAP_DOMAIN_PAGE = "ldap_domains";
 	public static final String DOMAIN_CONFIRM_REMOVE_PAGE = "ldap_domain_remove_confirmation";
@@ -327,7 +327,7 @@ public class Constants {
 
 	// ldap_attributemapping navigation outcomes and combobox long constants
 	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_CONTROLLER = "ldapAttributeMappingRegistration";
-	public static final String LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE = "ldap_attributemapping_registration_step1";
+	public static final String LDAP_ATTRIBUTEMAPPING_EDIT_PAGE = "ldap_attributemapping_registration_edit";
 	public static final String ATTRIBUTEMAPPING_INFO = "attributeMappingInfo";
 	public static final String LDAP_ATTRIBUTEMAPPING_PAGE = "ldap_attributemappings";
 	public static final String ATTRIBUTEMAPPING_CONFIRM_REMOVE_PAGE = "ldap_attributemapping_remove_confirmation";
@@ -336,7 +336,7 @@ public class Constants {
 
 	// ldap_roleattributekey navigation outcomes and combobox long constants
 	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_CONTROLLER = "ldapRoleAttributeKeyRegistration";
-	public static final String LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE = "ldap_roleattributekey_registration_step1";
+	public static final String LDAP_ROLEATTRIBUTEKEY_EDIT_PAGE = "ldap_roleattributekey_registration_edit";
 	public static final String ROLEATTRIBUTEKEY_INFO = "roleAttributeKeyInfo";
 	public static final String LDAP_ROLEATTRIBUTEKEY_PAGE = "ldap_roleattributekeys";
 	public static final String ROLEATTRIBUTEKEY_CONFIRM_REMOVE_PAGE = "ldap_roleattributekey_remove_confirmation";
@@ -345,7 +345,7 @@ public class Constants {
 
 	// ldap_server navigation outcomes and combobox long constants
 	public static final String LDAP_SERVER_REGISTRATION_CONTROLLER = "ldapServerRegistration";
-	public static final String LDAP_SERVER_REGISTRATION_STEP1_PAGE = "ldap_server_registration_step1";
+	public static final String LDAP_SERVER_EDIT_PAGE = "ldap_server_registration_edit";
 	public static final String LDAPSERVER_INFO = "ldapServerInfo";
 	public static final String LDAP_SERVER_PAGE = "ldap_servers";
 	public static final String SERVER_CONFIRM_REMOVE_PAGE = "ldap_server_remove_confirmation";
@@ -354,7 +354,7 @@ public class Constants {
 	
 	// ldap_userdnpattern navigation outcomes and combobox long constants
 	public static final String LDAP_USERDNPATTERN_REGISTRATION_CONTROLLER = "ldapUserDnPatternRegistration";
-	public static final String LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE = "ldap_userdnpattern_registration_step1";
+	public static final String LDAP_USERDNPATTERN_EDIT_PAGE = "ldap_userdnpattern_registration_edit";
 	public static final String USERDNPATTERN_INFO = "userDnPatternInfo";
 	public static final String LDAP_USERDNPATTERN_PAGE = "ldap_userdnpatterns";
 	public static final String USERDNPATTERN_CONFIRM_REMOVE_PAGE = "ldap_userdnpattern_remove_confirmation";

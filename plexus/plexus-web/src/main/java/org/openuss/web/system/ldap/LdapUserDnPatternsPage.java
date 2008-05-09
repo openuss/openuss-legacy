@@ -110,7 +110,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapPage{
 	public String selectUserDnPatternAndEdit() {
 		UserDnPatternInfo userDnPattern = currentUserDnPattern();
 		setSessionBean(Constants.USERDNPATTERN_INFO, userDnPattern);		
-		return Constants.LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_USERDNPATTERN_EDIT_PAGE;
 	}
 	 
 	public String confirmRemoveUserDnPattern() {
@@ -145,8 +145,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapPage{
 				sort(userDnPatternList);
 				dataPage = new DataPage<UserDnPatternInfo>(userDnPatternList.size(),0,userDnPatternList);
 			}
-			
-				return dataPage;
+			return dataPage;
 		}
 
 	}		

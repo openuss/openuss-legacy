@@ -81,7 +81,7 @@ public class LdapUserDnPatternRegistrationController extends AbstractLdapPage {
 		userDnPatternInfo = new UserDnPatternInfo();
 		setSessionBean(Constants.USERDNPATTERN_INFO, userDnPatternInfo);
 		
-		return Constants.LDAP_USERDNPATTERN_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_USERDNPATTERN_EDIT_PAGE;
 	}
 
 	

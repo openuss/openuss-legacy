@@ -35,14 +35,14 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapPage{
 			super.prerender();
 			addBreadCrumbs();
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}	
 	}
 	
 	/**
 	 * Adds an additional BreadCrumb.
 	 */
-	 private void addBreadCrumbs() {		 
+	 protected void addBreadCrumbs() {		 
 		 breadcrumbs.loadAdministrationCrumbs();
 		 
 		 BreadCrumb myBreadCrumb = new BreadCrumb();		 
@@ -73,7 +73,7 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapPage{
 	public String selectRoleAttributeKeyAndEdit() {
 		RoleAttributeKeyInfo roleAttributeKey = currentRoleAttributeKey();
 		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKey);		
-		return Constants.LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_ROLEATTRIBUTEKEY_EDIT_PAGE;
 	}
 
 	/**

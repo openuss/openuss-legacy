@@ -15,6 +15,10 @@
 	   			<o:block label="#{msg.login_headline}">
 		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true" forceId="true"/>
 		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password" forceId="true"/>
+		   			<label class="field_label">
+		   				<t:selectBooleanCheckbox id="j_rememberme" forceId="true" value="#{authenticationController.rememberMe}"/>
+		   				#{msg['login_remember_me']}
+		   			</label>		   			
 		   		</o:block>
 		   		<o:block>
 			    	<t:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login" forceId="true"/>

@@ -35,7 +35,7 @@ public class LdapDomainsPage extends AbstractLdapPage{
 			super.prerender();
 			addBreadCrumbs();
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}		
 	}
 	
@@ -77,7 +77,7 @@ public class LdapDomainsPage extends AbstractLdapPage{
 		AuthenticationDomainInfo authenticationDomain = currentAuthenticationDomain();
 		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomain);
 		
-		return Constants.LDAP_DOMAIN_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_DOMAIN_EDIT_PAGE;
 	}
 	
 	/**

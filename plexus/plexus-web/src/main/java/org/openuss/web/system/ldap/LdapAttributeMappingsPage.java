@@ -33,7 +33,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapPage{
 			super.prerender();
 			addBreadCrumbs();
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}		
 	}
 	
@@ -72,7 +72,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapPage{
 		AttributeMappingInfo attributeMapping = currentAttributeMapping();
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMapping);
 		
-		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_ATTRIBUTEMAPPING_EDIT_PAGE;
 	}
 
 	/**

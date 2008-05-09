@@ -74,7 +74,7 @@ public class LdapServersPage extends AbstractLdapPage {
 		LdapServerInfo ldapServerInfo = currentLdapServer();
 		setSessionBean(Constants.LDAPSERVER_INFO, ldapServerInfo);			
 			
-		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_SERVER_EDIT_PAGE;
 	}
 	 
 	/**

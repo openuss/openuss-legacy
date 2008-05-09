@@ -5,7 +5,6 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
-import org.openuss.web.BasePage;
 import org.openuss.web.PageLinks;
 
 /**
@@ -14,16 +13,15 @@ import org.openuss.web.PageLinks;
  */
 @Bean(name="views$secured$system$ldap_index", scope=Scope.REQUEST)
 @View
-public class LdapServerConfigIndexPage extends BasePage{
+public class LdapServerConfigIndexPage extends AbstractLdapPage{
 
-	
 	@Prerender
 	public void prerender() {
 		try {
 			super.prerender();
 			addBreadCrumbs();
 		} catch (Exception e) {
-			
+			logger.error(e);
 		}
 	}
 	

@@ -74,7 +74,7 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapPage
 		logger.debug("start registration process");
 		attributeMappingInfo = new AttributeMappingInfo();		
 		setSessionBean(Constants.ATTRIBUTEMAPPING_INFO, attributeMappingInfo);
-		return Constants.LDAP_ATTRIBUTEMAPPING_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_ATTRIBUTEMAPPING_EDIT_PAGE;
 	}
 	
 	public List<SelectItem> getAllRoleAttributeKeys() {

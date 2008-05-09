@@ -83,7 +83,7 @@ public class LdapRoleAttributeKeyRegistrationController extends AbstractLdapPage
 		roleAttributeKeyInfo = new RoleAttributeKeyInfo();
 		setSessionBean(Constants.ROLEATTRIBUTEKEY_INFO, roleAttributeKeyInfo);
 		
-		return Constants.LDAP_ROLEATTRIBUTEKEY_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_ROLEATTRIBUTEKEY_EDIT_PAGE;
 	}
 
 	@SuppressWarnings( { "unchecked" })

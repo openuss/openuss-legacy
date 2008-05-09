@@ -87,7 +87,7 @@ public class LdapDomainRegistrationController extends AbstractLdapPage {
 		authenticationDomainInfo = new AuthenticationDomainInfo();
 		setSessionBean(Constants.AUTHENTICATIONDOMAIN_INFO, authenticationDomainInfo);
 		
-		return Constants.LDAP_DOMAIN_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_DOMAIN_EDIT_PAGE;
 	}
 
 

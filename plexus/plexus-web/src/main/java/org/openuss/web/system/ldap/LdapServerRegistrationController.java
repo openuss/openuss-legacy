@@ -85,7 +85,7 @@ public class LdapServerRegistrationController extends AbstractLdapPage {
 		logger.debug("start registration process");
 		ldapServerInfo = new LdapServerInfo();
 		setSessionBean(Constants.LDAPSERVER_INFO, ldapServerInfo);
-		return Constants.LDAP_SERVER_REGISTRATION_STEP1_PAGE;
+		return Constants.LDAP_SERVER_EDIT_PAGE;
 	}
 
 	/**
