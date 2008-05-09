@@ -31,11 +31,12 @@
 						<t:commandNavigation2 id="adm_institutes" forceId="true" action="admin_institutes" activeOnViewIds="/views/secured/system/institutes.xhtml" >
 							<h:outputText value="#{msg['admin_command_institutes']}" ></h:outputText>
 						</t:commandNavigation2>
+						<t:commandNavigation2 action="admin_ldap_index" activeOnViewIds="/views/secured/system/ldap_index.xhtml,/views/secured/system/ldap/ldap_roleattributekeys.xhtml,/views/secured/system/ldap/ldap_attributemappings.xhtml,/views/secured/system/ldap/ldap_domains.xhtml,/views/secured/system/ldap/ldap_userdnpatterns.xhtml,/views/secured/system/ldap/ldap_servers.xhtml" >
+							<h:outputText value="#{msg['admin_command_ldap_index']}" ></h:outputText>		
+						</t:commandNavigation2>							
 					</t:commandNavigation2>
 				</t:panelNavigation2>	
 			</h:form>
 	</s:authorize> 
-	
-	
 	
 </ui:composition>

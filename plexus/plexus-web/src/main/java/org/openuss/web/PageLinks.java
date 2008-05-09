@@ -48,4 +48,13 @@ public class PageLinks{
 	public static final String ADMIN_UNIVERSITIES = "/views/secured/system/universities.faces";
 	public static final String ADMIN_INSTITUTES = "/views/secured/system/institutes.faces";
 	public static final String ADMIN_DEPARTMENTS = "/views/secured/system/departments.faces";
+	
+	public static final String ADMIN_LDAP_INDEX = "/views/secured/system/ldap_index.faces";
+	public static final String ADMIN_LDAP_ROLEATTRIBUTEKEY = "/views/secured/system/ldap/ldap_roleattributekeys.faces";
+	public static final String ADMIN_LDAP_ATTRIBUTEMAPPING = "/views/secured/system/ldap/ldap_attributemappings.faces";
+	public static final String ADMIN_LDAP_AUTHENTICATIONDOMAIN = "/views/secured/system/ldap/ldap_domains.faces";
+	public static final String ADMIN_LDAP_USERDNPATTERN = "/views/secured/system/ldap/ldap_userdnpatterns.faces";
+	public static final String ADMIN_LDAP_LDAPSERVER = "/views/secured/system/ldap/ldap_servers.faces";
+	public static final String ADMIN_LDAP_LDAPSERVERSTEP_ONE = "/views/secured/system/ldap/ldap_serverstep1.faces";
+	
 }

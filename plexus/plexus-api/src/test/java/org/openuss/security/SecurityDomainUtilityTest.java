@@ -10,8 +10,9 @@ public class SecurityDomainUtilityTest extends TestCase {
 
 	public void testExtractDomain() {
 		assertEquals("domain",SecurityDomainUtility.extractDomain("domain\\username"));
-		assertEquals("", SecurityDomainUtility.extractDomain("domain$username"));
-		assertEquals("", SecurityDomainUtility.extractDomain("username"));
+		assertNull(SecurityDomainUtility.extractDomain("domain$username"));
+		assertNull(SecurityDomainUtility.extractDomain("username"));
+		assertNull(SecurityDomainUtility.extractDomain(null));
 	}
 
 	public void testExtractUsername() {
@@ -19,6 +20,7 @@ public class SecurityDomainUtilityTest extends TestCase {
 		assertEquals("domain$username", SecurityDomainUtility.extractUsername("domain$username"));
 		assertEquals("", SecurityDomainUtility.extractUsername("domain\\"));
 		assertEquals("username", SecurityDomainUtility.extractUsername("username"));
+		assertNull(SecurityDomainUtility.extractUsername(null));
 	}
 
 }

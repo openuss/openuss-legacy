@@ -1,4 +1,4 @@
-// OpenUSS - Open Source University Support System
+o// OpenUSS - Open Source University Support System
 /**
  * This is only generated once! It will never be overwritten.
  * You can (and have to!) safely modify it by hand.
@@ -92,8 +92,8 @@ public class LdapConfigurationServiceImpl extends LdapConfigurationServiceBase {
 
 		// load related entities (domain + user dn patterns)
 		AuthenticationDomain domainEntity = getAuthenticationDomainDao().load(ldapServerInfo.getAuthenticationDomainId());
-		List<UserDnPattern> userDnPatternEntities = new ArrayList<UserDnPattern>();
 		
+		List<UserDnPattern> userDnPatternEntities = new ArrayList<UserDnPattern>();
 		for (Iterator<Long> iterator = ldapServerInfo.getUserDnPatternIds().iterator(); iterator.hasNext();) {
 			UserDnPattern userDnPatternEntity = getUserDnPatternDao().load(iterator.next());
 			userDnPatternEntities.add(userDnPatternEntity);
@@ -101,6 +101,7 @@ public class LdapConfigurationServiceImpl extends LdapConfigurationServiceBase {
 
 		LdapServer ldapServer = getLdapServerDao().ldapServerInfoToEntity(ldapServerInfo);
 		ldapServer.setAuthenticationDomain(domainEntity);
+		ldapServer.setUserDnPatterns(userDnPatternEntities);
 		getLdapServerDao().create(ldapServer);
 
 		// update non-required attributes
@@ -210,11 +211,11 @@ public class LdapConfigurationServiceImpl extends LdapConfigurationServiceBase {
 
 		// set user dn patterns
 		List<UserDnPattern> userDnPatternEntities = new ArrayList<UserDnPattern>();
-		for (Iterator<UserDnPattern> iterator = ldapServerEntity.getUserDnPatterns().iterator(); iterator.hasNext();) {
-			UserDnPattern userDnPattern = getUserDnPatternDao().load(iterator.next().getId());
-			userDnPattern.getLdapServers().add(ldapServerEntity);
+		for (Long id: (List<Long>) ldapServer.getUserDnPatternIds()) {
+			UserDnPattern userDnPattern = getUserDnPatternDao().load(id);
 			userDnPatternEntities.add(userDnPattern);
 		}
+		
 		ldapServerEntity.setUserDnPatterns(userDnPatternEntities);
 
 		// save to DB

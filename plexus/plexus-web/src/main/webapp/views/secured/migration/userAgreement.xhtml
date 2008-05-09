@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<f:loadBundle basename="resources" var="msg" />
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content">
+ 			<h:form id="migration_reg1Form">
+ 				<!--  o:block>
+ 					<span class="header_font_normal">
+	 					#{msg.user_registration1_Headline}
+ 					</span>
+ 				</o:block -->
+ 				<o:block styleClass="form_box" label="${msg.user_registration1_Subheading}">
+ 					<div class="content_font_normal">
+		   				<h:outputText value="${msg.user_registration1_Text}" escape="false" styleClass="content_font_normal"/>
+	   				</div>
+	   				<label class="field_label">
+   					<h:selectBooleanCheckbox id="checkAgree" 
+   						value="#{centralUserData.userAgreementAccepted}" 
+   						validator="#{centralUserData.validateAcception}"
+   						styleClass="fieldCheckBox" 
+   						required="true"/>
+   						#{msg.user_registration1_Check}
+   					</label>
+	   				<h:message for="checkAgree" styleClass="field_error"/>
+	   			</o:block>
+	   			<o:block>
+					<h:commandButton value="${msg.user_registration3_ConfirmButton}" action="#{shortenedRegistrationController.register}" styleClass="button_big"/>
+		  		</o:block>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

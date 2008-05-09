@@ -14,7 +14,7 @@ public class SecurityDomainUtility {
 	private static String delimiter = USERNAME_DOMAIN_DELIMITER;
 
 	/**
-	 * Converts username and domain name to <code>\\${domain}\${username}</code>
+	 * Converts username and domain name to <code>${domain}\${username}</code>
 	 * @param domain - name of the domain
 	 * @param username - username without domain
 	 * @return username with domain prefix
@@ -26,13 +26,13 @@ public class SecurityDomainUtility {
 	/**
 	 * Extract the domain name from a <code>domain\\username</code> pattern.
 	 * @param username - username containing optionally the domain  
-	 * @return domain name or empty string
+	 * @return domain name or null
 	 */
 	public static String extractDomain(String username) {
-		if (username.indexOf(USERNAME_DOMAIN_DELIMITER) > -1) {
+		if (StringUtils.indexOf(username, USERNAME_DOMAIN_DELIMITER) > -1) {
 			return StringUtils.substringBefore(username, SecurityDomainUtility.USERNAME_DOMAIN_DELIMITER);
 		} else {
-			return "";
+			return null;
 		}
 		
 	}
@@ -43,7 +43,7 @@ public class SecurityDomainUtility {
 	 * @return username
 	 */
 	public static String extractUsername(String username) {
-		if (username.indexOf(USERNAME_DOMAIN_DELIMITER) > -1) {
+		if (StringUtils.indexOf(username, USERNAME_DOMAIN_DELIMITER) > -1) {
 			return StringUtils.substringAfter(username, SecurityDomainUtility.USERNAME_DOMAIN_DELIMITER);
 		} else {
 			return username;
@@ -56,7 +56,7 @@ public class SecurityDomainUtility {
 	 * @return true if username is a full qualified username
 	 */
 	public static boolean containsDomain(String username) {
-		return username.indexOf(USERNAME_DOMAIN_DELIMITER) > -1;
+		return StringUtils.indexOf(username, USERNAME_DOMAIN_DELIMITER) > -1;
 	}
 
 }

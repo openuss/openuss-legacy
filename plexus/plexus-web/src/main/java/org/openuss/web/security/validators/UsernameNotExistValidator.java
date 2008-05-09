@@ -25,7 +25,6 @@ public class UsernameNotExistValidator extends BaseBean implements Validator {
 		String username = (String) value;
 		if (StringUtils.isNotEmpty(username)) {
 			SecurityService service = (SecurityService) getBean("securityService");
-			// TODO user should be defined by attribute of the validator
 			UserInfo user = (UserInfo) getSessionBean(Constants.USER);
 			boolean unique = service.isValidUserName(user, username);
 			if (!unique) {

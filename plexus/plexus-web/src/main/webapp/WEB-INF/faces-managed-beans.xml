@@ -326,5 +326,36 @@
  		<managed-bean-class>java.util.ArrayList</managed-bean-class>
  		<managed-bean-scope>session</managed-bean-scope> 	 		
  	</managed-bean>
+ 	
+	<!-- LDAP Authentication -->
+	<managed-bean>
+        <managed-bean-name>roleAttributeKeyInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.RoleAttributeKeyInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+	
+	<managed-bean>
+        <managed-bean-name>attributeMappingInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.AttributeMappingInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>authenticationDomainInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.AuthenticationDomainInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>userDnPatternInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.UserDnPatternInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>ldapServerInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.LdapServerInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

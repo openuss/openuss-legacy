@@ -537,10 +537,16 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 		assertNotNull(server);
 		assertNull(server.getId());
 		
+		
 		// save ldap info object to DB
 		server = service.createLdapServer(server);
 		assertNotNull(server.getId());
-
+		assertEquals(1, server.getUserDnPatternIds().size());
+		
+		List<LdapServerInfo> servers = service.getAllLdapServers();
+		LdapServerInfo srv = servers.get(0);
+		assertEquals(1, srv.getUserDnPatternIds().size());
+		
 		// set new value
 		server.setProviderUrl("http://www.invalid-url.com");
 		
@@ -549,6 +555,7 @@ public class LdapConfigurationServiceIntegrationTest extends LdapConfigurationSe
 			service.saveLdapServer(server);
 			fail("Should have raised an LdapConfigurationServiceException: URL must be a valid ldap-url!");
 		} catch (LdapConfigurationServiceException expected) {
+			// expected
 		}
 		
 		// set new value
