@@ -89,6 +89,7 @@ public class AuthenticationController extends BasePage {
 		authRequest.setDetails(new WebAuthenticationDetails(request));
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
+		
 		try {
 			// Perform authentication
 			auth = getAuthenticationManager().authenticate(authRequest);
@@ -101,11 +102,9 @@ public class AuthenticationController extends BasePage {
 			injectUserInformationIntoSession(auth);
 			sessionTracker.logSessionCreated(getSession());
 		
-			if (logger.isDebugEnabled())
-				logger.debug("User: " + username + " switched to active state.");
+			logger.debug("User: " + username + " switched to active state.");
 		} catch (DisabledException ex) {
-			if (logger.isDebugEnabled())
-				logger.debug("User " + username + " is not active");
+			logger.debug("User " + username + " is not active");
 			addError(i18n("authentication_error_account_disabled"));
 			return "/views/public/user/activate/request.xhtml";
 		} catch (AuthenticationException ex) {
@@ -179,7 +178,6 @@ public class AuthenticationController extends BasePage {
 			user = (UserInfo) auth.getPrincipal();
 			securityService.setLoginTime(user);
 			setSessionBean(Constants.USER_SESSION_KEY, user);
-			
 			refreshDesktop();
 		}
 	}
@@ -189,8 +187,7 @@ public class AuthenticationController extends BasePage {
 	 * @return outcome is LOGOUT
 	 */
 	public String logout() {
-		if (logger.isDebugEnabled())
-			logger.debug(".logout - started");
+		logger.debug(".logout - started");
 
 		// invalidate current session
 		final HttpServletRequest request = getRequest();

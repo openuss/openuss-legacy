@@ -11,7 +11,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, filterInvocationInterceptor
+				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
 				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, filterInvocationInterceptor
 			</value>
 		</property>
@@ -20,6 +20,11 @@
 	<!-- - - - - - - - - - - - - - - - - - - - 
 		Filter
        - - - - - - - - - - - - - - - - - - - -->
+       
+    <bean id="authenticationAwareRequestFilter" class="org.openuss.web.security.AuthenticationAwareRequestFilter">
+		<property name="securityService" ref="securityService"/>
+		<property name="desktopService2" ref="desktopService2"/>
+    </bean>
 		
 	<bean id="logFilter" class="org.openuss.framework.web.LogFilter"/>	
 
@@ -34,6 +39,7 @@
 		<property name="authenticationFailureUrl" value="/views/public/login/login.faces?error=true"/>
 		<property name="securityService" ref="securityService"/>
 		<property name="onlineStatisticService" ref="onlineStatisticService"/>
+		<property name="filterProcessesUrl" value="/views/acegi_security_check.faces"/>
 	</bean>
 
 	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
@@ -193,9 +199,9 @@
     <bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices"> 
         <property name="userDetailsService" ref="userDetailsService"/>
         <property name="key" value="openuss-plexus"/> 
-        <property name="parameter" value="loginForm:rememberMe"/>
+        <property name="parameter" value="j_rememberme"/>
     </bean> 
-  
+
     <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider"> 
         <property name="key" value="openuss-plexus"/>
     </bean>

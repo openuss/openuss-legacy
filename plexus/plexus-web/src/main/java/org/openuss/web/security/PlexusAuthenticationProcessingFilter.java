@@ -19,10 +19,6 @@ public class PlexusAuthenticationProcessingFilter extends AuthenticationProcessi
 	
 	private SecurityService securityService;
 	
-	public PlexusAuthenticationProcessingFilter() {
-		super();
-	}
-
 	@Override
 	protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
 		super.onSuccessfulAuthentication(request, response, authResult);
@@ -45,6 +41,11 @@ public class PlexusAuthenticationProcessingFilter extends AuthenticationProcessi
 		
 		request.getSession().setAttribute(Constants.USER_SESSION_KEY, userInfo);
 		onlineStatisticService.logSessionStart((Long)request.getSession().getAttribute(Constants.ONLINE_SESSION_ID));
+	}
+
+	@Override
+	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+		return super.requiresAuthentication(request, response);
 	}
 
 	public OnlineStatisticService getOnlineStatisticService() {

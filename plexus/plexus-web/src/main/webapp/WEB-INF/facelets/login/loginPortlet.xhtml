@@ -27,6 +27,10 @@
 		   			<t:inputSecret id="j_password" forceId="true" value="#{authenticationController.password}" title="${msg['login_password_hint']}" required="true" styleClass="field"/>
 		   			<h:message id="fieldError" for="j_password" styleClass="field_error" showDetail="true" showSummary="false" />
 		   		
+		   			<label class="field_rememberme">
+		   				<t:selectBooleanCheckbox id="j_rememberme" forceId="true" value="#{authenticationController.rememberMe}" styleClass="fieldCheckBox"/>
+		   				#{msg['login_remember_me']}
+		   			</label>
 			    	<t:commandButton id="loginButton" forceId="true" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
 		    	</h:form>
 				<h:form id="loginPortletRegister">
