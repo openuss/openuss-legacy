@@ -52,27 +52,24 @@ public abstract class BasePage extends BaseBean {
 		refreshDesktop();
 	}
 
-
 	protected void refreshDesktop() {
 		if (user != null && user.getId() != null) {
-				logger.debug("refrehsing desktop object");
-				try{
-					desktopInfo = desktopService2.findDesktopByUser(user.getId());
-				} catch (DesktopException e){
-					// should not occur
-					logger.error(e.getMessage());
-				}
-				logger.debug(desktopInfo.getId());
-				setBean(Constants.DESKTOP_INFO, desktopInfo);
-				if (desktopInfo == null || desktopInfo.getId() == null) {
-					logger.error("could not find desktop for user " + user);
-					addError(i18n("message_error_no_desktop_found"));
-					redirect(Constants.HOME);
-					return;
-				}
+			logger.debug("refrehsing desktop object");
+			try {
+				desktopInfo = desktopService2.findDesktopByUser(user.getId());
+				logger.debug("Found desktop for user with id" + desktopInfo.getId());
+			} catch (DesktopException e) {
+				logger.error("No desktop found for user "+user.getId(),e);
+			}
+			setBean(Constants.DESKTOP_INFO, desktopInfo);
+			if (desktopInfo == null || desktopInfo.getId() == null) {
+				logger.error("could not find desktop for user " + user);
+				addError(i18n("message_error_no_desktop_found"));
+				redirect(Constants.HOME);
+				return;
+			}
 		}
 	}
-
 
 	/**
 	 * @return ResoureBundle
