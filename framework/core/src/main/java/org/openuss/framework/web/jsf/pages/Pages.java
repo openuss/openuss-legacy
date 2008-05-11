@@ -71,7 +71,7 @@ public class Pages {
 		}
 		
 		//	Uncomment this for debug the web layer - this enables to edit pages.xml without restart tomcat
-		//	instance = new Pages();
+			instance = new Pages();
 		
 		return instance;
 	}
