@@ -56,8 +56,8 @@
 	   			<o:block label="#{msg.migration_login_headline}">
 		   			<o:input entity="migrationController" property="username" label="#{msg['login_username']}" required="true"/>
 		   			<o:input entity="migrationController" property="password" label="#{msg['login_password']}" required="true" type="password"/>		   					
-		   		</o:block>
-   			 	<o:block>
+		   		</o:block> 
+		   		<o:block>
 				    <h:commandButton id="loginButton" action="#{migrationController.performMigration}" value="${msg.login_button}" styleClass="button_login"/>
 		 		</o:block>
 	 		</h:form> 
@@ -68,8 +68,8 @@
 		   			<o:input entity="centralUserData" property="username" label="${msg['user_username']}" disabled="true">
 		   				<f:converter converterId="deleteDomainNameFromUsernameConverter" />
 		   			</o:input>
-		   			<o:input entity="centralUserData" property="firstName" label="${msg['user_contact_firstname']}" disabled="true"/>
-					<o:input entity="centralUserData" property="lastName" label="${msg['user_contact_lastname']}" disabled="true"/>		   			
+		   			<o:input entity="centralUserData" property="firstName" label="${msg['user_firstname']}" disabled="true"/>
+					<o:input entity="centralUserData" property="lastName" label="${msg['user_lastname']}" disabled="true"/>		   			
 		   			<o:input entity="centralUserData" property="email" label="${msg['user_email']}" disabled="true"/>		   					   					
 		   		</o:block>
    			 	<o:block>

@@ -10,13 +10,15 @@
 	xmlns:s="http://www.openuss.org/jsf-security">
 		<br />
 		<h:outputText value="#{msg['user_profile_login_header']}" styleClass="header_font_normal" />
-		<o:input id="username" forceId="true" entity="user" property="username" required="true">
+		<h:outputText value="#{msg.profile_readonly_field_explain}" styleClass="content_font_normal" rendered="#{user.centralUser}"/>
+		<o:input id="username" forceId="true" entity="user" property="username" required="true" disabled="#{user.centralUser}">
 			<f:validator validatorId="usernameNotExistValidator" />
 		</o:input>
-		<o:input id="email" forceId="true" entity="user" property="email" required="true">
+		<o:input id="email" forceId="true" entity="user" property="email" required="true" disabled="#{user.centralUser}">
 			<t:validateEmail />
 			<f:validator validatorId="uniqueEmailValidator" />
 		</o:input>
+		<!-- 
 		<s:authorize ifNotGranted="ROLE_USER">
 			<o:input id="password" forceId="true" entity="user" property="password" required="true"
 				type="password" redisplay="false">
@@ -30,16 +32,20 @@
 			</h:inputSecret>
 			<h:message for="confirmPassword" styleClass="field_error" />
 		</s:authorize>
-		<s:authorize ifAllGranted="ROLE_USER" rendered="#{not empty user.id}"><br />
-			<t:commandButton id="newPassword" forceId="true" action="secure_password_change" value="#{msg.user_new_password}" styleClass="button_save"/><br />
-		</s:authorize>
+		 -->
+		<c:if test="#{not user.centralUser}">
+			<s:authorize ifAllGranted="ROLE_USER" rendered="#{not empty user.id}"><br/>
+				<t:commandButton id="newPassword" forceId="true" action="secure_password_change" value="#{msg.user_new_password}" styleClass="button_save"/><br />
+			</s:authorize>
+		</c:if>
 
 	<!-- public profile information -->
 		<br />
 		<h:outputText value="#{msg.profile_public_header}" styleClass="header_font_normal"/> <br />
 		<h:outputText value="#{msg.profile_public_explain}" styleClass="content_font_normal"/>								
-		<o:input id="firstName" forceId="true" entity="user" property="firstName" maxlength="100" required="true"/>
-		<o:input id="lastName" forceId="true" entity="user" property="lastName" maxlength="100" required="true"/>
+		<h:outputText value="#{msg.profile_readonly_field_explain}" styleClass="content_font_normal" rendered="#{user.centralUser}"/>
+		<o:input id="firstName" forceId="true" entity="user" property="firstName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
+		<o:input id="lastName" forceId="true" entity="user" property="lastName" maxlength="100" required="true" disabled="#{user.centralUser}"/>
 		<o:input id="title" forceId="true" entity="user" property="title" maxlength="100"/>
 		<o:input id="profession" forceId="true" entity="user" property="profession" maxlength="100"/>
 		

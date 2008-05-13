@@ -363,5 +363,7 @@ public class Constants {
 	
 	// migration navigation outcomes constants
 	public static final String MIGRATION_PAGE = "migration";
+	public static final String USER_ACTIVATION_REQUEST_PAGE="user_activation_request";
+
 	
 }

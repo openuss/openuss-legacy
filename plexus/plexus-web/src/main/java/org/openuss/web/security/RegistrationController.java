@@ -1,11 +1,13 @@
 package org.openuss.web.security;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -18,6 +20,8 @@ import org.openuss.registration.RegistrationException;
 import org.openuss.registration.RegistrationService;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
+import org.openuss.security.ldap.AuthenticationDomainInfo;
+import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
 import org.openuss.web.Constants;
@@ -49,11 +53,16 @@ public class RegistrationController extends BaseBean {
 
 	@Property(value = "#{registrationData}")
 	private RegistrationData registrationData;
+	
+	@Property(value = "#{ldapConfigurationService}")
+	private LdapConfigurationService ldapConfigurationService;
 
 	@Property(value = "#{param.username}")
 	private String username;
 
 	private String userToken;
+
+	private String changePasswordUrl;
 
 	/**
 	 * Performs user registrations and removes user registration information
@@ -164,24 +173,38 @@ public class RegistrationController extends BaseBean {
 	 * @throws MessagingException
 	 */
 	public String forgotPassword() throws RegistrationException, Exception {
-		if (registrationService == null)
+		if (registrationService == null) {
 			throw new IllegalStateException(
 					"RegistrationController isn't connected to a RegistrationService. Check if the property is properly initialized within managed beans configuration.");
-
-		UserInfo user = securityService.getUserByName(userToken);
-		if (user == null) {
-			user = securityService.getUserByEmail(userToken);
 		}
+
+		UserInfo user = securityService.getUserByEmail(userToken);
 		if (user == null) {
 			addError(i18n("username_not_found"));
 			return Constants.FAILURE;
 		}
+		
+		if (user.isCentralUser()) {
+			AuthenticationDomainInfo domain = findDomainByName(user.getDomainName());
+			changePasswordUrl = domain.getChangePasswordUrl();
+			return Constants.FAILURE;
+		}
+		// Handle local user
 		String verificationCode = registrationService.generateActivationCode(user);
-
 		sendForgottenPasswordEmail(user, verificationCode);
 		showPasswordMailConfirmation(user);
-
 		return Constants.SUCCESS;
+	}
+
+	private AuthenticationDomainInfo findDomainByName(String domainName) {
+		// FIXME Refactor into business layer
+		List<AuthenticationDomainInfo> domains = ldapConfigurationService.getAllDomains();
+		for (AuthenticationDomainInfo domain : domains) {
+			if (StringUtils.equals(domain.getName(), domainName)) {
+				return domain;
+			}
+		}
+		return null;
 	}
 
 	private void showPasswordMailConfirmation(UserInfo user) {
@@ -247,6 +270,22 @@ public class RegistrationController extends BaseBean {
 
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
+	}
+
+	public LdapConfigurationService getLdapConfigurationService() {
+		return ldapConfigurationService;
+	}
+
+	public void setLdapConfigurationService(LdapConfigurationService ldapConfigurationService) {
+		this.ldapConfigurationService = ldapConfigurationService;
+	}
+
+	public String getChangePasswordUrl() {
+		return changePasswordUrl;
+	}
+
+	public void setChangePasswordUrl(String changePasswordUrl) {
+		this.changePasswordUrl = changePasswordUrl;
 	}
 
 }

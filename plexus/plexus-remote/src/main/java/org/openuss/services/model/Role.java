@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Role")
 public enum Role {
-	NONE,
+	NONE, 
 	PARTICIPANT,
 	ASSISTANT
 }

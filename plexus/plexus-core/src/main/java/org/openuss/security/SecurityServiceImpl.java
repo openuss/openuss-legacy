@@ -70,6 +70,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		getUserDao().create(user);
 		if (user.isCentralUser()) {
 			user.setPassword(generateRandomPassword());
+			user.setEnabled(true);
 		}
 		encodePassword(user);
 

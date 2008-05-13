@@ -85,7 +85,11 @@ public class UserDaoImpl extends UserDaoBase {
 	@Override
 	public void toUserInfo(User source, UserInfo target) {
 		super.toUserInfo(source, target);
-		target.setUsername(source.getUsername());
+		if (source.isCentralUser()) {
+			target.setUsername(SecurityDomainUtility.extractUsername(source.getUsername()));
+		} else {
+			target.setUsername(source.getUsername());
+		}
 		target.setDisplayName(source.getDisplayName());
 		target.setCentralUser(source.isCentralUser());
 		target.setDomainName(SecurityDomainUtility.extractDomain(source.getUsername()));

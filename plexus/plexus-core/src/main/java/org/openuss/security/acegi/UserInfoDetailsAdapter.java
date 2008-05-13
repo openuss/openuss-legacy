@@ -12,7 +12,7 @@ import org.openuss.security.UserInfo;
  * @author Ingo Dueppe
  *
  */
-public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
+public class UserInfoDetailsAdapter extends UserInfo implements UserDetails {
 
 	private static final long serialVersionUID = -1828012593245034508L;
 	
@@ -24,9 +24,13 @@ public class UserInfoDetailsAdapter extends UserInfo implements UserDetails{
 	}
 
 	private void setAuthorities(String[] authorities) {
-		grantedAuthorities = new GrantedAuthority[authorities.length];
-		for(int i = 0; i < authorities.length; i++) {
-			grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
+		if (authorities != null) {
+			grantedAuthorities = new GrantedAuthority[authorities.length];
+			for(int i = 0; i < authorities.length; i++) {
+				grantedAuthorities[i] = new StringGrantedAuthority(authorities[i]);
+			}
+		} else {
+			grantedAuthorities = new GrantedAuthority[0];
 		}
 	}
 	

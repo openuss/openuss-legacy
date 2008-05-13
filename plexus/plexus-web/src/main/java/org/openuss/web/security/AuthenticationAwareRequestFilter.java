@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
@@ -41,9 +42,11 @@ public class AuthenticationAwareRequestFilter implements Filter {
 
 		UserInfo userInfo = (UserInfo) request.getAttribute(Constants.USER_SESSION_KEY);
 
-		if (userInfo == null && auth.getPrincipal() instanceof UserInfo) {
+		if (!ObjectUtils.equals(userInfo, auth.getPrincipal()) && auth.getPrincipal() instanceof UserInfo) {
 			logger.debug("Principal is: " + auth.getPrincipal());
 			UserInfo user = (UserInfo) auth.getPrincipal();
+			// FIXME what about anonymous?
+			user = securityService.getUser(user.getId());
 			securityService.setLoginTime(user);
 			request.setAttribute(Constants.USER_SESSION_KEY, user);
 

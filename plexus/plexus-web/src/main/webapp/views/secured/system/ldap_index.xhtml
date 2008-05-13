@@ -70,6 +70,12 @@
 						value="#{msg.ldap_server}" 
 						title="#{msg.ldap_server_hint}"
 						styleClass="button"/>
+						<h:commandButton 
+					    id="reconfigure"
+						action="#{ldapReconfigurationAction.perform}"
+						value="#{msg['ldap_command_reconfigure']}" 
+						title="#{msg['ldap_command_reconfigure_hint']}"
+						styleClass="button"/>
 					</o:block>
 				</s:authorize>		
 			</h:form>

@@ -181,6 +181,16 @@
 			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
 		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>migration</from-outcome>
+			<to-view-id>/views/secured/migration/migration.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>migration_centraluser_registration</from-outcome>
+			<to-view-id>/views/secured/migration/userAgreement.xhtml</to-view-id>
+		</navigation-case>	
+		
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
     	W e b D A V  - R u l e s
  	   - - - - - - - - - - - - - - - - - - - - - - - - - -->

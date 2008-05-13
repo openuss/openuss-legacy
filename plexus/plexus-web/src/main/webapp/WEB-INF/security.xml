@@ -94,11 +94,12 @@
 				PATTERN_TYPE_APACHE_ANT 
 				/views/commons/**=ROLE_USER
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
-				/views/public/**=ROLE_ANONYMOUS, ROLE_USER
-				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER
+				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
+				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
 				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
+				/views/secured/migration/**=ROLE_LDAPUSER, ROLE_ADMIN
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER
 				/views/**=ROLE_ADMIN
