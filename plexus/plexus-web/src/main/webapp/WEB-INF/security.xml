@@ -118,6 +118,7 @@
 		class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
+				<ref local="configurableLdapAuthenticationProvider"/>
 				<ref local="daoAuthenticationProvider" />
 				<ref local="anonymousAuthenticationProvider" />
 				<ref local="rememberMeAuthenticationProvider"/>
@@ -188,6 +189,34 @@
 	<!-- Automatically receives AuthenticationEvent messages -->
 	<bean id="loggerListener"
 		class="org.acegisecurity.event.authentication.LoggerListener" />
+		
+		
+    <!-- ===================== LDAP ==================== -->
+    
+    <bean id="ldapConfigurationServiceNoSecurity" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="ldapConfigurationServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.LdapConfigurationService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>                
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="configurableLdapAuthenticationProvider" class="org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderImpl" init-method="init"> 
+        <property name="userCache" ref="userCache"/>
+        <property name="ldapConfigurationService" ref="ldapConfigurationServiceNoSecurity"/>
+    </bean>
+    	
+	<bean id="ldapConfigDomainCommand" class="org.openuss.security.acegi.ldap.LdapConfigDomainCommand">
+		 <property name="configurableLdapAuthenticationProvider" ref="configurableLdapAuthenticationProvider"/>		
+	</bean>		
+		
 		
 	<!-- ===================== REMEMBER ME ==================== -->
     

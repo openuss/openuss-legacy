@@ -19,7 +19,6 @@ public class LdapConfigDomainCommand extends AbstractDomainCommand implements In
 	 * {@inheritDoc}
 	 */
 	public final void execute() {
-		
 		if (StringUtils.equals("RECONFIGURE", getCommandType())) {
 			
 //			reconfigure LDAP server configuration

@@ -194,7 +194,7 @@ public class AuthenticationController extends BasePage {
 		request.getSession(false).invalidate();
 
 		// Remove Cookie
-		Cookie terminate = new Cookie(TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY, null);
+		Cookie terminate = new Cookie(TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY, "-");
 		terminate.setMaxAge(0);
 		getResponse().addCookie(terminate);
 		

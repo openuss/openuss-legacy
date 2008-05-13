@@ -104,7 +104,7 @@ public class ActiveDirectoryBindAuthenticator extends AbstractLdapAuthenticator 
     * Allows subclasses to inspect the exception thrown by an attempt to bind with a particular DN.
     * The default implementation just reports the failure to the debug log.
     */
-   void handleBindException(String userDn, String username, Throwable cause) {
+   protected void handleBindException(String userDn, String username, Throwable cause) {
        if (logger.isDebugEnabled()) {
            logger.debug("Failed to bind as " + userDn + ": " + cause);
        }

@@ -25,6 +25,7 @@ import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsImpl;
 import org.acegisecurity.userdetails.ldap.LdapUserDetailsMapper;
+import org.apache.commons.lang.StringUtils;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityDomainUtility;
@@ -44,10 +45,7 @@ import org.springframework.util.Assert;
  * is thrown.
  * Within each <code>LdapAuthenticationProvider</code> a <code>NullAuthoritiesPopulator</code> is used.
  * </p>
- *
- */
-
-/**
+ * 
  * @author Peter Schuh
  *
  */
@@ -64,7 +62,6 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected UserCache userCache;
 	protected List<LdapAuthenticationProvider> ldapAuthenticationProviders = new Vector<LdapAuthenticationProvider>();
 	protected List<LdapServerConfiguration> ldapServerConfigurations = null;
-
 	
 	/** 
 	 * @see org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProvider#reconfigure()
@@ -75,7 +72,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 		ldapAuthenticationProviders.clear();
 		// Get new configurations
 		ldapServerConfigurations = ldapConfigurationService.getEnabledLdapServerConfigurations();
-		if (ldapServerConfigurations!=null && ldapServerConfigurations.size()>0) {
+		if (ldapServerConfigurations != null && !ldapServerConfigurations.isEmpty()) {
 			// Instantiate and initialize providers and related objects
 			for (LdapServerConfiguration ldapServerConfiguration : ldapServerConfigurations) {
 				InitialDirContextFactory initialDirContextFactory = newInitialDirContextFactory(ldapServerConfiguration);
@@ -85,8 +82,8 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 				if (ldapServerConfiguration.getLdapServerType() == LdapServerType.ACTIVE_DIRECTORY) {
 					ldapAuthenticator = newActiveDirectoryBindAuthenticator(ldapServerConfiguration, initialDirContextFactory, messageSource, ldapUserDetailsMapper);
 				} else if (ldapServerConfiguration.getLdapServerType() == LdapServerType.OTHER) {
-						   ldapAuthenticator = newBindAuthenticator(ldapServerConfiguration, initialDirContextFactory, messageSource, ldapUserDetailsMapper);
-					   }
+					ldapAuthenticator = newBindAuthenticator(ldapServerConfiguration, initialDirContextFactory, messageSource, ldapUserDetailsMapper);
+				}
 				LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(ldapAuthenticator);
 				ldapAuthenticationProvider.setMessageSource(messageSource);
 				ldapAuthenticationProvider.setUserCache(userCache);
@@ -109,8 +106,9 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	 * @see org.acegisecurity.providers.AuthenticationProvider#authenticate(org.acegisecurity.Authentication)
 	 */
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		if (ldapAuthenticationProviders.size()==0)
-			throw new ProviderNotFoundException(messages.getMessage("ProviderManager.providerNotFound", "No LDAP authentication provider found.")); 
+		if (ldapAuthenticationProviders.isEmpty()) {
+			throw new ProviderNotFoundException(messages.getMessage("ProviderManager.providerNotFound", "No LDAP authentication provider found."));
+		}
 		
 		//Delete domain information from username
 		String username = (String) authentication.getPrincipal();			
@@ -213,8 +211,9 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
 	protected LdapUserDetails assignDefaultRole(LdapUserDetails ldapUserDetails) {
 		LdapUserDetailsImpl.Essence essence = new LdapUserDetailsImpl.Essence(ldapUserDetails);
 		essence.addAuthority(new GrantedAuthorityImpl(defaultRolePrefix+Roles.LDAPUSER.getName()));
-		if (defaultRole!=null && !"".equals(defaultRole))
+		if (StringUtils.isNotBlank(defaultRole)) {
 			essence.addAuthority(new GrantedAuthorityImpl(defaultRole));
+		}
 		return essence.createUserDetails();
 	}
 	
@@ -223,8 +222,7 @@ public class ConfigurableLdapAuthenticationProviderImpl implements
         // so subsequent attempts are successful even with encoded passwords.
         // Also ensure we return the original getDetails(), so that future
         // authentication events after cache expiry contain the details
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,
-        		authentication.getCredentials(), user.getAuthorities());
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(principal,	authentication.getCredentials(), user.getAuthorities());
 		result.setDetails(authentication.getDetails());
         return result;
 	}

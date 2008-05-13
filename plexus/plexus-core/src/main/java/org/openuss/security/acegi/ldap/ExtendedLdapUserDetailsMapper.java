@@ -13,12 +13,10 @@ public class ExtendedLdapUserDetailsMapper extends LdapUserDetailsMapper {
 	private String groupRoleAttributeKey = "cn";
 
     //~ Methods ========================================================================================================
-
 	
     /**
      * Retrieves a Role from a Role DN  according to the groupRoleAttributeKey. Default is Common Name (CN) of a Role DN.
      */
-    
     protected GrantedAuthority createAuthority(Object roleDn) {
         String dn = null;
     	String role = null;        
@@ -33,11 +31,11 @@ public class ExtendedLdapUserDetailsMapper extends LdapUserDetailsMapper {
     		if (startindex > -1) {
     			startindex = startindex + groupRoleAttributeKey.length()+1;
     			// If GroupRoleAttributeKey is not at the end of the DN
-    			if (dn.indexOf(",", startindex) > -1)
-    				endindex = dn.indexOf(",", startindex);    			
-    		}
-    		// GroupRoleAttribute not found within Role DN -> Return full roleDN
-    		else { 
+    			if (dn.indexOf(',', startindex) > -1) {
+    				endindex = dn.indexOf(",", startindex);
+    			}
+    		} else { 
+    			// GroupRoleAttribute not found within Role DN -> Return full roleDN
     			startindex = 0;
     		}
     		
