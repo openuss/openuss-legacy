@@ -12,7 +12,7 @@
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
 				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
-				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -42,10 +42,11 @@
 		<property name="filterProcessesUrl" value="/views/acegi_security_check.faces"/>
 	</bean>
 
-	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+	<bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
 		<property name="ignoreFailure" value="false"/>
+		<property name="securityService" ref="securityService"/>
 	</bean>
 	
 	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
