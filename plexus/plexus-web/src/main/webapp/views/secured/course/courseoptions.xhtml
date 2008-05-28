@@ -67,8 +67,8 @@
 						
 						<c:choose>
 							<c:when test="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" >
-								<o:input entity="courseOptionsInfo" property="papersubmission" label="#{msg.courseoptionsinfo_papersubmission} *" forceId="true" />
-                       			<o:input entity="courseOptionsInfo" property="collaboration" label="#{msg.courseoptionsinfo_collaboration} *" forceId="true" />
+								<o:input entity="courseOptionsInfo" property="papersubmission" label="#{msg.courseoptionsinfo_papersubmission}" forceId="true" />
+                       			<o:input entity="courseOptionsInfo" property="collaboration" label="#{msg.courseoptionsinfo_collaboration}" forceId="true" />
                        		</c:when>
                        		<c:otherwise>
                        			<o:input entity="courseOptionsInfo" property="papersubmission" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
@@ -76,9 +76,6 @@
                        		</c:otherwise>
                        	</c:choose>
 					</div>
-					<c:if test="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}">
-						<h:outputText value="#{msg.course_options_features_disabled_info}" styleClass="header_font_normal"/>
-					</c:if>
 				</o:block>
 				<o:block>
 					<t:commandButton 
