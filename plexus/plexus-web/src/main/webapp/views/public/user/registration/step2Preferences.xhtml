@@ -29,9 +29,11 @@
  				<o:block label="#{msg.user_registration2_Subheading}" styleClass="form_box">
 	   				<ui:include src="/views/commons/user/profileData.xhtml" />
 		  		</o:block>
+		  		<!-- 
 		  		<o:block label="#{msg.privacy_endorsement_head}" styleClass="form_box">
 		  			<h:outputText value="#{msg.privacy_endorsement}" styleClass="content_font_normal"/>
 		  		</o:block>
+		  		 -->
   	  			<o:block>
 					<t:commandButton id="continue" forceId="true" value="${msg.forward}" action="#{views$public$user$registration$startProcess.lastStepRegistration}" styleClass="button_continue"/>
 		  		</o:block>		  		

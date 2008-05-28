@@ -18,7 +18,6 @@
 			<t:validateEmail />
 			<f:validator validatorId="uniqueEmailValidator" />
 		</o:input>
-		<!-- 
 		<s:authorize ifNotGranted="ROLE_USER">
 			<o:input id="password" forceId="true" entity="user" property="password" required="true"
 				type="password" redisplay="false">
@@ -32,7 +31,6 @@
 			</h:inputSecret>
 			<h:message for="confirmPassword" styleClass="field_error" />
 		</s:authorize>
-		 -->
 		<c:if test="#{not user.centralUser}">
 			<s:authorize ifAllGranted="ROLE_USER" rendered="#{not empty user.id}"><br/>
 				<t:commandButton id="newPassword" forceId="true" action="secure_password_change" value="#{msg.user_new_password}" styleClass="button_save"/><br />
