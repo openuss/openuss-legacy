@@ -72,8 +72,8 @@ public class DepartmentRegistrationController extends AbstractDepartmentPage {
 		}
 
 		// by default set department enabled
-		departmentInfo.setEnabled(true);
-		departmentService.create(departmentInfo, user.getId());
+		departmentApplication.setEnabled(true);
+		departmentService.create(departmentApplication, user.getId());
 		
 		addMessage(i18n("department_registration_success"));
 
