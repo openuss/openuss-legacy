@@ -31,6 +31,8 @@ public class DocumentServlet extends HttpServlet {
 	private static final long serialVersionUID = -8848001102897327126L;
 
 	private static final Logger logger = Logger.getLogger(DocumentServlet.class);
+	
+	private static final String REQUEST_FILE = "org.openuss.web.servlets.request.file";
 
 	private transient DocumentService documentService;
 	private transient AclManager aclManager;
@@ -103,28 +105,42 @@ public class DocumentServlet extends HttpServlet {
 		response.setContentLength(file.getFileSize().intValue());
 	}
 
+	@Override
+	protected long getLastModified(HttpServletRequest request) {
+		final FileInfo fileInfo = lookupFile(request);
+		if (fileInfo != null) {
+			return fileInfo.getModified().getTime();
+		} else {
+			return super.getLastModified(request);
+		}
+	}
+
 	private void sendFileNotFound(final HttpServletResponse response) throws IOException {
 		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	/**
-	 * 
 	 * @param request
 	 * @return RepositoryFile or Null
 	 */
 	private FileInfo lookupFile(final HttpServletRequest request) {
-		final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
-		// fetch file from document service
-		FileInfo file = null;
-		try {
-			file = documentService.getFileEntry(Long.parseLong(fileId), true);
-		} catch (NumberFormatException nfe) {
-			// number format exception can be ignored.
-		}
-
+		FileInfo file = (FileInfo) request.getAttribute(REQUEST_FILE);
+		
 		if (file == null) {
-			logger.debug("file not found with id " + fileId);
+			final String fileId = request.getParameter(Constants.REPOSITORY_FILE_ID);
+			try {
+				// fetch file from document service
+				file = documentService.getFileEntry(Long.parseLong(fileId), true);
+			} catch (NumberFormatException nfe) {
+				// number format exception can be ignored.
+			}
+			if (file == null) {
+				logger.debug("file not found with id " + fileId);
+			} else {
+				request.setAttribute(REQUEST_FILE, file);
+			}
 		}
+		
 		return file;
 	}
 }
