@@ -11,7 +11,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
+				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, shibbolethProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
 				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
 			</value>
 		</property>
@@ -163,10 +163,12 @@
 		</property>
 	</bean>
 
+	<!--  <bean id="authenticationProcessingFilterEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"> -->
 	<bean id="authenticationProcessingFilterEntryPoint"
-		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		class="org.openuss.web.security.ExtendedAuthenticationProcessingFilterEntryPoint">
 		<property name="loginFormUrl">
-			<value>/views/public/login/login.faces</value>
+			<value>/views/public/login/login.faces</value>			
 		</property>
 		<property name="forceHttps">
 			<value>false</value>
@@ -191,7 +193,11 @@
 	<!-- Automatically receives AuthenticationEvent messages -->
 	<bean id="loggerListener"
 		class="org.acegisecurity.event.authentication.LoggerListener" />
-		
+	
+	<!-- ================= SHIBBOLETH ================== -->
+	
+	<bean id="shibbolethProcessingFilter" class="org.openuss.web.security.ShibbolethAuthenticationProcessingFilter">
+	</bean>
 		
     <!-- ===================== LDAP ==================== -->
     

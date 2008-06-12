@@ -22,6 +22,11 @@
 		   		</o:block>
 		   		<o:block>
 			    	<t:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login" forceId="true"/>
+			    </o:block>
+			    <o:block>
+				    <h:outputLink value="#{views$public$login$login.ssoUrl}">
+						<h:outputText value="SSO Login"/>
+					</h:outputLink>
 			    </o:block>	
 		   	</h:form>
 		 </ui:define>

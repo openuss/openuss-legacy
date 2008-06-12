@@ -107,6 +107,7 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
 
         try {
             chain.doFilter(request, response);
+            
             if (logger.isDebugEnabled()) {
                 logger.debug("Chain processed normally");
             }
@@ -207,8 +208,9 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
         // SEC-112: Clear the SecurityContextHolder's Authentication, as the
         // existing Authentication is no longer considered valid
         SecurityContextHolder.getContext().setAuthentication(null);
-
-        authenticationEntryPoint.commence(httpRequest, (HttpServletResponse) response, reason);
+        
+       	authenticationEntryPoint.commence(httpRequest, (HttpServletResponse) response, reason);
+       
     }
 
     public void setAccessDeniedHandler(AccessDeniedHandler accessDeniedHandler) {

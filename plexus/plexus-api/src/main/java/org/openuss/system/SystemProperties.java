@@ -29,6 +29,22 @@ public interface SystemProperties {
 
 	public static final String COPYRIGHT = "openuss.copyright";
 	
+	/* URL to start authentication within a lazy session configuration.
+	 * value of openuss server url followed by
+	 * these information from shibboleth.xml: 
+	 * value of handlerURL attribute (e. g. /Shibboleth.sso) within <Sessions> element followed by
+	 * value of Location attribute (e. g. /WAYF/zivmiro01.uni-muenster.de) within <SessionInitiator> element followed by
+	 * "?target=" (without quotes) for the value of the target url
+	 * 
+	 * example: https://www.openuss.de/Shibboleth.sso/WAYF/zivmiro01.uni-muenster.de?target=
+	 * 
+	 * According to that a complete url for initiating a user authentication looks like this 
+	 * (value of the target parameter has to be the url, that the user wants to access and 
+	 * can be taken from the http request object):
+	 * 
+	 * example: https://www.openuss.de/Shibboleth.sso/WAYF/zivmiro01.uni-muenster.de?target=https://www.openuss.de/views/secured/myuni/myuni.faces */
+	public static final String SHIBBOLETH_START_AUTH_URL = "shibboleth.start.auth.url";
+	
 	// Support System Configuration
 	public static final String DOCUMENTATION_URL = "documentation.url";
 

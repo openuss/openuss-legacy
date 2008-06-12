@@ -26,6 +26,7 @@ INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (12, 'impressum.t
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (13, 'provider.url', 'http://openuss.sourceforge.net');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (14, 'getting.started', '');
 INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (15, 'mail.smtp.auth', 'true');
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (16, 'shibboleth.start.auth.url', 'https://wi-vm591.uni-muenster.de/Shibboleth.sso/WAYF/zivmiro01.uni-muenster.de?target=');
 
 
 INSERT INTO SECURITY_AUTHORITY (ID, NAME) VALUES (-10, 'admin');
