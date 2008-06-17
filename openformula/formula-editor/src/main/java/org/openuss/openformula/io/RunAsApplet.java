@@ -16,11 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ResourceBundle;
 
 import org.openuss.openformula.design.AppletButtons;
@@ -31,7 +31,8 @@ import org.openuss.openformula.design.language.Translation;
 /**
  * Stellt das auf der Webseite abgebildete Applet dar.
  * 
- * @author  Lofi Dewanto
+ * @author Lofi Dewanto
+ * @author Ingo Düppe
  *          Update the application context
  */
 public final class RunAsApplet extends Applet implements ActionListener {
@@ -144,8 +145,8 @@ public final class RunAsApplet extends Applet implements ActionListener {
             urlStr = urlStr + ":" + url.getPort();
         }
 
-        if (urlStr.equals(":")) {
-            urlStr = "localhost:9000";
+        if (urlStr.equals(":-1")) {
+            urlStr = "localhost:8080";
         }
 
         urlStr = "http://" + urlStr + 
@@ -196,6 +197,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
         return pinfo;
     }
 
+    @Override
     public final void paint(final Graphics g) {
         super.paint(g);
     }
@@ -205,7 +207,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
      * (Die ursprüngliche Formel wird wieder angezeigt.)
      */
     public final void reset() {
-        draw.getMyCursor().getPrimaryElement().selectAll();
+    	draw.getMyCursor().getPrimaryElement().selectAll();
         draw.getMyCursor().getPrimaryElement().deleteSelection();
         draw.getMyCursor().parse(mathMLfromServer);
         draw.repaint();
@@ -270,20 +272,32 @@ public final class RunAsApplet extends Applet implements ActionListener {
             urlStr = urlStr + ":" + url.getPort();
         }
 
-        if (urlStr.equals(":")) {
-            urlStr = "localhost:9000";
+        if (urlStr.equals(":-1")) {
+            urlStr = "localhost:8080";
         }
 
         urlStr = "http://" + urlStr + 
-                 formulaConfig.getString("formula.SaveServlet") + 
-                 encode(mathMLfromServer);
-
+                 formulaConfig.getString("formula.SaveServlet") + getParameter("id"); 
+        
+        System.out.println("Sending" + urlStr);
+        
         try {
             url = new URL(urlStr);
 
             final URLConnection uc = url.openConnection();
-            uc.setRequestProperty("text", mathMLfromServer);
-
+            uc.setDoInput(true);
+            uc.setDoOutput(true);
+            uc.setUseCaches(false);
+            uc.setDefaultUseCaches(false);
+            uc.setRequestProperty("Content-Type", "plain/text");
+            
+            PrintWriter out = new PrintWriter(uc.getOutputStream());
+            out.println();
+            out.print("formula="+mathMLfromServer);
+            out.close();          
+            
+//           uc.setRequestProperty("formula", mathMLfromServer);
+            
             final BufferedReader in = new BufferedReader(
                                               new InputStreamReader(
                                                       uc.getInputStream()));
@@ -292,7 +306,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
                 final String id = in.readLine();
 
                 if (id.startsWith("accept as ")) {
-                    //System.out.println("Submit of data succed!");
+                    System.out.println("Submit of data succed!");
                     return id.substring(10);
                 }
             }
@@ -305,18 +319,20 @@ public final class RunAsApplet extends Applet implements ActionListener {
     }
 
     public final void stop() {
+    	submit();
     }
 
     public final void actionPerformed(final ActionEvent e) {
+    	System.out.println("ActionEvent "+e.getActionCommand());
     }
 
-    private static String encode(final String str) {
-        try {
-			return URLEncoder.encode(str,"UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-    }
+//    private static String encode(final String str) {
+//        try {
+//			return URLEncoder.encode(str,"UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			return "";
+//		}
+//    }
 
     public static String decode(final String str) {
         try {
