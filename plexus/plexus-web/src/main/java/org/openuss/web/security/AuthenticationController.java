@@ -27,6 +27,7 @@ import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
@@ -126,41 +127,59 @@ public class AuthenticationController extends BasePage {
 					String[] authorities = securityService.getGrantedAuthorities(user);
 					auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));					
 				} else {
-					/* New central user
+					/* Either new central user or already migrated user with different domain, e. g. a single sign-on domain
 					 * 1. Try to find OpenUSS profile by email address
-					 * 2. If found, check profile, whether user is not locked or credentials or account is expired. Disabled users will be enabled.
-					 * 3. If no exception occurs, migrate user and redirect her.
-					 * 3. If not found, redirect user to migration page.
+					 * 2. If found, check profile, whether user has already been migrated.
+					 * 2.1.1. If user has already been migrated, check profile, whether user is locally enabled and not locked or credentials or account is expired.
+					 * 2.1.2. Either throw corresponding exceptions or generate authentication object, as if user had used a local login.
+					 * 2.1.3. Handle "local user".
+					 * 2.2.1. If found, but not migrated, check profile, whether user is not locked or credentials or account is expired. Disabled users will be enabled.
+					 * 2.2.2. If no exception occurs, migrate user and redirect her.
+					 * 2.3.1. If not found, redirect user to migration page.
 					 */
 					user = securityService.getUserByEmail(centralUserData.getEmail());
 					
-					if (user != null) {
-						/* OpenUSS profile of central user found by email.
-						 * 1. Enable user profile. (Seldom: User registered without activating her account. As LDAP user, she should be enabled anyway. Refers to: Shortened Registration)
-						 * 2. Check for exceptions (see above).
-						 * 3. If no exception is thrown, put authentication into SecurityContext, so that SecurityService can find it.
-						 * 4. Migrate user, i. e. change username, password, firstname and lastname.
-						 * 5. Add message to inform user about migration.
-						 * 6. Handle "local user".
+					if (user != null && user.isCentralUser()) {
+						/* OpenUSS profile of central user found by email. User has already been migrated with different domain.
+						 * Handle user as if she was found by user name (see above).
+						 * 1. Check profile, whether user is locally enabled and not locked or credentials or account is expired.
+						 * 2. Either throw corresponding exceptions or generate authentication object, as if user had used a local login.
+						 * 3. Handle "local user".
 						 */
-						user.setEnabled(true);
 						AuthenticationUtils.checkLocallyAllowanceToLogin(user);
+						migrationUtility.reconcile(user, false);
+						// FIXME refactor to business layer
 						String[] authorities = securityService.getGrantedAuthorities(user);
-						auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));
-						migrationUtility.migrate(user, auth);
-						// Set session bean here, so that i18n gets correct locale for user.
-						setSessionBean(Constants.USER_SESSION_KEY, user);
-						addMessage(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
-					} else {
-						/* OpenUSS profile not found. Central user has to migrate manually or do an abbreviated registration.
-						 * 1. Add message to ask user to migrate or register.
-						 * 2. Redirect user to migration page.
-						 */
-						// Initialize the security context
-						final SecurityContext securityContext = SecurityContextHolder.getContext();
-						securityContext.setAuthentication(auth);
-						session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);						
-						return Constants.MIGRATION_PAGE;			
+						auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));		
+					} else { 
+						if (user != null) {
+							/* OpenUSS profile of central user found by email. User is a new central user, i. e. has not already been migrated.
+							 * 1. Enable user profile. (Seldom: User registered without activating her account. As LDAP user, she should be enabled anyway. Refers to: Shortened Registration)
+							 * 2. Check for exceptions (see above).
+							 * 3. If no exception is thrown, put authentication into SecurityContext, so that SecurityService can find it.
+							 * 4. Migrate user, i. e. change username, password, firstname and lastname.
+							 * 5. Add message to inform user about migration.
+							 * 6. Handle "local user".
+							 */
+							user.setEnabled(true);
+							AuthenticationUtils.checkLocallyAllowanceToLogin(user);
+							String[] authorities = securityService.getGrantedAuthorities(user);
+							auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));
+							migrationUtility.migrate(user, auth);
+							// Set session bean here, so that i18n gets correct locale for user.
+							setSessionBean(Constants.USER_SESSION_KEY, user);
+							addMessage(i18n("migration_done_by_email_hint",centralUserData.getAuthenticationDomainName()));						
+						} else {
+							/* OpenUSS profile not found. Central user has to migrate manually or do an abbreviated registration.
+							 * 1. Add message to ask user to migrate or register.
+							 * 2. Redirect user to migration page.
+							 */
+							// Initialize the security context
+							final SecurityContext securityContext = SecurityContextHolder.getContext();
+							securityContext.setAuthentication(auth);
+							session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);						
+							return Constants.MIGRATION_PAGE;			
+						}
 					}
 				}
 			}
@@ -278,10 +297,28 @@ public class AuthenticationController extends BasePage {
 		final HttpServletRequest request = getRequest();
 		request.getSession(false).invalidate();
 
-		// Remove Cookie
-		Cookie terminate = new Cookie(TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY, "-");
+		/******************
+		 * Remove Cookies *
+		 ******************/
+		
+		// Remove Acegi RememberMe cookie (with ContextPath)
+		Cookie terminate = new Cookie(TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY, null);
 		terminate.setMaxAge(0);
+		terminate.setPath(StringUtils.isNotBlank(getRequest().getContextPath()) ? getRequest().getContextPath() : "/");
+
 		getResponse().addCookie(terminate);
+
+		// Remove other Cookies, especially Shibboleth Single Sign-On cookies (with root path), 
+		// but not a JSESSIONID cookie due to it is needed for routing (sticky session) 
+		// within a load balancing environment.
+		for (Cookie cookie : getRequest().getCookies()) {
+			if (!(StringUtils.equalsIgnoreCase(cookie.getName(), "JSESSIONID")) && !(StringUtils.equalsIgnoreCase(cookie.getName(), TokenBasedRememberMeServices.ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE_KEY))) {
+				terminate = new Cookie(cookie.getName(),null);
+				terminate.setMaxAge(0);
+				terminate.setPath("/");
+				getResponse().addCookie(terminate);
+			}					
+		}
 		
 		SecurityContextHolder.clearContext();
 
