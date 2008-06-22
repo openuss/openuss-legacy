@@ -17,7 +17,21 @@
 	<f:loadBundle basename="resources" var="msg" />
 	<ui:composition>
 		<s:authorize ifNotGranted="ROLE_USER">
-   			<o:block label="#{msg.login_headline}">
+			<c:if test="#{not empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}">
+				<o:block label="${msg.login_sso_headline}">
+					<h:form>
+						<p class="content_font_normal">
+							<h:outputText value="${msg.login_sso_can_be_used}" escape="false"/>		   			
+						</p>
+						<p class="content_font_normal">
+							<h:outputLink value="#{SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}" style="background:url(/theme-plexus/img/icons/lock_icon.png) left center no-repeat; padding-left:18px;">
+								<h:outputText value="#{msg.login_sso_linktext}"/>
+							</h:outputLink>
+						</p>
+					</h:form>
+				</o:block>
+			</c:if>						
+   			<o:block label="#{empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL? msg.login_headline : msg.login_headline_local_login}">
 		   		<h:form id="loginPortletLogin" >
 		   			<h:outputLabel for="j_username" value="#{msg.login_username}" styleClass="field_label"/> 
 		   			<t:inputText id="j_username" forceId="true" value="#{authenticationController.username}" title="${msg['login_username_hint']}" required="true" styleClass="field"/>
@@ -44,20 +58,6 @@
 					</ul>
 		   		</h:form>
 			</o:block>
-			<c:if test="#{not empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}">
-				<o:block label="${msg.login_sso_headline}">
-					<h:form>
-						<p class="content_font_normal">
-							<h:outputText value="${msg.login_sso_can_be_used}" escape="false"/>		   			
-						</p>
-						<p class="header_font_normal">
-							<h:outputLink value="#{SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}" style="background:url(/theme-plexus/img/icons/lock_icon.png) left center no-repeat; padding-left:18px;">
-								<h:outputText value="#{msg.login_sso_linktext}"/>
-							</h:outputLink>
-						</p>
-					</h:form>
-				</o:block>
-			</c:if>						
 		</s:authorize>
 	</ui:composition>
 <!-- Lines below that point will be ignored -->	

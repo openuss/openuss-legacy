@@ -44,6 +44,7 @@ public class LoginPage extends BasePage {
 		if (getSessionAttribute(AuthenticationProcessingFilter.ACEGI_SAVED_REQUEST_KEY) instanceof SavedRequest && !StringUtils.isBlank(getSystemPropertiesBean().getSHIBBOLETH_START_AUTH_URL())) {
 			setSsoUrl(getSystemPropertiesBean().getSHIBBOLETH_START_AUTH_URL()+getSystemPropertiesBean().getOPENUSS_SERVER_URL()+((SavedRequest)getSessionAttribute(AuthenticationProcessingFilter.ACEGI_SAVED_REQUEST_KEY)).getRequestUrl());
 		}
+		else setSsoUrl(getSystemPropertiesBean().getSHIBBOLETH_START_AUTH_URL()+getSystemPropertiesBean().getOPENUSS_SERVER_URL());
 	}
 
 	public String getSsoUrl() {

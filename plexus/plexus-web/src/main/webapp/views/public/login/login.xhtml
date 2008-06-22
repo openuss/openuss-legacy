@@ -11,8 +11,24 @@
       
 	<ui:composition template="/views/layout/dialog.xhtml">
 		<ui:define name="content">
-	   		<h:form id="loginPortletLogin" styleClass="form_box">
-	   			<o:block label="#{msg.login_headline}">
+			<c:if test="#{not empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}">
+				<h:form styleClass="form_box">
+					<o:block label="${msg.login_sso_headline}">
+					
+						<p class="content_font_normal">
+							<h:outputText value="${msg.login_sso_can_be_used}" escape="false"/>		   			
+						</p>
+						<p class="content_font_normal">
+							<h:outputLink value="#{views$public$login$login.ssoUrl}" style="background:url(/theme-plexus/img/icons/lock_icon.png) left center no-repeat; padding-left:18px;">
+								<h:outputText value="#{msg.login_sso_linktext}"/>
+							</h:outputLink>
+						</p>
+					
+					</o:block>
+				</h:form>
+			</c:if>
+	   		<h:form id="loginPortletLogin" styleClass="form_box">	   			
+	   			<o:block label="#{empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL? msg.login_headline : msg.login_headline_local_login}">
 		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true" forceId="true"/>
 		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password" forceId="true"/>
 		   			<label class="field_label">
@@ -23,11 +39,6 @@
 		   		<o:block>
 			    	<t:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login" forceId="true"/>
 			    </o:block>
-			    <o:block>
-				    <h:outputLink value="#{views$public$login$login.ssoUrl}">
-						<h:outputText value="#{msg.login_sso_linktext}"/>
-					</h:outputLink>
-			    </o:block>	
 		   	</h:form>
 		 </ui:define>
 		 <ui:define name="navigation">
