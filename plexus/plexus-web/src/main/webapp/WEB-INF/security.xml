@@ -166,7 +166,7 @@
 	<!--  <bean id="authenticationProcessingFilterEntryPoint"
 		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint"> -->
 	<bean id="authenticationProcessingFilterEntryPoint"
-		class="org.openuss.web.security.ExtendedAuthenticationProcessingFilterEntryPoint">
+		class="org.openuss.framework.web.acegi.ExtendedAuthenticationProcessingFilterEntryPoint">
 		<property name="loginFormUrl">
 			<value>/views/public/login/login.faces</value>			
 		</property>
@@ -196,7 +196,25 @@
 	
 	<!-- ================= SHIBBOLETH ================== -->
 	
-	<bean id="shibbolethProcessingFilter" class="org.openuss.web.security.ShibbolethAuthenticationProcessingFilter">
+	<bean id="shibbolethProcessingFilter" class="org.openuss.security.acegi.shibboleth.ShibbolethAuthenticationProcessingFilter">
+		<property name="shibbolethUsernameHeaderKey">
+			<value>SHIB_REMOTE_USER</value>
+		</property>
+		<property name="shibbolethFirstNameHeaderKey">
+			<value>Shib-Person-givenname</value>
+		</property>
+		<property name="shibbolethLastNameHeaderKey">
+			<value>Shib-Person-sn</value>
+		</property>
+		<property name="shibbolethEmailHeaderKey">
+			<value>Shib-Person-mail</value>
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="defaultRole">
+			<value>ROLE_SHIBBOLETHUSER</value>
+		</property>
 	</bean>
 		
     <!-- ===================== LDAP ==================== -->

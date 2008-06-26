@@ -9,7 +9,7 @@ import org.springframework.dao.DataAccessException;
 
 /**
  * @author Ingo Dueppe
- *
+ * @author Peter Schuh
  */
 public class UserDetailsServiceAdapter implements UserDetailsService {
 
@@ -30,7 +30,13 @@ public class UserDetailsServiceAdapter implements UserDetailsService {
 
 		UserInfo userInfo = securityService.getUserByName(username);
 		if (userInfo == null) {
-			throw new UsernameNotFoundException("Username not found!");
+			// FIXME Workaround for missing signature within interface. Fix it, if Acegi developers extend the interface definition.
+			// Unfortunately the UserDetailsService interface does not provide a method loadUserByEmail, but we need this. 
+			// Therefore we assume the username parameter being an email address and try to load the user.
+			userInfo = securityService.getUserByEmail(username);
+			if (userInfo == null) {
+				throw new UsernameNotFoundException("Username not found!");
+			}
 		}
 		
 		String[] authorities = securityService.getGrantedAuthorities(userInfo);

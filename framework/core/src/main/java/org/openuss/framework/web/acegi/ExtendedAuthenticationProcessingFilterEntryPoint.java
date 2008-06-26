@@ -1,4 +1,4 @@
-package org.openuss.web.security;
+package org.openuss.framework.web.acegi;
 
 import java.io.IOException;
 
