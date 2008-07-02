@@ -51,6 +51,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected String defaultDomainName = null;
 	protected Long defaultDomainId;
 	protected boolean assignDefaultRoleEnabled = false;
+	protected boolean redirectEnabled = false;
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
 	
@@ -154,9 +155,16 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		// Subclasses can override this method, e. g. to redirect users.
 		onSuccessfulAuthentication(request, response, authResult);
 
+		getRememberMeServices().loginSuccess(request, response, authResult);
+		
 		// Fire event
 		if (this.eventPublisher != null) {
 			eventPublisher.publishEvent(new AuthenticationSuccessEvent(authResult));
+		}
+		
+		if (isRedirectEnabled()) {
+			String targetUrl = determineTargetUrl(request);
+			sendRedirect(request, response, targetUrl);			
 		}
 	}
 
@@ -183,6 +191,14 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 
 		// Subclasses can override this method, e. g. to redirect users.
 		onUnsuccessfulAuthentication(request, response, failed);
+		
+		getRememberMeServices().loginFail(request, response);
+		
+		if (isRedirectEnabled()) {
+			String failureUrl = determineFailureUrl(request, failed);			
+			sendRedirect(request, response, failureUrl);			
+		}
+
 	}
 	
 	
@@ -325,5 +341,22 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	
 	public void setDefaultDomainId(Long defaultDomainId) {
 		this.defaultDomainId = defaultDomainId;
+	}
+
+	public boolean isRedirectEnabled() {
+		return redirectEnabled;
+	}
+
+	public void setRedirectEnabled(boolean redirectEnabled) {
+		this.redirectEnabled = redirectEnabled;
+	}
+
+	public AuthenticationDetailsSource getAuthenticationDetailsSource() {
+		return authenticationDetailsSource;
+	}
+
+	public void setAuthenticationDetailsSource(
+			AuthenticationDetailsSource authenticationDetailsSource) {
+		this.authenticationDetailsSource = authenticationDetailsSource;
 	}
 }
