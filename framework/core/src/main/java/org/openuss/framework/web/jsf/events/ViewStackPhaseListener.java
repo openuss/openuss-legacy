@@ -39,16 +39,29 @@ public class ViewStackPhaseListener implements PhaseListener {
 		if (StringUtils.isNotBlank(viewId)) {
 			Stack<String> viewStack = getViewStack(event.getFacesContext());
 			
-			if (!viewStack.contains(viewId)) {
+			if (viewStack.isEmpty()){
 				viewStack.push(viewId);
 			} else {
-				while (!viewId.equals(viewStack.peek())) {
+				while (viewStack.contains(removeParameters(viewId))){
 					viewStack.pop();
 				}
+				viewStack.push(viewId);
 			}
 		}
 		
 	}
+	
+	private boolean noParameter(String url){		
+		return (url.lastIndexOf("?") == -1);
+	}
+	
+	private String removeParameters(String url){
+		if (noParameter(url)){
+			return url;
+		}
+		return url.substring(0, url.lastIndexOf("?"));
+	}
+	
 
 	public void beforePhase(PhaseEvent event) {}
 

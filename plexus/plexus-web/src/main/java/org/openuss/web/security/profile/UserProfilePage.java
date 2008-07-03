@@ -134,6 +134,12 @@ public class UserProfilePage extends BasePage{
 		}
 		securityService.saveUser(user);
 	}
+	
+	public String removeUser(){
+		getSecurityService().removeUser(user);
+		addMessage(i18n("user_delete_message"));
+		return Constants.DESKTOP;
+	}
 
 	public SecurityService getSecurityService() {
 		return securityService;

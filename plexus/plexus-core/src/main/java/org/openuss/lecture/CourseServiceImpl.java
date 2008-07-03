@@ -701,6 +701,7 @@ public class CourseServiceImpl extends CourseServiceBase {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private void sendApplicationNotificationToAssistants(Course course) {
 		List<CourseMemberInfo> assistants = getCourseMemberDao().findByType(CourseMemberDao.TRANSFORM_COURSEMEMBERINFO, course, CourseMemberType.ASSISTANT);
 		List<User> recipients = new ArrayList<User>();
@@ -743,5 +744,13 @@ public class CourseServiceImpl extends CourseServiceBase {
 			getCourseMemberDao().remove(member);
 		}
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void handleRemoveUserDependencies(User user) throws Exception {
+		//remove user dependencies from courseMember tables
+		List<CourseMember> members = getCourseMemberDao().findByUser(user);
+		getCourseMemberDao().remove(members);
 	}
 }

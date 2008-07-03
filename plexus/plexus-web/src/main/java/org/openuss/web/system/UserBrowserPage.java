@@ -83,6 +83,12 @@ public class UserBrowserPage extends BasePage{
 		return Constants.SUCCESS;
 	}
 	
+	public String deleteUser(){
+		getSecurityService().removeUserPermanently(this.dataModel.getRowData());
+		addMessage(i18n("system_message_deleted_user", this.dataModel.getRowData().getUsername()));
+		return Constants.SUCCESS;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public DataPage<UserInfo> fetchDataPage(int startRow, int pageSize) {
 		if (logger.isDebugEnabled()) {

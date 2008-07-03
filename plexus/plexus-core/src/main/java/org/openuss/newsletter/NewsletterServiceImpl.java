@@ -290,4 +290,10 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 		getMailDao().update(getMailDao().mailDetailToEntity(mailDetail));
 	}
 
+	@Override
+	protected void handleRemoveAllSubscriptions(User user) throws Exception {
+		List<Subscriber> subscribers = getSubscriberDao().findByUser(user);
+		getSubscriberDao().remove(subscribers);
+	}
+
 }

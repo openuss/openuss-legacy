@@ -513,4 +513,12 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 			getInstituteDao().update(institute);
 		}
 	}
+
+	@Override
+	protected void handleRemoveUserDependencies(User user) throws Exception {
+		List<Application> applications = getApplicationDao().findByApplyingUser(user);
+		getApplicationDao().remove(applications);
+		applications = getApplicationDao().findByConfirmingUser(user);
+		getApplicationDao().remove(applications);
+	}
 }

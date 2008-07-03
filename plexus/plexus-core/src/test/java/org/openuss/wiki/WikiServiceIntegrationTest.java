@@ -255,6 +255,20 @@ public class WikiServiceIntegrationTest extends WikiServiceIntegrationTestBase {
 		final WikiSiteInfo wikiSiteInfo = wikiService.getWikiSite(wikiSiteId);
 		assertNull(wikiSiteInfo);
 	}
+
+	public void testRemoveUserDependencies(){
+		final WikiSiteContentInfo wikiSite = createDefaultWikiSiteContentInfo();
+		wikiService.saveWikiSite(wikiSite);
+		
+		final Long wikiSiteVersionId = wikiSite.getId();
+		final Long wikiSiteId = wikiSite.getWikiSiteId();
+		
+		wikiService.removeUserDependencies(assistantUser);
+		
+		WikiSiteContentInfo content = wikiService.getWikiSiteContent(wikiSiteVersionId);
+		
+		assertTrue(content.getAuthorId().equals(new Long(-11)));
+	}
 	
 	/**
 	 * Tests the creation, storage, selection and deleting of an Image.

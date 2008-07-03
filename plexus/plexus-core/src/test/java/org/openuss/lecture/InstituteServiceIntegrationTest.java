@@ -30,6 +30,8 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 	
 	private DepartmentDao departmentDao;
 	
+	private ApplicationDao applicationDao;
+	
 	private AclManager aclManager;
 
 	@Override
@@ -462,6 +464,26 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 		logger.info("----> END access to findApplicationByInstitute test");
 	}
 	
+
+	public void testRemoveUserDependencies(){
+		User user = testUtility.createUniqueUserInDB();
+		Department department = testUtility.createUniqueDepartmentInDB();
+		department.setDepartmentType(DepartmentType.OFFICIAL);
+		Institute institute = testUtility.createUniqueInstituteInDB();
+		Application application = Application.Factory.newInstance();
+		application.setApplicationDate(new Date());
+		application.setApplyingUser(user);
+		application.setConfirmingUser(user);
+		application.setDepartment(department);
+		application.setDescription(" ");
+		application.setInstitute(institute);
+		getApplicationDao().create(application);
+		
+		getInstituteService().removeUserDependencies(user);
+		
+		assertEquals(0, getApplicationDao().findByApplyingUser(user).size());
+	}
+	
 	protected String[] getConfigLocations() {
 		return new String[] { 
 			"classpath*:applicationContext.xml", 
@@ -492,6 +514,14 @@ public class InstituteServiceIntegrationTest extends InstituteServiceIntegration
 
 	public void setAclManager(AclManager aclManager) {
 		this.aclManager = aclManager;
+	}
+
+	public ApplicationDao getApplicationDao() {
+		return applicationDao;
+	}
+
+	public void setApplicationDao(ApplicationDao applicationDao) {
+		this.applicationDao = applicationDao;
 	}
 	
 }

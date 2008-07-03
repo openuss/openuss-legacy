@@ -154,7 +154,10 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 
 	@Override
 	protected void handleRemoveUser(UserInfo user) throws Exception {
-		getUserDao().remove(user.getId());
+		User userObject = getUserDao().findUserByUsername(user.getUsername());
+		userObject.setAccountExpired(true);
+		userObject.setAccountLocked(true);
+		getUserDao().update(userObject);
 	}
 
 	@Override
@@ -493,6 +496,30 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 			return ((UserImpl) user).getGrantedAuthorities();
 		} else {
 			return new String[0];
+		}
+	}
+	
+	protected void handleRemoveUserPermanently(UserInfo user) throws Exception{
+		getCommandService().createOnceCommand(getUserObject(user), "userDeleteCommand", new Date(), null);
+	}
+
+	/**
+	 * Method for removing user object. Only for use of UserDeleteCommand. 
+	 * Do not use from Services! This will fail due to many dependencies of user object! 
+	 */
+	@Override
+	protected void handleDeleteUserObject(User user) throws Exception {
+		getUserDao().remove(user);
+	}
+
+	@Override
+	protected void handleRemoveAuthorityFromAllGroups(Authority authority)
+			throws Exception {
+		Collection<Group> groups = getAllGroups();
+		for (Group group : groups){
+			if (group.getMembers().contains(authority)){
+				removeAuthorityFromGroup(authority, group);
+			}
 		}
 	}
 

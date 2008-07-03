@@ -212,6 +212,30 @@ public class NewsletterServiceIntegrationTest extends NewsletterServiceIntegrati
 		assertEquals(mailDraft.getSubject(), loadedSendMessage.getSubject());
 		assertEquals(mailDraft.getText(), loadedSendMessage.getText());
 	}
+	
+	public void testRemoveAllSubscriptions(){
+		DomainObject domainObject = generateDomainObject();
+		getNewsletterService().addNewsletter(domainObject, "testName");		
+		NewsletterInfo newsletter = getNewsletterService().getNewsletter(domainObject);
+		User user = testUtility.createUniqueUserInDB();
+		UserInfo userInfo = securityService.getUser(user.getId());
+		flush();
+		//Init list of subscribers has to be empty
+		List<SubscriberInfo> subscribers = getNewsletterService().getSubscribers(newsletter);
+		assertEquals(0, subscribers.size());
+		//add user to newsletter
+		getNewsletterService().subscribe(newsletter, userInfo);
+		subscribers = getNewsletterService().getSubscribers(newsletter);
+		assertEquals(1, subscribers.size());
+		SubscriberInfo si = (SubscriberInfo) subscribers.get(0);
+		assertEquals(false, si.isBlocked());
+		assertEquals(user.getDisplayName(), si.getDisplayName());
+		assertEquals(user.getEmail(), si.getEmail());
+		
+		getNewsletterService().removeAllSubscriptions(user);
+		subscribers = getNewsletterService().getSubscribers(newsletter);
+		assertEquals(0, subscribers.size());
+	}
 
 	private DomainObject generateDomainObject(){
 		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());

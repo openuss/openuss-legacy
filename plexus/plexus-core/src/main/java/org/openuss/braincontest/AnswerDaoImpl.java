@@ -5,6 +5,13 @@
  */
 package org.openuss.braincontest;
 
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+
 /**
  * @see org.openuss.braincontest.Answer
  */
@@ -53,5 +60,23 @@ public class AnswerDaoImpl extends AnswerDaoBase {
     {
         return this.findByContestAndSolver(transform, "from org.openuss.braincontest.Answer as answer where answer.answerPk.solver.id = ? and answer.answerPk.contest.id = ?", solverId, contestId);
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List handleFindBySolver(final Long solverId) throws Exception {
+		final String queryString = 
+		" FROM org.openuss.braincontest.Answer as answer" +
+		" WHERE answer.answerPk.solver.id = :solverId";
+		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Query queryObject = session.createQuery(queryString);
+				queryObject.setParameter("solverId", solverId);
+				List<Object[]> results = queryObject.list();
+				transformEntities(AnswerDao.TRANSFORM_NONE, results);
+				return results;
+			}
+		}, true);
+	}
 	
 }
+

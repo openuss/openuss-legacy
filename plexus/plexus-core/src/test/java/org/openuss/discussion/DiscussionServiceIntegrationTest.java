@@ -25,15 +25,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	private PostInfo generatePost(){
 		User user = testUtility.createUserSecureContext();
-		PostInfo postInfo = new PostInfo();
-		postInfo.setCreated(new Date(System.currentTimeMillis()));
-		postInfo.setLastModification(postInfo.getCreated());
-		postInfo.setSubmitter(user.getUsername());
-		postInfo.setSubmitterId(1L);
-		postInfo.setText("testText");
-		postInfo.setTitle("testTitle");	
-		postInfo.setIp("001.002.003.004");
-		return postInfo;
+		return generateUserPost(user);
 	}
 
 	private DomainObject generateDomainObject(){
@@ -168,6 +160,59 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		assertNotNull(loadedForum);
 		assertEquals(domainObject.getId(), loadedForum.getDomainIdentifier());
 		
+	}
+	
+	public void testRemoveUserFromDiscussions(){
+		//build up a forum, topic, post, and edited post and forum and topic watch
+		
+		//create forum
+		ForumInfo fi = new ForumInfo();
+		DomainObject domainObject = generateDomainObject();
+		fi.setDomainIdentifier(domainObject.getId());
+		fi.setReadOnly(false);
+		discussionService.addForum(fi);
+		fi = discussionService.getForum(domainObject);
+		
+		//create topic
+		//test correct creation of a example topic
+		User user = testUtility.createUserSecureContext();
+		PostInfo firstPost = generateUserPost(user);
+		discussionService.createTopic(firstPost, fi);		
+		List<TopicInfo> topics = discussionService.getTopics(discussionService.getForum(domainObject));
+		assertNotNull(topics);
+		
+		//add post and edit this post
+		discussionService.addPost(generateUserPost(user), topics.get(0));
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
+		List<PostInfo> posts = discussionService.getPosts(topics.get(0));
+		PostInfo post = posts.get(1);
+		post.setText("neu");
+		discussionService.updatePost(post);
+		
+		//add watches
+		discussionService.addForumWatch(fi);
+		discussionService.addTopicWatch(topics.get(0));
+		
+		//remove everything
+		discussionService.removeUserFromDiscussions(user);
+		
+		//check status
+		topics = discussionService.getTopics(discussionService.getForum(domainObject));
+		assertTrue(" unknown unknown or deleted".equals(topics.get(0).getSubmitter().toLowerCase()));
+		assertFalse(discussionService.watchesForum(fi));
+		assertFalse(discussionService.watchesTopic(topics.get(0)));
+	}
+
+	private PostInfo generateUserPost(User user) {
+		PostInfo postInfo = new PostInfo();
+		postInfo.setCreated(new Date(System.currentTimeMillis()));
+		postInfo.setLastModification(postInfo.getCreated());
+		postInfo.setSubmitter(user.getUsername());
+		postInfo.setSubmitterId(1L);
+		postInfo.setText("testText");
+		postInfo.setTitle("testTitle");	
+		postInfo.setIp("001.002.003.004");
+		return postInfo;
 	}
 
 	public SecurityService getSecurityService() {

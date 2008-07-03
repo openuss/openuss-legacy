@@ -66,6 +66,23 @@
 		<property name="durability" value="true"/>
 		<property name="jobClass" value="org.openuss.statistics.StatisticUpdateJob"/>
 	</bean>
+	
+	<bean id="userDeleteCommand" class="org.openuss.security.UserDeleteCommand" scope="prototype">
+		<property name="commandService" ref="commandService"/>
+		<property name="securityService" ref="securityService"/>
+		<property name="brainContestService" ref="brainContestService"/>
+		<property name="desktopService2" ref="desktopService2"/>
+		<property name="workspaceService" ref="workspaceService"/>
+		<property name="discussionService" ref="discussionService"/>
+		<property name="courseService" ref="courseService"/>
+		<property name="instituteService" ref="instituteService"/>
+		<property name="newsletterService" ref="newsletterService"/>
+		<property name="paperSubmissionService" ref="paperSubmissionService"/>
+		<property name="registrationService" ref="registrationService"/>
+		<property name="membershipService" ref="membershipService"/>
+		<property name="onlineStatisticService" ref="onlineStatisticService"/>
+		<property name="wikiService" ref="wikiService"/>
+	</bean>
 
 
 </beans>

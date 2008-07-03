@@ -5,9 +5,11 @@
  */
 package org.openuss.collaboration;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -141,4 +143,32 @@ public class WorkspaceServiceImpl extends org.openuss.collaboration.WorkspaceSer
 		
 		return workspaceInfos;
 	}
+
+	@Override
+	protected List handleFindWorkspacesByUser(User user) throws Exception {
+		List<BigInteger> workspaceIds = getWorkspaceDao().findByUser(user);
+		List<Workspace> workspaces = new ArrayList<Workspace>();
+		for (BigInteger id : workspaceIds){
+			workspaces.add(getWorkspaceDao().load(new Long(id.longValue())));
+		}
+		return workspaces;
+	}
+	
+	protected void handleRemoveUserFromWorkspaces(User user) {
+		List<Workspace> workspaces = findWorkspacesByUser(user);
+		List<Long> userIds;
+		Set<User> workspaceMembers;
+		for (Workspace workspace : workspaces){
+			workspaceMembers = workspace.getUser();
+			userIds = new ArrayList<Long>();
+			for (User workspaceMember : workspaceMembers){
+				if (!user.getId().equals(workspaceMember.getId())){
+					userIds.add(workspaceMember.getId());
+				}
+			}
+			updateWorkspaceMembers(userIds, workspace.getId());
+		}
+	}
+
+	
 }

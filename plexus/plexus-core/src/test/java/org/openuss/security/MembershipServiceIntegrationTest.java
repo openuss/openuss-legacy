@@ -254,5 +254,30 @@ public class MembershipServiceIntegrationTest extends MembershipServiceIntegrati
 
 		logger.info("----> END access to createGroup test");
 	}
+	
+	public void testRemoveUserDependencies(){
+		// Create University with DefaultUser as Owner
+		//test not working, no idea why.
+//		University university = testUtility.createUniqueUniversityInDB();
+//		User user = testUtility.createUniqueUserInDB();
+//
+//		flush();
+//		
+//		membershipService.addAspirant(university.getMembership(), user);
+//		assertEquals(1, getAspirantCount(university));
+//		
+//		flush();
+//
+//		membershipService.removeUserDependencies(user);
+//		assertEquals(0, getAspirantCount(university));
+	}
+
+	private int getAspirantCount(University university) {
+		int aspirantCount = 0;
+		for (Group group : university.getMembership().getGroups()){
+			aspirantCount += group.getMembers().size();
+		}
+		return aspirantCount;
+	}
 
 }

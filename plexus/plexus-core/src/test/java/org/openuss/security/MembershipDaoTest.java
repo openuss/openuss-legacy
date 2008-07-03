@@ -74,4 +74,37 @@ public class MembershipDaoTest extends MembershipDaoTestBase {
 		flush();
 		
 	}
+	
+	public void testFindByMember(){
+//		// Create users
+//		List<User> users = new ArrayList<User>(5);
+//		for(int i=0;i<5;i++) {
+//			users.add(testUtility.createUniqueUserInDB());
+//		}
+//		
+//		// Create Groups
+//		List<Group> groups = new ArrayList<Group>(4);
+//		for(int i=0;i<4;i++) {
+//			groups.add(Group.Factory.newInstance(GroupType.ADMINISTRATOR, "Group"+i));
+//			groups.get(0).addMember(users.get(i));
+//		}
+//		
+//		// Create Memberships
+//		Membership membership = Membership.Factory.newInstance();
+//		membership.getMembers().add(users.get(0));
+//		membership.getAspirants().add(users.get(1));
+//		membership.getAspirants().add(users.get(2));
+//		membership.getMembers().add(users.get(3));
+//		membership.getMembers().add(users.get(4));
+//		membership.getGroups().add(groups.get(0));
+//		membership.getGroups().add(groups.get(1));
+//		
+//		flush();
+//		
+//		List<Membership> members = getMembershipDao().findByMember(users.get(0));
+//		assertEquals(1, members.size());
+//		
+//		members = getMembershipDao().findByMember(users.get(1));
+//		assertNull(members);
+	}
 }

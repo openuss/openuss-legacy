@@ -410,6 +410,11 @@ public class PaperSubmissionServiceImpl
 		return getSecurityService().getGroupByName("GROUP_COURSE_" + domainId + "_PARTICIPANTS");
 	}
 
+	@Override
+	protected void handleRemoveUserFromExam(User user) throws Exception {
+		getPaperSubmissionDao().remove(getPaperSubmissionDao().findByUser(user));
+	}
+
 	
 
 }

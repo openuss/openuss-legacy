@@ -795,6 +795,30 @@ public class CourseServiceIntegrationTest extends CourseServiceIntegrationTestBa
 		logger.debug("----> END access to setCourseStatus test <---- ");
 	}
 	
+	public void testRemoveUserDependencies(){
+			courseService.addAspirant(courseInfo, getSecurityService().getUser(user.getId()));
+			List<CourseMemberInfo> aspirants = courseService.getAspirants(courseInfo);
+			assertEquals(1, aspirants.size());
+			courseService.removeUserDependencies(user);
+			Collection<CourseMember> emptyAspirants = courseService.getAspirants(courseInfo);
+			assertEquals(0, emptyAspirants.size());
+
+			courseService.addAssistant(courseInfo, getSecurityService().getUser(user.getId()));
+			List<CourseMemberInfo> assistants = courseService.getAssistants(courseInfo);
+			assertEquals(1, assistants.size());
+			courseService.removeUserDependencies(user);
+			Collection<CourseMember> emptyAssistant = courseService.getAssistants(courseInfo);
+			assertEquals(0, emptyAssistant.size());
+		
+			courseService.addParticipant(courseInfo, getSecurityService().getUser(user.getId()));
+			List<CourseMemberInfo> participant = courseService.getParticipants(courseInfo);
+			assertEquals(1, participant.size());
+			courseService.removeUserDependencies(user);
+			Collection<CourseMember> emptyParticipants = courseService.getParticipants(courseInfo);
+			assertEquals(0, emptyParticipants.size());
+	}
+	
+	
 	public InstituteDao getInstituteDao() {
 		return instituteDao;
 	}

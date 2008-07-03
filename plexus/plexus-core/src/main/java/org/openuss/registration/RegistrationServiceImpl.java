@@ -151,7 +151,7 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		// store registration code
 		instituteActivationCode.setInstitute(institute);
 		instituteActivationCode.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		instituteActivationCode.setCode(code);		
+		instituteActivationCode.setCode(code);	
 		getInstituteActivationCodeDao().create(instituteActivationCode);
 		
 		return code;	
@@ -178,6 +178,12 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 	@Override
 	protected void handleRemoveInstituteCodes(Institute institute) throws Exception {
 		getInstituteActivationCodeDao().remove(getInstituteActivationCodeDao().findByInstitute(institute));
+	}
+
+	@Override
+	protected void handleRemoveUserRegistrationCodes(User user)
+			throws Exception {
+		getUserActivationCodeDao().remove(getUserActivationCodeDao().findByUser(user));
 	}
 
 }

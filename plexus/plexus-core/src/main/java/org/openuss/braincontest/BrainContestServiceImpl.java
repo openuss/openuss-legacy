@@ -8,15 +8,18 @@ package org.openuss.braincontest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import org.openuss.collaboration.Workspace;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
 import org.openuss.framework.web.jsf.util.AcegiUtils;
+import org.openuss.security.User;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
 
@@ -27,6 +30,7 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class BrainContestServiceImpl extends BrainContestServiceBase {
 
+	private static final String UNKNOWN = "Unknown";
 	private static final Logger logger = Logger.getLogger(BrainContestServiceImpl.class);
 
 	/**
@@ -220,8 +224,21 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 		Validate.notNull(contest, "Contest must not be null");
 
 		BrainContest brainContest = getBrainContestDao().load(contest.getId());
-		getBrainContestDao().remove(brainContest);
+		for (Answer answer : brainContest.getAnswers()){
+			getAnswerDao().remove(answer);
+		}
+		brainContest.setAnswers(null);
+		getBrainContestDao().remove(brainContest);		
 		getSecurityService().removeObjectIdentity(contest);
+	}
+	/**
+	 * written for deleting of a user, 
+	 * all answers of that users are deleted, setting to unknown user is not possible 
+	 * due to combined contest / user combination as primary key
+	 */
+	protected void handleRemoveUserFromAnswers(User user){
+		List<Answer> answers = getAnswerDao().findBySolver(user.getId());
+		getAnswerDao().remove(answers);
 	}
 
 }

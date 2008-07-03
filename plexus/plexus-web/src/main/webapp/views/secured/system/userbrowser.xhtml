@@ -96,6 +96,7 @@
 				</t:column>			
 				<plexus:column header="#{msg.commands_header}">
 					<plexus:linkProfileIcon user="#{bean.id}"/> 
+					<t:commandButton value="#{msg.system_button_remove}" title="#{msg.system_button_remove}" action="#{views$secured$system$userbrowser.deleteUser}" styleClass="button_save" />
 				</plexus:column>
 			</plexus:dataTable>
 			<o:block>

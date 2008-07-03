@@ -3,6 +3,8 @@ package org.openuss.lecture;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openuss.security.User;
+
 public class InstituteServiceMock implements InstituteService {
 
 	public Long create(InstituteInfo instituteInfo, Long userId) {
@@ -139,6 +141,9 @@ public class InstituteServiceMock implements InstituteService {
 	}
 	
 	public void resendActivationCode(InstituteInfo instituteInfo, Long userId) {
+	}
+
+	public void removeUserDependencies(User user) {
 	}
 	
 }

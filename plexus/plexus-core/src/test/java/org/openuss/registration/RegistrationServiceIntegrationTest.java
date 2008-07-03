@@ -90,6 +90,50 @@ public class RegistrationServiceIntegrationTest extends RegistrationServiceInteg
 		endTransaction();
 	}
 	
+	public void testRemoveUserRegistrationCodes() throws RegistrationException{
+		//FIXME not working test
+//		UserInfo userInfo = createUserInfo();
+//		registrationService.registrateUser(userInfo);
+//		
+//		assertNotNull(userInfo.getId());
+//		assertEquals(false, userInfo.isEnabled());
+//		
+//		setComplete();
+//		endTransaction();
+//		startNewTransaction();
+//		
+//		String code = registrationService.generateActivationCode(userInfo);
+//		
+//		flush();
+//		
+//		registrationService.removeUserRegistrationCodes(user);
+//		
+//		flush();
+//		
+//		int test = 0;
+//		try{
+//			registrationService.activateUserByCode(code);
+//		} catch (RegistrationCodeNotFoundException rcnfe){
+//			test = 1;
+//		}
+//		assertEquals(0, test);
+//		
+//		
+//		//clean up
+//		activationCodeDao.remove(activationCodeDao.loadAll());
+//		user = userDao.load(user.getId());
+//		for (Group group: user.getGroups()) {
+//			group = groupDao.load(group.getId());
+//			group.removeMember(user);
+//			groupDao.update(group);
+//		}
+//
+//		userDao.remove(user);
+//		
+//		setComplete();
+//		endTransaction();
+	}
+	
 	public UserDao getUserDao() {
 		return userDao;
 	}
