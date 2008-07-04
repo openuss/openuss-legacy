@@ -15,6 +15,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
 import org.openuss.messaging.MessageService;
 import org.openuss.messaging.MessageServiceException;
+import org.openuss.migration.CentralUserData;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;

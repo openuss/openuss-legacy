@@ -34,6 +34,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.migration.CentralUserData;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;

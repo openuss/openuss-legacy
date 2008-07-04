@@ -6,6 +6,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
+import org.openuss.migration.CentralUserData;
 import org.openuss.web.BasePage;
 import org.openuss.web.PageLinks;
 

@@ -10,7 +10,6 @@ import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.DisabledException;
 import org.acegisecurity.LockedException;
 import org.acegisecurity.adapters.PrincipalAcegiUserToken;
-import org.acegisecurity.providers.ProviderNotFoundException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider;
 import org.acegisecurity.userdetails.UserDetails;
@@ -26,7 +25,7 @@ import org.springframework.util.Assert;
  * @author Standard
  *
  */
-public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	//~ Instance fields ================================================================================================
 
@@ -46,6 +45,14 @@ public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthent
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean migrationEnabled = false;
+	
+	/**
+	 * Enables reconciliation, i. e. application specific updating of locally stored user details with data received from shibboleth identity provider.
+	 * Defaults to <code>false</code>.
+	 */
+	protected boolean reconciliationEnabled = false;
+
+	
 	/**
 	 * Possibly useful for automatic migration of disabled or not yet enabled users, e. g. if user has registered, but not yet verified his email address.
 	 * Defaults to <code>false</code>.
@@ -109,10 +116,30 @@ public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthent
 	    
 	    // Automatic migration
 	    if (isMigrationEnabled() && !isAlreadyMigrated(user, authentication)) {
-	    	// do migration
-	    	
-	    	// Force cache update
-	    	cacheWasUsed = false;
+	    	if (cacheWasUsed) {
+	    		// Reload user to get latest data (i. e. not from cache)
+	    		user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
+	    	}
+	    	// Cache could have been out-dated regarding the need for migration.
+	    	// Possibly user has been migrated otherwise, meanwhile.
+	    	if (!isAlreadyMigrated(user, authentication)) {
+		    	migrate(user, authentication);
+		    	// Reload user
+		    	user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
+		    	// Force cache update
+		    	cacheWasUsed = false;
+	    	}
+	    }
+	    else if (!cacheWasUsed && isReconciliationEnabled()) {
+	    	 	// Only do reconciliation of centrally administered user details and locally saved ones, 
+	    		// if local user details came from user details service, to preserve user details being 
+	    		// updated with out-dated data from cache.
+	    		boolean userWasUpdated = false;
+	    		userWasUpdated = reconcile(user, authentication);
+		    	if (userWasUpdated) {
+		    		// Reload user
+			    	user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
+		    	}
 	    }
 	
 	    if (!cacheWasUsed) {
@@ -135,36 +162,27 @@ public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthent
 		Assert.hasLength(key, "A key must be set");
 	}
 	
-	protected String generateUsernameFromAuthentication(Authentication authentication) {
-		String domainName = "";
-		String username = "";
-		try {
-			 domainName = (String)((ShibbolethUserDetails) authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get();
-			 username = (String)((ShibbolethUserDetails) authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.USERNAME_KEY).get();
-		} catch (NamingException e) {
-			throw new IllegalArgumentException(e.getMessage(),e);
-		}
-		return SecurityDomainUtility.toUsername(domainName, username);
-	}
+	
+	/**
+	 * Enables application specific derivation of usernames.
+	 * @param authentication
+	 * @return
+	 */
+	protected abstract String generateUsernameFromAuthentication(Authentication authentication);
 	
 	@Override
 	public boolean supports(Class authentication) {
 		return (PrincipalAcegiUserToken.class.isAssignableFrom(authentication));
 	}
 	
-    protected final UserDetails retrieveUser(final String username, final PrincipalAcegiUserToken authentication) throws AuthenticationException {
+    protected UserDetails retrieveUser(String username, PrincipalAcegiUserToken authentication) throws AuthenticationException {
 
         UserDetails loadedUser;
 
         try {
-			String userEmailAddress = (String)((ShibbolethUserDetails) authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY).get();
-            // Due to insufficient interface declaration, we had to extend our UserDetailsService implementation, so that it can also load a user by email address.
-			// May the Acegi developers extend the interface by a loadUserByEmail or a similar method.
-			loadedUser = this.getUserDetailsService().loadUserByUsername(userEmailAddress);
+			loadedUser = this.getUserDetailsService().loadUserByUsername(username);
         } catch (DataAccessException repositoryProblem) {
             throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
-        } catch (NamingException e) {
-        	throw new IllegalArgumentException(e.getMessage(),e);
         }
 
         if (loadedUser == null) {
@@ -174,16 +192,29 @@ public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthent
         return loadedUser;
     }
     
+    /**
+     * Application specific migration for users, e. g. set authentication mechanism for user to shibboleth.
+     * @param user
+     * @param authentication
+     */
+    protected void migrate(UserDetails user, Authentication authentication) {}
     
     /**
-     * Check user migration status using user details and authentication request.
+     * Application specific reconciliation of user details, e. g. updating of locally stored user details with 
+     * data received by the corresponding shibboleth filter.
+     * @param user
+     * @param authentication
+     * @return reconciliation status: <code>true</code>, if locally stored user details had to be updated.
+     */
+    protected abstract boolean reconcile(UserDetails user, Authentication authentication);
+
+    /**
+     * Check user migration status.
      * @param user
      * @param authentication
      * @return migration status
      */
-    public boolean isAlreadyMigrated(UserDetails user, Authentication authentication) {
-    	return SecurityDomainUtility.containsDomain(user.getUsername());
-    }
+    protected abstract boolean isAlreadyMigrated(UserDetails user, Authentication authentication);
 	
 	public boolean isMigrationEnabled() {
 		return migrationEnabled;
@@ -238,16 +269,19 @@ public class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthent
 		this.ignoreDisabledException = ignoreDisabledException;
 	}
 
-
-
 	public String getKey() {
 		return key;
 	}
-
-
 
 	public void setKey(String key) {
 		this.key = key;
 	}
 
+	public boolean isReconciliationEnabled() {
+		return reconciliationEnabled;
+	}
+
+	public void setReconciliationEnabled(boolean reconciliationEnabled) {
+		this.reconciliationEnabled = reconciliationEnabled;
+	}
 }

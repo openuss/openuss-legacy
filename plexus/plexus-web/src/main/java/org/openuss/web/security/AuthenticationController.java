@@ -33,6 +33,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.migration.CentralUserData;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
@@ -40,7 +41,6 @@ import org.openuss.security.UserInfo;
 import org.openuss.security.acegi.UserInfoDetailsAdapter;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.migration.CentralUserData;
 import org.openuss.web.migration.MigrationUtility;
 import org.openuss.web.statistics.OnlineSessionTracker;
 

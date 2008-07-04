@@ -27,6 +27,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
+import org.openuss.migration.CentralUserData;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
