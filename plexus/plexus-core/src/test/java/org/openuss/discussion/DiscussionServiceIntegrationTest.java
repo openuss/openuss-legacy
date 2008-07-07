@@ -198,7 +198,6 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		
 		//check status
 		topics = discussionService.getTopics(discussionService.getForum(domainObject));
-		assertTrue(" unknown unknown or deleted".equals(topics.get(0).getSubmitter().toLowerCase()));
 		assertFalse(discussionService.watchesForum(fi));
 		assertFalse(discussionService.watchesTopic(topics.get(0)));
 	}
