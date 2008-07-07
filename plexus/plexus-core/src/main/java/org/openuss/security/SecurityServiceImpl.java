@@ -35,6 +35,10 @@ import org.openuss.security.acl.PermissionPK;
  */
 public class SecurityServiceImpl extends SecurityServiceBase {
 
+	private static final String OPENUSS_EMAIL_SUFFIX = "@openuss.de";
+
+	private static final String UNKNOWN = "unknown";
+
 	private static final Logger logger = Logger.getLogger(SecurityServiceImpl.class);
 
 	private static final String GROUP_PREFIX = "GROUP_";
@@ -155,8 +159,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected void handleRemoveUser(UserInfo user) throws Exception {
 		User userObject = getUserDao().findUserByUsername(user.getUsername());
-		userObject.setAccountExpired(true);
-		userObject.setAccountLocked(true);
+		userObject.setDeleted(true);
 		getUserDao().update(userObject);
 	}
 
@@ -501,6 +504,44 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	
 	protected void handleRemoveUserPermanently(UserInfo user) throws Exception{
 		getCommandService().createOnceCommand(getUserObject(user), "userDeleteCommand", new Date(), null);
+	}
+
+	@Override
+	protected void handleRemovePersonalInformation(User user) throws Exception {
+		User unknown = getUserObject(getUserByName(UNKNOWN));
+		user.setAddress(unknown.getAddress());
+		user.setAddressPublic(unknown.isAddressPublic());
+		user.setAgeGroup(unknown.getAgeGroup());
+		user.setCity(unknown.getCity());
+		user.setCountry(unknown.getCountry());
+		user.setDiscussionSubscriptionEnabled(unknown.isDiscussionSubscriptionEnabled());
+		user.setEmail(user.getId().toString()+OPENUSS_EMAIL_SUFFIX);
+		user.setEmailPublic(unknown.isEmailPublic());
+		user.setFirstName(unknown.getFirstName());
+		user.setImageId(unknown.getImageId());
+		user.setImagePublic(unknown.isImagePublic());
+		user.setLastLogin(unknown.getLastLogin());
+		user.setLastName(unknown.getLastName());
+		user.setLocale(unknown.getLocale());
+		user.setMatriculation(unknown.getMatriculation());
+		user.setName(unknown.getName()+user.getId().toString());
+		user.setNewsletterSubscriptionEnabled(unknown.isNewsletterSubscriptionEnabled());
+		//FIXME Login not possible - should a usable password be generated?
+		user.setPassword("1");
+		user.setPortrait(unknown.getPortrait());
+		user.setPortraitPublic(unknown.isPortraitPublic());
+		user.setPostcode(unknown.getPostcode());
+		user.setProfession(unknown.getProfession());
+		user.setProfilePublic(unknown.isProfilePublic());
+		user.setSmsEmail(unknown.getSmsEmail());
+		user.setStudies(unknown.getSmsEmail());
+		user.setTelephone(unknown.getTelephone());
+		user.setTelephonePublic(unknown.isTelephonePublic());
+		user.setTheme(unknown.getTheme());
+		user.setTimezone(unknown.getTimezone());
+		user.setTitle(unknown.getTitle());
+		user.setUsername(unknown.getUsername()+user.getId().toString());
+		getUserDao().update(user);
 	}
 
 }

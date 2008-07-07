@@ -28,7 +28,6 @@ import org.openuss.system.SystemProperties;
  */
 public class DiscussionServiceImpl extends DiscussionServiceBase {
 
-	private static final String UNKNOWN = "Unknown";
 	public static final Logger logger = Logger.getLogger(DiscussionServiceImpl.class);
 
 	/**
@@ -462,28 +461,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleRemoveUserFromDiscussions(User user) throws Exception {
-		User unknown = getSecurityService().getUserObject(getSecurityService().getUserByName(UNKNOWN));
 		//remove user from watches
 		getForumWatchDao().remove(getForumWatchDao().findByUser(user));
 		getDiscussionWatchDao().remove(getDiscussionWatchDao().findByUser(user));
-		//set topic submitter to unknown
-		List<Topic> topics = getTopicDao().findBySubmitter(user);
-		for (Topic topic : topics){
-			topic.setSubmitter(unknown);
-		}
-		getTopicDao().update(topics);
-		//set post submitter to unknown
-		List<Post> posts = getPostDao().findByUser(user);
-		for (Post post : posts){
-			post.setSubmitter(unknown);
-		}
-		getPostDao().update(posts);
-		//set editor to unknown
-		posts = getPostDao().findByEditor(user);
-		for (Post post : posts){
-			post.setEditor(unknown);
-		}
-		getPostDao().update(posts);
 	}
 
 }

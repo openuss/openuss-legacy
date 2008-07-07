@@ -71,8 +71,6 @@
 		<property name="commandService" ref="commandService"/>
 		<property name="securityService" ref="securityService"/>
 		<property name="discussionService" ref="discussionService"/>
-		<property name="courseService" ref="courseService"/>
-		<property name="instituteService" ref="instituteService"/>
 		<property name="newsletterService" ref="newsletterService"/>
 	</bean>
 

@@ -746,11 +746,4 @@ public class CourseServiceImpl extends CourseServiceBase {
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void handleRemoveUserDependencies(User user) throws Exception {
-		//remove user dependencies from courseMember tables
-		List<CourseMember> members = getCourseMemberDao().findByUser(user);
-		getCourseMemberDao().remove(members);
-	}
 }
