@@ -6,10 +6,11 @@ package org.openuss.webdav;
  */
 public abstract class WebDAVHrefException extends WebDAVException {
 
+	private static final long serialVersionUID = -5025252996221063218L;
+
 	public WebDAVHrefException(int statusCode, String msg, Throwable cause) {
 		super(statusCode, msg, cause);
 	}
-
 
 	/**
 	 * @return The path that was resolved when the exception occured.
