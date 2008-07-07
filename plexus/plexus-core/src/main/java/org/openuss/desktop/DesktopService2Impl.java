@@ -1207,17 +1207,4 @@ public class DesktopService2Impl extends DesktopService2Base {
 		}
 	}
 
-
-
-	@Override
-	protected void handleDeleteDesktop(User user) {
-		Desktop desktop = getDesktopDao().findByUser(user);
-		desktop.setCourses(null);
-		desktop.setCourseTypes(null);
-		desktop.setDepartments(null);
-		desktop.setInstitutes(null);
-		desktop.setUniversities(null);
-		getDesktopDao().update(desktop);
-		getDesktopDao().remove(desktop);
-	}
 }

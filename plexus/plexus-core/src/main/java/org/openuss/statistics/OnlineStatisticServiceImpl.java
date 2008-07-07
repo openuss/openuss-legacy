@@ -92,10 +92,4 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 		return getSystemStatisticDao().toSystemStatisticInfo(statistic);
 	}
 
-	@Override
-	protected void handleRemoveUserSessions(User user) throws Exception {
-		List<OnlineSession> onlineSessions = getOnlineSessionDao().findByUser(user);
-		getOnlineSessionDao().remove(onlineSessions);
-	}
-
 }

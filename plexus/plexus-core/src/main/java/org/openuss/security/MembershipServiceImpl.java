@@ -5,7 +5,6 @@
  */
 package org.openuss.security;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -249,21 +248,4 @@ public class MembershipServiceImpl extends MembershipServiceBase {
 		}
 	}
 
-	@Override
-	protected void handleRemoveUserDependencies(User user) throws Exception {
-		List<BigInteger> membershipIds = getMembershipDao().findByMember(user);
-		for (BigInteger id : membershipIds){
-			Membership membership = getMembershipDao().load(new Long(id.longValue()));
-			if (membership != null){
-				getMembershipDao().remove(membership);
-			}
-		}
-		List<BigInteger> aspirantIds = getMembershipDao().findByAspirant(user);
-		for (BigInteger id : membershipIds){
-			Membership membership = getMembershipDao().load(new Long(id.longValue()));
-			if (membership != null){
-				getMembershipDao().remove(membership);
-			}
-		}
-	}
 }

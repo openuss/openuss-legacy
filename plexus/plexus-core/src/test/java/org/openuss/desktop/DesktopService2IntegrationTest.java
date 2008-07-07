@@ -592,73 +592,7 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to findLinkedCoursesByUserAndUniversity(userId, universityId) test");
 	}
 	
-	public void testRemoveDesktop() throws Exception{
-		logger.info("----> BEGIN desktop remove test");
-		
-		//Create University
-		University university = testUtility.createUniqueUniversityInDB();
-		
-		//Create Departments
-		Department department1 = testUtility.createUniqueDepartmentInDB();
-		department1.setUniversity(university);
-		
-		Department department2 = testUtility.createUniqueDepartmentInDB();
-		department2.setUniversity(university);
-		
-		Department department3 = testUtility.createUniqueDepartmentInDB();
-		department3.setUniversity(university);
-		
-		// Create Institutes
-		Institute institute1 = testUtility.createUniqueInstituteInDB();
-		institute1.setDepartment(department1);
-		
-		Institute institute2 = testUtility.createUniqueInstituteInDB();
-		institute2.setDepartment(department2);
-		
-		Institute institute3 = testUtility.createUniqueInstituteInDB();
-		institute3.setDepartment(department3);
-		
-		// Create CourseTypes
-		CourseType courseType1 = testUtility.createUniqueCourseTypeInDB();
-		courseType1.setInstitute(institute1);
-		
-		CourseType courseType2 = testUtility.createUniqueCourseTypeInDB();
-		courseType2.setInstitute(institute2);
-		
-		CourseType courseType3 = testUtility.createUniqueCourseTypeInDB();
-		courseType3.setInstitute(institute3);
-		
-		// Create Courses
-		Course course1 = testUtility.createUniqueCourseInDB();
-		course1.setCourseType(courseType1);
-		
-		Course course2 = testUtility.createUniqueCourseInDB();
-		course2.setCourseType(courseType2);
-		
-		Course course3 = testUtility.createUniqueCourseInDB();
-		course3.setCourseType(courseType3);
-		
-		// Create Desktop
-		Desktop desktop = Desktop.Factory.newInstance();
-		User user = testUtility.createUniqueUserInDB();
-		desktop.setUser(user);
-		this.desktopDao.create(desktop);
-		
-		// Link
-		desktop.getCourses().add(course1);
-		desktop.getCourses().add(course2);
-		desktop.getCourses().add(course3);
-		desktop.getUniversities().add(university);
-		desktop.getCourseTypes().add(courseType2);
-		desktop.getDepartments().add(department1);
-		desktop.getInstitutes().add(institute3);
-		flush();
-		
-		getDesktopService2().deleteDesktop(user);
-		DesktopInfo deletedDesktop = getDesktopService2().findDesktopByUser(user.getId()); 
-		assertTrue(!deletedDesktop.getId().equals(desktop.getId()));
-	}
-	
+
 	public void testUnlinkAllFromUniversity() throws Exception {
 		logger.info("----> BEGIN access to unlinkAllFromUniversity test");
 

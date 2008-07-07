@@ -457,39 +457,6 @@ public class PaperSubmissionServiceIntegrationTest extends PaperSubmissionServic
 		return info;
 	}
 	
-	public void testRemoveUserFromExam(){
-		Course course = createCourseDomain();
-		
-		ExamInfo examInfo = createExamInfo("test_exam");
-		examInfo.setDomainId(course.getId());
-		Long futureDate = new Date().getTime()+1000000000;
-		examInfo.setDeadline(new Date(futureDate));
-		getPaperSubmissionService().createExam(examInfo);
-		Long examId = examInfo.getId();
-		assertNotNull(examId);
-		
-		PaperSubmissionInfo paperSubmissionInfo = createPaperSubmissionInfo(examId);
-		paperSubmissionService.createPaperSubmission(paperSubmissionInfo);
-		Long paperSubmissionId = paperSubmissionInfo.getId();
-		assertNotNull(paperSubmissionId);
-		
-		Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + course.getId() + "_PARTICIPANTS");
-		group.addMember(user1);
-		group.addMember(user2);
-		
-		List<PaperSubmissionInfo> membersAsSubmissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examId);
-		assertNotNull(membersAsSubmissions);
-		assertEquals(2, membersAsSubmissions.size());
-		assertNotSame(membersAsSubmissions.get(0).getSubmissionStatus(), SubmissionStatus.NOT_SUBMITTED);
-		assertEquals(membersAsSubmissions.get(1).getSubmissionStatus(), SubmissionStatus.NOT_SUBMITTED);
-		
-		getPaperSubmissionService().removeUserFromExam(user1);
-		membersAsSubmissions = paperSubmissionService.getMembersAsPaperSubmissionsByExam(examId);
-		assertNotNull(membersAsSubmissions);
-		assertEquals(2, membersAsSubmissions.size());
-
-	}
-	
 	public void setTestUtility(TestUtility testUtility) {
 		this.testUtility = testUtility;
 	}

@@ -180,10 +180,4 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		getInstituteActivationCodeDao().remove(getInstituteActivationCodeDao().findByInstitute(institute));
 	}
 
-	@Override
-	protected void handleRemoveUserRegistrationCodes(User user)
-			throws Exception {
-		getUserActivationCodeDao().remove(getUserActivationCodeDao().findByUser(user));
-	}
-
 }

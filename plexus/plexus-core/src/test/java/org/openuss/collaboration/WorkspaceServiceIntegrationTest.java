@@ -126,23 +126,6 @@ public class WorkspaceServiceIntegrationTest extends WorkspaceServiceIntegration
 		return course;
 	}
 	
-	public void testRemoveUserFromWorkspaces(){
-		Course course = createCourseDomain();
-		
-		WorkspaceInfo workspaceInfo = createWorkspaceInfo("name");
-		workspaceInfo.setDomainId(course.getId());
-		assertNull(workspaceInfo.getId());
-		workspaceService.createWorkspace(workspaceInfo);
-		assertNotNull(workspaceInfo.getId());
-		List<Long> userIds = new ArrayList<Long>();
-		userIds.add(user.getId());
-		workspaceService.updateWorkspaceMembers(userIds, workspaceInfo.getId());
-		
-		workspaceService.removeUserFromWorkspaces(user);
-		
-		assertEquals(0, workspaceService.findWorkspaceMembers(((WorkspaceInfo)(workspaceService.findWorkspacesByDomain(course.getId()).get(0))).getId()).size());
-	}
-	
 	private DefaultDomainObject createDomainObject() {
 		DefaultDomainObject defaultDomainObject = new DefaultDomainObject(TestUtility.unique());
 		return defaultDomainObject;

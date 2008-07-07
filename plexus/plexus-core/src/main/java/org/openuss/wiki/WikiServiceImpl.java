@@ -39,8 +39,6 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 	
-	private static final String UNKNOWN = "unknown";
-
 	private static final Logger LOGGER = Logger.getLogger(WikiServiceImpl.class);
 	
 	private static final String WIKI_STARTSITE_NAME = "index";
@@ -596,16 +594,6 @@ public class WikiServiceImpl extends org.openuss.wiki.WikiServiceBase {
 		public String getFilename() {
 			return filename;
 		}
-	}
-
-	@Override
-	protected void handleRemoveUserDependencies(User user) throws Exception {
-		User unknown = getSecurityService().getUserObject(getSecurityService().getUserByName(UNKNOWN));
-		List<WikiSiteVersion> siteVersions = getWikiSiteVersionDao().findByAuthor(user);
-		for (WikiSiteVersion siteVersion : siteVersions){
-			siteVersion.setAuthor(unknown);
-		}
-		getWikiSiteVersionDao().update(siteVersions);
 	}
 
 }
