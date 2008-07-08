@@ -9,11 +9,16 @@ import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
+import org.openuss.migration.CentralUserData;
+import org.openuss.migration.CentralUserDataImpl;
+import org.openuss.migration.UserMigrationUtility;
 import org.openuss.security.SecurityDomainUtility;
+import org.openuss.security.UserInfo;
 import org.springframework.dao.DataAccessException;
 
 public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthenticationProvider {
-
+	private UserMigrationUtility userMigrationUtility;
+	
 	@Override
 	protected boolean isAlreadyMigrated(UserDetails user, Authentication authentication) {
 		return SecurityDomainUtility.containsDomain(user.getUsername());
@@ -55,9 +60,37 @@ public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthentica
 	}
 
 	@Override
+    protected void migrate(UserDetails user, Authentication authentication) {
+    	getUserMigrationUtility().migrate((UserInfo)user, mapShibbolethUserAttributesToCentralUserData(authentication));
+    }
+    
+	@Override
 	protected boolean reconcile(UserDetails user, Authentication authentication) {
-		// TODO Auto-generated method stub
-		return false;
+		return getUserMigrationUtility().reconcile((UserInfo)user, mapShibbolethUserAttributesToCentralUserData(authentication), false);
+	}
+
+	private CentralUserData mapShibbolethUserAttributesToCentralUserData(
+			Authentication authentication) {
+		CentralUserData centralUserData = new CentralUserDataImpl();
+		try {
+			centralUserData.setUsername(generateUsernameFromAuthentication(authentication));
+			centralUserData.setFirstName((String)((ShibbolethUserDetails)authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.FIRSTNAME_KEY).get());
+			centralUserData.setLastName((String)((ShibbolethUserDetails)authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.LASTNAME_KEY).get());
+			centralUserData.setEmail((String)((ShibbolethUserDetails)authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY).get());
+			centralUserData.setAuthenticationDomainName((String)((ShibbolethUserDetails)authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get());
+			centralUserData.setAuthenticationDomainId((Long)((ShibbolethUserDetails)authentication.getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY).get());
+		} catch (NamingException e) {
+			// do nothing
+		}
+		return centralUserData;
+	}
+
+	public UserMigrationUtility getUserMigrationUtility() {
+		return userMigrationUtility;
+	}
+
+	public void setUserMigrationUtility(UserMigrationUtility userMigrationUtility) {
+		this.userMigrationUtility = userMigrationUtility;
 	}
 
 }

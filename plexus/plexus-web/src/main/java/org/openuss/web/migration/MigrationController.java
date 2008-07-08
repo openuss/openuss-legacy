@@ -124,7 +124,11 @@ public class MigrationController extends BasePage {
 			
 			// Successful authentication -> Migrate user profile
 			migrationUtility.migrate((UserInfo)auth.getPrincipal(), auth);
-			
+			// Reload user
+			user = securityService.getUser(user.getId());
+			String[] authorities = securityService.getGrantedAuthorities(user); 
+			auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, authorities));
+
 			addMessage(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
 			// Handle local user
 			if (auth.getPrincipal() instanceof UserInfo) {

@@ -234,8 +234,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 			if (request.getAttribute(shibbolethUsernameHeaderKey)!=null) {
 				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getAttribute(shibbolethUsernameHeaderKey));
 				if (request.getAttribute(shibbolethEmailHeaderKey)!=null) {
-					String userEmail = (String) request.getAttribute(shibbolethEmailHeaderKey);
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, userEmail.toLowerCase());
+					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getAttribute(shibbolethEmailHeaderKey)).toLowerCase());
 				}
 				if (request.getAttribute(shibbolethFirstNameHeaderKey)!=null) {
 					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getAttribute(shibbolethFirstNameHeaderKey));

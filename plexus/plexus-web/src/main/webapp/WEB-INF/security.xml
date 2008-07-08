@@ -71,6 +71,9 @@
 		<property name="authenticationEntryPoint">
 			<ref local="authenticationProcessingFilterEntryPoint" />
 		</property>
+		<property name="migrationEntryPoint">
+			<ref local="migrationEntryPoint" />
+		</property>
 	</bean>
 
 	<bean id="basicExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
@@ -95,12 +98,12 @@
 				PATTERN_TYPE_APACHE_ANT 
 				/views/commons/**=ROLE_USER
 				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
-				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
+				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER, ROLE_SHIBBOLETHUSER
 				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
 				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
 				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
-				/views/secured/migration/**=ROLE_LDAPUSER, ROLE_ADMIN
+				/views/secured/migration/**=ROLE_LDAPUSER, ROLE_SHIBBOLETHUSER, ROLE_ADMIN
 				/views/secured/system/**=ROLE_ADMIN
 				/views/secured/**=ROLE_USER
 				/views/**=ROLE_ADMIN
@@ -216,6 +219,22 @@
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
 	</bean>
+	
+	<!-- =============== User Migration ================ -->
+	<bean id="userMigrationUtility" class="org.openuss.migration.UserMigrationUtilityImpl">
+		<property name="securityService" ref="securityService" />
+		<property name="messageService" ref="messageService" />		
+	</bean>
+	
+	<bean id="migrationEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl">
+			<value>/views/secured/migration/migration.faces</value>			
+		</property>
+		<property name="forceHttps">
+			<value>false</value>
+		</property>
+	</bean>	
 		
     <!-- ===================== LDAP ==================== -->
     
