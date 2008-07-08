@@ -8,6 +8,7 @@ import org.acegisecurity.LockedException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.openuss.security.SecurityDomainUtility;
+import org.openuss.security.UserDeletedException;
 import org.openuss.security.UserInfo;
 
 /**
@@ -29,6 +30,9 @@ public class AuthenticationUtils {
 		}
 		if (user.isAccountExpired()) { 
 			throw new AccountExpiredException("authentication_error_account_expired");
+		}
+		if (user.isDeleted()){
+			throw new UserDeletedException("authentication_error_account_deleted");
 		}
 	}
 	

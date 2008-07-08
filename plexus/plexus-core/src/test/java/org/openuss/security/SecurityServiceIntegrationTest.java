@@ -220,6 +220,11 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 
 		logger.info("----> END access to removeAllPermissions test");
 	}
+	
+	public void testRemoveUserPermanently(){
+		User user = testUtility.createUniqueUserInDB();
+		securityService.removeUserPermanently(getSecurityService().getUser(user.getId()));
+	}
 
 	public AclManager getAclManager() {
 		return aclManager;

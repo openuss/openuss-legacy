@@ -12,6 +12,10 @@
 					<property name="action" value="#{userActivate.activate}"/>
 				</bean>
 				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
+					<property name="viewId" value="/actions/public/user/delete.xhtml"/>
+					<property name="action" value="#{userDeleteAction.deleteUser}"/>
+				</bean>
+				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
 					<property name="viewId" value="/actions/public/user/password/change.xhtml"/>
 					<property name="action" value="#{passwordChangeAction.loginUserByCode}"/>
 				</bean>

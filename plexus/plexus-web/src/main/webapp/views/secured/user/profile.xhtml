@@ -50,6 +50,11 @@
    			 	<o:block>
 	   			 	<h:commandButton actionListener="#{views$secured$user$profile.saveProfile}" value="#{msg.save}" styleClass="button"/>
 					<h:commandButton action="user_profile_view" value="#{msg.user_profile_preview}" styleClass="button" />
+					<h:commandButton 
+						action="#{views$secured$user$profile.deleteUser}" 
+						value="#{msg.user_delete}" 
+						styleClass="button" 
+						onclick="if (!confirm('#{msg.user_confirm_delete}')) return false"/>
 		 		</o:block>
 	 		</h:form> 
   		</ui:define>

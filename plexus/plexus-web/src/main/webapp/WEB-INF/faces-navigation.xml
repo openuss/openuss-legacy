@@ -283,6 +283,20 @@
     </navigation-rule>
     
     <navigation-rule>
+    	<from-view-id>/actions/public/user/delete.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>userDeleteAction.deleteUser</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>userActivate.activate</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
     	<from-view-id>/actions/public/user/password/change.xhtml</from-view-id>
     	<navigation-case>
     		<from-action>passwordChangeAction.loginUserByCode</from-action>

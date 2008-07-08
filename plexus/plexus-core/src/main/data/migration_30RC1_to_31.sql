@@ -652,3 +652,7 @@ ALTER TABLE SECURITY_USER
 
 UPDATE SECURITY_USER
 SET SECURITY_USER.deleted = 0;
+
+create table SECURITY_DELETECODE (ID BIGINT not null, CODE VARCHAR(64) not null unique, USER_FK BIGINT not null, primary key (ID));
+alter table SECURITY_DELETECODE add constraint SECURITY_DELETECODEIFKC foreign key (ID) references SECURITY_ACTIVATIONCODE;
+alter table SECURITY_DELETECODE add constraint SECURITY_DELETECODE_USER_FKC foreign key (USER_FK) references SECURITY_USER;

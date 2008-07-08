@@ -35,6 +35,7 @@ import org.apache.shale.tiger.view.View;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
+import org.openuss.security.UserDeletedException;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acegi.UserInfoDetailsAdapter;
 import org.openuss.web.BasePage;
@@ -121,6 +122,10 @@ public class AuthenticationController extends BasePage {
 					 * 3. Handle "local user".
 					 */
 					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
+					//check if user is deleted
+					if (user.isDeleted()){
+						
+					}
 					migrationUtility.reconcile(user, false);
 					// FIXME refactor to business layer
 					String[] authorities = securityService.getGrantedAuthorities(user);
@@ -194,6 +199,8 @@ public class AuthenticationController extends BasePage {
 				return Constants.USER_ACTIVATION_REQUEST_PAGE;
 			} else if (ex instanceof LockedException) {
 				exceptionMessage = i18n("authentication_error_account_locked");
+			} else if (ex instanceof UserDeletedException) {
+				exceptionMessage = i18n("authentication_error_account_deleted");
 			} else if (ex instanceof AccountExpiredException) {
 				exceptionMessage = i18n("authentication_error_account_expired");
 			} else if (ex instanceof BadCredentialsException) { 

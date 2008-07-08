@@ -159,8 +159,9 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	@Override
 	protected void handleRemoveUser(UserInfo user) throws Exception {
 		User userObject = getUserDao().findUserByUsername(user.getUsername());
-		userObject.setDeleted(true);
+		userObject.setDeleted(true);		
 		getUserDao().update(userObject);
+		removeUserPermanently(user);
 	}
 
 	@Override
@@ -503,7 +504,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 	
 	protected void handleRemoveUserPermanently(UserInfo user) throws Exception{
-		getCommandService().createOnceCommand(getUserObject(user), "userDeleteCommand", new Date(), null);
+		Date startDate = new Date(System.currentTimeMillis()+ (60000L*60L*24L*4L));
+		getCommandService().createOnceCommand(getUserObject(user), "userDeleteCommand", startDate, null);
 	}
 
 	@Override
@@ -526,7 +528,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		user.setMatriculation(unknown.getMatriculation());
 		user.setName(unknown.getName()+user.getId().toString());
 		user.setNewsletterSubscriptionEnabled(unknown.isNewsletterSubscriptionEnabled());
-		//FIXME Login not possible - should a usable password be generated?
+		//FIXME Login not possible after change - should a usable password hash be generated?
 		user.setPassword("1");
 		user.setPortrait(unknown.getPortrait());
 		user.setPortraitPublic(unknown.isPortraitPublic());

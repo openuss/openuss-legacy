@@ -2,6 +2,8 @@ package org.openuss.web.security.profile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.faces.event.ActionEvent;
 
@@ -17,10 +19,14 @@ import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.framework.utilities.ImageUtils;
 import org.openuss.framework.web.xss.HtmlInputFilter;
+import org.openuss.messaging.MessageService;
+import org.openuss.registration.RegistrationService;
 import org.openuss.security.Roles;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
 import org.openuss.security.acl.LectureAclEntry;
+import org.openuss.system.SystemProperties;
+import org.openuss.system.SystemService;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
 import org.openuss.web.upload.UploadFileManager;
@@ -47,6 +53,15 @@ public class UserProfilePage extends BasePage{
 	
 	@Property(value = "#{uploadFileManager}")
 	private UploadFileManager uploadFileManager;
+
+	@Property(value = "#{registrationService}")
+	private RegistrationService registrationService;
+	
+	@Property(value = "#{systemService}")
+	private SystemService systemService;
+	
+	@Property(value = "#{messageService}")
+	private MessageService messageService;
 	
 	@Prerender
 	public void prerender() {
@@ -70,6 +85,34 @@ public class UserProfilePage extends BasePage{
 		setBean(Constants.SHOW_USER_PROFILE, profile);
 		return Constants.USER_PROFILE_VIEW_PAGE;
 	}	
+	
+	public String deleteUser(){
+		sendVerificationEmail(user, registrationService.generateUserDeleteCode(user));
+		addMessage(i18n("profile_user_delete_message"));
+		return Constants.SUCCESS;
+	}
+	
+	private String applicationAddress() {
+		return systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue();
+	}
+	
+	private void sendVerificationEmail(UserInfo user, String activationCode) {
+		try {
+			String link = "/actions/public/user/delete.faces?code=" + activationCode;
+
+			link = applicationAddress() + link;
+
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("username", user.getUsername());
+			parameters.put("link", link);
+
+			messageService.sendMessage("user.delete.email.verification.sender",
+					"user.delete.email.verification.subject", "deleteuser", parameters, user);
+
+		} catch (Exception e) {
+			logger.error("Error: ", e);
+		}
+	}
 	
 	/**
 	 * Persist User Profile
@@ -163,6 +206,30 @@ public class UserProfilePage extends BasePage{
 
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
+	}
+
+	public RegistrationService getRegistrationService() {
+		return registrationService;
+	}
+
+	public void setRegistrationService(RegistrationService registrationService) {
+		this.registrationService = registrationService;
+	}
+
+	public SystemService getSystemService() {
+		return systemService;
+	}
+
+	public void setSystemService(SystemService systemService) {
+		this.systemService = systemService;
+	}
+
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
 	}
 
 }

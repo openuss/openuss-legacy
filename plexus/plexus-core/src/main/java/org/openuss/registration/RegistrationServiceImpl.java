@@ -180,4 +180,37 @@ public class RegistrationServiceImpl extends org.openuss.registration.Registrati
 		getInstituteActivationCodeDao().remove(getInstituteActivationCodeDao().findByInstitute(institute));
 	}
 
+	@Override
+	protected void handleGenerateDeleteUserCommand(String code)
+			throws Exception {
+		UserDeleteCode deleteCode = getUserDeleteCodeDao().findByCode(code);
+		if (deleteCode==null){
+			logger.debug("Could not find user delete code: " + code);
+			throw new RegistrationCodeNotFoundException("Could not find user delete code: " + code);
+		}
+
+		if (isExpired(deleteCode)){
+			logger.debug("user delete code expired!");
+			throw new RegistrationCodeExpiredException("user delete code expired!" + code);
+		}
+		getSecurityService().removeUser(getSecurityService().getUser(deleteCode.getUser().getId()));
+	}
+
+	@Override
+	protected String handleGenerateUserDeleteCode(UserInfo user)
+			throws Exception {
+		UserDeleteCode reg = UserDeleteCode.Factory.newInstance();
+
+		// generate new MD5 hash from user id and current time millis
+		String code = md5("AC{"+user.getId()+"}"+System.currentTimeMillis())+user.getId();
+		
+		// store registration code
+		reg.setUser(getSecurityService().getUserObject(user));
+		reg.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		reg.setCode(code);		
+		getUserDeleteCodeDao().create(reg);
+		
+		return code;
+	}
+
 }
