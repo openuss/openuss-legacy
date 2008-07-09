@@ -61,9 +61,14 @@ public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthentica
 
 	@Override
     protected void migrate(UserDetails user, Authentication authentication) {
-    	getUserMigrationUtility().migrate((UserInfo)user, mapShibbolethUserAttributesToCentralUserData(authentication));
+		getUserMigrationUtility().migrate((UserInfo)user, mapShibbolethUserAttributesToCentralUserData(authentication));
+		markUserAsMigratedOne(user, authentication);
     }
-    
+
+	private void markUserAsMigratedOne(UserDetails user, Authentication authentication) {
+		((ShibbolethUserDetails)authentication.getDetails()).getAttributes().put(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY, new Boolean(true));
+	}
+	
 	@Override
 	protected boolean reconcile(UserDetails user, Authentication authentication) {
 		return getUserMigrationUtility().reconcile((UserInfo)user, mapShibbolethUserAttributesToCentralUserData(authentication), false);

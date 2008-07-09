@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SecurityDomainUtility {
 	public static final String USERNAME_DOMAIN_DELIMITER = "\\";
+	public static final String USER_MIGRATION_INDICATOR_KEY = "USER_AUTOMATICALLY_MIGRATED";
 	
 	private static String delimiter = USERNAME_DOMAIN_DELIMITER;
 
