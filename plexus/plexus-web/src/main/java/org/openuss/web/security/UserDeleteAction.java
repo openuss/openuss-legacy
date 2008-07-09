@@ -23,6 +23,9 @@ public class UserDeleteAction extends BaseBean {
 	@Property(value="#{param.code}")
 	private String changeCode;
 	
+	@Property(value="#{authenticationController}")
+	private AuthenticationController authenticationController;
+	
 	/**
 	 * Activate User by activationCode.
 	 * @return outcome
@@ -31,6 +34,9 @@ public class UserDeleteAction extends BaseBean {
 		if (changeCode != null) {						
 			try {
 				registrationService.generateDeleteUserCommand(changeCode);
+				//logout user
+				authenticationController.logout();
+				addMessage(i18n("user_delete_successful"));
 				return Constants.SUCCESS;
 			} catch (RegistrationCodeNotFoundException e) {
 				addError(i18n("delete_error_code_not_found"));
@@ -58,6 +64,15 @@ public class UserDeleteAction extends BaseBean {
 
 	public void setRegistrationService(RegistrationService registrationService) {
 		this.registrationService = registrationService;
+	}
+
+	public AuthenticationController getAuthenticationController() {
+		return authenticationController;
+	}
+
+	public void setAuthenticationController(
+			AuthenticationController authenticationController) {
+		this.authenticationController = authenticationController;
 	}
 
 }

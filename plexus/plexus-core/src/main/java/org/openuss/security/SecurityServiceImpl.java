@@ -504,7 +504,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 	
 	protected void handleRemoveUserPermanently(UserInfo user) throws Exception{
-		Date startDate = new Date(System.currentTimeMillis()+ (60000L*60L*24L*4L));
+		Date startDate = new Date(System.currentTimeMillis());
+		//Date startDate = new Date(System.currentTimeMillis()+ (60000L*60L*24L*4L));
 		getCommandService().createOnceCommand(getUserObject(user), "userDeleteCommand", startDate, null);
 	}
 

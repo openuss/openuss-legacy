@@ -122,10 +122,6 @@ public class AuthenticationController extends BasePage {
 					 * 3. Handle "local user".
 					 */
 					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
-					//check if user is deleted
-					if (user.isDeleted()){
-						
-					}
 					migrationUtility.reconcile(user, false);
 					// FIXME refactor to business layer
 					String[] authorities = securityService.getGrantedAuthorities(user);
@@ -173,6 +169,9 @@ public class AuthenticationController extends BasePage {
 			// Handle local user
 			if (auth.getPrincipal() instanceof UserInfo) {
 				// Initialize the security context
+				if (securityService.getUserByName(username).isDeleted()){
+					throw new UserDeletedException("authentication_error_account_deleted");
+				}
 				final SecurityContext securityContext = SecurityContextHolder.getContext();
 				securityContext.setAuthentication(auth);
 				session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
