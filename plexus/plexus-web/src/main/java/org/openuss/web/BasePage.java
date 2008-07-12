@@ -65,6 +65,8 @@ public abstract class BasePage extends BaseBean {
 				Boolean migrated = (Boolean)((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY).get();
 				if (migrated) {
 					addMessage(i18n("migration_done_by_email_hint",(String)((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get()));
+					// Remove marker attribute
+					((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().remove(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY);
 				}
 			} catch (NamingException e) {
 				// do nothing, due to user was not migrated automatically.
@@ -72,6 +74,7 @@ public abstract class BasePage extends BaseBean {
 				
 		}
 	}
+	
 	protected void refreshDesktop() {
 		if (user != null && user.getId() != null) {
 			logger.debug("refrehsing desktop object");

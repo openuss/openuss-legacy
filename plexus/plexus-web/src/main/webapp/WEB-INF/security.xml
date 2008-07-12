@@ -123,6 +123,7 @@
 		class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
+				<ref local="shibbolethAuthenticationProvider"/>
 				<ref local="configurableLdapAuthenticationProvider"/>
 				<ref local="daoAuthenticationProvider" />
 				<ref local="anonymousAuthenticationProvider" />
@@ -200,6 +201,9 @@
 	<!-- ================= SHIBBOLETH ================== -->
 	
 	<bean id="shibbolethProcessingFilter" class="org.openuss.security.acegi.shibboleth.ShibbolethAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>		
 		<property name="shibbolethUsernameHeaderKey">
 			<value>SHIB_REMOTE_USER</value>
 		</property>
@@ -219,6 +223,29 @@
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
 	</bean>
+
+	<bean id="shibbolethAuthenticationProvider" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProvider">
+		<property name="userCache" ref="userCache" />
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="migrationEnabled">
+			<value>true</value>
+		</property>
+		<property name="reconciliationEnabled">
+			<value>true</value>
+		</property>
+		<property name="ignoreDisabledException">
+			<value>true</value>
+		</property>
+		<property name="userMigrationUtility">
+			<ref local="userMigrationUtility" />
+		</property>		
+	</bean>	
+	
 	
 	<!-- =============== User Migration ================ -->
 	<bean id="userMigrationUtility" class="org.openuss.migration.UserMigrationUtilityImpl">

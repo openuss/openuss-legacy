@@ -31,6 +31,9 @@ public class UserMigrationUtilityImpl implements UserMigrationUtility, Initializ
 	
 	public void migrate(UserInfo user, CentralUserData centralUserData) {
 		Authentication preservedAuthentication = SecurityContextHolder.getContext().getAuthentication();
+		// Set enabled status for migrated user, since we received a verified email address from a trusted third-party, e. g. a ldap directory or a SSO identity provider.
+		user.setEnabled(true);
+		
 		UserInfoDetailsAdapter userDetails = new UserInfoDetailsAdapter(user,securityService.getGrantedAuthorities(user));
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 		

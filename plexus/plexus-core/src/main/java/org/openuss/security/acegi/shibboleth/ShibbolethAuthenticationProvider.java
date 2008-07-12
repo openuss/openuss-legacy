@@ -1,7 +1,5 @@
 package org.openuss.security.acegi.shibboleth;
 
-import javax.naming.NamingException;
-
 import org.acegisecurity.AccountExpiredException;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
@@ -15,14 +13,11 @@ import org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
-import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
-import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
-import org.openuss.security.SecurityDomainUtility;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 
 /**
- * @author Standard
+ * @author Peter Schuh
  *
  */
 public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {

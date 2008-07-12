@@ -45,6 +45,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected String shibbolethFirstNameHeaderKey = null;
 	protected String shibbolethLastNameHeaderKey = null;
 	protected String shibbolethEmailHeaderKey = null;
+	protected ShibbolethUserDetails shibbolethUserDetails;
 	protected String key = null;
 	protected String defaultRolePrefix = "ROLE_";
 	protected String defaultRole = null;
@@ -56,6 +57,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
 	
 	public void afterPropertiesSet() throws Exception {
+		Assert.notNull(getAuthenticationManager(), "authenticationManager must be specified");
 		Assert.hasLength(shibbolethUsernameHeaderKey, "shibbolethUsernameHeaderKey must be specified");
 		Assert.hasLength(shibbolethFirstNameHeaderKey, "shibbolethFirstNameHeaderKey must be specified");
 		Assert.hasLength(shibbolethLastNameHeaderKey, "shibbolethLastNameHeaderKey must be specified");
@@ -76,8 +78,15 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
-		// Check, if authentication is required and possible (shibboleth request header attributes must be present)
-		if (requiresAuthentication(httpRequest, httpResponse) && (httpRequest.getHeader(shibbolethUsernameHeaderKey)!=null)) {
+		// Check, if authentication is required and possible.
+		// Possible means, that shibboleth request header attributes must be present and set.
+		// Remember, that shibboleth request header attributes are always present, if a request 
+		// passed the apache shibboleth module. Only their presence does not indicate, that an authentication
+		// is possible. For an authentication, they must be set.
+		if (requiresAuthentication(httpRequest, httpResponse) && 
+		   (httpRequest.getHeader(shibbolethUsernameHeaderKey)!= null)&& 
+		   !("".equals(httpRequest.getHeader(shibbolethUsernameHeaderKey)))) {
+			
 			if (logger.isDebugEnabled()) {
 				logger.debug("Request is to process authentication");
 			}
@@ -230,16 +239,16 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public class ShibbolethAuthenticationDetailsSource implements AuthenticationDetailsSource {
 		
 		public Object buildDetails(HttpServletRequest request) {
-			ShibbolethUserDetails shibbolethUserDetails = new ShibbolethUserDetailsImpl();
-			if (request.getAttribute(shibbolethUsernameHeaderKey)!=null) {
+			shibbolethUserDetails = new ShibbolethUserDetailsImpl();
+			if (request.getHeader(shibbolethUsernameHeaderKey)!=null) {
 				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getAttribute(shibbolethUsernameHeaderKey));
 				if (request.getAttribute(shibbolethEmailHeaderKey)!=null) {
 					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getAttribute(shibbolethEmailHeaderKey)).toLowerCase());
 				}
-				if (request.getAttribute(shibbolethFirstNameHeaderKey)!=null) {
+				if (request.getHeader(shibbolethFirstNameHeaderKey)!=null) {
 					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getAttribute(shibbolethFirstNameHeaderKey));
 				}
-				if (request.getAttribute(shibbolethLastNameHeaderKey)!=null) {
+				if (request.getHeader(shibbolethLastNameHeaderKey)!=null) {
 					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.LASTNAME_KEY, request.getAttribute(shibbolethLastNameHeaderKey));
 				}
 				if (getDefaultDomainName()!=null) {

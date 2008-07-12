@@ -167,6 +167,11 @@ public class MigrationController extends BasePage {
 				   auth = AuthenticationUtils.createSuccessAuthentication(authRequest, user);
 				   // FIXME Ugly - Put in a UserInforDetailsAdapter 
 				   migrationUtility.migrate(user, auth);
+    			   // Reload user
+				   String[] authorities = securityService.getGrantedAuthorities(user); 
+				   user = new UserInfoDetailsAdapter(securityService.getUser(user.getId()), authorities);
+				   auth = AuthenticationUtils.createSuccessAuthentication(auth, user);
+				   
 				   // Set session bean here, so that i18n gets correct locale for user.
 				   setSessionBean(Constants.USER_SESSION_KEY, user);
 				   

@@ -15,9 +15,16 @@ import org.openuss.migration.UserMigrationUtility;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.UserInfo;
 import org.springframework.dao.DataAccessException;
+import org.springframework.util.Assert;
 
 public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthenticationProvider {
 	private UserMigrationUtility userMigrationUtility;
+	
+	@Override
+	protected void doAfterPropertiesSet() throws Exception {
+		super.doAfterPropertiesSet();
+		Assert.notNull(this.userMigrationUtility, "A UserMigrationUtility must be set");
+	}
 	
 	@Override
 	protected boolean isAlreadyMigrated(UserDetails user, Authentication authentication) {

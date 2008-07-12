@@ -6,6 +6,7 @@ import org.apache.shale.tiger.view.Prerender;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.lecture.LectureException;
+import org.openuss.security.SecurityDomainUtility;
 import org.openuss.web.BasePage;
 
 /**
@@ -27,6 +28,16 @@ public class LogoutPage extends BasePage {
 			
 		breadcrumbs.addCrumb(newCrumb);
 		
+		if (wasShibbolethUser()) {
+			addWarning(i18n("logout_single_sign_out_warning"));
+		}
+		
 	}
 	
+	public boolean wasShibbolethUser() {
+		boolean wasShibbolethUser = getSession().getAttribute(SecurityDomainUtility.SHIBBOLETH_USER_INDICATOR_KEY) != null;
+		getSession().removeAttribute(SecurityDomainUtility.SHIBBOLETH_USER_INDICATOR_KEY);
+		return wasShibbolethUser;
+	}
+		
 }

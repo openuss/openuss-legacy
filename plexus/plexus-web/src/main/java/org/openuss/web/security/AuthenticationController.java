@@ -33,6 +33,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.migration.CentralUserData;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityDomainUtility;
@@ -322,6 +323,13 @@ public class AuthenticationController extends BasePage {
 				terminate.setPath("/");
 				getResponse().addCookie(terminate);
 			}					
+		}
+		
+		// We must display a SSO logout warning, due to lack of single sign-out/single sign-off within shibboleth system.
+		// Since we cannot guarantee call to logout page, we have to clear SecurityContext here, but we also need to know,
+		// that user was a shibboleth user. So we set a marker attribute within the session.
+		if (SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails) {
+			getSession().setAttribute(SecurityDomainUtility.SHIBBOLETH_USER_INDICATOR_KEY, "true");			
 		}
 		
 		SecurityContextHolder.clearContext();
