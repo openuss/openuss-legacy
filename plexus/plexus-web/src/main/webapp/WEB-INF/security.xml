@@ -200,7 +200,7 @@
 	
 	<!-- ================= SHIBBOLETH ================== -->
 	
-	<bean id="shibbolethProcessingFilter" class="org.openuss.security.acegi.shibboleth.ShibbolethAuthenticationProcessingFilter">
+	<bean id="shibbolethProcessingFilter" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProcessingFilter">
 		<property name="authenticationManager">
 			<ref local="authenticationManager" />
 		</property>		
@@ -219,8 +219,17 @@
 		<property name="key">
 			<value>shibboleth</value>
 		</property>
+		<property name="defaultDomainName">
+			<value>wwu</value>
+		</property>
+		<property name="defaultDomainId">
+			<value>1006</value>
+		</property>
 		<property name="defaultRole">
 			<value>ROLE_SHIBBOLETHUSER</value>
+		</property>
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
 		</property>
 	</bean>
 

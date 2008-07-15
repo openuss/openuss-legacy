@@ -35,6 +35,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.migration.CentralUserData;
+import org.openuss.migration.UserMigrationUtility;
 import org.openuss.security.AttributeMappingKeys;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
@@ -42,7 +43,6 @@ import org.openuss.security.UserInfo;
 import org.openuss.security.acegi.UserInfoDetailsAdapter;
 import org.openuss.web.BasePage;
 import org.openuss.web.Constants;
-import org.openuss.web.migration.MigrationUtility;
 import org.openuss.web.statistics.OnlineSessionTracker;
 
 
@@ -50,6 +50,7 @@ import org.openuss.web.statistics.OnlineSessionTracker;
  * AuthenticationController handles all processes around user login, logout, and forgotten passwords. 
  * @author Ingo Dueppe
  * @author Sebastian Roekens
+ * @author Peter Schuh
  *
  */
 @Bean(name="authenticationController", scope=Scope.REQUEST)
@@ -82,8 +83,8 @@ public class AuthenticationController extends BasePage {
 	@Property(value="#{centralUserData}")
 	private CentralUserData centralUserData;
 	
-	@Property(value="#{migrationUtility}")
-	MigrationUtility migrationUtility;
+	@Property(value="#{userMigrationUtility}")
+	private UserMigrationUtility userMigrationUtility;
 	
 	public AuthenticationController() {
 		logger.debug(" created");
@@ -123,7 +124,7 @@ public class AuthenticationController extends BasePage {
 					 * 3. Handle "local user".
 					 */
 					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
-					migrationUtility.reconcile(user, false);
+					userMigrationUtility.reconcile(user, centralUserData, false);
 					// FIXME refactor to business layer
 					String[] authorities = securityService.getGrantedAuthorities(user);
 					auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));					
@@ -148,7 +149,7 @@ public class AuthenticationController extends BasePage {
 						 * 3. Handle "local user".
 						 */
 						AuthenticationUtils.checkLocallyAllowanceToLogin(user);
-						migrationUtility.reconcile(user, false);
+						userMigrationUtility.reconcile(user, centralUserData, false);
 						// FIXME refactor to business layer
 						String[] authorities = securityService.getGrantedAuthorities(user);
 						auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));		
@@ -166,7 +167,7 @@ public class AuthenticationController extends BasePage {
 							AuthenticationUtils.checkLocallyAllowanceToLogin(user);
 							String[] authorities = securityService.getGrantedAuthorities(user);
 							auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));
-							migrationUtility.migrate(user, auth);
+							userMigrationUtility.migrate(user, centralUserData);
 							// Reload user
 							user = securityService.getUser(user.getId());
 							authorities = securityService.getGrantedAuthorities(user); 
@@ -325,15 +326,12 @@ public class AuthenticationController extends BasePage {
 			}					
 		}
 		
-		// We must display a SSO logout warning, due to lack of single sign-out/single sign-off within shibboleth system.
-		// Since we cannot guarantee call to logout page, we have to clear SecurityContext here, but we also need to know,
-		// that user was a shibboleth user. So we set a marker attribute within the session.
+		// Due to lack of single sign-out/single sign-off within shibboleth system, we must display a SSO logout warning.
 		if (SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails) {
-			getSession().setAttribute(SecurityDomainUtility.SHIBBOLETH_USER_INDICATOR_KEY, "true");			
+			addWarning(i18n("logout_single_sign_out_warning"));
 		}
 		
 		SecurityContextHolder.clearContext();
-
 		return LOGOUT;
 	}
 	
@@ -424,12 +422,12 @@ public class AuthenticationController extends BasePage {
 		this.centralUserData = centralUserData;
 	}
 
-	public MigrationUtility getMigrationUtility() {
-		return migrationUtility;
+	public UserMigrationUtility getUserMigrationUtility() {
+		return userMigrationUtility;
 	}
 
-	public void setMigrationUtility(MigrationUtility migrationUtility) {
-		this.migrationUtility = migrationUtility;
+	public void setUserMigrationUtility(UserMigrationUtility userMigrationUtility) {
+		this.userMigrationUtility = userMigrationUtility;
 	}
 
 }

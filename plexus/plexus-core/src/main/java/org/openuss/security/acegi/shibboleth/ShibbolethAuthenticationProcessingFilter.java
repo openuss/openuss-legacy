@@ -30,6 +30,7 @@ import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.event.authentication.AuthenticationSuccessEvent;
+import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.AuthenticationDetailsSource;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
@@ -63,8 +64,11 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		Assert.hasLength(shibbolethLastNameHeaderKey, "shibbolethLastNameHeaderKey must be specified");
 		Assert.hasLength(shibbolethEmailHeaderKey, "shibbolethEmailHeaderKey must be specified");
 		Assert.hasLength(key, "key must be specified");
+		doAfterPropertiesSet();
 	}
 	
+	protected void doAfterPropertiesSet() throws Exception {}
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (!(request instanceof HttpServletRequest)) {
@@ -213,7 +217,8 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	
 	@Override
 	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-		return SecurityContextHolder.getContext().getAuthentication() == null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return ((authentication == null) || (authentication instanceof AnonymousAuthenticationToken));
 	}
 	
 	/**
@@ -241,15 +246,15 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		public Object buildDetails(HttpServletRequest request) {
 			shibbolethUserDetails = new ShibbolethUserDetailsImpl();
 			if (request.getHeader(shibbolethUsernameHeaderKey)!=null) {
-				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getAttribute(shibbolethUsernameHeaderKey));
-				if (request.getAttribute(shibbolethEmailHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getAttribute(shibbolethEmailHeaderKey)).toLowerCase());
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
+				if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
+					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase());
 				}
 				if (request.getHeader(shibbolethFirstNameHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getAttribute(shibbolethFirstNameHeaderKey));
+					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getHeader(shibbolethFirstNameHeaderKey));
 				}
 				if (request.getHeader(shibbolethLastNameHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.LASTNAME_KEY, request.getAttribute(shibbolethLastNameHeaderKey));
+					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.LASTNAME_KEY, request.getHeader(shibbolethLastNameHeaderKey));
 				}
 				if (getDefaultDomainName()!=null) {
 					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY, getDefaultDomainName());

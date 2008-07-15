@@ -28,7 +28,7 @@ public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthentica
 	
 	@Override
 	protected boolean isAlreadyMigrated(UserDetails user, Authentication authentication) {
-		return SecurityDomainUtility.containsDomain(user.getUsername());
+		return ((UserInfo)user).isCentralUser();
 	}
 	
 	@Override

@@ -35,6 +35,7 @@ import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.migration.CentralUserData;
+import org.openuss.migration.UserMigrationUtility;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
@@ -82,6 +83,8 @@ public class MigrationController extends BasePage {
 	@Property(value="#{passwordEncoder}")
 	transient private Md5PasswordEncoder passwordEncoder;
 	
+	@Property(value="#{userMigrationUtility}")
+	private UserMigrationUtility userMigrationUtility;
 	
 	Authentication oldCentralAuthentication;
 	
@@ -123,12 +126,13 @@ public class MigrationController extends BasePage {
 			auth = authenticationManager.authenticate(authRequest);
 			
 			// Successful authentication -> Migrate user profile
-			migrationUtility.migrate((UserInfo)auth.getPrincipal(), auth);
+			userMigrationUtility.migrate((UserInfo)auth.getPrincipal(), centralUserData);
 			// Reload user
-			user = securityService.getUser(user.getId());
+			UserInfo user = securityService.getUser(((UserInfo)auth.getPrincipal()).getId());
 			String[] authorities = securityService.getGrantedAuthorities(user); 
 			auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, authorities));
-
+			// Set session bean here, so that i18n gets correct locale for user.
+			setSessionBean(Constants.USER_SESSION_KEY, user);
 			addMessage(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
 			// Handle local user
 			if (auth.getPrincipal() instanceof UserInfo) {
@@ -159,18 +163,17 @@ public class MigrationController extends BasePage {
 			    * Without checking the password ANY disabled profile could be hijacked by ANY authenticated central user, who has no profile yet.
 			    * So we have to check the password on our own. Alternatively we could revoke central authentication and redirect to activation request page.
 			    */
-				UserInfoDetailsAdapter user = new UserInfoDetailsAdapter(securityService.getUserByName(username),null);
+				UserInfoDetailsAdapter userInfoDetailsAdapter = new UserInfoDetailsAdapter(securityService.getUserByName(username),null);
 				String presentedPassword = authRequest.getCredentials() == null ? "" : authRequest.getCredentials().toString();
 				
-				if (passwordEncoder.isPasswordValid(user.getPassword(), presentedPassword, saltSource.getSalt(user))) {
-				   user.setEnabled(true);
-				   auth = AuthenticationUtils.createSuccessAuthentication(authRequest, user);
+				if (passwordEncoder.isPasswordValid(userInfoDetailsAdapter.getPassword(), presentedPassword, saltSource.getSalt(userInfoDetailsAdapter))) {
+				   userInfoDetailsAdapter.setEnabled(true);
+				   auth = AuthenticationUtils.createSuccessAuthentication(authRequest, userInfoDetailsAdapter);
 				   // FIXME Ugly - Put in a UserInforDetailsAdapter 
-				   migrationUtility.migrate(user, auth);
+				   userMigrationUtility.migrate(userInfoDetailsAdapter, centralUserData);
     			   // Reload user
-				   String[] authorities = securityService.getGrantedAuthorities(user); 
-				   user = new UserInfoDetailsAdapter(securityService.getUser(user.getId()), authorities);
-				   auth = AuthenticationUtils.createSuccessAuthentication(auth, user);
+				   UserInfo user = securityService.getUser(userInfoDetailsAdapter.getId());
+				   auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, securityService.getGrantedAuthorities(user)));
 				   
 				   // Set session bean here, so that i18n gets correct locale for user.
 				   setSessionBean(Constants.USER_SESSION_KEY, user);
@@ -306,6 +309,12 @@ public class MigrationController extends BasePage {
 	public void setMigrationUtility(MigrationUtility migrationUtility) {
 		this.migrationUtility = migrationUtility;
 	}
+	public UserMigrationUtility getUserMigrationUtility() {
+		return userMigrationUtility;
+	}
+	public void setUserMigrationUtility(UserMigrationUtility userMigrationUtility) {
+		this.userMigrationUtility = userMigrationUtility;
+	}	
 	public RememberMeServices getRememberMeServices() {
 		return rememberMeServices;
 	}
@@ -329,5 +338,5 @@ public class MigrationController extends BasePage {
 	}
 	public void setPasswordEncoder(Md5PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
-	}	
+	}
 }

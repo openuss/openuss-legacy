@@ -87,6 +87,13 @@ public class Visit extends BaseBean implements Serializable{
 			locale = user.getLocale();
 		} 
 		
+		// Try to retrieve attribute, that was set by AuthenticationAwareRequestFilter
+		if (user == null) {
+			if (getRequest().getAttribute(Constants.USER_SESSION_KEY)!=null && getRequest().getAttribute(Constants.USER_SESSION_KEY) instanceof UserInfo) {
+				locale = ((UserInfo)getRequest().getAttribute(Constants.USER_SESSION_KEY)).getLocale();
+			}
+		}
+		
 		if (locale == null) {
 			locale = getViewRoot().getLocale().toString();
 		}
