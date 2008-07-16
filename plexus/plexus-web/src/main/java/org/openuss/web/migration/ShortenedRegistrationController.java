@@ -111,8 +111,10 @@ public class ShortenedRegistrationController extends BasePage {
 		
 		String username = user.getUsername();
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,"protected");
-
-		authRequest.setDetails(new WebAuthenticationDetails(request));
+		// Set details for authentication request. Preserve existing user details!
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+		authRequest.setDetails(userDetails!=null? userDetails : new WebAuthenticationDetails(request));
+		
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
 		

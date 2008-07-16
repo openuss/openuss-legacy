@@ -76,15 +76,15 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	        try {
 	            user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
 	        } catch (UsernameNotFoundException notFound) {
+	        	if (isMigrationEnabled()) {
+	        		// Return authentication request, so that new user or user, that cannot be migrated automatically, 
+	        		// can be redirected to a MigrationEntryPoint within an extended ExceptionTranslationFilter 
+	        		return authentication;
+	        	}	            
 	            if (isHideUserNotFoundExceptions()) {
 	                throw new BadCredentialsException(messages.getMessage(
 	                        "AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
 	            }
-	            if (isMigrationEnabled()) {
-	            	// Return authentication request, so that new user or user, that cannot be migrated automatically, 
-	            	// can be redirected to a MigrationEntryPoint within an extended ExceptionTranslationFilter 
-	            	return authentication;
-	            }	            
 	            else {
 	                throw notFound;
 	            }

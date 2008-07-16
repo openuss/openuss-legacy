@@ -28,6 +28,7 @@ import org.acegisecurity.ui.WebAuthenticationDetails;
 import org.acegisecurity.ui.rememberme.RememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
+import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
@@ -73,9 +74,6 @@ public class MigrationController extends BasePage {
 	
 	@Property(value="#{daoAuthenticationProvider}")
 	private AuthenticationProvider daoAuthenticationProvider;
-	
-	@Property(value="#{migrationUtility}")
-	transient private MigrationUtility migrationUtility;
 
 	@Property(value="#{saltSource}")
 	transient private ReflectionSaltSource saltSource;
@@ -84,7 +82,7 @@ public class MigrationController extends BasePage {
 	transient private Md5PasswordEncoder passwordEncoder;
 	
 	@Property(value="#{userMigrationUtility}")
-	private UserMigrationUtility userMigrationUtility;
+	transient private UserMigrationUtility userMigrationUtility;
 	
 	Authentication oldCentralAuthentication;
 	
@@ -117,8 +115,10 @@ public class MigrationController extends BasePage {
 		username = SecurityDomainUtility.extractUsername(username);
 		
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-
-		authRequest.setDetails(new WebAuthenticationDetails(request));
+		// Set details for authentication request. Preserve existing user details!
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+		authRequest.setDetails(userDetails!=null? userDetails : new WebAuthenticationDetails(request));
+		
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
 		try {
@@ -303,12 +303,7 @@ public class MigrationController extends BasePage {
 		providers.add(daoAuthenticationProvider);
 		authenticationManager.setProviders(providers);
 	}
-	public MigrationUtility getMigrationUtility() {
-		return migrationUtility;
-	}
-	public void setMigrationUtility(MigrationUtility migrationUtility) {
-		this.migrationUtility = migrationUtility;
-	}
+
 	public UserMigrationUtility getUserMigrationUtility() {
 		return userMigrationUtility;
 	}

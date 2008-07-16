@@ -243,7 +243,7 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
         SavedRequest savedRequest = new SavedRequest(httpRequest, portResolver);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Authentication entry point being called; SavedRequest added to Session: " + savedRequest);
+            logger.debug("Migration entry point being called; SavedRequest added to Session: " + savedRequest);
         }
 
         if (createSessionAllowed) {
