@@ -39,33 +39,46 @@ public class PlexusBasicProcessingFilter extends ExtendedBasicProcessingFilter {
 		super.onSuccessfulAuthentication(request, response, authResult);
 		// Load migrated OpenUSS user profile for authenticated LDAP user
 		if (authResult.getPrincipal() instanceof LdapUserDetails) {
-			// Retrieve username
+			// Retrieve email address.
 			LdapUserDetails ldapUserDetails = (LdapUserDetails)authResult.getPrincipal();
-			String username = "";
+			String userEmailAddress = "";
 			try {
-				String authenticationDomainName = ((String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.AUTHENTICATIONDOMAINNAME_KEY).get());
-				username = ((String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.USERNAME_KEY).get());
-				username = AuthenticationUtils.generateCentralUserLoginName(authenticationDomainName, username);				
+				userEmailAddress = ((String) ldapUserDetails.getAttributes().get(AttributeMappingKeys.EMAIL_KEY).get());				
 			} catch (NamingException ne) {
 			    // do nothing
 			}
-			if (StringUtils.isNotBlank(username)) {
-				UserInfo user = securityService.getUserByName(username);
+			if (StringUtils.isNotBlank(userEmailAddress)) {
+				// Load by email address, due to user could have been migrated by another authentication mechanism, e. g. shibboleth.
+				// If the shibboleth mechanism uses a different domain name, user cannot be found by username.
+				UserInfo user = securityService.getUserByEmail(userEmailAddress);
 				if (user != null) {
 					// OpenUSS user profile found  
-					logger.debug("Replacing LDAP-Principal +"+authResult.getPrincipal()+" with "+user.getUsername());
-					
-					String[] authorities = securityService.getGrantedAuthorities(user);
-					UserDetails userDetails = new UserInfoDetailsAdapter(user, authorities);
-					
-					Authentication authentication = new PrincipalAcegiUserToken("key",user.getUsername(),"[protected]", userDetails.getAuthorities(),userDetails);
-					authentication.setAuthenticated(true);
-					SecurityContextHolder.getContext().setAuthentication(authentication);
+					if (isUserAllowedToLogin(user)) {
+						logger.debug("Replacing LDAP-Principal +"+authResult.getPrincipal()+" with "+user.getUsername());
+						
+						String[] authorities = securityService.getGrantedAuthorities(user);
+						UserDetails userDetails = new UserInfoDetailsAdapter(user, authorities);
+						
+						Authentication authentication = new PrincipalAcegiUserToken("key",user.getUsername(),"[protected]", userDetails.getAuthorities(),userDetails);
+						authentication.setAuthenticated(true);
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					}
 				}
 			}
 		}
 	}
 
+	protected boolean isUserAllowedToLogin(UserInfo user) {
+		boolean allowed = false;
+			if (!user.isAccountExpired() && 
+				!user.isAccountLocked() && 
+				!user.isCredentialsExpired() && 
+				user.isEnabled()) {
+				allowed = true;
+			}
+		return allowed;
+	}
+	
 	public SecurityService getSecurityService() {
 		return securityService;
 	}

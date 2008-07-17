@@ -12,7 +12,7 @@
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
 				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, shibbolethProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
-				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter, shibbolethProcessingFilterWithoutMigration, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -70,9 +70,6 @@
 	<bean id="formExceptionTranslationFilter" class="org.openuss.framework.web.acegi.PlexusExceptionTranslationFilter">
 		<property name="authenticationEntryPoint">
 			<ref local="authenticationProcessingFilterEntryPoint" />
-		</property>
-		<property name="migrationEntryPoint">
-			<ref local="migrationEntryPoint" />
 		</property>
 	</bean>
 
@@ -248,6 +245,9 @@
 		<property name="defaultTargetUrl">
 			<value>/views/welcome.faces</value>
 		</property>
+		<property name="migrationTargetUrl">
+			<value>/views/secured/migration/migration.faces</value>
+		</property>
 		
 		<!-- Perhaps this property must be set true within production environment. -->
 		<property name="useRelativeContext">
@@ -281,7 +281,7 @@
 		</property>		
 	</bean>	
 	
-	<!-- Additional configuration without migration, e. g. to be used within BASIC auth filter chain. -->
+	<!-- Additional configuration without migration, here to be used within BASIC auth filter chain. -->
 	
 	<bean id="shibbolethProcessingFilterWithoutMigration" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProcessingFilter">
 		<property name="authenticationManager">
@@ -311,6 +311,15 @@
 		<property name="defaultRole">
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
+		<property name="returnAfterSuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="returnAfterUnsuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="redirectEnabled">
+			<value>false</value>
+		</property>		
 		<property name="rememberMeServices">
 			<ref local="rememberMeServices" />
 		</property>
@@ -344,16 +353,6 @@
 		<property name="messageService" ref="messageService" />		
 	</bean>
 	
-	<bean id="migrationEntryPoint"
-		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<property name="loginFormUrl">
-			<value>/views/secured/migration/migration.faces</value>			
-		</property>
-		<property name="forceHttps">
-			<value>false</value>
-		</property>
-	</bean>	
-		
     <!-- ===================== LDAP ==================== -->
     
     <bean id="ldapConfigurationServiceNoSecurity" class="org.springframework.aop.framework.ProxyFactoryBean">

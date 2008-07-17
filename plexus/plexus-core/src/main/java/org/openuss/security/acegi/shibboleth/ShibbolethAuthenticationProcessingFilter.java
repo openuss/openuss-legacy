@@ -53,6 +53,14 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected String defaultDomainName = null;
 	protected Long defaultDomainId;
 	protected boolean assignDefaultRoleEnabled = false;
+	
+	/**
+	 * Enables migration. Defaults to <code>false</code>. Gets <code>true</code> by setting a <code>migrationTargetUrl</code>.
+	 * Take care to also enable migration within corresponding <code>shibbolethAuthenticationProvider</code>!
+	 */
+	protected boolean migrationEnabled = false;
+	protected String migrationTargetUrl = null;
+	protected boolean migrationNecessary = false;
 	protected boolean redirectEnabled = false;
 	protected boolean returnAfterUnsuccessfulAuthentication = false;
 	protected boolean returnAfterSuccessfulAuthentication = false;
@@ -89,10 +97,10 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		// Remember, that shibboleth request header attributes are always present, if a request 
 		// passed the apache shibboleth module. Only their presence does not indicate, that an authentication
 		// is possible. For an authentication, they must be set.
-		String header = httpRequest.getHeader(shibbolethUsernameHeaderKey);
+		String usernameHeader = httpRequest.getHeader(shibbolethUsernameHeaderKey);
 		if (requiresAuthentication(httpRequest, httpResponse) && 
-		   (httpRequest.getHeader(shibbolethUsernameHeaderKey)!= null)&& 
-		   !("".equals(httpRequest.getHeader(shibbolethUsernameHeaderKey)))) {
+		   (usernameHeader!= null)&& 
+		   !("".equals(usernameHeader))) {
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("Request is to process authentication");
@@ -155,11 +163,36 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	    }
 	    catch (IllegalStateException ignored){	    	
 	    }
-	
-	    return this.getAuthenticationManager().authenticate(authRequest);
+	    Authentication authentication = this.getAuthenticationManager().authenticate(authRequest);
+	    
+	    // Set switch for redirect to migration page
+	    if (isMigrationEnabled() && authentication.equals(authRequest)) {
+	    	setMigrationNecessary(true);
+	    }
+	    	
+	    return authentication;
 	}
     
-       
+	@Override
+	protected String determineTargetUrl(HttpServletRequest request) {
+		String targetUrl = null;
+		if (isMigrationEnabled() && isMigrationNecessary()) {
+			targetUrl = getMigrationTargetUrl();
+			setMigrationNecessary(false);
+		}
+		else {
+			// Don't attempt to obtain the url from the saved request if
+			// alwaysUsedefaultTargetUrl is set
+			targetUrl = isAlwaysUseDefaultTargetUrl() ? null : obtainFullRequestUrl(request);
+		}
+	
+		if (targetUrl == null) {
+			targetUrl = getDefaultTargetUrl();
+		}
+
+		return targetUrl;
+	}
+	
     @Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			Authentication authResult) throws IOException {
@@ -398,5 +431,30 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public void setReturnAfterSuccessfulAuthentication(
 			boolean returnAfterSuccessfulAuthentication) {
 		this.returnAfterSuccessfulAuthentication = returnAfterSuccessfulAuthentication;
+	}
+
+	public boolean isMigrationEnabled() {
+		return migrationEnabled;
+	}
+
+	protected void setMigrationEnabled(boolean migrationEnabled) {
+		this.migrationEnabled = migrationEnabled;
+	}
+
+	public String getMigrationTargetUrl() {
+		return migrationTargetUrl;
+	}
+
+	public void setMigrationTargetUrl(String migrationTargetUrl) {
+		this.migrationTargetUrl = migrationTargetUrl;
+		setMigrationEnabled(migrationTargetUrl == null? false : true);
+	}
+
+	protected boolean isMigrationNecessary() {
+		return migrationNecessary;
+	}
+
+	protected void setMigrationNecessary(boolean migrationNecessary) {
+		this.migrationNecessary = migrationNecessary;
 	}
 }
