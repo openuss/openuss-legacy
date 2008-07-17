@@ -54,6 +54,8 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected Long defaultDomainId;
 	protected boolean assignDefaultRoleEnabled = false;
 	protected boolean redirectEnabled = false;
+	protected boolean returnAfterUnsuccessfulAuthentication = false;
+	protected boolean returnAfterSuccessfulAuthentication = false;
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
 	
@@ -87,6 +89,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		// Remember, that shibboleth request header attributes are always present, if a request 
 		// passed the apache shibboleth module. Only their presence does not indicate, that an authentication
 		// is possible. For an authentication, they must be set.
+		String header = httpRequest.getHeader(shibbolethUsernameHeaderKey);
 		if (requiresAuthentication(httpRequest, httpResponse) && 
 		   (httpRequest.getHeader(shibbolethUsernameHeaderKey)!= null)&& 
 		   !("".equals(httpRequest.getHeader(shibbolethUsernameHeaderKey)))) {
@@ -100,6 +103,17 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 			try {
 				onPreAuthentication(httpRequest, httpResponse);
 				authResult = attemptAuthentication(httpRequest);
+				
+				// Authentication success
+				if (isContinueChainBeforeSuccessfulAuthentication()) {
+					chain.doFilter(request, response);
+				}
+				
+				successfulAuthentication(httpRequest, httpResponse, authResult);
+				
+				if (isReturnAfterSuccessfulAuthentication()) {
+					return;
+				}
 			}
 			catch (AuthenticationException failed) {
 				// Authentication failed
@@ -108,16 +122,11 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 				// exceptions differently.
 				unsuccessfulAuthentication(httpRequest, httpResponse, failed);
 				
-				// Return to caller, i. e. the filter chain.
-				return;
+				if (isReturnAfterUnsuccessfulAuthentication()) {
+					return;
+				}
 			}
 	
-			// Authentication success
-			if (isContinueChainBeforeSuccessfulAuthentication()) {
-				chain.doFilter(request, response);
-			}
-	
-			successfulAuthentication(httpRequest, httpResponse, authResult);		
 		}
 		
 		chain.doFilter(request, response);
@@ -165,19 +174,19 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 			logger.debug("Updated SecurityContextHolder to contain the following Authentication: '" + authResult + "'");
 		}
 
-		// Subclasses can override this method, e. g. to redirect users.
-		onSuccessfulAuthentication(request, response, authResult);
-
 		getRememberMeServices().loginSuccess(request, response, authResult);
 		
 		// Fire event
 		if (this.eventPublisher != null) {
 			eventPublisher.publishEvent(new AuthenticationSuccessEvent(authResult));
 		}
+
+		// Subclasses can override this method, e. g. to do a more specific redirect.
+		onSuccessfulAuthentication(request, response, authResult);
 		
-		if (isRedirectEnabled()) {
+		if (isRedirectEnabled() && getDefaultTargetUrl()!=null) {
 			String targetUrl = determineTargetUrl(request);
-			sendRedirect(request, response, targetUrl);			
+			sendRedirect(request, response, targetUrl);
 		}
 	}
 
@@ -202,12 +211,12 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		catch (IllegalStateException ignored) {
 		}
 
-		// Subclasses can override this method, e. g. to redirect users.
-		onUnsuccessfulAuthentication(request, response, failed);
-		
 		getRememberMeServices().loginFail(request, response);
-		
-		if (isRedirectEnabled()) {
+
+		// Subclasses can override this method, e. g. to do a more specific redirect.
+		onUnsuccessfulAuthentication(request, response, failed);
+			
+		if (isRedirectEnabled() && getAuthenticationFailureUrl()!=null) {
 			String failureUrl = determineFailureUrl(request, failed);			
 			sendRedirect(request, response, failureUrl);			
 		}
@@ -371,5 +380,23 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public void setAuthenticationDetailsSource(
 			AuthenticationDetailsSource authenticationDetailsSource) {
 		this.authenticationDetailsSource = authenticationDetailsSource;
+	}
+
+	public boolean isReturnAfterUnsuccessfulAuthentication() {
+		return returnAfterUnsuccessfulAuthentication;
+	}
+
+	public void setReturnAfterUnsuccessfulAuthentication(
+			boolean returnAfterUnsuccessfulAuthentication) {
+		this.returnAfterUnsuccessfulAuthentication = returnAfterUnsuccessfulAuthentication;
+	}
+
+	public boolean isReturnAfterSuccessfulAuthentication() {
+		return returnAfterSuccessfulAuthentication;
+	}
+
+	public void setReturnAfterSuccessfulAuthentication(
+			boolean returnAfterSuccessfulAuthentication) {
+		this.returnAfterSuccessfulAuthentication = returnAfterSuccessfulAuthentication;
 	}
 }

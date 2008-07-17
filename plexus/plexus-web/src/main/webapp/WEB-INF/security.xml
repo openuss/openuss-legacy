@@ -132,6 +132,19 @@
 		</property>
 	</bean>
 
+	<bean id="authenticationManagerWithoutMigration"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="shibbolethAuthenticationProviderWithoutMigration"/>
+				<ref local="configurableLdapAuthenticationProvider"/>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+
 	<bean id="daoAuthenticationProvider"
 		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService">
@@ -226,6 +239,21 @@
 		<property name="defaultRole">
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
+		<property name="returnAfterSuccessfulAuthentication">
+			<value>true</value>
+		</property>
+		<property name="redirectEnabled">
+			<value>true</value>
+		</property>		
+		<property name="defaultTargetUrl">
+			<value>/views/welcome.faces</value>
+		</property>
+		
+		<!-- Perhaps this property must be set true within production environment. -->
+		<property name="useRelativeContext">
+			<value>false</value>
+		</property>
+		
 		<property name="rememberMeServices">
 			<ref local="rememberMeServices" />
 		</property>
@@ -253,6 +281,62 @@
 		</property>		
 	</bean>	
 	
+	<!-- Additional configuration without migration, e. g. to be used within BASIC auth filter chain. -->
+	
+	<bean id="shibbolethProcessingFilterWithoutMigration" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManagerWithoutMigration" />
+		</property>		
+		<property name="shibbolethUsernameHeaderKey">
+			<value>SHIB_REMOTE_USER</value>
+		</property>
+		<property name="shibbolethFirstNameHeaderKey">
+			<value>Shib-Person-givenname</value>
+		</property>
+		<property name="shibbolethLastNameHeaderKey">
+			<value>Shib-Person-sn</value>
+		</property>
+		<property name="shibbolethEmailHeaderKey">
+			<value>Shib-Person-mail</value>
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="defaultDomainName">
+			<value>wwu</value>
+		</property>
+		<property name="defaultDomainId">
+			<value>1006</value>
+		</property>
+		<property name="defaultRole">
+			<value>ROLE_SHIBBOLETHUSER</value>
+		</property>
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
+		</property>
+	</bean>
+
+	<bean id="shibbolethAuthenticationProviderWithoutMigration" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProvider">
+		<property name="userCache" ref="userCache" />
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="migrationEnabled">
+			<value>false</value>
+		</property>
+		<property name="reconciliationEnabled">
+			<value>true</value>
+		</property>
+		<property name="ignoreDisabledException">
+			<value>false</value>
+		</property>
+		<property name="userMigrationUtility">
+			<ref local="userMigrationUtility" />
+		</property>		
+	</bean>	
 	
 	<!-- =============== User Migration ================ -->
 	<bean id="userMigrationUtility" class="org.openuss.migration.UserMigrationUtilityImpl">

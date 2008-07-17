@@ -166,7 +166,7 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
                     new InsufficientAuthenticationException("Full authentication is required to access this resource"));
             } else {
             	// SendStartMigration, if migration is enabled and necessary.
-            	if (hasToMigrate()) {
+            	if (isMigrationEnabled() && hasToMigrate(request)) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Access is denied (user must migrate); redirecting to migration entry point",
                             exception);
@@ -231,7 +231,7 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
     	return (migrationEntryPoint!=null);
     }
     
-    protected boolean hasToMigrate() {
+    protected boolean hasToMigrate(ServletRequest request) {
     	return (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalAcegiUserToken && 
 			SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails);
     }
