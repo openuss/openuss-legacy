@@ -42,17 +42,16 @@ import org.springframework.util.Assert;
 
 public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessingFilter {
 
-	protected String shibbolethUsernameHeaderKey = null;
-	protected String shibbolethFirstNameHeaderKey = null;
-	protected String shibbolethLastNameHeaderKey = null;
-	protected String shibbolethEmailHeaderKey = null;
+	protected String shibbolethUsernameHeaderKey = "REMOTE_USER";
+	protected String shibbolethFirstNameHeaderKey = "SHIB_FIRSTNAME";
+	protected String shibbolethLastNameHeaderKey = "SHIB_LASTNAME";
+	protected String shibbolethEmailHeaderKey = "SHIB_MAIL";;
 	protected ShibbolethUserDetails shibbolethUserDetails;
 	protected String key = null;
 	protected String defaultRolePrefix = "ROLE_";
-	protected String defaultRole = null;
+	protected String defaultRole = "ROLE_SHIBUSER";
 	protected String defaultDomainName = null;
 	protected Long defaultDomainId;
-	protected boolean assignDefaultRoleEnabled = false;
 	
 	/**
 	 * Enables migration. Defaults to <code>false</code>. Gets <code>true</code> by setting a <code>migrationTargetUrl</code>.
@@ -74,6 +73,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		Assert.hasLength(shibbolethLastNameHeaderKey, "shibbolethLastNameHeaderKey must be specified");
 		Assert.hasLength(shibbolethEmailHeaderKey, "shibbolethEmailHeaderKey must be specified");
 		Assert.hasLength(key, "key must be specified");
+		Assert.hasLength(defaultRole, "defaultRole must be specified");
 		doAfterPropertiesSet();
 	}
 	
@@ -146,11 +146,8 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	   
 	    String username = (String) request.getHeader(shibbolethUsernameHeaderKey);
 		String password = "";
-		GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[0];
 
-		if (isAssignDefaultRoleEnabled()) {
-			grantedAuthorities = new GrantedAuthority[]{new GrantedAuthorityImpl(getDefaultRole())};
-		}
+		GrantedAuthority[] grantedAuthorities = new GrantedAuthority[]{new GrantedAuthorityImpl(getDefaultRole())};
 			
 	    PrincipalAcegiUserToken authRequest = new PrincipalAcegiUserToken(getKey(),username,password,grantedAuthorities,username);
 	
@@ -323,7 +320,6 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		if (defaultRole.toLowerCase().startsWith(defaultRolePrefix.toLowerCase())) { 
 			this.defaultRole = defaultRole;
 		} else this.defaultRole = defaultRolePrefix+defaultRole;
-		setAssignDefaultRoleEnabled(true);
 	}
 	
 	public String getShibbolethUsernameHeaderKey() {
@@ -364,14 +360,6 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 
 	public void setKey(String key) {
 		this.key = key;
-	}
-
-	public boolean isAssignDefaultRoleEnabled() {
-		return assignDefaultRoleEnabled;
-	}
-
-	protected void setAssignDefaultRoleEnabled(boolean assignDefaultRoleEnabled) {
-		this.assignDefaultRoleEnabled = assignDefaultRoleEnabled;
 	}
 
 	public String getDefaultDomainName() {
