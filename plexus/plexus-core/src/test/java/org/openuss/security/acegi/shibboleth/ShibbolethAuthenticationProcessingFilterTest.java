@@ -45,7 +45,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	private final Long DEFAULTDOMAINID = 42L;
 	private final String MIGRATIONTARGETURL = "views/migration/migration.html";
 	private final String DEFAULTROLE = "ROLE_SHIBBOLETH";
-
+	private final String USERNAME = "test";
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -58,11 +58,6 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	}
 
 	
-	/* ************************************************************************
-	 * Tests for superclass AbstractProcessingFilter.                         *
-	 * These must also be passed by ShibbolethAuthenticationProcessingFilter. *
-	 * Test taken from Acegi framework, but extended and modified.            *
-	 **************************************************************************/	
 	
 	private MockHttpServletRequest createMockRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -73,7 +68,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         request.setRequestURI("/mycontext/j_mock_post");
         request.setContextPath("/mycontext");
         
-        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, "j_sixpack42");
+        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
         request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, "Joe");
         request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, "Sixpack");
         request.addHeader(SHIBBOLETHEMAILHEADERKEY, "j_sixpack42@acegisecurity.org");
@@ -97,7 +92,28 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         return new SavedRequest(request, new PortResolverImpl());
     }
 
+    /* ************************************************************************
+     * Tests for ShibbolethAuthenticationProcessingFilter.                    *
+     **************************************************************************/	
 
+    
+    // Test for requiresAuthentication
+    // Tests for shibboleth headers cleared by mod_shib
+    // Tests for shibboleth not installed
+    // Test for migration
+    // Tests for plexus configuration
+    // Tests without redirect
+    // Tests without returnAfter...
+    
+    
+    
+    
+    /* ************************************************************************
+     * Tests for superclass AbstractProcessingFilter.                         *
+     * These must also be passed by ShibbolethAuthenticationProcessingFilter. *
+     * Test taken from Acegi framework, but extended and modified.            *
+     **************************************************************************/	
+    
     public void testDefaultProcessesFilterUrlWithPathParameter() {
         MockHttpServletRequest request = createMockRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -155,9 +171,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setKey(KEY);
         filter.setDefaultDomainId(DEFAULTDOMAINID);
         filter.setDefaultDomainName(DEFAULTDOMAINNAME);
-        filter.setRedirectEnabled(true);
+        filter.setRedirectOnAuthenticationFailureEnabled(true);
         filter.setReturnAfterUnsuccessfulAuthentication(returnAfterUnsuccessfulAuthentication);
         filter.setReturnAfterSuccessfulAuthentication(false);
+        filter.setFilterProcessesUrl("/j_mock_post");
         filter.setAuthenticationFailureUrl("/failed.jsp");
 
         // Test
@@ -180,9 +197,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setKey(KEY);
         filter.setDefaultDomainId(DEFAULTDOMAINID);
         filter.setDefaultDomainName(DEFAULTDOMAINNAME);
-        filter.setRedirectEnabled(true);
+        filter.setRedirectOnAuthenticationFailureEnabled(true);
         filter.setReturnAfterUnsuccessfulAuthentication(true);
         filter.setReturnAfterSuccessfulAuthentication(false);
+        filter.setFilterProcessesUrl("/j_mock_post");
         filter.setAuthenticationFailureUrl("/failed.jsp");
 
         Properties exceptionMappings = filter.getExceptionMappings();
@@ -215,7 +233,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup authentication manager
         AuthenticationManager authManager = new AuthenticationManager()
         {public org.acegisecurity.Authentication authenticate(org.acegisecurity.Authentication authentication) throws org.acegisecurity.AuthenticationException {
-        	return new UsernamePasswordAuthenticationToken("test","protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});}};
+        	return new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});}};
  
         // Setup our test object, to grant access
         ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
@@ -227,7 +245,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setKey(KEY);
         filter.setDefaultDomainId(DEFAULTDOMAINID);
         filter.setDefaultDomainName(DEFAULTDOMAINNAME);
-        filter.setRedirectEnabled(true);
+        filter.setRedirectOnAuthenticationSuccessEnabled(true);
         filter.setReturnAfterUnsuccessfulAuthentication(true);
         filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
         filter.setFilterProcessesUrl("/j_OTHER_LOCATION");
@@ -237,7 +255,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         executeFilterInContainerSimulator(config, filter, request, response, chain);
         assertEquals("/mycontext/logged_in.jsp", response.getRedirectedUrl());
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals("test", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        assertEquals(USERNAME, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         assertEquals(8*1024, response.getBufferSize());
     }
 
@@ -307,10 +325,22 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         boolean alwaysUseDefaultTargetUrl = true;
         filter.setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTargetUrl);
         assertTrue(filter.isAlwaysUseDefaultTargetUrl());
-                
-        boolean redirectEnabled = true;
-        filter.setRedirectEnabled(redirectEnabled);
-        assertTrue(filter.isRedirectEnabled());
+
+        boolean onlyProcessFilterProcessesUrlEnabled = true;
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        assertTrue(filter.isOnlyProcessFilterProcessesUrlEnabled());
+        
+        boolean processEachUrlEnabled = true;
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        assertTrue(filter.isProcessEachUrlEnabled());
+        
+        boolean redirectOnAuthenticationFailureEnabled = true;
+        filter.setRedirectOnAuthenticationFailureEnabled(redirectOnAuthenticationFailureEnabled);
+        assertTrue(filter.isRedirectOnAuthenticationFailureEnabled());
+        
+        boolean redirectOnAuthenticationSuccessEnabled = true;
+        filter.setRedirectOnAuthenticationSuccessEnabled(redirectOnAuthenticationSuccessEnabled);
+        assertTrue(filter.isRedirectOnAuthenticationSuccessEnabled());
         
         boolean returnAfterSuccessfulAuthentication = true;
         filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
@@ -335,8 +365,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         } catch (IllegalArgumentException expected) {}
     }
 
-    public void testIgnoresAnyServletPathOtherThanFilterProcessesUrl()
-        throws Exception {
+    public void testIgnoresAnyServletPathOtherThanFilterProcessesUrl() throws Exception {
         // Setup our HTTP request
         MockHttpServletRequest request = createMockRequest();
         request.setServletPath("/some.file.html");
@@ -356,16 +385,16 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         executeFilterInContainerSimulator(config, filter, request, response, chain);
     }
 
-    public void testNormalOperationWithDefaultFilterProcessesUrl()
-        throws Exception {
+    public void testNormalOperationWithDefaultFilterProcessesUrl() throws Exception {
         // Setup our HTTP request
         MockHttpServletRequest request = createMockRequest();
 
         // Setup our filter configuration
         MockFilterConfig config = new MockFilterConfig(null, null);
 
+        boolean returnAfterSuccessfulAuthentication = true;
         // Setup our expectation that the filter chain will not be invoked, as we redirect to defaultTargetUrl
-        MockFilterChain chain = new MockFilterChain(false);
+        MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // Setup our test object, to grant access
@@ -374,22 +403,38 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setDefaultTargetUrl("/logged_in.jsp");
         filter.setAuthenticationFailureUrl("/failure.jsp");
         filter.setAuthenticationManager(new MockAuthenticationManager(true));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setRedirectOnAuthenticationSuccessEnabled(true);
+        filter.setReturnAfterUnsuccessfulAuthentication(true);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
         filter.afterPropertiesSet();
 
         // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
         assertEquals("/mycontext/logged_in.jsp", response.getRedirectedUrl());
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals("test", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        assertEquals(USERNAME, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         assertEquals(8*1024, response.getBufferSize());
     }
 
-    public void testStartupDetectsInvalidAuthenticationFailureUrl()
-        throws Exception {
-        AbstractProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+    public void testStartupDetectsInvalidAuthenticationFailureUrl() throws Exception {
+        ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setAuthenticationManager(new MockAuthenticationManager());
         filter.setDefaultTargetUrl("/");
         filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
 
         try {
             filter.afterPropertiesSet();
@@ -399,12 +444,18 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         }
     }
 
-    public void testStartupDetectsInvalidAuthenticationManager()
-        throws Exception {
-        AbstractProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+    public void testStartupDetectsInvalidAuthenticationManager() throws Exception {
+    	ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setAuthenticationFailureUrl("/failed.jsp");
         filter.setDefaultTargetUrl("/");
         filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
 
         try {
             filter.afterPropertiesSet();
@@ -453,32 +504,53 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup our filter configuration
         MockFilterConfig config = new MockFilterConfig(null, null);
 
+        boolean returnAfterSuccessfulAuthentication = true;
         // Setup our expectation that the filter chain will not be invoked, as we redirect to defaultTargetUrl
-        MockFilterChain chain = new MockFilterChain(false);
+        MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
+        
         // Setup our test object, to grant access
         ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setFilterProcessesUrl("/j_mock_post");
         filter.setDefaultTargetUrl("/logged_in.jsp");
+        filter.setAuthenticationManager(new MockAuthenticationManager(true));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
 
         // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
         assertEquals("/mycontext/logged_in.jsp", response.getRedirectedUrl());
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals("test", SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        assertEquals(USERNAME, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         assertEquals(8*1024, response.getBufferSize());
 
+        boolean returnAfterUnsuccessfulAuthentication = true;
         // Now try again but this time have filter deny access
         // Setup our HTTP request
         // Setup our expectation that the filter chain will not be invoked, as we redirect to authenticationFailureUrl
-        chain = new MockFilterChain(false);
+        chain = new MockFilterChain(!returnAfterUnsuccessfulAuthentication);
         response = new MockHttpServletResponse();
 
         // Setup our test object, to deny access
         filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setFilterProcessesUrl("/j_mock_post");
         filter.setAuthenticationFailureUrl("/failed.jsp");
+        filter.setAuthenticationManager(new MockAuthenticationManager(false));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setReturnAfterUnsuccessfulAuthentication(returnAfterUnsuccessfulAuthentication);
 
         // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
@@ -494,14 +566,25 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup our filter configuration
         MockFilterConfig config = new MockFilterConfig(null, null);
 
+        boolean returnAfterSuccessfulAuthentication = true;
         // Setup our expectation that the filter chain will be invoked, as we want to go to the location requested in the session
-        MockFilterChain chain = new MockFilterChain(true);
+        MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // Setup our test object, to grant access
         ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setFilterProcessesUrl("/j_mock_post");
         filter.setDefaultTargetUrl("/foobar");
+        filter.setAuthenticationManager(new MockAuthenticationManager(true));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+
         assertFalse(filter.isAlwaysUseDefaultTargetUrl()); // check default
         filter.setAlwaysUseDefaultTargetUrl(true);
         assertTrue(filter.isAlwaysUseDefaultTargetUrl()); // check changed
@@ -521,13 +604,23 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup our filter configuration
         MockFilterConfig config = new MockFilterConfig(null, null);
 
+        boolean returnAfterSuccessfulAuthentication = true;
         // Setup our expectation that the filter chain will be invoked, as we want to go to the location requested in the session
-        MockFilterChain chain = new MockFilterChain(true);
+        MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // Setup our test object, to grant access
         ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
         filter.setFilterProcessesUrl("/j_mock_post");
+        filter.setAuthenticationManager(new MockAuthenticationManager(true));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
 
         // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
@@ -540,7 +633,8 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         MockHttpServletRequest request = createMockRequest();
         MockFilterConfig config = new MockFilterConfig(null, null);
 
-        MockFilterChain chain = new MockFilterChain(true);
+        boolean returnAfterSuccessfulAuthentication = true;
+        MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         // Setup our test object, to grant access
@@ -548,7 +642,17 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setFilterProcessesUrl("/j_mock_post");
         filter.setDefaultTargetUrl("http://monkeymachine.co.uk/");
         filter.setAlwaysUseDefaultTargetUrl(true);
+        filter.setAuthenticationManager(new MockAuthenticationManager(true));
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+        filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+        filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+        filter.setKey(KEY);
+        filter.setDefaultDomainId(DEFAULTDOMAINID);
+        filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
 
+        // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
         assertEquals("http://monkeymachine.co.uk/", response.getRedirectedUrl());
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());

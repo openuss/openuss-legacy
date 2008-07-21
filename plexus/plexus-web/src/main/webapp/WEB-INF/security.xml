@@ -236,12 +236,27 @@
 		<property name="defaultRole">
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
+		<property name="onlyProcessFilterProcessesUrlEnabled">
+			<value>false</value>
+		</property>
+		<property name="processEachUrlEnabled">
+			<value>true</value>
+		</property>
 		<property name="returnAfterSuccessfulAuthentication">
 			<value>true</value>
 		</property>
-		<property name="redirectEnabled">
+		<property name="returnAfterUnsuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="redirectOnAuthenticationSuccessEnabled">
 			<value>true</value>
-		</property>		
+		</property>
+		<property name="redirectOnAuthenticationFailureEnabled">
+			<value>false</value>
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/nothing, filter is configured not to redirect on authentication failure.</value>
+		</property>
 		<property name="defaultTargetUrl">
 			<value>/views/welcome.faces</value>
 		</property>
@@ -311,15 +326,30 @@
 		<property name="defaultRole">
 			<value>ROLE_SHIBBOLETHUSER</value>
 		</property>
+		<property name="defaultTargetUrl">
+			<value>/nothing, filter is configured not to redirect on authentication success.</value>
+		</property>
+		<property name="onlyProcessFilterProcessesUrlEnabled">
+			<value>false</value>
+		</property>
+		<property name="processEachUrlEnabled">
+			<value>true</value>
+		</property>		
 		<property name="returnAfterSuccessfulAuthentication">
 			<value>false</value>
 		</property>
 		<property name="returnAfterUnsuccessfulAuthentication">
 			<value>false</value>
 		</property>
-		<property name="redirectEnabled">
+		<property name="redirectOnAuthenticationSuccessEnabled">
 			<value>false</value>
-		</property>		
+		</property>
+		<property name="redirectOnAuthenticationFailureEnabled">
+			<value>false</value>
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>nothing, filter is configured not to redirect on authentication failure.</value>
+		</property>						
 		<property name="rememberMeServices">
 			<ref local="rememberMeServices" />
 		</property>

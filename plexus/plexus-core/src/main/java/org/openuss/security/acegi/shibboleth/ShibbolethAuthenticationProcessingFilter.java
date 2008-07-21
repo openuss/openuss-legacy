@@ -60,14 +60,20 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	protected boolean migrationEnabled = false;
 	protected String migrationTargetUrl = null;
 	protected boolean migrationNecessary = false;
-	protected boolean redirectEnabled = false;
+	protected boolean redirectOnAuthenticationSuccessEnabled = true;
+	protected boolean redirectOnAuthenticationFailureEnabled = true;
+	
+	protected boolean processEachUrlEnabled = false;
+	
+	protected boolean onlyProcessFilterProcessesUrlEnabled = true;
+	
 	protected boolean returnAfterUnsuccessfulAuthentication = false;
 	protected boolean returnAfterSuccessfulAuthentication = false;
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
 	
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(getAuthenticationManager(), "authenticationManager must be specified");
+		super.afterPropertiesSet();
 		Assert.hasLength(shibbolethUsernameHeaderKey, "shibbolethUsernameHeaderKey must be specified");
 		Assert.hasLength(shibbolethFirstNameHeaderKey, "shibbolethFirstNameHeaderKey must be specified");
 		Assert.hasLength(shibbolethLastNameHeaderKey, "shibbolethLastNameHeaderKey must be specified");
@@ -214,7 +220,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		// Subclasses can override this method, e. g. to do a more specific redirect.
 		onSuccessfulAuthentication(request, response, authResult);
 		
-		if (isRedirectEnabled() && getDefaultTargetUrl()!=null) {
+		if (isRedirectOnAuthenticationSuccessEnabled()) {
 			String targetUrl = determineTargetUrl(request);
 			sendRedirect(request, response, targetUrl);
 		}
@@ -246,27 +252,28 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		// Subclasses can override this method, e. g. to do a more specific redirect.
 		onUnsuccessfulAuthentication(request, response, failed);
 			
-		if (isRedirectEnabled() && getAuthenticationFailureUrl()!=null) {
+		if (isRedirectOnAuthenticationFailureEnabled()) {
 			String failureUrl = determineFailureUrl(request, failed);			
 			sendRedirect(request, response, failureUrl);			
 		}
 
 	}
-	
-	
+		
 	@Override
 	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return ((authentication == null) || (authentication instanceof AnonymousAuthenticationToken));
+		boolean authenticationRequired = ((super.requiresAuthentication(request, response) || isProcessEachUrlEnabled())) && 
+		   								 (((authentication == null) || (authentication instanceof AnonymousAuthenticationToken) || (super.requiresAuthentication(request, response) && isOnlyProcessFilterProcessesUrlEnabled())));
+		return authenticationRequired;
 	}
 	
-	/**
-	 * This filter by default responds to every request.
-	 *
-	 * @return the default
-	 */
+    /**
+     * This filter by default responds to <code>/j_acegi_security_check</code>.
+     *
+     * @return the default
+     */
 	public String getDefaultFilterProcessesUrl() {
-		return "/";
+		return "/j_acegi_security_check";
 	}
 
 	/**
@@ -386,14 +393,6 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		this.defaultDomainId = defaultDomainId;
 	}
 
-	public boolean isRedirectEnabled() {
-		return redirectEnabled;
-	}
-
-	public void setRedirectEnabled(boolean redirectEnabled) {
-		this.redirectEnabled = redirectEnabled;
-	}
-
 	public AuthenticationDetailsSource getAuthenticationDetailsSource() {
 		return authenticationDetailsSource;
 	}
@@ -444,5 +443,40 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 
 	protected void setMigrationNecessary(boolean migrationNecessary) {
 		this.migrationNecessary = migrationNecessary;
+	}
+
+	public boolean isProcessEachUrlEnabled() {
+		return processEachUrlEnabled;
+	}
+
+	public void setProcessEachUrlEnabled(boolean processEachUrlEnabled) {
+		this.processEachUrlEnabled = processEachUrlEnabled;
+	}
+
+	public boolean isRedirectOnAuthenticationSuccessEnabled() {
+		return redirectOnAuthenticationSuccessEnabled;
+	}
+
+	public void setRedirectOnAuthenticationSuccessEnabled(
+			boolean redirectOnAuthenticationSuccessEnabled) {
+		this.redirectOnAuthenticationSuccessEnabled = redirectOnAuthenticationSuccessEnabled;
+	}
+
+	public boolean isRedirectOnAuthenticationFailureEnabled() {
+		return redirectOnAuthenticationFailureEnabled;
+	}
+
+	public void setRedirectOnAuthenticationFailureEnabled(
+			boolean redirectOnAuthenticationFailureEnabled) {
+		this.redirectOnAuthenticationFailureEnabled = redirectOnAuthenticationFailureEnabled;
+	}
+
+	public boolean isOnlyProcessFilterProcessesUrlEnabled() {
+		return onlyProcessFilterProcessesUrlEnabled;
+	}
+
+	public void setOnlyProcessFilterProcessesUrlEnabled(
+			boolean onlyProcessFilterProcessesUrlEnabled) {
+		this.onlyProcessFilterProcessesUrlEnabled = onlyProcessFilterProcessesUrlEnabled;
 	}
 }
