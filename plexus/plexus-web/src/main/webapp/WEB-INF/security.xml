@@ -348,7 +348,7 @@
 			<value>false</value>
 		</property>
 		<property name="authenticationFailureUrl">
-			<value>nothing, filter is configured not to redirect on authentication failure.</value>
+			<value>/nothing, filter is configured not to redirect on authentication failure.</value>
 		</property>						
 		<property name="rememberMeServices">
 			<ref local="rememberMeServices" />

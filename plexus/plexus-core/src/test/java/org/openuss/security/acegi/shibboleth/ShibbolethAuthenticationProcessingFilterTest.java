@@ -1,11 +1,5 @@
 package org.openuss.security.acegi.shibboleth;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.verify;
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -26,10 +20,13 @@ import org.acegisecurity.MockAuthenticationManager;
 import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.util.PortResolverImpl;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -43,9 +40,13 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	private final String KEY = "shib";
 	private final String DEFAULTDOMAINNAME = "shibboleth";
 	private final Long DEFAULTDOMAINID = 42L;
-	private final String MIGRATIONTARGETURL = "views/migration/migration.html";
+	private final String MIGRATIONTARGETURL = "/migration/migration.html";
 	private final String DEFAULTROLE = "ROLE_SHIBBOLETH";
 	private final String USERNAME = "test";
+	private final String FIRSTNAME = "Joe";
+	private final String LASTNAME = "Sixpack";
+	private final String EMAIL = "j_sixpack42@acegisecurity.org";
+
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -69,9 +70,9 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         request.setContextPath("/mycontext");
         
         request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
-        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, "Joe");
-        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, "Sixpack");
-        request.addHeader(SHIBBOLETHEMAILHEADERKEY, "j_sixpack42@acegisecurity.org");
+        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, FIRSTNAME);
+        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, LASTNAME);
+        request.addHeader(SHIBBOLETHEMAILHEADERKEY, EMAIL);
 
         return request;
     }
@@ -94,16 +95,307 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 
     /* ************************************************************************
      * Tests for ShibbolethAuthenticationProcessingFilter.                    *
-     **************************************************************************/	
-
+     **************************************************************************/
     
-    // Test for requiresAuthentication
-    // Tests for shibboleth headers cleared by mod_shib
-    // Tests for shibboleth not installed
-    // Test for migration
-    // Tests for plexus configuration
-    // Tests without redirect
-    // Tests without returnAfter...
+    public void testSuccessfulAuthenticationAndRedirectToMigrationPage() throws Exception {
+	    // Setup our HTTP request
+	    MockHttpServletRequest request = createMockRequest();
+	
+	    // Setup our filter configuration
+	    MockFilterConfig config = new MockFilterConfig(null, null);
+	
+	    // Setup not to return, but to continue chain.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    MockHttpServletResponse response = new MockHttpServletResponse();
+	
+	    // Setup our test object, to grant access and redirect to migration page.
+	    ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+	    filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl("/foobar");
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+	    filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+	    filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+	    filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+	    filter.setKey(KEY);
+	    filter.setDefaultDomainId(DEFAULTDOMAINID);
+	    filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+	    filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+		filter.setMigrationTargetUrl(MIGRATIONTARGETURL);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	}
+    
+    public void testSuccessfulAuthenticationWithoutRedirectButContinuedProcessingOfFilterChain() throws Exception {
+	    // Setup our HTTP request
+	    MockHttpServletRequest request = createMockRequest();
+	
+	    // Setup our filter configuration
+	    MockFilterConfig config = new MockFilterConfig(null, null);
+	
+	    // Setup not to return, but to continue chain.
+	    boolean returnAfterSuccessfulAuthentication = false;
+	    // Setup our expectation that the filter chain will be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    MockHttpServletResponse response = new MockHttpServletResponse();
+	
+	    // Setup our test object, to grant access
+	    ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+	    filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl("/foobar");
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+	    filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+	    filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+	    filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+	    filter.setKey(KEY);
+	    filter.setDefaultDomainId(DEFAULTDOMAINID);
+	    filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+	    filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+		filter.setRedirectOnAuthenticationSuccessEnabled(false);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertNull(response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertTrue(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails);
+	    ShibbolethUserDetails sud = (ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+	    assertEquals(USERNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.USERNAME_KEY).get());
+	    assertEquals(FIRSTNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.FIRSTNAME_KEY).get());
+	    assertEquals(LASTNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.LASTNAME_KEY).get());
+	    assertEquals(EMAIL,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY).get());
+	    assertEquals(DEFAULTDOMAINNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get());
+	    assertEquals(DEFAULTDOMAINID,(Long)sud.getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY).get());
+	    assertEquals(1, chain.getCount());
+	}
+
+    public void testUnsuccessfulAuthenticationWithoutRedirectButContinuedProcessingOfFilterChain() throws Exception {
+	    // Setup our HTTP request
+	    MockHttpServletRequest request = createMockRequest();
+	
+	    // Setup our filter configuration
+	    MockFilterConfig config = new MockFilterConfig(null, null);
+	
+	    // Setup not to return, but to continue chain.
+	    boolean returnAfterUnsuccessfulAuthentication = false;
+	    // Setup our expectation that the filter chain will be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterUnsuccessfulAuthentication);
+	    MockHttpServletResponse response = new MockHttpServletResponse();
+	
+	    // Setup our test object, to grant access
+	    ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+	    filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl("/foobar");
+	    filter.setAuthenticationManager(new MockAuthenticationManager(false));
+	    filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+	    filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
+	    filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
+	    filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
+	    filter.setKey(KEY);
+	    filter.setDefaultDomainId(DEFAULTDOMAINID);
+	    filter.setDefaultDomainName(DEFAULTDOMAINNAME);
+	    filter.setReturnAfterSuccessfulAuthentication(returnAfterUnsuccessfulAuthentication);
+		filter.setRedirectOnAuthenticationFailureEnabled(false);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertNull(response.getRedirectedUrl());
+	    assertNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertEquals(1, chain.getCount());
+    }
+    
+    public void testShibbolethRequestHeadersNotPresent() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/j_mock_post");
+        request.setScheme("http");
+        request.setServerName("www.example.com");
+        request.setRequestURI("/mycontext/j_mock_post");
+        request.setContextPath("/mycontext");
+
+        // Setup our filter configuration
+        MockFilterConfig config = new MockFilterConfig(null, null);
+
+        boolean continueFilteringIfShibbolethHeadersAreNotPresent = true;
+        // Setup our expectation that the filter chain will not be invoked, as we redirect to authenticationFailureUrl
+        MockFilterChain chain = new MockFilterChain(continueFilteringIfShibbolethHeadersAreNotPresent);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        // Setup requiresAuthentication switches.
+        boolean onlyProcessFilterProcessesUrlEnabled = false;
+        boolean processEachUrlEnabled = true;
+        
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setFilterProcessesUrl("/j_mock_post");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        
+        // Test
+        executeFilterInContainerSimulator(config, filter, request, response, chain);
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    public void testShibbolethRequestHeadersCleared() throws Exception {
+        // Setup our HTTP request with headers cleared. Shibboleth service provider clears request headers to prevent spoofing.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/j_mock_post");
+        request.setScheme("http");
+        request.setServerName("www.example.com");
+        request.setRequestURI("/mycontext/j_mock_post");
+        request.setContextPath("/mycontext");
+        
+        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, "");
+        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, "");
+        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, "");
+        request.addHeader(SHIBBOLETHEMAILHEADERKEY, "");
+
+
+        // Setup our filter configuration
+        MockFilterConfig config = new MockFilterConfig(null, null);
+
+        boolean continueFilteringIfShibbolethHeadersAreCleared = true;
+        // Setup our expectation that the filter chain will not be invoked, as we redirect to authenticationFailureUrl
+        MockFilterChain chain = new MockFilterChain(continueFilteringIfShibbolethHeadersAreCleared);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        // Setup requiresAuthentication switches.
+        boolean onlyProcessFilterProcessesUrlEnabled = false;
+        boolean processEachUrlEnabled = true;
+        
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+        filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
+        filter.setFilterProcessesUrl("/j_mock_post");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        
+        // Test
+        executeFilterInContainerSimulator(config, filter, request, response, chain);
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    
+    public void testRequiresAuthentication() {
+        MockHttpServletRequest request = createMockRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        ShibbolethAuthenticationProcessingFilter filter = new ShibbolethAuthenticationProcessingFilter();
+        boolean onlyProcessFilterProcessesUrlEnabled;
+        boolean processEachUrlEnabled;
+        
+        //~ Check onlyProcessFilterProcessesUrl, i. e. default behaviour from superclass.
+        onlyProcessFilterProcessesUrlEnabled = true;
+        processEachUrlEnabled = false;
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test
+        assertTrue(filter.requiresAuthentication(request, response));
+
+        //~ Check onlyProcessFilterProcessesUrl, i. e. default behaviour from superclass.
+        onlyProcessFilterProcessesUrlEnabled = true;
+        processEachUrlEnabled = false;
+        SecurityContextHolder.clearContext();
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test
+        assertFalse(filter.requiresAuthentication(request, response));
+
+        //~ Check processEachUrl and neglect default behaviour from superclass. Test without authentication.
+        onlyProcessFilterProcessesUrlEnabled = false;
+        processEachUrlEnabled = true;
+        SecurityContextHolder.clearContext();
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test
+        assertTrue(filter.requiresAuthentication(request, response));
+        
+        //~ Check processEachUrl and neglect default behaviour from superclass. Test with anonymous authentication.
+        onlyProcessFilterProcessesUrlEnabled = false;
+        processEachUrlEnabled = true;
+        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken(KEY,USERNAME,new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}));
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test
+        assertTrue(filter.requiresAuthentication(request, response));
+
+        //~ Check processEachUrl and neglect default behaviour from superclass. Test with another authentication.
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test
+        assertFalse(filter.requiresAuthentication(request, response));
+
+        //~ Check onlyProcessFilterProcessesUrl and processEachUrl, although this is contradictory. Results in an OR relation between behaviour from superclass and additional check.
+        onlyProcessFilterProcessesUrlEnabled = true;
+        processEachUrlEnabled = true;
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test behaviour from superclass
+        assertTrue(filter.requiresAuthentication(request, response));
+
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test behaviour from superclass and additional behaviour for existing authentication
+        assertFalse(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken(KEY,USERNAME,new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}));
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test behaviour from superclass and additional behaviour for existing authentication
+        assertTrue(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.clearContext();
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test behaviour from superclass and additional behaviour for existing authentication
+        assertTrue(filter.requiresAuthentication(request, response));
+
+        //~ Check neither onlyProcessFilterProcessesUrl nor processEachUrl. Results in an AND relation between behaviour from superclass and additional check.
+        onlyProcessFilterProcessesUrlEnabled = false;
+        processEachUrlEnabled = false;
+        SecurityContextHolder.clearContext();
+        filter.setFilterProcessesUrl("/j_acegi_security_check");
+        filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
+        filter.setProcessEachUrlEnabled(processEachUrlEnabled);
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test AND relation fires true
+        assertTrue(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken(KEY,USERNAME,new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}));
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test AND relation fires true
+        assertTrue(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        request.setRequestURI("/mycontext/j_acegi_security_check;jsessionid=I8MIONOSTHOR");
+        // Test AND relation fires false
+        assertFalse(filter.requiresAuthentication(request, response));
+
+        SecurityContextHolder.clearContext();
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test AND relation fires false
+        assertFalse(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken(KEY,USERNAME,new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}));
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test AND relation fires false
+        assertFalse(filter.requiresAuthentication(request, response));
+        
+        SecurityContextHolder.getContext().setAuthentication(new PrincipalAcegiUserToken(KEY, USERNAME, "PW", new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)}, USERNAME));
+        request.setRequestURI("/mycontext/some.file.html");
+        // Test AND relation fires false
+        assertFalse(filter.requiresAuthentication(request, response));        
+    }
     
     
     
@@ -326,6 +618,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTargetUrl);
         assertTrue(filter.isAlwaysUseDefaultTargetUrl());
 
+        boolean continueChainBeforeSuccessfulAuthentication = true;
+        filter.setContinueChainBeforeSuccessfulAuthentication(continueChainBeforeSuccessfulAuthentication);
+        assertTrue(filter.isContinueChainBeforeSuccessfulAuthentication());
+        
         boolean onlyProcessFilterProcessesUrlEnabled = true;
         filter.setOnlyProcessFilterProcessesUrlEnabled(onlyProcessFilterProcessesUrlEnabled);
         assertTrue(filter.isOnlyProcessFilterProcessesUrlEnabled());
@@ -662,6 +958,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 
     private class MockFilterChain implements FilterChain {
         private boolean expectToProceed;
+        private int count = 0;
 
         public MockFilterChain(boolean expectToProceed) {
             this.expectToProceed = expectToProceed;
@@ -674,10 +971,19 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         public void doFilter(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
             if (expectToProceed) {
+            	count++;
                 assertTrue(true);
             } else {
                 fail("Did not expect filter chain to proceed");
             }
         }
+
+		public int getCount() {
+			return count;
+		}
+
+		public void setCount(int count) {
+			this.count = count;
+		}
     }    
 }
