@@ -36,7 +36,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
     protected String key;
     
 	/**
-	 * Enables migration, i. e. either automatic migration, if a user can be found, or manual migration by redirecting the user within an extended <code>ExceptionTranslationFilter</code> to a specific migration page. 
+	 * Enables migration, i. e. either automatic migration, if a user can be found, or manual migration by redirecting the user to a specific migration page. 
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean migrationEnabled = false;
@@ -50,6 +50,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	
 	/**
 	 * Possibly useful for automatic migration of disabled or not yet enabled users, e. g. if user has registered, but not yet verified his email address.
+	 * Nevertheless <code>DisabledException</code> will be thrown for migrated users.
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean ignoreDisabledException = false;
@@ -100,7 +101,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	            // we're using latest data (ie not from the cache)
 	            cacheWasUsed = false;
 	            user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
-	            additionalAuthenticationChecks(user, (UsernamePasswordAuthenticationToken) authentication);
+	            additionalAuthenticationChecks(user, (PrincipalAcegiUserToken) authentication);
 	        } else {
 	            throw exception;
 	        }
@@ -112,8 +113,12 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	    // Automatic migration
 	    if (isMigrationEnabled() && !isAlreadyMigrated(user, authentication)) {
 	    	if (cacheWasUsed) {
-	    		// Reload user to get latest data (i. e. not from cache)
+	    		// Reload user to get latest data (i. e. not from cache).
+	    		// Do additional authentication checks, due to cache may be out-dated.
 	    		user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
+	    		additionalAuthenticationChecks(user, (PrincipalAcegiUserToken) authentication);
+	    		// Force cache update
+	    		cacheWasUsed = false;
 	    	}
 	    	// Cache could have been out-dated regarding the need for migration.
 	    	// Possibly user has been migrated otherwise, meanwhile.
@@ -121,8 +126,6 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 		    	migrate(user, authentication);
 		    	// Reload user
 		    	user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
-		    	// Force cache update
-		    	cacheWasUsed = false;
 	    	}
 	    }
 	    else if (!cacheWasUsed && isReconciliationEnabled()) {
@@ -221,7 +224,8 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 
 	protected void additionalAuthenticationChecks(UserDetails user, PrincipalAcegiUserToken authentication) throws AuthenticationException {
 		// No password checking necessary, since this was done by the shibboleth identity provider, already.
-		if (!user.isEnabled() && !isIgnoreDisabledException()) {
+		if ((!user.isEnabled() && !isIgnoreDisabledException() && !isAlreadyMigrated(user, authentication)) || 
+			(!user.isEnabled() && isAlreadyMigrated(user, authentication))) {
 			throw new DisabledException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.disabled",
 			"User is disabled"), user);
 		}

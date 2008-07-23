@@ -44,10 +44,6 @@ public class UserMigrationUtilityImpl implements UserMigrationUtility, Initializ
 		user.setUsername(centralUserData.getUsername());
 		reconcile(user, centralUserData, true);
 		
-		// Reload user
-//		user = securityService.getUser(user.getId());
-//		String[] authorities = securityService.getGrantedAuthorities(user); 
-//		auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, authorities));
 		// Remove temporary authentication, due to it was only necessary for SecurityService.
 		SecurityContextHolder.getContext().setAuthentication(preservedAuthentication);
 	
