@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ===================================================== 
+		FILTER CHAIN 
+		===================================================== -->
+	<bean id="securityFilterChainProxy"
+		class="org.acegisecurity.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, shibbolethProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter, shibbolethProcessingFilterWithoutMigration, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, filterInvocationInterceptor
+			</value>
+		</property>
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - 
+		Filter
+       - - - - - - - - - - - - - - - - - - - -->
+       
+    <!-- ATTENTION! Causes dependency between plexus-core and plexus-web. Therefore it is commented out and not used within filter chain for tests.
+    <bean id="authenticationAwareRequestFilter" class="org.openuss.web.security.AuthenticationAwareRequestFilter">
+		<property name="securityService" ref="securityService"/>
+		<property name="desktopService2" ref="desktopService2"/>
+    </bean>
+    -->
+		
+	<bean id="logFilter" class="org.openuss.framework.web.LogFilter"/>	
+
+	<bean id="httpSessionContextIntegrationFilter"
+		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+	</bean>
+
+	<!-- ATTENTION! Usage of PlexusAuthenticationProcessingFilter causes dependency between plexus-core and plexus-web. Due to PlexusAuthenticationProcessingFilter is not important, we use Acegi class instead for testing. -->
+	<!-- <bean id="authenticationProcessingFilter" class="org.openuss.web.security.PlexusAuthenticationProcessingFilter"> -->
+	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="defaultTargetUrl" value="/views/public/login/login.faces"/>
+		<property name="authenticationFailureUrl" value="/views/public/login/login.faces?error=true"/>
+		<!-- <property name="securityService" ref="securityService"/>
+		<property name="onlineStatisticService" ref="onlineStatisticService"/> -->
+		<property name="filterProcessesUrl" value="/views/acegi_security_check.faces"/>
+	</bean>
+
+	<!-- ATTENTION! Usage of PlexusBasicProcessingFilter causes dependency between plexus-core and plexus-web. Due to PlexusBasicProcessingFilter is not important, we use Acegi class instead for testing. -->
+	<!-- <bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter"> -->
+	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
+		<property name="ignoreFailure" value="false"/>
+		<!-- <property name="securityService" ref="securityService"/> -->
+	</bean>
+	
+	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+		<property name="realmName" value="OpenUSS"/>
+	</bean>
+
+	<bean id="contextHolderAwareRequestFilter"
+		class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" />
+
+	<bean id="anonymousProcessingFilter"
+		class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key">
+			<value>anonymous-key</value>
+		</property>
+		<property name="userAttribute">
+			<value>anonymousUser,ROLE_ANONYMOUS</value>
+		</property>
+	</bean>
+
+<!-- 	<bean id="formExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">-->
+	<bean id="formExceptionTranslationFilter" class="org.openuss.framework.web.acegi.PlexusExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<ref local="authenticationProcessingFilterEntryPoint" />
+		</property>
+	</bean>
+
+	<bean id="basicExceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
+	</bean>
+
+	<bean id="filterInvocationInterceptor"
+		class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager" />
+		</property>
+		<property name="accessDecisionManager">
+			<ref local="httpRequestAccessDecisionManager" />
+		</property>
+		<!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+			The FilterSecurityInterceptor will work from the top of the list down to the FIRST 
+			pattern that matches the request URL. Accordingly, you should place MOST SPECIFIC 
+			(ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT 
+				/views/commons/**=ROLE_USER
+				/views/errors/**=ROLE_ANONYMOUS, ROLE_USER
+				/views/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER, ROLE_SHIBBOLETHUSER
+				/views/welcome.faces*=ROLE_ANONYMOUS, ROLE_USER, ROLE_LDAPUSER
+				/views/secured/course/main.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
+				/views/secured/documents/documents.faces=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
+				/views/secured/lecture/institute.faces=ROLE_ANONYMOUS, ROLE_USER,  ROLE_ADMIN
+				/views/secured/migration/**=ROLE_LDAPUSER, ROLE_SHIBBOLETHUSER, ROLE_ADMIN
+				/views/secured/system/**=ROLE_ADMIN
+				/views/secured/**=ROLE_USER
+				/views/**=ROLE_ADMIN
+				/files/**=ROLE_ANONYMOUS, ROLE_USER
+				/rss/public/**=ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN
+				/rss/secured/**=ROLE_USER
+				/services/**=ROLE_ADMIN
+				/webdav/**=ROLE_USER
+			</value>
+		</property>
+	</bean>
+	
+	
+	<!-- ======================== AUTHENTICATION ======================= -->
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="shibbolethAuthenticationProvider"/>
+				<ref local="configurableLdapAuthenticationProvider"/>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authenticationManagerWithoutMigration"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="shibbolethAuthenticationProviderWithoutMigration"/>
+				<ref local="configurableLdapAuthenticationProvider"/>
+				<ref local="daoAuthenticationProvider" />
+				<ref local="anonymousAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider"
+		class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="userCache">
+			<ref bean="userCache" />
+		</property>
+ 		<property name="passwordEncoder" ref="passwordEncoder" />
+		<property name="saltSource" ref="saltSource"/>
+	</bean>
+	
+	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="getId"/>
+	</bean>
+	
+	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder">
+		<property name="encodeHashAsBase64" value="true"/>
+	</bean>
+
+	<bean id="userDetailsService"
+		class="org.openuss.security.acegi.UserDetailsServiceAdapter">
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
+	</bean>
+
+
+	<bean id="anonymousAuthenticationProvider"
+		class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+		<property name="key">
+			<value>anonymous-key</value>
+		</property>
+	</bean>
+
+	<bean id="authenticationProcessingFilterEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl">
+			<value>/views/public/login/login.faces</value>			
+		</property>
+		<property name="forceHttps">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="httpRequestAccessDecisionManager"
+		class="org.acegisecurity.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions">
+			<value>false</value>
+		</property>
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter" />
+			</list>
+		</property>
+	</bean>
+	<!-- An access decision voter that reads ROLE_* configuration settings -->
+	<bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter" />
+
+
+	<!-- Automatically receives AuthenticationEvent messages -->
+	<bean id="loggerListener"
+		class="org.acegisecurity.event.authentication.LoggerListener" />
+	
+	<!-- ================= SHIBBOLETH ================== -->
+	
+	<bean id="shibbolethProcessingFilter" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManager" />
+		</property>		
+		<property name="shibbolethUsernameHeaderKey">
+			<value>SHIB_REMOTE_USER</value>
+		</property>
+		<property name="shibbolethFirstNameHeaderKey">
+			<value>Shib-Person-givenname</value>
+		</property>
+		<property name="shibbolethLastNameHeaderKey">
+			<value>Shib-Person-sn</value>
+		</property>
+		<property name="shibbolethEmailHeaderKey">
+			<value>Shib-Person-mail</value>
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="defaultDomainName">
+			<value>wwu</value>
+		</property>
+		<property name="defaultDomainId">
+			<value>1006</value>
+		</property>
+		<property name="defaultRole">
+			<value>ROLE_SHIBBOLETHUSER</value>
+		</property>
+		<property name="onlyProcessFilterProcessesUrlEnabled">
+			<value>false</value>
+		</property>
+		<property name="processEachUrlEnabled">
+			<value>true</value>
+		</property>
+		<property name="returnAfterSuccessfulAuthentication">
+			<value>true</value>
+		</property>
+		<property name="returnAfterUnsuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="redirectOnAuthenticationSuccessEnabled">
+			<value>true</value>
+		</property>
+		<property name="redirectOnAuthenticationFailureEnabled">
+			<value>false</value>
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/nothing, filter is configured not to redirect on authentication failure.</value>
+		</property>
+		<property name="defaultTargetUrl">
+			<value>/views/welcome.faces</value>
+		</property>
+		<property name="migrationTargetUrl">
+			<value>/views/secured/migration/migration.faces</value>
+		</property>
+		
+		<!-- Perhaps this property must be set true within production environment. -->
+		<property name="useRelativeContext">
+			<value>false</value>
+		</property>
+		
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
+		</property>
+	</bean>
+
+	<bean id="shibbolethAuthenticationProvider" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProvider">
+		<property name="userCache" ref="userCache" />
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="migrationEnabled">
+			<value>true</value>
+		</property>
+		<property name="reconciliationEnabled">
+			<value>true</value>
+		</property>
+		<property name="ignoreDisabledException">
+			<value>true</value>
+		</property>
+		<property name="userMigrationUtility">
+			<ref local="userMigrationUtility" />
+		</property>		
+	</bean>	
+	
+	<!-- Additional configuration without migration, here to be used within BASIC auth filter chain. -->
+	
+	<bean id="shibbolethProcessingFilterWithoutMigration" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProcessingFilter">
+		<property name="authenticationManager">
+			<ref local="authenticationManagerWithoutMigration" />
+		</property>		
+		<property name="shibbolethUsernameHeaderKey">
+			<value>SHIB_REMOTE_USER</value>
+		</property>
+		<property name="shibbolethFirstNameHeaderKey">
+			<value>Shib-Person-givenname</value>
+		</property>
+		<property name="shibbolethLastNameHeaderKey">
+			<value>Shib-Person-sn</value>
+		</property>
+		<property name="shibbolethEmailHeaderKey">
+			<value>Shib-Person-mail</value>
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="defaultDomainName">
+			<value>wwu</value>
+		</property>
+		<property name="defaultDomainId">
+			<value>1006</value>
+		</property>
+		<property name="defaultRole">
+			<value>ROLE_SHIBBOLETHUSER</value>
+		</property>
+		<property name="defaultTargetUrl">
+			<value>/nothing, filter is configured not to redirect on authentication success.</value>
+		</property>
+		<property name="onlyProcessFilterProcessesUrlEnabled">
+			<value>false</value>
+		</property>
+		<property name="processEachUrlEnabled">
+			<value>true</value>
+		</property>		
+		<property name="returnAfterSuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="returnAfterUnsuccessfulAuthentication">
+			<value>false</value>
+		</property>
+		<property name="redirectOnAuthenticationSuccessEnabled">
+			<value>false</value>
+		</property>
+		<property name="redirectOnAuthenticationFailureEnabled">
+			<value>false</value>
+		</property>
+		<property name="authenticationFailureUrl">
+			<value>/nothing, filter is configured not to redirect on authentication failure.</value>
+		</property>						
+		<property name="rememberMeServices">
+			<ref local="rememberMeServices" />
+		</property>
+	</bean>
+
+	<bean id="shibbolethAuthenticationProviderWithoutMigration" class="org.openuss.security.acegi.shibboleth.PlexusShibbolethAuthenticationProvider">
+		<property name="userCache" ref="userCache" />
+		<property name="userDetailsService">
+			<ref local="userDetailsService" />
+		</property>
+		<property name="key">
+			<value>shibboleth</value>
+		</property>
+		<property name="migrationEnabled">
+			<value>false</value>
+		</property>
+		<property name="reconciliationEnabled">
+			<value>true</value>
+		</property>
+		<property name="ignoreDisabledException">
+			<value>false</value>
+		</property>
+		<property name="userMigrationUtility">
+			<ref local="userMigrationUtility" />
+		</property>		
+	</bean>	
+	
+	<!-- =============== User Migration ================ -->
+	<bean id="userMigrationUtility" class="org.openuss.migration.UserMigrationUtilityImpl">
+		<property name="securityService" ref="securityService" />
+		<property name="messageService" ref="messageService" />		
+	</bean>
+	
+    <!-- ===================== LDAP ==================== -->
+    
+    <bean id="ldapConfigurationServiceNoSecurity" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="ldapConfigurationServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.LdapConfigurationService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>                
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="configurableLdapAuthenticationProvider" class="org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderImpl" init-method="init"> 
+        <property name="userCache" ref="userCache"/>
+        <property name="ldapConfigurationService" ref="ldapConfigurationServiceNoSecurity"/>
+    </bean>
+    	
+	<bean id="ldapConfigDomainCommand" class="org.openuss.security.acegi.ldap.LdapConfigDomainCommand">
+		 <property name="configurableLdapAuthenticationProvider" ref="configurableLdapAuthenticationProvider"/>		
+	</bean>		
+		
+		
+	<!-- ===================== REMEMBER ME ==================== -->
+    
+    <bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter"> 
+        <property name="rememberMeServices" ref="rememberMeServices"/>
+        <property name="authenticationManager" ref="authenticationManager"/>
+    </bean>
+ 
+    <bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices"> 
+        <property name="userDetailsService" ref="userDetailsService"/>
+        <property name="key" value="openuss-plexus"/> 
+        <property name="parameter" value="j_rememberme"/>
+    </bean> 
+
+    <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider"> 
+        <property name="key" value="openuss-plexus"/>
+    </bean>
+    
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Access Control List Definitions
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="aclManager" class="org.acegisecurity.acl.AclProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="basicAclProvider"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="basicAclProvider" class="org.acegisecurity.acl.basic.BasicAclProvider">
+		<property name="basicAclDao">
+			<ref local="basicAclDao"/>
+		</property>
+		<property name="defaultAclObjectIdentityClass">
+			<value>
+				org.openuss.security.acegi.acl.EntityObjectIdentity
+			</value>
+		</property>
+		<property name="basicAclEntryCache"><ref bean="ehCacheBasedAclEntryCache"/></property>
+	</bean>
+	
+	
+	<bean id="basicAclDao" class="org.openuss.security.acegi.acl.PermissionAclDaoAdapter">
+		<property name="permissionDao"><ref bean="permissionDao"/></property>
+		<property name="objectIdentityDao"><ref bean="objectIdentityDao"/></property>
+	</bean>
+
+</beans>

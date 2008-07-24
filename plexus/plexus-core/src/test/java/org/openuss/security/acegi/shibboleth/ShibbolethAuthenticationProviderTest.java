@@ -574,6 +574,20 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		} catch (BadCredentialsException e) {
 			// success
 		}
+		verify(userCache);
+		
+		userCache = createMock(UserCache.class);
+		expect(userCache.getUserFromCache(USERNAME)).andReturn(null);
+		replay(userCache);
+		provider.setUserCache(userCache);
+		provider.setHideUserNotFoundExceptions(false);
+		// Test
+		try {
+			provider.authenticate(authentication);
+			fail("UsernameNotFoundException expected.");
+		} catch (UsernameNotFoundException e) {
+			// success
+		}
 		verify(userCache);		
 	}
 
