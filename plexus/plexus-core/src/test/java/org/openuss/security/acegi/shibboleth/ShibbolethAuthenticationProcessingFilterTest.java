@@ -19,14 +19,19 @@ import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.MockAuthenticationManager;
 import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.event.authentication.AuthenticationSuccessEvent;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
+import org.acegisecurity.ui.AuthenticationDetailsSource;
+import org.acegisecurity.ui.AuthenticationDetailsSourceImpl;
 import org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.util.PortResolverImpl;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -121,9 +126,9 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
     
     public void testSuccessfulAuthenticationWithoutRedirectToMigrationPageForMigratedUser() throws Exception {
 		
-	    // Setup not to return, but to continue chain.
+	    // Setup to return.
 	    boolean returnAfterSuccessfulAuthentication = true;
-	    // Setup our expectation that the filter chain will be invoked.
+	    // Setup our expectation that the filter chain will not be invoked.
 	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
 	
         // Setup authentication manager
@@ -131,7 +136,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         {public org.acegisecurity.Authentication authenticate(org.acegisecurity.Authentication authentication) throws org.acegisecurity.AuthenticationException {
         	return new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});}};
         	
-	    // Setup our test object, to grant access and redirect to migration page.
+	    // Setup our test object, to grant access and redirect migrated user to defaultTargetUrl.
 	    String defaultTargetUrl = "/foobar";
         filter.setFilterProcessesUrl("/j_mock_post");
 	    filter.setDefaultTargetUrl(defaultTargetUrl);
@@ -142,13 +147,25 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	    executeFilterInContainerSimulator(config, filter, request, response, chain);
 	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
 	    assertTrue(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	}
+	
+	    SecurityContextHolder.clearContext();
+	    response = new MockHttpServletResponse();
+        // Setup our HTTP request
+    	request.getSession().setAttribute(AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY, makeSavedRequestForUrl());
+	    // Setup our test object, to grant access and redirect migrated user to url within SavedRequest.
+    	boolean alwaysUseDefaultTargetUrl = false;
+    	filter.setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTargetUrl);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(makeSavedRequestForUrl().getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+    }
     
     public void testSuccessfulAuthenticationAndRedirectToMigrationPage() throws Exception {
 		
-	    // Setup not to return, but to continue chain.
+	    // Setup to return.
 	    boolean returnAfterSuccessfulAuthentication = true;
-	    // Setup our expectation that the filter chain will be invoked.
+	    // Setup our expectation that the filter chain will not be invoked.
 	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
 	
 	    // Setup our test object, to grant access and redirect to migration page.
@@ -162,7 +179,7 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	    assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
 	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
 	}
-    
+       
     public void testSuccessfulAuthenticationWithoutRedirectButContinuedProcessingOfFilterChain() throws Exception {
 		
 	    // Setup not to return, but to continue chain.
@@ -388,8 +405,67 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         assertFalse(filter.requiresAuthentication(request, response));        
     }
     
+    public void testFireAuthenticationSuccessEvent() throws Exception {
+	    // Setup eventPublisher
+	    ApplicationEventPublisher eventPublisher = new ApplicationEventPublisher(){
+	    	public void publishEvent(ApplicationEvent event) {
+	   	    	assertTrue(event instanceof AuthenticationSuccessEvent);	   	 
+	   	    }
+		};
+	    
+	    // Setup to return.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will not be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    // Setup our test object, to grant access.
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    String defaultTargetUrl = "/foobar";
+        filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl(defaultTargetUrl);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+        filter.setApplicationEventPublisher(eventPublisher);	    
+	    
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    }
     
-    
+    public void testSuccessfulAuthenticationWithContinueChainBeforeSuccessfulAuthentication() throws Exception {
+        // Setup to continue chain before placing authentication into SecurityContext.
+	    boolean continueChainBeforeSuccessfulAuthentication = true;
+	    // Setup to return after having placed authentication into SecurityContext.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will be invoked.
+	    MockFilterChain chain = new MockFilterChain(continueChainBeforeSuccessfulAuthentication);
+        	
+	    // Setup our test object, to grant access and redirect to defaultTargetUrl, after having continued the chain.
+	    String defaultTargetUrl = "/foobar";
+        filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl(defaultTargetUrl);
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+	    filter.setContinueChainBeforeSuccessfulAuthentication(continueChainBeforeSuccessfulAuthentication);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertEquals(1, chain.getCount());
+	    
+	    // Setup not to return after having placed authentication into SecurityContext, but to continue chain again.
+	    returnAfterSuccessfulAuthentication = false;
+	    // Setup our expectation that the filter chain will be invoked.
+	    chain = new MockFilterChain(continueChainBeforeSuccessfulAuthentication);
+        response = new MockHttpServletResponse();
+	    
+	    // Setup our test object, to grant access,  redirect to defaultTargetUrl, after having continued the chain for a first time, and process chain a second time.
+	    filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertEquals(2, chain.getCount());
+    }
     
     /* ************************************************************************
      * Tests for superclass AbstractProcessingFilter.                         *
@@ -564,6 +640,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setMigrationTargetUrl(MIGRATIONTARGETURL);
         assertEquals(MIGRATIONTARGETURL, filter.getMigrationTargetUrl());
         assertTrue(filter.isMigrationEnabled());
+        // Test null migrationTargetUrl causes migration to be disabled.
+        filter.setMigrationTargetUrl(null);
+        assertNull(filter.getMigrationTargetUrl());
+        assertFalse(filter.isMigrationEnabled());
 
         boolean alwaysUseDefaultTargetUrl = true;
         filter.setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTargetUrl);
@@ -597,6 +677,9 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         filter.setReturnAfterUnsuccessfulAuthentication(returnAfterUnsuccessfulAuthentication);
         assertTrue(filter.isReturnAfterUnsuccessfulAuthentication());
         
+        AuthenticationDetailsSource authenticationDetailsSource = new AuthenticationDetailsSourceImpl();
+        filter.setAuthenticationDetailsSource(authenticationDetailsSource);
+        assertEquals(authenticationDetailsSource, filter.getAuthenticationDetailsSource());
     }
 
     public void testDefaultUrlMuststartWithSlashOrHttpScheme() {

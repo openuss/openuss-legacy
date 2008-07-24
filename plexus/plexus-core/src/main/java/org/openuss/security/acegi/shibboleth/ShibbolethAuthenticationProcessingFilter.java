@@ -326,7 +326,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public void setDefaultRole(String defaultRole) {
 		if (defaultRole.toLowerCase().startsWith(defaultRolePrefix.toLowerCase())) { 
 			this.defaultRole = defaultRole;
-		} else this.defaultRole = defaultRolePrefix+defaultRole;
+		} else this.defaultRole = getDefaultRolePrefix()+defaultRole;
 	}
 	
 	public String getShibbolethUsernameHeaderKey() {

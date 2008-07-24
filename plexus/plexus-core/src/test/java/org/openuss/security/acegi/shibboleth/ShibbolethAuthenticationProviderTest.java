@@ -60,6 +60,7 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 	private InMemoryDaoImpl userDetailsService;
 	private User unmigratedUser;
 	private User migratedUser;
+	private User migratedUserNoReconciliationNecessary;
 	private User reconciledUser;
 	private User disabledUser;
 	private User lockedUser;
@@ -85,6 +86,7 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		unmigratedUser = new User(USERNAME,PW,true,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
 		migratedUser = new User(USERNAME,DELIMITER+PW+DELIMITER,true,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
 		reconciledUser = new User(USERNAME,DELIMITER+"TOBEDIFFERENT"+DELIMITER,true,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
+		migratedUserNoReconciliationNecessary = new User(USERNAME,DELIMITER+"ACME"+DELIMITER,true,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
 		disabledUser = new User(USERNAME,PW,false,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
 		accountExpiredUser = new User(USERNAME,PW,true,false,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
 		credentialsExpiredUser = new User(USERNAME,PW,true,true,false,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
@@ -171,11 +173,26 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		provider.setMigrationEnabled(true);
 		provider.setReconciliationEnabled(true);
 		userDetailsService.getUserMap().addUser(migratedUser);
-		// Test
+		// Test reconciliation.
 		Authentication authResult = provider.authenticate(authentication);
 		assertEquals(reconciledUser, (User)authResult.getPrincipal());
 		assertEquals(1, provider.getReconcileCount());
-		verify(userCache);			
+		verify(userCache);
+		
+		provider.resetCounters();
+		userCache = createMock(UserCache.class);
+		expect(userCache.getUserFromCache(USERNAME)).andReturn(null);
+		userCache.putUserInCache(migratedUserNoReconciliationNecessary);
+		replay(userCache);
+		provider.setUserCache(userCache);
+		UserMap userMap = new UserMap();
+		userMap.addUser(migratedUserNoReconciliationNecessary);
+		userDetailsService.setUserMap(userMap);
+		// Test reconciliation not necessary.
+		authResult = provider.authenticate(authentication);
+		assertEquals(migratedUserNoReconciliationNecessary, (User)authResult.getPrincipal());
+		assertEquals(1, provider.getReconcileCount());
+		verify(userCache);
 	}
 	
 	public void testReconciliationWithCacheHit() {
@@ -190,7 +207,19 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		Authentication authResult = provider.authenticate(authentication);
 		assertEquals(migratedUser, (User)authResult.getPrincipal());
 		assertEquals(0, provider.reconcileCount);
-		verify(userCache);		
+		verify(userCache);
+		
+		provider.resetCounters();
+		userCache = createMock(UserCache.class);
+		expect(userCache.getUserFromCache(USERNAME)).andReturn(migratedUserNoReconciliationNecessary);
+		replay(userCache);
+		provider.setUserCache(userCache);
+		userDetailsService.getUserMap().addUser(migratedUserNoReconciliationNecessary);
+		// Test with user from cache. Not reconciled to prevent lost updates, if cache is out-dated.
+		authResult = provider.authenticate(authentication);
+		assertEquals(migratedUserNoReconciliationNecessary, (User)authResult.getPrincipal());
+		assertEquals(0, provider.getReconcileCount());
+		verify(userCache);
 	}
 	
 	public void testSuccessfulAuthenticationForMigratedUserWithCacheMiss() {
@@ -607,6 +636,34 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 	}
 
 	
+	public void testCannotCreateUsernameFromAuthentication() {
+		UserCache userCache = createMock(UserCache.class);
+		expect(userCache.getUserFromCache("NONE_PROVIDED")).andReturn(null);
+		replay(userCache);
+		provider = new MockShibbolethAuthenticationProvider() {
+			@Override
+			protected String generateUsernameFromAuthentication(Authentication authentication) {
+				return null;
+			}
+		};
+		provider.setUserDetailsService(userDetailsService);
+		provider.setKey(KEY);
+		provider.setMigrationEnabled(false);
+		provider.setReconciliationEnabled(false);
+		provider.setIgnoreDisabledException(false);
+		provider.setForcePrincipalAsString(false);
+		provider.setHideUserNotFoundExceptions(false);
+		provider.setUserCache(userCache);
+		// Test
+		try {
+			provider.authenticate(authentication);
+			fail("UsernameNotFoundException expected.");
+		} catch (UsernameNotFoundException e) {
+			// success
+		}
+		verify(userCache);
+	}
+	
 	public void testEmptyUsername() {
 		UserDetails user = null;
 		try {
@@ -791,10 +848,15 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		@Override
 		protected boolean reconcile(UserDetails user, Authentication authentication) {
 			reconcileCount++;
-			UserMap userMap = new UserMap();
-			userMap.addUser(reconciledUser);
-			ShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
-			return true;
+			if (user.equals(migratedUserNoReconciliationNecessary)) {
+				return false;
+			}
+			else {
+				UserMap userMap = new UserMap();
+				userMap.addUser(reconciledUser);
+				ShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
+				return true;
+			}
 		}
 		
 		@Override
