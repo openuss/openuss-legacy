@@ -291,28 +291,23 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		
 		public Object buildDetails(HttpServletRequest request) {
 			shibbolethUserDetails = new ShibbolethUserDetailsImpl();
-			if (request.getHeader(shibbolethUsernameHeaderKey)!=null) {
-				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
-				if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase());
-				}
-				if (request.getHeader(shibbolethFirstNameHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getHeader(shibbolethFirstNameHeaderKey));
-				}
-				if (request.getHeader(shibbolethLastNameHeaderKey)!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.LASTNAME_KEY, request.getHeader(shibbolethLastNameHeaderKey));
-				}
-				if (getDefaultDomainName()!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY, getDefaultDomainName());
-				}
-				if (getDefaultDomainId()!=null) {
-					shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY, getDefaultDomainId());
-				}
-				return shibbolethUserDetails;
+            shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
+			if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase());
 			}
-			else {
-				return null;
+			if (request.getHeader(shibbolethFirstNameHeaderKey)!=null) {
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getHeader(shibbolethFirstNameHeaderKey));
 			}
+			if (request.getHeader(shibbolethLastNameHeaderKey)!=null) {
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.LASTNAME_KEY, request.getHeader(shibbolethLastNameHeaderKey));
+			}
+			if (getDefaultDomainName()!=null) {
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY, getDefaultDomainName());
+			}
+			if (getDefaultDomainId()!=null) {
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY, getDefaultDomainId());
+			}
+			return shibbolethUserDetails;
 		}
 		
 	}

@@ -227,6 +227,29 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	    assertEquals(1, chain.getCount());
     }
     
+    public void testDomainInformationNotSet() throws Exception {
+  
+	    // Setup to return.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will not be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    // Setup our test object, to grant access.
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    String defaultTargetUrl = "/foobar";
+        filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl(defaultTargetUrl);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+        filter.setDefaultDomainId(null);
+        filter.setDefaultDomainName(null);
+	    
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY));
+	    assertNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY));
+    }
+    
     public void testShibbolethRequestHeadersNotPresent() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setServletPath("/j_mock_post");
@@ -283,6 +306,71 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Test
         executeFilterInContainerSimulator(config, filter, request, response, chain);
         assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    public void testUsernameHeaderSetButOtherRequestHeadersNotPresent() throws Exception {
+        // Setup our HTTP request with headers cleared. Shibboleth service provider clears request headers to prevent spoofing.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/j_mock_post");
+        request.setScheme("http");
+        request.setServerName("www.example.com");
+        request.setRequestURI("/mycontext/j_mock_post");
+        request.setContextPath("/mycontext");
+        
+        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
+  
+	    // Setup to return.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will not be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    // Setup our test object, to grant access.
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    String defaultTargetUrl = "/foobar";
+        filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl(defaultTargetUrl);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+	    
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY));
+	    assertNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.FIRSTNAME_KEY));
+	    assertNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.LASTNAME_KEY));
+    }
+    
+    public void testUsernameHeaderSetButOtherRequestHeadersCleared() throws Exception {
+        // Setup our HTTP request with headers cleared. Shibboleth service provider clears request headers to prevent spoofing.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/j_mock_post");
+        request.setScheme("http");
+        request.setServerName("www.example.com");
+        request.setRequestURI("/mycontext/j_mock_post");
+        request.setContextPath("/mycontext");
+        
+        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
+        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, "");
+        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, "");
+        request.addHeader(SHIBBOLETHEMAILHEADERKEY, "");
+  
+	    // Setup to return.
+	    boolean returnAfterSuccessfulAuthentication = true;
+	    // Setup our expectation that the filter chain will not be invoked.
+	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    // Setup our test object, to grant access.
+	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
+	    String defaultTargetUrl = "/foobar";
+        filter.setFilterProcessesUrl("/j_mock_post");
+	    filter.setDefaultTargetUrl(defaultTargetUrl);
+        filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
+	    
+	    // Test
+	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    assertEquals(request.getContextPath()+defaultTargetUrl, response.getRedirectedUrl());
+	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertNotNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY));
+	    assertNotNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.FIRSTNAME_KEY));
+	    assertNotNull(((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.LASTNAME_KEY));
     }
     
     public void testRequiresAuthentication() {
