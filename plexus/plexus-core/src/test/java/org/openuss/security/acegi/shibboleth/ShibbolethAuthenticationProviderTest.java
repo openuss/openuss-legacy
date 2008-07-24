@@ -523,11 +523,30 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 		userMap = new UserMap();
 		userMap.addUser(migratedUser);
 		userDetailsService.setUserMap(userMap);
-		provider.setIgnoreDisabledException(true);
 		userCache = createMock(UserCache.class);
 		expect(userCache.getUserFromCache(USERNAME)).andReturn(migratedUser);
 		replay(userCache);
 		provider.setUserCache(userCache);
+		provider.setIgnoreDisabledException(true);
+		// Test not ignoring disabled status for migrated users. Test with disabled, migrated user.
+		try {
+			provider.authenticate(authentication);
+			fail("DisabledException expected.");
+		} catch (DisabledException e) {
+			// success
+		}
+		verify(userCache);
+		
+		authResult = null;
+		migratedUser = new User(USERNAME,DELIMITER+PW+DELIMITER,false,true,true,true,new GrantedAuthority[]{new GrantedAuthorityImpl(USERROLE)});
+		userMap = new UserMap();
+		userMap.addUser(migratedUser);
+		userDetailsService.setUserMap(userMap);
+		userCache = createMock(UserCache.class);
+		expect(userCache.getUserFromCache(USERNAME)).andReturn(migratedUser);
+		replay(userCache);
+		provider.setUserCache(userCache);
+		provider.setIgnoreDisabledException(false);
 		// Test not ignoring disabled status for migrated users. Test with disabled, migrated user.
 		try {
 			provider.authenticate(authentication);
