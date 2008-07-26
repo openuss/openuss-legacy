@@ -67,6 +67,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	private final String DEFAULTTARGETURL = "/views/welcome.faces";
 	private final String LOGINFORMURL = "/views/public/login/login.faces";
 	private final String MIGRATIONTARGETURL = "/views/secured/migration/migration.faces";
+	private final String SAVEDREQUESTKEY = AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY;
 	
 	private MockHttpServletRequest request;
 	private MockFilterConfig config;
@@ -131,6 +132,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	protected PlexusShibbolethAuthenticationProcessingFilter shibbolethProcessingFilterWithoutMigration;
 	protected PlexusShibbolethAuthenticationProvider shibbolethAuthenticationProviderWithoutMigration;
 	protected FilterChainProxy securityFilterChainProxy;
+	// The application filter chain.
 	protected MockFilterChain chain = new MockFilterChain(true);
 
 	//~ Constructor
@@ -140,80 +142,28 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	}
 
 	//~ Convenience methods
-	private MockHttpServletRequest createMockRequestForSecuredView() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-
-        request.setServletPath("/j_mock_post");
-        request.setScheme("https");
-        request.setServerName("www.example.com");
-        request.setRequestURI(CONTEXTPATH+SECUREDVIEWSURL);
+	
+	private MockHttpServletRequest createMockRequest(String url) {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath(url);
+		request.setScheme(SCHEME);
+        request.setServerName(SERVERNAME);
         request.setContextPath(CONTEXTPATH);
+        request.setRequestURI(request.getContextPath()+url);
         
         request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
         request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, FIRSTNAME);
         request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, LASTNAME);
         request.addHeader(SHIBBOLETHEMAILHEADERKEY, EMAIL);
-
-        return request;
-    }
-	
-	private MockHttpServletRequest createMockRequestForNotSecuredView() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-
-        request.setServletPath("/j_mock_post");
-        request.setScheme("https");
-        request.setServerName("www.example.com");
-        request.setRequestURI(CONTEXTPATH+NOTSECUREDVIEWSURL);
-        request.setContextPath(CONTEXTPATH);
-        
-        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
-        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, FIRSTNAME);
-        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, LASTNAME);
-        request.addHeader(SHIBBOLETHEMAILHEADERKEY, EMAIL);
-
-        return request;
-    }
-	
-	private MockHttpServletRequest createMockRequestForSecuredRssFeed() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-
-        request.setServletPath("/j_mock_post");
-        request.setScheme("https");
-        request.setServerName("www.example.com");
-        request.setRequestURI(CONTEXTPATH+SECUREDRSSFEEDURL);
-        request.setContextPath(CONTEXTPATH);
-        
-        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
-        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, FIRSTNAME);
-        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, LASTNAME);
-        request.addHeader(SHIBBOLETHEMAILHEADERKEY, EMAIL);
-
-        return request;
-    }
-	
-	private MockHttpServletRequest createMockRequestForNotSecuredRssFeed() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-
-        request.setServletPath("/j_mock_post");
-        request.setScheme("https");
-        request.setServerName("www.example.com");
-        request.setRequestURI(CONTEXTPATH+NOTSECUREDRSSFEEDURL);
-        request.setContextPath(CONTEXTPATH);
-        
-        request.addHeader(SHIBBOLETHUSERNAMEHEADERKEY, USERNAME);
-        request.addHeader(SHIBBOLETHFIRSTNAMEHEADERKEY, FIRSTNAME);
-        request.addHeader(SHIBBOLETHLASTNAMEHEADERKEY, LASTNAME);
-        request.addHeader(SHIBBOLETHEMAILHEADERKEY, EMAIL);
-
-        return request;
-    }
-	
+		return request;
+	}
+		
     private SavedRequest makeSavedRequestForUrl() {
-        MockHttpServletRequest request = createMockRequestForSecuredView();
+        MockHttpServletRequest request = createMockRequest(SECUREDVIEWSURL);
         return new SavedRequest(request, new PortResolverImpl());
     }
 
-	private void generateUnmigratedDisabledUser() {
+	private UserInfo createUserInfo() {
 		UserInfo user = new UserInfo();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
@@ -222,54 +172,36 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 		user.setTimezone(TimeZone.getDefault().getID());		
 		user.setFirstName(FIRSTNAME);
 		user.setLastName(LASTNAME);
-		securityService.createUser(user);
+		return user;
+	}
+    
+    private void generateUnmigratedDisabledUser() {
+		securityService.createUser(createUserInfo());
 	}
 	
 	private void generateUnmigratedEnabledUser() {
-		UserInfo user = new UserInfo();
-		user.setUsername(USERNAME);
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
+		UserInfo user = createUserInfo();
 		user.setEnabled(true);
 		securityService.createUser(user);
 	}
 	
 	private void generateMigratedDisabledUser() {
-		UserInfo user = new UserInfo();
+		UserInfo user = createUserInfo();
 		user.setUsername(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
 		securityService.createUser(user);		
 	}
 	
 	private void generateMigratedEnabledUserNoReconcilationNecessary() {
-		UserInfo user = new UserInfo();
+		UserInfo user = createUserInfo();
 		user.setUsername(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
 		user.setEnabled(true);
 		securityService.createUser(user);		
 	}
 
 	private void generateMigratedEnabledUserToBeReconciled() {
-		UserInfo user = new UserInfo();
+		UserInfo user = createUserInfo();
 		user.setUsername(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
-		user.setPassword(PASSWORD);
 		user.setEmail("acme@acme.org");
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
 		user.setFirstName("John");
 		user.setLastName("Doe");
 		user.setEnabled(true);
@@ -277,42 +209,21 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	}
 
 	private void generateLockedUser() {
-		UserInfo user = new UserInfo();
-		user.setUsername(USERNAME);
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
+		UserInfo user = createUserInfo();
 		user.setEnabled(true);
 		user.setAccountLocked(true);
 		securityService.createUser(user);		
 	}
 	
 	private void generateAccountExpiredUser() {
-		UserInfo user = new UserInfo();
-		user.setUsername(USERNAME);
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
+		UserInfo user = createUserInfo();
 		user.setEnabled(true);
 		user.setAccountExpired(true);
 		securityService.createUser(user);		
 	}
 	
 	private void generateCredentialsExpiredUser() {
-		UserInfo user = new UserInfo();
-		user.setUsername(USERNAME);
-		user.setPassword(PASSWORD);
-		user.setEmail(EMAIL);
-		user.setLocale(LOCALE);
-		user.setTimezone(TimeZone.getDefault().getID());		
-		user.setFirstName(FIRSTNAME);
-		user.setLastName(LASTNAME);
+		UserInfo user = createUserInfo();
 		user.setEnabled(true);
 		user.setAccountExpired(true);
 		securityService.createUser(user);
@@ -335,29 +246,49 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	public void testUserCreation() {
 		generateUnmigratedEnabledUser();
 		UserInfo user = securityService.getUserByName(USERNAME);
-		String[] grantedAuthorities = securityService.getGrantedAuthorities(user);
 		user.setUsername(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, user.getUsername()));
 		securityService.saveUser(user);
-		UserInfo user2 = securityService.getUserByEmail(EMAIL);
 		assertNotNull(user);
 		assertNotNull(user.getId());
+		assertTrue(user.isCentralUser());
 	}
 	
     public void testShibbolethRequestHeadersNotPresent() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        chain.resetCount();
+    	request = new MockHttpServletRequest();
         request.setServletPath(SECUREDVIEWSURL);
         request.setScheme(SCHEME);
         request.setServerName(SERVERNAME);
-        request.setRequestURI(CONTEXTPATH+SECUREDVIEWSURL);
         request.setContextPath(CONTEXTPATH);
-
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
         // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
-        response = new MockHttpServletResponse();
-     
-        // Test
+        response = new MockHttpServletResponse();     
+        // Test SECUREDVIEWSURL. Application filter not invoked, since we redirect to login form url.
         securityFilterChainProxy.doFilter(request, response, chain);
-        String redirectUrl = response.getRedirectedUrl();
         assertEquals(SCHEME+"://"+SERVERNAME+CONTEXTPATH+LOGINFORMURL, response.getRedirectedUrl());
+        assertEquals(request.getScheme()+"://"+request.getServerName()+request.getRequestURI(), ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getFullRequestUrl());
+        assertEquals(0, chain.getCount());
+
+        chain.resetCount();
+        request = new MockHttpServletRequest();
+        request.setServletPath(NOTSECUREDVIEWSURL);
+        request.setScheme(SCHEME);
+        request.setServerName(SERVERNAME);
+        request.setContextPath(CONTEXTPATH);
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDVIEWSURL. Application filter invoked, since access is granted.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
+        assertEquals(1, chain.getCount());
+
+        // Test for other URLs -> unsecured view, (un)secured rss
+        
+        
+//        String savedRequestUrl = ((SavedRequest)request.getSession().getAttribute(AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY)).getFullRequestUrl();
+//        String redirectUrl = response.getRedirectedUrl();
     }
 
     public void testShibbolethRequestHeadersCleared() throws Exception {
@@ -549,13 +480,17 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
             }
         }
 
+		public void resetCount() {
+			setCount(0);
+		}
+
 		public int getCount() {
 			return count;
 		}
 
 		public void setCount(int count) {
 			this.count = count;
-		}
+		}		
     }    
 
     public SecurityService getSecurityService() {
