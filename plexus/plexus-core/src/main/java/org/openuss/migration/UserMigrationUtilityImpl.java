@@ -46,12 +46,8 @@ public class UserMigrationUtilityImpl implements UserMigrationUtility, Initializ
 		
 		// Remove temporary authentication, due to it was only necessary for SecurityService.
 		SecurityContextHolder.getContext().setAuthentication(preservedAuthentication);
-	
-		try {
-			sendMigrationNotificationEmail(user, centralUserData.getAuthenticationDomainName());
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage(),e);
-		}
+		
+		sendMigrationNotificationEmail(user, centralUserData.getAuthenticationDomainName());		
 	}
 
 	public boolean reconcile(UserInfo user, CentralUserData centralUserData, boolean haveToSave) {
@@ -86,7 +82,7 @@ public class UserMigrationUtilityImpl implements UserMigrationUtility, Initializ
 	 * @param domainname
 	 * @throws MessageServiceException
 	 */
-	private void sendMigrationNotificationEmail(UserInfo user, String authenticationDomainName) throws Exception {		
+	private void sendMigrationNotificationEmail(UserInfo user, String authenticationDomainName) throws MessageServiceException {		
 		String username = SecurityDomainUtility.extractUsername(user.getUsername());
 
 		Map<String, Object> parameters = new HashMap<String, Object>();

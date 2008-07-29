@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
  * @author Peter Schuh
  *
  */
-public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+public abstract class AbstractShibbolethAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	//~ Instance fields ================================================================================================
 
@@ -56,6 +56,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	 */
 	protected boolean ignoreDisabledException = false;
 	
+	@SuppressWarnings("unchecked")
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 	    Assert.isTrue(supports(authentication.getClass()), messages.getMessage("ShibbolethAuthenticationProvider.onlySupports",
 	            "Only PrincipalAcegiUserToken is supported"));
@@ -174,7 +175,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	 */
 	@Override
 	public boolean supports(Class authentication) {
-		return (PrincipalAcegiUserToken.class.isAssignableFrom(authentication));
+		return PrincipalAcegiUserToken.class.isAssignableFrom(authentication);
 	}
 	
     /**

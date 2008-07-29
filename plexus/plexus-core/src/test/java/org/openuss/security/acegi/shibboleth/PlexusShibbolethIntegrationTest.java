@@ -415,16 +415,20 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     }
     
     public void testSuccessfulAuthenticationWithReconciliationForEnabledMigratedUser() throws Exception {
+    	UserInfo user;
+    	
     	generateMigratedEnabledUserToBeReconciled();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(SECUREDVIEWSURL);
     	response = new MockHttpServletResponse();
         // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -436,6 +440,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateMigratedEnabledUserToBeReconciled();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -444,8 +449,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -457,6 +463,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateMigratedEnabledUserToBeReconciled();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -465,8 +472,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test NOTSECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -479,32 +487,39 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     	generateMigratedEnabledUserToBeReconciled();
     	request = createMockRequest(SECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNull(response.getRedirectedUrl());
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(1, chain.getCount());
 	    
 	    rollback();
     	generateMigratedEnabledUserToBeReconciled();
     	request = createMockRequest(NOTSECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNull(response.getRedirectedUrl());
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(1, chain.getCount());
     }
     
     public void testSuccessfulAuthenticationWithAutomaticMigration() throws Exception {
+    	UserInfo user;
+    	
     	generateUnmigratedDisabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(SECUREDVIEWSURL);
     	response = new MockHttpServletResponse();
         // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
@@ -512,8 +527,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
@@ -526,6 +542,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateUnmigratedDisabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -535,8 +552,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
@@ -549,6 +567,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateUnmigratedDisabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -558,8 +577,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
@@ -573,6 +593,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     	generateUnmigratedDisabledUser();
     	request = createMockRequest(SECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
@@ -580,9 +601,10 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertNotNull(response.getHeader("WWW-Authenticate"));
 	    assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
 	    assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-	    assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
+	    user = securityService.getUserByName(USERNAME);
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertFalse(((UserInfo)securityService.getUserByName(USERNAME)).isEnabled());
         assertEquals(0, chain.getCount());	    
 
@@ -590,20 +612,23 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     	generateUnmigratedDisabledUser();
     	request = createMockRequest(NOTSECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
 	    assertNull(request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY));
         assertNull(response.getHeader("WWW-Authenticate"));
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    user = securityService.getUserByName(USERNAME);
+        assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertFalse(((UserInfo)securityService.getUserByName(USERNAME)).isEnabled());
         assertEquals(1, chain.getCount());	    
     
         rollback();
     	generateUnmigratedEnabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(SECUREDVIEWSURL);
     	response = new MockHttpServletResponse();
         // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
@@ -611,8 +636,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -624,6 +650,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateUnmigratedEnabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -633,8 +660,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -646,6 +674,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    rollback();
 	    generateUnmigratedEnabledUser();
         chain.resetCount();
+        user = null;
     	request = createMockRequest(DEFAULTTARGETURL);
     	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
@@ -655,8 +684,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    user = securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(0, chain.getCount());
     	response = new MockHttpServletResponse();
     	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
@@ -669,26 +699,30 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     	generateUnmigratedEnabledUser();
     	request = createMockRequest(SECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	    assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
+	    user = securityService.getUserByName(USERNAME);
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
         assertEquals(1, chain.getCount());	    
 
         rollback();
     	generateUnmigratedEnabledUser();
     	request = createMockRequest(NOTSECUREDRSSFEEDURL);
         chain.resetCount();
+        user = null;
     	response = new MockHttpServletResponse();
     	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
     	securityFilterChainProxy.doFilter(request, response, chain);
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
-	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
-	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    user = securityService.getUserByName(USERNAME);
+	    assertEquals(FIRSTNAME, user.getFirstName());
+	    assertEquals(LASTNAME, user.getLastName());
         assertEquals(1, chain.getCount());	    
     }    
     

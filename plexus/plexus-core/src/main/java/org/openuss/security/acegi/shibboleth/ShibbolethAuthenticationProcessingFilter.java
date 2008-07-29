@@ -1,6 +1,7 @@
 package org.openuss.security.acegi.shibboleth;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,8 +21,6 @@ import org.acegisecurity.providers.anonymous.AnonymousAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.AuthenticationDetailsSource;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
 import org.springframework.util.Assert;
@@ -37,16 +36,19 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	 * Must not be <code>null</code>.
 	 */
 	protected String shibbolethUsernameHeaderKey = "REMOTE_USER";
+	
 	/**
 	 * Key of the HTTP header attribute for a user's firstname.</br> 
 	 * Must not be <code>null</code>.
 	 */
 	protected String shibbolethFirstNameHeaderKey = "SHIB_FIRSTNAME";
+	
 	/**
 	 * Key of the HTTP header attribute for a user's lastname.</br> 
 	 * Must not be <code>null</code>.
 	 */
 	protected String shibbolethLastNameHeaderKey = "SHIB_LASTNAME";
+	
 	/**
 	 * Key of the HTTP header attribute for a user's email address.</br> 
 	 * Must not be <code>null</code>.
@@ -170,9 +172,11 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	 */
 	protected boolean returnAfterSuccessfulAuthentication = false;
 	
-	protected final Log logger = LogFactory.getLog(this.getClass());
-	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
-	
+	public ShibbolethAuthenticationProcessingFilter() {
+		super();
+		super.setAuthenticationDetailsSource(new ShibbolethAuthenticationDetailsSource());
+	}
+
 	public void afterPropertiesSet() throws Exception {
 		super.afterPropertiesSet();
 		Assert.hasLength(shibbolethUsernameHeaderKey, "shibbolethUsernameHeaderKey must be specified");
@@ -385,7 +389,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
      * @param authRequest the authentication request object that should have its details set
      */
 	protected void setDetails(HttpServletRequest request, PrincipalAcegiUserToken authRequest) {        
-    	authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
+    	authRequest.setDetails(getAuthenticationDetailsSource().buildDetails(request));
     }
     
 	public class ShibbolethAuthenticationDetailsSource implements AuthenticationDetailsSource {
@@ -394,7 +398,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 			shibbolethUserDetails = new ShibbolethUserDetailsImpl();
             shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
 			if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
-				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase());
+				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase(Locale.ENGLISH));
 			}
 			if (request.getHeader(shibbolethFirstNameHeaderKey)!=null) {
 				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.FIRSTNAME_KEY, request.getHeader(shibbolethFirstNameHeaderKey));
@@ -420,9 +424,11 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	
 	
 	public void setDefaultRole(String defaultRole) {
-		if (defaultRole.toLowerCase().startsWith(defaultRolePrefix.toLowerCase())) { 
+		if (defaultRole.toLowerCase(Locale.ENGLISH).startsWith(defaultRolePrefix.toLowerCase(Locale.ENGLISH))) { 
 			this.defaultRole = defaultRole;
-		} else this.defaultRole = getDefaultRolePrefix()+defaultRole;
+		} else {
+			this.defaultRole = getDefaultRolePrefix()+defaultRole;
+		}
 	}
 	
 	public String getShibbolethUsernameHeaderKey() {
@@ -487,15 +493,6 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	
 	public void setDefaultDomainId(Long defaultDomainId) {
 		this.defaultDomainId = defaultDomainId;
-	}
-
-	public AuthenticationDetailsSource getAuthenticationDetailsSource() {
-		return authenticationDetailsSource;
-	}
-
-	public void setAuthenticationDetailsSource(
-			AuthenticationDetailsSource authenticationDetailsSource) {
-		this.authenticationDetailsSource = authenticationDetailsSource;
 	}
 
 	public boolean isReturnAfterUnsuccessfulAuthentication() {

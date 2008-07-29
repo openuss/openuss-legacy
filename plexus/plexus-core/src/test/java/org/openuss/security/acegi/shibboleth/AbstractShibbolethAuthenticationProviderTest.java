@@ -46,7 +46,7 @@ import org.springframework.dao.DataAccessResourceFailureException;
  * @author Peter Schuh
  *
  */
-public class ShibbolethAuthenticationProviderTest extends TestCase {
+public class AbstractShibbolethAuthenticationProviderTest extends TestCase {
     
 	private final String KEY = "shib";
 	private final String DEFAULTDOMAINNAME = "shibboleth";
@@ -848,7 +848,7 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 	}
 	
 	
-	private class MockShibbolethAuthenticationProvider extends ShibbolethAuthenticationProvider {
+	private class MockShibbolethAuthenticationProvider extends AbstractShibbolethAuthenticationProvider {
 		private int reconcileCount = 0;
 		private int migrateCount = 0;
 		
@@ -877,7 +877,7 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 			else {
 				UserMap userMap = new UserMap();
 				userMap.addUser(reconciledUser);
-				ShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
+				AbstractShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
 				return true;
 			}
 		}
@@ -887,7 +887,7 @@ public class ShibbolethAuthenticationProviderTest extends TestCase {
 			migrateCount++;
 			UserMap userMap = new UserMap();
 			userMap.addUser(migratedUser);
-			ShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
+			AbstractShibbolethAuthenticationProviderTest.this.userDetailsService.setUserMap(userMap);
 		}
 
 		public int getReconcileCount() {

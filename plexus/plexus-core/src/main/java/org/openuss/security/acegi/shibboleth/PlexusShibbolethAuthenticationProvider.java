@@ -21,7 +21,7 @@ import org.springframework.util.Assert;
  * @author Peter Schuh
  *
  */
-public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthenticationProvider {
+public class PlexusShibbolethAuthenticationProvider extends AbstractShibbolethAuthenticationProvider {
 	private UserMigrationUtility userMigrationUtility;
 	
 	@Override
@@ -83,7 +83,7 @@ public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthentica
 	 * @param authentication
 	 */
 	private void markUserAsMigratedOne(UserDetails user, Authentication authentication) {
-		((ShibbolethUserDetails)authentication.getDetails()).getAttributes().put(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY, new Boolean(true));
+		((ShibbolethUserDetails)authentication.getDetails()).getAttributes().put(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY, Boolean.valueOf(true));
 	}
 	
 	@Override
