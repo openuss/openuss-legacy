@@ -19,6 +19,7 @@ import org.acegisecurity.util.FilterChainProxy;
 import org.acegisecurity.util.PortResolverImpl;
 import org.hibernate.SessionFactory;
 import org.openuss.TestUtility;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
@@ -26,6 +27,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
+/**
+ * @author Peter Schuh
+ *
+ */
 public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
     private final String SHIBBOLETHUSERNAMEHEADERKEY = "SHIB_REMOTE_USER";
 	private final String SHIBBOLETHFIRSTNAMEHEADERKEY = "Shib-Person-givenname";
@@ -339,12 +344,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(response.getHeader("WWW-Authenticate"));
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
         assertEquals(1, chain.getCount());        
-    }
-    
-    
-    
-//        String savedRequestUrl = ((SavedRequest)request.getSession().getAttribute(AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY)).getFullRequestUrl();
-//        String redirectUrl = response.getRedirectedUrl();
+    }    
 
     public void testSuccessfulAuthenticationWithoutReconciliationForEnabledMigratedUser() throws Exception {
     	generateMigratedEnabledUserNoReconcilationNecessary();
@@ -511,6 +511,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
@@ -533,6 +534,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
@@ -555,6 +557,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
@@ -607,6 +610,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertEquals(0, chain.getCount());
@@ -628,6 +632,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertEquals(0, chain.getCount());
@@ -649,6 +654,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         securityFilterChainProxy.doFilter(request, response, chain);
 	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNotNull(((ShibbolethUserDetails)((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY));
 	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
 	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertEquals(0, chain.getCount());
@@ -956,14 +962,17 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	}
 	
 	protected String[] getConfigLocations() {
+		// Nonessential configuration files were commented out to accelerate instantiation of application context.
+		// If tests fail, add them again.
 		return new String[] { 
-				"classpath*:applicationContext.xml", 
-				"classpath*:applicationContext-beans.xml",
+				"classpath*:applicationContext.xml",
+//				"classpath*:applicationContext-beans.xml",
 				"classpath*:applicationContext-lucene.xml",
 				"classpath*:applicationContext-cache.xml", 
-				"classpath*:applicationContext-messaging.xml",
-				"classpath*:applicationContext-resources.xml",
-				"classpath*:applicationContext-events.xml",
+//				"classpath*:applicationContext-messaging.xml",
+//				"classpath*:applicationContext-resources.xml",
+//				"classpath*:applicationContext-aop.xml",
+//				"classpath*:applicationContext-events.xml",
 				"classpath*:testContext.xml", 
 				"classpath*:testDataSource.xml",
 				"classpath*:testShibbolethSecurity.xml"};

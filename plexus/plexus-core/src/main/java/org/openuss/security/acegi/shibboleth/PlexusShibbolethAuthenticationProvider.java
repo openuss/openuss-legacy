@@ -17,6 +17,10 @@ import org.openuss.security.UserInfo;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 
+/**
+ * @author Peter Schuh
+ *
+ */
 public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthenticationProvider {
 	private UserMigrationUtility userMigrationUtility;
 	
@@ -72,6 +76,12 @@ public class PlexusShibbolethAuthenticationProvider extends ShibbolethAuthentica
 		markUserAsMigratedOne(user, authentication);
     }
 
+	
+	/**
+	 * Sets a marker for a migrated user. This marker is used within frontend to decide whether to show an appropriate message.
+	 * @param user
+	 * @param authentication
+	 */
 	private void markUserAsMigratedOne(UserDetails user, Authentication authentication) {
 		((ShibbolethUserDetails)authentication.getDetails()).getAttributes().put(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY, new Boolean(true));
 	}

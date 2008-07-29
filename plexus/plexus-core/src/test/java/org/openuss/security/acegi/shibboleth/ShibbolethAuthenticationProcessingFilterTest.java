@@ -36,6 +36,10 @@ import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+/**
+ * @author Peter Schuh
+ *
+ */
 public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
 	
     private final String SHIBBOLETHUSERNAMEHEADERKEY = "REMOTE_USER";

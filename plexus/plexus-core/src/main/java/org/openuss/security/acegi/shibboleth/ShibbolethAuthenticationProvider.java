@@ -25,32 +25,33 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	//~ Instance fields ================================================================================================
 
     /**
-     * Our user details service (which does the real work of checking the user against a back-end user store).
+     * Our user details service (which does the real work of checking the user against a back-end user store).</br>
+     * Must not be <code>null</code>.
      */
     protected UserDetailsService userDetailsService;
     /**
-     * Indicates, which filter has generated the authentication request. 
-     * Only PrincipalAcegiUserToken with proper key will be processed.
-     * Assure setting the key according to the key property of the corresponding <code>ShibbolethAuthenticationProcessingFilter</code>.
+     * Indicates, which filter has generated the authentication request.</br> 
+     * Only <code>PrincipalAcegiUserToken</code> with proper key will be processed.</br>
+     * Assure setting the key according to the key property of the corresponding <code>ShibbolethAuthenticationProcessingFilter</code>.</br>
+     * Must not be <code>null</code>.
      */
     protected String key;
     
 	/**
-	 * Enables migration, i. e. either automatic migration, if a user can be found, or manual migration by redirecting the user to a specific migration page. 
+	 * Enables migration, i. e. either automatic migration, if a user can be found, or manual migration by redirecting the user to a specific migration page.</br> 
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean migrationEnabled = false;
 	
 	/**
-	 * Enables reconciliation, i. e. application specific updating of locally stored user details with data received from shibboleth identity provider.
+	 * Enables reconciliation, i. e. application specific updating of locally stored user details with data received from shibboleth identity provider.</br>
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean reconciliationEnabled = false;
 
-	
 	/**
-	 * Possibly useful for automatic migration of disabled or not yet enabled users, e. g. if user has registered, but not yet verified his email address.
-	 * Nevertheless <code>DisabledException</code> will be thrown for migrated users.
+	 * Possibly useful for automatic migration of disabled or not yet enabled users, e. g. if user has registered, but not yet verified his email address.</br>
+	 * Nevertheless <code>DisabledException</code> will be thrown for migrated users.</br>
 	 * Defaults to <code>false</code>.
 	 */
 	protected boolean ignoreDisabledException = false;
@@ -168,11 +169,21 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 	 */
 	protected abstract String generateUsernameFromAuthentication(Authentication authentication);
 	
+	/* (non-Javadoc)
+	 * @see org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider#supports(java.lang.Class)
+	 */
 	@Override
 	public boolean supports(Class authentication) {
 		return (PrincipalAcegiUserToken.class.isAssignableFrom(authentication));
 	}
 	
+    /**
+     * Retrieves user by username using a <code>UserDetailsService</code> implementation, that has to be assigned as a property.
+     * @param username
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     protected UserDetails retrieveUser(String username, PrincipalAcegiUserToken authentication) throws AuthenticationException {
 
         UserDetails loadedUser;
@@ -198,8 +209,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
     protected void migrate(UserDetails user, Authentication authentication) {}
     
     /**
-     * Application specific reconciliation of user details, e. g. updating of locally stored user details with 
-     * data received by the corresponding shibboleth filter.
+     * Application specific reconciliation of user details, e. g. updating of locally stored user details with data received by the corresponding shibboleth filter.
      * @param user
      * @param authentication
      * @return reconciliation status: <code>true</code>, if locally stored user details had to be updated.
@@ -214,14 +224,6 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
      */
     protected abstract boolean isAlreadyMigrated(UserDetails user, Authentication authentication);
 	
-	public boolean isMigrationEnabled() {
-		return migrationEnabled;
-	}
-
-	public void setMigrationEnabled(boolean migrationEnabled) {
-		this.migrationEnabled = migrationEnabled;
-	}
-
 	protected void additionalAuthenticationChecks(UserDetails user, PrincipalAcegiUserToken authentication) throws AuthenticationException {
 		// No password checking necessary, since this was done by the shibboleth identity provider, already.
 		if ((!user.isEnabled() && !isIgnoreDisabledException() && !isAlreadyMigrated(user, authentication)) || 
@@ -241,11 +243,25 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
         }
 	}
 
+	public boolean isMigrationEnabled() {
+		return migrationEnabled;
+	}
+	
+	public void setMigrationEnabled(boolean migrationEnabled) {
+		this.migrationEnabled = migrationEnabled;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider#additionalAuthenticationChecks(org.acegisecurity.userdetails.UserDetails, org.acegisecurity.providers.UsernamePasswordAuthenticationToken)
+	 */
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		// This method must be implemented, due to inheritance, but is never used, since we use a PrincipalAcegiUserToken.
 	}
 
+	/* (non-Javadoc)
+	 * @see org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider#retrieveUser(java.lang.String, org.acegisecurity.providers.UsernamePasswordAuthenticationToken)
+	 */
 	@Override
 	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		// This method must be implemented, due to inheritance, but is never used, since we use a PrincipalAcegiUserToken.

@@ -42,6 +42,10 @@ import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
 import org.springframework.dao.DataAccessResourceFailureException;
 
+/**
+ * @author Peter Schuh
+ *
+ */
 public class ShibbolethAuthenticationProviderTest extends TestCase {
     
 	private final String KEY = "shib";

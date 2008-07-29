@@ -1,17 +1,3 @@
-/* Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.openuss.security.acegi.shibboleth;
 
 import java.io.IOException;
@@ -40,35 +26,150 @@ import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
 import org.springframework.util.Assert;
 
+/**
+ * @author Peter Schuh
+ *
+ */
 public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessingFilter {
 
+	/**
+	 * Key of the HTTP header attribute for a user's username.</br> 
+	 * Must not be <code>null</code>.
+	 */
 	protected String shibbolethUsernameHeaderKey = "REMOTE_USER";
+	/**
+	 * Key of the HTTP header attribute for a user's firstname.</br> 
+	 * Must not be <code>null</code>.
+	 */
 	protected String shibbolethFirstNameHeaderKey = "SHIB_FIRSTNAME";
+	/**
+	 * Key of the HTTP header attribute for a user's lastname.</br> 
+	 * Must not be <code>null</code>.
+	 */
 	protected String shibbolethLastNameHeaderKey = "SHIB_LASTNAME";
+	/**
+	 * Key of the HTTP header attribute for a user's email address.</br> 
+	 * Must not be <code>null</code>.
+	 */
 	protected String shibbolethEmailHeaderKey = "SHIB_MAIL";;
-	protected ShibbolethUserDetails shibbolethUserDetails;
+	
+	/**
+     * Indicates, which filter instance has generated the authentication request.</br> 
+     * Only <code>PrincipalAcegiUserToken</code> with proper key will be processed by a corresponding <code>ShibbolethAuthenticationProvider</code> implementation.</br>
+     * Assure setting the key according to the key property of the corresponding <code>ShibbolethAuthenticationProvider</code> instance.</br>
+     * Must not be <code>null</code>.
+     */
 	protected String key = null;
+
+	protected ShibbolethUserDetails shibbolethUserDetails;
+	
+	/**
+	 * Default role prefix of a default role. If default role is automatically prefixed, if prefix is missing.</br>
+	 * Defaults to <code>ROLE_</code>.</br>
+	 * Must not be <code>null</code>.
+	 */
 	protected String defaultRolePrefix = "ROLE_";
+	
+	/**
+	 * Default role, that is assigned to a shibboleth user for an authentication request, that is processed by the corresponding <code>ShibbolethAuthenticationProvider</code>.</br>
+	 * Must not be <code>null</code>.
+	 */
 	protected String defaultRole = "ROLE_SHIBUSER";
+	
+	/**
+	 * Name of the default domain, that is assigned to a shibboleth user's details of an authentication request, that is processed by the corresponding <code>ShibbolethAuthenticationProvider</code>.
+	 */
 	protected String defaultDomainName = null;
+
+	/**
+	 * ID of the default domain, that is assigned to a shibboleth user's details of an authentication request, that is processed by the corresponding <code>ShibbolethAuthenticationProvider</code>.
+	 */
 	protected Long defaultDomainId;
 	
 	/**
-	 * Enables migration. Defaults to <code>false</code>. Gets <code>true</code> by setting a <code>migrationTargetUrl</code>.
-	 * Take care to also enable migration within corresponding <code>shibbolethAuthenticationProvider</code>!
+	 * Enables migration.</br> 
+	 * Gets <code>true</code> by setting a <code>migrationTargetUrl</code>.</br>
+	 * Take care to also enable migration within corresponding <code>shibbolethAuthenticationProvider</code>!</br>
+	 * Defaults to <code>false</code>.
 	 */
 	protected boolean migrationEnabled = false;
+	
+	/**
+	 * Url the user gets redirected to, if manual migration is necessary.</br>
+	 * Take care to also enable migration within corresponding <code>shibbolethAuthenticationProvider</code>!
+	 */
 	protected String migrationTargetUrl = null;
+	
 	protected boolean migrationNecessary = false;
+	
+	/**
+	 * Enables HTTP redirect in case of a successful authentication.</br>
+	 * Defaults to <code>true</code>.
+	 */
 	protected boolean redirectOnAuthenticationSuccessEnabled = true;
+
+	/**
+	 * Enables HTTP redirect in case of a successful authentication.</br>
+	 * Defaults to <code>true</code>.
+	 */
 	protected boolean redirectOnAuthenticationFailureEnabled = true;
 	
+	/**
+	 * Defines, when an authentication is required.</br>
+	 * Behaviour depends on both <code>processEachUrlEnabled</code> <b>and</b> <code>onlyProcessFilterProcessesUrlEnabled</code>.</br>
+	 * <p>
+	 * <u>Possible four combinations:</u></br>
+	 * </p>
+	 * <p>
+	 * processEachUrlEnabled: <code>false</code></br>
+	 * onlyProcessFilterProcessesUrlEnabled: <code>false</code></br>
+	 * Results in:</br>
+	 * Authentication is required, if and only if current authentication is <code>null</code> or an instance of an <code>AnonymousAuthenticationToken</code> <b>and</b> url of request matches the url, that the filter is set to process.
+	 * </p>
+	 * <p>
+	 * processEachUrlEnabled: <code>true</code></br>
+	 * onlyProcessFilterProcessesUrlEnabled: <code>false</code></br>
+	 * Results in:</br>
+	 * Authentication is required, if current authentication is <code>null</code> or an instance of an <code>AnonymousAuthenticationToken</code>.
+	 * </p>
+	 * <p>
+	 * processEachUrlEnabled: <code>false</code></br>
+	 * onlyProcessFilterProcessesUrlEnabled: <code>true</code></br>
+	 * Results in:</br>
+	 * Authentication is required, if url of request matches the url, that the filter is configured to process.
+	 * </p>
+	 * <p>
+	 * processEachUrlEnabled: <code>true</code></br>
+	 * onlyProcessFilterProcessesUrlEnabled: <code>true</code></br>
+	 * Results in:</br>
+	 * Authentication is required, if current authentication is <code>null</code> or an instance of an <code>AnonymousAuthenticationToken</code> <b>or</b> url of request matches the url, that the filter is set to process.
+	 * </p>
+	 * <p>
+	 * <u>Default behaviour:</u>
+	 * </p>
+	 * processEachUrlEnabled: <code>false</code></br>
+	 * onlyProcessFilterProcessesUrlEnabled: <code>true</code>
+	 */
 	protected boolean processEachUrlEnabled = false;
 	
+	/**
+	 * @see #processEachUrlEnabled
+	 * 
+	 */
 	protected boolean onlyProcessFilterProcessesUrlEnabled = true;
 	
+	/**
+	 * Enables filter to return after unsuccessful authentication instead of continuing filter chain.</br>
+	 * Defaults to <code>false</code>, i. e. proceeding filter chain.
+	 */
 	protected boolean returnAfterUnsuccessfulAuthentication = false;
+
+	/**
+	 * Enables filter to return after successful authentication instead of continuing filter chain.</br>
+	 * Defaults to <code>false</code>, i. e. proceeding filter chain.
+	 */
 	protected boolean returnAfterSuccessfulAuthentication = false;
+	
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	protected AuthenticationDetailsSource authenticationDetailsSource = new ShibbolethAuthenticationDetailsSource();
 	
