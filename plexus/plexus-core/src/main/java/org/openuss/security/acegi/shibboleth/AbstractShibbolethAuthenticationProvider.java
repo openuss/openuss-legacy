@@ -56,7 +56,6 @@ public abstract class AbstractShibbolethAuthenticationProvider extends AbstractU
 	 */
 	protected boolean ignoreDisabledException = false;
 	
-	@SuppressWarnings("unchecked")
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 	    Assert.isTrue(supports(authentication.getClass()), messages.getMessage("ShibbolethAuthenticationProvider.onlySupports",
 	            "Only PrincipalAcegiUserToken is supported"));
