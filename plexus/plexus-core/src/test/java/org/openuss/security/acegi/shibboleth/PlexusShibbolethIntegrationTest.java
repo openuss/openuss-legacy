@@ -1,11 +1,5 @@
 package org.openuss.security.acegi.shibboleth;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.verify;
-
 import java.io.IOException;
 import java.util.TimeZone;
 
@@ -14,47 +8,30 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.AuthenticationManager;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.MockAuthenticationManager;
+import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.ui.AbstractProcessingFilter;
-import org.acegisecurity.ui.rememberme.RememberMeProcessingFilter;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.util.FilterChainProxy;
 import org.acegisecurity.util.PortResolverImpl;
 import org.hibernate.SessionFactory;
 import org.openuss.TestUtility;
-import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
-import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
-import org.openuss.messaging.MessageService;
-import org.openuss.migration.UserMigrationUtility;
-import org.openuss.migration.UserMigrationUtilityImpl;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
-import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
-
-import junit.framework.TestCase;
 
 public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
     private final String SHIBBOLETHUSERNAMEHEADERKEY = "SHIB_REMOTE_USER";
 	private final String SHIBBOLETHFIRSTNAMEHEADERKEY = "Shib-Person-givenname";
 	private final String SHIBBOLETHLASTNAMEHEADERKEY = "Shib-Person-sn";
 	private final String SHIBBOLETHEMAILHEADERKEY = "Shib-Person-mail";
-	private final String KEY = "shibboleth";
 	private final String DEFAULTDOMAINNAME = "wwu";
-	private final Long DEFAULTDOMAINID = 1006L;
-	private final String DEFAULTROLE = "ROLE_SHIBBOLETHUSER";
 	private final String USERNAME = "test";
 	private final String FIRSTNAME = "Joe";
 	private final String LASTNAME = "Sixpack";
@@ -74,60 +51,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	private final String SAVEDREQUESTKEY = AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY;
 	
 	private MockHttpServletRequest request;
-	private MockFilterConfig config;
 	private MockHttpServletResponse response;
-	
-//	private PlexusShibbolethAuthenticationProcessingFilter filter = new PlexusShibbolethAuthenticationProcessingFilter();
-//	private PlexusShibbolethAuthenticationProvider provider = new PlexusShibbolethAuthenticationProvider();
-//
-//	private PlexusShibbolethAuthenticationProcessingFilter filterWithoutMigration = new PlexusShibbolethAuthenticationProcessingFilter();
-//	private PlexusShibbolethAuthenticationProvider providerWithoutMigration = new PlexusShibbolethAuthenticationProvider();
-
-//	public void setUp() {
-//		SecurityContextHolder.clearContext();
-//		// Setup plexus shibboleth configuration
-////		filter.setAuthenticationManager(authenticationManager);
-//		filter.setKey(KEY);
-//		filter.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
-//		filter.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
-//		filter.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
-//		filter.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
-//		filter.setDefaultDomainId(DEFAULTDOMAINID);
-//		filter.setDefaultDomainName(DEFAULTDOMAINNAME);
-//		filter.setDefaultRole(DEFAULTROLE);
-//		filter.setOnlyProcessFilterProcessesUrlEnabled(false);
-//		filter.setProcessEachUrlEnabled(true);
-//		filter.setReturnAfterSuccessfulAuthentication(true);
-//		filter.setReturnAfterUnsuccessfulAuthentication(false);
-//		filter.setRedirectOnAuthenticationSuccessEnabled(true);
-//		filter.setRedirectOnAuthenticationFailureEnabled(false);
-//		filter.setUseRelativeContext(false);
-//		filter.setDefaultTargetUrl(DEFAULTTARGETURL);
-//		filter.setMigrationTargetUrl(MIGRATIONTARGETURL);
-//		filter.setAuthenticationFailureUrl("/nothing, filter is configured not to redirect on authentication failure.");
-//
-//
-////		filterWithoutMigration.setAuthenticationManager(authenticationManager);
-//		filterWithoutMigration.setKey(KEY);
-//		filterWithoutMigration.setShibbolethUsernameHeaderKey(SHIBBOLETHUSERNAMEHEADERKEY);
-//		filterWithoutMigration.setShibbolethFirstNameHeaderKey(SHIBBOLETHFIRSTNAMEHEADERKEY);
-//		filterWithoutMigration.setShibbolethLastNameHeaderKey(SHIBBOLETHLASTNAMEHEADERKEY);
-//		filterWithoutMigration.setShibbolethEmailHeaderKey(SHIBBOLETHEMAILHEADERKEY);
-//		filterWithoutMigration.setDefaultDomainId(DEFAULTDOMAINID);
-//		filterWithoutMigration.setDefaultDomainName(DEFAULTDOMAINNAME);
-//		filterWithoutMigration.setDefaultRole(DEFAULTROLE);
-//		filterWithoutMigration.setOnlyProcessFilterProcessesUrlEnabled(false);
-//		filterWithoutMigration.setProcessEachUrlEnabled(true);
-//		filterWithoutMigration.setReturnAfterSuccessfulAuthentication(false);
-//		filterWithoutMigration.setReturnAfterUnsuccessfulAuthentication(false);
-//		filterWithoutMigration.setRedirectOnAuthenticationSuccessEnabled(false);
-//		filterWithoutMigration.setRedirectOnAuthenticationFailureEnabled(false);
-//		filterWithoutMigration.setDefaultTargetUrl("/nothing, filter is configured not to redirect on authentication success.");
-//		filterWithoutMigration.setAuthenticationFailureUrl("/nothing, filter is configured not to redirect on authentication failure.");
-//
-//	}
-	// Tests for plexus configuration
-	
+	private SavedRequest savedRequest;
+		
 	protected SecurityService securityService;
 	protected SessionFactory sessionFactory;
 	protected TestUtility testUtility;
@@ -182,17 +108,22 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
     private void generateUnmigratedDisabledUser() {
 		securityService.createUser(createUserInfo());
 	}
-	
+    
+    private void generateUnmigratedDisabledUserNotFindableByEmail() {
+    	UserInfo user = createUserInfo();
+    	user.setEmail("acme@acme.org");
+		securityService.createUser(user);
+    }
+    
 	private void generateUnmigratedEnabledUser() {
 		UserInfo user = createUserInfo();
 		user.setEnabled(true);
 		securityService.createUser(user);
 	}
-	
-	private void generateMigratedDisabledUser() {
-		UserInfo user = createUserInfo();
-		securityService.createUser(user);
-		user = securityService.getUserByName(USERNAME);
+
+	private void generateMigratedDisabledUserNoReconcilationNecessary() {
+		securityService.createUser(createUserInfo());
+		UserInfo user = securityService.getUserByName(USERNAME);
 		user.setUsername(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME));
 		securityService.saveUser(user);
 	}
@@ -208,7 +139,6 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 
 	private void generateMigratedEnabledUserToBeReconciled() {
 		UserInfo user = createUserInfo();
-		user.setEmail("acme@acme.org");
 		user.setFirstName("John");
 		user.setLastName("Doe");
 		user.setEnabled(true);
@@ -264,6 +194,8 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 		assertTrue(user.isCentralUser());
 	}
 	
+	//~ Tests for OpenUSS Plexus configuration
+
     public void testShibbolethRequestHeadersNotPresent() throws Exception {
         chain.resetCount();
     	request = new MockHttpServletRequest();
@@ -416,27 +348,24 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 
     public void testSuccessfulAuthenticationWithoutReconciliationForEnabledMigratedUser() throws Exception {
     	generateMigratedEnabledUserNoReconcilationNecessary();
-//        chain.resetCount();
-//    	request = createMockRequest(SECUREDVIEWSURL);
-//    	response = new MockHttpServletResponse();
-//        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
-//        securityFilterChainProxy.doFilter(request, response, chain);
-//	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
-//	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-//	    assertEquals(0, chain.getCount());
-//    	response = new MockHttpServletResponse();
-//    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
-//        securityFilterChainProxy.doFilter(request, response, chain);
-//        assertNull(response.getRedirectedUrl());
-//	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-//	    assertEquals(1, chain.getCount());
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
 	    	    
     	request = createMockRequest(DEFAULTTARGETURL);
-    	SavedRequest savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
         request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
-        assertNotNull(request.getSession());
-        assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
-        assertEquals(SECUREDVIEWSURL, ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getServletPath());
         chain.resetCount();
     	response = new MockHttpServletResponse();
         // Test SECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
@@ -451,108 +380,575 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertEquals(1, chain.getCount());
 	    
-	    
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
 
-//	    
-//	    SecurityContextHolder.clearContext();
-//	    response = new MockHttpServletResponse();
-//        // Setup our HTTP request
-//    	request.getSession().setAttribute(AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY, makeSavedRequestForUrl());
-//	    // Setup our test object, to grant access and redirect migrated user to url within SavedRequest.
-//    	boolean alwaysUseDefaultTargetUrl = false;
-//    	filter.setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTargetUrl);
-//	    // Test
-//	    executeFilterInContainerSimulator(config, filter, request, response, chain);
-//	    assertEquals(makeSavedRequestForUrl().getFullRequestUrl(), response.getRedirectedUrl());
-//	    assertTrue(SecurityContextHolder.getContext().getAuthentication() instanceof UsernamePasswordAuthenticationToken);
-	    
-	    // Test for other URLs -> unsecured view, (un)secured rss
+	    request = createMockRequest(SECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
 
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
     }
     
     public void testSuccessfulAuthenticationWithReconciliationForEnabledMigratedUser() throws Exception {
     	generateMigratedEnabledUserToBeReconciled();
-    }
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
 
-/*
-    public void testSuccessfulAuthenticationWithoutRedirectButContinuedProcessingOfFilterChain() throws Exception {
-		
-	    // Setup not to return, but to continue chain.
-	    boolean returnAfterSuccessfulAuthentication = false;
-	    // Setup our expectation that the filter chain will be invoked.
-	    MockFilterChain chain = new MockFilterChain(!returnAfterSuccessfulAuthentication);
+	    rollback();
+	    generateMigratedEnabledUserToBeReconciled();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateMigratedEnabledUserToBeReconciled();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+    	generateMigratedEnabledUserToBeReconciled();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNull(response.getRedirectedUrl());
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(1, chain.getCount());
 	    
-	    // Setup our test object, to grant access
-	    filter.setFilterProcessesUrl("/j_mock_post");
-	    filter.setDefaultTargetUrl("/foobar");
-	    filter.setAuthenticationManager(new MockAuthenticationManager(true));
-	    filter.setReturnAfterSuccessfulAuthentication(returnAfterSuccessfulAuthentication);
-		filter.setRedirectOnAuthenticationSuccessEnabled(false);
-	    // Test
-	    executeFilterInContainerSimulator(config, filter, request, response, chain);
+	    rollback();
+    	generateMigratedEnabledUserToBeReconciled();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertNull(response.getRedirectedUrl());
-	    assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-	    assertTrue(SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails);
-	    ShibbolethUserDetails sud = (ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
-	    assertEquals(USERNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.USERNAME_KEY).get());
-	    assertEquals(FIRSTNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.FIRSTNAME_KEY).get());
-	    assertEquals(LASTNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.LASTNAME_KEY).get());
-	    assertEquals(EMAIL,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.EMAIL_KEY).get());
-	    assertEquals(DEFAULTDOMAINNAME,(String)sud.getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get());
-	    assertEquals(DEFAULTDOMAINID,(Long)sud.getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINID_KEY).get());
-	    assertEquals(1, chain.getCount());
-	}
-
-    public void testUnsuccessfulAuthenticationWithoutRedirectButContinuedProcessingOfFilterChain() throws Exception {
-	    // Setup not to return, but to continue chain.
-	    boolean returnAfterUnsuccessfulAuthentication = false;
-	    // Setup our expectation that the filter chain will be invoked.
-	    MockFilterChain chain = new MockFilterChain(!returnAfterUnsuccessfulAuthentication);
-	
-	    // Setup our test object, to grant access
-	    filter.setFilterProcessesUrl("/j_mock_post");
-	    filter.setDefaultTargetUrl("/foobar");
-	    filter.setAuthenticationManager(new MockAuthenticationManager(false));
-	    filter.setReturnAfterSuccessfulAuthentication(returnAfterUnsuccessfulAuthentication);
-		filter.setRedirectOnAuthenticationFailureEnabled(false);
-	    // Test
-	    executeFilterInContainerSimulator(config, filter, request, response, chain);
-	    assertNull(response.getRedirectedUrl());
-	    assertNull(SecurityContextHolder.getContext().getAuthentication());
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
 	    assertEquals(1, chain.getCount());
     }
- */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    
+    public void testSuccessfulAuthenticationWithAutomaticMigration() throws Exception {
+    	generateUnmigratedDisabledUser();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateUnmigratedDisabledUser();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateUnmigratedDisabledUser();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertTrue(((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).isEnabled());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+    	generateUnmigratedDisabledUser();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertNull(request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY));
+	    assertNotNull(response.getHeader("WWW-Authenticate"));
+	    assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
+	    assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+	    assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    assertFalse(((UserInfo)securityService.getUserByName(USERNAME)).isEnabled());
+        assertEquals(0, chain.getCount());	    
+
+        rollback();
+    	generateUnmigratedDisabledUser();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertNull(request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY));
+        assertNull(response.getHeader("WWW-Authenticate"));
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+	    assertFalse(((UserInfo)securityService.getUserByName(USERNAME)).isEnabled());
+        assertEquals(1, chain.getCount());	    
+    
+        rollback();
+    	generateUnmigratedEnabledUser();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(request.getContextPath()+DEFAULTTARGETURL, response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateUnmigratedEnabledUser();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateUnmigratedEnabledUser();
+        chain.resetCount();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(NOTSECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+    	response = new MockHttpServletResponse();
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, due to redirect to url of saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+	    assertEquals(savedRequest.getFullRequestUrl(), response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(SecurityDomainUtility.toUsername(DEFAULTDOMAINNAME, USERNAME))).getLastName());
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDVIEWSURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertEquals(1, chain.getCount());
+	    
+	    rollback();
+    	generateUnmigratedEnabledUser();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test SECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+        assertEquals(1, chain.getCount());	    
+
+        rollback();
+    	generateUnmigratedEnabledUser();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        chain.resetCount();
+    	response = new MockHttpServletResponse();
+    	// Test NOTSECUREDRSSFEEDURL. Application filter chain invoked.
+    	securityFilterChainProxy.doFilter(request, response, chain);
+	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
+	    assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));
+	    assertEquals(FIRSTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getFirstName());
+	    assertEquals(LASTNAME, ((UserInfo)securityService.getUserByName(USERNAME)).getLastName());
+        assertEquals(1, chain.getCount());	    
+    }    
+    
+    public void testSuccessfulAuthenticationAndRedirectToMigrationPage() throws Exception {
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
+        assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof PrincipalAcegiUserToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        // Simulate redirect.
+    	request.setServletPath(MIGRATIONTARGETURL);
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
+    	securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertEquals(1, chain.getCount());
+	    
+	    generateUnmigratedDisabledUserNotFindableByEmail();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
+        assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof PrincipalAcegiUserToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        // Simulate redirect.
+    	request.setServletPath(MIGRATIONTARGETURL);
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
+    	securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertEquals(1, chain.getCount());
+	    
+	    rollback();
+    	request = createMockRequest(DEFAULTTARGETURL);
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
+        assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof PrincipalAcegiUserToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        // Simulate redirect.
+    	request.setServletPath(MIGRATIONTARGETURL);
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
+    	securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertEquals(1, chain.getCount());
+
+	    rollback();
+	    generateUnmigratedDisabledUserNotFindableByEmail();
+    	savedRequest = makeSavedRequestForUrl(SECUREDVIEWSURL);
+        request.getSession().setAttribute(SAVEDREQUESTKEY, savedRequest);	    
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+    	response = new MockHttpServletResponse();
+        // Test DEFAULTTARGETURL. Application filter chain is not invoked, due to redirect to defaultTargetUrl, since there is no saved request.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(request.getContextPath()+MIGRATIONTARGETURL, response.getRedirectedUrl());
+        assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof PrincipalAcegiUserToken);
+	    assertEquals(0, chain.getCount());
+    	response = new MockHttpServletResponse();
+    	// Test DEFAULTTARGETURL. Application filter chain invoked, after redirect and with authentication present within security context.
+        // Simulate redirect.
+    	request.setServletPath(MIGRATIONTARGETURL);
+        request.setRequestURI(request.getContextPath()+request.getServletPath());
+    	securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+	    assertEquals(1, chain.getCount());
+    }
+    
+    public void testUnsuccessfulAuthenticationDueToLockedUserStatus() throws Exception {
+    	generateLockedUser();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(SCHEME+"://"+SERVERNAME+CONTEXTPATH+LOGINFORMURL, response.getRedirectedUrl());
+        assertEquals(request.getScheme()+"://"+request.getServerName()+request.getRequestURI(), ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getFullRequestUrl());
+        assertEquals(0, chain.getCount());
+        
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+        assertEquals(1, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDRSSFEEDURL. Application filter chain is not invoked. Basic Authentication is requested.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNotNull(response.getHeader("WWW-Authenticate"));
+        assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+        assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(0, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDRSSFEEDURL. Application filter chain is invoked, since access is granted.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getHeader("WWW-Authenticate"));
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(1, chain.getCount());                
+    }
+
+    public void testUnsuccessfulAuthenticationDueToAccountExpiredUserStatus() throws Exception {
+    	generateAccountExpiredUser();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(SCHEME+"://"+SERVERNAME+CONTEXTPATH+LOGINFORMURL, response.getRedirectedUrl());
+        assertEquals(request.getScheme()+"://"+request.getServerName()+request.getRequestURI(), ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getFullRequestUrl());
+        assertEquals(0, chain.getCount());
+        
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+        assertEquals(1, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDRSSFEEDURL. Application filter chain is not invoked. Basic Authentication is requested.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNotNull(response.getHeader("WWW-Authenticate"));
+        assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+        assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(0, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDRSSFEEDURL. Application filter chain is invoked, since access is granted.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getHeader("WWW-Authenticate"));
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(1, chain.getCount());                
+    }    
+
+    public void testUnsuccessfulAuthenticationDueToCredentialsExpiredUserStatus() throws Exception {
+    	generateCredentialsExpiredUser();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(SCHEME+"://"+SERVERNAME+CONTEXTPATH+LOGINFORMURL, response.getRedirectedUrl());
+        assertEquals(request.getScheme()+"://"+request.getServerName()+request.getRequestURI(), ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getFullRequestUrl());
+        assertEquals(0, chain.getCount());
+        
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+        assertEquals(1, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDRSSFEEDURL. Application filter chain is not invoked. Basic Authentication is requested.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNotNull(response.getHeader("WWW-Authenticate"));
+        assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+        assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(0, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDRSSFEEDURL. Application filter chain is invoked, since access is granted.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getHeader("WWW-Authenticate"));
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(1, chain.getCount());                
+    }
+
+    public void testUnsuccessfulAuthenticationDueToDisabledStatusOfMigratedUser() throws Exception {
+    	generateMigratedDisabledUserNoReconcilationNecessary();
+        chain.resetCount();
+    	request = createMockRequest(SECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertEquals(SCHEME+"://"+SERVERNAME+CONTEXTPATH+LOGINFORMURL, response.getRedirectedUrl());
+        assertEquals(request.getScheme()+"://"+request.getServerName()+request.getRequestURI(), ((SavedRequest)request.getSession().getAttribute(SAVEDREQUESTKEY)).getFullRequestUrl());
+        assertEquals(0, chain.getCount());
+        
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDVIEWSURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDVIEWSURL. Application filter chain is not invoked, since we redirect to login form url.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getRedirectedUrl());
+        assertEquals(1, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(SECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test SECUREDRSSFEEDURL. Application filter chain is not invoked. Basic Authentication is requested.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNotNull(response.getHeader("WWW-Authenticate"));
+        assertEquals("Full authentication is required to access this resource", response.getErrorMessage());
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+        assertNotNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(0, chain.getCount());
+
+        chain.resetCount();
+    	request = createMockRequest(NOTSECUREDRSSFEEDURL);
+        // Setup filter. Does not attempt authentication, due to request headers are not present. Continues with next filter instead.
+        response = new MockHttpServletResponse();     
+        // Test NOTSECUREDRSSFEEDURL. Application filter chain is invoked, since access is granted.
+        securityFilterChainProxy.doFilter(request, response, chain);
+        assertNull(response.getHeader("WWW-Authenticate"));
+        assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
+        assertEquals(1, chain.getCount());                
+    }    
+ 
+	protected void rollback() {
+		endTransaction();
+	    startNewTransaction();
+	}	
 	
 	protected void commit() {
 		setComplete();
-		endTransaction();
-		startNewTransaction();
+		rollback();
 	}
 	
 	protected void flush() {
@@ -572,7 +968,6 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 				"classpath*:testDataSource.xml",
 				"classpath*:testShibbolethSecurity.xml"};
 	}
-//	"classpath*:applicationContext-aop.xml",
 
 	//~ Inner Classes ==================================================================================================
 
@@ -582,10 +977,6 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 
         public MockFilterChain(boolean expectToProceed) {
             this.expectToProceed = expectToProceed;
-        }
-
-        private MockFilterChain() {
-            super();
         }
 
         public void doFilter(ServletRequest request, ServletResponse response)

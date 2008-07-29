@@ -128,7 +128,7 @@ public abstract class ShibbolethAuthenticationProvider extends AbstractUserDetai
 		    	user = retrieveUser(username, (PrincipalAcegiUserToken) authentication);
 	    	}
 	    }
-	    else if (!cacheWasUsed && isReconciliationEnabled()) {
+	    else if (!cacheWasUsed && isReconciliationEnabled() && isAlreadyMigrated(user, authentication)) {
 	    	 	// Only do reconciliation of centrally administered user details and locally saved ones, 
 	    		// if local user details came from user details service, to preserve user details being 
 	    		// updated with out-dated data from cache.

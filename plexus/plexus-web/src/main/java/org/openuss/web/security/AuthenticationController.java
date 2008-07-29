@@ -98,6 +98,7 @@ public class AuthenticationController extends BasePage {
 		final HttpServletRequest request = getRequest();
 		final HttpServletResponse response = getResponse();
 		final HttpSession session = getSession();
+		boolean userWasUpdated = false;
 		
 		// Delete domain information from username, so that users can enter domain information during login
 		username = SecurityDomainUtility.extractUsername(username);
@@ -124,7 +125,10 @@ public class AuthenticationController extends BasePage {
 					 * 3. Handle "local user".
 					 */
 					AuthenticationUtils.checkLocallyAllowanceToLogin(user);
-					userMigrationUtility.reconcile(user, centralUserData, false);
+					userWasUpdated = userMigrationUtility.reconcile(user, centralUserData, false);
+			    	if (userWasUpdated) {
+						user = securityService.getUserByName(centralUserData.getUsername());
+			    	}
 					// FIXME refactor to business layer
 					String[] authorities = securityService.getGrantedAuthorities(user);
 					auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));					
@@ -149,7 +153,10 @@ public class AuthenticationController extends BasePage {
 						 * 3. Handle "local user".
 						 */
 						AuthenticationUtils.checkLocallyAllowanceToLogin(user);
-						userMigrationUtility.reconcile(user, centralUserData, false);
+						userWasUpdated = userMigrationUtility.reconcile(user, centralUserData, false);
+				    	if (userWasUpdated) {
+							user = securityService.getUserByEmail(centralUserData.getEmail());
+				    	}
 						// FIXME refactor to business layer
 						String[] authorities = securityService.getGrantedAuthorities(user);
 						auth = AuthenticationUtils.createSuccessAuthentication(authRequest, new UserInfoDetailsAdapter(user, authorities));		
