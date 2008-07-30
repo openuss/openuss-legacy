@@ -32,7 +32,6 @@ import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationTrustResolver;
 import org.acegisecurity.AuthenticationTrustResolverImpl;
 import org.acegisecurity.InsufficientAuthenticationException;
-import org.acegisecurity.adapters.PrincipalAcegiUserToken;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.ui.AbstractProcessingFilter;
 import org.acegisecurity.ui.AccessDeniedHandler;
@@ -43,7 +42,6 @@ import org.acegisecurity.util.PortResolver;
 import org.acegisecurity.util.PortResolverImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
@@ -83,7 +81,6 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
 
     private AccessDeniedHandler accessDeniedHandler = new AccessDeniedHandlerImpl();
     private AuthenticationEntryPoint authenticationEntryPoint;
-    private AuthenticationEntryPoint migrationEntryPoint = null;
     private AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
     private PortResolver portResolver = new PortResolverImpl();
     private boolean createSessionAllowed = true;
@@ -110,7 +107,6 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
 
         try {
             chain.doFilter(request, response);
-            
             if (logger.isDebugEnabled()) {
                 logger.debug("Chain processed normally");
             }
@@ -165,23 +161,12 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
                 sendStartAuthentication(request, response, chain,
                     new InsufficientAuthenticationException("Full authentication is required to access this resource"));
             } else {
-            	// SendStartMigration, if migration is enabled and necessary.
-            	if (isMigrationEnabled() && hasToMigrate(request)) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Access is denied (user must migrate); redirecting to migration entry point",
-                            exception);
-                    }
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Access is denied (user is not anonymous); delegating to AccessDeniedHandler",
+                        exception);
+                }
 
-                    sendStartMigration(request, response, chain,
-                        new InsufficientAuthenticationException("User must migrate before accessing this resource"));
-            	} else {
-            		if (logger.isDebugEnabled()) {
-            			logger.debug("Access is denied (user is not anonymous); delegating to AccessDeniedHandler",
-            					exception);
-            		}
-            		
-            		accessDeniedHandler.handle(request, response, (AccessDeniedException) exception);            		
-            	}
+                accessDeniedHandler.handle(request, response, (AccessDeniedException) exception);
             }
         }
     }
@@ -222,38 +207,8 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
         // SEC-112: Clear the SecurityContextHolder's Authentication, as the
         // existing Authentication is no longer considered valid
         SecurityContextHolder.getContext().setAuthentication(null);
-        
-       	authenticationEntryPoint.commence(httpRequest, (HttpServletResponse) response, reason);
-       
-    }
-    
-    protected boolean isMigrationEnabled() {
-    	return (migrationEntryPoint!=null);
-    }
-    
-    protected boolean hasToMigrate(ServletRequest request) {
-    	return (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalAcegiUserToken && 
-			SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails);
-    }
-    
-    protected void sendStartMigration(ServletRequest request, ServletResponse response, FilterChain chain,
-        AuthenticationException reason) throws ServletException, IOException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        SavedRequest savedRequest = new SavedRequest(httpRequest, portResolver);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Migration entry point being called; SavedRequest added to Session: " + savedRequest);
-        }
-
-        if (createSessionAllowed) {
-            // Store the HTTP request itself. Used by AbstractProcessingFilter
-            // for redirection after successful authentication (SEC-29)
-            httpRequest.getSession().setAttribute(AbstractProcessingFilter.ACEGI_SAVED_REQUEST_KEY, savedRequest);
-        }
-        
-       	migrationEntryPoint.commence(httpRequest, (HttpServletResponse) response, reason);
-       
+        authenticationEntryPoint.commence(httpRequest, (HttpServletResponse) response, reason);
     }
 
     public void setAccessDeniedHandler(AccessDeniedHandler accessDeniedHandler) {
@@ -276,12 +231,4 @@ public class PlexusExceptionTranslationFilter implements Filter, InitializingBea
     public void setPortResolver(PortResolver portResolver) {
         this.portResolver = portResolver;
     }
-
-	public AuthenticationEntryPoint getMigrationEntryPoint() {
-		return migrationEntryPoint;
-	}
-
-	public void setMigrationEntryPoint(AuthenticationEntryPoint migrationEntryPoint) {
-		this.migrationEntryPoint = migrationEntryPoint;
-	}
 }
