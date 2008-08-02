@@ -32,28 +32,32 @@ import org.springframework.util.Assert;
 public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessingFilter {
 
 	/**
-	 * Key of the HTTP header attribute for a user's username.</br> 
+	 * Key of the HTTP header attribute for a user's username.</br>
+	 * Defaults to <i>Shib-Person-commonName</i>.</br> 
 	 * Must not be <code>null</code>.
 	 */
-	protected String shibbolethUsernameHeaderKey = "REMOTE_USER";
+	protected String shibbolethUsernameHeaderKey = "Shib-Person-commonName";
 	
 	/**
 	 * Key of the HTTP header attribute for a user's firstname.</br> 
+	 * Defaults to <i>Shib-InetOrgPerson-givenName</i>.</br>
 	 * Must not be <code>null</code>.
 	 */
-	protected String shibbolethFirstNameHeaderKey = "SHIB_FIRSTNAME";
+	protected String shibbolethFirstNameHeaderKey = "Shib-InetOrgPerson-givenName";
 	
 	/**
-	 * Key of the HTTP header attribute for a user's lastname.</br> 
+	 * Key of the HTTP header attribute for a user's lastname.</br>
+	 * Defaults to <i>Shib-Person-surname</i>.</br>
 	 * Must not be <code>null</code>.
 	 */
-	protected String shibbolethLastNameHeaderKey = "SHIB_LASTNAME";
+	protected String shibbolethLastNameHeaderKey = "Shib-Person-surname";
 	
 	/**
-	 * Key of the HTTP header attribute for a user's email address.</br> 
+	 * Key of the HTTP header attribute for a user's email address.</br>
+	 * Defaults to <i>Shib-InetOrgPerson-mail</i>.</br>
 	 * Must not be <code>null</code>.
 	 */
-	protected String shibbolethEmailHeaderKey = "SHIB_MAIL";;
+	protected String shibbolethEmailHeaderKey = "Shib-InetOrgPerson-mail";;
 	
 	/**
      * Indicates, which filter instance has generated the authentication request.</br> 
