@@ -33,10 +33,10 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 
 	/**
 	 * Key of the HTTP header attribute for a user's username.</br>
-	 * Defaults to <i>Shib-Person-commonName</i>.</br> 
+	 * Defaults to <i>Shib-TargetedID</i>.</br> 
 	 * Must not be <code>null</code>.
 	 */
-	protected String shibbolethUsernameHeaderKey = "Shib-Person-commonName";
+	protected String shibbolethUsernameHeaderKey = "Shib-TargetedID";
 	
 	/**
 	 * Key of the HTTP header attribute for a user's firstname.</br> 
