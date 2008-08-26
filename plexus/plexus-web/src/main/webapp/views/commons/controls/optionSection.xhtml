@@ -8,7 +8,7 @@
 	<o:block label="#{msg.controls_option_label}">
 		<h:form id="changeLanguageForm">
 			<s:authorize ifNotGranted="ROLE_USER">
-			    <h:outputLabel for="themeSelect" value="${msg.controls_language_label}" styleClass="field_label"/>
+			    <h:outputLabel for="languageSelect" value="${msg.controls_language_label}" styleClass="field_label"/>
 				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown_form" value="#{visit.locale}" onchange="this.form.submit();">
 				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
 				</h:selectOneListbox>
