@@ -7,6 +7,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import java.io.IOException;
 
 /**
  * Custom LabelRenderer component that adds asterisks for required fields. Based
@@ -21,7 +22,7 @@ public class LabelRenderer extends Renderer {
 		return false;
 	}
 
-	public void encodeBegin(FacesContext context, UIComponent component) throws java.io.IOException {
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
 		Map<String, String> attrs = component.getAttributes();
@@ -42,7 +43,7 @@ public class LabelRenderer extends Renderer {
 		writer.write(attrs.get("value"));
 	}
 
-	public void encodeEnd(FacesContext context, UIComponent component) throws java.io.IOException {
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
 		Map<String, String> attrs = component.getAttributes();
