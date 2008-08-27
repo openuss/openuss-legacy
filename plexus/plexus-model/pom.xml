@@ -84,7 +84,7 @@
 	<properties>
 		<andromda.config>andromda.xml</andromda.config>
 		<model.uri>
-			jar:file:${project.build.sourceDirectory}/plexus.xml.zip!/plexus.xml
+			jar:file:${project.basedir}/src/main/uml/plexus.xml.zip!/plexus.xml
 		</model.uri>
 		<filter></filter>
 		<validation>true</validation>
