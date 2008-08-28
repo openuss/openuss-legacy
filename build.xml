@@ -37,6 +37,7 @@
 		<delete verbose="true" includeemptydirs="true" failonerror="false">
 			<fileset dir=".">
 				<include name="**/andromda*.log"/>
+                <include name="**/andromda*.exc"/>
 			</fileset>
 		</delete>
 	</target>
