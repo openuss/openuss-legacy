@@ -146,7 +146,7 @@ public class LectureWebServiceIntegrationTest extends AbstractDependencyInjectio
 
 	private String unique(String str) {
 		return str + "-" + unique();
-	}
+	}	
 
 	protected String[] getConfigLocations() {
 			setAutowireMode(AUTOWIRE_BY_NAME);

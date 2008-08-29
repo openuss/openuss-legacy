@@ -14,7 +14,7 @@
 	</description>
 	<url>http://openuss.sf.net/plexus/</url>
 	<prerequisites>
-		<maven>2.0.7</maven>
+		<maven>2.0.9</maven>
 	</prerequisites>
 	<issueManagement>
 		<system>jira</system>
@@ -137,46 +137,6 @@
 					<artifactId>andromda-maven-plugin</artifactId>
 					<version>3.2</version>
 				</plugin>
-				<!-- 
-					<plugin>
-					<artifactId>maven-clover-plugin</artifactId>
-					<executions>
-					<execution>
-					<id>main</id>
-					<phase>verify</phase>
-					<goals>
-					<goal>instrument</goal>
-					<goal>aggregate</goal>
-					<goal>save-history</goal>
-					<goal>log</goal>
-					</goals>
-					</execution>
-					<execution>
-					<id>site</id>
-					<phase>pre-site</phase>
-					<goals>
-					<goal>instrument</goal>
-					<goal>aggregate</goal>
-					<goal>save-history</goal>
-					</goals>
-					</execution>
-					</executions>
-					<configuration>
-					<includesAllSourceRoots>
-					false
-					</includesAllSourceRoots>
-					<generateHistorical>true</generateHistorical>
-					<flushPolicy>threaded</flushPolicy>
-					<flushInterval>100</flushInterval>
-					<jdk>1.5</jdk>
-					<licenseLocation>http://teamopenuss.uni-muenster.de/downloads/clover.license</licenseLocation>
-					
-					<licenseLocation>
-					${clover.license}
-					</licenseLocation>
-					</configuration>
-					</plugin>
-				-->
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -271,10 +231,24 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
+                        <phase>package</phase>
 					</execution>
 				</executions>
 				<inherited>true</inherited>
 			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+                        <phase>package</phase>
+					</execution>
+				</executions>
+				<inherited>true</inherited>
+			</plugin>            
 		</plugins>
 	</build>
 	<modules>
@@ -303,55 +277,11 @@
 			</releases>
 		</repository>
 		<repository>
-			<id>apache.incubation.releases</id>
-			<name>Apache Incubating Release Distribution Repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository</url>
-		</repository>
-		<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
 			<layout>legacy</layout>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
 		</repository>		
-<!-- 
-		<repository>
-			<id>java-net</id>
-			<name>Java.Net</name>
-			<layout>legacy</layout>
-			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-		</repository>		
-			<repository>
-			<id>andromda</id>
-			<name>andromda</name>
-			<url>http://team.andromda.org/maven2</url>
-			<snapshots><enabled>false</enabled></snapshots>
-			<releases><enabled>true</enabled></releases>
-			</repository>
-			<repository>
-			<id>apache.snapshots</id>
-			<snapshots>	       <enabled>true</enabled>       </snapshots>
-			<name>Apache Snapshot Repository</name>
-			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
-			</repository>
-			<repository>
-			<releases>
-			<enabled>true</enabled>
-			</releases>
-			<id>myfaces.staging</id>
-			<name>MyFaces Staging Repository</name>
-			<url>http://myfaces.zones.apache.org/dist/maven-repository</url>
-			</repository>
-			<repository>
-			<id>myfaces-114-staging</id>
-			<name>Apache MyFaces Core 1.1.4 Staging Repository</name>
-			<url>http://people.apache.org/builds/myfaces/core-1.1.4/m2-staging-repository</url>
-			</repository>		
-			<repository>
-			<id>apache.snapshots</id>
-			<name>Apache Snapshot Repository</name>
-			<url>http://people.apache.org/maven-snapshot-repository</url>
-			</repository>		
-		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -370,33 +300,6 @@
 			<name>Apache Incubating Release Distribution Repository</name>
 			<url>http://people.apache.org/repo/m2-incubating-repository</url>
 		</pluginRepository>
-		<!--		
-		<pluginRepository>
-			<releases><enabled>true</enabled></releases>
-			<id>central</id>
-			<name>ibiblio</name>
-			<url>http://www.ibiblio.org/maven2</url>
-			</pluginRepository>
-			<pluginRepository>
-			<id>codehaus-plugins</id>
-			<name>codehaus-plugins</name>
-			<url>http://repository.codehaus.org/</url>
-			</pluginRepository>
-			<pluginRepository>
-			<id>andromda</id>
-			<name>andromda</name>
-			<url>http://team.andromda.org/maven2</url>
-			<snapshots><enabled>false</enabled></snapshots>
-			<releases><enabled>true</enabled></releases>
-			</pluginRepository>
-			<pluginRepository>
-			<id>apache-snapshots</id>
-			<name>Apache snapshots</name>
-			<url>
-			http://people.apache.org/maven-snapshot-repository/
-			</url>
-			</pluginRepository>
-		-->
 	</pluginRepositories>
 	<dependencies>
 		<dependency>
@@ -424,93 +327,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-<!--  
-	<reporting>
-		<plugins>
-			<plugin>
-				<artifactId>
-					maven-project-info-reports-plugin
-				</artifactId>
-			</plugin>
-			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-javadoc-plugin</artifactId>
-        		<configuration>
-          			<aggregate>true</aggregate>
- 					<reportSets>
-						<reportSet>
-							<id>html</id>
-							<configuration>
-								<minmemory>128</minmemory>
-								<maxmemory>384</maxmemory>
-								<charset>UTF-8</charset>
-								<sourcepath>
-									${project.build.directory}/src;${project.build.directory}/../src/main/java
-								</sourcepath>
-							</configuration>
-							<reports>
-								<report>javadoc</report>
-							</reports>
-						</reportSet>
-					</reportSets>
-		        </configuration>
-			</plugin>
--->
-			<!-- 
-			<plugin>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<configuration>
-					<showSuccess>false</showSuccess>
-					<outputDirectory>
-						${project.build.directory}/surefire-reports
-					</outputDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<configuration>
-					<outputDirectory>target/site</outputDirectory>
-					<threshold>Low</threshold>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>taglist-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<artifactId>maven-changes-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>jira-report</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-		</plugins>
-	</reporting>
--->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -531,7 +347,7 @@
 			<dependency>
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
-				<version>3.2</version>
+				<version>3.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
@@ -541,27 +357,27 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate</artifactId>
-				<version>3.2.5.ga</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.3</version>
+				<version>2.4</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>1.3.1</version>
+				<version>1.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.myfaces.core</groupId>
 				<artifactId>myfaces-api</artifactId>
-				<version>1.1.5</version>
+				<version>${myfaces.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.myfaces.core</groupId>
 				<artifactId>myfaces-impl</artifactId>
-				<version>1.1.5</version>
+				<version>${myfaces.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.myfaces.tomahawk</groupId>
@@ -736,7 +552,7 @@
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
-				<version>2.2.0</version>
+				<version>2.3.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.acegisecurity</groupId>
@@ -769,7 +585,7 @@
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
 				<artifactId>ehcache</artifactId>
-				<version>1.3.0</version>
+				<version>1.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>log4j</groupId>
@@ -779,14 +595,14 @@
 			<dependency>
 				<groupId>org.andromda.profiles.uml14</groupId>
 				<artifactId>andromda-profile</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<type>xml.zip</type>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda</groupId>
 				<artifactId>andromda-core</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<exclusions>
 					<exclusion>
 						<artifactId>xml-apis</artifactId>
@@ -809,41 +625,41 @@
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-translation-core</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-validation-library</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-spring-cartridge</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-hibernate-cartridge</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-jsf-cartridge</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.cartridges</groupId>
 				<artifactId>andromda-java-cartridge</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.andromda.translationlibraries</groupId>
 				<artifactId>andromda-ocl-query-library</artifactId>
-				<version>3.2</version>
+				<version>${andromda.version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
@@ -915,11 +731,6 @@
 				<groupId>ant</groupId>
 				<artifactId>ant</artifactId>
 				<version>1.6.5</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>aopalliance</groupId>
@@ -1004,7 +815,10 @@
 	<properties>
 		<shale.version>1.0.4</shale.version>
 		<spring.version>2.0.8</spring.version>
-		<cxf.version>2.0.4-incubator</cxf.version>
+		<cxf.version>2.0.8</cxf.version>
+        <myfaces.version>1.1.5</myfaces.version>
+        <hibernate.version>3.2.5.GA</hibernate.version>
+        <andromda.version>3.2</andromda.version>
 	<!--
 		<maven.andromda.loggingConfigurationUri>
 		${project.dir}/tools/config/log4j.xml

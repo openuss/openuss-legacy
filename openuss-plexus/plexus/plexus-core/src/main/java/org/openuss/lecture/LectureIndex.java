@@ -92,7 +92,11 @@ public class LectureIndex extends DomainIndexer implements RecreateLectureIndex 
 				} catch (IOException e) {
 					logger.error(e);
 				} finally {
-					lock.release();
+                    try {
+                        lock.release();
+                    } catch (IOException e) {
+                        logger.error(e);
+                    }
 				}
 			}
 		}		
