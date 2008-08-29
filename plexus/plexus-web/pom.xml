@@ -13,7 +13,7 @@
 	<artifactId>plexus-web</artifactId>
 	<name>Plexus - Web</name>
 	<packaging>war</packaging>
-
+    
 	<dependencies>
 		<dependency>
 			<groupId>org.openuss.themes</groupId>
