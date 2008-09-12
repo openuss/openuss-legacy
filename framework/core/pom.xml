@@ -10,7 +10,31 @@
 	<name>Framework - Core</name>
 	<packaging>jar</packaging>
 	<dependencies>
-		<dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+    	<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>
 		</dependency>
@@ -18,10 +42,12 @@
 			<groupId>org.apache.myfaces.tomahawk</groupId>
 			<artifactId>tomahawk</artifactId>
 		</dependency>
-		<dependency>
+<!--
+        <dependency>
 			<groupId>org.apache.shale</groupId>
 			<artifactId>shale-core</artifactId>
 		</dependency>
+-->        
 		<dependency>
 			<groupId>org.apache.shale</groupId>
 			<artifactId>shale-test</artifactId>
@@ -48,31 +74,37 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-hibernate3</artifactId>
 		</dependency>
+<!--        
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 		</dependency>
-		<dependency>
+        <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
-		<dependency>
+<!--
+        <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
+-->        
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 		</dependency>
+<!--        
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+-->        
 		<dependency>
 			<groupId>org.acegisecurity</groupId>
 			<artifactId>acegi-security</artifactId>
@@ -95,6 +127,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+<!--        
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -105,9 +138,12 @@
 			<artifactId>activation</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+-->
+<!--
+        <dependency>
 			<groupId>velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+-->        
 	</dependencies>
 </project>
