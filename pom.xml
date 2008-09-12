@@ -543,7 +543,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate</artifactId>
-				<version>3.2.6.ga</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
@@ -1038,5 +1038,6 @@
 		<shale.version>1.0.4</shale.version>
 		<spring.version>2.0.8</spring.version>
 		<cxf.version>2.0.4-incubator</cxf.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
 	</properties>
 </project>
