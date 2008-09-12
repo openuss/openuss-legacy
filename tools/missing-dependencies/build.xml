@@ -112,16 +112,6 @@
 			<arg value="-Dpackaging=jar"/>
 		</exec>
 	</target>
-	<target name="fck-faces">
-		<exec executable="${maven.executable}">
-			<arg value="install:install-file"/>
-			<arg value="-Dfile=./fck-faces/fck-faces-1.5.1.jar"/>
-			<arg value="-DgroupId=fck-faces"/>
-			<arg value="-DartifactId=fck-faces"/>
-			<arg value="-Dversion=1.5.1"/>
-			<arg value="-Dpackaging=jar"/>
-		</exec>
-	</target>
 	<target name="jenia4faces">
 		<exec executable="${maven.executable}">
 			<arg value="install:install-file"/>
