@@ -111,9 +111,9 @@ public class ImageUtils {
 	private static byte[] toByteArray(BufferedImage bufferedImage) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		MemoryCacheImageOutputStream mos = new MemoryCacheImageOutputStream(baos);
-		Iterator iter = ImageIO.getImageWritersByFormatName("JPG");
+		Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("JPG");
 		if (iter.hasNext()) {
-			ImageWriter writer = (ImageWriter) iter.next();
+			ImageWriter writer = iter.next();
 			writer.setOutput(mos);
 			writer.write(new IIOImage(bufferedImage, null, null));
 		}
@@ -217,9 +217,8 @@ public class ImageUtils {
 				throw new UnsupportedOperationException("PNG compression not implemented");
 			}
 
-			Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
-			ImageWriter writer;
-			writer = (ImageWriter) iter.next();
+			Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpg");
+			ImageWriter writer = iter.next();
 
 			ImageOutputStream ios = ImageIO.createImageOutputStream(new File(toFileName));
 			writer.setOutput(ios);
