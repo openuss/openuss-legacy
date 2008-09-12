@@ -138,8 +138,6 @@ public class BookmarkingAspectTest extends AbstractTransactionalDataSourceSpring
 				"classpath*:testDataSource.xml" };
 	}
 
-
-
 	public void setUniversityService(UniversityService universityService) {
 		this.universityService = universityService;
 	}
