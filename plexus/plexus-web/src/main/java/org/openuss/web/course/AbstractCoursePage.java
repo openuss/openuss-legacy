@@ -70,7 +70,7 @@ public class AbstractCoursePage extends BasePage {
 			redirect(Constants.FAILURE);
 			return;
 		} else {
-			if (courseInfo.getCourseTypeId()==null){
+			if (courseInfo.getCourseTypeId() == null){
 				courseInfo = getCourseService().findCourse(courseInfo.getId());
 			}
 			courseTypeInfo = courseTypeService.findCourseType(courseInfo.getCourseTypeId());
