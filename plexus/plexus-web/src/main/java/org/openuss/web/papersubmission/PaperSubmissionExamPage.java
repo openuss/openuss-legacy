@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIData;
+import javax.faces.event.ActionEvent;
 
 import org.apache.commons.collections.comparators.ComparatorChain;
 import org.apache.commons.lang.StringUtils;
@@ -246,7 +247,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		return Constants.SUCCESS;
 	}
 
-	public String addAttachment() throws IOException{
+	public void addAttachment(ActionEvent actionEvent) throws IOException{
 		LOGGER.debug("papersubmission attachment add");
 		if (examInfo.getAttachments() == null) {
 			examInfo.setAttachments(new ArrayList<FileInfo>());
@@ -258,10 +259,8 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 				examInfo.getAttachments().add(fileInfo);
 			} else {
 				addError(i18n("papersubmission_filename_already_exists"));
-				return Constants.FAILURE;
 			}
 		}
-		return Constants.SUCCESS;
 	}
 	
 	private boolean validFileName(String fileName) {
@@ -326,7 +325,6 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 		private DataPage<ExamInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 12:59
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				

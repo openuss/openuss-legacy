@@ -12,13 +12,12 @@
       xmlns:plexus="http://www.openuss.org/plexus/jsf">
       
     <h:form id="paperForm" enctype="multipart/form-data" rendered="#{views$secured$papersubmission$examlist.editing}">
-    
-        <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
-            	<o:input id="name" forceId="true" label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
+          <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
+            	<o:input id="name" label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
             
             	<h:outputText value="#{msg.papersubmission_exam_edit_description}" styleClass="field_label" />
                 <div class="content_iframe">
-                   <fck:editor value="#{examInfo.description}" id="textEditor" toolbarSet="Basic" maxlength="250" height="200">
+                   <fck:editor value="#{examInfo.description}" id="textEditor" toolbarSet="Basic" maxlength="250" height="200" >
                        <f:converter converterId="xssFilter"/>
                    </fck:editor>
                 </div>           
@@ -64,7 +63,7 @@
 					
 					<t:commandButton id="addAttachment" forceId="true" 
 						value="#{msg.papersubmission_exam_edit_add_attachment}"
-						action="#{views$secured$papersubmission$examlist.addAttachment}"
+						actionListener="#{views$secured$papersubmission$examlist.addAttachment}"
 						title="#{msg.papersubmission_exam_edit_add_attachment}"
 						immediate="true"
 						styleClass="button_add"/> 					
