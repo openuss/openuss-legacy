@@ -70,8 +70,8 @@ public class Pages {
 			}
 		}
 		
-		//	Uncomment this for debug the web layer - this enables to edit pages.xml without restart tomcat
-			instance = new Pages();
+		//	Uncomment this for debug the web layer - this enables to edit pages.xml without to restart tomcat
+		//	instance = new Pages();
 		
 		return instance;
 	}
@@ -113,6 +113,7 @@ public class Pages {
 	 * 
 	 * @param facesContext
 	 */
+	@SuppressWarnings("unchecked")
 	public void applyRequestParameterValues(FacesContext facesContext) {
 		String viewId = facesContext.getViewRoot().getViewId();
 		if (logger.isDebugEnabled()) {
@@ -171,6 +172,7 @@ public class Pages {
 	 * @param viewId the JSF view id
 	 * @return a map of page parameter name to String value
 	 */
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> getConvertedParameters(FacesContext facesContext, String viewId) {
 		return getConvertedParameters(facesContext, viewId, Collections.EMPTY_SET);
 	}
@@ -262,7 +264,6 @@ public class Pages {
 		try {
 			SAXReader saxReader = new SAXReader();
 			saxReader.setMergeAdjacentText(true);
-			// TODO should be switch on for validation!
 			saxReader.setValidation(false);
 			Document doc = saxReader.read(stream);
 			return doc.getRootElement();
@@ -275,6 +276,7 @@ public class Pages {
 	 * @param stream
 	 *            intputstream to a pages.xml file
 	 */
+	@SuppressWarnings("unchecked")
 	private void parse(InputStream stream) {
 		Element root = getDocumentRoot(stream);
 		List<Element> elements = root.elements("page");
@@ -318,6 +320,7 @@ public class Pages {
 		parseSecurityConstraints(element, page);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void parseSecurityConstraints(Element element, Page page) {
 		List<Element> elements = element.elements("securityConstraint");
 		for(Element constraintElement : elements) {
@@ -354,6 +357,7 @@ public class Pages {
 	 * qparam element page element
 	 * @param page object
 	 */
+	@SuppressWarnings("unchecked")
 	private void parseParameters(Element element, Page page) {
 		List<Element> elements = element.elements("parameter");
 		for (Element parameterElement : elements) {
