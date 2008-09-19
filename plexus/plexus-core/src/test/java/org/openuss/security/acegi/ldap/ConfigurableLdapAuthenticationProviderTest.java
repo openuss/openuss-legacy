@@ -461,8 +461,9 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 			fail();
 		verify(ldapConfigurationService);
 	}	
+
+	/*
 	public void testAuthenticationViaActiveDirectoryServerWithBadCredentials() {
-	
 		// Provide arbitrary username and password!
 		String username="tester";
 		String password="protected";
@@ -519,6 +520,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		}		
 		verify(ldapConfigurationService);
 	}
+	 */
 
 	public void testAuthenticationViaActiveDirectoryServerWithNoMappingInfo() {
 		
