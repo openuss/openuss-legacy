@@ -1106,3 +1106,9 @@ set changed_users.newemail =
 (select security_user.email
  from security_user
  where security_user.id = changed_users.id);
+
+--------------------------------------------------------------------------
+-- Add additional system properties                                     --
+--------------------------------------------------------------------------
+
+INSERT INTO SYSTEM_PROPERTY (ID, PROP_NAME, PROP_VALUE) VALUES (15, 'mail.smtp.auth', 'true');
