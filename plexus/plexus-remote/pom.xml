@@ -15,7 +15,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-codegen-plugin</artifactId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
 				<version>${cxf.version}</version>
 				<dependencies>
 					<dependency>
@@ -23,18 +23,23 @@
 						<artifactId>cxf-rt-frontend-jaxws</artifactId>
 						<version>${cxf.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-frontend-simple</artifactId>
+						<version>${cxf.version}</version>
+					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
-						<id>generate-wsdl</id>
-						<phase>process-classes</phase>
+						<id>generate-test-sources</id>
+						<phase>generate-test-sources</phase>
 						<configuration>
-							<className>
-								org.openuss.services.LectureWebService
-							</className>
+							<className>org.openuss.services.LectureWebService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
 						</configuration>
 						<goals>
-							<goal>java2wsdl</goal>
+							<goal>java2ws</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -106,6 +111,10 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 		</dependency>		
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+		</dependency>
 	</dependencies>
 	
 </project>

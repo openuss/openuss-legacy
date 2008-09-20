@@ -240,12 +240,12 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<scope>provided</scope>
+<!-- 			<scope>provided</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
-			<scope>provided</scope>
+<!-- 			<scope>provided</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>velocity</groupId>
