@@ -44,7 +44,9 @@ import org.fckfaces.util.Util;
 public class FCKServlet extends org.fckfaces.util.Servlet {
 
 	private static final long serialVersionUID = -945294405900760483L;
-	private static final String WIKI_PREFIX = "/FCKeditorWiki/";
+	private static final long lastModified = System.currentTimeMillis();
+	
+	private static final String WIKI_PREFIX = "/FCKEditorWiki/";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -80,23 +82,33 @@ public class FCKServlet extends org.fckfaces.util.Servlet {
         }
 	}
 
-	private void setHeaders(final String uri, final File file, 
-			final HttpServletResponse response) {
-		response.setHeader("Cache-Control", "public");
-        response.setHeader("Last-Modified", calcModify());
+	private void setHeaders(final String uri, final File file,	final HttpServletResponse response) {
+    	if (uri.endsWith(".jsf") || uri.endsWith(".html")) {
+        	response.setContentType("text/html;charset=UTF-8");
+        } else {
+            response.setHeader("Cache-Control", "public");
+            response.setHeader("Last-Modified", calcModify());
+        }
         
         if (uri.endsWith(".css")) {
-        	response.setContentType("text/css;");
+        	response.setContentType("text/css;charset=UTF-8");
         } else if (uri.endsWith(".js")) {
-        	response.setContentType("text/javascript;");
+        	response.setContentType("text/javascript;charset=UTF-8");
         } else if (uri.endsWith(".gif")) {
         	response.setContentType("image/gif;");
+        } else if (uri.endsWith(".xml")) {
+        	response.setContentType("text/xml;charset=UTF-8");
         }
         response.setContentLength((int) file.length());
 	}
+	
+	@Override
+	protected long getLastModified(HttpServletRequest req) {
+		return lastModified;
+	}
 
 	private static final String calcModify() {
-		Date mod = new Date();
+		Date mod = new Date(lastModified);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z",Locale.ENGLISH);
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 		return sdf.format(mod);
