@@ -15,7 +15,7 @@ public class UniversityServiceMock implements UniversityService {
 		return null;
 	}
 
-	public List findPeriodsByUniversityAndActivation(Long universityId,  boolean active) {
+	public List<Period> findPeriodsByUniversityAndActivation(Long universityId,  boolean active) {
 		return null;
 	}
 
@@ -27,7 +27,6 @@ public class UniversityServiceMock implements UniversityService {
 
 	@SuppressWarnings( { "unchecked" })
 	public java.util.List findUniversitiesByUser(Long userId) {
-		//TODO: Implement me!
 		return null;
 	}
 	
@@ -219,15 +218,15 @@ public class UniversityServiceMock implements UniversityService {
 		return periods;
 	}
 
-	public List findUniversitiesByMemberAndEnabled(Long userId, boolean enabled) {
+	public List<Period> findUniversitiesByMemberAndEnabled(Long userId, boolean enabled) {
 		return null;
 	}
 
-	public List findUniversitiesByTypeAndEnabled(UniversityType universityType, boolean enabled) {
+	public List<Period> findUniversitiesByTypeAndEnabled(UniversityType universityType, boolean enabled) {
 		return null;
 	}
 	
-	public List findPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
+	public List<Period> findPeriodsByInstituteWithCoursesOrActive(InstituteInfo instituteInfo) {
 		return null;
 	}
 	
@@ -241,7 +240,7 @@ public class UniversityServiceMock implements UniversityService {
 	public void setUniversityStatus(Long universityId, boolean status) {
 	}
 	
-	public List findPeriodsByUniversityWithCourses(Long universityId) {
+	public List<Period> findPeriodsByUniversityWithCourses(Long universityId) {
 		return null;
 	}
 	

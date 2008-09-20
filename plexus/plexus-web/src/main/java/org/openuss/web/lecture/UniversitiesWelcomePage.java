@@ -46,6 +46,7 @@ public class UniversitiesWelcomePage extends BasePage {
 	
 	private List<UniversityInfo> universities;
 	
+	@SuppressWarnings("unchecked")
 	public List<UniversityInfo> getUniversities() {
 		if (universities == null) {
 			universities = getUniversityService().findAllUniversities();

@@ -31,6 +31,7 @@ public class GlobalFeed extends AbstractFeed {
 	
 	private NewsController newsController;
 
+	@SuppressWarnings("unchecked")
 	private FeedWrapper buildFeedArray() {
 		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
 

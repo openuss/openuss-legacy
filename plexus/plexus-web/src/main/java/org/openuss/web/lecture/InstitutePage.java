@@ -106,6 +106,7 @@ public class InstitutePage extends AbstractLecturePage {
 		addBreadCrumbs();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkForApplicationMessage() {
 		// FIXME This should be done within the view. 
 		Boolean hasPermission = securityService.hasPermission(instituteInfo, new Integer[] { LectureAclEntry.INSTITUTE_ADMINISTRATION });

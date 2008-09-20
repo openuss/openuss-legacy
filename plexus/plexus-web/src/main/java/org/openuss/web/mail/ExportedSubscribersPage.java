@@ -19,7 +19,6 @@ public class ExportedSubscribersPage extends AbstractNewsletterPage {
 
 	private String subscribersComma;
 
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();

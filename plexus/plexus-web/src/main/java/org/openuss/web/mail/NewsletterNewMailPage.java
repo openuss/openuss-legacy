@@ -22,7 +22,6 @@ import org.openuss.web.Constants;
 @View
 public class NewsletterNewMailPage extends AbstractNewsletterPage{
 	
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();

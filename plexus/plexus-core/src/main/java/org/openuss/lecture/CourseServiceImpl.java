@@ -511,7 +511,6 @@ public class CourseServiceImpl extends CourseServiceBase {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleApplyUser(CourseInfo courseInfo, UserInfo userInfo) throws Exception {
 		handleApplyUser(courseInfo, userInfo, null);

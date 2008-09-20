@@ -131,6 +131,7 @@ public class MessageSendingCommand extends AbstractDomainCommand implements Doma
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Set<String> extractInvalidEMails(MailSendException mse) {
 		Set<String> invalidAddresses = new HashSet<String>();
 		for (SendFailedException sfe : (Collection<SendFailedException>) mse.getFailedMessages().values()) {

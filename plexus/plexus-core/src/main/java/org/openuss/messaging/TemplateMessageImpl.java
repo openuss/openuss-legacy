@@ -73,7 +73,7 @@ public class TemplateMessageImpl extends TemplateMessageBase implements Template
 	}
 
 	@Override
-	public Map getParameterMap() {
+	public Map<String, String> getParameterMap() {
 		Map<String, String> params = new HashMap<String, String>();
 		for (TemplateParameter param : getParameters()) {
 			params.put(param.getName(), param.getValue());

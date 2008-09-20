@@ -25,7 +25,6 @@ public class NewsletterSubscribersPage extends AbstractNewsletterPage{
 	
 	private SubscriberDataProvider data = new SubscriberDataProvider();
 	
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {	
 		super.prerender();

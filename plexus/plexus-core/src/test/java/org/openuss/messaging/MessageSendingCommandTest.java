@@ -48,7 +48,7 @@ public class MessageSendingCommandTest extends AbstractDependencyInjectionSpring
 		message.setTemplate("password");
 		message.setSenderName("OPENUSS-PLEXUS-UNIT-TEST");
 		message.addParameter("username", ">username<");
-		message.addParameter("link",">link<");
+		message.addParameter("passwordresetlink",">link<");
 		job.setMessage(message);
 		createRecipients(job);
 		return job;
