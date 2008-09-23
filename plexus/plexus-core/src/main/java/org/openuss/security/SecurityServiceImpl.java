@@ -189,12 +189,17 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		if (securityContext != null && authority instanceof UserImpl) {
 			Authentication auth = securityContext.getAuthentication();
-			if (auth != null && ObjectUtils.equals(auth.getPrincipal(), authority)) {
-				logger.debug("refresing current user security context.");
-				final UsernamePasswordAuthenticationToken authentication;
-				authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(),
-						"[Protected]", ((UserImpl) authority).getAuthorities());
-				securityContext.setAuthentication(authentication);
+			if (auth != null) {
+				Object principal = auth.getPrincipal();
+				if (principal instanceof String && StringUtils.equals((String) principal, authority.getName()) || ObjectUtils.equals(principal, authority)) {
+					logger.debug("refresing current user security context.");
+					System.out.println("User"+authority.getName());
+					final UsernamePasswordAuthenticationToken authentication;
+					authentication = new UsernamePasswordAuthenticationToken(((UserImpl) authority).getUsername(), "[Protected]", ((UserImpl) authority).getAuthorities());
+					securityContext.setAuthentication(authentication);
+				} else {
+					logger.debug("not refreshing user security!");
+				}
 			}
 		}
 	}
@@ -215,6 +220,7 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		return group;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkInheritanceConstraints(Authority authority, Group group) {
 		Set grantedGroups = group.getGrantedGroups();
 		if (grantedGroups.contains(authority)) {
