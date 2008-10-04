@@ -67,7 +67,7 @@ public class ConversationUtil {
 
 		String url = facesContext.getApplication().getViewHandler().getActionURL(facesContext, viewId);
 		if (parameters != null) {
-			logger.debug("Try to encodee "+url);
+			logger.debug("Try to encode "+url);
 			url = ConversationUtil.encodeParameters(url, parameters);
 			logger.debug(url);
 			if (url.length() > 1024) {
