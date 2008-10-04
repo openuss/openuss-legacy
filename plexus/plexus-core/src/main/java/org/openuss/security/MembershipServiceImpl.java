@@ -247,5 +247,4 @@ public class MembershipServiceImpl extends MembershipServiceBase {
 			membership.setMembers(new ArrayList<User>());
 		}
 	}
-
 }

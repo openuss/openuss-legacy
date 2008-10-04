@@ -11,8 +11,8 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
-				/**=httpSessionContextIntegrationFilter, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, authenticationAwareRequestFilter, filterInvocationInterceptor
+				/views/**=httpSessionContextIntegrationFilter, authenticationProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, shibbolethProcessingFilter, anonymousProcessingFilter, formExceptionTranslationFilter, filterInvocationInterceptor
+				/**=httpSessionContextIntegrationFilter, shibbolethProcessingFilterWithoutMigration, basicProcessingFilter, contextHolderAwareRequestFilter, rememberMeProcessingFilter, anonymousProcessingFilter, basicExceptionTranslationFilter, filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -21,10 +21,12 @@
 		Filter
        - - - - - - - - - - - - - - - - - - - -->
        
+    <!-- ATTENTION! Causes dependency between plexus-core and plexus-web. Therefore it is commented out and not used within filter chain for tests.
     <bean id="authenticationAwareRequestFilter" class="org.openuss.web.security.AuthenticationAwareRequestFilter">
 		<property name="securityService" ref="securityService"/>
 		<property name="desktopService2" ref="desktopService2"/>
     </bean>
+    -->
 		
 	<bean id="logFilter" class="org.openuss.framework.web.LogFilter"/>	
 
@@ -32,21 +34,24 @@
 		class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
 	</bean>
 
-<!--	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">-->
-	<bean id="authenticationProcessingFilter" class="org.openuss.web.security.PlexusAuthenticationProcessingFilter">
+	<!-- ATTENTION! Usage of PlexusAuthenticationProcessingFilter causes dependency between plexus-core and plexus-web. Due to PlexusAuthenticationProcessingFilter is not important, we use Acegi class instead for testing. -->
+	<!-- <bean id="authenticationProcessingFilter" class="org.openuss.web.security.PlexusAuthenticationProcessingFilter"> -->
+	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="defaultTargetUrl" value="/views/public/login/login.faces"/>
 		<property name="authenticationFailureUrl" value="/views/public/login/login.faces?error=true"/>
-		<property name="securityService" ref="securityService"/>
-		<property name="onlineStatisticService" ref="onlineStatisticService"/>
+		<!-- <property name="securityService" ref="securityService"/>
+		<property name="onlineStatisticService" ref="onlineStatisticService"/> -->
 		<property name="filterProcessesUrl" value="/views/acegi_security_check.faces"/>
 	</bean>
 
-	<bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter">
+	<!-- ATTENTION! Usage of PlexusBasicProcessingFilter causes dependency between plexus-core and plexus-web. Due to PlexusBasicProcessingFilter is not important, we use Acegi class instead for testing. -->
+	<!-- <bean id="basicProcessingFilter" class="org.openuss.web.security.PlexusBasicProcessingFilter"> -->
+	<bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="authenticationEntryPoint" ref="basicProcessingFilterEntryPoint"/>
 		<property name="ignoreFailure" value="false"/>
-		<property name="securityService" ref="securityService"/>
+		<!-- <property name="securityService" ref="securityService"/> -->
 	</bean>
 	
 	<bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">

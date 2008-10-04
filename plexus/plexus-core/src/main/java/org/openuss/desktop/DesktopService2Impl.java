@@ -1206,5 +1206,4 @@ public class DesktopService2Impl extends DesktopService2Base {
 			
 		}
 	}
-
 }

@@ -89,7 +89,7 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapPage
 
 	
 	public void processValueChange(ValueChangeEvent valueChangeEvent) {
-		ArrayList selectedIds = (ArrayList)valueChangeEvent.getNewValue();
+		List<?> selectedIds = (List<?>)valueChangeEvent.getNewValue();
 		attributeMappingInfo.setRoleAttributeKeyIds(selectedIds);
 	}				
 

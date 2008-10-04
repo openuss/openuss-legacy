@@ -24,7 +24,6 @@ public class BrainContestTopListPage extends AbstractBrainContestPage {
 
 	private BrainContestTopListDataProvider data = new BrainContestTopListDataProvider();
 
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();

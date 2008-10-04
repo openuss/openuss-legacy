@@ -552,7 +552,6 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 		
 		private DataPage<DomainResult> page; 
 		
-		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<DomainResult> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

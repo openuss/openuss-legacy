@@ -135,7 +135,6 @@ private static final Logger logger = Logger.getLogger(DiscussionSearchPage.class
 		
 		private DataPage<DiscussionSearchDomainResult> page; 
 		
-		@SuppressWarnings("unchecked")
 		@Override 
 		public DataPage<DiscussionSearchDomainResult> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

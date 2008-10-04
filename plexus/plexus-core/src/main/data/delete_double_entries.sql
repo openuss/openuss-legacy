@@ -1,3 +1,9 @@
+--
+-- For DB Version 3.0
+--
+-- Deletes all double entries that shouldn't exisits
+--
+
 create procedure delete_double_forumwatch
 as
 declare variable userId bigint;

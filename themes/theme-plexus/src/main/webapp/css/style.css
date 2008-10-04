@@ -2415,6 +2415,11 @@ a:hover {
 	color:#2C5885 !important;	
 }
 
+#left p.content_font_normal a, #left span.content_font_normal a {
+	color:#2C5885;
+	text-decoration: none;
+}
+
 div.inline_buttons {
 	padding-top: 0.5em;
 	padding-left: 10px;

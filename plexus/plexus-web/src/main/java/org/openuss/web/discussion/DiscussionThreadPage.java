@@ -34,7 +34,6 @@ public class DiscussionThreadPage extends AbstractDiscussionPage {
 
 	public boolean topicReadOnly;
 
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();

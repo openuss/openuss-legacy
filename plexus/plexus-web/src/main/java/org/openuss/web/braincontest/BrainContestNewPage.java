@@ -37,7 +37,6 @@ public class BrainContestNewPage extends AbstractBrainContestPage {
 	
 	private UIData attachmentList;
 
-	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception { // NOPMD idueppe
 		super.prerender();

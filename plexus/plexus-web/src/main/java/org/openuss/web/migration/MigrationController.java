@@ -28,12 +28,15 @@ import org.acegisecurity.ui.WebAuthenticationDetails;
 import org.acegisecurity.ui.rememberme.RememberMeServices;
 import org.acegisecurity.ui.savedrequest.SavedRequest;
 import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
+import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
+import org.openuss.migration.CentralUserData;
+import org.openuss.migration.UserMigrationUtility;
 import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.SecurityService;
 import org.openuss.security.UserInfo;
@@ -71,9 +74,6 @@ public class MigrationController extends BasePage {
 	
 	@Property(value="#{daoAuthenticationProvider}")
 	private AuthenticationProvider daoAuthenticationProvider;
-	
-	@Property(value="#{migrationUtility}")
-	transient private MigrationUtility migrationUtility;
 
 	@Property(value="#{saltSource}")
 	transient private ReflectionSaltSource saltSource;
@@ -81,6 +81,8 @@ public class MigrationController extends BasePage {
 	@Property(value="#{passwordEncoder}")
 	transient private Md5PasswordEncoder passwordEncoder;
 	
+	@Property(value="#{userMigrationUtility}")
+	transient private UserMigrationUtility userMigrationUtility;
 	
 	Authentication oldCentralAuthentication;
 	
@@ -113,8 +115,19 @@ public class MigrationController extends BasePage {
 		username = SecurityDomainUtility.extractUsername(username);
 		
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-
-		authRequest.setDetails(new WebAuthenticationDetails(request));
+		
+		// Set details for authentication request. Preserve existing user details!
+		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
+		if (details instanceof UserDetails) {
+			authRequest.setDetails(details);
+		} else {
+			authRequest.setDetails(new WebAuthenticationDetails(request));
+		}
+		
+//		// Set details for authentication request. Preserve existing user details!
+//		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+//		authRequest.setDetails(userDetails!=null? userDetails : new WebAuthenticationDetails(request));
+		
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
 		try {
@@ -122,8 +135,13 @@ public class MigrationController extends BasePage {
 			auth = authenticationManager.authenticate(authRequest);
 			
 			// Successful authentication -> Migrate user profile
-			migrationUtility.migrate((UserInfo)auth.getPrincipal(), auth);
-			
+			userMigrationUtility.migrate((UserInfo)auth.getPrincipal(), centralUserData);
+			// Reload user
+			UserInfo user = securityService.getUser(((UserInfo)auth.getPrincipal()).getId());
+			String[] authorities = securityService.getGrantedAuthorities(user); 
+			auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, authorities));
+			// Set session bean here, so that i18n gets correct locale for user.
+			setSessionBean(Constants.USER_SESSION_KEY, user);
 			addMessage(i18n("migration_done_by_local_login", centralUserData.getAuthenticationDomainName()));		
 			// Handle local user
 			if (auth.getPrincipal() instanceof UserInfo) {
@@ -154,14 +172,18 @@ public class MigrationController extends BasePage {
 			    * Without checking the password ANY disabled profile could be hijacked by ANY authenticated central user, who has no profile yet.
 			    * So we have to check the password on our own. Alternatively we could revoke central authentication and redirect to activation request page.
 			    */
-				UserInfoDetailsAdapter user = new UserInfoDetailsAdapter(securityService.getUserByName(username),null);
+				UserInfoDetailsAdapter userInfoDetailsAdapter = new UserInfoDetailsAdapter(securityService.getUserByName(username),null);
 				String presentedPassword = authRequest.getCredentials() == null ? "" : authRequest.getCredentials().toString();
 				
-				if (passwordEncoder.isPasswordValid(user.getPassword(), presentedPassword, saltSource.getSalt(user))) {
-				   user.setEnabled(true);
-				   auth = AuthenticationUtils.createSuccessAuthentication(authRequest, user);
+				if (passwordEncoder.isPasswordValid(userInfoDetailsAdapter.getPassword(), presentedPassword, saltSource.getSalt(userInfoDetailsAdapter))) {
+				   userInfoDetailsAdapter.setEnabled(true);
+				   auth = AuthenticationUtils.createSuccessAuthentication(authRequest, userInfoDetailsAdapter);
 				   // FIXME Ugly - Put in a UserInforDetailsAdapter 
-				   migrationUtility.migrate(user, auth);
+				   userMigrationUtility.migrate(userInfoDetailsAdapter, centralUserData);
+    			   // Reload user
+				   UserInfo user = securityService.getUser(userInfoDetailsAdapter.getId());
+				   auth = AuthenticationUtils.createSuccessAuthentication(auth, new UserInfoDetailsAdapter(user, securityService.getGrantedAuthorities(user)));
+				   
 				   // Set session bean here, so that i18n gets correct locale for user.
 				   setSessionBean(Constants.USER_SESSION_KEY, user);
 				   
@@ -290,12 +312,13 @@ public class MigrationController extends BasePage {
 		providers.add(daoAuthenticationProvider);
 		authenticationManager.setProviders(providers);
 	}
-	public MigrationUtility getMigrationUtility() {
-		return migrationUtility;
+
+	public UserMigrationUtility getUserMigrationUtility() {
+		return userMigrationUtility;
 	}
-	public void setMigrationUtility(MigrationUtility migrationUtility) {
-		this.migrationUtility = migrationUtility;
-	}
+	public void setUserMigrationUtility(UserMigrationUtility userMigrationUtility) {
+		this.userMigrationUtility = userMigrationUtility;
+	}	
 	public RememberMeServices getRememberMeServices() {
 		return rememberMeServices;
 	}
@@ -319,5 +342,5 @@ public class MigrationController extends BasePage {
 	}
 	public void setPasswordEncoder(Md5PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
-	}	
+	}
 }

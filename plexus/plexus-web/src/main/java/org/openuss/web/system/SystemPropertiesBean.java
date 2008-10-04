@@ -58,6 +58,10 @@ public class SystemPropertiesBean {
 		}
 	}
 	
+	public String getSHIBBOLETH_START_AUTH_URL() { //NOPMD
+		return value(SystemProperties.SHIBBOLETH_START_AUTH_URL);
+	}
+	
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
 	}

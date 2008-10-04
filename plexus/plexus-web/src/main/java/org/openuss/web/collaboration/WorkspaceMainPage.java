@@ -52,7 +52,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
+	@SuppressWarnings( { }) // NOPMD by Administrator on 13.03.08 13:02
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:54
 		super.prerender();
 		
@@ -102,9 +102,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
-	public String editWorkspace() throws LectureException { // NOPMD by Administrator on 13.03.08 12:55
-		workspaceInfo = currentWorkspace();
+	public String editWorkspace() throws LectureException { // NOPMD by Administrator on 13.03.08 12:55		workspaceInfo = currentWorkspace();
 		if (workspaceInfo == null) {
 			return Constants.FAILURE;
 		}
@@ -139,8 +137,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * 
 	 * @return outcome
 	 */
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
-	public String saveWorkspace() throws DesktopException, LectureException { // NOPMD by Administrator on 13.03.08 12:55
+	public String saveWorkspace() throws DesktopException, LectureException { 
 		LOGGER.debug("Starting method saveWorkspace()");
 		boolean create;
 		if (workspaceInfo.getId() == null) {
@@ -269,7 +266,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
 
-	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
 	protected List<UserInfo> loadCourseMembers() {
 		final Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
 		
@@ -338,7 +334,6 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		private DataPage<UserInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
 		public DataPage<UserInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<UserInfo> courseMembers = loadCourseMembers();

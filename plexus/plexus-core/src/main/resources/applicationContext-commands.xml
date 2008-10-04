@@ -74,5 +74,4 @@
 		<property name="newsletterService" ref="newsletterService"/>
 	</bean>
 
-
 </beans>

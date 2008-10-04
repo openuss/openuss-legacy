@@ -513,5 +513,4 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 			getInstituteDao().update(institute);
 		}
 	}
-
 }

@@ -76,7 +76,7 @@ public class RegistrationController extends BaseBean {
 			addError(i18n("message_error_cannot_perform_registration"));
 			return "failure";
 		}
-		// set default user time zone
+		// FIXME set default user time zone
 		user.setTimezone(TimeZone.getDefault().getID());
 
 		registrationService.registrateUser(user);

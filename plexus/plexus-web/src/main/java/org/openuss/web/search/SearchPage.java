@@ -100,7 +100,6 @@ public class SearchPage extends BasePage {
 
 		private DataPage<DomainResult> page;
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<DomainResult> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

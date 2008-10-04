@@ -105,16 +105,6 @@ public class MyUniPage extends BasePage {
 		logger.debug("Prerender MyUni-Page");
 		prerenderCalled = true;
 		
-		logger.debug("PrerenderMaxseverity: " + getFacesContext().getMaximumSeverity());
-		logger.debug("PrerenderMessages: " + getFacesContext().getMessages().hasNext());
-		for (Iterator i = getFacesContext().getMessages(); i.hasNext();  ){
-			logger.debug("PrerenderMessage: " + i.next());
-		}
-		logger.debug("PrerenderMessagesNull: " + getFacesContext().getMessages(null).hasNext());
-		for (Iterator i = getFacesContext().getMessages(null); i.hasNext();  ){
-			logger.debug("PrerenderMessageNull: " + i.next());
-		}
-		
 		// Load paramenters from request
 		loadParams();
 		// Remove bookmarks
@@ -203,7 +193,7 @@ public class MyUniPage extends BasePage {
 	 * Removes bookmarks if the corresponding parameters are set
 	 */
 	private void removeBookmarks() {
-		if (user != null && desktopService2 != null) {
+		if (user != null && user.getId() != null && desktopService2 != null) {
 			Long desktopId = null;
 
 			// Get the desktop id
@@ -705,8 +695,7 @@ public class MyUniPage extends BasePage {
 		departmentsList.getAttributes().put("title", i18n("flexlist_departments"));
 		departmentsList.getAttributes().put("showButtonTitle", i18n("flexlist_more_departments"));
 		departmentsList.getAttributes().put("hideButtonTitle", i18n("flexlist_less_departments"));
-		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle",
-				i18n("flexlist_remove_bookmark"));
+		departmentsList.getAttributes().put("alternateRemoveBookmarkLinkTitle", i18n("flexlist_remove_bookmark"));
 
 		// Load values into the component
 		loadValuesForDepartmentList(departmentsList);

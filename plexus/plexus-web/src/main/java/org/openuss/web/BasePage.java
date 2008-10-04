@@ -3,6 +3,9 @@ package org.openuss.web;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.naming.NamingException;
+
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.view.Preprocess;
@@ -10,7 +13,10 @@ import org.apache.shale.tiger.view.Prerender;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
 import org.openuss.desktop.DesktopService2;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetails;
+import org.openuss.framework.web.acegi.shibboleth.ShibbolethUserDetailsImpl;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.security.SecurityDomainUtility;
 import org.openuss.security.UserInfo;
 
 /**
@@ -49,9 +55,25 @@ public abstract class BasePage extends BaseBean {
 	
 	@Prerender
 	public void prerender() throws Exception {
+		addMessageForAutomaticallyMigratedShibbolethUsers();
 		refreshDesktop();
 	}
 
+	protected void addMessageForAutomaticallyMigratedShibbolethUsers() {
+		if (SecurityContextHolder.getContext().getAuthentication().getDetails() instanceof ShibbolethUserDetails) {
+			try {
+				if ((((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(SecurityDomainUtility.USER_MIGRATION_INDICATOR_KEY) !=null)) {
+					addMessage(i18n("migration_done_by_email_hint",(String)((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY).get()));
+					// Remove marker attribute
+					((ShibbolethUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().remove(ShibbolethUserDetailsImpl.AUTHENTICATIONDOMAINNAME_KEY);
+				}
+			} catch (NamingException e) {
+				// do nothing, due to user was not migrated automatically.
+			}
+				
+		}
+	}
+	
 	protected void refreshDesktop() {
 		if (user != null && user.getId() != null) {
 			logger.debug("refrehsing desktop object");

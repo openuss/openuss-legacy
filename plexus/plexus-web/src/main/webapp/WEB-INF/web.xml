@@ -267,7 +267,7 @@
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - -
 	   Shale Filter
-	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	- - - - - - - - - - - - - - - - - - - - - - - -->
 	<filter>
 		<filter-name>shale</filter-name>
 		<filter-class>org.apache.shale.application.faces.ShaleApplicationFilter</filter-class>

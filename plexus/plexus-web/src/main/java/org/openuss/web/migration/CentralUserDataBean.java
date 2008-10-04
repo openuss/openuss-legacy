@@ -8,6 +8,7 @@ import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.framework.web.jsf.controller.BaseBean;
+import org.openuss.migration.CentralUserData;
 
 /**
  * Stores information about a centrally authenticated user. 
@@ -16,7 +17,7 @@ import org.openuss.framework.web.jsf.controller.BaseBean;
  */
 @Bean(name = "centralUserData", scope = Scope.SESSION)
 @View
-public class CentralUserData extends BaseBean {
+public class CentralUserDataBean extends BaseBean implements CentralUserData {
 
 	private String username;
 	private String firstName;
@@ -48,41 +49,77 @@ public class CentralUserData extends BaseBean {
 		this.userAgreementAccepted = userAgreementAccepted;
 	}	
 	
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getUsername()
+	 */
 	public String getUsername() {
 		return username;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setUsername(java.lang.String)
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getFirstName()
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setFirstName(java.lang.String)
+	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getLastName()
+	 */
 	public String getLastName() {
 		return lastName;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setLastName(java.lang.String)
+	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getEmail()
+	 */
 	public String getEmail() {
 		return email;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setEmail(java.lang.String)
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getAuthenticationDomainId()
+	 */
 	public Long getAuthenticationDomainId() {
 		return authenticationDomainId;
 	}
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setAuthenticationDomainId(java.lang.Long)
+	 */
 	public void setAuthenticationDomainId(Long authenticationDomainId) {
 		this.authenticationDomainId = authenticationDomainId;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#getAuthenticationDomainName()
+	 */
 	public String getAuthenticationDomainName() {
 		return authenticationDomainName;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.openuss.web.migration.CentralUserData#setAuthenticationDomainName(java.lang.String)
+	 */
 	public void setAuthenticationDomainName(String authenticationDomainName) {
 		this.authenticationDomainName = authenticationDomainName;
 	}	

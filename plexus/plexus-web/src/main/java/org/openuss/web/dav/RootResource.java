@@ -83,7 +83,6 @@ public class RootResource extends AbstractOrganisationResource {
 	/* (non-Javadoc)
 	 * @see org.openuss.web.dav.SimpleWebDAVResource#getRawChildNames()
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Map<Long, String> getRawChildNames() {
 		Map<Long,String> resMap = new HashMap<Long, String>();

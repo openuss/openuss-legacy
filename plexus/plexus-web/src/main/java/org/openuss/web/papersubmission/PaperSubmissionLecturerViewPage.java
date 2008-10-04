@@ -177,7 +177,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		private DataPage<FolderEntryInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:01
+		@SuppressWarnings( { }) // NOPMD by Administrator on 13.03.08 13:01
 		public DataPage<FolderEntryInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 							

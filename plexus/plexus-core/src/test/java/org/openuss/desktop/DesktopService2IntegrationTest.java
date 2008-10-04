@@ -592,7 +592,6 @@ public class DesktopService2IntegrationTest extends DesktopService2IntegrationTe
 		logger.info("----> END access to findLinkedCoursesByUserAndUniversity(userId, universityId) test");
 	}
 	
-
 	public void testUnlinkAllFromUniversity() throws Exception {
 		logger.info("----> BEGIN access to unlinkAllFromUniversity test");
 

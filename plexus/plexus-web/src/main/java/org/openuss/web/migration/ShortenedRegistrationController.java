@@ -27,6 +27,7 @@ import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.View;
 import org.openuss.desktop.DesktopException;
 import org.openuss.desktop.DesktopInfo;
+import org.openuss.migration.CentralUserData;
 import org.openuss.registration.RegistrationException;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
@@ -110,8 +111,15 @@ public class ShortenedRegistrationController extends BasePage {
 		
 		String username = user.getUsername();
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,"protected");
-
-		authRequest.setDetails(new WebAuthenticationDetails(request));
+		
+		// Set details for authentication request. Preserve existing user details!
+		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
+		if (details instanceof UserDetails) {
+			authRequest.setDetails(details);
+		} else {
+			authRequest.setDetails(new WebAuthenticationDetails(request));
+		}
+		
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
 		
