@@ -528,9 +528,8 @@ a.icon_recover span {
   font-size: 0pt;
   height: 16px;
   padding: 0 16px 0 0;
-  margin: 0 0 0 5px;
+  margin: 0 4px 0 5px;
   overflow: hidden;
-  position: relative;
   width: 16px;
   cursor: pointer;  
 }
