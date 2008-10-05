@@ -3,6 +3,7 @@ package org.openuss.framework.jsfcontrols.components.flexlist;
 import java.io.IOException;
 
 public class CourseUIFlexList extends UIFlexList {
+	
 	protected void writeFlexListItemRight(ListItemDAO listItem) throws IOException {
 		writer.startElement("div", this);
 		writer.writeAttribute("class", "flexListItemRight", null);
@@ -22,15 +23,13 @@ public class CourseUIFlexList extends UIFlexList {
 			String cssClass;
 			if (subscribed == null) {
 				cssClass = "newsletter_none";
-			}
-			else {
+			} else {
 				cssClass = (subscribed) ? "newsletter_subscribed" : "newsletter_notSubscribed";
 			}
 			String title;
 			if (subscribed == null) {
 				title = bundle.getString("flexlist_title_newsletter_none");
-			}
-			else {
+			} else {
 				title = (subscribed) ? bundle.getString("flexlist_title_newsletter_unsubscribe") : bundle.getString("flexlist_title_newsletter_subscribe");
 			}
 			if (subscribed == null) {
@@ -41,8 +40,7 @@ public class CourseUIFlexList extends UIFlexList {
 					writer.writeAttribute("title", title, null);
 					writer.endElement("span");								
 				writer.endElement("span");
-			}
-			else {
+			} else {
 				writer.startElement("a", this);
 				writer.writeAttribute("href", url, null);
 									
@@ -59,14 +57,12 @@ public class CourseUIFlexList extends UIFlexList {
 			url = listItem.getForumActionUrl();
 			if (subscribed == null) {
 				cssClass = "forum_none";
-			}
-			else {
+			} else {
 				cssClass = (subscribed) ? "forum_subscribed" : "forum_notSubscribed";
 			}
 			if (subscribed == null) {
 				title = bundle.getString("flexlist_title_forum_none");
-			}
-			else {
+			} else {
 				title = (subscribed) ? bundle.getString("flexlist_title_forum_unsubscribe") : bundle.getString("flexlist_title_forum_subscribe");
 			}
 			if (subscribed == null) {
@@ -77,8 +73,7 @@ public class CourseUIFlexList extends UIFlexList {
 						writer.writeAttribute("title", title, null);
 					writer.endElement("span");			
 				writer.endElement("span");
-			}
-			else {
+			} else {
 				writer.startElement("a", this);
 				writer.writeAttribute("href", url, null);
 					writer.writeAttribute("class", cssClass, null);
@@ -92,8 +87,8 @@ public class CourseUIFlexList extends UIFlexList {
 			// Show the "remove bookmark link" if the url is set
 			String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
 			title = bundle.getString("flexlist_title_removeBookmarkUrl");
-			if(removeBookmarkUrl != null && removeBookmarkUrl != "")
-			{
+			
+			if(removeBookmarkUrl != null && removeBookmarkUrl != "") {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					

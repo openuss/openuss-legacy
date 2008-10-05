@@ -15,7 +15,7 @@ public class UIFlexList extends UIOutput {
 	protected ResponseWriter writer;
 	protected ResourceBundle bundle;
 	
-	protected boolean expanded; //if expanded="false" dont expand the list
+	protected boolean expanded; //if expanded="false" don't expand the list
 	protected String styleClass;
 	
 	public void encodeBegin(FacesContext context) throws IOException {
@@ -25,14 +25,18 @@ public class UIFlexList extends UIOutput {
 		bundle = ResourceBundle.getBundle("resources", new Locale(locale));
 		
 		String expandedAttribute = (String)getAttributes().get("expanded");
-		if (expandedAttribute == "true" || expandedAttribute == null) this.expanded = true;
-		else this.expanded = false;
+		if (expandedAttribute == "true" || expandedAttribute == null) {
+			this.expanded = true;
+		} else {
+			this.expanded = false;
+		}
 		
 		String styleClass = (String)getAttributes().get("styleClass");
-		if(styleClass!="")
+		if(styleClass!="") {
 			styleClass = " " + styleClass;
-		else
+		} else {
 			styleClass = "";
+		}
 		
 		writer.startElement("div", this);
 			writer.writeAttribute("class", "flexList" + styleClass, null);
@@ -60,7 +64,7 @@ public class UIFlexList extends UIOutput {
 				writer.endElement("div");
 				
 				writer.startElement("a", this);
-					writer.writeAttribute("href", "javascript:void(0)", null);
+					writer.writeAttribute("href", "javascript:void(0);", null);
 					String javascript = "" +
 						"Element.toggle('flexlist_arrow_expanded" + this.getId() + "'); " + 
 						"Element.toggle('flexlist_arrow_collapsed" + this.getId() + "'); " +
@@ -101,12 +105,9 @@ public class UIFlexList extends UIOutput {
 			writer.writeAttribute("class", "flexListItems", null);
 		
 			ArrayList<ListItemDAO> visibleItems = (ArrayList<ListItemDAO>)(getAttributes().get("visibleItems"));
-			if(visibleItems == null || visibleItems.isEmpty())
-			{
+			if(visibleItems == null || visibleItems.isEmpty()) {
 				writeEmptyItems();
-			}
-			else
-			{
+			} else {
 				writeListItems(visibleItems);
 			}
 			writer.endElement("ul");
@@ -114,8 +115,7 @@ public class UIFlexList extends UIOutput {
 			// Render list of hidden items
 			ArrayList<ListItemDAO> hiddenItems = (ArrayList<ListItemDAO>)getAttributes().get("hiddenItems");
 			
-			if(hiddenItems != null && !hiddenItems.isEmpty())
-			{
+			if(hiddenItems != null && !hiddenItems.isEmpty()) {
 				writer.startElement("ul", this);
 					writer.writeAttribute("class", "flexListItems", null);
 					writer.writeAttribute("id", "hidden_items" + this.getId(), null);
@@ -127,7 +127,6 @@ public class UIFlexList extends UIOutput {
 				// Render the list footer containing the buttons for showing and hiding the hidden items
 				writeFooter();
 			}
-				
 		writer.endElement("div");
 	}
 	
@@ -151,7 +150,6 @@ public class UIFlexList extends UIOutput {
 			writer.startElement("li", this);
 				// Render the "meta info" on the right side of the list
 				writeFlexListItemRight(listItem);
-				
 				// Render the left side of the item
 				writeFlexListItemLeft(listItem);
 			writer.endElement("li");
@@ -163,18 +161,14 @@ public class UIFlexList extends UIOutput {
 		writer.startElement("div", this);
 		writer.writeAttribute("class", "flexListItemLeft", null);
 
-			if(title != null)
-			{
+			if(title != null) {
 				// If the url is set, render an a tag, otherwise just plain text
-				if(url != null)
-				{
+				if(url != null)	{
 					writer.startElement("a", this);
 						writer.writeAttribute("href", url, null);
 						writer.write(title);
 					writer.endElement("a");
-				}
-				else
-				{
+				} else {
 					writer.write(title);
 				}
 			}
@@ -193,8 +187,7 @@ public class UIFlexList extends UIOutput {
 			String removeBookmarkUrl = listItem.getRemoveBookmarkUrl();
 			String title;
 			title = bundle.getString("flexlist_title_removeBookmarkUrl");
-			if(removeBookmarkUrl != null && removeBookmarkUrl != "")
-			{
+			if(removeBookmarkUrl != null && removeBookmarkUrl != "") {
 				writer.startElement("a", this);
 					writer.writeAttribute("href", removeBookmarkUrl, null);
 					
@@ -208,6 +201,7 @@ public class UIFlexList extends UIOutput {
 		
 		writer.endElement("div");
 	}
+	
 	private void writeFooter()  throws IOException {
 		writer.startElement("ul", this);
 			writer.writeAttribute("class", "flexListBottom", null);
@@ -232,10 +226,11 @@ public class UIFlexList extends UIOutput {
 							writer.writeAttribute("id", "show_hidden_items" + this.getId(), null);
 							
 							String showButtonTitle = (String)getAttributes().get("showButtonTitle");
-							if(showButtonTitle != null)
+							if(showButtonTitle != null) {
 								writer.write( showButtonTitle );
-							else
+							} else {
 								writer.write(bundle.getString("flexlist_more_items"));
+							}
 						writer.endElement("span");
 						
 						writer.startElement("span", this);
@@ -243,10 +238,11 @@ public class UIFlexList extends UIOutput {
 							writer.writeAttribute("style", "display:none;", null);
 							
 							String hideButtonTitle = (String)getAttributes().get("hideButtonTitle");
-							if(hideButtonTitle != null)
+							if(hideButtonTitle != null) {
 								writer.write( hideButtonTitle );
-							else
+							} else { 
 								writer.write(bundle.getString("flexlist_less_items"));
+							}
 						writer.endElement("span");
 						
 					writer.endElement("a");
