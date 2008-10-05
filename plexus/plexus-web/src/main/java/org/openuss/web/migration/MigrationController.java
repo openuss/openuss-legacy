@@ -124,10 +124,6 @@ public class MigrationController extends BasePage {
 			authRequest.setDetails(new WebAuthenticationDetails(request));
 		}
 		
-//		// Set details for authentication request. Preserve existing user details!
-//		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
-//		authRequest.setDetails(userDetails!=null? userDetails : new WebAuthenticationDetails(request));
-		
 		session.setAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		Authentication auth = null;
 		try {
@@ -196,7 +192,6 @@ public class MigrationController extends BasePage {
 				   session.setAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY, securityContext);
 				   rememberMeServices.loginSuccess(request, response, auth);
 				   // setup user and userPreferences
-//				   injectUserInformationIntoSession(auth);
 				   sessionTracker.logSessionCreated(getSession());							   
 				} else {
 					exceptionMessage = i18n("authentication_error_password_mismatch");
