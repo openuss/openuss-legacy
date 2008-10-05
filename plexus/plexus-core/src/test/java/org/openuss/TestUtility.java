@@ -81,27 +81,6 @@ public class TestUtility {
 
 	private Institute defaultInstitute;
 
-	// /**
-	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
-	// <code>TestUtility.createUniqueUserInDB()</code>.
-	// */
-	// public User createDefaultUserInDB() {
-	// defaultUser.setUsername(unique(USERNAME));
-	// defaultUser.setGroups(new ArrayList<Group>());
-	// userDao.create(defaultUser);
-	// return defaultUser;
-	// }
-
-	// /**
-	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
-	// <code>TestUtility.createUniqueUserInDB()</code>.
-	// */
-	// public User createUserInDB() {
-	// User user = createDefaultUser();
-	// userDao.create(user);
-	// return user;
-	// }
-
 	public void removeDefaultUser() {
 		removeUser(defaultUser);
 	}
@@ -114,29 +93,6 @@ public class TestUtility {
 		user = userDao.load(user.getId());
 		userDao.remove(user);
 	}
-
-	// /**
-	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
-	// <code>TestUtility.createUniqueInstituteInDB()</code>.
-	// */
-	// public Institute createPersistInstituteWithDefaultUser() {
-	// defaultUser.setUsername(unique(USERNAME));
-	// defaultUser.setFirstName("firstName");
-	// defaultUser.setLastName("lastName");
-	// defaultUser.setTitle("title");
-	// defaultUser.setEmail(unique("email"));
-	// defaultUser.setLocale("de_DE");
-	//		
-	// userDao.create(defaultUser);
-	// defaultInstitute.setName(unique("name"));
-	// defaultInstitute.setShortcut(unique("shortcut"));
-	// defaultInstitute.setEmail(unique("email"));
-	// defaultInstitute.setLocale("de_DE");
-	// defaultInstitute.setOwnerName("owner name");
-	// defaultInstitute.setMembership(Membership.Factory.newInstance());
-	// instituteDao.create(defaultInstitute);
-	// return defaultInstitute;
-	// }
 
 	public User createUniqueUserInDB() {
 		User user = createUniqueUser();
@@ -491,7 +447,7 @@ public class TestUtility {
 
 		// Create a unique CourseType and Period
 		CourseType courseType = this.createUniqueCourseTypeInDB();
-		Period period = this.createUniquePeriodInDB(courseType.getInstitute().getDepartment().getUniversity());
+		Period period = this.createUniqueActivePeriodInDB(courseType.getInstitute().getDepartment().getUniversity());
 
 		// Create a unique CourseType
 		Course course = Course.Factory.newInstance();
@@ -522,18 +478,18 @@ public class TestUtility {
 		return course;
 	}
 
-	public Period createUniquePeriodInDB(University university) {
-
+	public Period createUniqueActivePeriodInDB(University university) {
 		// Create Startdate
-		Calendar cal = new GregorianCalendar();
-		cal.set(2007, 3, 1);
-		Date startdate = new Date(cal.getTimeInMillis());
-
+		Date startdate = new Date(System.currentTimeMillis() - 1000*60*60*24*60);
 		// Create Enddate
-		cal = new GregorianCalendar();
-		cal.set(2008, 8, 31);
-		Date enddate = new Date(cal.getTimeInMillis());
+		Date enddate = new Date(System.currentTimeMillis() + 1000*60*60*24*60);
 
+		Period period = associatePeriodToUniversity(university, startdate, enddate);
+
+		return period;
+	}
+
+	private Period associatePeriodToUniversity(University university, Date startdate, Date enddate) {
 		// Create a unique Period
 		Period period = Period.Factory.newInstance();
 		period.setName(unique("Period"));
@@ -551,60 +507,18 @@ public class TestUtility {
 	}
 
 	public Period createUniquePeriodInDB() {
-		// Create University
-		University university = this.createUniqueUniversityInDB();
-
-		// Create Startdate
-		Calendar cal = new GregorianCalendar();
-		cal.set(2007, 3, 1);
-		Date startdate = new Date(cal.getTimeInMillis());
-
-		// Create Enddate
-		cal = new GregorianCalendar();
-		cal.set(2008, 8, 31);
-		Date enddate = new Date(cal.getTimeInMillis());
-
-		// Create a unique Period
-		Period period = Period.Factory.newInstance();
-		period.setName(unique("Period"));
-		period.setDescription("A unique Period");
-		period.setCourses(new ArrayList<Course>());
-		period.setStartdate(startdate);
-		period.setEnddate(enddate);
-		period.setDefaultPeriod(false);
-		university.add(period);
-
-		periodDao.create(period);
-		this.getSecurityService().createObjectIdentity(period, university);
-
-		return period;
+		return createUniqueActivePeriodInDB(this.createUniqueUniversityInDB());
 	}
 
 	public Period createUniqueInactivePeriodInDB() {
 		// Create a unique University
 		University university = this.createUniqueUniversityInDB();
-
 		// Create Startdate
-		Calendar cal = new GregorianCalendar();
-		cal.set(2005, 3, 1);
-		Date startdate = new Date(cal.getTimeInMillis());
-
+		Date startdate = new Date(System.currentTimeMillis() - 1000*60*60*24*120);
 		// Create Enddate
-		cal = new GregorianCalendar();
-		cal.set(2006, 8, 31);
-		Date enddate = new Date(cal.getTimeInMillis());
+		Date enddate = new Date(System.currentTimeMillis() - 1000*60*60*24*2);
 
-		// Create a unique Period
-		Period period = Period.Factory.newInstance();
-		period.setName(unique("Period"));
-		period.setDescription("A unique Period");
-		period.setCourses(new ArrayList<Course>());
-		period.setStartdate(startdate);
-		period.setEnddate(enddate);
-		period.setDefaultPeriod(false);
-		university.add(period);
-
-		periodDao.create(period);
+		Period period = associatePeriodToUniversity(university, startdate, enddate);
 
 		return period;
 	}
@@ -632,19 +546,6 @@ public class TestUtility {
 		instituteDao.remove(defaultInstitute);
 		// userDao.remove(defaultInstitute.getOwner());
 	}
-
-	// /**
-	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
-	// <code>TestUtility.createUniqueInstituteInDB()</code>.
-	// */
-	// public Institute createdDefaultInstituteWithStoredUser() {
-	// defaultUser.setUsername(unique(USERNAME));
-	// userDao.create(defaultUser);
-	// defaultInstitute.setName(unique("name"));
-	// defaultInstitute.setShortcut(unique("shortcut"));
-	// instituteDao.create(defaultInstitute);
-	// return defaultInstitute;
-	// }
 
 	public User createAnonymousSecureContext() {
 		return createSecureContext(Roles.ANONYMOUS_ID);
@@ -688,24 +589,6 @@ public class TestUtility {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return user;
 	}
-
-	// /**
-	// * @deprecated As of OpenUSS 3.0 RC1, replaced by
-	// <code>TestUtility.createUniqueUser()</code>.
-	// */
-	// public User createDefaultUser() {
-	// User user = User.Factory.newInstance();
-	// user.setUsername(unique(USERNAME));
-	// user.setFirstName("firstName");
-	// user.setLastName("lastName");
-	// user.setPassword("password");
-	// user.setEmail(unique("email"));
-	// user.setEnabled(true);
-	// user.setAccountExpired(true);
-	// user.setCredentialsExpired(true);
-	// user.setAccountLocked(true);
-	// return user;
-	// }
 
 	private static volatile long uniqueId = System.currentTimeMillis();
 

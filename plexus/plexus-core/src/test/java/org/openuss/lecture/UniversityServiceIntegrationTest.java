@@ -240,7 +240,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create a Period
 		University universityTest = testUtility.createUniqueUniversityInDB();
-		Period period = testUtility.createUniquePeriodInDB(universityTest);
+		Period period = testUtility.createUniqueActivePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Get University
@@ -286,7 +286,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create a Period
 		University universityTest = testUtility.createUniqueUniversityInDB();
-		Period period = testUtility.createUniquePeriodInDB(universityTest);
+		Period period = testUtility.createUniqueActivePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Save UniversityID
@@ -332,7 +332,7 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 
 		// Create a Period
 		University universityTest = testUtility.createUniqueUniversityInDB();
-		Period period = testUtility.createUniquePeriodInDB(universityTest);
+		Period period = testUtility.createUniqueActivePeriodInDB(universityTest);
 		assertNotNull(period.getId());
 
 		// Synchronize with Database
@@ -346,7 +346,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findPeriod test");
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public void testFindAllUniversities() {
 		logger.info("----> BEGIN access to findAllUniversities test");
 
@@ -388,7 +387,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findAllUniversities test");
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public void testFindPeriodsByUniversity() {
 		logger.info("----> BEGIN access to findPeriodsByUniversity test");
 
@@ -399,9 +397,9 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		int sizeBefore = university.getPeriods().size();
 
 		// Create Periods with university
-		Period period1 = testUtility.createUniquePeriodInDB(university);
+		Period period1 = testUtility.createUniqueActivePeriodInDB(university);
 
-		Period period2 = testUtility.createUniquePeriodInDB(university);
+		Period period2 = testUtility.createUniqueActivePeriodInDB(university);
 		
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
 		period3.setUniversity(university);
@@ -420,7 +418,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findPeriodsByUniversity test");
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public void testFindPeriodsByUniversityAndActivation() {
 		logger.info("----> BEGIN access to findActivePeriodByUniversity test");
 
@@ -439,9 +436,9 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		int passiveSizeBefore = passivePeriods.size();
 		
 		// Create Periods with university
-		Period period1 = testUtility.createUniquePeriodInDB(university);
+		Period period1 = testUtility.createUniqueActivePeriodInDB(university);
 
-		Period period2 = testUtility.createUniquePeriodInDB(university);
+		Period period2 = testUtility.createUniqueActivePeriodInDB(university);
 
 		Period period3 = testUtility.createUniqueInactivePeriodInDB();
 		period3.setUniversity(university);
@@ -453,20 +450,17 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		periodDao.update(period3);
 
 		// Test
-		List<PeriodInfo> periodInfos = this.getUniversityService().
-			findPeriodsByUniversityAndActivation(university.getId(), true);
+		List<PeriodInfo> periodInfos = this.getUniversityService().findPeriodsByUniversityAndActivation(university.getId(), true);
 		assertNotNull(periodInfos);
 		assertEquals(sizeBefore+2, periodInfos.size());
 		
-		periodInfos = this.getUniversityService().
-			findPeriodsByUniversityAndActivation(university.getId(), false);
+		periodInfos = this.getUniversityService().findPeriodsByUniversityAndActivation(university.getId(), false);
 		assertNotNull(periodInfos);
 		assertEquals(passiveSizeBefore+1, periodInfos.size());
 
 		logger.info("----> END access to findActivePeriodByUniversity test");
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public void testFindUniversitiesByUserAndEnabled() {
 		logger.info("----> BEGIN access to findUniversitiesByUser test");
 
@@ -496,7 +490,6 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		logger.info("----> END access to findUniversitiesByUser test");
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	public void testFindUniversitiesByTypeAndEnabled() {
 		logger.info("----> BEGIN access to findUniversitiesByType test");
 
@@ -723,10 +716,10 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		University university2 = testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniqueActivePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
-		testUtility.createUniquePeriodInDB(university2);
+		testUtility.createUniqueActivePeriodInDB(university2);
 		assertEquals(2, university2.getPeriods().size());
 		
 		// Create Departments
@@ -781,14 +774,14 @@ public class UniversityServiceIntegrationTest extends UniversityServiceIntegrati
 		testUtility.createUniqueUniversityInDB();
 		
 		// Create Periods
-		testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniqueActivePeriodInDB(university1);
 		assertEquals(2, university1.getPeriods().size());
 		
 		Period period2 = testUtility.createUniqueInactivePeriodInDB();
 		university1.add(period2);
 		assertEquals(3, university1.getPeriods().size());
 		
-		testUtility.createUniquePeriodInDB(university1);
+		testUtility.createUniqueActivePeriodInDB(university1);
 		assertEquals(4, university1.getPeriods().size());
 		
 		// Create Departments

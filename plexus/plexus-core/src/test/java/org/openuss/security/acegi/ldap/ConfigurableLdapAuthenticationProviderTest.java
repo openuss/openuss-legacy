@@ -8,11 +8,13 @@ import static org.easymock.EasyMock.verify;
 import java.util.List;
 import java.util.Vector;
 
+import javax.naming.CommunicationException;
 import javax.naming.NamingException;
 
 import junit.framework.TestCase;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.AuthenticationServiceException;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.providers.ProviderNotFoundException;
@@ -27,6 +29,7 @@ import org.openuss.security.ldap.LdapConfigurationService;
 import org.openuss.security.ldap.LdapServerType;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.StaticMessageSource;
+import org.springframework.dao.DataAccessException;
 
 /**
  * Tests <code>ConfigurableLdapAuthenticationProvider</code> class.
@@ -345,6 +348,7 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
 			ldapAuthenticationProvider.init();
+			
 		} catch (Exception e) {
 			fail();
 		}
@@ -506,6 +510,9 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		ldapAuthenticationProvider.setUserCache(userCache);
 		try {
 			ldapAuthenticationProvider.init();
+		} catch (javax.naming.CommunicationException e) {
+			// no ldap server available
+			return;
 		} catch (Exception e) {			
 			fail();
 		}
@@ -516,6 +523,12 @@ public class ConfigurableLdapAuthenticationProviderTest extends TestCase {
 		try {
 			ldapAuthenticationProvider.authenticate(authRequest);
 			fail();
+		} catch (AuthenticationServiceException e) {
+			if (!(e.getCause().getCause() instanceof CommunicationException)) {
+				fail(e.getCause().getCause().getMessage());
+			} else {
+				return; // Ldap not available!
+			}
 		} catch (BadCredentialsException be) {
 			// Success
 		}		
