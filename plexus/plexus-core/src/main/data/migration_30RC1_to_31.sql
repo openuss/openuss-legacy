@@ -188,6 +188,8 @@ CREATE TABLE COURSES2GROUPS (
 ALTER TABLE COURSES2GROUPS ADD CONSTRAINT LECTURE_COURSE_GROUPS_FKC FOREIGN KEY (GROUPS_FK) REFERENCES SECURITY_GROUP;
 ALTER TABLE COURSES2GROUPS ADD CONSTRAINT SECURITY_GROUP_COURSES_FKC FOREIGN KEY (COURSES_FK) REFERENCES LECTURE_COURSE;
 
+
+
 -- adding groups for all courses --
 
 create procedure create_groups
@@ -227,6 +229,38 @@ where cm.member_type = 1 and cm.course_fk = c2g.courses_fk;
 
 delete from security_permission
 where security_permission.mask = 1040 and security_permission.acl_object_identity_fk in (select id from lecture_course);
+
+
+-- Check that all courses has an object id that represens course -> course_type permission hierarchy
+INSERT INTO security_object_identity (ID, PARENT_FK)
+SELECT
+  i.id, null
+FROM
+ lecture_institute i
+WHERE
+  not exists
+  (SELECT o.id FROM security_object_identity o WHERE o.id = i.id);
+
+-- Check that all course_type has an object id that represens course_type -> institute permission hierarchy
+INSERT INTO security_object_identity (ID, PARENT_FK)
+SELECT
+  ct.id,  ct.institute_fk
+FROM
+ lecture_course_type ct
+WHERE
+  not exists
+  (SELECT o.id FROM security_object_identity o WHERE o.id = ct.id);
+
+-- check that all courses has an object id that represens course -> course_type permission hierarchy
+insert into security_object_identity (id, parent_fk)
+select
+  c.id, c.course_type_fk
+from
+ lecture_course c
+where
+  not exists
+  (select o.id from security_object_identity o where o.id = c.id);
+
 
 -- add read permission to course to group --
 
