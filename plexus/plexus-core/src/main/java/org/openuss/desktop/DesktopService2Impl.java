@@ -363,7 +363,6 @@ public class DesktopService2Impl extends DesktopService2Base {
 	 */
 	@SuppressWarnings( { "unchecked" })
 	protected List handleFindLinkedDepartmentsByUserAndUniversity(Long userId, Long universityId) throws Exception {
-
 		Validate.notNull(userId, "userId cannot be null!");
 		Validate.notNull(universityId, "universityId cannot be null!");
 
@@ -497,7 +496,7 @@ public class DesktopService2Impl extends DesktopService2Base {
 	}
 
 
-	protected Map handleGetMyUniInfo(Long userId) {
+	protected Map<Long, MyUniInfo> handleGetMyUniInfo(Long userId) {
 		Validate.notNull(userId, "UserId cannot be null!");
 
 		User user = this.getUserDao().load(userId);

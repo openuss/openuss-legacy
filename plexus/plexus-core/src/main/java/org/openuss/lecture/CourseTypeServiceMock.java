@@ -14,8 +14,8 @@ public class CourseTypeServiceMock implements CourseTypeService {
 		return null;
 	}
 
-	public List findCourseTypesByInstitute(Long instituteId) {
-		List courseTypes = new ArrayList();
+	public List<CourseTypeInfo> findCourseTypesByInstitute(Long instituteId) {
+		List<CourseTypeInfo> courseTypes = new ArrayList<CourseTypeInfo>();
 		
 		if(instituteId.longValue() % 2 == 0){
 			CourseTypeInfo courseType1 = new CourseTypeInfo();

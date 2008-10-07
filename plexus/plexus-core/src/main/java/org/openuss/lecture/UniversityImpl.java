@@ -87,7 +87,7 @@ public class UniversityImpl extends org.openuss.lecture.UniversityBase implement
 	/**
 	 * @see org.openuss.lecture.University#getActivePeriods()
 	 */
-	public List getActivePeriods() {
+	public List<Period> getActivePeriods() {
 
 		List<Period> activePeriods = new ArrayList<Period>();
 

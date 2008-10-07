@@ -235,7 +235,7 @@ public class OrganisationServiceImpl extends OrganisationServiceBase {
 	/**
 	 * @see org.openuss.lecture.OrganisationService#findGroupsByOrganisation(Long)
 	 */
-	protected List handleFindGroupsByOrganisation(Long organisationId) throws Exception {
+	protected List<GroupItem> handleFindGroupsByOrganisation(Long organisationId) throws Exception {
 
 		Validate.notNull(organisationId,
 				"OrganisationService.handleFindGroupsByOrganisation - organisationId cannot be null.");

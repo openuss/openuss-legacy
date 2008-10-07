@@ -80,8 +80,9 @@ public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 	 * @see org.openuss.lecture.CourseMemberDao#findByUser(int,
 	 *      org.openuss.security.User)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public List findByUser(final int transform, final User user) {
+	public List<CourseMemberInfo> findByUser(final int transform, final User user) {
 		return this.findByUser(transform,
 				"from org.openuss.lecture.CourseMember as courseMember where courseMember.courseMemberPk.user = ?",
 				user);
@@ -91,6 +92,7 @@ public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 	 * @see org.openuss.lecture.CourseMemberDao#findByCourse(int,
 	 *      org.openuss.lecture.Course)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List findByCourse(final int transform, final Course course) {
 		return this.findByCourse(transform,	
@@ -101,6 +103,7 @@ public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 	 * @see org.openuss.lecture.CourseMemberDao#findByType(int,
 	 *      org.openuss.lecture.Course, org.openuss.lecture.CourseMemberType)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List findByType(final int transform, final Course course, final CourseMemberType memberType) {
 		return this

@@ -21,7 +21,7 @@ public class DepartmentServiceMock implements DepartmentService {
 		
 	}
 
-	public List findDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type, boolean enabled) {
+	public List<Department> findDepartmentsByUniversityAndTypeAndEnabled(Long universityId, DepartmentType type, boolean enabled) {
 		return null;
 	}
 
@@ -195,12 +195,11 @@ public class DepartmentServiceMock implements DepartmentService {
 		return null;
 	}
 	
-	@SuppressWarnings( { "unchecked" })
-	public List findDepartmentsByType(DepartmentType type) {
+	public List<Department> findDepartmentsByType(DepartmentType type) {
 		return null;
 	}
 
-	public List findDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType) {
+	public List<Department> findDepartmentsByUniversityAndType(Long universityId, DepartmentType departmentType) {
 		return null;
 	}
 
@@ -211,15 +210,15 @@ public class DepartmentServiceMock implements DepartmentService {
 	public void setDepartmentStatus(Long departmentId, boolean status) {
 	}
 	
-	public List findApplicationsByDepartment(Long departmentId) {
+	public List<Department> findApplicationsByDepartment(Long departmentId) {
 		return null;
 	}
 
-	public List findApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) {
+	public List<Department> findApplicationsByDepartmentAndConfirmed(Long departmentId, boolean confirmed) {
 		return null;
 	}
 	
-	public List findOpenApplicationsByDepartment(Long departmentId) {
+	public List<Department> findOpenApplicationsByDepartment(Long departmentId) {
 		return null;
 	}
 	

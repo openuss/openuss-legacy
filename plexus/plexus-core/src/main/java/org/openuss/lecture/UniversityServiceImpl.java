@@ -380,7 +380,8 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		return periodInfos;
 	}
 
-	private void sortPeriodsByStartDate(List periodInfos) {
+	@SuppressWarnings("unchecked")
+	private void sortPeriodsByStartDate(List<PeriodInfo> periodInfos) {
 		Collections.sort(periodInfos, new PropertyComparator("startdate", true, false));
 	}
 

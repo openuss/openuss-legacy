@@ -62,7 +62,7 @@ public class SystemServiceImpl extends SystemServiceBase implements Initializing
 	/**
 	 * @see org.openuss.system.SystemService#getProperties()
 	 */
-	protected java.util.Collection handleGetProperties() throws java.lang.Exception {
+	protected java.util.Collection<SystemProperty> handleGetProperties() throws java.lang.Exception {
 		return getSystemPropertyDao().loadAll();
 	}
 
@@ -73,6 +73,7 @@ public class SystemServiceImpl extends SystemServiceBase implements Initializing
 		return getSystemPropertyDao().findByName(name);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handlePersistProperties(Collection properties) throws Exception {
 		getSystemPropertyDao().update(properties);

@@ -270,7 +270,6 @@ public class DepartmentServiceImpl extends DepartmentServiceBase {
 		this.getApplicationDao().remove(application);
 	}
 
-	@SuppressWarnings( { "unchecked" })
 	@Override
 	protected void handleSignoffInstitute(Long instituteId) throws Exception {
 		Validate.notNull(instituteId, "The instituteId cannot be null");

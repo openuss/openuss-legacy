@@ -46,7 +46,7 @@ public class OnlineStatisticServiceImpl extends OnlineStatisticServiceBase {
 	}
 
 	private void closeOtherActiveUserSessions(User user, OnlineSession session) {
-		List<OnlineSession> userSessions = getOnlineSessionDao().findActiveSessionByUser(user);
+		@SuppressWarnings("unchecked") List<OnlineSession> userSessions = getOnlineSessionDao().findActiveSessionByUser(user);
 		Date now = new Date();
 		for (OnlineSession userSession: userSessions) {
 			if (!userSession.equals(session)) {

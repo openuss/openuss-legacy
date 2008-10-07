@@ -68,6 +68,7 @@ public class DiscussionSearchQuery extends SimpleLuceneSearchQuery implements Di
 	 * @param isFuzzy use fuzzy search?
 	 * @param submitter search for author/submitter
 	 */
+	@SuppressWarnings("unchecked")
 	public List<DiscussionSearchDomainResult> search(String textToSearch, Long courseId, boolean onlyInTitle, boolean isFuzzy, String submitter) {
 		
 		StringBuilder queryString = new StringBuilder();

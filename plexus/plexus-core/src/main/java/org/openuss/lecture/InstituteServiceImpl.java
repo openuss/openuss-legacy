@@ -196,12 +196,13 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	/**
 	 * @see org.openuss.lecture.InstituteService#findInstitutesByEnabled(java.lang.Boolean)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	protected List handleFindAllInstitutes(boolean enabledOnly) throws Exception {
+	protected List<InstituteInfo> handleFindAllInstitutes(boolean enabledOnly) throws Exception {
 		if (enabledOnly) {
 			return getInstituteDao().findByEnabled(InstituteDao.TRANSFORM_INSTITUTEINFO, enabledOnly);
 		} else {
-			return new ArrayList(getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO));
+			return new ArrayList<InstituteInfo>(getInstituteDao().loadAll(InstituteDao.TRANSFORM_INSTITUTEINFO));
 		}
 	}
 
@@ -292,7 +293,7 @@ public class InstituteServiceImpl extends InstituteServiceBase {
 	}
 
 	@Override
-	protected List handleFindApplicationsByInstitute(Long instituteId) throws Exception {
+	protected List<ApplicationInfo> handleFindApplicationsByInstitute(Long instituteId) throws Exception {
 		Validate.notNull(instituteId, "InstituteService.findApplicationByInstitute - the instituteId cannot be null.");
 	
 		// Load institute

@@ -23,10 +23,10 @@ public class InstituteServiceMock implements InstituteService {
 		
 	}
 
-	public List findInstitutesByDepartment(Long departmentId) {
-		List institutes = new ArrayList();
+	public List<InstituteInfo> findInstitutesByDepartment(Long departmentId) {
+		List<InstituteInfo> institutes = new ArrayList<InstituteInfo>();
 		
-		List validDepartments = new ArrayList();
+		List<Long> validDepartments = new ArrayList<Long>();
 		validDepartments.add(1101L);
 		validDepartments.add(1102L);
 		validDepartments.add(1103L);
@@ -78,6 +78,7 @@ public class InstituteServiceMock implements InstituteService {
 		return institutes;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findInstitutesByDepartmentAndEnabled(Long departmentId,
 			boolean enabled) {
 		// for testing purposes: return the same data as method findInstitutesByDepartment
@@ -126,7 +127,7 @@ public class InstituteServiceMock implements InstituteService {
 		return null;
 	}
 
-	public List findApplicationsByInstitute(Long instituteId) {
+	public List<Application> findApplicationsByInstitute(Long instituteId) {
 		return null;
 	}
 

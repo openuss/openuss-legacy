@@ -67,6 +67,7 @@ public class LectureSearchQuery extends SimpleLuceneSearchQuery implements Lectu
 	 * @param fuzzy use fuzzy search
 	 * @return List<DomainResult>
 	 */
+	@SuppressWarnings("unchecked")
 	public List<DomainResult> search(String textToSearch, boolean fuzzy) {
 		StringBuilder queryString = new StringBuilder();
 				

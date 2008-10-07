@@ -67,8 +67,9 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 	}
 
+
 	private void sendNotificationsToForumWatchers(final Topic topic, final Forum forum) {
-		List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
+		@SuppressWarnings("unchecked") List<ForumWatch> watches = getForumWatchDao().findByForum(forum);
 		List<User> emails = new ArrayList<User>();
 		for (ForumWatch watch : watches) {
 			emails.add(watch.getForumWatchPk().getUser());
@@ -101,6 +102,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		getSecurityService().removeObjectIdentity(topic);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void removeAllDiscussionWatchesOfTopic(final Topic topic) {
 		getDiscussionWatchDao().remove(getDiscussionWatchDao().findByTopic(topic));
 	}
@@ -135,13 +137,13 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	private void sendNotifications(final Topic topic, final Forum forum) {
-		List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
-		List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
-		Set<User> emails = new HashSet();
+		@SuppressWarnings("unchecked") List<User> emailsByTopic = getTopicDao().findUsersToNotifyByTopic(topic);
+		@SuppressWarnings("unchecked") List<User> emailsByForum = getTopicDao().findUsersToNotifyByForum(topic, forum);
+		Set<User> emails = new HashSet<User>();
 		emails.addAll(emailsByTopic);
 		emails.addAll(emailsByForum);
 		logEmailAdresses(emails);
-		sendNotificationEmail(new ArrayList(emails), topic);
+		sendNotificationEmail(new ArrayList<User>(emails), topic);
 		logger.debug("got users to notify");
 	}
 
@@ -213,7 +215,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 		Validate.notNull(post.getId());
 		PostInfo postInfo = (PostInfo) getPostDao().load(PostDao.TRANSFORM_POSTINFO, post.getId());
 		if (postInfo != null) {
-			List<FileInfo> attachments = getAttachments(postInfo);
+			@SuppressWarnings("unchecked") List<FileInfo> attachments = getAttachments(postInfo);
 			postInfo.setAttachments(attachments);
 			postInfo.setUserIsSubmitter(postInfo.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
 		}
@@ -224,18 +226,18 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getPosts(org.openuss.discussion.TopicInfo)
 	 */
-	protected List handleGetPosts(final TopicInfo topicInfo) {
+	protected List<PostInfo> handleGetPosts(final TopicInfo topicInfo) {
 		Validate.notNull(topicInfo);
 		Validate.notNull(topicInfo.getId());
 
 		getTrackingService().setRead(topicInfo);
 
 		Topic topic = getTopicDao().load(topicInfo.getId());
-		List<PostInfo> posts = getPostDao().findByTopic(PostDao.TRANSFORM_POSTINFO, topic);
+		@SuppressWarnings("unchecked") List<PostInfo> posts = getPostDao().findByTopic(PostDao.TRANSFORM_POSTINFO, topic);
 		Collections.sort(posts, new PostInfoComparator());
 		for (PostInfo post : posts) {
 			post.setUserIsSubmitter(post.getSubmitterId().equals(getSecurityService().getCurrentUser().getId()));
-			List<FileInfo> attachments = getDocumentService().getFileEntries(post);
+			@SuppressWarnings("unchecked") List<FileInfo> attachments = getDocumentService().getFileEntries(post);
 			post.setAttachments(attachments);
 		}
 
@@ -254,7 +256,8 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	/**
 	 * @see org.openuss.discussion.DiscussionService#getTopics(java.lang.Long)
 	 */
-	protected List handleGetTopics(final ForumInfo forumInfo) {
+	@SuppressWarnings("unchecked")
+	protected List<TopicInfo> handleGetTopics(final ForumInfo forumInfo) {
 		Validate.notNull(forumInfo, "Parameter forum must not be null");
 		Validate.notNull(forumInfo.getId(), "Parameter form must provide an valid id.");
 
