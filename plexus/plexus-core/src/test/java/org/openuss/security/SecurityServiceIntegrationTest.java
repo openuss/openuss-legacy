@@ -53,7 +53,7 @@ public class SecurityServiceIntegrationTest extends SecurityServiceIntegrationTe
 		
 		UserInfo retrievedUser = securityService.getUserByName(username);
 		assertNotNull(retrievedUser);
-		assertEquals(retrievedUser.getUsername(),SecurityDomainUtility.extractUsername(username));
+		assertEquals(retrievedUser.getUsername(),username);
 		assertTrue(retrievedUser.isCentralUser());
 		assertTrue(retrievedUser.isEnabled());
 	}

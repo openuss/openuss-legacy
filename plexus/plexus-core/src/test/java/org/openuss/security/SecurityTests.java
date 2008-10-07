@@ -7,6 +7,9 @@ import org.openuss.security.acegi.ldap.ActiveDirectoryBindAuthenticatorTest;
 import org.openuss.security.acegi.ldap.ActiveDirectoryLdapTemplateTest;
 import org.openuss.security.acegi.ldap.ConfigurableLdapAuthenticationProviderTest;
 import org.openuss.security.acegi.ldap.ExtendedLdapUserDetailsMapperTest;
+import org.openuss.security.acegi.shibboleth.PlexusShibbolethIntegrationTest;
+import org.openuss.security.acegi.shibboleth.ShibbolethAuthenticationProcessingFilterTest;
+import org.openuss.security.acegi.shibboleth.ShibbolethAuthenticationProviderTest;
 import org.openuss.security.acl.AclPermissionIntegrationTest;
 import org.openuss.security.acl.ObjectIdentityDaoTest;
 import org.openuss.security.acl.PermissionDaoTest;
@@ -40,6 +43,10 @@ public class SecurityTests {
 		suite.addTestSuite(ActiveDirectoryLdapTemplateTest.class);
 		suite.addTestSuite(ConfigurableLdapAuthenticationProviderTest.class);
 		suite.addTestSuite(ExtendedLdapUserDetailsMapperTest.class);
+		// Shibboleth
+		suite.addTestSuite(PlexusShibbolethIntegrationTest.class);
+		suite.addTestSuite(ShibbolethAuthenticationProcessingFilterTest.class);
+		suite.addTestSuite(ShibbolethAuthenticationProviderTest.class);
 		//$JUnit-END$
 		return suite;
 	}

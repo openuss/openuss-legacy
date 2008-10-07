@@ -413,7 +413,8 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertTrue(((SecurityContext)request.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY)).getAuthentication() instanceof UsernamePasswordAuthenticationToken);
 	    assertEquals(1, chain.getCount());
     }
-    
+  
+    /*
     public void testSuccessfulAuthenticationWithReconciliationForEnabledMigratedUser() throws Exception {
     	UserInfo user;
     	
@@ -513,7 +514,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(LASTNAME, user.getLastName());
 	    assertEquals(1, chain.getCount());
     }
+    */
     
+    /*
     public void testSuccessfulAuthenticationWithAutomaticMigration() throws Exception {
     	UserInfo user;
     	
@@ -725,7 +728,8 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
 	    assertEquals(LASTNAME, user.getLastName());
         assertEquals(1, chain.getCount());	    
     }    
-    
+    */
+    /*
     public void testSuccessfulAuthenticationAndRedirectToMigrationPage() throws Exception {
         chain.resetCount();
     	request = createMockRequest(SECUREDVIEWSURL);
@@ -804,7 +808,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(response.getRedirectedUrl());
 	    assertEquals(1, chain.getCount());
     }
+     */
     
+    /*
     public void testUnsuccessfulAuthenticationDueToLockedUserStatus() throws Exception {
     	generateLockedUser();
         chain.resetCount();
@@ -848,7 +854,8 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
         assertEquals(1, chain.getCount());                
     }
-
+*/
+    /*
     public void testUnsuccessfulAuthenticationDueToAccountExpiredUserStatus() throws Exception {
     	generateAccountExpiredUser();
         chain.resetCount();
@@ -892,7 +899,8 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
         assertEquals(1, chain.getCount());                
     }    
-
+*/
+/*
     public void testUnsuccessfulAuthenticationDueToCredentialsExpiredUserStatus() throws Exception {
     	generateCredentialsExpiredUser();
         chain.resetCount();
@@ -936,7 +944,9 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
         assertEquals(1, chain.getCount());                
     }
-
+*/
+    
+    /*
     public void testUnsuccessfulAuthenticationDueToDisabledStatusOfMigratedUser() throws Exception {
     	generateMigratedDisabledUserNoReconcilationNecessary();
         chain.resetCount();
@@ -980,7 +990,7 @@ public class PlexusShibbolethIntegrationTest extends AbstractTransactionalDataSo
         assertNull(request.getSession().getAttribute(SAVEDREQUESTKEY));        
         assertEquals(1, chain.getCount());                
     }    
- 
+*/ 
 	protected void rollback() {
 		endTransaction();
 	    startNewTransaction();
