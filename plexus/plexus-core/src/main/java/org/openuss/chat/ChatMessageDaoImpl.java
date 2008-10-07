@@ -21,7 +21,7 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 		final String hqlSelect = "select max(m.id) from org.openuss.chat.ChatMessage as m where m.room.id = :roomId";
 		return (Long) getHibernateTemplate().execute(new org.springframework.orm.hibernate3.HibernateCallback() {
 			public Object doInHibernate(org.hibernate.Session session) throws HibernateException {
-				List results = session.createQuery(hqlSelect).setLong("roomId", roomId).list();
+				List<?> results = session.createQuery(hqlSelect).setLong("roomId", roomId).list();
 				Long msgId;
 				if (results.size() > 0) {
 					msgId = (Long) results.get(0);
@@ -40,7 +40,7 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	 *      java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public List findByRoomAfter(final int transform, final Long roomId, final Long messageId) {
+	public List<?> findByRoomAfter(final int transform, final Long roomId, final Long messageId) {
 		return findByRoomAfter(
 				transform,
 				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? and chatMessage.id > ?",
@@ -51,13 +51,13 @@ public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 	 * @see org.openuss.chat.ChatMessageDao#findByRoom(int, java.lang.Long)
 	 */
 	@Override
-	public List findByRoom(final int transform, final Long roomId) {
+	public List<?> findByRoom(final int transform, final Long roomId) {
 		return findByRoom(transform,
 				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? order by id", roomId);
 	}
 
 	@Override
-	public List findByRoomSince(int transform, Long roomId, Date since) {
+	public List<?> findByRoomSince(int transform, Long roomId, Date since) {
 		return findByRoomSince(
 				transform,
 				"from org.openuss.chat.ChatMessage as chatMessage where chatMessage.room.id = ? and chatMessage.time > ?",

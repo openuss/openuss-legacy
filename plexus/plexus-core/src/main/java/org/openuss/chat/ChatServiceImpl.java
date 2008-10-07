@@ -73,7 +73,8 @@ public class ChatServiceImpl extends ChatServiceBase {
 	/**
 	 * @see org.openuss.chat.ChatService#getRooms(org.openuss.foundation.DomainObject)
 	 */
-	protected List handleGetRooms(DomainObject domain) throws Exception {
+	@SuppressWarnings("unchecked")
+	protected List<ChatRoomInfo> handleGetRooms(DomainObject domain) throws Exception {
 		Validate.notNull(domain, "Parameter domain must not be null!");
 		Validate.notNull(domain.getId(), "Parameter domain must contain an valid identifier!");
 		return (List<ChatRoomInfo>) getChatRoomDao().findChatRoomByDomainId(ChatRoomDao.TRANSFORM_CHATROOMINFO, domain.getId());
@@ -108,7 +109,7 @@ public class ChatServiceImpl extends ChatServiceBase {
 	/**
 	 * @see org.openuss.chat.ChatService#getMessages(java.lang.Long)
 	 */
-	protected List handleGetMessages(Long roomId) throws Exception {
+	protected List<?> handleGetMessages(Long roomId) throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
 		return getChatMessageDao().findByRoom(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO,roomId);
 	}
@@ -116,10 +117,11 @@ public class ChatServiceImpl extends ChatServiceBase {
 	/**
 	 * @see org.openuss.chat.ChatService#getChatUsers(java.lang.Long)
 	 */
-	protected List handleGetChatUsers(Long roomId) throws Exception {
+	@SuppressWarnings("unchecked")
+	protected List<?> handleGetChatUsers(Long roomId) throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
 		ChatRoom room = getChatRoomDao().load(roomId);
-		List users = new ArrayList(room.getChatUsers());
+		List<?> users = new ArrayList(room.getChatUsers());
 		getChatUserDao().toChatUserInfoCollection(users);
 		return users;
 	}
@@ -128,14 +130,14 @@ public class ChatServiceImpl extends ChatServiceBase {
 	 * @see org.openuss.chat.ChatService#getRecentMessages(java.lang.Long,
 	 *      java.lang.Long)
 	 */
-	protected List handleGetRecentMessages(Long roomId, Long messageId)	throws Exception {
+	protected List<?> handleGetRecentMessages(Long roomId, Long messageId)	throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null!");
 		Validate.notNull(messageId, "Parameter messageId must not be null!");
 		return getChatMessageDao().findByRoomAfter(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO,roomId,messageId);
 	}
 
 	@Override
-	protected List handleGetRecentMessages(Long roomId, Date since) throws Exception {
+	protected List<?> handleGetRecentMessages(Long roomId, Date since) throws Exception {
 		Validate.notNull(roomId, "Parameter roomId must not be null");
 		Validate.notNull(since, "Parameter since must not be null");
 		return getChatMessageDao().findByRoomSince(ChatMessageDao.TRANSFORM_CHATMESSAGEINFO, roomId, since);

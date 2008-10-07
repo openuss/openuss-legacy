@@ -8,13 +8,11 @@ package org.openuss.braincontest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
-import org.openuss.collaboration.Workspace;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
 import org.openuss.foundation.DomainObject;
@@ -30,7 +28,6 @@ import org.openuss.security.acl.LectureAclEntry;
  */
 public class BrainContestServiceImpl extends BrainContestServiceBase {
 
-	private static final String UNKNOWN = "Unknown";
 	private static final Logger logger = Logger.getLogger(BrainContestServiceImpl.class);
 
 	/**
@@ -173,7 +170,6 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	 *      org.openuss.security.User,
 	 *      org.openuss.braincontest.BrainContestInfo, boolean)
 	 */
-	@SuppressWarnings("unchecked")
 	protected boolean handleAnswer(String answer, UserInfo user, BrainContestInfo contest, boolean topList) throws BrainContestApplicationException {
 		Validate.notNull(answer, "Answer must not be null");
 		Validate.notNull(user, "User must not be null");
@@ -236,6 +232,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 	 * all answers of that users are deleted, setting to unknown user is not possible 
 	 * due to combined contest / user combination as primary key
 	 */
+	@SuppressWarnings("unchecked")
 	protected void handleRemoveUserFromAnswers(User user){
 		List<Answer> answers = getAnswerDao().findBySolver(user.getId());
 		getAnswerDao().remove(answers);
