@@ -128,6 +128,7 @@ public class LdapDomainsPage extends AbstractLdapPage{
 		
 		private DataPage<AuthenticationDomainInfo> dataPage;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<AuthenticationDomainInfo> getDataPage(int startRow, int pageSize) {
 

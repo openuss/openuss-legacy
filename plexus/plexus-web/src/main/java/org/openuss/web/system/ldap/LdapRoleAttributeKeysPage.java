@@ -125,6 +125,7 @@ public class LdapRoleAttributeKeysPage extends AbstractLdapPage{
 		
 		private DataPage<RoleAttributeKeyInfo> dataPage;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<RoleAttributeKeyInfo> getDataPage(int startRow, int pageSize) {
 			if (dataPage == null) {

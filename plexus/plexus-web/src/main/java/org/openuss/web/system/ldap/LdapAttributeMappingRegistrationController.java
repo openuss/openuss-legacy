@@ -77,6 +77,7 @@ public class LdapAttributeMappingRegistrationController extends AbstractLdapPage
 		return Constants.LDAP_ATTRIBUTEMAPPING_EDIT_PAGE;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllRoleAttributeKeys() {
 		List<SelectItem> roleAttributeKeyItems = new ArrayList<SelectItem>();
 		List<RoleAttributeKeyInfo> roleAttributeKeys = ldapConfigurationService.getAllRoleAttributeKeys();

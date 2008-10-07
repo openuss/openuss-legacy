@@ -105,6 +105,7 @@ public class LdapServerRegistrationController extends AbstractLdapPage {
 		return items;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void processValueChangeUserDnPattern(ValueChangeEvent valueChangeEvent) {
 		List<Long> selectedIds = (ArrayList<Long>) valueChangeEvent.getNewValue();
 		ldapServerInfo.setUserDnPatternIds(selectedIds);
@@ -115,6 +116,7 @@ public class LdapServerRegistrationController extends AbstractLdapPage {
 		ldapServerInfo.setAuthenticationDomainId(selectedId);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllAuthenticationDomains() {
 		List<SelectItem> domainItems = new ArrayList<SelectItem>();
 		List<AuthenticationDomainInfo> domains = ldapConfigurationService.getAllDomains();
@@ -124,6 +126,7 @@ public class LdapServerRegistrationController extends AbstractLdapPage {
 		return domainItems;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllUserDnPatterns() {
 		List<SelectItem> userDnPatternItems = new ArrayList<SelectItem>();
 		List<UserDnPatternInfo> userDnPatterns = ldapConfigurationService.getAllUserDnPatterns();
@@ -133,6 +136,7 @@ public class LdapServerRegistrationController extends AbstractLdapPage {
 		return userDnPatternItems;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Long[] getUserDnPatternIds() {
 		return (Long[]) ldapServerInfo.getUserDnPatternIds().toArray(new Long[ldapServerInfo.getUserDnPatternIds().size()]);
 	}

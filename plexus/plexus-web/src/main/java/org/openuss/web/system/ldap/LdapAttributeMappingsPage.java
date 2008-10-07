@@ -119,6 +119,7 @@ public class LdapAttributeMappingsPage extends AbstractLdapPage{
 		
 		private DataPage<AttributeMappingInfo> dataPage;
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<AttributeMappingInfo> getDataPage(int startRow, int pageSize) {
 			if (dataPage == null) {

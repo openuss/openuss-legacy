@@ -91,6 +91,7 @@ public class LdapDomainRegistrationController extends AbstractLdapPage {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getAllAttributeMappings() {
 		List<SelectItem> attributeMappingItems = new ArrayList<SelectItem>();
 		List<AttributeMappingInfo> attributeMappings = ldapConfigurationService.getAllAttributeMappings();
