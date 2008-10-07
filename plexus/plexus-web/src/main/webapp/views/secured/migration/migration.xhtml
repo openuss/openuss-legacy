@@ -50,7 +50,7 @@
 		  				<f:param value="#{centralUserData.authenticationDomainName}"/>
 		  			</h:outputFormat>			  			
 	   			</o:block>  			  		
-			<h:form id="migration_register" enctype="multipart/form-data">
+			<h:form id="migration_register">
 	   			<o:block label="#{msg.migration_register_headline}"><br/>
 	   			<h:outputText value="#{msg.migration_register_header}" styleClass="header_font_normal"/> <br/>
 	   				<h:outputText value="#{msg.profile_readonly_field_explain}" styleClass="content_font_normal"/>
@@ -65,7 +65,7 @@
 				    <h:commandButton id="migrationRegisterButton" action="migration_centraluser_registration" value="${msg.migration_register_button}" styleClass="button_login"/>
 		 		</o:block>
 	 		</h:form>
-	 		<h:form id="migration_login" enctype="multipart/form-data">
+	 		<h:form id="migration_login">
 	   			<o:block label="#{msg.migration_login_headline}">
 		   			<o:input entity="migrationController" property="username" label="#{msg['login_username']}" required="true"/>
 		   			<o:input entity="migrationController" property="password" label="#{msg['login_password']}" required="true" type="password"/>		   					
