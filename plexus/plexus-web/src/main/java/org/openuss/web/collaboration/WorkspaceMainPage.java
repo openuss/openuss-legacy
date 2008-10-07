@@ -52,8 +52,8 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
 	@Prerender
-	@SuppressWarnings( { }) // NOPMD by Administrator on 13.03.08 13:02
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:54
+	@SuppressWarnings( { }) 
+	public void prerender() throws Exception { 
 		super.prerender();
 		
 		memberSelection.processSwitch();
@@ -102,8 +102,9 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 	 * @return outcome
 	 * @throws LectureException
 	 */
-	public String editWorkspace() throws LectureException { // NOPMD by Administrator on 13.03.08 12:55		workspaceInfo = currentWorkspace();
-		if (workspaceInfo == null) {
+	public String editWorkspace() throws LectureException { 
+		workspaceInfo = currentWorkspace();
+		if (workspaceInfo == null && workspaceInfo.getId() == null) {
 			return Constants.FAILURE;
 		}
 		workspaceInfo = workspaceService.getWorkspace(workspaceInfo.getId());
@@ -118,7 +119,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 			if (this.workspaceInfo.getId() != null) {
 				List<UserInfo> members = loadCourseMembers();
 				
-				List<Long> wsMemberIds = getWorkspaceMemberIds(); // NOPMD by Administrator on 13.03.08 12:55
+				List<Long> wsMemberIds = getWorkspaceMemberIds(); 
 				
 				Map<UserInfo, Boolean> map = new HashMap<UserInfo, Boolean>(members.size());
 				for (UserInfo member : members) {
@@ -296,7 +297,7 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		private DataPage<WorkspaceInfo> page;
 
 		@Override
-		@SuppressWarnings( { "unchecked" }) // NOPMD by Administrator on 13.03.08 13:02
+		@SuppressWarnings( { "unchecked" })
 		public DataPage<WorkspaceInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {
 				List<WorkspaceInfo> workspaces = new ArrayList<WorkspaceInfo>(getWorkspaceService().findWorkspacesByDomainAndUser(getCourseInfo().getId(), getUser()));

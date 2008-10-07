@@ -290,6 +290,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 	 * 
 	 * @return List of all subfolders
 	 */
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getFolderList() {
 		if (folderList == null) {
 			// Get folder list from document service.
@@ -310,7 +311,7 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		return folderList;
 	}
 
-	private String pathDepth(List path) {
+	private String pathDepth(List<Object> path) {
 		final StringBuilder depth = new StringBuilder();
 		for (int i = 0; i < path.size(); i++) {
 			depth.append("/ ");
@@ -394,7 +395,5 @@ public class WorkspaceViewPage extends AbstractCollaborationPage {
 		moveMode = false;
 		return Constants.SUCCESS;
 	}
-
-
 
 }
