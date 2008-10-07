@@ -562,7 +562,7 @@
 			
 			<navigation-case>
 				<from-outcome>course_options_members</from-outcome>
-				<to-view-id>/views/secured/course/courseparticipants.xhtml</to-view-id>				
+				<to-view-id>/views/secured/course/participants.xhtml</to-view-id>				
 			</navigation-case>
 
 			<navigation-case>

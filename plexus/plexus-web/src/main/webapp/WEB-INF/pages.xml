@@ -248,6 +248,13 @@
 			converterId="javax.faces.Long" />
 	</page>
 
+	<page view-id="/views/secured/course/participants.xhtml">
+		<securityConstraint domainObject="#{courseInfo}"
+			permissions="#{ACL.READ}" />
+		<parameter name="course" value="#{courseInfo.id}"
+			converterId="javax.faces.Long" />
+	</page>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 		Periods
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->

@@ -11,7 +11,7 @@
     <plexus:dataTable 
     	id="courseparticipants" 
     	label="#{msg.institute_members_subheading}" 
-    	value="views$secured$course$courseparticipants.data" 
+    	value="views$secured$course$participants.data" 
    	 	columnClasses="col_max_left, col_max_left, col_max_left, col_max_left, col_commands"
     	var="member" 
     	rows="20"
@@ -37,22 +37,10 @@
 			<h:outputText value="#{member.email}"/>
 		</t:column>
 
-		<!-- 
-		<t:column>
-			<f:facet name="header">#{msg['commands_header']}</f:facet>
-			<h:selectOneMenu styleClass="pulldown_small" valueChangeListener="#{views$secured$course$coursemembers.changedMember}">
-				<f:selectItem itemValue="null" itemLabel=""/>
-				<f:selectItem itemValue="suspend" itemLabel="#{msg['course_member_suspend']}"/>
-				<f:selectItem itemValue="readonly" itemLabel="#{msg['course_member_readonly']}"/>
-				<f:selectItem itemValue="active" itemLabel="#{msg['course_member_active']}"/>								
-			</h:selectOneMenu>
-		</t:column>
-		 -->
-		
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:linkProfileIcon user="#{member.userId}"/>
 			<plexus:command 
-				bean="#{views$secured$course$courseparticipants}"
+				bean="#{views$secured$course$participants}"
 				action="delete"
 				onclick="if (!confirm('#{msg.message_course_remove_member_confirmation} #{member.username}')) return false"
 				label="#{msg['course_members_delete']}"

@@ -16,7 +16,7 @@ import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.web.Constants;
 
-@Bean(name = "views$secured$course$courseparticipants", scope = Scope.REQUEST)
+@Bean(name = "views$secured$course$participants", scope = Scope.REQUEST)
 @View
 public class CourseParticipantsPage extends AbstractCoursePage {
 	private static final Logger logger = Logger.getLogger(CourseParticipantsPage.class);
