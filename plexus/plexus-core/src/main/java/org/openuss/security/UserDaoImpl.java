@@ -32,6 +32,7 @@ public class UserDaoImpl extends UserDaoBase {
 	 * @see org.openuss.security.UserDao#getPassword(int, java.lang.String,
 	 *      java.lang.Long)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getPassword(final int transform, final String queryString, final Long id) {
 		try {
@@ -85,11 +86,11 @@ public class UserDaoImpl extends UserDaoBase {
 	@Override
 	public void toUserInfo(User source, UserInfo target) {
 		super.toUserInfo(source, target);
-		if (source.isCentralUser()) {
-			target.setUsername(SecurityDomainUtility.extractUsername(source.getUsername()));
-		} else {
-			target.setUsername(source.getUsername());
-		}
+//		if (source.isCentralUser()) {
+//			target.setUsername(SecurityDomainUtility.extractUsername(source.getUsername()));
+//		} else {
+//		}
+		target.setUsername(source.getUsername());
 		target.setDisplayName(source.getDisplayName());
 		target.setCentralUser(source.isCentralUser());
 		target.setDomainName(SecurityDomainUtility.extractDomain(source.getUsername()));
