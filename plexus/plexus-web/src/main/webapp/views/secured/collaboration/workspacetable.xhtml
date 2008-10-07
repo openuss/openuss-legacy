@@ -29,6 +29,7 @@
 	        
 	    </plexus:dataTable>
     </s:acl>
+    
     <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
         <plexus:dataTable   
             id="workspaces" 
@@ -63,9 +64,7 @@
                     title="#{msg.collaboration_command_remove_workspace_hint}"
                     styleClass="icon_remove">
                 </plexus:command>
-            
             </plexus:column>
-            
         </plexus:dataTable>
     </s:acl>
     
