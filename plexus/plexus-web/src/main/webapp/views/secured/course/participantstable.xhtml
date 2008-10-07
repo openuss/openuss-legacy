@@ -3,6 +3,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://www.openuss.org/jsf-security"
       xmlns:plexus="http://www.openuss.org/plexus/jsf"
       xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:o="http://www.openuss.org/jsfcontrols"
@@ -39,15 +40,16 @@
 
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:linkProfileIcon user="#{member.userId}"/>
-			<plexus:command 
-				bean="#{views$secured$course$participants}"
-				action="delete"
-				onclick="if (!confirm('#{msg.message_course_remove_member_confirmation} #{member.username}')) return false"
-				label="#{msg['course_members_delete']}"
-				title="#{msg['course_members_delete_hint']}"
-				styleClass="icon_remove" />
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+				<plexus:command 
+					bean="#{views$secured$course$participants}"
+					action="delete"
+					onclick="if (!confirm('#{msg.message_course_remove_member_confirmation} #{member.username}')) return false"
+					label="#{msg['course_members_delete']}"
+					title="#{msg['course_members_delete_hint']}"
+					styleClass="icon_remove" />
+			</s:acl>
 		</plexus:column>
-		
 	</plexus:dataTable>      
 	
 </ui:composition>
