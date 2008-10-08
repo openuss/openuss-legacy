@@ -186,7 +186,11 @@ public class RegistrationController extends BaseBean {
 		
 		if (user.isCentralUser()) {
 			AuthenticationDomainInfo domain = findDomainByName(user.getDomainName());
-			changePasswordUrl = domain.getChangePasswordUrl();
+			if (domain != null ) {
+				changePasswordUrl = domain.getChangePasswordUrl();
+			} else {
+				changePasswordUrl = "";
+			}
 			return Constants.FAILURE;
 		}
 		// Handle local user
@@ -196,11 +200,12 @@ public class RegistrationController extends BaseBean {
 		return Constants.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	private AuthenticationDomainInfo findDomainByName(String domainName) {
 		// FIXME Refactor into business layer
 		List<AuthenticationDomainInfo> domains = ldapConfigurationService.getAllDomains();
 		for (AuthenticationDomainInfo domain : domains) {
-			if (StringUtils.equals(domain.getName(), domainName)) {
+			if (StringUtils.equalsIgnoreCase(domain.getName(), domainName)) {
 				return domain;
 			}
 		}

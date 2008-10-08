@@ -29,7 +29,7 @@ public class AuthenticationDomainImpl extends AuthenticationDomainBase implement
 	public void setName(String name) {
 		// not allowed to overwrite AuthenticationDomain name
 		if (getName() == null) {
-			super.setName(name);
+			super.setName(name.toLowerCase());
 		}
 	}
 
