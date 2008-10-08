@@ -12,6 +12,7 @@
     xmlns:x="http://myfaces.apache.org/extensions">
 	
 		<h:form>
+			<t:saveState id="newsletter_abo" value="#{newsletter_newsletter.subscribed}"/>
 			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.PARTICIPATE}">
 				<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
 					<h:outputText value="#{msg['newsletter_subscribe']}" styleClass="content_font_normal" rendered="#{not newsletter_newsletter.subscribed}" escape="false"></h:outputText>
@@ -19,12 +20,12 @@
 					<ul class="action_list">
 						<c:if test="#{not newsletter_newsletter.subscribed}">
 							<li class="newsletter_subscribe">
-								<h:commandLink value="" action="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_subscribe']}</h:commandLink>
+								<h:commandLink value="" actionListener="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_subscribe']}</h:commandLink>
 							</li>
 						</c:if>
 						<c:if test="#{newsletter_newsletter.subscribed}">
 							<li class="newsletter_unsubscribe">
-								<h:commandLink value="" action="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_unsubscribe']}</h:commandLink>
+								<h:commandLink value="" actionListener="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_unsubscribe']}</h:commandLink>
 							</li>
 						</c:if>
 						

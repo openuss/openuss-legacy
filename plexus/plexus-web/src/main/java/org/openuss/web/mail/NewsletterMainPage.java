@@ -3,6 +3,8 @@ package org.openuss.web.mail;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.event.ActionEvent;
+
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Scope;
 import org.apache.shale.tiger.view.Prerender;
@@ -72,15 +74,14 @@ public class NewsletterMainPage extends AbstractNewsletterPage{
 		return Constants.NEWSLETTER_NEWMAIL;
 	}
 	
-	public String toggleNewsletterStatus(){
+	public void toggleNewsletterStatus(ActionEvent action){
 		if (getNewsletter().isSubscribed()){
 			getCourseNewsletterService().unsubscribe(courseInfo, user);	
 			addMessage(i18n("newsletter_unsubscribe_success"));
-		} else if (!getNewsletter().isSubscribed()){
+		} else {
 			getCourseNewsletterService().subscribe(courseInfo, user);
 			addMessage(i18n("newsletter_subscribe_success"));
 		}
-		return Constants.SUCCESS;
 	}
 	
 	public String sendMail(){
