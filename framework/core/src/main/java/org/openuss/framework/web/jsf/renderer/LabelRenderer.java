@@ -24,7 +24,7 @@ public class LabelRenderer extends Renderer {
 	public void encodeBegin(FacesContext context, UIComponent component) throws java.io.IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
-		Map<String, String> attrs = component.getAttributes();
+		@SuppressWarnings("unchecked")	Map<String, String> attrs = component.getAttributes();
 		String id = attrs.get("for");
 
 		UIInput input = (UIInput) component.findComponent(id);
@@ -45,6 +45,7 @@ public class LabelRenderer extends Renderer {
 	public void encodeEnd(FacesContext context, UIComponent component) throws java.io.IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
+		@SuppressWarnings("unchecked")
 		Map<String, String> attrs = component.getAttributes();
 		String id = attrs.get("for");
 

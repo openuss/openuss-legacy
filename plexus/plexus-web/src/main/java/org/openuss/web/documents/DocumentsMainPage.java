@@ -145,6 +145,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 		return Constants.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String download() throws IOException {
 		logger.debug("downloading documents");
 		List<FileInfo> files = documentService.allFileEntries(selectedEntries());
@@ -253,6 +254,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public List<SelectItem> getFolderList() {
 		if(folderList == null){
 			//Get folder list from document service
@@ -263,7 +265,7 @@ public class DocumentsMainPage extends AbstractDocumentPage {
 				if (info != null) {
 					//check depth
 					StringBuilder depth = new StringBuilder();
-					List path = documentService.getFolderPath(info);
+					List<?> path = documentService.getFolderPath(info);
 					for(int i = 0; i < path.size(); i++) {
 						depth = depth.append("/ ");
 					}

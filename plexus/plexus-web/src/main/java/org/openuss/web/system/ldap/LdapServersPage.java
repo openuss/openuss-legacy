@@ -118,6 +118,7 @@ public class LdapServersPage extends AbstractLdapPage {
 		
 		private DataPage<LdapServerInfo> dataPage;		
 			
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<LdapServerInfo> getDataPage(int startRow, int pageSize) {
 			if (dataPage == null) {

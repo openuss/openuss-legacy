@@ -99,6 +99,7 @@ public class MyUniPage extends BasePage {
 	private static final String coursesBasePath = "/views/secured/course/main.faces";
 	private static final String submissionBasePath = "/views/secured/papersubmission/submissionview.faces";
 
+	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception {
 		super.prerender();
@@ -312,6 +313,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForDepartmentList(UIFlexList departmentsList) {
 		if (departmentListDataLoaded == false && prerenderCalled == true && departmentsList != null) {
 			logger.debug("Loading data for departments flexlist");
@@ -329,6 +331,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForInstituteList(UIFlexList institutesList) {
 		if (instituteListDataLoaded == false && prerenderCalled == true && institutesList != null) {
 			logger.debug("Loading data for institutes flexlist");
@@ -347,6 +350,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForCourseList(CourseUIFlexList coursesList) {
 		if (courseListDataLoaded == false && prerenderCalled == true && coursesList != null) {
 			logger.debug("Loading data for courses flexlist");
@@ -365,6 +369,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadValuesForExamList(UIFlexList submissionsList2) {
 		if (examListDataLoaded == false && prerenderCalled == true && examsList != null) {
 			logger.debug("Loading data for submissions flexlist");
@@ -382,6 +387,7 @@ public class MyUniPage extends BasePage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void loadValuesForTabs(UITabs tabs) {
 		if (tabDataLoaded == false && prerenderCalled == true && tabs != null) {
 			logger.debug("Loading data for MyUni-Tabs");
@@ -488,6 +494,7 @@ public class MyUniPage extends BasePage {
 		return listItems;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<ListItemDAO> getVisibleExamListItems(Long universityId) {
 		List<ListItemDAO> listItems = new ArrayList<ListItemDAO>();
 		final DateFormat dateFormat = new SimpleDateFormat();
@@ -689,6 +696,7 @@ public class MyUniPage extends BasePage {
 		return departmentsList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setDepartmentsList(UIFlexList departmentsList) {
 		logger.debug("Setting departments flexlist component");
 		this.departmentsList = departmentsList;
@@ -705,6 +713,7 @@ public class MyUniPage extends BasePage {
 		return institutesList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setInstitutesList(UIFlexList institutesList) {
 		logger.debug("Setting institutes flexlist component");
 		this.institutesList = institutesList;
@@ -721,6 +730,7 @@ public class MyUniPage extends BasePage {
 		return coursesList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setCoursesList(CourseUIFlexList coursesList) {
 		logger.debug("Setting courses flexlist component");
 		this.coursesList = coursesList;
@@ -737,6 +747,7 @@ public class MyUniPage extends BasePage {
 		return examsList;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setExamsList(UIFlexList examsList) {
 		logger.debug("Setting exams flexlist component");
 		this.examsList = examsList;
@@ -750,6 +761,7 @@ public class MyUniPage extends BasePage {
 		return tabs;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setTabs(UITabs tabs) {
 		logger.debug("Setting MyUni-tabs component");
 		this.tabs = tabs;

@@ -324,6 +324,7 @@ public class PaperSubmissionExamPage extends AbstractPaperSubmissionPage {
 
 		private DataPage<ExamInfo> page;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<ExamInfo> getDataPage(int startRow, int pageSize) {
 			if (page == null) {

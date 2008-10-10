@@ -137,6 +137,7 @@ public class PaperSubmissionLecturerViewPage extends AbstractPaperSubmissionPage
 		return Constants.SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String saveComment() {
 		List<PaperSubmissionInfo> submissionList = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), paperSubmissionInfo.getUserId());
 		submissionList.get(submissionList.size()-1).setComment(paperSubmissionInfo.getComment());

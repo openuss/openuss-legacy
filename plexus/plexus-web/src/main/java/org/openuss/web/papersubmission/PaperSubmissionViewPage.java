@@ -64,6 +64,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	
 	/** Prepares the information needed for rendering. 
 	 * @throws Exception */
+	@SuppressWarnings("unchecked")
 	@Prerender
 	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:57
 		super.prerender();

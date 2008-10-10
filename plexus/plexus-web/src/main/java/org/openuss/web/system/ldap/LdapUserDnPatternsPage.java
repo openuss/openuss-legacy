@@ -129,6 +129,7 @@ public class LdapUserDnPatternsPage extends AbstractLdapPage{
 
 		private DataPage<UserDnPatternInfo> dataPage;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public DataPage<UserDnPatternInfo> getDataPage(int startRow, int pageSize) {
 			if (dataPage == null) {
