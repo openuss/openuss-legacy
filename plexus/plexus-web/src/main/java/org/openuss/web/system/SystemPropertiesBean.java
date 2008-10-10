@@ -1,7 +1,6 @@
 package org.openuss.web.system;
 
 import org.apache.log4j.Logger;
-
 import org.apache.shale.tiger.managed.Bean;
 import org.apache.shale.tiger.managed.Property;
 import org.apache.shale.tiger.managed.Scope;
@@ -70,7 +69,7 @@ public class SystemPropertiesBean {
 		try {
 			return systemService.getProperty(propertyKey).getValue();
 		} catch (Exception ex) {
-			logger.error(ex);
+			logger.error("System Property "+propertyKey+" not defined", ex);
 			return "";
 		}
 	}
