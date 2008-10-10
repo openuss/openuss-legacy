@@ -40,6 +40,7 @@ public class WikiOverviewPage extends AbstractWikiPage {
 		wikiBreadCrumb.setLink(PageLinks.WIKI_MAIN);
 		wikiBreadCrumb.setName(i18n(Constants.WIKI_MAIN_HEADER));
 		wikiBreadCrumb.setHint(i18n(Constants.WIKI_MAIN_HEADER));
+		wikiBreadCrumb.addParameter("course",courseInfo.getId());
 		breadcrumbs.addCrumb(wikiBreadCrumb);
 
 		final BreadCrumb wikiSiteBreadCrumb = new BreadCrumb();

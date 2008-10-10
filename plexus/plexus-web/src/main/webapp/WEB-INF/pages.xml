@@ -460,49 +460,34 @@
 		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 	<page view-id="/views/secured/wiki/*">
-		<securityConstraint domainObject="#{courseInfo}"
-			permissions="#{ACL.READ}" />
-		<parameter name="course" value="#{courseInfo.id}"
-			converterId="javax.faces.Long" />
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.PARTICIPATE}" />
+		<parameter name="course" value="#{courseInfo.id}" converterId="javax.faces.Long" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikimain.xhtml">
-		<parameter name="page"
-			value="#{wiki_current_site_version.name}" />
-		<parameter name="version"
-			value="#{wiki_current_site_version.id}"
-			converterId="javax.faces.Long" />
+		<parameter name="page" value="#{wiki_current_site_version.name}" />
+		<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikiversion.xhtml">
-		<parameter name="page"
-			value="#{views$secured$wiki$wikimain.siteVersionInfo.name}" />
+		<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikioverview.xhtml"></page>
 
 	<page view-id="/views/secured/wiki/wikiprintpreview.xhtml">
-		<parameter name="page"
-			value="#{wiki_current_site_version.name}" />
-		<parameter name="version"
-			value="#{wiki_current_site_version.id}"
-			converterId="javax.faces.Long" />
+		<parameter name="page" value="#{wiki_current_site_version.name}" />
+		<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long" />
 	</page>
 
-	<page
-		view-id="/views/secured/wiki/wikisiteoverwriteconfirmation.xhtml">
-		<securityConstraint domainObject="#{courseInfo}"
-			permissions="#{ACL.DELETE}" />
-		<parameter name="page"
-			value="#{views$secured$wiki$wikimain.siteVersionInfo.name}" />
+	<page view-id="/views/secured/wiki/wikisiteoverwriteconfirmation.xhtml">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.DELETE}" />
+		<parameter name="page" value="#{views$secured$wiki$wikimain.siteVersionInfo.name}" />
 	</page>
 
-	<page
-		view-id="/views/secured/wiki/wikisiteremoveconfirmation.xhtml">
-		<securityConstraint domainObject="#{courseInfo}"
-			permissions="#{ACL.DELETE}" />
-		<parameter name="site" value="#{wiki_site_to_remove.wikiSiteId}"
-			converterId="javax.faces.Long" />
+	<page view-id="/views/secured/wiki/wikisiteremoveconfirmation.xhtml">
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.DELETE}" />
+		<parameter name="site" value="#{wiki_site_to_remove.wikiSiteId}" converterId="javax.faces.Long" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikiimport.xhtml">
@@ -518,35 +503,25 @@
 	</page>
 
 	<page view-id="/views/secured/wiki/wikicreatenewsite.xhtml">
-		<securityConstraint domainObject="#{courseInfo}"
-			permissions="#{ACL.CREATE}" />
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.PARTICIPATE}" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikichooseimage.xhtml">
-		<parameter name="version"
-			value="#{wiki_current_site_version.id}"
-			converterId="javax.faces.Long" />
-		<parameter name="image" value="#{wiki_image.id}"
-			converterId="javax.faces.Long" />
+		<parameter name="version" value="#{wiki_current_site_version.id}" converterId="javax.faces.Long" />
+		<parameter name="image" value="#{wiki_image.id}" converterId="javax.faces.Long" />
 		<parameter name="imagename" value="#{wiki_image.name}" />
 	</page>
 
-	<page
-		view-id="/views/secured/wiki/wikiimageremoveconfirmation.xhtml">
-		<parameter name="version"
-			value="#{wiki_current_site_version.id}" />
-		<parameter name="image" value="#{wiki_image.id}"
-			converterId="javax.faces.Long" />
+	<page view-id="/views/secured/wiki/wikiimageremoveconfirmation.xhtml">
+		<parameter name="version" value="#{wiki_current_site_version.id}" />
+		<parameter name="image" value="#{wiki_image.id}" converterId="javax.faces.Long" />
 		<parameter name="imagename" value="#{wiki_image.name}" />
 	</page>
 
 	<page view-id="/views/secured/wiki/wikiedit.xhtml">
-		<securityConstraint domainObject="#{courseInfo}"
-			permissions="#{ACL.UPDATE}" />
-		<parameter name="page"
-			value="#{wiki_current_site_version.name}" />
-		<parameter name="version"
-			value="#{wiki_current_site_version.id}" />
+		<securityConstraint domainObject="#{courseInfo}" permissions="#{ACL.PARTICIPATE}" />
+		<parameter name="page" value="#{wiki_current_site_version.name}" />
+		<parameter name="version" value="#{wiki_current_site_version.id}" />
 	</page>
 
 </pages>
