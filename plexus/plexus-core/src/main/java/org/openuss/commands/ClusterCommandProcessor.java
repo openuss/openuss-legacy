@@ -132,6 +132,7 @@ public class ClusterCommandProcessor implements ApplicationContextAware {
 	 * Load all commands that are newer than the last processed one.
 	 * @return Collection<Command> 
 	 */
+	@SuppressWarnings("unchecked")
 	private Collection<Command> loadNextNodeCommands() {
 		LastProcessedCommand last = lastProcessedCommandDao.load(systemService.getInstanceIdentity());
 
