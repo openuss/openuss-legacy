@@ -45,7 +45,8 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	private static final String ROLE_PREFIX = "ROLE_";
 
 	@Override
-	protected Collection handleGetAllUsers() throws Exception {
+	@SuppressWarnings("unchecked")
+	protected Collection<UserInfo> handleGetAllUsers() throws Exception {
 		return getUserDao().loadAll(UserDao.TRANSFORM_USERINFO);
 	}
 
@@ -399,13 +400,15 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 	}
 
 	@Override
-	protected Collection handleGetAllGroups() throws Exception {
+	@SuppressWarnings("unchecked")
+	protected Collection<GroupItem> handleGetAllGroups() throws Exception {
 		GroupDao groupDao = getGroupDao();
 		return groupDao.loadAll(GroupDao.TRANSFORM_GROUPITEM);
 	}
 
 	@Override
-	protected List handleGetUsers(UserCriteria criteria) throws Exception {
+	@SuppressWarnings("unchecked")
+	protected List<UserInfo> handleGetUsers(UserCriteria criteria) throws Exception {
 		return getUserDao().findUsersByCriteria(UserDao.TRANSFORM_USERINFO, criteria);
 	}
 
