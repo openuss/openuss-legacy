@@ -40,6 +40,7 @@ public class NewsletterServiceImpl extends org.openuss.newsletter.NewsletterServ
 	 *      org.openuss.security.User)
 	 */
 	protected void handleSubscribe(NewsletterInfo newsletter, UserInfo user) throws java.lang.Exception {
+		Validate.notNull(user.getId(), "UserInfo id must not be empty!");
 		Newsletter ml = loadNewsletter(newsletter);
 		User userObject = getSecurityService().getUserObject(user);
 		Subscriber subscriber = getSubscriberDao().findByUserAndNewsletter(userObject, ml);
