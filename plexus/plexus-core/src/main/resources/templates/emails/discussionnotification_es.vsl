@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS notificador de temas del foro</font></h3>
+		</p>
+		<p>
+			Usted ha recibido este email de notificación porque hay un cambio en un tema no leido: <i>${topicname}</i>, 
+			para ir al tema, pinche en el siguiente enlace:<br/>
+			<a href="${topiclink}">${topiclink}</a>
+		</p>
+		<p>
+			Si el enlace de arriba no funciona, copie y pegue la URL en una nueva ventana de su navegador.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

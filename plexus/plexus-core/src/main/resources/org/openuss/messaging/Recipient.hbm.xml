@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.messaging.RecipientImpl" table="MESSAGE_RECIPIENT" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="state" type="org.openuss.messaging.SendStateEnum">
+            <column name="STATE" not-null="true" unique="false" sql-type="INTEGER"/>
+        </property>
+        <property name="send" type="java.util.Date">
+            <column name="SEND" not-null="false" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="EMAIL" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="locale" type="java.lang.String">
+            <column name="LOCALE" not-null="false" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="sms" type="java.lang.String">
+            <column name="SMS" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <many-to-one name="job" class="org.openuss.messaging.MessageJobImpl" foreign-key="MESSAGE_RECIPIENT_JOB_FKC" lazy="proxy" fetch="select">
+            <column name="JOB_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

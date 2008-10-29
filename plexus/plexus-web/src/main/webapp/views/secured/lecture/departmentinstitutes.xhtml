@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	
+		<ui:composition template="/views/layout/layout.xhtml">
+		
+	  		<ui:define name="navigation"> 
+				<ui:include src="/views/commons/navigation/department.xhtml" />
+			</ui:define>
+			
+	  		<ui:define name="content">
+	  			
+				<h:form id="institutesForm">
+					<ui:include src="/views/commons/institute/institutestable.xhtml"/>
+					<o:block>
+					<h:commandButton 
+						    id="addInstitute"
+							action="institute_registration_start" 
+							value="#{msg.institute_command_add_institute}" 
+							title="#{msg.institute_command_add_institute_hint}"
+							styleClass="button"/>
+					</o:block>
+				</h:form>
+				
+				<h:form id="applicationsForm" rendered="#{views$secured$lecture$departmentinstitutes.departmentType==0}">
+					
+					<ui:include src="/views/secured/lecture/applicationstable.xhtml"/>
+				</h:form>
+			</ui:define>
+					
+		</ui:composition>
+		
+	<!-- text below will be ignored -->
+	</body>
+</html>

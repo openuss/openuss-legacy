@@ -1,0 +1,34 @@
+<f:subview
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:o="http://www.openuss.org/jsfcontrols">
+
+			<div id="footer_left">
+				<ul class="back"> 
+					<li>
+						<h:outputLink id="pagebackLink" value="javascript:history.back()">
+							<h:outputText value="${msg.footer_backward}"/>
+						</h:outputLink>
+					</li>
+				</ul>					
+			</div>
+			<div id="footer_right">
+				<ul class="linkup">
+					<li>
+						<h:outputLink id="pageupLink" value="#pageup">
+							<h:outputText value="${msg.footer_pageup}"/>
+						</h:outputLink>
+					</li>
+				</ul>
+				<ul class="none">
+					<li>
+					    <small>Server: #{SYSTEM_PROPERTIES.OPENUSS_INSTANCE_ID}</small>
+					</li>
+				</ul>
+			</div>
+			<div id="footer_center">
+				<label>(c) Copyright OpenUSS 2000 - 2007 </label> <a class="smalllink" href="${facesContext.externalContext.requestContextPath}/views/public/impressum.faces" title="#{msg.impressum_header}">#{msg.impressum_header}</a>				
+				<label>Servicecenter E-Learning: </label> <a class="smalllink" href="mailto:openuss@e-learning.uni-muenster.de" title="openuss@e-learning.uni-muenster.de">openuss@e-learning.uni-muenster.de</a>
+			</div>
+ </f:subview>

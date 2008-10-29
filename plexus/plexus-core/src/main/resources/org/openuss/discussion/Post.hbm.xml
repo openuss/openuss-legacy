@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.discussion.PostImpl" table="DISCUSSION_POST" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="title" type="java.lang.String">
+            <column name="TITLE" not-null="true" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="text" type="org.andromda.persistence.hibernate.usertypes.HibernateStringClobType">
+            <column name="TEXT" not-null="true" unique="false" sql-type="BLOB"/>
+        </property>
+        <property name="created" type="java.util.Date">
+            <column name="CREATED" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="lastModification" type="java.util.Date">
+            <column name="LAST_MODIFICATION" not-null="false" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="ip" type="java.lang.String">
+            <column name="IP" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <many-to-one name="submitter" class="org.openuss.security.UserImpl" foreign-key="DISCUSSION_POST_SUBMITTER_FKC" lazy="proxy" fetch="select">
+            <column name="SUBMITTER_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="topic" class="org.openuss.discussion.TopicImpl" foreign-key="DISCUSSION_POST_TOPIC_FKC" lazy="proxy" fetch="select">
+            <column name="TOPIC_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="formula" class="org.openuss.discussion.FormulaImpl" foreign-key="DISCUSSION_POST_FORMULA_FKC" cascade="all" lazy="proxy" fetch="select">
+            <column name="FORMULA_FK" not-null="false" sql-type="BIGINT" unique="true"/>
+        </many-to-one>
+        <many-to-one name="editor" class="org.openuss.security.UserImpl" foreign-key="DISCUSSION_POST_EDITOR_FKC" lazy="proxy" fetch="select">
+            <column name="EDITOR_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

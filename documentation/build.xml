@@ -1,0 +1,165 @@
+<project name="openuss :: documentation :: build" default="stage generated Site Documentation" basedir="../">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<property name="stageDirectory" value="${basedir}/target/website"/>
+
+	<property name="website" value="${stageDirectory}/teamopenuss.uni-muenster.de"/>
+	
+	<property name="javadoc.src" value="target/site/apidocs"/>
+	<property name="javadoc.dst" value="apidocs"/>
+	<property name="clover.src" value="target/site/clover"/>
+	<property name="clover.dst" value="clover"/>
+	<property name="xref.src" value="target/site/xref"/>
+	<property name="xref.dst" value="xref"/>
+	<property name="xref-test.src" value="target/site/xref-test"/>
+	<property name="xref-test.dst" value="xref-test"/>
+
+
+	<property name="application" value="application"/>
+	<property name="framework.jsfcontrols.src" value="framework/jsfcontrols"/>
+	<property name="framework.utilities.src" value="framework/utilities"/>
+	<property name="framework.tests.src" value="framework/tests"/>
+	<property name="framework.jsfcontrols.dst" value="framework/framework-jsfcontrols"/>
+	<property name="framework.utilities.dst" value="framework/framework-utilities"/>
+	<property name="framework.tests.dst" value="framework/framework-tests"/>
+
+	<property name="news.api" value="news/news-api"/>
+	<property name="foundation.api" value="foundation/foundation-api"/>
+
+	<!-- ================================= 
+          target: generate Site Documentation              
+         ================================= -->
+    <target name="generate Site Documentation">
+        <antcall target="site"/>
+    	<antcall target="siteDocumentation"/>
+    </target>
+
+	
+	<!-- ================================= 
+          target: stage generated Site Documentation              
+         ================================= -->
+    <target name="stage generated Site Documentation">
+        <antcall target="stage"/>
+    	<antcall target="copy.generated.reports"/>
+    	<antcall target="stageDocumentation"/>
+    </target>
+
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: site                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="site">
+		<exec executable="${maven.executable}">
+			<arg line="site:site"/>
+		</exec>
+	</target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: siteDocumentation                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="siteDocumentation">
+		<exec executable="${maven.executable}" dir="${basedir}/documentation">
+			<arg line="site:site"/>
+		</exec>
+	</target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: stage                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="stage" description="Creates the full website of the entire project into a specified directory">
+        <exec executable="${maven.executable}">
+        	<arg line="site:stage"/>
+        	<arg line="-DstagingDirectory=${stageDirectory}"/>
+    	</exec>
+    </target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: stageDocumentation                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="stageDocumentation" description="Creates the website of the documentation project into a specified directory">
+        <exec executable="${maven.executable}" dir="${basedir}/documentation">
+        	<arg line="site:stage"/>
+        	<arg line="-DstagingDirectory=${stageDirectory}"/>
+    	</exec>
+    </target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: copy generated reports                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="copy.generated.reports">
+            <copy overwrite="true" todir="${website}/${application}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${application}/${javadoc.src}" id="application"/>
+            </copy>
+            <copy overwrite="true" todir="${website}/${application}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${application}/${clover.src}" id="application"/>
+            </copy>
+            <copy overwrite="true" todir="${website}/${application}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${application}/${xref.src}" id="application"/>
+            </copy>
+            <copy overwrite="true" todir="${website}/${application}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${application}/${xref-test.src}" id="application"/>
+            </copy>
+    		<copy overwrite="true" todir="${website}/${framework.jsfcontrols.dst}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.jsfcontrols.src}/${javadoc.src}" id="jsfcontrols"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.jsfcontrols.dst}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.jsfcontrols.src}/${clover.src}" id="jsfcontrols"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.jsfcontrols.dst}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.jsfcontrols.src}/${xref.src}" id="jsfcontrols"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.jsfcontrols.dst}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.jsfcontrols.src}/${xref-test.src}" id="jsfcontrols"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.tests.dst}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.tests.src}/${javadoc.src}" id="tests"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.tests.dst}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.tests.src}/${clover.src}" id="tests"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.tests.dst}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.tests.src}/${xref.src}" id="tests"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.tests.dst}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.tests.src}/${xref-test.src}" id="tests"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.utilities.dst}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.utilities.src}/${javadoc.src}" id="utilities"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.utilities.dst}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.utilities.src}/${clover.src}" id="utilities"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.utilities.dst}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.utilities.src}/${xref.src}" id="utilities"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${framework.utilities.dst}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${framework.utilities.src}/${xref-test.src}" id="utilities"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${news.api}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${news.api}/${javadoc.src}" id="news"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${news.api}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${news.api}/${clover.src}" id="news"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${news.api}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${news.api}/${xref.src}" id="news"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${news.api}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${news.api}/${xref-test.src}" id="news"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${foundation.api}/${javadoc.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${foundation.api}/${javadoc.src}" id="foundation"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${foundation.api}/${clover.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${foundation.api}/${clover.src}" id="foundation"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${foundation.api}/${xref.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${foundation.api}/${xref.src}" id="foundation"/>
+    		</copy>
+    		<copy overwrite="true" todir="${website}/${foundation.api}/${xref-test.dst}" failonerror="false">
+            	<fileset dir="${basedir}/${foundation.api}/${xref-test.src}" id="foundation"/>
+    		</copy>
+    </target>
+
+	
+</project>

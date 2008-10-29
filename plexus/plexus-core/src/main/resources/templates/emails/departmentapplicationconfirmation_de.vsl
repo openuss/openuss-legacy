@@ -1,0 +1,18 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
+			Hallo, <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,<br> 
+			ihre Bewerbung für die Mitgliedschaft des Institutes ${institutename} im Fachbereich <i>${departmentname}</i> 
+			wurde erfolgreich versandt. Sie werden informiert, sobald ihre Bewerbung bearbeitet wurde.
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS!
+		</p>
+		<p>
+			<small>
+				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+			</small>
+		</p>
+	</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+		<s:authorize ifAllGranted="ROLE_USER">
+			<s:acl domainObject="#{instituteInfo}" hasNotPermission="#{ACL.INSTITUTE_TUTOR}">
+				<o:block label="#{msg.options}" styleClass="option_box">
+					<ul class="action_list">
+						<li class="institute_apply_for_membership">
+							<h:commandLink action="#{views$public$institute$institute.applyForMembership}" ><span />#{msg['institute_command_assistant_application']}</h:commandLink>
+						</li>
+					</ul>
+				</o:block>
+			</s:acl>
+		</s:authorize>
+	
+</f:subview>

@@ -1,0 +1,18 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
+			Hallo <i>${userfirstname} ${userlastname} (${username})</i>,
+			sie wurden soeben als Mitglied aus der Organisation  
+			<i>${organisationname}</i> entfernt.
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS!
+		</p>
+		<p>
+			<small>
+				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+			</small>
+		</p>
+	</body>
+</html>

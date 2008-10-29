@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Available Downloads</title>
+    </properties>
+
+    <body>
+		<a name="stable"/>
+        <section name="Latest Stable Version">
+			<h4>
+				OpenUSS - 1.1
+			</h4>
+			<p>
+				The latest stable sersion can be found <a href="http://prdownloads.sourceforge.net/openuss/openuss-user.zip?download">here</a>
+			</p>
+		</section>
+		<a name="revo"/>
+        <section name="OpenUSS Revolutions">
+			<h4>
+				OpenUSS - 2.0 Revolutions
+			</h4>
+			<p>
+				The latest version can be found <a href="http://prdownloads.sourceforge.net/openuss/usr-openuss20-beta1.zip?download">here</a>
+			</p>
+		</section>
+		<a name="plexus"/>
+        <section name="OpenUSS Plexus">
+			<h4>
+				OpenUSS - 3.0 Plexus
+			</h4>
+			<p>
+				There is no version released yet for OpenUSS PLEXUS.<br/>
+				Explore the <a href="http://sourceforge.net/project/showfiles.php?group_id=6259">Sourceforge Site</a> to find out about the latest releases.
+			</p>
+		</section>
+		<section name="Download latest sources">
+			<h4>
+				Get the latest sources from our CVS repository.
+			</h4>
+			<p>
+				You can either use the <a href="http://openuss.cvs.sourceforge.net/openuss/">cvs viewer</a> to download isolated sources only or <br/>
+				you may use the <a href="http://sourceforge.net/cvs/?group_id=6259">Anonymous CVS Access</a> to download the complete sources to your computer.
+			</p>
+		</section>
+    </body>
+</document>

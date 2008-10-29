@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:of="http://www.openuss.org/jsf-core"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{instituteInfo.name}"/></ui:define>
+ 		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/institute.xhtml" />
+		</ui:define>
+  		<ui:define name="content">
+          	<o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
+  				<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
+  			</o:block>
+  					
+  			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
+			<h:form id="membersForm"> 
+				<ui:include src="institutememberstable.xhtml" />
+				<o:block>
+					<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$institutemembers.save}" styleClass="button_save"/>
+					<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="institute_members" styleClass="button_cancel" immediate="true"/>
+				</o:block>
+	  		</h:form>
+
+			
+  			<c:if test="#{views$secured$lecture$auth$aspirants.data.data.rowCount > 0}">
+			  	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
+				<h:form id="membersForm"> 
+					<ui:include src="aspirantstable.xhtml" />
+					<o:block>
+						<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$aspirants.save}" styleClass="button_save"/>
+						<h:commandButton value="${msg.reset}" title="#{msg.reset_hint}" action="institute_aspirants" styleClass="button_cancel" immediate="true"/>
+					</o:block>
+		  		</h:form>
+  			</c:if>
+
+	  		<h:form id="newMemberForm">
+	  			<o:block label="#{msg['institute_members_add_subheading']}" styleClass="form_box">
+					<o:input entity="views$secured$lecture$auth$institutemembers" property="username" required="true" label="#{msg['user_username']}" styleClass="field_inline">
+						<f:validator validatorId="usernameExistValidator" />
+					</o:input>
+					<h:commandButton value="#{msg['institute_members_command_add']}" title="#{msg['institute_members_command_add_hint']}" actionListener="#{views$secured$lecture$auth$institutemembers.addMember}" styleClass="button_save"/>
+				</o:block>
+			</h:form>	
+  		
+  		</ui:define>
+	</ui:composition>
+	
+	<!-- text above will be ignored -->
+	
+	</body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Migration Assistant</font></h3>
+			Herzlichen Glueckwunsch!
+		</p>
+		<p>
+			Nachdem Sie Ihren Benutzernamen und Ihr Passwort fuer die Domaene <i>${domainname}</i> eingegeben hatten, wurde Ihr OpenUSS Profil erfolgreich umgestellt.
+			Ab jetzt muessen Sie sich stets mit dem Benutzernamen <i>${username}</i> und dem Passwort, welches Sie fuer die Domaene <i>${domainname}</i> verwenden, anmelden.
+			Zukuenftige E-Mail-Benachrichtigungen werden stets an diese E-Mail-Adresse gesendet.
+		</p>
+		<p>			
+			Sollten bei Verwendung der o. g. Anmeldedaten Probleme auftreten, kontaktieren Sie bitte das <a href="mailto:openuss@e-learning.uni-muenster.de">Servicecenter E-Learning</a>
+		</p>
+		<p>
+			Viel Spass mit OpenUSS!
+		</p>
+		<p>
+			<small>Auf diese E-Mail koennen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.</small>			
+		</p>
+		
+	</body>
+</html>
+
+

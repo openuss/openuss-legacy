@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+	<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/course.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<!-- removed ACL tags -->
+
+		<h:form id="brainContestTableFrom">
+			<plexus:dataTable id="brainContestTable"
+				columnClasses="col_date, col_max_left, col_min_left, col_commands"
+				label="#{msg.braincontest_main_header}"
+				value="views$secured$braincontest$braincontestmain.data"
+				var="braincontest" rows="20"
+				infoText="#{msg.table_info_text_braincontests}">
+
+				<t:column>
+					<plexus:commandSortHeader columnName="releaseDate">#{msg['braincontest_main_column_date']}</plexus:commandSortHeader>
+					<h:outputText value="#{braincontest.releaseDate}" />
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="title"> #{msg['braincontest_main_column_title']}</plexus:commandSortHeader>
+					<o:link value="/views/secured/braincontest/braincontestsolve.faces" title="#{braincontest.title}" >
+						<f:param value="#{courseInfo.id}" name="course" />
+						<f:param value="#{braincontest.id}" name="braincontest"/>
+						<h:outputText value="#{braincontest.title}" />
+					</o:link>
+				</t:column>
+
+				<t:column>
+					<plexus:commandSortHeader columnName="answers">#{msg['braincontest_main_column_answers']}</plexus:commandSortHeader>
+					<h:outputText value="#{braincontest.answers} / #{braincontest.tries}" />
+				</t:column>
+				
+				<t:column >
+						<plexus:command
+							bean="#{views$secured$braincontest$braincontestmain}"
+							action="topList" 
+							label="#{msg.braincontest_main_button_top}"
+							title="#{msg.braincontest_main_button_top}" 
+							rendered="#{braincontest.released}"
+							styleClass="icon_toplist"/>
+					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+						<plexus:command
+							bean="#{views$secured$braincontest$braincontestmain}"
+							action="editContest" 
+							label="#{msg['braincontest_main_button_edit']}"
+							title="#{msg['braincontest_main_button_edit']}"
+							styleClass="icon_edit" />
+						<plexus:command						
+							bean="#{views$secured$braincontest$braincontestmain}"
+							onclick="if (!confirm('#{msg.braincontest_confirm_delete_post}')) return false"
+							action="remove" label="#{msg['braincontest_main_button_remove']}"
+							title="#{msg['braincontest_main_button_remove']}" 
+							styleClass="icon_remove"/>
+					</s:acl>	
+				</t:column>
+			</plexus:dataTable>
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+				<o:block>
+					<h:commandButton
+						action="#{views$secured$braincontest$braincontestmain.newContest}"
+						value="#{msg.braincontest_new}"
+						title="#{msg.braincontest_new}"
+						styleClass="button_add" />
+				</o:block>
+			</s:acl>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>

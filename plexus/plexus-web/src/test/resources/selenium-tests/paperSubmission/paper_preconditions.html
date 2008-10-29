@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>paper_preconditions</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">paper_preconditions</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/plexus-web/views/welcome.faces</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="17">assertTitle</td>
+	<td height="17">Willkommen bei OpenUSS!</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>j_password</td>
+	<td>masterkey</td>
+</tr>
+<tr>
+	<td height="19">clickAndWait</td>
+	<td height="19">loginButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">assertTitle</td>
+	<td height="19">MeineUni</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">open</td>
+	<td height="19">/plexus-web/views/public/institute/institute.faces?institute=15</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">assertTitle</td>
+	<td height="19">Institutionsseite - OpenUSS</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">clickAndWait</td>
+	<td height="19">cmd_inst_coursetype</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">assertTitle</td>
+	<td height="19">Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td height="19">clickAndWait</td>
+	<td height="19">addCourseType</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td height="19">assertTitle</td>
+	<td height="19">Institutionsseite - OpenUSS - Support</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>PaperSubmission</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shortcut</td>
+	<td>PS</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>test PaperSubmission</td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>periodSelection</td>
+	<td>label=Permanentes Angebot</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>saveCourseType</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cmd_inst_courses</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>courseTypeSelect</td>
+	<td>label=PaperSubmission</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addPeriod</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>accessType</td>
+	<td>label=Mit manueller Freigabe.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>papersubmission</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cmd_papersubmission</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>addExam</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>PaperSubmission</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='...']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=26</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>savePaper</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>home</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

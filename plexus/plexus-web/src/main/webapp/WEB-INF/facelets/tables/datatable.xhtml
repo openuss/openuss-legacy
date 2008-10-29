@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:oc="http://www.openuss.org/jsf-core">
+      
+   	<c:if test="${empty rowClasses}">
+		<c:set var="rowClasses" value="odd, even"/>
+	</c:if> 
+	<c:if test="${empty columnClasses}">
+		<c:set var="columnClasses" value="col_max_left, col_min_left"/>
+	</c:if>
+	<c:if test="${empty rows}">
+		<c:set var="rows" value="10"/>
+	</c:if>
+	<c:if test="${empty pages}">
+		<c:set var="pages" value="5"/>
+	</c:if>
+	<c:if test="${empty rendered}">
+		<c:set var="rendered" value="true"/>
+	</c:if>
+	<c:if test="${empty forceId}">
+		<c:set var="forceId" value="false"/>
+	</c:if>
+      
+    <oc:setValueBinding var="data" bean="${value}" property="data"/>  
+    <oc:setValueBinding var="binding" bean="${value}" property="table"/>  
+    <oc:setValueBinding var="sortColumn" bean="${value}" property="sortColumn"/>  
+    <oc:setValueBinding var="ascending" bean="${value}" property="ascending"/>  
+    <oc:setValueBinding var="firstRow" bean="${value}" property="firstRow"/>
+    
+    <c:if test="${rendered}">
+	    <o:block label="${label}">
+	    	<div class="table_scroll">
+				<t:dataTable id="#{id}" forceId="#{forceId}" 
+					value="${data}"
+					binding="#{binding}"
+					styleClass="table"
+					headerClass="table_header"
+					footerClass="table_footer"
+					rowClasses="${rowClasses}"
+					columnClasses="${columnClasses}"
+					preserveDataModel="true"
+					preserveSort="true"
+					rows="${rows}"
+					sortColumn="${sortColumn}" 
+					sortAscending="${ascending}"
+					first="${firstRow}">
+					<oc:strAttribute name="var" value="${var}" />
+					<oc:strAttribute name="rowIndexVar" value="${rowIndex}" />
+					<ui:insert/>
+				</t:dataTable>
+			</div>
+			<plexus:dataScroller for="${id}" pages="${pages}" infoText="${infoText}"/>
+		</o:block>
+	</c:if>	
+</ui:composition>

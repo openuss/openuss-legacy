@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- the following xmlns are for code complition only -->
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:x="http://myfaces.apache.org/extensions"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+<!-- Lines above that point will be ignored 														-->
+<!-- If you need specific namesspaces be sure that they will be included in the ui:composition tag 	-->
+<!-- or in the view class specified by the f:view tag 												-->	      
+	<ui:composition template="/views/layout/news.xhtml">
+		<ui:define name="content">
+		   	<h:form id="newsItemDetail"> 
+		   		<o:block label="#{msg.news_header} - #{news_selected_newsitem.publisherName}">
+		   			<p class="header_font_normal">
+						<h:outputText id="publisher" value="#{news_selected_newsitem.title} - "/>
+						<h:outputText id="publishDate" value="#{news_selected_newsitem.publishDate}">
+							<f:convertDateTime timeZone="#{visit.timeZone}" type="date" dateStyle="medium" timeStyle="medium"/>
+						</h:outputText>
+					</p>
+					<div class="content_font_normal">
+				    	<h:outputText id="newsText" value="#{news_selected_newsitem.text}" escape="false"/>
+				    </div>
+
+					<f:subview rendered="#{!(empty news_selected_newsitem.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{news_selected_newsitem.attachments}" >
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage	value="/images/filetypes/#{attachment.extension}.gif" />
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+
+				</o:block>
+				<o:block>
+					<h:commandButton id="linkBack" action="view:backward" value="#{msg['news_selected_newsitem_back']}" styleClass="button_back"/>
+				</o:block>
+	  		</h:form>
+	    </ui:define>
+	</ui:composition>
+<!-- Lines below that point will be ignored -->	
+</html>

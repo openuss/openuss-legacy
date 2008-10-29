@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>openuss-plexus</display-name>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - 
+	     Spring ContextLoader Configuration
+	- - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:applicationContext.xml,
+			classpath*:applicationContext-activation.xml,
+			classpath*:applicationContext-cache.xml,
+			classpath*:applicationContext-entities.xml,
+			classpath*:applicationContext-dataSource.xml,
+			classpath*:applicationContext-legacy.xml,
+			classpath*:applicationContext-commands.xml,
+			classpath*:applicationContext-quartz.xml,
+			classpath*:applicationContext-messaging.xml,
+			classpath*:applicationContext-newsletter.xml,
+			classpath*:applicationContext-lucene.xml,
+			classpath*:applicationContext-resources.xml,
+			classpath*:applicationContext-aop.xml,
+			classpath*:applicationContext-events.xml,
+			classpath*:applicationContext-remote.xml,
+			classpath*:applicationContext-jmx.xml,
+			/WEB-INF/applicationContext-webservice.xml,
+			/WEB-INF/applicationContext-i18n.xml,
+			/WEB-INF/security.xml,
+			/WEB-INF/actions.xml,
+			/WEB-INF/openuss-context.xml,
+			/WEB-INF/views-controller-map.xml
+		</param-value>
+	</context-param>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - 
+	     Facelets Configuration
+	- - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>facelets.REFRESH_PERIOD</param-name>
+		<param-value>2</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>facelets.BUFFER_SIZE</param-name>
+		<param-value>500</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>facelets.LIBRARIES</param-name>
+		<param-value>/WEB-INF/taglibs/shale.taglib.xml;/WEB-INF/taglibs/tomahawk.taglib.xml;/WEB-INF/taglibs/tomahawk-sandbox.taglib.xml;/WEB-INF/taglibs/plexus.taglib.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>facelets.RESOURCE_RESOLVER</param-name>
+		<param-value>org.openuss.framework.web.facelets.ClasspathResourceResolver</param-value>
+	</context-param>
+ 
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - 
+	   JavaServer Faces Configuration
+	- - - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>/WEB-INF/faces-navigation.xml,/WEB-INF/faces-managed-beans.xml</param-value>
+	</context-param>	
+
+	<context-param>
+		<param-name>com.sun.faces.validateXml</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>com.sun.faces.verifyObjects</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - -
+	   Tomahawk and MyFaces Configuration 
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	<context-param>
+		<param-name>org.apache.myfaces.ALLOW_JAVASCRIPT</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.DETECT_JAVASCRIPT</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.PRETTY_HTML</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- 
+	<context-param>
+		<param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
+		<param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value>
+	</context-param>
+	 -->
+	
+	<context-param>
+		<param-name>org.apache.myfaces.COMPRESS_STATE_IN_SESSION</param-name>
+		<param-value>false</param-value>
+	</context-param>	
+	
+	<context-param>
+		<param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.VALIDATE</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+       JSTL Configuration  
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	 
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>resources</param-value>
+	</context-param>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+       FCK-Faces Configuration  
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	 
+	<context-param>
+		<param-name>org.fckfaces.CUSTOM_CONFIGURATIONS_PATH</param-name>
+		<param-value>/scripts/fckconfig.js</param-value>
+	</context-param>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+       OpenUSS Plexus Configuration  
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	<context-param>
+		<param-name>org.openuss.servlet.node</param-name>
+		<param-value>plexus_node_one</param-value>
+	</context-param>
+	 
+<!-- 
+	<context-param>
+		<param-name>org.openuss.web.themes.DEFAULT_THEME_ID</param-name>
+		<param-value>plexus</param-value>
+	</context-param>
+ -->
+	
+
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+	   Shale Configuration
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<context-param>
+		<param-name>org.apache.shale.view.EXCEPTION_DISPATCH_PATH</param-name>
+		<param-value>/views/errors/error.faces</param-value>
+	</context-param>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+	   Log4j ConfigLocation Configuration
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/log4j.properties</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>log4jExposeWebAppRoot</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - -
+	   Shale Filter
+	- - - - - - - - - - - - - - - - - - - - - - - -->
+	<filter>
+		<filter-name>shale</filter-name>
+		<filter-class>org.apache.shale.application.faces.ShaleApplicationFilter</filter-class>
+	</filter>
+    
+	<filter-mapping>
+		<filter-name>shale</filter-name>
+		<url-pattern>*.faces</url-pattern>
+	</filter-mapping>
+    
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+	   Acegi Security Filter
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<filter>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<filter-class>
+			org.acegisecurity.util.FilterToBeanProxy
+		</filter-class>
+		<init-param>
+			<param-name>targetBean</param-name>
+			<param-value>securityFilterChainProxy</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>*.faces</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/rss/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/webdav/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/files/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/zips/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/chat/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>*.xhtml</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>Acegi Security Chain Filter</filter-name>
+		<url-pattern>/services/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter-mapping>
+        <filter-name>Acegi Security Chain Filter</filter-name>
+        <url-pattern>*.asp</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+	   MyFaces Extensions Filter
+	- - - - - - - - - - - - - - - - - - - - - - - - -->
+	<filter>
+		<filter-name>MyFacesExtensionsFilter</filter-name>
+		<filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
+		<init-param>
+			<param-name>uploadMaxFileSize</param-name>
+			<param-value>100M</param-value>
+		</init-param>
+		<init-param>
+			<param-name>uploadThresholdSize</param-name>
+			<param-value>256k</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>MyFacesExtensionsFilter</filter-name>
+		<url-pattern>*.faces</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>MyFacesExtensionsFilter</filter-name>
+		<url-pattern>/faces/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - -
+	   Servlet Listener
+	- - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+	<listener>
+		<listener-class>
+			org.springframework.web.util.Log4jConfigListener
+		</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
+	<!-- Disabled by removing theme management 
+	<listener>
+		<listener-class>
+			org.openuss.web.application.StartupServletContextListener
+		</listener-class>
+	</listener>
+	 -->
+	
+	<listener>
+		<listener-class>
+			org.apache.myfaces.webapp.StartupServletContextListener
+		</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>
+			org.apache.commons.chain.web.ChainListener
+		</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>
+			org.acegisecurity.ui.session.HttpSessionEventPublisher
+		</listener-class>
+	</listener>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - -
+	   Servlets
+	- - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>DocumentServlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.DocumentServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>ZipDocumentServlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.ZipDocumentServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>6</load-on-startup>
+	</servlet>
+		
+	<servlet>
+		<servlet-name>FCKFaces</servlet-name>
+		<!-- new servlet to get a special FCKeditor for wiki! -->
+<!-- 	<servlet-class>org.fckfaces.util.Servlet</servlet-class> -->
+        <servlet-class>org.openuss.web.servlets.FCKServlet</servlet-class>
+	</servlet>
+	<servlet>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <servlet-class>org.openuss.web.servlets.WikiSaveDraftServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Chat Servlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.ChatServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<servlet-class>org.openuss.web.servlets.WebDAVServlet</servlet-class>
+		<init-param>
+			<param-name>resource-path-prefix</param-name>
+			<param-value>/webdav</param-value>
+		</init-param>
+		<init-param>
+			<!-- Comment this param out to allow unlimited uploads -->
+			<param-name>max-file-size</param-name>
+			<param-value>52428800</param-value><!-- 50 MiB -->
+		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>read-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow recursive requests -->
+			<param-value>-2</param-value>
+		</init-param>
+		<!-- Limit for the number of written resources per request -->
+		<init-param>
+			<param-name>write-limit</param-name>
+			<!-- -1: No limit -->
+			<param-value>100</param-value>
+		</init-param>
+		<!-- Limit for the number of resources that can be locked in one request -->
+		<init-param>
+			<param-name>lock-limit</param-name>
+			<!-- -1: No limit, -2: Do not allow locks on collections -->
+			<param-value>100</param-value>
+		</init-param>
+		<!-- Whether to replace common umlauts with surrogate character sequences -->
+		<init-param>
+			<param-name>evade-umlauts</param-name>
+			<!-- true: Replace umlauts, false: Do not modify strings -->
+			<param-value>true</param-value>
+		</init-param>
+		<!-- Uncomment the following to disable WebDAV -->
+		<!-- <init-param>
+			<param-name>killbit</param-name>
+			<param-value>true</param-value>
+		</init-param>-->
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+
+    <!-- ADDITION FOR FCKEDITOR -->
+    <!-- servlet>
+        <servlet-name>Connector</servlet-name>
+        <servlet-class>org.openuss.web.servlets.ConnectorServlet</servlet-class>
+        <init-param>
+                <param-name>debug</param-name>
+                <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+	        <servlet-name>Connector</servlet-name>
+	        <url-pattern>/fckfaces/FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp</url-pattern>
+	</servlet-mapping-->
+
+	<servlet-mapping>
+	   <servlet-name>WikiSaveDraft</servlet-name>
+	   <url-pattern>/fckfaces/FCKeditor/editor/savedraft</url-pattern>
+	</servlet-mapping>
+	<!--  END OF ADDITION -->
+
+	<servlet-mapping>
+		<servlet-name>DocumentServlet</servlet-name>
+		<url-pattern>/files/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ZipDocumentServlet</servlet-name>
+		<url-pattern>/zips/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Chat Servlet</servlet-name>
+		<url-pattern>/chat/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>FCKFaces</servlet-name>
+		<url-pattern>/fckfaces/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/rss/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>WebDAV Servlet</servlet-name>
+		<url-pattern>/webdav/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+ 	<error-page>
+		<error-code>404</error-code>
+		<location>/views/errors/404.faces</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/views/errors/403.faces</location>
+	</error-page>
+
+	<!-- Describe a DataSource -->
+	<resource-env-ref>
+		<resource-env-ref-name>jdbc/openuss30</resource-env-ref-name>
+		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+	 
+<!--	<resource-ref>-->
+<!--		<description>-->
+<!--			Resource reference to a factory for java.sql.Connection-->
+<!--			instances that may be used for talking to a particular-->
+<!--			database that is configured in the context.xml file of Tomcat.-->
+<!--		</description>-->
+<!--		<res-ref-name>jdbc/openuss30</res-ref-name>-->
+<!--		<res-type>javax.sql.DataSource</res-type>-->
+<!--		<res-auth>Container</res-auth>-->
+<!--	</resource-ref>-->
+</web-app>

@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+     <plexus:dataTable 
+	    	id="courses" 
+	    	var="courseInfo" 
+	    	label="#{periodInfo.name}"
+	    	value="views$secured$lecture$institutecourses.coursesOfCourseType" 
+	    	columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
+			styleClass="table"
+	    	rows="20"
+	    	infoText="#{msg.table_info_text_courses}">
+	  	
+		<t:column>
+			<plexus:commandSortHeader columnName="courseInfo.name">
+				<h:outputText value="#{msg.course_colheader_name}"/>
+			</plexus:commandSortHeader>
+			<o:link value="/views/secured/course/main.faces" title="#{courseInfo.description}">
+				<f:param value="#{courseInfo.id}" name="course" />
+				<h:outputText value="#{courseInfo.name} (#{courseInfo.shortcut})"/>
+			</o:link>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="courseInfo.periodName">
+				<h:outputText value="#{msg.course_colheader_period}"/>
+			</plexus:commandSortHeader>
+		
+			<h:outputText value="#{courseInfo.periodName}"/>
+			
+		</t:column>
+		
+		<plexus:column header="#{msg.course_options_access_headline}">
+			<h:outputText value="#{courseInfo.accessType}">
+					<f:converter converterId="accessTypeLabelConverter" />
+			</h:outputText>
+		</plexus:column>
+	
+		<s:authorize ifAllGranted="ROLE_USER">
+			<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.INSTITUTE_ASSIST}">
+				<plexus:column header="#{msg.commands_header}">
+					<o:link value="/views/secured/course/courseoptions.faces"
+						label="#{msg.course_command_edit}"
+						title="#{msg.course_command_edit_hint}"
+						styleClass="icon_settings">
+							<f:param value="#{courseInfo.id}" name="course" />
+							<span></span>
+					</o:link>
+					<plexus:command 
+						bean = "#{views$secured$lecture$institutecourses}"
+						action="disableCourse"
+						styleClass="icon_hide"
+						label="#{msg.course_command_disable}"
+						title="#{msg.course_command_disable_hint}"
+						rendered="#{courseInfo.enabled}">
+					</plexus:command>
+					<plexus:command 
+						bean = "#{views$secured$lecture$institutecourses}"
+						action = "enableCourse"
+						styleClass="icon_public"
+						label="#{msg.course_command_enable}"
+						title="#{msg.course_command_enable_hint}"
+						rendered="#{not courseInfo.enabled}">
+					</plexus:command>
+					<plexus:command
+						bean = "#{views$secured$lecture$institutecourses}"
+						action = "moveCourse"
+						styleClass="icon_move"
+						label="#{msg.course_command_move}"
+						title="#{msg.course_command_move_hint}">
+					</plexus:command>
+					<plexus:command
+						bean = "#{views$secured$lecture$institutecourses}"
+						action = "selectCourseAndConfirmRemove"
+						styleClass="icon_remove"
+						label="#{msg.course_command_remove}"
+						title="#{msg.course_command_remove_hint}">
+					</plexus:command>
+					<plexus:command 
+						bean="#{views$secured$lecture$institutecourses}"
+						action="removeCourseShortcut"
+						label="#{msg.course_command_shortcut_remove}"
+						title="#{msg.course_command_shortcut_hint_remove}"
+						styleClass="icon_bookmark_remove"
+						rendered="#{views$secured$lecture$institutecourses.bookmarked}">
+					</plexus:command>
+					<plexus:command 
+						bean="#{views$secured$lecture$institutecourses}"
+						action="shortcutCourse"
+						label="#{msg.course_command_shortcut}"
+						title="#{msg.course_command_shortcut_hint}"
+						styleClass="icon_bookmark"
+						rendered="#{not views$secured$lecture$institutecourses.bookmarked}">
+					</plexus:command>
+				</plexus:column>
+			</s:acl>	
+		</s:authorize>
+	</plexus:dataTable>
+	
+	
+</ui:composition>

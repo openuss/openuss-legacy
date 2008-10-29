@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+     
+    <o:link	value="/views/secured/user/userprofile.faces"
+			title="#{msg['user_profile_command_show_profile_hint']}"
+			styleClass="icon_profile">
+			<f:param name="showuser" value="${user}"/>
+	 		<h:outputText value="#{msg['user_profile_command_show_profile']}"/>
+	</o:link>
+    
+</ui:composition> 

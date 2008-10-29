@@ -1,0 +1,25 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS E-Mail Verifikation</font></h3>
+		<p>
+		Zur Bestätigung der Löschung Ihres OpenUSS Benutzerkontos "${username}"  
+		klicken Sie bitte auf den folgenden Link:
+		</p>
+		<p>
+		<a href="${link}">${link}</a>
+		</p>
+		<p>
+			Sollte das Anklicken des Links nicht funktionieren, so geben Sie bitte die Adresse in die
+			Adressleiste Ihres Browser ein.
+		</p>
+		<p>
+			Falls Sie Ihren Account nicht entfernen wollen, können Sie diese E-Mail ignorieren. 
+		</p>
+		<p>
+			Viel Spaß mit OpenUSS!
+		</p>
+			<small>
+				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+			</small>
+	</body>
+</html>

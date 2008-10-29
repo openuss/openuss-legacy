@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.lecture.OrganisationImpl" table="LECTURE_ORGANISATION" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="shortName" type="java.lang.String">
+            <column name="SHORT_NAME" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="shortcut" type="java.lang.String">
+            <column name="SHORTCUT" not-null="true" unique="false" sql-type="VARCHAR(30)"/>
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" not-null="false" unique="false" sql-type="VARCHAR(32000)"/>
+        </property>
+        <property name="ownerName" type="java.lang.String">
+            <column name="OWNER_NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="address" type="java.lang.String">
+            <column name="ADDRESS" not-null="false" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="postcode" type="java.lang.String">
+            <column name="POSTCODE" not-null="false" unique="false" sql-type="VARCHAR(50)"/>
+        </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" not-null="false" unique="false" sql-type="VARCHAR(50)"/>
+        </property>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" not-null="false" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="TELEPHONE" not-null="false" unique="false" sql-type="VARCHAR(50)"/>
+        </property>
+        <property name="telefax" type="java.lang.String">
+            <column name="TELEFAX" not-null="false" unique="false" sql-type="VARCHAR(50)"/>
+        </property>
+        <property name="website" type="java.lang.String">
+            <column name="WEBSITE" not-null="false" unique="false" sql-type="VARCHAR(200)"/>
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="EMAIL" not-null="false" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="locale" type="java.lang.String">
+            <column name="LOCALE" not-null="false" unique="false" sql-type="VARCHAR(10)"/>
+        </property>
+        <property name="theme" type="java.lang.String">
+            <column name="THEME" not-null="false" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="imageId" type="java.lang.Long">
+            <column name="IMAGE_ID" not-null="false" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="enabled" type="boolean">
+            <column name="ENABLED" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <many-to-one name="membership" class="org.openuss.security.MembershipImpl" foreign-key="LECTURE_ORGANISATION_MEMBERSHC" cascade="all" lazy="proxy" fetch="select">
+            <column name="MEMBERSHIP_FK" not-null="true" sql-type="BIGINT" unique="true"/>
+        </many-to-one>
+        <joined-subclass name="org.openuss.lecture.UniversityImpl" table="LECTURE_UNIVERSITY" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="LECTURE_UNIVERSITYIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="universityType" type="org.openuss.lecture.UniversityTypeEnum">
+                <column name="UNIVERSITY_TYPE" not-null="true" unique="false" sql-type="INTEGER"/>
+            </property>
+            <bag name="departments" order-by="UNIVERSITY_FK" lazy="true" fetch="select" inverse="true">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_DEPARTMENT_UNIVERSITYC">
+                    <column name="UNIVERSITY_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.DepartmentImpl"/>
+            </bag>
+            <bag name="periods" order-by="UNIVERSITY_FK" lazy="true" fetch="select" inverse="true">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_PERIOD_UNIVERSITY_FKC">
+                    <column name="UNIVERSITY_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.PeriodImpl"/>
+            </bag>
+        </joined-subclass>
+        <joined-subclass name="org.openuss.lecture.DepartmentImpl" table="LECTURE_DEPARTMENT" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="LECTURE_DEPARTMENTIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="departmentType" type="org.openuss.lecture.DepartmentTypeEnum">
+                <column name="DEPARTMENT_TYPE" not-null="true" unique="false" sql-type="INTEGER"/>
+            </property>
+            <property name="defaultDepartment" type="boolean">
+                <column name="DEFAULT_DEPARTMENT" not-null="true" unique="false" sql-type="SMALLINT"/>
+            </property>
+            <many-to-one name="university" class="org.openuss.lecture.UniversityImpl" foreign-key="LECTURE_DEPARTMENT_UNIVERSITYC" lazy="proxy" fetch="select">
+                <column name="UNIVERSITY_FK" not-null="false" sql-type="BIGINT"/>
+            </many-to-one>
+            <bag name="institutes" order-by="DEPARTMENT_FK" lazy="true" fetch="select" inverse="true">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_INSTITUTE_DEPARTMENT_C">
+                    <column name="DEPARTMENT_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.InstituteImpl"/>
+            </bag>
+            <bag name="applications" order-by="DEPARTMENT_FK" lazy="true" fetch="select" inverse="true">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_APPLICATION_DEPARTMENC">
+                    <column name="DEPARTMENT_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.ApplicationImpl"/>
+            </bag>
+        </joined-subclass>
+        <joined-subclass name="org.openuss.lecture.InstituteImpl" table="LECTURE_INSTITUTE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="LECTURE_INSTITUTEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <many-to-one name="department" class="org.openuss.lecture.DepartmentImpl" foreign-key="LECTURE_INSTITUTE_DEPARTMENT_C" lazy="proxy" fetch="select">
+                <column name="DEPARTMENT_FK" not-null="false" sql-type="BIGINT"/>
+            </many-to-one>
+            <bag name="courseTypes" order-by="INSTITUTE_FK" lazy="true" fetch="select" inverse="true" cascade="all, delete-orphan">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_COURSE_TYPE_INSTITUTEC">
+                    <column name="INSTITUTE_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.CourseTypeImpl"/>
+            </bag>
+            <bag name="applications" order-by="INSTITUTE_FK" lazy="true" fetch="select" inverse="true" cascade="all">
+                <cache usage="read-write" />
+                <key foreign-key="LECTURE_APPLICATION_INSTITUTEC">
+                    <column name="INSTITUTE_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.lecture.ApplicationImpl"/>
+            </bag>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

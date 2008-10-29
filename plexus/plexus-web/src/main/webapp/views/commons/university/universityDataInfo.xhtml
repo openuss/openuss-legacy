@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+     
+     
+     <h:panelGrid border="0" columns="2" footerClass="footer_right">
+		<h:outputText value="#{msg.universityinfo_name}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.name}" styleClass="field_label" />
+	 	
+	 	<h:outputText value="#{msg.universityinfo_shortcut}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.shortcut}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_universityType}" styleClass="field_label" />
+		<h:outputText value="#{universityRegistration.transformedUniversityType}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_description}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.description}" styleClass="field_label" escape="false"/>
+		
+		<h:outputText value="#{msg.universityinfo_ownername}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.ownerName}" styleClass="field_label" escape="false"/>
+		
+		<h:outputText value="#{msg.universityinfo_address}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.address}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_country}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.country}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_postcode}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.postcode}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_city}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.city}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_email}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.email}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_website}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.website}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_telephone}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.telephone}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_telefax}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.telefax}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_locale}" styleClass="field_label" />
+		<h:outputText value="#{universityRegistration.transformedLocale}" styleClass="field_label" />
+		
+		<h:outputText value="#{msg.universityinfo_theme}" styleClass="field_label" />
+		<h:outputText value="#{universityApplication.theme}" styleClass="field_label" />
+	 	
+	</h:panelGrid>
+    
+</ui:composition>

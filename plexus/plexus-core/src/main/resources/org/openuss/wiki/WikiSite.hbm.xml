@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.wiki.WikiSiteImpl" table="WIKI_WIKISITE" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="domainId" type="java.lang.Long">
+            <column name="DOMAIN_ID" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="deleted" type="java.lang.Boolean">
+            <column name="DELETED" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <property name="readOnly" type="java.lang.Boolean">
+            <column name="READ_ONLY" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <bag name="wikiSiteVersions" order-by="WIKI_SITE_FK" lazy="false" fetch="select" inverse="true" cascade="all">
+            <cache usage="read-write" />
+            <key foreign-key="WIKI_WIKISITEVERSION_WIKI_SITC">
+                <column name="WIKI_SITE_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.wiki.WikiSiteVersionImpl"/>
+        </bag>
+    </class>
+</hibernate-mapping>

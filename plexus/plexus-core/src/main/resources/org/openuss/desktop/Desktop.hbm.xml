@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.desktop.DesktopImpl" table="DESKTOP_DESKTOP" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <many-to-one name="user" class="org.openuss.security.UserImpl" foreign-key="DESKTOP_DESKTOP_USER_FKC" lazy="proxy" fetch="select">
+            <column name="USER_FK" not-null="true" sql-type="BIGINT" unique="true"/>
+        </many-to-one>
+        <bag name="institutes" table="DESKTOP_DESKTOP_INSTITUTE" order-by="INSTITUTES_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="LECTURE_INSTITUTE_DESKTOPS_FKC">
+                <column name="DESKTOPS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.lecture.InstituteImpl" foreign-key="DESKTOP_DESKTOP_INSTITUTES_FKC">
+                <column name="INSTITUTES_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+        <bag name="courses" table="DESKTOP_DESKTOP_COURSE" order-by="COURSES_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="LECTURE_COURSE_DESKTOPS_FKC">
+                <column name="DESKTOPS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.lecture.CourseImpl" foreign-key="DESKTOP_DESKTOP_COURSES_FKC">
+                <column name="COURSES_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+        <list name="courseTypes" table="DESKTOP_DESKTOP_COURSETYPE"  lazy="true" fetch="select" inverse="false">
+            <key foreign-key="LECTURE_COURSE_TYPE_DESKTOPS_C">
+                <column name="DESKTOPS_FK" sql-type="BIGINT"/>
+            </key>
+            <list-index column="DESKTOP_COURSE_TYPES_IDX"/>
+            <many-to-many class="org.openuss.lecture.CourseTypeImpl" foreign-key="DESKTOP_DESKTOP_COURSE_TYPES_C">
+                <column name="COURSE_TYPES_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </list>
+        <bag name="universities" table="DESKTOP_DESKTOP_UNIVERSITY" order-by="UNIVERSITIES_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="LECTURE_UNIVERSITY_DESKTOPS_FC">
+                <column name="DESKTOPS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.lecture.UniversityImpl" foreign-key="DESKTOP_DESKTOP_UNIVERSITIES_C">
+                <column name="UNIVERSITIES_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+        <bag name="departments" table="DESKTOP_DESKTOP_DEPARTMENT" order-by="DEPARTMENTS_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="LECTURE_DEPARTMENT_DESKTOPS_FC">
+                <column name="DESKTOPS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.lecture.DepartmentImpl" foreign-key="DESKTOP_DESKTOP_DEPARTMENTS_FC">
+                <column name="DEPARTMENTS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

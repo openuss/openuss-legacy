@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.registration.ActivationCodeImpl" table="SECURITY_ACTIVATIONCODE" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="createdAt" type="java.sql.Timestamp">
+            <column name="CREATED_AT" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <joined-subclass name="org.openuss.registration.UserActivationCodeImpl" table="SECURITY_USERCODE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="SECURITY_USERCODEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="code" type="java.lang.String">
+                <column name="CODE" not-null="true" unique="true" sql-type="VARCHAR(64)"/>
+            </property>
+            <many-to-one name="user" class="org.openuss.security.UserImpl" foreign-key="SECURITY_USERCODE_USER_FKC" lazy="proxy" fetch="select">
+                <column name="USER_FK" not-null="true" sql-type="BIGINT"/>
+            </many-to-one>
+        </joined-subclass>
+        <joined-subclass name="org.openuss.registration.InstituteActivationCodeImpl" table="SECURITY_INSTITUTECODE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="SECURITY_INSTITUTECODEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="code" type="java.lang.String">
+                <column name="CODE" not-null="true" unique="true" sql-type="VARCHAR(64)"/>
+            </property>
+            <many-to-one name="institute" class="org.openuss.lecture.InstituteImpl" foreign-key="SECURITY_INSTITUTECODE_INSTITC" lazy="proxy" fetch="select">
+                <column name="INSTITUTE_FK" not-null="true" sql-type="BIGINT"/>
+            </many-to-one>
+        </joined-subclass>
+        <joined-subclass name="org.openuss.registration.UserDeleteCodeImpl" table="SECURITY_DELETECODE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="SECURITY_DELETECODEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="code" type="java.lang.String">
+                <column name="CODE" not-null="true" unique="true" sql-type="VARCHAR(64)"/>
+            </property>
+            <many-to-one name="user" class="org.openuss.security.UserImpl" foreign-key="SECURITY_DELETECODE_USER_FKC" lazy="proxy" fetch="select">
+                <column name="USER_FK" not-null="true" sql-type="BIGINT"/>
+            </many-to-one>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

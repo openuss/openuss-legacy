@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.ldap.AuthenticationDomainImpl" table="SECURITY_LDAP_AUTHDOMAIN" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="true" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" not-null="true" unique="false" sql-type="VARCHAR(32000)"/>
+        </property>
+        <property name="changePasswordUrl" type="java.lang.String">
+            <column name="CHANGE_PASSWORD_URL" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <set name="ldapServers" order-by="AUTHENTICATION_DOMAIN_FK" lazy="true" fetch="select" inverse="true">
+            <cache usage="read-write" />
+            <key foreign-key="SECURITY_LDAP_SERVER_AUTHENTIC">
+                <column name="AUTHENTICATION_DOMAIN_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.security.ldap.LdapServerImpl"/>
+        </set>
+        <many-to-one name="attributeMapping" class="org.openuss.security.ldap.AttributeMappingImpl" foreign-key="SECURITY_LDAP_AUTHDOMAIN_ATTRC" lazy="proxy" fetch="select">
+            <column name="ATTRIBUTE_MAPPING_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

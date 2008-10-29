@@ -1,0 +1,23 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Email Verification</font></h3>
+		To delete your <i>${username}</i> OpenUSS account and verify this action, please click on the following link:<br/>
+		<p>
+		<a href="${link}">${link}</a>
+		</p>
+		<p>
+			If you have received this mail in error, you do not need to take any action.			
+		</p>
+		<p>
+			If the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
+		<p>
+			Thank you for using OpenUSS.
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>
+
+

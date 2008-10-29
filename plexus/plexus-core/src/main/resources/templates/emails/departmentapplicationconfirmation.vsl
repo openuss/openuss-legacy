@@ -1,0 +1,17 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			Dear <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,
+			your application for joining the institute ${institutename} to the department  
+			<i>${departmentname}</i> has been successfully sent to the department administrators. You will get informed when your
+			application has been edited.
+		</p>
+		<p>
+			Thank you for using OpenUSS!
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>

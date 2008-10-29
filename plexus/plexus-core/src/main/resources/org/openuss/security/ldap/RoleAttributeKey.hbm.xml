@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.ldap.RoleAttributeKeyImpl" table="SECURITY_LDAP_ROLEATTRIBUTE" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" not-null="true" unique="true" sql-type="VARCHAR(250)"/>
+        </property>
+        <bag name="attributeMappings" table="SECURITY_LDAP_MAPPING2ROLE" order-by="ATTRIBUTE_MAPPINGS_FK" lazy="true" fetch="select" inverse="true">
+            <key foreign-key="SECURITY_LDAP_ATTRIBUTEMAPPINC">
+                <column name="ROLE_ATTRIBUTE_KEYS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.ldap.AttributeMappingImpl" foreign-key="SECURITY_LDAP_ROLEATTRIBUTE_AC">
+                <column name="ATTRIBUTE_MAPPINGS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

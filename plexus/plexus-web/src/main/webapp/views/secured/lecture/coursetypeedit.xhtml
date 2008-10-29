@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"    
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+	<h:form id="courseTypeForm">
+		<t:saveState value="#{courseTypeInfo}"/>
+		<t:saveState value="#{periodInfo.id}"/>
+		<o:block label="#{msg.coursetype_header}" styleClass="form_box">
+			<o:input entity="courseTypeInfo" property="name" required="true" maxlength="100" immediate="false" />
+			<o:input entity="courseTypeInfo" property="shortcut" required="true" maxlength="30" immediate="false" >
+				<f:validator validatorId="filenameValidator"/>			
+			</o:input>
+			<o:input entity="courseTypeInfo" property="description" maxlength="250" type="textarea" immediate="false"  />
+			<br />
+			<c:if test="#{courseTypeInfo.id == null}">
+				<h:outputText value="#{msg.coursetype_instantiate_info}" styleClass="content_font_normal"/>
+	   			<h:outputLabel value="#{msg.institute_period_selection}" for="periodSelection" styleClass="field_label"/>
+				<h:selectOneListbox 
+					id="periodSelection" 
+					size="1" 
+					immediate="true" 
+					value="#{periodInfo.id}"
+					onchange="this.form.submit();"
+					valueChangeListener="#{views$secured$lecture$institutecoursetypes.processPeriodSelectChanged}"
+					styleClass="pulldown">
+				    <f:selectItems value="#{views$secured$lecture$institutecoursetypes.allPeriods}"/>
+				</h:selectOneListbox>
+			</c:if>
+		</o:block>
+		<o:block>
+			<c:if test="#{courseTypeInfo.id == null}">
+				<h:outputText value="#{msg.coursetype_save_info}" styleClass="content_font_normal" />
+				<br />
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big"  rendered="#{periodInfo.id > -1}"/>
+				<h:commandButton id="saveCourseTypeAndGoToSettings" action="#{views$secured$lecture$institutecoursetypes.saveCourseTypeAndGoToSettings}" value="#{msg.coursetype_save_and_configure}" styleClass="button_big button_disabled" disabled="true" rendered="#{not(periodInfo.id > -1)}"/>
+				<h:commandButton id="saveCourseType" action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save_only}" styleClass="button_save" />
+			</c:if>
+			<c:if test="#{courseTypeInfo.id != null}">
+				<h:commandButton id="saveCourseType" action="#{views$secured$lecture$institutecoursetypes.saveCourseType}" value="#{msg.save}" styleClass="button_save" />
+			</c:if>
+			<h:commandButton id="cancel" immediate="true" action="#{views$secured$lecture$institutecoursetypes.cancelCourseType}" value="#{msg.cancel}" styleClass="button_cancel" />
+		</o:block>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.system.SystemPropertyImpl" table="SYSTEM_PROPERTY" dynamic-insert="false" dynamic-update="false">
+        <cache usage="nonstrict-read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="PROP_NAME" not-null="true" unique="true" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="value" type="java.lang.String">
+            <column name="PROP_VALUE" not-null="true" unique="false" sql-type="VARCHAR(256)"/>
+        </property>
+    </class>
+</hibernate-mapping>

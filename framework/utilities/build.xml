@@ -1,0 +1,19 @@
+<project name="openuss :: framework :: utilities :: build" default="install" basedir=".">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<target name="compile">
+		<exec executable="${maven.executable}">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="${maven.executable}">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="${maven.executable}">
+			<arg line="install"/>
+		</exec>
+	</target>
+</project>

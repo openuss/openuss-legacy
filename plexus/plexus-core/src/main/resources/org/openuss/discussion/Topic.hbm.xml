@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.discussion.TopicImpl" table="DISCUSSION_TOPIC" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="hits" type="java.lang.Integer">
+            <column name="HITS" not-null="true" unique="false" sql-type="INTEGER"/>
+        </property>
+        <property name="readOnly" type="boolean">
+            <column name="READ_ONLY" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <many-to-one name="submitter" class="org.openuss.security.UserImpl" foreign-key="DISCUSSION_TOPIC_SUBMITTER_FKC" lazy="false" fetch="select">
+            <column name="SUBMITTER_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+        <bag name="posts" order-by="created" lazy="true" fetch="select" inverse="true" cascade="all, delete-orphan">
+            <cache usage="read-write" />
+            <key foreign-key="DISCUSSION_POST_TOPIC_FKC">
+                <column name="TOPIC_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.discussion.PostImpl"/>
+        </bag>
+        <many-to-one name="first" class="org.openuss.discussion.PostImpl" foreign-key="DISCUSSION_TOPIC_FIRST_FKC" lazy="false" fetch="select">
+            <column name="FIRST_FK" not-null="false" sql-type="BIGINT" unique="true"/>
+        </many-to-one>
+        <many-to-one name="last" class="org.openuss.discussion.PostImpl" foreign-key="DISCUSSION_TOPIC_LAST_FKC" lazy="false" fetch="select">
+            <column name="LAST_FK" not-null="false" sql-type="BIGINT" unique="true"/>
+        </many-to-one>
+        <many-to-one name="forum" class="org.openuss.discussion.ForumImpl" foreign-key="DISCUSSION_TOPIC_FORUM_FKC" lazy="proxy" fetch="select">
+            <column name="FORUM_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

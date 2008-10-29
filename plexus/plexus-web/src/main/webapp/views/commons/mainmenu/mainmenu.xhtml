@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+	<h:form id="mainmenu">
+		<ul id="header_navigation">
+			<li class="main_nav_doc">
+				<h:outputLink value="#{SYSTEM_PROPERTIES.DOCUMENTATION_URL}" title="#{msg.mainmenu_command_documentation}" rendered="true">
+					<h:outputText value="#{msg.mainmenu_command_documentation}"/>
+				</h:outputLink>
+			</li>
+			<li class="main_nav_forum">
+				<h:outputLink value="#{SYSTEM_PROPERTIES.SUPPORT_URL}" title="#{msg.mainmenu_command_userforum}" rendered="true">
+					<h:outputText value="#{msg.mainmenu_command_userforum}"/>
+				</h:outputLink>
+			</li>
+			<s:authorize ifAllGranted="ROLE_ADMIN">
+				<li class="main_nav_admin">
+					<t:commandLink id="administration" forceId="true" action="administration" value="#{msg['mainmenu_command_administration']}" />
+				</li>
+			</s:authorize>
+		</ul>
+	</h:form>
+</ui:composition>

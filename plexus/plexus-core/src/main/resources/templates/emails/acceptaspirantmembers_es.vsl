@@ -1,0 +1,23 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Administración de Usuarios</font></h3>
+			Estimados <i>${organisationname}</i> - administradores,
+			el usuario <i>${username} (${userfirstname} ${userlastname})</i> ha sido añadido a su organización 
+			<i>${organisationname}</i>.
+		</p>
+		<p>
+			Debe pinchar en el siguiente enlace para administrar su centro:<br/>
+			<a href="${courseapplicantlink}">${organisationlink}</a>
+		</p>
+		<p>
+			Si el enlace de arriba no funciona, copie y pegue la URL en una nueva ventana de su navegador.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

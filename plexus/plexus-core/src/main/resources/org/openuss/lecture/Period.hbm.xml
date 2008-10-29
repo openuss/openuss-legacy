@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.lecture.PeriodImpl" table="LECTURE_PERIOD" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="startdate" type="java.util.Date">
+            <column name="STARTDATE" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="enddate" type="java.util.Date">
+            <column name="ENDDATE" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="defaultPeriod" type="boolean">
+            <column name="DEFAULT_PERIOD" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <bag name="courses" order-by="PERIOD_FK" lazy="true" fetch="select" inverse="true" cascade="all,delete-orphan">
+            <cache usage="read-write" />
+            <key foreign-key="LECTURE_COURSE_PERIOD_FKC">
+                <column name="PERIOD_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.lecture.CourseImpl"/>
+        </bag>
+        <many-to-one name="university" class="org.openuss.lecture.UniversityImpl" foreign-key="LECTURE_PERIOD_UNIVERSITY_FKC" lazy="proxy" fetch="select">
+            <column name="UNIVERSITY_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

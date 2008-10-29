@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:s="http://www.openuss.org/jsf-security"
+	  xmlns:foundation="http://www.openuss.org/foundation/jsf"> 
+	<o:block label="#{msg.controls_option_label}">
+		<h:form id="changeLanguageForm">
+			<s:authorize ifNotGranted="ROLE_USER">
+			    <h:outputLabel for="languageSelect" value="${msg.controls_language_label}" styleClass="field_label"/>
+				<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown_form" value="#{visit.locale}" onchange="this.form.submit();">
+				    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+				</h:selectOneListbox>
+			</s:authorize>
+		</h:form>
+	</o:block>
+</ui:composition>

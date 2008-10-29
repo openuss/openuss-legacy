@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title" /></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css"	media="screen,screen" />
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+	
+	<body>
+	<!-- text above will be ignored -->
+		<ui:composition template="/views/layout/layout.xhtml">
+		
+			<ui:define name="title">
+				<h:outputText
+					value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+			</ui:define>
+			
+			<ui:define name="navigation">
+				<ui:include src="/views/commons/navigation/course.xhtml" />
+			</ui:define>
+			
+			<ui:define name="content">
+				<h:form id="wikiCreateNewSiteForm">
+			        <o:block label="#{msg.wiki_new_site_headline}" styleClass="form_box">
+			        	<h:outputLabel value="#{msg.wiki_new_site_name}" for="newSiteText" styleClass="field_label" />
+			        	<t:inputText
+			        		id="name"
+			        		forceId="true"
+			        		value="#{views$secured$wiki$wikicreatenewsite.siteVersionInfo.name}"
+			        		styleClass="field_inline"
+			        		required="true"
+			        		maxlength="100"
+			        		validator="wikiSiteNameValidator" />
+			            <t:commandButton id="create" forceId="true" action="#{views$secured$wiki$wikicreatenewsite.createNewSite}" value="#{msg.wiki_new_site_create}" title="#{msg.wiki_new_site_create_hint}" styleClass="button_save" />
+			            <h:message id="wikiSiteNameError" for="name" styleClass="field_error" showDetail="true" showSummary="false" />
+			        </o:block>
+			    </h:form>
+			</ui:define>	
+		</ui:composition>
+	
+	<!-- text above will be ignored -->
+	</body>
+</html>

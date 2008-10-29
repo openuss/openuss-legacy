@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="openuss :: framework :: webdav :: build" default="install" basedir=".">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<target name="compile">
+		<exec executable="${maven.executable}">
+			<arg line="compile"/>
+		</exec>
+	</target>
+	<target name="clean">
+		<exec executable="${maven.executable}">
+			<arg line="clean"/>
+		</exec>
+	</target>
+	<target name="install">
+		<exec executable="${maven.executable}">
+			<arg line="install"/>
+		</exec>
+	</target>
+	<target name="install (offline)">
+		<exec executable="${maven.executable}">
+			<arg line="-o install"/>
+		</exec>
+	</target>
+	<target name="install w/o tests">
+		<exec executable="${maven.executable}">
+			<arg line="install -Dmaven.test.skip=true" />
+		</exec>
+	</target>
+	<target name="eclipse">
+		<exec executable="${maven.executable}">
+			<arg line="eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
+		</exec>
+	</target>
+	<target name="eclipse (offline)">
+		<exec executable="${maven.executable}">
+			<arg line="-o eclipse:clean eclipse:eclipse -DdownloadSources=true -Dwtpversion=1.0"/>
+		</exec>
+	</target>
+</project>

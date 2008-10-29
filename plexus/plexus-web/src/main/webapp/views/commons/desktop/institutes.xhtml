@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+      
+    <plexus:dataTable 
+    	id="institutes"
+    	label="#{msg.desktop_institutes_header}" 
+		var="instituteItem"
+		value="views$secured$desktop$desktop.institutesProvider"
+		styleClass="form_box"
+		rows="10"
+		infoText="#{msg.table_info_text_institutes}">
+	  
+		<t:column>
+			<plexus:commandSortHeader columnName="name">
+				<h:outputText value="#{msg.desktop_institutes_colheader_name}"/>
+			</plexus:commandSortHeader>
+			<o:link value="/views/secured/lecture/institute.faces" title="#{instituteItem.ownerName}">
+				<f:param value="#{instituteItem.id}" name="institute" />
+				<h:outputText value="#{instituteItem.name} (#{instituteItem.shortcut})"/>
+			</o:link>
+		</t:column>
+		
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command
+				bean="#{views$secured$desktop$desktop}"
+				action="removeInstitute"
+				label="#{msg.desktop_institutes_command_remove}"
+				title="#{msg.desktop_institutes_command_remove_hint}"
+				styleClass="button_unlink"/>
+		</plexus:column>
+		 
+	</plexus:dataTable>
+
+</ui:composition>

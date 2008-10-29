@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.chat.ChatRoomImpl" table="CHAT_ROOM" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="domainId" type="java.lang.Long">
+            <column name="DOMAIN_ID" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="topic" type="java.lang.String">
+            <column name="TOPIC" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="created" type="java.util.Date">
+            <column name="CREATED" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <bag name="messages" order-by="ROOM_FK" lazy="true" fetch="select" inverse="true" cascade="all,delete-orphan">
+            <cache usage="read-write" />
+            <key foreign-key="CHAT_MESSAGE_ROOM_FKC">
+                <column name="ROOM_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.chat.ChatMessageImpl"/>
+        </bag>
+        <set name="chatUsers" table="CHAT_ROOMS2CHAT_USERS" order-by="CHAT_USERS_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="CHAT_USER_CHAT_ROOMS_FKC">
+                <column name="CHAT_ROOMS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.chat.ChatUserImpl" foreign-key="CHAT_ROOM_CHAT_USERS_FKC">
+                <column name="CHAT_USERS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </set>
+        <many-to-one name="owner" class="org.openuss.chat.ChatUserImpl" cascade="save-update" foreign-key="CHAT_ROOM_OWNER_FKC" lazy="proxy" fetch="select">
+            <column name="OWNER_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

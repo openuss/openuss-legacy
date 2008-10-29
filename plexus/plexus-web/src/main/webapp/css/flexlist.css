@@ -1,0 +1,198 @@
+/* Flexlist CSS */
+
+.flexList a {
+	text-decoration: none;
+	color: #5493D4;
+}
+
+.flexList a:hover {
+	text-decoration: underline;
+}
+
+.flexList a:focus {
+	outline-style: none;
+}
+
+.flexList ul {
+	list-style-type: none;
+	padding-left: 0px !important;
+	margin-top:0px !important;
+	margin-bottom:0px !important;
+}
+
+.flexList {
+	width: 100%;
+	margin-top: 7px;
+}
+
+.flexList .flexListItems {
+	margin: 0px;
+	padding: 0px;
+}
+
+.flexListItems li {
+	border-bottom: 1px solid #CCCCCC;
+	padding: 5px 0px 5px 0px;
+	line-height: 14px;
+}
+
+.flexList .flexListBottom {
+	margin: 0px;
+}
+
+.flexListBottom li {
+	border: none;
+	padding: 5px 0px 5px 0px;
+}
+
+.flexListBottom li .flexListItemLeft {
+	font-style: italic;	
+}
+
+.flexList .header {
+	background-color: #5493D4;
+	color: white;
+	border: none;
+	padding: 3px 0px 3px 0px;
+}
+
+.flexList .header .flexListItemLeft {
+	padding-left: 5px;
+}
+
+.flexList .header a{
+	color:white !important;
+}
+
+.flexList .header a:hover{
+	text-decoration:none !important;
+}
+
+.flexListItemRight {
+	float: right;
+	height: 16px;
+	padding-right: 23px;
+	display:inline;	
+}
+
+.flexListItemLeft {
+	padding-left: 18px;
+	display:inline;
+}
+
+.flexList .highlight {
+	color: #5DBF00;
+}
+
+.flexListItemRight a {
+	text-decoration: none !important;
+}
+
+/* Specific rules for department, institute and course flexlist */
+.flexListDepartments .header {
+	background:url(../img/department_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+.flexListInstitutions .header {
+	background:url(../images/institution_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+.flexListCourses .header {
+	background:url(../images/course_small_flexlist.png) #5493d4 no-repeat center right;	
+}
+
+
+/* Tabs CSS */
+
+#flexlist_tabs {}
+
+#flexlist_tabs .header_normal {
+  padding: 0;
+  height: 28px;
+  background-image: url(../images/headline_small_bg.jpg);
+  background-repeat: repeat-x;
+  background-position: bottom;
+}
+
+#flexlist_tabs .header_normal_right_bg {
+  float: right;
+  width: 9px;
+  height: 28px;
+  background-image: url(../images/headline_right_small_bg.jpg);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  border:none;
+}
+
+#flexlist_tabs .tabs {
+	float:left; 
+	font-size: 13px; 
+}
+
+.tabs #tab_selected {
+	font-size: 13px !important; 
+	float:left;  
+	height: 28px; 
+	background-color: white;
+	background-image: url(../images/headline_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	border-bottom:1px solid white;
+	padding-left:9px;
+	margin-bottom: -1px;
+}
+
+.tabs .tab_selected_right {
+	float:left;
+	background-image: url(../images/headline_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;
+	border-bottom:1px solid white;
+	margin-bottom: -1px;
+}
+
+.tabs .tab_deselected {
+	font-size: 13px !important; 
+	float:left;  
+	height: 28px; 
+	background-color: #F4F4F4;
+	background-image: url(../images/headline_grey_left_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top left;
+	padding-left:9px;
+	cursor: pointer;
+	margin-bottom: -1px;	
+}
+
+.tabs .tab_deselected_right {
+	float:left;
+	background-image: url(../images/headline_grey_right_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: top right;
+	width:9px;
+	height:28px;	
+	margin-bottom: -1px;	
+}
+
+.tabs .tab_arrow_sel_right {
+	float:left; 
+	width: 30px; 
+	height: 27px; 
+	background-image: url(../images/arrow_white_to_grey.jpg);
+}
+
+.tabs .tab_content {
+	padding-top: 5px;
+	border-top: 1px solid #aeaeae;
+}
+
+.tabs .tab_arrow {
+	float:left; 
+	width: 30px; 
+	height: 27px; 
+	background-image: url(../images/arrow_grey_to_grey.jpg);
+}
+
+.tabs a:focus {
+	outline-style: none;
+}

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<title>Neue Seite 1</title>
+</head>
+
+<body>
+ <script type="text/javascript">
+   <!--
+     	// Clear all.
+    	function clearAll() {
+    		for (var i = 0; i < document.applets.length; i++)
+    		    document.applets[i].reset();
+    	}
+    
+    	// Save the formula
+    	function sendData() {
+    		var daten = "";
+    		for (var i = 0; i < document.applets.length; i++) {
+    			var get = document.applets[i].submit();
+    			if (get != "") {
+    				if (daten != "")
+    					daten = daten + ",";
+    				daten = daten + get;
+    			}
+    		}
+    		document.FileUpload.Ids.value = daten;
+    	}
+   //-->
+</script>
+<form method="post" action="EditFormula.html" name="FileUpload" id="FormMethod" enctype="multipart/form-data" onReset="clearAll()" onSubmit="sendData()">
+	<applet  name="myApplet" code="org/openuss/openformula/io/RunAsApplet.class" archive="../../../target/formula-editor-3.1-SNAPSHOT.jar" width="800" height="600">
+	  <param name="id" value="1">
+	  War nix! Formularix.IO.RunAsApplet 
+	</applet>
+	<input type="submit"> 
+</form>
+<br>Hallo<br>
+</body>
+
+</html>

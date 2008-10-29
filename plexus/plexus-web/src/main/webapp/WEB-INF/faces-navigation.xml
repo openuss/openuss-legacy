@@ -1,0 +1,1297 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+<faces-config>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	G l o b a l - R u l e s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+	<navigation-rule>
+		<description>Global navigation rules</description>
+		<from-view-id>/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>institute_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>desktop</from-outcome>
+			<to-view-id>/views/welcome.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>search</from-outcome>
+			<to-view-id>/views/public/search/search.xhtml</to-view-id>
+		</navigation-case>
+			
+		<navigation-case>
+			<from-outcome>extendedSearch</from-outcome>
+			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/views/welcome.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/views/public/login/login.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/views/public/login/logout.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>messagebox</from-outcome>
+			<to-view-id>/views/public/messagebox.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>forgot_password</from-outcome>
+			<to-view-id>/views/public/login/forgotPassword.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>register_user</from-outcome>
+			<to-view-id>/views/public/user/registration/startProcess.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>search_institutes</from-outcome>
+			<to-view-id>/views/public/institute/institutes.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute</from-outcome>
+			<to-view-id>/views/public/institute/institute.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>user_profile</from-outcome>
+			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>user_profile_view</from-outcome>
+			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>closePopupFrame</from-outcome>
+			<to-view-id>/views/public/popup/closePopupFrame.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>administration</from-outcome>
+			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>secure_password_change</from-outcome>
+			<to-view-id>/views/secured/user/newPassword.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>course_main</from-outcome>
+			<to-view-id>/views/secured/course/main.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>course_remove_member</from-outcome>
+			<to-view-id>/views/secured/course/confirmmembercancel.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>search_result</from-outcome>
+			<to-view-id>/views/public/search/search.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>extended_search_result</from-outcome>
+			<to-view-id>/views/public/search/extendedsearch.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university</from-outcome>
+			<to-view-id>/views/public/university/university.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>universities</from-outcome>
+			<to-view-id>/views/public/university/universities.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_create</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department</from-outcome>
+			<to-view-id>/views/public/department/department.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_department</from-outcome>
+			<to-view-id>/views/secured/lecture/university.xhtml</to-view-id>
+		</navigation-case>		
+  
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_courses</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>error</from-outcome>
+			<to-view-id>/views/errors/error.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>migration</from-outcome>
+			<to-view-id>/views/secured/migration/migration.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>migration_centraluser_registration</from-outcome>
+			<to-view-id>/views/secured/migration/userAgreement.xhtml</to-view-id>
+		</navigation-case>	
+		
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	W e b D A V  - R u l e s
+ 	   - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<navigation-case>
+			<from-outcome>webdav_guide</from-outcome>
+			<to-view-id>/views/secured/webdav/guide.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_win_xp</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_winxp.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_win_vista</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_winvista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_kde</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_kde.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_gnome</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_gnome.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>webdav_guide_mac</from-outcome>
+			<to-view-id>/views/secured/webdav/guide_macosx.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+    	L o g i n / L o g o u t  - R u l e s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+	<navigation-rule>
+		<from-view-id>/views/public/login/forgotPassword.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/views/public/messagebox.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/views/welcome.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       R e g i s t r a t i o n  - P r o c e s s 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    
+    <navigation-rule>
+    	<from-view-id>/views/public/user/registration/*</from-view-id>
+	   	<navigation-case>
+    		<from-outcome>start</from-outcome>
+    		<to-view-id>/views/public/user/registration/startProcess.xhtml</to-view-id>
+    	</navigation-case>
+	   	<navigation-case>
+    		<from-outcome>step1</from-outcome>
+    		<to-view-id>/views/public/user/registration/step1UserAgreement.xhtml</to-view-id>
+    	</navigation-case>
+	   	<navigation-case>
+    		<from-outcome>step2</from-outcome>
+    		<to-view-id>/views/public/user/registration/step2Preferences.xhtml</to-view-id>
+    	</navigation-case>
+	   	<navigation-case>
+    		<from-outcome>step3</from-outcome>
+    		<to-view-id>/views/public/user/registration/step3Confirmation.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+
+    
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       A c t i o n s
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+    	<from-view-id>/actions/public/user/activate.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>userActivate.activate</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>userActivate.activate</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/public/user/activate/request.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+    	<from-view-id>/actions/public/user/delete.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>userDeleteAction.deleteUser</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>userActivate.activate</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+    	<from-view-id>/actions/public/user/password/change.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>passwordChangeAction.loginUserByCode</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/secured/user/newPassword.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>passwordChangeAction.loginUserByCode</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/public/login/forgotPassword.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+    	<from-view-id>/actions/public/lecture/instituteactivation.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-action>instituteActivationAction.activateInstitute</from-action>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-action>instituteActivationAction.activateInstitute</from-action>
+    		<from-outcome>failure</from-outcome>
+    		<to-view-id>/views/welcome.xhtml</to-view-id>
+    	</navigation-case>
+    
+    </navigation-rule>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       D e s k t o p  - P a g es
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/*</from-view-id>
+		<navigation-case>
+			<from-outcome>user_bookmarks</from-outcome>
+			<to-view-id>/views/secured/user/profile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/views/secured/user/newPassword.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/views/secured/desktop/desktop</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+    <navigation-rule>
+    	<from-view-id>/views/secured/desktop/*</from-view-id>
+    	<navigation-case>
+    		<from-outcome>coursetype_course_selection</from-outcome>
+    		<to-view-id>/views/secured/desktop/coursetypecourseselection.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       I n s t i t u t e  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1application</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1application.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step2</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       I n s t i t u t e   - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+
+	<navigation-rule>
+		<from-view-id>/views/secured/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>institute</from-outcome>
+			<to-view-id>/views/public/institute/institute.xtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_data</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/institutemembers.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_news</from-outcome>
+			<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_news_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/newsedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_courses</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecourses.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_coursetype_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/coursetyperemove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_period</from-outcome>
+			<to-view-id>/views/secured/lecture/periodedit.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_period_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/periodremove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_course_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/courseremove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/institutedisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+		<from-view-id>/views/public/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_news</from-outcome>
+			<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_coursetypes</from-outcome>
+			<to-view-id>/views/secured/lecture/institutecoursetypes.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_data</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/institutemembers.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>institute_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/aspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       C o u r s e - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+		<navigation-rule>
+			<from-view-id>/views/secured/*</from-view-id>
+		
+			<!-- TODO move main to public or insert second public course main -->
+			<navigation-case>
+				<from-outcome>course</from-outcome>
+				<to-view-id>/views/secured/course/main.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>course_discussion</from-outcome>
+				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>course_newsletter</from-outcome>
+				<to-view-id>/views/secured/newsletter/newsletter.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>course_quiz</from-outcome>
+				<to-view-id>/views/secured/course/quiz.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>course_chat</from-outcome>
+				<to-view-id>/views/secured/course/chatmain.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>freestyle_learning</from-outcome>
+				<to-view-id>/views/secured/course/fslinstall.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>course_options</from-outcome>
+				<to-view-id>/views/secured/course/courseoptions.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_options_config</from-outcome>
+				<to-view-id>/views/secured/course/courseoptions.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>course_options_aspirants</from-outcome>
+				<to-view-id>/views/secured/course/courseaspirants.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_options_members</from-outcome>
+				<to-view-id>/views/secured/course/participants.xhtml</to-view-id>				
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>course_options_assistants</from-outcome>
+				<to-view-id>/views/secured/course/courseassistants.xhtml</to-view-id>
+     		</navigation-case>
+     		
+     		<navigation-case>
+				<from-outcome>course_news</from-outcome>
+				<to-view-id>/views/secured/course/coursenews.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>course_news_edit</from-outcome>
+				<to-view-id>/views/secured/course/coursenewsedit.xhtml</to-view-id>
+			</navigation-case>
+     		
+			<navigation-case>
+				<from-outcome>course_options_news</from-outcome>
+				<to-view-id>/views/secured/lecture/news.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_type_remove_confirmation</from-outcome>
+				<to-view-id>/views/secured/lecture/coursetyperemoveconfirmation.xhtml</to-view-id>				
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>course_remove_confirmation</from-outcome>
+				<to-view-id>/views/secured/lecture/courseremoveconfirmation.xhtml</to-view-id>
+			</navigation-case>
+
+			<navigation-case>
+				<from-outcome>newsletter_newmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/newmail.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>newsletter_subscribers</from-outcome>
+				<to-view-id>/views/secured/newsletter/newslettersubscribers.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			
+			<navigation-case>
+				<from-outcome>newsletter_showmail</from-outcome>
+				<to-view-id>/views/secured/newsletter/showmail.xhtml</to-view-id>				
+			</navigation-case>			
+		
+			<navigation-case>
+				<from-outcome>newsletter_export</from-outcome>
+				<to-view-id>/views/secured/newsletter/exportedsubscribers.xhtml</to-view-id>				
+			</navigation-case>			
+		
+
+			<!-- braincontest -->
+
+			<navigation-case>
+				<from-outcome>braincontest_main</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestmain.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_new</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestnew.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_solve</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestsolve.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>braincontest_top</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontesttop.xhtml</to-view-id>				
+			</navigation-case>	
+			
+			<navigation-case>
+				<from-outcome>braincontest_solved</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestsolved.xhtml</to-view-id>				
+			</navigation-case>					
+
+			<navigation-case>
+				<from-outcome>braincontest_wrong</from-outcome>
+				<to-view-id>/views/secured/braincontest/braincontestwrong.xhtml</to-view-id>				
+			</navigation-case>					
+
+			<!-- documents -->
+
+			<navigation-case>
+				<from-outcome>documents_main</from-outcome>
+				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_edit_file</from-outcome>
+				<to-view-id>/views/secured/documents/fileedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_edit_folder</from-outcome>
+				<to-view-id>/views/secured/documents/folderedit.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_remove_folderentries</from-outcome>
+				<to-view-id>/views/secured/documents/remove.xhtml</to-view-id>				
+			</navigation-case>			
+
+			<navigation-case>
+				<from-outcome>documents_add_zip</from-outcome>
+				<to-view-id>/views/secured/documents/addzip.xhtml</to-view-id>				
+			</navigation-case>	
+			
+			<!-- discussion -->	
+			<navigation-case>
+				<from-outcome>discussion_new</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionnew.xhtml</to-view-id>				
+			</navigation-case>		
+
+			<navigation-case>
+				<from-outcome>discussion_thread</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionthread.xhtml</to-view-id>				
+			</navigation-case>					
+
+			<navigation-case>
+				<from-outcome>discussion_main</from-outcome>
+				<to-view-id>/views/secured/discussion/discussions.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			<navigation-case>
+				<from-outcome>discussion_removethread</from-outcome>
+				<to-view-id>/views/secured/discussion/removethread.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			<navigation-case>
+				<from-outcome>discussion_search</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>		
+			
+			<navigation-case>
+				<from-outcome>discussion_search_result</from-outcome>
+				<to-view-id>/views/secured/discussion/discussionsearch.xhtml</to-view-id>				
+			</navigation-case>			
+			
+			<!--  Wiki  -->
+			<navigation-case>
+				<from-outcome>course_wiki</from-outcome>
+				<to-view-id>/views/secured/wiki/wikimain.xhtml</to-view-id>
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>wiki_edit</from-outcome>
+				<to-view-id>/views/secured/wiki/wikiedit.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>wiki_create_new_site</from-outcome>
+				<to-view-id>/views/secured/wiki/wikicreatenewsite.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
+				<from-outcome>wiki_overview</from-outcome>
+				<to-view-id>/views/secured/wiki/wikioverview.xhtml</to-view-id>
+			</navigation-case>
+            <navigation-case>
+				<from-outcome>wiki_version</from-outcome>
+				<to-view-id>/views/secured/wiki/wikiversion.xhtml</to-view-id>				
+			</navigation-case>
+			<navigation-case>
+                <from-outcome>wiki_choose_image</from-outcome>
+                <to-view-id>/views/secured/wiki/wikichooseimage.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_remove_image</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimageremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_remove_site</from-outcome>
+                <to-view-id>/views/secured/wiki/wikisiteremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_import</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimport.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_import_confirmation</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiimportconfirmation.xhtml</to-view-id>              
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_print_preview</from-outcome>
+                <to-view-id>/views/secured/wiki/wikiprintpreview.xhtml</to-view-id>
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>wiki_overwrite</from-outcome>
+                <to-view-id>/views/secured/wiki/wikisiteoverwriteconfirmation.xhtml</to-view-id>
+            </navigation-case>
+			
+            <!--  Papersubmission  -->
+            <navigation-case>
+	            <from-outcome>examlist</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/examlist.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>papersubmission_file_remove</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileremove.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>papersubmission_file_edit</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionfileedit.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>submissionview</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>submissionviewlecturer</from-outcome>
+	            <to-view-id>/views/secured/papersubmission/submissionviewlecturer.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>	        
+                <from-outcome>papersubmission_add_zip</from-outcome>
+                <to-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</to-view-id>              
+            </navigation-case>  
+  	        <navigation-case>
+                <from-outcome>papersubmission_exam_remove</from-outcome>
+                <to-view-id>/views/secured/papersubmission/examremove.xhtml</to-view-id>              
+            </navigation-case>  
+	        
+	        <!--  Collaboration -->
+	        <navigation-case>
+	            <from-outcome>collaboration</from-outcome>
+	            <to-view-id>/views/secured/collaboration/main.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>collaboration_confirm_remove</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceremoveconfirmation.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+	            <from-outcome>workspaceview</from-outcome>
+	            <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+	        </navigation-case>
+	        <navigation-case>
+                <from-outcome>collaboration_edit_file</from-outcome>
+                <to-view-id>/views/secured/collaboration/fileedit.xhtml</to-view-id>                
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_edit_folder</from-outcome>
+                <to-view-id>/views/secured/collaboration/folderedit.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_remove_folderentries</from-outcome>
+                <to-view-id>/views/secured/collaboration/documentremoveconfirmation.xhtml</to-view-id>              
+            </navigation-case>          
+            <navigation-case>
+                <from-outcome>collaboration_add_zip</from-outcome>
+                <to-view-id>/views/secured/collaboration/addzip.xhtml</to-view-id>              
+            </navigation-case>
+							
+		</navigation-rule>
+		
+		<navigation-rule>
+			<from-view-id>/views/secured/documents/addzip.xhtml</from-view-id>
+			<navigation-case>
+				<from-outcome>success</from-outcome>
+				<to-view-id>/views/secured/documents/documents.xhtml</to-view-id>
+			</navigation-case>
+		</navigation-rule>
+		<navigation-rule>
+            <from-view-id>/views/secured/collaboration/addzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/collaboration/workspaceview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
+        <navigation-rule>
+            <from-view-id>/views/secured/papersubmission/submissionaddzip.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>success</from-outcome>
+                <to-view-id>/views/secured/papersubmission/submissionview.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       News  - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>detailsNewsItem</from-outcome>
+			<to-view-id>/views/public/news/newsDetail.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/views/public/news/newsDetail.xhtml</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>newsItem_edit</from-outcome>
+			<to-view-id>/views/public/news/newsEdit.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+	
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+       Administration - P a g e
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>/views/secured/system/*</from-view-id>
+		
+		<navigation-case>
+			<from-outcome>admin_properties</from-outcome>
+			<to-view-id>/views/secured/system/properties.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>admin_users</from-outcome>
+			<to-view-id>/views/secured/system/userbrowser.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>admin_groups</from-outcome>
+			<to-view-id>/views/secured/system/groups.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_universities</from-outcome>
+			<to-view-id>/views/secured/system/universities.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_departments</from-outcome>
+			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_institutes</from-outcome>
+			<to-view-id>/views/secured/system/institutes.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_ldap_index</from-outcome>
+			<to-view-id>/views/secured/system/ldap_index.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_ldap_servers</from-outcome>
+			<to-view-id>/views/secured/system/ldap_servers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>user_profile_view</from-outcome>
+			<to-view-id>/views/secured/user/userprofile.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_attributemapping_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_attributemappingremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_attributemappings</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_attributemappings.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_attributemapping_edit</from-outcome>		
+			<to-view-id>/views/secured/system/ldap/ldap_attributemappingedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_domain_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_domainremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_domains</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_domains.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_domain_edit</from-outcome>		
+			<to-view-id>/views/secured/system/ldap/ldap_domainedit.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ldap_roleattributekey_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_roleattributekeyremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_roleattributekeys</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_roleattributekeys.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_roleattributekey_edit</from-outcome>		
+			<to-view-id>/views/secured/system/ldap/ldap_roleattributekeyedit.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ldap_server_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_serverremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_servers</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_servers.xhtml</to-view-id>
+		</navigation-case>	
+
+		<navigation-case>
+			<from-outcome>ldap_server_edit</from-outcome>		
+			<to-view-id>/views/secured/system/ldap/ldap_serveredit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>ldap_userdnpatterns</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_userdnpatterns.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ldap_userdnpattern_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/system/ldap/ldap_userdnpatternremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ldap_userdnpattern_edit</from-outcome>		
+			<to-view-id>/views/secured/system/ldap/ldap_userdnpatternedit.xhtml</to-view-id>
+		</navigation-case>		
+
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+	
+		<navigation-case>
+			<from-outcome>admin_departments</from-outcome>
+			<to-view-id>/views/secured/system/departments.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>university_registration_step2</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep2.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/views/secured/system/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/universityremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      D e p a r t m e n t  - R e g i s t r a t i o n 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+	<navigation-rule>
+	
+		<from-view-id>/*</from-view-id>
+	
+			<navigation-case>
+					<from-outcome>department_registration_start</from-outcome>
+					<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
+			</navigation-case>
+		
+	</navigation-rule>
+	
+	<navigation-rule>
+		
+		<from-view-id>/views/secured/lecture/registration/*</from-view-id>
+
+			<navigation-case>
+				<from-outcome>department_registration_start</from-outcome>
+				<to-view-id>/views/secured/lecture/registration/departmentstart.xhtml</to-view-id>
+			</navigation-case>
+			
+			<navigation-case>
+				<from-outcome>department_registration_step1</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep1.xhtml</to-view-id>
+			</navigation-case>
+	
+			<navigation-case>
+				<from-outcome>department_registration_step2</from-outcome>		
+				<to-view-id>/views/secured/lecture/registration/departmentstep2.xhtml</to-view-id>
+			</navigation-case>
+	</navigation-rule>
+
+
+   <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+      U n i v e r s i t y  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+	<navigation-rule>
+		<from-view-id>/views/secured/lecture/*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_remove</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodremove.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_period_add</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiodedit.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universitymembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>admin_universities</from-outcome>
+			<to-view-id>/views/secured/system/universities.xhtml</to-view-id>
+		</navigation-case>
+
+	</navigation-rule>
+	
+	<navigation-rule>
+	
+	<from-view-id>/views/public/university/*</from-view-id>
+	
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_data</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/universitydepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_command_edit</from-outcome>
+			<to-view-id>/views/secured/lecture/universityoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_periods</from-outcome>
+			<to-view-id>/views/secured/lecture/universityperiods.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universitymembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/universityaspirants.xhtml</to-view-id>
+		</navigation-case>
+			
+	</navigation-rule>
+ <!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             D e p a r t m e n t  - P a g e 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/secured/*</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>department_data</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>		
+				
+		<navigation-case>
+			<from-outcome>department_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_remove_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentremoveconfirmation.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_disable_confirmation</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentdisableconfirmation.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+    <navigation-rule>
+		<from-view-id>/views/public/department/*</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>department_data</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentoptions.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>department_members</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentMembers.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_departments</from-outcome>
+			<to-view-id>/views/secured/lecture/instituteDepartments.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>manage_institute</from-outcome>
+			<to-view-id>/views/secured/lecture/departmentinstitutes.xhtml</to-view-id>
+		</navigation-case>		
+				
+		<navigation-case>
+			<from-outcome>department_aspirants</from-outcome>
+			<to-view-id>/views/secured/lecture/auth/departmentaspirants.xhtml</to-view-id>
+		</navigation-case>
+		
+		
+	</navigation-rule>
+	
+	
+	
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             Papersubmission 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    
+    <navigation-rule>
+    	<from-view-id>/views/secured/papersubmission/examlist.xhtml</from-view-id>
+    	<navigation-case>
+    		<from-outcome>success</from-outcome>
+    		<to-view-id>/views/secured/papersubmission/examlist.xhtml</to-view-id>
+    	</navigation-case>
+    	<navigation-case>
+    		<from-outcome>failed</from-outcome>
+    		<to-view-id>/views/secured/papersubmission/examlist.xhtml</to-view-id>
+    	</navigation-case>
+    </navigation-rule>
+    
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - -  
+             Welcome-Page 
+    - - - - - - - - - - - - - - - - - - - - - - - - - -->	
+    <navigation-rule>
+		<from-view-id>/views/welcome.xhtml</from-view-id>	
+		
+		<navigation-case>
+			<from-outcome>university_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/universitystart.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>university_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/universitystep1.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_start</from-outcome>
+			<to-view-id>/views/secured/lecture/registration/start.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>institute_registration_step1</from-outcome>		
+			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+		
+</faces-config>
+

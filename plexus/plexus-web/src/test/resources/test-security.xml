@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="getId"/>
+	</bean>
+	
+	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder">
+		<property name="encodeHashAsBase64" value="true"/>
+	</bean>
+
+</beans>

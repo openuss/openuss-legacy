@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+
+<faces-config>
+
+ 	<component>
+  		<component-type>org.openuss.framework.jsfcontrols.components.defaultAction</component-type>
+  		<component-class>org.openuss.framework.jsfcontrols.components.UIDefaultAction</component-class>
+ 	</component>
+   
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.idProxy</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.UIIDProxy</component-class>
+	</component>
+
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.param</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.UIParam</component-class>
+	</component>
+	
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UIFlexList</component-class>
+	</component>
+	
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.courseflexlist</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.CourseUIFlexList</component-class>
+	</component>
+
+
+	<component>
+		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
+		<component-class>org.openuss.framework.jsfcontrols.components.flexlist.UITabs</component-class>
+	</component>
+	
+	
+	<component>
+        <component-type>org.openuss.components.HtmlSelectManyPicklist</component-type>
+        <component-class>org.openuss.framework.jsfcontrols.components.picklist.HtmlSelectManyPicklist</component-class>
+    </component>
+   
+    <converter>
+    	<description>Converts a TimeZone object to a string representation and vice versa</description>
+    	<display-name>TimeZoneConverter</display-name>
+    	<converter-for-class>java.util.TimeZone</converter-for-class>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.TimeZoneConverter</converter-class>
+    </converter>
+    
+    <converter>
+    	<description>Converts a Locale object to a string representation and vice versa</description>
+    	<display-name>LocaleConverter</display-name>
+    	<converter-for-class>java.util.Locale</converter-for-class>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.LocaleConverter</converter-class>
+    </converter>
+
+    <converter>
+    	<description>Workaround for Shale Issue: Converts a Long object to a string representation and vice versa</description>
+    	<display-name>LongConverter</display-name>
+    	<converter-for-class>java.lang.Long</converter-for-class>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.ShaleLongConverter</converter-class>
+    </converter>
+    
+    <converter>
+    	<description>Converts a timestamp object to a string representation and vice versa</description>
+    	<display-name>TimestampConverter</display-name>
+    	<converter-id>org.openuss.framework.converter.TimestampConverter</converter-id>
+    	<converter-class>org.openuss.framework.jsfcontrols.converter.TimestampConverter</converter-class>
+    	<property>
+    		<display-name>The date style of the timestamp object. Available is 'short', 'medium'(default), 'long' and 'full'. Only available, if the type property is set.</display-name>
+    		<property-name>dateStyle</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    	<property>
+    		<display-name>The time style of the timestamp object. Available is 'short', 'medium'(default), 'long' and 'full'. Only available, if the type property is set.</display-name>
+    		<property-name>timeStyle</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    	<property>
+    		<display-name>Specifies the timezone of the timestamp object. Default is GMT.</display-name>
+    		<property-name>timeZone</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    	<property>
+    		<display-name>Specifies the locale of the timestamp object. Overrides the user's current locale.</display-name>
+    		<property-name>locale</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    	<property>
+    		<display-name>The date format pattern used to convert this number. Use this or the type property.</display-name>
+    		<property-name>pattern</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    	<property>
+    		<display-name>Specifies whether to display the date, time, or both.</display-name>
+    		<property-name>style</property-name>
+    		<property-class>java.lang.String</property-class>
+    	</property>
+    </converter>
+</faces-config>

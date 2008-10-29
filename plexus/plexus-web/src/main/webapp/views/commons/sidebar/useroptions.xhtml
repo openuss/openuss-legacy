@@ -1,0 +1,38 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+    
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="actionsForm">
+			<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
+				<ul class="action_list">
+					<s:authorize ifAllGranted="ROLE_ADMIN">
+					<li class="register_university">
+						<h:commandLink value="" action="university_registration_start" ><span />#{msg.university_command_add_university}</h:commandLink>
+					</li>
+					<li class="register_department">
+						<h:commandLink value="" action="department_registration_start" ><span />#{msg.department_command_add_department}</h:commandLink>
+					</li>
+					</s:authorize>
+					<s:authorize ifAllGranted="ROLE_USER">
+					<li class="register_institute">
+						<h:commandLink value="" action="institute_registration_start" ><span />#{msg.institute_command_add_institute}</h:commandLink>
+					</li>
+					</s:authorize>
+					<li class="webdav_guide">
+						<h:commandLink value="" action="webdav_guide"><span />#{msg.webdav_command_guide}</h:commandLink>
+ 					</li>			  		
+				</ul>
+			</o:block>
+		</h:form>
+	</s:authorize>
+</f:subview>

@@ -1,0 +1,799 @@
+a.icon_edit {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_edit span {
+  background-position: left top;
+  background-image: url(../img/buttons/edit_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_edit:focus span, a.icon_edit:hover span {
+  background-position: top right;
+}
+
+a.icon_toplist {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_toplist span {
+  background-position: left top;
+  background-image: url(../img/buttons/toplist_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_toplist:focus span, a.icon_toplist:hover span {
+  background-position: top right;
+}
+
+a.icon_settings {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_settings span {
+  background-position: left top;
+  background-image: url(../img/buttons/settings_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_settings:focus span, a.icon_settings:hover span {
+  background-position: top right;
+}
+
+a.icon_remove {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_remove span {
+  background-position: left top;
+  background-image: url(../img/buttons/delete_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_remove:focus span, a.icon_remove:hover span {
+  background-position: top right;
+}
+ 
+a.icon_profile {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_profile span {
+  background-position: left top;
+  background-image: url(../img/buttons/profile_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_profile:focus span, a.icon_profile:hover span {
+  background-position: top right;
+  cursor: pointer;
+}
+
+a.icon_bookmark {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_bookmark span {
+  background-position: left top;
+  background-image: url(../img/buttons/bookmark_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_bookmark:focus span, a.icon_bookmark:hover span {
+  background-position: top right;
+}
+
+a.icon_bookmark_remove {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_bookmark_remove span {
+  background-position: left top;
+  background-image: url(../img/buttons/bookmark_remove_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_bookmark_remove:focus span, a.icon_bookmark_remove:hover span {
+  background-position: top right;
+}
+
+a.icon_send {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_send span {
+  background-position: left top;
+  background-image: url(../img/buttons/send_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_send:focus span, a.icon_send:hover span {
+  background-position: top right;
+}
+
+a.icon_sendnow {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_sendnow span {
+  background-position: left top;
+  background-image: url(../img/buttons/send_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_sendnow:focus span, a.icon_sendnow:hover span {
+  background-position: top right;
+}
+
+a.icon_public {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_public span {
+  background-position: left top;
+  background-image: url(../img/buttons/public_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_public:focus span, a.icon_public:hover span {
+  background-position: top right;
+}
+
+a.icon_hide {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_hide span {
+  background-position: left top;
+  background-image: url(../img/buttons/hide_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_hide:focus span, a.icon_hide:hover span {
+  background-position: top right;
+}
+
+a.icon_move {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_move span {
+  background-position: left top;
+  background-image: url(../img/buttons/move_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_move:focus span, a.icon_move:hover span {
+  background-position: top right;
+}
+
+a.icon_cancel {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  /*line-height: 0px;*/
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  /*position: relative;*/
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_cancel span {
+  background-position: left top;
+  background-image: url(../img/buttons/cancel_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  /*left: 0pt;
+  position: absolute;
+  top: 0pt;*/
+  width: 16px;
+}
+
+a.icon_cancel:focus span, a.icon_cancel:hover span {
+  background-position: top right;
+}
+
+a.icon_accept {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 8pt;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  padding-right: 5pt;
+}
+
+a.icon_reject {
+  background: transparent none repeat scroll 0%;
+  color: #F0F0F0;
+  float: left;
+  font-size: 8pt;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+
+a.icon_lock {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_lock span {
+  background-position: left top;
+  background-image: url(../img/buttons/lock_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_unlock {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_unlock span {
+  background-position: left top;
+  background-image: url(../img/buttons/unlock_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_mark_for_removal {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_mark_for_removal span {
+  background-position: left top;
+  background-image: url(../img/buttons/mark_delete_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+a.icon_recover {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  float: left;
+  font-size: 0pt;
+  height: 16px;
+  line-height: 0px;
+  margin: 0 5px 0 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  width: 16px;
+}
+
+a.icon_recover span {
+  background-position: left top;
+  background-image: url(../img/buttons/unmark_delete_icon.png);
+  background-repeat: no-repeat;
+  display: block;
+  height: 16px;
+  left: 0pt;
+  position: absolute;
+  top: 0pt;
+  width: 16px;
+}
+
+/*MyUni Icons*/
+
+.myuni_time_period {
+  	
+}
+
+.flexListItemRight a, .flexListItemRight span.newsletter_none, .flexListItemRight span.forum_none {
+  background: transparent none repeat scroll 0%;
+  color: #FFFFFF;
+  font-size: 0pt;
+  height: 16px;
+  padding: 0 16px 0 0;
+  margin: 0 4px 0 5px;
+  overflow: hidden;
+  width: 16px;
+  cursor: pointer;  
+}
+
+.flexListItemRight span.newsletter_none, .flexListItemRight span.forum_none {
+	cursor: help;	
+}
+
+.flexListItemRight a span, .flexListItemRight span span {
+  background-position: left top;
+  background-repeat: no-repeat;
+  height: 16px;
+  position:absolute;
+  width: 16px;  
+}
+
+.flexListItemRight a:focus span, .flexListItemRight a:hover span {
+  background-position: top right;
+}
+
+.flexListItemRight a.newsletter_subscribed span {
+  background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
+}
+
+.flexListItemRight a.newsletter_notSubscribed span {
+  background-image: url(../img/buttons/newsletter_subscribe_icon.png);
+}
+
+.flexListItemRight span.newsletter_none span {
+  background-image: url(../img/buttons/newsletter_none_icon.png);
+}
+
+.flexListItemRight a.forum_subscribed span {
+  background-image: url(../img/buttons/forum_unsubscribe_icon.png);
+}
+
+.flexListItemRight a.forum_notSubscribed span {
+  background-image: url(../img/buttons/forum_subscribe_icon.png);
+}
+
+.flexListItemRight span.forum_none span {
+  background-image: url(../img/buttons/forum_none_icon.png);
+}
+
+.flexListItemRight a.remove_bookmark span {
+  background-image: url(../img/buttons/bookmark_remove_icon.png);
+}
+
+/*Actionbox*/
+
+ul.action_list {
+  list-style: none;
+  padding:0;
+  margin: 5px 0 15px 20px;
+  color: #a5a5a5;
+}
+
+ul.action_list li {
+  margin-top: 10px;	
+}
+
+ul.action_list li a {
+  color:#2C5885;
+  text-decoration: none;
+  vertical-align:middle;
+  height:16px;
+  padding:0;
+  cursor: pointer;
+}
+
+ul.action_list li a:focus, ul.action_list li a:hover {
+  text-decoration: none;
+}
+
+ul.action_list li a:focus span, ul.action_list li a:hover span {
+  background-position: right top;
+}
+
+ul.action_list li a span {
+  background-position: left top;
+  background-repeat: no-repeat;
+  margin: 0 4px 0 -20px;
+  height: 16px;
+  width: 16px;
+  position: absolute;    
+}
+
+ul.action_list li.newsletter_subscribe a span{
+  background-image:url(../img/buttons/newsletter_subscribe_icon.png);
+}
+
+ul.action_list li.newsletter_unsubscribe a span{
+  background-image:url(../img/buttons/newsletter_unsubscribe_icon.png);
+}
+
+ul.action_list li.newsletter_subscriberlist a span {
+  background-image:url(../img/buttons/personlist_icon.png);
+}
+
+ul.action_list li.forum_subscribe a span{
+  background-image:url(../img/buttons/forum_subscribe_icon.png);
+}
+
+ul.action_list li.forum_unsubscribe a span{
+  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+}
+
+ul.action_list li.forum_lock a span{
+  background-image:url(../img/buttons/lock_icon.png);
+}
+
+ul.action_list li.forum_unlock a span{
+  background-image:url(../img/buttons/unlock_icon.png);
+}
+
+ul.action_list li.institute_add_bookmark a span{
+  background-image:url(../img/buttons/bookmark_icon.png);
+}
+
+ul.action_list li.institute_remove_bookmark a span{
+  background-image:url(../img/buttons/bookmark_remove_icon.png);
+}
+
+ul.action_list li.institute_apply_for_membership a span{
+  background-image:url(../img/buttons/join_icon.png);
+}
+
+ul.action_list li.topic_subscribe a span{
+  background-image:url(../img/buttons/forum_subscribe_icon.png);
+}
+
+ul.action_list li.topic_unsubscribe a span{
+  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+}
+
+ul.action_list li.topic_lock a span{
+  background-image:url(../img/buttons/lock_icon.png);
+}
+
+ul.action_list li.topic_unlock a span{
+  background-image:url(../img/buttons/unlock_icon.png);
+}
+
+ul.action_list li.course_remove_bookmark a span{
+  background-image:url(../img/buttons/bookmark_remove_icon.png);
+}
+
+ul.action_list li.course_bookmark a span{
+  background-image:url(../img/buttons/bookmark_icon.png);
+}
+
+ul.action_list li.department_bookmark a span{
+  background-image:url(../img/buttons/bookmark_icon.png);
+}
+
+ul.action_list li.department_overview_of_all_courses a span{
+	background-image:url(../img/buttons/list_icon.png)
+}
+	
+ul.action_list li.department_remove_bookmark a span{
+  background-image:url(../img/buttons/bookmark_remove_icon.png);
+}
+
+ul.action_list li.register_institute a span{
+  background-image:url(../img/buttons/add_institute_icon.png);
+}
+
+ul.action_list li.register_department a span{
+  background-image:url(../img/buttons/add_department_icon.png);
+}
+
+ul.action_list li.register_university a span{
+  background-image:url(../img/buttons/add_university_icon.png);
+}
+
+ul.action_list li.webdav_guide a span{
+  background-image:url(../img/buttons/webdav_icon.png);
+}
+
+ul.action_list li.wiki_create_new a span {
+  background-image:url(../img/buttons/edit_icon.png);
+}
+
+ul.action_list li.wiki_overview a span {
+  background-image:url(../img/buttons/list_icon.png);
+}
+
+ul.action_list li.wiki_versions a span {
+  background-image:url(../img/buttons/versions_icon.png);
+}
+
+ul.action_list li.wiki_last_stable a span {
+  background-image:url(../img/buttons/go_stable_icon.png);
+}
+
+ul.action_list li.wiki_print_preview a span {
+  background-image:url(../img/buttons/print_preview_icon.png);
+}
+
+ul.action_list li.wiki_lock a span {
+  background-image:url(../img/buttons/lock_icon.png);
+}
+
+ul.action_list li.wiki_unlock a span {
+  background-image:url(../img/buttons/unlock_icon.png);
+}
+
+ul.action_list li.wiki_mark_stable a span {
+  background-image:url(../img/buttons/mark_stable_icon.png);
+}
+
+ul.action_list li.wiki_unmark_stable a span {
+  background-image:url(../img/buttons/unmark_stable_icon.png);
+}
+
+ul.action_list li.wiki_import a span {
+  background-image:url(../img/buttons/import_wiki_icon.png);
+}
+
+ul.action_list li.wiki_recover a span {
+  background-image:url(../img/buttons/unmark_delete_icon.png);
+}
+
+/*Legendbox*/
+
+ul.legend_list {
+  list-style: none;
+  padding:0px;
+  margin:0px;
+  color: #a5a5a5;  
+}
+
+ul.legend_list li {
+  margin:4px 0px 0px 0px; padding:0px 2px 0px 20px;
+  background-position:left center;
+  background-repeat:no-repeat;
+  min-height:16px;
+  vertical-align:middle;
+}
+   
+ul.legend_list li.newsletter_none {
+  background-image:url(../img/capturebox/newsletter_none_icon.png);
+}
+
+ul.legend_list li.newsletter_notSubscribed {
+  background-image:url(../img/capturebox/newsletter_subscribe_icon.png);
+}
+
+ul.legend_list li.newsletter_subscribed {
+  background-image:url(../img/capturebox/newsletter_unsubscribe_icon.png);
+}
+
+ul.legend_list li.forum_none {
+  background-image:url(../img/capturebox/forum_none_icon.png);
+}
+
+ul.legend_list li.forum_notSubscribed {
+  background-image:url(../img/capturebox/forum_subscribe_icon.png);
+}
+
+ul.legend_list li.forum_subscribed {
+  background-image:url(../img/capturebox/forum_unsubscribe_icon.png);
+}
+
+ul.legend_list li.remove_bookmark {
+  background-image:url(../img/capturebox/bookmark_remove_icon.png);
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Project Documentation</title>
+    </properties>
+
+    <body>
+		<a name="start"/>
+        <section name="Getting Started">
+			<p>
+				The getting started section can be found <a href="documentation/gettingstarted.html">here</a>
+			</p>
+		</section>
+		
+		<a name="javadoc"/>
+		<section name="The Java Documentation">
+			<p>
+				The following Java Doc is available here:
+			</p>
+			<h5>
+				The Main Application
+			</h5>
+			<ul>
+				<li><a href="application/apidocs/index.html">Application</a></li>
+			</ul>
+			<h5>
+				The Framework
+			</h5>
+			<ul>
+				<li><a href="framework/framework-jsfcontrols/apidocs/index.html">JSF Components</a></li>
+				<li><a href="framework/framework-utilities/apidocs/index.html">Utilities</a></li>
+				<li><a href="framework/framework-tests/apidocs/index.html">Tests</a></li>
+			</ul>
+			<h5>
+				The Components
+			</h5>
+			<ul>
+				<li><a href="foundation/foundation-api/apidocs/index.html">Foundation</a></li>
+				<li><a href="news/news-api/apidocs/index.html">News</a></li>
+			</ul>
+		</section>
+		<a name="owninstance"/>
+		<section name="Setting up your own instance of OpenUSS">
+			<p>
+				A brief documentation of setting up your own instance of openuss will appear soon.
+			</p>
+		</section>
+    </body>
+</document>

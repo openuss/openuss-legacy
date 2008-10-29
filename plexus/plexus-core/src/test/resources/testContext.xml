@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		T e s t U t i l i t y  -  S t r u c t u r e
+		- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="defaultUser" class="org.openuss.security.UserImpl">
+		<property name="username" value="defaultuser" />
+		<property name="password" value="defaultpassword" />
+		<property name="email" value="default@email.de" />
+		<property name="enabled" value="true" />
+		<property name="accountExpired" value="false" />
+		<property name="credentialsExpired" value="true" />
+		<property name="accountLocked" value="true" />
+	</bean>
+	
+	<bean id="defaultInstitute" class="org.openuss.lecture.InstituteImpl">
+		<property name="name" value="institutename" />
+		<property name="shortcut" value="shortcut" />
+		<property name="email" value="email" />
+	</bean>
+
+	<bean id="testUtility" class="org.openuss.TestUtility">
+		<property name="defaultUser">
+			<ref local="defaultUser" />
+		</property>
+		<property name="defaultInstitute">
+			<ref local="defaultInstitute" />
+		</property>
+		<property name="userDao">
+			<ref bean="userDao" />
+		</property>
+		<property name="groupDao">
+			<ref bean="groupDao" />
+		</property>
+		<property name="membershipDao">
+			<ref bean="membershipDao" />
+		</property>
+		<property name="instituteDao">
+			<ref bean="instituteDao" />
+		</property>
+		<property name="universityDao">
+			<ref bean="universityDao" />
+		</property>
+		<property name="departmentDao">
+			<ref bean="departmentDao" />
+		</property>
+		<property name="courseTypeDao">
+			<ref bean="courseTypeDao" />
+		</property>
+		<property name="applicationDao">
+			<ref bean="applicationDao" />
+		</property>
+		<property name="courseDao">
+			<ref bean="courseDao" />
+		</property>
+		<property name="periodDao">
+			<ref bean="periodDao" />
+		</property>
+		<property name="securityService">
+			<ref bean="securityService" />
+		</property>
+		<property name="organisationService">
+			<ref bean="organisationService" />
+		</property>
+	</bean>
+
+	<bean id="lectureBuilder"
+		class="org.openuss.lecture.LectureBuilder">
+		<property name="instituteDao">
+			<ref bean="instituteDao" />
+		</property>
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          L E C T U R E  S E A R C H  I N D E X
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="lectureDirectory"	class="org.springmodules.lucene.index.support.RAMDirectoryFactoryBean"/>
+	
+	<bean id="recreateIndexer" class="org.openuss.lecture.LectureIndex">
+		<property name="universityDao" ref="universityDao"/>
+		<property name="universityIndexer" ref="universityIndexer"/>
+		<property name="departmentDao" ref="departmentDao"/>
+		<property name="departmentIndexer" ref="departmentIndexer"/>
+		<property name="instituteDao" ref="instituteDao"/>
+		<property name="instituteIndexer" ref="instituteIndexer"/>
+		<property name="courseDao" ref="courseDao"/>
+		<property name="courseIndexer" ref="courseIndexer"/>
+		<property name="indexFactory" ref="indexFactory" />
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          L E C T U R E  S E A R C H  I N D E X
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	
+	<bean id="scheduler" class="org.openuss.framework.tests.SchedulerMock"/>
+	<bean id="nodeScheduler" class="org.openuss.framework.tests.SchedulerMock"/>
+	
+	<bean id="domainEventPublisher" class="org.openuss.events.DomainEventPublisher"/>
+
+</beans>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.discussion.DiscussionWatchImpl" table="DISCUSSION_TOPICWATCH" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <composite-id name="discussionWatchPk" class="org.openuss.discussion.DiscussionWatchPK">
+            <key-many-to-one name="user" class="org.openuss.security.UserImpl" >
+                <column name="USER_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+            <key-many-to-one name="topic" class="org.openuss.discussion.TopicImpl" >
+                <column name="TOPIC_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+        </composite-id>   
+    </class>
+</hibernate-mapping>

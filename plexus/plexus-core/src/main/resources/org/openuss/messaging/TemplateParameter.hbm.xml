@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.messaging.TemplateParameterImpl" table="MESSAGE_TEMPLATEPARAMETER" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="value" type="java.lang.String">
+            <column name="param_value" not-null="true" unique="false" sql-type="VARCHAR(1024)"/>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <many-to-one name="template" class="org.openuss.messaging.TemplateMessageImpl" cascade="none" foreign-key="MESSAGE_TEMPLATEPARAMETER_TEMC" lazy="proxy" fetch="select">
+            <column name="TEMPLATE_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

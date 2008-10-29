@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.discussion.ForumImpl" table="DISCUSSION_FORUM" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="domainIdentifier" type="java.lang.Long">
+            <column name="DOMAIN_IDENTIFIER" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="readOnly" type="boolean">
+            <column name="READ_ONLY" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <set name="topics" order-by="FORUM_FK" lazy="true" fetch="select" inverse="true">
+            <cache usage="read-write" />
+            <key foreign-key="DISCUSSION_TOPIC_FORUM_FKC">
+                <column name="FORUM_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.discussion.TopicImpl"/>
+        </set>
+    </class>
+</hibernate-mapping>

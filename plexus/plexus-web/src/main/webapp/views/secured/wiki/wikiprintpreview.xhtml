@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="#{theme.stylesheet}" rel="stylesheet" type="text/css" media="screen,screen"/>
+	</head>
+
+	<body>
+	<!-- text above will be ignored -->
+	
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
+           	<c:if test="${wiki_current_site_version.deleted}">
+           		<o:block label="#{msg.wiki_main_header_site_deleted}" styleClass="form_box">
+  					<p class="content_font_normal">
+  						<h:outputFormat value="#{msg.wiki_main_site_deleted_detail}" styleClass="content_font_normal">
+							<f:param value="#{wiki_current_site_version.name}" />
+						</h:outputFormat>
+					</p>
+  				</o:block>
+            </c:if>
+            
+            <c:if test="${not wiki_current_site_version.deleted}">
+            	<c:if test="${empty views$secured$wiki$wikimain.siteVersionInfo.text}">
+  					<p class="content_font_normal">
+  						<h:outputFormat value="#{msg.wiki_edit_create_msg}" styleClass="content_font_normal">
+							<f:param value="#{wiki_new_site_name}" />
+						</h:outputFormat>
+					</p>
+	        	</c:if>
+	        	
+	        	<c:if test="${not empty wiki_current_site_version.text}">
+	        	  	<div class="wiki_content"><h:outputText escape="false" value="#{wiki_current_site_version.text}" class="content_font_normal"></h:outputText></div>
+	        	</c:if>
+        	</c:if>
+	<!-- text above will be ignored -->
+	</body>
+</html>

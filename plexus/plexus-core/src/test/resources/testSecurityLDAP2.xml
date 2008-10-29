@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~ AUTHENTICATION DEFINITIONS ~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- This authentication provider accepts any presented TestingAuthenticationToken -->
+	<bean id="testingAuthenticationProvider" class="org.acegisecurity.providers.TestingAuthenticationProvider"/>
+
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+			    <ref local="testingAuthenticationProvider"/>
+			    <!-- <ref local="ldapAuthProvider"/>  -->
+			    <ref local="activeDirectoryLdapAuthProvider"/>
+    				
+			</list>
+		</property>
+	</bean>
+
+
+
+
+<!-- LDAP Authentification -->
+
+<bean id="initialDirContextFactory" class="org.acegisecurity.ldap.DefaultInitialDirContextFactory">
+	<constructor-arg value="ldap://wwusv1.uni-muenster.de:389/dc=uni-muenster,dc=de"/>	
+	<property name="authenticationType"><value>DIGEST-MD5</value></property>
+</bean>
+
+<bean id="activeDirectoryLdapAuthProvider" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider">
+	<constructor-arg>
+		<bean class="org.openuss.security.acegi.ldap.ActiveDirectoryBindAuthenticator">
+			<constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
+			<property name="userDnPatterns"><list><value>cn={0},ou=projekt-benutzer,dc=uni-muenster,dc=de</value></list></property>
+		</bean>
+	</constructor-arg>	
+</bean>
+
+
+</beans>

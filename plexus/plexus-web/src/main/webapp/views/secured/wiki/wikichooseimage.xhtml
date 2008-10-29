@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/choose.xhtml">
+	   <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}" ifNot="error"/>
+	   
+	   <ui:define name="title">
+            <h:outputText value="#{courseInfo.name}"/>
+        </ui:define>
+         
+        <ui:define name="content">
+            <h:form id="mainWikiForm" enctype="multipart/form-data">
+                <script type="text/javascript">
+					function SelectFile( fileUrl ) {
+						window.opener.SetUrl( fileUrl ) ;
+						window.close() ;
+					}
+				</script>
+            
+               	<plexus:dataTable 
+			    	id="imagestable" 
+			    	label="#{views$secured$wiki$wikichooseimage.siteVersionInfo.name}" 
+			    	value="views$secured$wiki$wikichooseimage.imagesData"
+			    	columnClasses="col_min_center, col_max_left, col_max_left, col_max_left, col_max_left, col_commands"
+			    	var="entry" 
+			    	rows="20">  
+			    	
+			    	<t:column> 
+			            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
+			            <h:graphicImage value="/images/filetypes/#{entry.extension}.gif"/>
+			        </t:column>
+			      
+					<t:column>
+			            <plexus:commandSortHeader columnName="name"> #{msg['documents_main_column_name']} </plexus:commandSortHeader>
+			            <h:outputLink onclick="SelectFile('#{facesContext.externalContext.requestContextPath}/files/#{entry.fileName}?fileid=#{entry.id}');" title="#{entry.description}" rendered="${!entry.folder}">
+			                <h:outputText value="#{entry.name}"/>
+			            </h:outputLink>
+			        </t:column>
+			
+			        <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+			            <t:column>
+			                <plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
+			                <h:outputText value="#{entry.sizeAsString}"/>
+			            </t:column>
+			        </s:acl>
+			
+			        <s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.ASSIST}">
+			            <t:column>
+			                <plexus:commandSortHeader columnName="fileSize"> #{msg['documents_main_column_size']} </plexus:commandSortHeader>
+			                <h:outputText value="#{entry.sizeAsString}" rendered="${!entry.folder}"/>
+			            </t:column>
+			        </s:acl>
+			
+			        <t:column>
+			            <plexus:commandSortHeader columnName="created"> #{msg['documents_main_column_create']} </plexus:commandSortHeader>
+			            <h:outputText value="#{entry.created}">
+			                <f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+			            </h:outputText>
+			        </t:column>
+			
+			        <t:column>
+			            <plexus:commandSortHeader columnName="modified"> #{msg['documents_main_column_change']} </plexus:commandSortHeader>
+			            <h:outputText value="#{entry.modified}">
+			                <f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+			            </h:outputText>
+			        </t:column>
+			        
+			        <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+			            <plexus:column header="#{msg.documents_main_column_actions}">
+			                <plexus:command 
+			                    bean="#{views$secured$wiki$wikichooseimage}"
+			                    action="deleteImage" 
+			                    label="#{msg.documents_main_button_delete}" 
+			                    title="#{msg.documents_main_button_delete}"
+			                    styleClass="icon_remove"/>
+			            </plexus:column>
+			        </s:acl>
+					
+				</plexus:dataTable>
+				
+				<o:block>
+				    <h:outputLabel value="#{msg.wiki_choose_image_upload_file}"
+                    for="file" styleClass="field_label" />
+				    <t:inputFileUpload 
+	                    id="file" 
+	                    storage="file" 
+	                    accept="image/*" 
+	                    immediate="true" 
+	                    validator="imageValidator"
+	                    styleClass="uploadField">
+	                    <f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+	                </t:inputFileUpload>
+
+	                <h:commandButton action="#{views$secured$wiki$wikichooseimage.save}"
+	                    value="#{msg['newdocument_button_save']}"
+	                    title="#{msg['newdocument_button_save']}" 
+	                    immediate="true"
+	                    styleClass="button_save" />
+	                    
+	                <h:message id="fileError" for="file" styleClass="field_error" showDetail="true" showSummary="false" />
+	            </o:block>
+            </h:form>
+        </ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

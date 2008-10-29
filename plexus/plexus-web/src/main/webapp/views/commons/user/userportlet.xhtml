@@ -1,0 +1,31 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="userportletLogout">
+			<h:outputFormat value="#{msg.user_portlet_username}">
+				<f:param value="#{user.firstName}"/>
+				<f:param value="#{user.lastName}"/>
+			</h:outputFormat>
+			&#160;|&#160;
+			<t:commandLink action="user_profile" value="#{msg.user_portlet_command_profile}"/>
+			&#160;|&#160;
+			<t:commandLink id="logout" forceId="true" action="#{authenticationController.logout}" value="#{msg.user_portlet_command_logout}"/>
+		</h:form>
+	</s:authorize>
+	<s:authorize ifNotGranted="ROLE_USER">
+		<h:form id="userportletLogin">
+			<t:commandLink id="login" forceId="true" action="login" value="#{msg.user_portlet_command_login}"/> 
+		</h:form>
+	</s:authorize>
+	
+</f:subview>

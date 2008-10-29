@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.ldap.AttributeMappingImpl" table="SECURITY_LDAP_ATTRIBUTEMAPPING" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="mappingName" type="java.lang.String">
+            <column name="MAPPING_NAME" not-null="true" unique="true" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="usernameKey" type="java.lang.String">
+            <column name="USERNAME_KEY" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="firstNameKey" type="java.lang.String">
+            <column name="FIRST_NAME_KEY" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="lastNameKey" type="java.lang.String">
+            <column name="LAST_NAME_KEY" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="emailKey" type="java.lang.String">
+            <column name="EMAIL_KEY" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="groupRoleAttributeKey" type="java.lang.String">
+            <column name="GROUP_ROLE_ATTRIBUTE_KEY" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <bag name="roleAttributeKeys" table="SECURITY_LDAP_MAPPING2ROLE" order-by="ROLE_ATTRIBUTE_KEYS_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="SECURITY_LDAP_ROLEATTRIBUTE_AC">
+                <column name="ATTRIBUTE_MAPPINGS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.ldap.RoleAttributeKeyImpl" foreign-key="SECURITY_LDAP_ATTRIBUTEMAPPINC">
+                <column name="ROLE_ATTRIBUTE_KEYS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+        <set name="authenticationDomains" order-by="ATTRIBUTE_MAPPING_FK" lazy="true" fetch="select" inverse="true">
+            <cache usage="read-write" />
+            <key foreign-key="SECURITY_LDAP_AUTHDOMAIN_ATTRC">
+                <column name="ATTRIBUTE_MAPPING_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.security.ldap.AuthenticationDomainImpl"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core"    
+      xmlns:fck="http://www.fck-faces.org/fck-faces"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+    <h:form id="paperForm" enctype="multipart/form-data" rendered="#{views$secured$papersubmission$examlist.editing}">
+          <o:block label="#{msg.papersubmission_exam_edit_header}" styleClass="form_box">
+            	<o:input id="name" label="#{msg.papersubmission_exam_edit_name}" entity="examInfo" property="name" required="true" maxlength="100"/>
+            
+            	<h:outputText value="#{msg.papersubmission_exam_edit_description}" styleClass="field_label" />
+                <div class="content_iframe">
+                   <fck:editor value="#{examInfo.description}" id="textEditor" toolbarSet="Basic" maxlength="250" height="200" >
+                       <f:converter converterId="xssFilter"/>
+                   </fck:editor>
+                </div>           
+           
+            	<h:outputLabel value="#{msg.papersubmission_exam_edit_attachment}" for="attachmentUpload" styleClass="field_label" />
+					<f:subview rendered="#{!(empty requestScope.examInfo.attachments)}">
+						<div class="content_font_normal">
+							<t:dataList 
+								var="attachment" 
+								value="#{requestScope.examInfo.attachments}" 
+								binding="${views$secured$papersubmission$examlist.attachmentList}">
+						  		<t:commandButton id="attachmentDelete" forceId="true" value="#{msg.attachment_delete}" title="#{msg.attachment_delete_hint}"
+									action="#{views$secured$papersubmission$examlist.removeAttachment}"
+									immediate="true" styleClass="button_remove" />
+						  		&#160;
+								<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+									<f:param value="#{attachment.id}" name="fileid" />
+									<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+									<h:graphicImage value="/images/filetypes/default.gif" 
+						                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+							  		#{attachment.fileName} 
+							  	</o:link> 
+								<f:subview rendered="#{empty attachment.id}">
+									<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+									<h:graphicImage value="/images/filetypes/default.gif" 
+						                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+							  		#{attachment.fileName} 
+							  	</f:subview> 
+								<br/>	
+							</t:dataList>
+						</div>
+					</f:subview>
+	
+					<t:inputFileUpload 
+						id="attachmentUpload" forceId="true"
+						storage="file" 
+						accept="*"
+						immediate="true" styleClass="uploadField">
+						<f:valueChangeListener type="org.openuss.web.upload.UploadListener" />
+					</t:inputFileUpload>
+					
+					<t:commandButton id="addAttachment" forceId="true" 
+						value="#{msg.papersubmission_exam_edit_add_attachment}"
+						actionListener="#{views$secured$papersubmission$examlist.addAttachment}"
+						title="#{msg.papersubmission_exam_edit_add_attachment}"
+						immediate="true"
+						styleClass="button_add"/> 					
+					<h:message for="attachmentUpload" styleClass="field_error" showDetail="true" showSummary="false" />
+					
+            		<o:input id="deadline" forceId="true" label="#{msg.papersubmission_exam_edit_deadline}" entity="examInfo" property="deadline" required="true" type="full">
+            			<f:validator  validatorId="calendarDateAfterNowValidator"/>
+            		</o:input>
+		       </o:block> 
+        <o:block>   
+            <t:commandButton id="savePaper" forceId="true"   action="#{views$secured$papersubmission$examlist.saveExam}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+            <t:commandButton id="cancelPaper" forceId="true" action="#{views$secured$papersubmission$examlist.cancelExam}" value="#{msg.cancel}" title="#{msg.cancel_hint}" immediate="true" styleClass="button_cancel"/>
+        </o:block>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.news.NewsItemImpl" table="NEWS_NEWSITEM" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="category" type="org.openuss.news.NewsCategoryEnum">
+            <column name="CATEGORY" not-null="true" unique="false" sql-type="INTEGER"/>
+        </property>
+        <property name="publisherIdentifier" type="java.lang.Long">
+            <column name="PUBLISHER_IDENTIFIER" not-null="true" unique="false" sql-type="BIGINT" index="NEWSITEM_PUBLISHER"/>
+        </property>
+        <property name="text" type="org.andromda.persistence.hibernate.usertypes.HibernateStringClobType">
+            <column name="TEXT" not-null="true" unique="false" sql-type="BLOB"/>
+        </property>
+        <property name="publisherName" type="java.lang.String">
+            <column name="PUBLISHER_NAME" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="title" type="java.lang.String">
+            <column name="TITLE" not-null="false" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="publishDate" type="java.util.Date">
+            <column name="PUBLISH_DATE" not-null="true" unique="false" sql-type="TIMESTAMP" index="NEWSITEM_PUBLISHDATE"/>
+        </property>
+        <property name="expireDate" type="java.util.Date">
+            <column name="EXPIRE_DATE" not-null="false" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="author" type="java.lang.String">
+            <column name="AUTHOR" not-null="false" unique="false" sql-type="VARCHAR(64)"/>
+        </property>
+        <property name="publisherType" type="org.openuss.news.PublisherTypeEnum">
+            <column name="PUBLISHER_TYPE" not-null="true" unique="false" sql-type="INTEGER"/>
+        </property>
+    </class>
+</hibernate-mapping>

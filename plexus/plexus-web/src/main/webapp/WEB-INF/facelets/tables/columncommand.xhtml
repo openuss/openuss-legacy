@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+    <c:if test="${empty label}">
+    	<c:set var="label" value="${action}"/>
+    </c:if>      
+	<t:column>
+		<f:facet name="header">
+			<h:panelGroup>
+				<h:outputText value="${header}"/>
+			</h:panelGroup>
+		</f:facet>
+		<t:commandLink action="#{bean[action]}" styleClass="command" title="${title}">
+			<h:outputText value="${label}"/>
+			<ui:insert/>
+		</t:commandLink>
+	</t:column>
+</ui:composition>

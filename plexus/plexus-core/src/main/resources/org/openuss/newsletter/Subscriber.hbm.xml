@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.newsletter.SubscriberImpl" table="NEWSLETTER_SUBSCRIBER" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <composite-id name="subscriberPk" class="org.openuss.newsletter.SubscriberPK">
+            <key-many-to-one name="newsletter" class="org.openuss.newsletter.NewsletterImpl" >
+                <column name="NEWSLETTER_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+            <key-many-to-one name="user" class="org.openuss.security.UserImpl" >
+                <column name="USER_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+        </composite-id>   
+        <property name="blocked" type="boolean">
+            <column name="BLOCKED" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+    </class>
+</hibernate-mapping>

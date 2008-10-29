@@ -1,0 +1,663 @@
+<ehcache>
+
+    <!-- Sets the path to the directory where cache .data files are created.
+
+         If the path is a Java System Property it is replaced by
+         its value in the running VM.
+
+         The following properties are translated:
+         user.home - User's home directory
+         user.dir - User's current working directory
+         java.io.tmpdir - Default temp file path -->
+    <diskStore path="java.io.tmpdir/hibernate"/>
+
+    <!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required for defaultCache:
+
+        maxInMemory       - Sets the maximum number of objects that will be created in memory
+        eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+                            is never expired.
+        timeToIdleSeconds - Sets the time to idle for an element before it expires.
+                            i.e. The maximum amount of time between accesses before an element expires
+                            Is only used if the element is not eternal.
+                            Optional attribute. A value of 0 means that an Element can idle for infinity
+        timeToLiveSeconds - Sets the time to live for an element before it expires.
+                            i.e. The maximum time between creation time and when an element expires.
+                            Is only used if the element is not eternal.
+        overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+                            has reached the maxInMemory limit.
+
+        -->
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        overflowToDisk="true" />
+
+
+	<!-- entity caches -->
+	<cache
+        name="org.openuss.news.NewsItemImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="600"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.documents.FolderImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.documents.FolderImpl.entries"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.documents.FolderEntryImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.documents.FileEntryImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.viewtracking.DomainViewStateImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.GroupImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.UserImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.acl.ObjectIdentityImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.security.acl.ObjectIdentityImpl.child"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.security.acl.ObjectIdentityImpl.permissions"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.acl.PermissionImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.AuthorityImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.MembershipImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.security.MembershipImpl.groups"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.ldap.RoleAttributeKeyImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.ldap.AttributeMappingImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.security.ldap.AttributeMappingImpl.authenticationDomains"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.security.ldap.AuthenticationDomainImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.security.ldap.AuthenticationDomainImpl.ldapServers"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+	<cache
+        name="org.openuss.security.ldap.UserDnPatternImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+
+	<cache
+        name="org.openuss.braincontest.AnswerImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.braincontest.BrainContestImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.braincontest.BrainContestImpl.answers"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+	<cache
+        name="org.openuss.lecture.InstituteImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.InstituteImpl.courseTypes"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.InstituteImpl.applications"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.CourseTypeImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.CourseTypeImpl.courses"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.PeriodImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.PeriodImpl.courses"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.CourseImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.CourseMemberImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+	<cache
+        name="org.openuss.lecture.UniversityImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.UniversityImpl.departments"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.UniversityImpl.periods"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.DepartmentImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.DepartmentImpl.institutes"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.lecture.DepartmentImpl.applications"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.lecture.ApplicationImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+
+    <cache
+        name="org.openuss.messaging.MessageJobImpl.recipients"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+
+
+
+    <cache
+        name="org.openuss.messaging.TemplateMessageImpl.parameters"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.system.SystemPropertyImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="3600"
+        overflowToDisk="false"
+    />
+
+
+
+
+
+	<cache
+        name="org.openuss.discussion.TopicImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.discussion.TopicImpl.posts"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.discussion.DiscussionWatchImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.discussion.FormulaImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.discussion.PostImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.discussion.ForumWatchImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.discussion.ForumImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.discussion.ForumImpl.topics"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.newsletter.NewsletterImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.newsletter.NewsletterImpl.subscribers"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.newsletter.NewsletterImpl.mailings"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.newsletter.SubscriberImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.newsletter.MailImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.desktop.DesktopImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.wiki.WikiSiteImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.wiki.WikiSiteImpl.wikiSiteVersions"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.wiki.WikiSiteVersionImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.statistics.OnlineSessionImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.statistics.SystemStatisticImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+    <cache
+        name="org.openuss.chat.ChatRoomImpl.messages"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+
+
+	<cache
+        name="org.openuss.collaboration.WorkspaceImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.paperSubmission.ExamImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="org.openuss.paperSubmission.ExamImpl.papersubmissions"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+	<cache
+        name="org.openuss.paperSubmission.PaperSubmissionImpl"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="240"
+        timeToLiveSeconds="240"
+        overflowToDisk="false"
+    />
+
+</ehcache>
