@@ -209,7 +209,6 @@
 	<modules>
         <!--  <module>documentation</module> -->
 		<module>framework</module>
-		<module>themes</module>
 		<module>openformula</module>
 		<module>plexus</module>
 	</modules>
