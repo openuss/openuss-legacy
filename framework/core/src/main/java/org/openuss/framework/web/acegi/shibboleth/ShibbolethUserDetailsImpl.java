@@ -66,10 +66,6 @@ public class ShibbolethUserDetailsImpl implements ShibbolethUserDetails {
 
    public ShibbolethUserDetailsImpl() {}
    
-   public ShibbolethUserDetailsImpl(String username) {
-	   setUsername(username);
-   }
-
    //~ Methods ========================================================================================================
 
    public Attributes getAttributes() {

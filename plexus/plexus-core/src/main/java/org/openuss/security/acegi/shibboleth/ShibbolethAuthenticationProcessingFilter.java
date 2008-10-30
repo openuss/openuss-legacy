@@ -403,7 +403,9 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public class ShibbolethAuthenticationDetailsSource implements AuthenticationDetailsSource {
 		
 		public Object buildDetails(HttpServletRequest request) {
-			shibbolethUserDetails = new ShibbolethUserDetailsImpl(request.getHeader(shibbolethUsernameHeaderKey));
+			ShibbolethUserDetailsImpl shibbolethUserDetailsImpl = new ShibbolethUserDetailsImpl();
+			shibbolethUserDetailsImpl.setUsername(request.getHeader(shibbolethUsernameHeaderKey));
+			shibbolethUserDetails = shibbolethUserDetailsImpl;
 			shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
 			if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
 				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase(Locale.ENGLISH));
