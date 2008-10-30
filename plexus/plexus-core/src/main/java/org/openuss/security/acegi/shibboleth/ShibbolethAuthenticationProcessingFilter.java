@@ -3,6 +3,7 @@ package org.openuss.security.acegi.shibboleth;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.naming.NamingException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -106,7 +107,7 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	 */
 	protected String migrationTargetUrl = null;
 	
-	protected boolean migrationNecessary = false;
+	protected String MIGRATION_NECESSARY_KEY = "ACEGI_SHIBBOLETH_MIGRATION_NECESSARY_KEY";
 	
 	/**
 	 * Enables HTTP redirect in case of a successful authentication.</br>
@@ -279,7 +280,10 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	    
 	    // Set switch for redirect to migration page
 	    if (isMigrationEnabled() && authentication.equals(authRequest)) {
-	    	setMigrationNecessary(true);
+	    	setMigrationNecessary(true, authentication);
+	    }
+	    else {
+	    	setMigrationNecessary(false, authentication);
 	    }
 	    	
 	    return authentication;
@@ -399,8 +403,8 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public class ShibbolethAuthenticationDetailsSource implements AuthenticationDetailsSource {
 		
 		public Object buildDetails(HttpServletRequest request) {
-			shibbolethUserDetails = new ShibbolethUserDetailsImpl();
-            shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
+			shibbolethUserDetails = new ShibbolethUserDetailsImpl(request.getHeader(shibbolethUsernameHeaderKey));
+			shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.USERNAME_KEY, request.getHeader(shibbolethUsernameHeaderKey));
 			if (request.getHeader(shibbolethEmailHeaderKey)!=null) {
 				shibbolethUserDetails.getAttributes().put(ShibbolethUserDetailsImpl.EMAIL_KEY, ((String) request.getHeader(shibbolethEmailHeaderKey)).toLowerCase(Locale.ENGLISH));
 			}
@@ -433,6 +437,26 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 		} else {
 			this.defaultRole = getDefaultRolePrefix()+defaultRole;
 		}
+	}
+	
+	protected boolean isMigrationNecessary() {
+		Boolean migrationNecessary = Boolean.FALSE;
+		try {
+			migrationNecessary = (Boolean) ((ShibbolethUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().get(MIGRATION_NECESSARY_KEY).get();
+		} catch (NamingException e) {}
+		return migrationNecessary; 
+	}
+	
+	protected void setMigrationNecessary(boolean migrationNecessary, Authentication authentication) {
+		((ShibbolethUserDetails) authentication.getDetails()).getAttributes().put(MIGRATION_NECESSARY_KEY, Boolean.valueOf(migrationNecessary));
+	}
+	
+	protected void setMigrationNecessary(boolean migrationNecessary) {
+		((ShibbolethUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails()).getAttributes().put(MIGRATION_NECESSARY_KEY, Boolean.valueOf(migrationNecessary));
+	}	
+	
+	public boolean isProcessEachUrlEnabled() {
+		return processEachUrlEnabled;
 	}
 	
 	public String getShibbolethUsernameHeaderKey() {
@@ -532,18 +556,6 @@ public class ShibbolethAuthenticationProcessingFilter extends AbstractProcessing
 	public void setMigrationTargetUrl(String migrationTargetUrl) {
 		this.migrationTargetUrl = migrationTargetUrl;
 		setMigrationEnabled(migrationTargetUrl == null? false : true);
-	}
-
-	protected boolean isMigrationNecessary() {
-		return migrationNecessary;
-	}
-
-	protected void setMigrationNecessary(boolean migrationNecessary) {
-		this.migrationNecessary = migrationNecessary;
-	}
-
-	public boolean isProcessEachUrlEnabled() {
-		return processEachUrlEnabled;
 	}
 
 	public void setProcessEachUrlEnabled(boolean processEachUrlEnabled) {

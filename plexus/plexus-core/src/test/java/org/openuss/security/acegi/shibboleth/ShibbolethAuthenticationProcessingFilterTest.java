@@ -138,7 +138,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup authentication manager
         AuthenticationManager authManager = new AuthenticationManager()
         {public org.acegisecurity.Authentication authenticate(org.acegisecurity.Authentication authentication) throws org.acegisecurity.AuthenticationException {
-        	return new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});}};
+        	UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});
+        	authResult.setDetails(new ShibbolethUserDetailsImpl());
+        	return authResult;
+         }};
         	
 	    // Setup our test object, to grant access and redirect migrated user to defaultTargetUrl.
 	    String defaultTargetUrl = "/foobar";
@@ -652,7 +655,10 @@ public class ShibbolethAuthenticationProcessingFilterTest extends TestCase {
         // Setup authentication manager
         AuthenticationManager authManager = new AuthenticationManager()
         {public org.acegisecurity.Authentication authenticate(org.acegisecurity.Authentication authentication) throws org.acegisecurity.AuthenticationException {
-        	return new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});}};
+        	UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(USERNAME,"protected",new GrantedAuthority[]{new GrantedAuthorityImpl(DEFAULTROLE)});
+        	authResult.setDetails(new ShibbolethUserDetailsImpl());
+        	return authResult;
+         }};
  
         // Setup our test object, to grant access
         filter.setAuthenticationManager(authManager);
