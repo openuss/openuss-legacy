@@ -11,7 +11,7 @@
 	
 	<groupId>org.openuss.openformula</groupId>
 	<artifactId>formula-web</artifactId>
-	<name>Formula Web Sample</name>
+	<name>OpenFormula - formula-web sample</name>
 	<packaging>war</packaging>
 
 	<dependencies>

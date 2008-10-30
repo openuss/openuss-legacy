@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>org.openuss.openformula</groupId>
 	<artifactId>formula-editor</artifactId>
-	<name>FormulaEditor</name>
+	<name>OpenFormula - formula-editor</name>
 	<packaging>jar</packaging>
 	<url>http://openuss.sf.net/plexus</url>
 

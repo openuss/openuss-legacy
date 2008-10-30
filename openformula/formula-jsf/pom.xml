@@ -10,7 +10,7 @@
 		<version>3.1-SNAPSHOT</version>
 	</parent>
 
-    <artifactId>formula-jsf</artifactId>
+    <artifactId>OpenFormula - formula-jsf</artifactId>
     <packaging>jar</packaging>
     <name>OpenUSS OpenFormula JSF-Component</name>
     
