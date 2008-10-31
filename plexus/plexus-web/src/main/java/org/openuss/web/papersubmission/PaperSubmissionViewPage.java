@@ -66,7 +66,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 	 * @throws Exception */
 	@SuppressWarnings("unchecked")
 	@Prerender
-	public void prerender() throws Exception { // NOPMD by Administrator on 13.03.08 12:57
+	public void prerender() throws Exception {
 		super.prerender();
 		refreshExamInfoBean();
 		refreshPaperInfoBean();
@@ -78,7 +78,7 @@ public class PaperSubmissionViewPage extends AbstractPaperSubmissionPage {
 		StringBuilder commentString = new StringBuilder();
 		List<PaperSubmissionInfo> submissionList = paperSubmissionService.findPaperSubmissionsByExamAndUser(examInfo.getId(), user.getId());
 		for(PaperSubmissionInfo submission : submissionList){
-			if(!submission.getComment().isEmpty()){
+			if(StringUtils.isNotEmpty(submission.getComment())){
 				commentString.append(submission.getComment());
 				commentString.append("<br/>");
 			}
