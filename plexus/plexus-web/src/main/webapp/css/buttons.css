@@ -14,7 +14,7 @@ a.icon_edit {
 
 a.icon_edit span {
   background-position: left top;
-  background-image: url(../img/buttons/edit_icon.png);
+  background-image: url(../images/buttons/edit_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -44,7 +44,7 @@ a.icon_toplist {
 
 a.icon_toplist span {
   background-position: left top;
-  background-image: url(../img/buttons/toplist_icon.png);
+  background-image: url(../images/buttons/toplist_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -74,7 +74,7 @@ a.icon_settings {
 
 a.icon_settings span {
   background-position: left top;
-  background-image: url(../img/buttons/settings_icon.png);
+  background-image: url(../images/buttons/settings_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -104,7 +104,7 @@ a.icon_remove {
 
 a.icon_remove span {
   background-position: left top;
-  background-image: url(../img/buttons/delete_icon.png);
+  background-image: url(../images/buttons/delete_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -134,7 +134,7 @@ a.icon_profile {
 
 a.icon_profile span {
   background-position: left top;
-  background-image: url(../img/buttons/profile_icon.png);
+  background-image: url(../images/buttons/profile_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -165,7 +165,7 @@ a.icon_bookmark {
 
 a.icon_bookmark span {
   background-position: left top;
-  background-image: url(../img/buttons/bookmark_icon.png);
+  background-image: url(../images/buttons/bookmark_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -195,7 +195,7 @@ a.icon_bookmark_remove {
 
 a.icon_bookmark_remove span {
   background-position: left top;
-  background-image: url(../img/buttons/bookmark_remove_icon.png);
+  background-image: url(../images/buttons/bookmark_remove_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -225,7 +225,7 @@ a.icon_send {
 
 a.icon_send span {
   background-position: left top;
-  background-image: url(../img/buttons/send_icon.png);
+  background-image: url(../images/buttons/send_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -255,7 +255,7 @@ a.icon_sendnow {
 
 a.icon_sendnow span {
   background-position: left top;
-  background-image: url(../img/buttons/send_icon.png);
+  background-image: url(../images/buttons/send_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -285,7 +285,7 @@ a.icon_public {
 
 a.icon_public span {
   background-position: left top;
-  background-image: url(../img/buttons/public_icon.png);
+  background-image: url(../images/buttons/public_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -315,7 +315,7 @@ a.icon_hide {
 
 a.icon_hide span {
   background-position: left top;
-  background-image: url(../img/buttons/hide_icon.png);
+  background-image: url(../images/buttons/hide_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -345,7 +345,7 @@ a.icon_move {
 
 a.icon_move span {
   background-position: left top;
-  background-image: url(../img/buttons/move_icon.png);
+  background-image: url(../images/buttons/move_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -375,7 +375,7 @@ a.icon_cancel {
 
 a.icon_cancel span {
   background-position: left top;
-  background-image: url(../img/buttons/cancel_icon.png);
+  background-image: url(../images/buttons/cancel_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -428,7 +428,7 @@ a.icon_lock {
 
 a.icon_lock span {
   background-position: left top;
-  background-image: url(../img/buttons/lock_icon.png);
+  background-image: url(../images/buttons/lock_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -454,7 +454,7 @@ a.icon_unlock {
 
 a.icon_unlock span {
   background-position: left top;
-  background-image: url(../img/buttons/unlock_icon.png);
+  background-image: url(../images/buttons/unlock_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -480,7 +480,7 @@ a.icon_mark_for_removal {
 
 a.icon_mark_for_removal span {
   background-position: left top;
-  background-image: url(../img/buttons/mark_delete_icon.png);
+  background-image: url(../images/buttons/mark_delete_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -506,7 +506,7 @@ a.icon_recover {
 
 a.icon_recover span {
   background-position: left top;
-  background-image: url(../img/buttons/unmark_delete_icon.png);
+  background-image: url(../images/buttons/unmark_delete_icon.png);
   background-repeat: no-repeat;
   display: block;
   height: 16px;
@@ -551,31 +551,31 @@ a.icon_recover span {
 }
 
 .flexListItemRight a.newsletter_subscribed span {
-  background-image: url(../img/buttons/newsletter_unsubscribe_icon.png);
+  background-image: url(../images/buttons/newsletter_unsubscribe_icon.png);
 }
 
 .flexListItemRight a.newsletter_notSubscribed span {
-  background-image: url(../img/buttons/newsletter_subscribe_icon.png);
+  background-image: url(../images/buttons/newsletter_subscribe_icon.png);
 }
 
 .flexListItemRight span.newsletter_none span {
-  background-image: url(../img/buttons/newsletter_none_icon.png);
+  background-image: url(../images/buttons/newsletter_none_icon.png);
 }
 
 .flexListItemRight a.forum_subscribed span {
-  background-image: url(../img/buttons/forum_unsubscribe_icon.png);
+  background-image: url(../images/buttons/forum_unsubscribe_icon.png);
 }
 
 .flexListItemRight a.forum_notSubscribed span {
-  background-image: url(../img/buttons/forum_subscribe_icon.png);
+  background-image: url(../images/buttons/forum_subscribe_icon.png);
 }
 
 .flexListItemRight span.forum_none span {
-  background-image: url(../img/buttons/forum_none_icon.png);
+  background-image: url(../images/buttons/forum_none_icon.png);
 }
 
 .flexListItemRight a.remove_bookmark span {
-  background-image: url(../img/buttons/bookmark_remove_icon.png);
+  background-image: url(../images/buttons/bookmark_remove_icon.png);
 }
 
 /*Actionbox*/
@@ -618,139 +618,139 @@ ul.action_list li a span {
 }
 
 ul.action_list li.newsletter_subscribe a span{
-  background-image:url(../img/buttons/newsletter_subscribe_icon.png);
+  background-image:url(../images/buttons/newsletter_subscribe_icon.png);
 }
 
 ul.action_list li.newsletter_unsubscribe a span{
-  background-image:url(../img/buttons/newsletter_unsubscribe_icon.png);
+  background-image:url(../images/buttons/newsletter_unsubscribe_icon.png);
 }
 
 ul.action_list li.newsletter_subscriberlist a span {
-  background-image:url(../img/buttons/personlist_icon.png);
+  background-image:url(../images/buttons/personlist_icon.png);
 }
 
 ul.action_list li.forum_subscribe a span{
-  background-image:url(../img/buttons/forum_subscribe_icon.png);
+  background-image:url(../images/buttons/forum_subscribe_icon.png);
 }
 
 ul.action_list li.forum_unsubscribe a span{
-  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+  background-image:url(../images/buttons/forum_unsubscribe_icon.png);
 }
 
 ul.action_list li.forum_lock a span{
-  background-image:url(../img/buttons/lock_icon.png);
+  background-image:url(../images/buttons/lock_icon.png);
 }
 
 ul.action_list li.forum_unlock a span{
-  background-image:url(../img/buttons/unlock_icon.png);
+  background-image:url(../images/buttons/unlock_icon.png);
 }
 
 ul.action_list li.institute_add_bookmark a span{
-  background-image:url(../img/buttons/bookmark_icon.png);
+  background-image:url(../images/buttons/bookmark_icon.png);
 }
 
 ul.action_list li.institute_remove_bookmark a span{
-  background-image:url(../img/buttons/bookmark_remove_icon.png);
+  background-image:url(../images/buttons/bookmark_remove_icon.png);
 }
 
 ul.action_list li.institute_apply_for_membership a span{
-  background-image:url(../img/buttons/join_icon.png);
+  background-image:url(../images/buttons/join_icon.png);
 }
 
 ul.action_list li.topic_subscribe a span{
-  background-image:url(../img/buttons/forum_subscribe_icon.png);
+  background-image:url(../images/buttons/forum_subscribe_icon.png);
 }
 
 ul.action_list li.topic_unsubscribe a span{
-  background-image:url(../img/buttons/forum_unsubscribe_icon.png);
+  background-image:url(../images/buttons/forum_unsubscribe_icon.png);
 }
 
 ul.action_list li.topic_lock a span{
-  background-image:url(../img/buttons/lock_icon.png);
+  background-image:url(../images/buttons/lock_icon.png);
 }
 
 ul.action_list li.topic_unlock a span{
-  background-image:url(../img/buttons/unlock_icon.png);
+  background-image:url(../images/buttons/unlock_icon.png);
 }
 
 ul.action_list li.course_remove_bookmark a span{
-  background-image:url(../img/buttons/bookmark_remove_icon.png);
+  background-image:url(../images/buttons/bookmark_remove_icon.png);
 }
 
 ul.action_list li.course_bookmark a span{
-  background-image:url(../img/buttons/bookmark_icon.png);
+  background-image:url(../images/buttons/bookmark_icon.png);
 }
 
 ul.action_list li.department_bookmark a span{
-  background-image:url(../img/buttons/bookmark_icon.png);
+  background-image:url(../images/buttons/bookmark_icon.png);
 }
 
 ul.action_list li.department_overview_of_all_courses a span{
-	background-image:url(../img/buttons/list_icon.png)
+	background-image:url(../images/buttons/list_icon.png)
 }
 	
 ul.action_list li.department_remove_bookmark a span{
-  background-image:url(../img/buttons/bookmark_remove_icon.png);
+  background-image:url(../images/buttons/bookmark_remove_icon.png);
 }
 
 ul.action_list li.register_institute a span{
-  background-image:url(../img/buttons/add_institute_icon.png);
+  background-image:url(../images/buttons/add_institute_icon.png);
 }
 
 ul.action_list li.register_department a span{
-  background-image:url(../img/buttons/add_department_icon.png);
+  background-image:url(../images/buttons/add_department_icon.png);
 }
 
 ul.action_list li.register_university a span{
-  background-image:url(../img/buttons/add_university_icon.png);
+  background-image:url(../images/buttons/add_university_icon.png);
 }
 
 ul.action_list li.webdav_guide a span{
-  background-image:url(../img/buttons/webdav_icon.png);
+  background-image:url(../images/buttons/webdav_icon.png);
 }
 
 ul.action_list li.wiki_create_new a span {
-  background-image:url(../img/buttons/edit_icon.png);
+  background-image:url(../images/buttons/edit_icon.png);
 }
 
 ul.action_list li.wiki_overview a span {
-  background-image:url(../img/buttons/list_icon.png);
+  background-image:url(../images/buttons/list_icon.png);
 }
 
 ul.action_list li.wiki_versions a span {
-  background-image:url(../img/buttons/versions_icon.png);
+  background-image:url(../images/buttons/versions_icon.png);
 }
 
 ul.action_list li.wiki_last_stable a span {
-  background-image:url(../img/buttons/go_stable_icon.png);
+  background-image:url(../images/buttons/go_stable_icon.png);
 }
 
 ul.action_list li.wiki_print_preview a span {
-  background-image:url(../img/buttons/print_preview_icon.png);
+  background-image:url(../images/buttons/print_preview_icon.png);
 }
 
 ul.action_list li.wiki_lock a span {
-  background-image:url(../img/buttons/lock_icon.png);
+  background-image:url(../images/buttons/lock_icon.png);
 }
 
 ul.action_list li.wiki_unlock a span {
-  background-image:url(../img/buttons/unlock_icon.png);
+  background-image:url(../images/buttons/unlock_icon.png);
 }
 
 ul.action_list li.wiki_mark_stable a span {
-  background-image:url(../img/buttons/mark_stable_icon.png);
+  background-image:url(../images/buttons/mark_stable_icon.png);
 }
 
 ul.action_list li.wiki_unmark_stable a span {
-  background-image:url(../img/buttons/unmark_stable_icon.png);
+  background-image:url(../images/buttons/unmark_stable_icon.png);
 }
 
 ul.action_list li.wiki_import a span {
-  background-image:url(../img/buttons/import_wiki_icon.png);
+  background-image:url(../images/buttons/import_wiki_icon.png);
 }
 
 ul.action_list li.wiki_recover a span {
-  background-image:url(../img/buttons/unmark_delete_icon.png);
+  background-image:url(../images/buttons/unmark_delete_icon.png);
 }
 
 /*Legendbox*/
@@ -771,29 +771,29 @@ ul.legend_list li {
 }
    
 ul.legend_list li.newsletter_none {
-  background-image:url(../img/capturebox/newsletter_none_icon.png);
+  background-image:url(../images/capturebox/newsletter_none_icon.png);
 }
 
 ul.legend_list li.newsletter_notSubscribed {
-  background-image:url(../img/capturebox/newsletter_subscribe_icon.png);
+  background-image:url(../images/capturebox/newsletter_subscribe_icon.png);
 }
 
 ul.legend_list li.newsletter_subscribed {
-  background-image:url(../img/capturebox/newsletter_unsubscribe_icon.png);
+  background-image:url(../images/capturebox/newsletter_unsubscribe_icon.png);
 }
 
 ul.legend_list li.forum_none {
-  background-image:url(../img/capturebox/forum_none_icon.png);
+  background-image:url(../images/capturebox/forum_none_icon.png);
 }
 
 ul.legend_list li.forum_notSubscribed {
-  background-image:url(../img/capturebox/forum_subscribe_icon.png);
+  background-image:url(../images/capturebox/forum_subscribe_icon.png);
 }
 
 ul.legend_list li.forum_subscribed {
-  background-image:url(../img/capturebox/forum_unsubscribe_icon.png);
+  background-image:url(../images/capturebox/forum_unsubscribe_icon.png);
 }
 
 ul.legend_list li.remove_bookmark {
-  background-image:url(../img/capturebox/bookmark_remove_icon.png);
+  background-image:url(../images/capturebox/bookmark_remove_icon.png);
 }

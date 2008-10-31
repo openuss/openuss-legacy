@@ -3,7 +3,7 @@
 	<version position="left"/>
     <bannerLeft>
 		<name>OpenUSS Logo</name>
-		<src>http://www.openuss.de/theme-plexus/img/logo.jpg</src>
+		<src>http://www.openuss.de/images/logo.jpg</src>
 		<href>http://www.openuss.org</href>
 	</bannerLeft>
 	<body>

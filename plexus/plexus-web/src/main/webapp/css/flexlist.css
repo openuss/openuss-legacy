@@ -90,7 +90,7 @@
 
 /* Specific rules for department, institute and course flexlist */
 .flexListDepartments .header {
-	background:url(../img/department_small_flexlist.png) #5493d4 no-repeat center right;	
+	background:url(../images/department_small_flexlist.png) #5493d4 no-repeat center right;	
 }
 .flexListInstitutions .header {
 	background:url(../images/institution_small_flexlist.png) #5493d4 no-repeat center right;	

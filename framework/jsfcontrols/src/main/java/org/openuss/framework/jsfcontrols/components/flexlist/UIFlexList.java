@@ -40,7 +40,7 @@ public class UIFlexList extends UIOutput {
 		
 		writer.startElement("div", this);
 			writer.writeAttribute("class", "flexList" + styleClass, null);
-			writeHeader();
+			writeHeader(context);
 			writeContent();
 			
 		writer.endElement("div");
@@ -49,7 +49,7 @@ public class UIFlexList extends UIOutput {
 	}
 	
 	//TODO remove li-element if css isnt broken afterwards
-	private void writeHeader() throws IOException {
+	private void writeHeader(FacesContext context) throws IOException {
 		String title = (String)getAttributes().get("title");
 		//If title is not set, dont render
 		if (title == null ) return;
@@ -75,13 +75,13 @@ public class UIFlexList extends UIOutput {
 						writer.writeAttribute("class", "flexListItemLeft", null);
 						
 						writer.startElement("img", this);
-							writer.writeAttribute("src", "/theme-plexus/img/collapsed_triangle_white.jpg", null);
+							writer.writeAttribute("src", context.getExternalContext().getRequestContextPath()+"/images/collapsed_triangle_white.jpg", null);
 							if (expanded) writer.writeAttribute("style", "display: none;", null);
 							writer.writeAttribute("id", "flexlist_arrow_collapsed" + this.getId(), null);
 						writer.endElement("img");
 						
 						writer.startElement("img", this);
-							writer.writeAttribute("src", "/theme-plexus/img/expanded_triangle_white.jpg", null);
+							writer.writeAttribute("src", context.getExternalContext().getRequestContextPath()+"/images/expanded_triangle_white.jpg", null);
 							if (!expanded) writer.writeAttribute("style", "display: none;", null);
 							writer.writeAttribute("id", "flexlist_arrow_expanded" + this.getId(), null);
 						writer.endElement("img");
