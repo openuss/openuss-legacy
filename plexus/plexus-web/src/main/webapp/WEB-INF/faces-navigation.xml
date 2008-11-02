@@ -1291,6 +1291,11 @@
 			<from-outcome>institute_registration_step1</from-outcome>		
 			<to-view-id>/views/secured/lecture/registration/step1.xhtml</to-view-id>
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>user_activation_request</from-outcome>		
+			<to-view-id>/views/public/user/activate/request.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 		
 </faces-config>
