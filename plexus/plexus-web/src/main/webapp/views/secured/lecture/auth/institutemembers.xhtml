@@ -44,7 +44,7 @@
 			
   			<c:if test="#{views$secured$lecture$auth$aspirants.data.data.rowCount > 0}">
 			  	<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.GRANT}" ifNot="error"/>
-				<h:form id="membersForm"> 
+				<h:form id="aspirantsForm"> 
 					<ui:include src="aspirantstable.xhtml" />
 					<o:block>
 						<h:commandButton value="${msg.save}" title="#{msg.save_hint}" action="#{views$secured$lecture$auth$aspirants.save}" styleClass="button_save"/>
