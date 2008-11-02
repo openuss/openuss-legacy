@@ -68,6 +68,10 @@ private static final Logger logger = Logger.getLogger(ExtendedSearchPage.class);
 	@Prerender
 	public void prerender(){
 		breadcrumbs.loadExtendedSearchCrumbs();
+		if (!isPostBack()){
+			extendedSearchResults = new ExtendedSearchResults();
+			initSearchForm();
+		}
 	}
 	
 	/**
