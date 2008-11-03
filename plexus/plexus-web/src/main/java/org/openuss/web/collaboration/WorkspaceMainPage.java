@@ -16,6 +16,7 @@ import org.openuss.desktop.DesktopException;
 import org.openuss.framework.jsfcontrols.breadcrumbs.BreadCrumb;
 import org.openuss.framework.web.jsf.model.AbstractPagedTable;
 import org.openuss.framework.web.jsf.model.DataPage;
+import org.openuss.lecture.CourseMemberInfo;
 import org.openuss.lecture.LectureException;
 import org.openuss.security.Authority;
 import org.openuss.security.Group;
@@ -267,16 +268,14 @@ public class WorkspaceMainPage extends AbstractCollaborationPage {
 		this.dataCourseMembers = dataCourseMembers;
 	}	
 
+	@SuppressWarnings("unchecked")
 	protected List<UserInfo> loadCourseMembers() {
-		final Group group = getSecurityService().getGroupByName("GROUP_COURSE_" + this.courseInfo.getId() + "_PARTICIPANTS");
-		
-		final List<Authority> members = group.getMembers();
-		final List<UserInfo> courseMembers = new ArrayList<UserInfo>(members.size());
-		for (Authority auth : members) {
-			courseMembers.add(getSecurityService().getUser(auth.getId()));
+		List<CourseMemberInfo> coursemembers = (List<CourseMemberInfo>) getCourseService().getParticipants(courseInfo);
+		List<UserInfo> userList = new ArrayList<UserInfo>();
+		for (CourseMemberInfo courseMemberInfo : coursemembers){
+			userList.add(getSecurityService().getUser(courseMemberInfo.getUserId()));
 		}
-		
-		return courseMembers;
+		return userList;
 	}
 	
 	@SuppressWarnings("unchecked") // NOPMD by Administrator on 13.03.08 13:02
