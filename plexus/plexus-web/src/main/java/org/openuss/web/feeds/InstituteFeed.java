@@ -2,6 +2,7 @@ package org.openuss.web.feeds;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -47,13 +48,15 @@ public class InstituteFeed extends AbstractFeed {
 		if (newsEntries != null && newsEntries.size() != 0) {
 			Collections.reverse(newsEntries);
 			for (NewsItemInfo item : newsEntries) {
-				this.addEntry(entries, 
-						item.getTitle(), 
-						linkNewsItem + item.getId(), 
-						item.getPublishDate(), 
-						item.getText(),
-						institute.getName(), 
-						item.getPublisherName());
+				if (item.getPublishDate().before(new Date())){
+					this.addEntry(entries, 
+							item.getTitle(), 
+							linkNewsItem + item.getId(), 
+							item.getPublishDate(), 
+							item.getText(),
+							institute.getName(), 
+							item.getPublisherName());
+				}
 			}
 
 			feedWrapper.setLastModified(newsEntries.get(0).getPublishDate());

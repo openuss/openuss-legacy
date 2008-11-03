@@ -7,6 +7,7 @@ package org.openuss.web.feeds;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,8 +46,11 @@ public class CourseFeed extends AbstractFeed {
 				newsItem = (NewsItemInfo) i.next();
 				link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
 						+ "/views/public/news/newsDetail.faces?news=" + newsItem.getId();
-				this.addEntry(entries, newsItem.getTitle(), link, newsItem.getPublishDate(), newsItem.getText(), course
-						.getName(), newsItem.getPublisherName());
+				if (newsItem.getPublishDate().before(new Date())) {
+					this.addEntry(entries, newsItem.getTitle(), link, newsItem
+							.getPublishDate(), newsItem.getText(), course
+							.getName(), newsItem.getPublisherName());
+				}
 			}
 
 			newsItem = (NewsItemInfo) newsEntries.get(0);

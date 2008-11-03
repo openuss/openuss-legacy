@@ -1,6 +1,7 @@
 package org.openuss.web.feeds;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -47,13 +48,12 @@ public class GlobalFeed extends AbstractFeed {
 			//Collections.reverse(newsEntries);
 			
 			for (NewsItemInfo item : newsEntries) {
-				this.addEntry(entries, 
-						item.getTitle() + " (" + item.getPublisherName() + ")", 
-						linkNewsItem + item.getId(), 
-						item.getPublishDate(), 
-						item.getText(),
-						"Global", 
-						item.getPublisherName());
+				if (item.getPublishDate().before(new Date())) {
+					this.addEntry(entries, item.getTitle() + " ("
+							+ item.getPublisherName() + ")", linkNewsItem
+							+ item.getId(), item.getPublishDate(), item
+							.getText(), "Global", item.getPublisherName());
+				}
 			}
 
 			feedWrapper.setLastModified(newsEntries.get(0).getPublishDate());
