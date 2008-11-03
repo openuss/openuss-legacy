@@ -4,6 +4,7 @@ import java.util.Set;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 public interface Forum extends org.openuss.foundation.DomainObject {
 
@@ -14,6 +15,10 @@ public interface Forum extends org.openuss.foundation.DomainObject {
 	public Long getDomainIdentifier();
 
 	public void setDomainIdentifier(Long domainIdentifier);
+	
+	public void setName(String name);
+	
+	public String getName();
 
 	public boolean isReadOnly();
 

@@ -9,14 +9,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.openuss.TestUtility;
-import org.openuss.foundation.DefaultDomainObject;
-import org.openuss.foundation.DomainObject;
+import org.openuss.foundation.DefaultNamedDomainObject;
+import org.openuss.foundation.NamedDomainObject;
 import org.openuss.security.SecurityService;
 import org.openuss.security.User;
 
 /**
  * JUnit Test for Spring Hibernate DiscussionService class.
  * @see org.openuss.discussion.DiscussionService
+ * @author Sebastian Roekens
  */
 @SuppressWarnings("unchecked")
 public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrationTestBase {
@@ -28,8 +29,9 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		return generateUserPost(user);
 	}
 
-	private DomainObject generateDomainObject(){
-		DomainObject domainObject = new DefaultDomainObject(TestUtility.unique());
+	private NamedDomainObject generateDomainObject(){
+		NamedDomainObject domainObject = new DefaultNamedDomainObject(TestUtility.unique());		
+		
 		securityService.createObjectIdentity(domainObject, null);
 		//securityService.setPermissions(user, domainId, LectureAclEntry.ASSIST);		
 		return domainObject;
@@ -38,7 +40,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	public void testCreateDeleteTopic(){
 		//test correct creation of a example topic
 		ForumInfo fi = new ForumInfo();
-		DomainObject domainObject = generateDomainObject();		
+		NamedDomainObject domainObject = generateDomainObject();		
 		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
@@ -75,7 +77,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testAddPost(){
 		ForumInfo fi = new ForumInfo();
-		DomainObject domainObject = generateDomainObject();
+		NamedDomainObject domainObject = generateDomainObject();
 		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
@@ -108,7 +110,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testDeletePost(){
 		ForumInfo fi = new ForumInfo();
-		DomainObject domainObject = generateDomainObject();
+		NamedDomainObject domainObject = generateDomainObject();
 		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
@@ -152,7 +154,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 	
 	public void testAddGetForum(){		
 		ForumInfo fi = new ForumInfo();
-		DomainObject domainObject = generateDomainObject();
+		NamedDomainObject domainObject = generateDomainObject();
 		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);
@@ -167,7 +169,7 @@ public class DiscussionServiceIntegrationTest extends DiscussionServiceIntegrati
 		
 		//create forum
 		ForumInfo fi = new ForumInfo();
-		DomainObject domainObject = generateDomainObject();
+		NamedDomainObject domainObject = generateDomainObject();
 		fi.setDomainIdentifier(domainObject.getId());
 		fi.setReadOnly(false);
 		discussionService.addForum(fi);

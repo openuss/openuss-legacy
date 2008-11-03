@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.openuss.documents.DocumentApplicationException;
 import org.openuss.documents.FileInfo;
 import org.openuss.documents.FolderInfo;
-import org.openuss.foundation.DomainObject;
+import org.openuss.foundation.NamedDomainObject;
 import org.openuss.security.User;
 import org.openuss.system.SystemProperties;
 
@@ -384,13 +384,14 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 	}
 
 	@Override
-	protected ForumInfo handleGetForum(final DomainObject domainObject) {
+	protected ForumInfo handleGetForum(final NamedDomainObject domainObject) {
 		Validate.notNull(domainObject, "DomainObject must not be null.");
 		Validate.notNull(domainObject.getId(), "DomainObject must provide an id.");
 		Forum forum = getForumDao().findByDomainIdentifier(domainObject.getId());
 		if (forum == null) {
 			ForumInfo forumInfo = new ForumInfo();
 			forumInfo.setDomainIdentifier(domainObject.getId());
+			forumInfo.setName(domainObject.getName());
 			forumInfo.setReadOnly(false);
 			handleAddForum(forumInfo);
 			forum = getForumDao().findByDomainIdentifier(domainObject.getId());
@@ -444,14 +445,7 @@ public class DiscussionServiceImpl extends DiscussionServiceBase {
 
 			Map parameters = new HashMap();
 			parameters.put("topicname", topic.getTitle());
-			
-//			FIXME AOP2Events - Dependency from diskussion to lecture is not allowed
-//			Course course = getCourseDao().load(topic.getForum().getDomainIdentifier());
-//			CourseInfo courseInfo = getCourseDao().toCourseInfo(course);
-//			parameters.put("coursename", courseInfo.getName());
-			
-			// FIXME AOP2Events - Use forum name and an application event if course is updated
-			parameters.put("forumname", "ISSUE: Find domain name");
+			parameters.put("forumname", topic.getForum().getName());
 			parameters.put("topiclink", link);
 
 			getMessageService().sendMessage("user.discussion.watch.sender", "user.discussion.watch.subject",

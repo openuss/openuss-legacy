@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 public abstract class ForumBase implements Forum, Serializable {
 	/**
@@ -12,7 +13,23 @@ public abstract class ForumBase implements Forum, Serializable {
 	private static final long serialVersionUID = 781295000319312230L;
 
 	private java.lang.Long id;
+	
+	private String name;
+	
+	/**
+	 * @see org.openuss.discussion.Forum#getName()
+	 */
+	public java.lang.String getName(){
+		return this.name;
+	}
 
+	/**
+	 * @see org.openuss.discussion.Forum#setName(java.lang.String name)
+	 */
+	public void setName(java.lang.String name){
+		this.name = name;
+	}
+	
 	/**
 	 * @see org.openuss.discussion.Forum#getId()
 	 */

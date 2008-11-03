@@ -16,6 +16,9 @@ public class ForumDaoImpl extends ForumDaoBase {
 			if (sourceEntity.getId() != null) {
 				targetVO.setId(sourceEntity.getId());
 			}
+			if (sourceEntity.getName() != null) {
+				targetVO.setName(sourceEntity.getName());
+			}
 			targetVO.setReadOnly(sourceEntity.isReadOnly());
 		}
 	}

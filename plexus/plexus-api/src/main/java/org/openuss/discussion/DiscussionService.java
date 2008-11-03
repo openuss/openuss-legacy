@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * @author Ingo Dueppe
+ * @author Sebastian Roekens
  */
 public interface DiscussionService {
 
@@ -39,7 +40,7 @@ public interface DiscussionService {
 
 	public void addForum(ForumInfo forum);
 
-	public ForumInfo getForum(org.openuss.foundation.DomainObject domainObject);
+	public ForumInfo getForum(org.openuss.foundation.NamedDomainObject domainObject);
 
 	public void changeEditState(ForumInfo forum);
 

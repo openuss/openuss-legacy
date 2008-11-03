@@ -2,12 +2,12 @@ package org.openuss.discussion;
 
 import java.io.Serializable;
 
-import org.openuss.foundation.DomainObject;
+import org.openuss.foundation.NamedDomainObject;
 
 /**
  * @author Ingo Dueppe
  */
-public class ForumInfo implements Serializable, DomainObject {
+public class ForumInfo implements Serializable, NamedDomainObject {
 
 	private static final long serialVersionUID = 3319166831448246399L;
 
@@ -15,9 +15,10 @@ public class ForumInfo implements Serializable, DomainObject {
 		this.domainIdentifier = null;
 		this.readOnly = false;
 		this.id = null;
+		this.name = null;
 	}
 
-	public ForumInfo(Long domainIdentifier, boolean readOnly, Long id) {
+	public ForumInfo(Long domainIdentifier, String name, boolean readOnly, Long id) {
 		this.domainIdentifier = domainIdentifier;
 		this.readOnly = readOnly;
 		this.id = id;
@@ -32,7 +33,7 @@ public class ForumInfo implements Serializable, DomainObject {
 	 *             if the argument is <code>null</code>
 	 */
 	public ForumInfo(ForumInfo otherBean) {
-		this(otherBean.getDomainIdentifier(), otherBean.isReadOnly(), otherBean.getId());
+		this(otherBean.getDomainIdentifier(), otherBean.getName(), otherBean.isReadOnly(), otherBean.getId());
 	}
 
 	/**
@@ -43,6 +44,7 @@ public class ForumInfo implements Serializable, DomainObject {
 		this.setDomainIdentifier(otherBean.getDomainIdentifier());
 		this.setReadOnly(otherBean.isReadOnly());
 		this.setId(otherBean.getId());
+		this.setName(otherBean.getName());
 	}
 
 	private Long domainIdentifier;
@@ -56,6 +58,19 @@ public class ForumInfo implements Serializable, DomainObject {
 
 	public void setDomainIdentifier(Long domainIdentifier) {
 		this.domainIdentifier = domainIdentifier;
+	}
+
+	private String name;
+	
+	/**
+	 * 
+	 */
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	private boolean readOnly;

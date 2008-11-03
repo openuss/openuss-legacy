@@ -14,6 +14,9 @@
         <property name="domainIdentifier" type="java.lang.Long">
             <column name="DOMAIN_IDENTIFIER" not-null="true" unique="false" sql-type="BIGINT"/>
         </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" unique="false" sql-type="VARCHAR(100)"/>
+        </property>        
         <property name="readOnly" type="boolean">
             <column name="READ_ONLY" not-null="true" unique="false" sql-type="SMALLINT"/>
         </property>

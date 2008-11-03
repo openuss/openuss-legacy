@@ -4,7 +4,7 @@ import org.apache.commons.lang.Validate;
 
 /**
  * @author ingo dueppe
- * @author sebasitan roekens
+ * @author Sebastian Roekens
  * @see org.openuss.discussion.Forum
  */
 public class ForumImpl extends ForumBase implements Forum {

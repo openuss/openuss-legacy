@@ -7,6 +7,7 @@ import java.util.Set;
  * time (like a specific semester) by one institute.
  * 
  * @author Ingo Düppe
+ * @author Sebastian Roekens
  */
 public interface Course extends org.openuss.foundation.DomainObject {
 

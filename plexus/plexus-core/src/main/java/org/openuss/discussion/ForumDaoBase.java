@@ -423,6 +423,7 @@ public abstract class ForumDaoBase
         target.setDomainIdentifier(source.getDomainIdentifier());
         target.setReadOnly(source.isReadOnly());
         target.setId(source.getId());
+        target.setName(source.getName());
     }
 
     /**
@@ -446,6 +447,14 @@ public abstract class ForumDaoBase
         if (copyIfNull || source.getDomainIdentifier() != null)
         {
             target.setDomainIdentifier(source.getDomainIdentifier());
+        }
+        if (copyIfNull || source.getId() != null)
+        {
+        	target.setId(source.getId());
+        }
+        if (copyIfNull || source.getName() != null)
+        {
+        	target.setName(source.getName());
         }
 	    target.setReadOnly(source.isReadOnly());
     }

@@ -561,9 +561,9 @@ public abstract class DiscussionServiceBase
         throws java.lang.Exception;
 
     /**
-     * @see org.openuss.discussion.DiscussionService#getForum(org.openuss.foundation.DomainObject)
+     * @see org.openuss.discussion.DiscussionService#getForum(org.openuss.foundation.NamedDomainObject)
      */
-    public org.openuss.discussion.ForumInfo getForum(org.openuss.foundation.DomainObject domainObject)
+    public org.openuss.discussion.ForumInfo getForum(org.openuss.foundation.NamedDomainObject domainObject)
     {
         try
         {
@@ -578,9 +578,9 @@ public abstract class DiscussionServiceBase
     }
 
      /**
-      * Performs the core logic for {@link #getForum(org.openuss.foundation.DomainObject)}
+      * Performs the core logic for {@link #getForum(org.openuss.foundation.NamedDomainObject)}
       */
-    protected abstract org.openuss.discussion.ForumInfo handleGetForum(org.openuss.foundation.DomainObject domainObject)
+    protected abstract org.openuss.discussion.ForumInfo handleGetForum(org.openuss.foundation.NamedDomainObject domainObject)
         throws java.lang.Exception;
 
     /**

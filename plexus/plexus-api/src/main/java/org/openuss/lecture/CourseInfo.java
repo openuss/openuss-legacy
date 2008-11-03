@@ -3,7 +3,7 @@ package org.openuss.lecture;
 /**
  * 
  */
-public class CourseInfo implements java.io.Serializable, org.openuss.foundation.DomainObject {
+public class CourseInfo implements java.io.Serializable, org.openuss.foundation.NamedDomainObject {
 	/**
 	 * The serial version UID of this class. Needed for serialization.
 	 */
