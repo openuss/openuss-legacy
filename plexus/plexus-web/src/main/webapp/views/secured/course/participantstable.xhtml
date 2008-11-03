@@ -33,10 +33,12 @@
 			<h:outputText value="#{member.lastName}"/>
 		</t:column>
 
-		<t:column>
-			<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
-			<h:outputText value="#{member.email}"/>
-		</t:column>
+		<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+			<t:column>
+				<plexus:commandSortHeader columnName="email">#{msg['user_email']}</plexus:commandSortHeader>
+				<h:outputText value="#{member.email}"/>
+			</t:column>
+		</s:acl>
 
 		<plexus:column header="#{msg.commands_header}">
 			<plexus:linkProfileIcon user="#{member.userId}"/>
