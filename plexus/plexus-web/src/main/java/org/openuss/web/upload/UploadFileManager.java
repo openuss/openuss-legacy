@@ -65,7 +65,7 @@ public class UploadFileManager extends BaseBean implements Serializable{
 	 */
 	public void removeDocument(UploadedDocument document) {
 		Validate.notNull(document, "Parameter document must not be null!");
-
+		setSessionBean(Constants.UPLOADED_FILE, null);
 		files.remove(document);
 		document.remove();
 	}
