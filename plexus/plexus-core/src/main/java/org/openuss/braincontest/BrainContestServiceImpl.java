@@ -192,6 +192,7 @@ public class BrainContestServiceImpl extends BrainContestServiceBase {
 			answerObject.setAnswerPk(new AnswerPK());
 			answerObject.getAnswerPk().setSolver(getSecurityService().getUserObject(user));
 			answerObject.getAnswerPk().setContest(brainContest);
+			getAnswerDao().create(answerObject);
 			brainContest.addAnswer(answerObject);
 		}
 		getBrainContestDao().update(brainContest);
