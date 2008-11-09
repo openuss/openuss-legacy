@@ -7,21 +7,21 @@ package org.openuss.web.feeds;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
-import org.openuss.discussion.Topic;
+import org.openuss.discussion.PostInfoComparator;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
 import org.openuss.system.SystemProperties;
 import org.openuss.system.SystemService;
-
+/**
+* @author Sebastian Roekens
+*/
 public class DiscussionFeed extends AbstractFeed {
 
 	private transient CourseService courseService;
@@ -39,37 +39,22 @@ public class DiscussionFeed extends AbstractFeed {
 		FeedWrapper feedWrapper = new FeedWrapper();
 		String link;
 
-		List<Topic> topics = getDiscussionService().getTopics(forum);
-
-		if (topics != null && !topics.isEmpty()) {
-			Collections.reverse(topics);
-			Iterator i = topics.iterator();
-			Iterator j;
-			TopicInfo topic;
-			List<PostInfo> posts;
-			PostInfo post;
-			Date lastEntry = new Date();
-			while (i.hasNext()) {
-				topic = (TopicInfo) i.next();
-				posts = getDiscussionService().getPosts(topic);
-				Collections.reverse(posts);
-				j = posts.iterator();
-				while (j.hasNext()) {
-					post = (PostInfo) j.next();
-					if (lastEntry == null) {
-						lastEntry = post.getLastModification();
-					}
-					if (post.getLastModification().after(lastEntry)) {
-						lastEntry = post.getLastModification();
-					}
-					link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
-							+ "/views/secured/discussion/discussionthread.faces?course=" + course.getId() + "&topic="
-							+ topic.getId() + "#" + post.getId();
-					this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), topic
-							.getTitle(), post.getSubmitter());
-				}
+		List<TopicInfo> topics = getDiscussionService().getTopics(forum);
+		ArrayList<PostInfo> allPosts = new ArrayList<PostInfo>();
+		for (TopicInfo topic : topics){
+			allPosts.addAll(getDiscussionService().getPosts(topic));
+		}
+		Collections.sort(allPosts, new PostInfoComparator());
+		Collections.reverse(allPosts);
+		for (PostInfo post: allPosts){
+			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
+					+ "/views/secured/discussion/discussionthread.faces?course=" + course.getId() + "&topic="
+					+ post.getTopicId() + "#" + post.getId();
+			this.addEntry(entries, post.getTitle(), link, post.getLastModification(), post.getText(), post.getTitle(), post.getSubmitter());
+			feedWrapper.setLastModified(post.getCreated());
+			if (post.getLastModification()!=null){
+				feedWrapper.setLastModified(post.getLastModification());
 			}
-			feedWrapper.setLastModified(lastEntry);
 		}
 
 		link = systemService.getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()

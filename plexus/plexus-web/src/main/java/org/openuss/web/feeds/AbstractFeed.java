@@ -26,12 +26,15 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
-
+/**
+* @author Sebastian Roekens
+*/
 public abstract class AbstractFeed implements MessageSourceAware {
 
 	public static final String RSS_2_0 = "rss_2.0";
 
-	public static final String ENCODING = "UTF-8";
+	//public static final String ENCODING = "UTF-8";
+	public static final String ENCODING = "ISO-8859-1";
 
 	public static final String TEXT_HTML = "text/html";
 
