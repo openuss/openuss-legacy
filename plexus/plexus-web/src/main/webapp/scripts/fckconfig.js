@@ -124,8 +124,8 @@ FCKConfig.ToolbarSets["Description"] = [
 FCKConfig.ToolbarSets["Discussion"] = [
 	['FitWindow','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print'],
-	['Undo','Redo','-','SelectAll','RemoveFormat'],
-	'/',
+	['Undo','Redo','-','SelectAll','RemoveFormat'],['FontName'],
+	'/',	
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
