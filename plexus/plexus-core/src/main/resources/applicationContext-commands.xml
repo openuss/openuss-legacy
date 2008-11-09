@@ -72,6 +72,7 @@
 		<property name="securityService" ref="securityService"/>
 		<property name="discussionService" ref="discussionService"/>
 		<property name="newsletterService" ref="newsletterService"/>
+		<property name="documentService" ref="documentService"/>
 	</bean>
 
 </beans>

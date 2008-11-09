@@ -539,7 +539,6 @@ public class SecurityServiceImpl extends SecurityServiceBase {
 		user.setMatriculation(unknown.getMatriculation());
 		user.setName(unknown.getName()+user.getId().toString());
 		user.setNewsletterSubscriptionEnabled(unknown.isNewsletterSubscriptionEnabled());
-		//FIXME Login not possible after change - should a usable password hash be generated?
 		user.setPassword("1");
 		user.setPortrait(unknown.getPortrait());
 		user.setPortraitPublic(unknown.isPortraitPublic());
