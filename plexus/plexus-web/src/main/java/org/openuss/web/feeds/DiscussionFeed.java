@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import org.openuss.discussion.DiscussionService;
 import org.openuss.discussion.ForumInfo;
 import org.openuss.discussion.PostInfo;
-import org.openuss.discussion.PostInfoComparator;
+import org.openuss.discussion.PostInfoEditedComparator;
 import org.openuss.discussion.TopicInfo;
 import org.openuss.lecture.CourseInfo;
 import org.openuss.lecture.CourseService;
@@ -44,7 +44,7 @@ public class DiscussionFeed extends AbstractFeed {
 		for (TopicInfo topic : topics){
 			allPosts.addAll(getDiscussionService().getPosts(topic));
 		}
-		Collections.sort(allPosts, new PostInfoComparator());
+		Collections.sort(allPosts, new PostInfoEditedComparator());
 		Collections.reverse(allPosts);
 		for (PostInfo post: allPosts){
 			link = getSystemService().getProperty(SystemProperties.OPENUSS_SERVER_URL).getValue()
