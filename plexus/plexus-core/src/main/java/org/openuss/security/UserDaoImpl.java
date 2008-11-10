@@ -81,6 +81,8 @@ public class UserDaoImpl extends UserDaoBase {
 			target.setUsername(source.getUsername());
 		}
 		super.userInfoToEntity(source, target, copyIfNull);
+		// delete user image id if needed
+		target.setImageId(source.getImageId());		
 	}
 
 	@Override

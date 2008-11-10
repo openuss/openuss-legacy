@@ -124,9 +124,6 @@ public class UserProfilePage extends BasePage{
 		// fetch uploaded files and remove it from upload manager
 		UploadedDocument uploaded = (UploadedDocument) getSessionBean(Constants.UPLOADED_FILE);
 		if (uploaded != null) {
-			if (user.getImageId() != null) {
-				documentService.removeFolderEntry(user.getImageId());
-			}
 			FileInfo imageFile = new FileInfo();
 				
 			imageFile.setName(Constants.USER_IMAGE_NAME);
@@ -149,6 +146,7 @@ public class UserProfilePage extends BasePage{
 			uploadFileManager.removeDocument(uploaded);
 		}
 		user.setPortrait(new HtmlInputFilter().filter(user.getPortrait()) );
+
 		securityService.saveUser(user);
 		addMessage(i18n("user_message_saved_profile_successfully"));
 	}
@@ -174,8 +172,10 @@ public class UserProfilePage extends BasePage{
 			Long fileId = user.getImageId();
 			user.setImageId(null);
 			documentService.removeFolderEntry(fileId);
+			removeSessionBean(Constants.UPLOADED_FILE);
 		}
 		securityService.saveUser(user);
+		setSessionBean(Constants.USER, user);
 	}
 	
 	public String removeUser(){
