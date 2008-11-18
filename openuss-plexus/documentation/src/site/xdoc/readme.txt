@@ -1,1 +1,0 @@
-This folder should only contain documents written in xdoc format.

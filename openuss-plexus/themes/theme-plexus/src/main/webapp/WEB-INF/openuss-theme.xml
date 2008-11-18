@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<theme id="plexus" name="Plexus">
-	<images>/theme-plexus/img</images>
-	<layout>/layouts/plexus-standard.xhtml</layout>
-	<stylesheet>/theme-plexus/css/style.css</stylesheet>
-</theme>

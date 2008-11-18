@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<theme id="wwu" name="University of Münster">
-	<images>/theme-university-of-muenster/img</images>
-	<layout>/layout/wwu-standard.xhtml</layout>
-	<stylesheet>/theme-university-of-muenster/css/style.css</stylesheet>
-</theme>

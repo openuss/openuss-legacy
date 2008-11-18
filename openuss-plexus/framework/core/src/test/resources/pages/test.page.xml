@@ -1,4 +1,0 @@
-<page id="test.xhtml">
-   	<parameter name="testId" value="#{test.id}" converterId="javax.faces.Long"/>
-	<parameter name="test" value="#{testBean}" converter="#{testConverter}"/>
-</page>

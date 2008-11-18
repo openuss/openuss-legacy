@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<theme id="none" name="none">
-	<images>/images</images>
-	<layout>/layouts/none.xhtml</layout>
-	<stylesheet>/theme-plexus-none/css/none.css</stylesheet>
-</theme>
