@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+	<h:form>
+		<o:block styleClass="option_box" label="#{msg.options}">
+			<ul class="action_list">
+				<li class="wiki_create_new">
+					<t:commandLink id="wiki_create_new" forceId="true" value="" action="wiki_create_new_site" title="#{msg.wiki_main_button_new_site_title}" ><span />#{msg.wiki_main_button_new_site}</t:commandLink>
+				</li>
+			
+				<li class="wiki_overview">
+					<t:commandLink id="wiki_overview" forceId="true" 
+						value="" 
+						action="wiki_overview"
+						title="#{msg.wiki_main_button_overview_title}" ><span />#{msg.wiki_main_button_overview}</t:commandLink>
+				</li>
+				
+				<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+					<li class="wiki_import">
+						<t:commandLink id="wiki_import" forceId="true" value="" action="#{views$secured$wiki$wikimain.showImportPage}" title="#{msg.wiki_main_button_import_wiki_title}" ><span />#{msg.wiki_main_button_import_wiki}</t:commandLink>
+					</li>
+				</s:acl>
+			</ul>
+		</o:block>
+	</h:form>
+
+</ui:composition>

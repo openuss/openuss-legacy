@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.MembershipImpl" table="SECURITY_MEMBERSHIP" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <bag name="groups" order-by="MEMBERSHIP_FK" lazy="true" fetch="select" inverse="false" cascade="all">
+            <cache usage="read-write" />
+            <key foreign-key="SECURITY_GROUP_MEMBERSHIP_FKC">
+                <column name="MEMBERSHIP_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.security.GroupImpl"/>
+        </bag>
+        <bag name="members" table="SECURITY_MEMBER_MEMBERSHIP" order-by="MEMBERS_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="SECURITY_USER_MEMBERSHIP_MEMBC">
+                <column name="MEMBERSHIP_MEMBERS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.UserImpl" foreign-key="SECURITY_MEMBERSHIP_MEMBERS_FC">
+                <column name="MEMBERS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+        <bag name="aspirants" table="SECURITY_ASPIRANT_MEMBERSHIP" order-by="ASPIRANTS_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="SECURITY_USER_MEMBERSHIP_ASPIC">
+                <column name="MEMBERSHIP_ASPIRANTS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.UserImpl" foreign-key="SECURITY_MEMBERSHIP_ASPIRANTSC">
+                <column name="ASPIRANTS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+   
+	<plexus:dataTable 
+		id="department" 
+		label="#{msg.departmentList_header}" 
+		value="views$public$department$departments.departments" 
+		var="bean" 
+		columnClasses="col_max_left, col_max_left, col_min_left, col_commands"
+		rows="20"
+		infoText="#{msg.table_info_text_departments}">
+		<t:column>
+			<plexus:commandSortHeader columnName="name">
+				#{msg['department_name']}
+			</plexus:commandSortHeader>
+	        <h:commandLink action="#{views$public$department$departments.selectDepartment}" styleClass="command">
+				<h:outputText value="#{bean.name}"/>
+			</h:commandLink>  
+			<h:graphicImage 
+					value="/images/pool/icons/document_stop.png" 
+					title="#{msg.default_department_donot_delete}" 
+					rendered="#{bean.defaultDepartment}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="shortcut">
+				#{msg['department_shortcut']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.shortcut}"/>
+		</t:column>
+		
+		<t:column>
+			<plexus:commandSortHeader columnName="ownerName">
+				#{msg['department_ownername']}
+			</plexus:commandSortHeader>
+			<h:outputText value="#{bean.ownerName}"/>
+		</t:column>
+
+		<plexus:column header="#{msg.commands_header}">
+			<s:authorize ifAllGranted="ROLE_USER">
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action="removeShortcut"
+					label="#{msg.university_command_shortcut_remove}"
+					title="#{msg.university_command_shortcut_hint_remove}"
+					styleClass="icon_bookmark_remove"
+					rendered="#{views$public$department$departments.bookmarked}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action="shortcutDepartment"
+					label="#{msg.university_command_shortcut}"
+					title="#{msg.university_command_shortcut_hint}"
+					styleClass="icon_bookmark"
+					rendered="#{not views$public$department$departments.bookmarked}">
+				</plexus:command>	
+			</s:authorize>
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action = "selectDepartmentAndConfirmDisable"
+					styleClass="icon_hide"
+					label="#{msg.department_command_disable}"
+					title="#{msg.department_command_disable_hint}"
+					rendered="#{bean.enabled == true}">
+				</plexus:command>
+				<plexus:command 
+					bean="#{views$public$department$departments}"
+					action = "enableDepartment"
+					styleClass="icon_public"
+					label="#{msg.department_command_enable}"
+					title="#{msg.department_command_enable_hint}"
+					rendered="#{not bean.enabled}">
+				</plexus:command>
+				<plexus:command
+					bean="#{views$public$department$departments}"
+					action = "selectDepartmentAndConfirmRemove"
+					styleClass="icon_remove"
+					label="#{msg.department_command_remove}"
+					rendered="#{not bean.defaultDepartment}">
+				</plexus:command>	
+			</s:acl>
+		</plexus:column>
+		
+	</plexus:dataTable>
+</ui:composition>

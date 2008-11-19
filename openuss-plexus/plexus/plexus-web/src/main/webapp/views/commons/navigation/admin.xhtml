@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	
+	<s:authorize ifAllGranted="ROLE_ADMIN"> 
+			<h:form id="adminNavigationForm">
+				<t:panelNavigation2 id="admin_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+					<t:commandNavigation2 value="#{msg['admin_navigation_header']}">
+						<t:commandNavigation2 id="adm_properties" forceId="true" action="admin_properties" activeOnViewIds="/views/secured/system/properties.xhtml" >
+							<h:outputText value="#{msg['admin_command_properties']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 id="adm_users" forceId="true" action="admin_users" activeOnViewIds="/views/secured/system/userbrowser.xhtml" >
+							<h:outputText value="#{msg['admin_command_users']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 id="adm_groups" forceId="true" action="admin_groups" activeOnViewIds="/views/secured/system/groups.xhtml" >
+							<h:outputText value="#{msg['admin_command_groups']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 id="adm_universities" forceId="true" action="admin_universities" activeOnViewIds="/views/secured/system/universities.xhtml" >
+							<h:outputText value="#{msg['admin_command_universities']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 id="adm_departments" forceId="true" action="admin_departments" activeOnViewIds="/views/secured/system/departments.xhtml" >
+							<h:outputText value="#{msg['admin_command_departments']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 id="adm_institutes" forceId="true" action="admin_institutes" activeOnViewIds="/views/secured/system/institutes.xhtml" >
+							<h:outputText value="#{msg['admin_command_institutes']}" ></h:outputText>
+						</t:commandNavigation2>
+						<t:commandNavigation2 action="admin_ldap_index" activeOnViewIds="/views/secured/system/ldap_index.xhtml,/views/secured/system/ldap/ldap_roleattributekeys.xhtml,/views/secured/system/ldap/ldap_attributemappings.xhtml,/views/secured/system/ldap/ldap_domains.xhtml,/views/secured/system/ldap/ldap_userdnpatterns.xhtml,/views/secured/system/ldap/ldap_servers.xhtml" >
+							<h:outputText value="#{msg['admin_command_ldap_index']}" ></h:outputText>		
+						</t:commandNavigation2>							
+					</t:commandNavigation2>
+				</t:panelNavigation2>	
+			</h:form>
+	</s:authorize> 
+	
+</ui:composition>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.paperSubmission.ExamImpl" table="PAPERSUBMISSION_EXAM" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="domainId" type="java.lang.Long">
+            <column name="DOMAIN_ID" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <property name="deadline" type="java.util.Date">
+            <column name="DEADLINE" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" not-null="false" unique="false" sql-type="VARCHAR(32000)"/>
+        </property>
+        <bag name="papersubmissions" order-by="EXAM_FK" lazy="false" fetch="select" inverse="true" cascade="all">
+            <cache usage="read-write" />
+            <key foreign-key="PAPERSUBMISSION_PAPER_EXAM_FKC">
+                <column name="EXAM_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.paperSubmission.PaperSubmissionImpl"/>
+        </bag>
+    </class>
+</hibernate-mapping>

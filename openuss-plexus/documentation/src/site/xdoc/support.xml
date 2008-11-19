@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Support</title>
+    </properties>
+
+    <body>
+
+        <section name="Support for Openuss">
+		<h4>
+			Sponsors and Partners
+		</h4>
+		<p>
+			A brief introduction of our sponsors and partners can be seen <a href="support/sponsors.html">here</a>
+		</p>
+		<h4>
+			Training and Support
+		</h4>
+		<p>
+			The E-Learning Copmpetence Centre of the University of Muenster orginaizes events on all sorts of 
+			subjects from the area of E-Learing.
+			<br/>
+			This events should gives you an overview about how students and teachers can take advantage 
+			from using E-Learning Components in their environment. Furthermore teachers get important 
+			hints and support on how to solve usual difficulties.
+			This service is offered only for the staff of the University of Muenster for free.
+			<br/>
+			A description of the training and support possibilities can be found <a href="support/training.html">here</a>
+		</p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.lecture.ApplicationImpl" table="LECTURE_APPLICATION" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="applicationDate" type="java.util.Date">
+            <column name="APPLICATION_DATE" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="confirmationDate" type="java.util.Date">
+            <column name="CONFIRMATION_DATE" not-null="false" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION" not-null="false" unique="false" sql-type="VARCHAR(32000)"/>
+        </property>
+        <property name="confirmed" type="boolean">
+            <column name="CONFIRMED" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <many-to-one name="department" class="org.openuss.lecture.DepartmentImpl" foreign-key="LECTURE_APPLICATION_DEPARTMENC" lazy="proxy" fetch="select">
+            <column name="DEPARTMENT_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="institute" class="org.openuss.lecture.InstituteImpl" foreign-key="LECTURE_APPLICATION_INSTITUTEC" lazy="proxy" fetch="select">
+            <column name="INSTITUTE_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="applyingUser" class="org.openuss.security.UserImpl" foreign-key="LECTURE_APPLICATION_APPLYING_C" lazy="proxy" fetch="select">
+            <column name="APPLYING_USER_FK" not-null="true" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="confirmingUser" class="org.openuss.security.UserImpl" foreign-key="LECTURE_APPLICATION_CONFIRMINC" lazy="proxy" fetch="select">
+            <column name="CONFIRMING_USER_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

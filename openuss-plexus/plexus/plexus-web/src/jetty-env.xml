@@ -1,0 +1,22 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC  "-//Mort Bay Consulting//DTD Configure 1.1//EN" "http://jetty.mortbay.org/configure_1_2.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+	<Set name="contextPath">/plexus-web</Set>
+	<New id="openussDS" class="org.mortbay.jetty.plus.naming.Resource">
+		<Arg>jdbc/openuss30</Arg>
+         <Arg>
+              <New class="org.apache.commons.dbcp.BasicDataSource">
+                    <Set name="Url">jdbc:firebirdsql:localhost:openuss30</Set>
+                    <Set name="DriverClassName">org.firebirdsql.jdbc.FBDriver</Set>
+                    <Set name="Username">sysdba</Set>
+                    <Set name="Password">masterkey</Set>
+                    <Set name="MaxActive">30</Set>
+                    <Set name="MaxIdle">10</Set>
+                    <Set name="MinIdle">2</Set>
+                    <Set name="MaxWait">5000</Set>
+                    <Set name="MinEvictableIdleTimeMillis">25000</Set>
+                    <Set name="TimeBetweenEvictionRunsMillis">30000</Set>
+             </New>
+         </Arg>		
+	</New>
+</Configure>

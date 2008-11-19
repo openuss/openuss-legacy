@@ -1,0 +1,16 @@
+<html>
+	<body>
+		<p>
+		<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			Dear <i>${organisationname}</i> - Administratoren,
+			the application of user <i>${username} (${userfirstname} ${userlastname})</i> for your organisation 
+			<i>${organisationname}</i> has been rejected.
+		</p>
+		<p>
+			Thank you for using OpenUSS.
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>

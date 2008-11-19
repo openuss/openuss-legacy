@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE facelet-taglib PUBLIC "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN" "facelet-taglib_1_0.dtd">
+<facelet-taglib>
+	<namespace>http://www.openuss.org/plexus/jsf</namespace>
+	<tag>
+		<tag-name>loginPortlet</tag-name>
+		<source>../facelets/login/loginPortlet.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>dataScroller</tag-name>
+		<source>../facelets/tables/datascroller.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>dataScrollerFacets</tag-name>
+		<source>../facelets/tables/datascrollerfacets.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>image</tag-name>
+		<source>../facelets/theme/image.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>columnCommand</tag-name>
+		<source>../facelets/tables/columncommand.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>command</tag-name>
+		<source>../facelets/tables/command.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>column</tag-name>
+		<source>../facelets/tables/column.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>dataTable</tag-name>
+		<source>../facelets/tables/datatable.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>commandSortHeader</tag-name>
+		<source>../facelets/tables/commandSortHeader.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>newsTable</tag-name>
+		<source>../facelets/news/newsTable.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>newsItemEdit</tag-name>
+		<source>../facelets/news/newsItemEdit.xhtml</source>
+	</tag>
+	<tag>
+		<tag-name>newsItemDetail</tag-name>
+		<source>../facelets/news/newsItemDetail.xhtml</source>
+	</tag>	
+	<tag>
+		<tag-name>linkProfileIcon</tag-name>
+		<source>../facelets/common/profile_icon_link.xhtml</source>
+	</tag>	
+	
+	<tag>
+      <tag-name>selectManyPicklist</tag-name>
+      <component>
+         <component-type>org.openuss.components.HtmlSelectManyPicklist</component-type>
+         <renderer-type>org.openuss.framework.jsfcontrols.components.picklist.HtmlPicklistRenderer</renderer-type>
+      </component>
+   </tag>
+	
+</facelet-taglib>

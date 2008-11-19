@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+	<div id="bread_crumb">
+		<t:saveState id="crumbstate" value="#{breadcrumbs.crumbs}" />
+		<o:block rendered="#{breadcrumbs.rendered}">
+			<h:form>
+				<o:breadCrumb value="#{breadcrumbs.crumbs}"/>
+				<s:authorize ifAllGranted="ROLE_USER">
+					<div style="display:inline;position:absolute;right:5px;">
+						<plexus:command 
+							bean="#{views$public$institute$institute}"
+							action="addShortcut"
+							styleClass="icon_bookmark"
+							label="#{msg.institute_command_shortcut}"
+							title="#{msg.institute_command_shortcut}"
+							rendered="#{not views$public$institute$institute.instituteBookmarked}">
+						  	<h:outputText value="#{msg.institute_command_shortcut}" />
+						</plexus:command>
+						<plexus:command 
+							bean="#{views$public$institute$institute}"
+							action="removeShortcut"
+							label="#{msg.institute_command_remove_shortcut}"
+							title="#{msg.institute_command_remove_shortcut}"
+							styleClass="icon_bookmark_remove"
+							rendered="#{views$public$institute$institute.instituteBookmarked}">
+						  	<h:outputText value="#{msg.institute_command_remove_shortcut}" />
+						</plexus:command>
+					</div>
+				</s:authorize>
+			</h:form>
+		</o:block>
+	</div>
+</ui:composition>

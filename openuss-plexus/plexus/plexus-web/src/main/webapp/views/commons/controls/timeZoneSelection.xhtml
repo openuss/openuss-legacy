@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:s="http://www.openuss.org/jsf-security"
+	  xmlns:foundation="http://www.openuss.org/foundation/jsf"> 
+	<h:form id="changeLanguageForm">
+		<s:authorize ifNotGranted="ROLE_USER">
+			<o:block label="${msg.controls_timezone_label}">
+				<h:selectOneListbox id="timeZoneSelect" size="1" styleClass="pulldown_form" value="#{visit.timeZone}" onchange="this.form.submit();">
+				    <f:selectItems value="#{visit.supportedTimeZoneItems}"/>
+				</h:selectOneListbox>
+			</o:block>
+		</s:authorize>
+	</h:form>
+</ui:composition>

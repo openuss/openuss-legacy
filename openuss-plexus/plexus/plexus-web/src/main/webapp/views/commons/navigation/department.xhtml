@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:include src="/views/commons/department/departmentinfo.xhtml" />
+
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="departmentNavigationForm">
+			<t:panelNavigation2 id="department_navigation" styleClass="navigation"
+				layout="list" itemClass="nav_item" openItemClass="open_item"
+				activeItemClass="active_item" separatorClass="item_separator">
+				<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
+					<t:commandNavigation2 value="#{msg['department_navigation_header']}">
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
+							<t:commandNavigation2 action="department" activeOnViewIds="/views/public/department/department.xhtml,/views/public/department/allcoursesbydepartment.xhtml">
+									<h:outputText value="#{msg['department_profile']}" ></h:outputText>
+							</t:commandNavigation2>
+						</s:acl>
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">				
+							<t:commandNavigation2 action="manage_institute"
+								activeOnViewIds="/views/secured/lecture/departmentinstitutes.xhtml">
+								<h:outputText value="#{msg['department_command_institutes']}"></h:outputText>
+							</t:commandNavigation2>
+						</s:acl>
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">	
+							
+								<t:commandNavigation2 action="department_members"
+									activeOnViewIds="/views/secured/lecture/auth/departmentMembers.xhtml">
+									<h:outputText value="#{msg['department_command_authorisations']}"></h:outputText>
+								</t:commandNavigation2>
+							
+						</s:acl>
+						<s:acl domainObject="#{departmentInfo}" hasPermission="#{ACL.DEPARTMENT_ADMINISTRATION}">
+							<t:commandNavigation2 action="department_data"
+								activeOnViewIds="/views/secured/lecture/departmentoptions.xhtml">
+								<h:outputText value="#{msg['department_command_settings']}"></h:outputText>
+							</t:commandNavigation2>
+						</s:acl>
+					</t:commandNavigation2>
+				</s:acl>
+			</t:panelNavigation2>
+		</h:form>
+	</s:authorize>
+
+</ui:composition>

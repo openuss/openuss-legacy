@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService">
+	   <property name="statisticsEnabled" value="true" />
+	   <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+       <property name="autodetect" value="false" />
+	   <property name="beans">
+	      <map>
+	        <entry key="Hibernate:name=statistics" value-ref="hibernateStatistics"/>
+	      </map>
+	   </property>
+	</bean>
+
+	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+		<property name="locateExistingServerIfPossible" value="true"/>
+	</bean>
+
+</beans>

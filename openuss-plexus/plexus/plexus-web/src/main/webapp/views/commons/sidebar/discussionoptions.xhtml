@@ -1,0 +1,53 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+		<h:form>
+			<o:block styleClass="option_box" label="#{msg.user_options_sidebar_header}">
+				<h:outputText value="#{msg.discussion_forum_watch_true}" styleClass="content_font_normal" rendered="#{views$secured$discussion$discussions.forumWatchState}" escape="false"/>
+				<h:outputText value="#{msg.discussion_forum_watch_false}" styleClass="content_font_normal" rendered="#{not views$secured$discussion$discussions.forumWatchState}" escape="false"/>
+					<ul class="action_list">
+						<c:if test="#{not views$secured$discussion$discussions.forumWatchState}">
+							<li class="forum_subscribe">
+								<h:commandLink value="" action="#{views$secured$discussion$discussions.changeWatchState}" ><span />#{msg['flexlist_title_forum_subscribe']}</h:commandLink>
+							</li>
+						</c:if>
+						<c:if test="#{views$secured$discussion$discussions.forumWatchState}">
+							<li class="forum_unsubscribe">
+								<h:commandLink value="" action="#{views$secured$discussion$discussions.changeWatchState}" ><span />#{msg['flexlist_title_forum_unsubscribe']}</h:commandLink>
+							</li>
+						</c:if>
+					</ul>
+					<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}" >
+						
+						<h:outputText value="#{msg.discussion_forum_readonly_true}" styleClass="content_font_normal" rendered="#{discussion_forum.readOnly}" escape="false"/>
+						<h:outputText value="#{msg.discussion_forum_readonly_false}" styleClass="content_font_normal" rendered="#{not discussion_forum.readOnly}" escape="false"/>
+						<ul class="action_list">
+							<c:if test="#{discussion_forum.readOnly}">
+								<li class="forum_unlock">
+									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_unlock']}</h:commandLink>
+								</li>
+							</c:if>
+							<c:if test="#{not discussion_forum.readOnly}">
+								<li class="forum_lock">
+									<h:commandLink action="#{views$secured$discussion$discussions.changeReadOnly}" ><span />#{msg['discussion_forum_lock']}</h:commandLink>
+								</li>
+							</c:if>
+						</ul>
+					</s:acl>
+					
+			</o:block>
+
+			
+		</h:form>
+	
+</f:subview>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+		
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	
+	<f:view>
+	
+	<ui:composition template="/views/layout/layout.xhtml">
+  		<ui:define name="navigation"> 
+			<ui:include src="/views/commons/navigation/desktop.xhtml" />
+		</ui:define>
+		<ui:define name="breadcrumb">
+			<ui:include src="/views/commons/navigation/crumb.xhtml" />
+		</ui:define>
+		<ui:define name="sidebar"></ui:define>
+		<ui:define name="search"></ui:define>
+  		<ui:define name="content">
+  			<h:form id="extendedSearchForm"> 
+				<o:block label="#{msg.extended_search_headline}">
+					<h:panelGrid border="0" columns="2" footerClass="footer_right">
+						<h:outputText value="#{msg.extended_search_search_term} " styleClass="field_label" style="vertical-align:top;" />
+					 	<h:inputText id="search_term" styleClass="field_inline" value="#{extended_search_results.textToSearch}"/>
+						<h:outputText value=" "/>
+						<h:panelGrid border="0" columns="1">
+					 		<h:panelGroup>
+					 			<h:selectBooleanCheckbox id="title_only" value="#{extended_search_results.titleOnly}"/>
+								<h:outputText value="#{msg.extended_search_title_only}"/>
+								<t:htmlTag value="br" />
+								<h:selectBooleanCheckbox id="official_only" 
+									value="#{extended_search_results.officialOnly}"
+									onchange="this.form.submit();"
+									immediate="true" 
+									valueChangeListener="#{views$public$search$extendedsearch.onlyOfficialFlagChanged}"
+								/>
+								<h:outputText value="#{msg.extended_search_official_only}"/>
+					 		</h:panelGroup>
+					 	</h:panelGrid>
+						<h:outputText value=" "/>
+						<h:panelGroup>
+							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
+						</h:panelGroup>
+
+						<h:outputText value="#{msg.extended_search_result_type} " styleClass="field_label"/>
+						<h:selectOneMenu id="search_for" 
+							value="#{extended_search_results.resultTypeId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.resultTypeChanged}">
+							<f:selectItems value="#{extended_search_results.resultTypes}"/>
+						</h:selectOneMenu>
+
+						<h:outputText value=" "/>
+						<h:panelGroup>
+							<t:htmlTag value="hr" style="width:500px; margin-left:0; text-align:left;" />
+						</h:panelGroup>
+						
+						<h:outputText value="#{msg.extended_search_university}" 
+							style="#{views$public$search$extendedsearch.visibilityUniversity}" styleClass="field_label"/>
+						<h:selectOneMenu id="university" 
+							value="#{extended_search_results.universityId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.universityChanged}" 
+							style="#{views$public$search$extendedsearch.visibilityUniversity}">
+							<f:selectItems value="#{extended_search_results.universities}"/>
+						</h:selectOneMenu>
+						
+						<h:outputText value="#{msg.extended_search_department}"
+							style="#{views$public$search$extendedsearch.visibilityDepartment}" styleClass="field_label"/>
+						<h:selectOneMenu id="department" 
+							value="#{extended_search_results.departmentId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.departmentChanged}"
+							style="#{views$public$search$extendedsearch.visibilityDepartment}">
+							<f:selectItems value="#{extended_search_results.departments}"/>
+						</h:selectOneMenu>
+
+						<h:outputText value="#{msg.extended_search_institute}" 
+							style="#{views$public$search$extendedsearch.visibilityInstitute}" styleClass="field_label"/>
+						<h:selectOneMenu id="institute" 
+							value="#{extended_search_results.instituteId}" 
+							styleClass="pulldown_inline" 
+							onchange="this.form.submit();"
+							immediate="true" 
+							valueChangeListener="#{views$public$search$extendedsearch.instituteChanged}"
+							style="#{views$public$search$extendedsearch.visibilityInstitute}">
+							<f:selectItems value="#{extended_search_results.institutes}"/>
+						</h:selectOneMenu>
+
+						<h:outputText value="#{msg.extended_search_course_type}" 
+							style="#{views$public$search$extendedsearch.visibilityCourseType}" styleClass="field_label"/>
+						<h:selectOneMenu id="course_type" 
+							value="#{extended_search_results.courseTypeId}" 
+							styleClass="pulldown_inline" 
+							style="#{views$public$search$extendedsearch.visibilityCourseType}">
+							<f:selectItems value="#{extended_search_results.courseTypes}"/>
+						</h:selectOneMenu>
+						
+						<h:outputText value="#{msg.extended_search_period}" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}" styleClass="field_label"/>
+						<h:selectOneMenu id="period" value="#{extended_search_results.periodId}" 
+							styleClass="pulldown_inline" 
+							style="#{views$public$search$extendedsearch.visibilityPeriod}">
+							<f:selectItems value="#{extended_search_results.periods}"/>
+						</h:selectOneMenu>
+
+					</h:panelGrid>
+					<h:commandButton action="#{views$public$search$extendedsearch.extendedSearch}" value="${msg.extended_search_search}" styleClass="button_save" />
+				</o:block>
+				<ui:include src="extendedsearchresults.xhtml" />
+			</h:form>
+		</ui:define>
+
+	  			
+	</ui:composition></f:view></body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://www.openuss.org/jsf-security"  
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="title"><h:outputText value="#{msg.university_maintitle} - #{universityInfo.name}"/></ui:define>
+ 		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/university.xhtml" />
+		</ui:define>
+  		<ui:define name="content"> 
+			<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.MANAGE_PERIODS}" ifNot="error"/>
+			<h:form id="removePeriodForm">
+				<o:block label="#{msg.warning_attention_dataloss} - #{msg.period_remove_header}" styleClass="warning_box">
+	  				<p class="content_font_normal">
+						<span>
+							<h:outputText value="#{msg.period_remove_text_part_1}" styleClass="warning"/><br/>
+							<strong>#{periodInfo.name}</strong><br/>
+							 #{periodInfo.description}<br/>
+							<br/>
+							<h:outputText value="#{msg.period_remove_text_part_2}" styleClass="warning"/>
+							<h:outputText value="#{msg.period_remove_text_part_3}" styleClass="warning"/>					
+						</span>
+					</p>
+				</o:block>
+				<o:block>
+					<h:commandButton value="${msg.remove}" action="#{views$secured$lecture$universityperiodremove.removePeriod}" styleClass="button_warning"/>
+					<h:commandButton value="${msg.cancel}" action="university_periods" immediate="true" styleClass="button_cancel"/>
+				</o:block>	
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

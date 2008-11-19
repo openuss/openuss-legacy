@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:c="http://java.sun.com/jstl/core">
+   
+    <o:block label="#{msg.universityList_header}">
+    		<table class="universities">
+    		<tr>
+   			<t:dataList var="uni" value="#{views$public$university$universitiestablewelcome.universities}">
+   					<td>
+   					<div class="unilink">
+				    	<o:link value="/views/public/university/university.faces">
+				    		<f:param name="university" value="#{uni.id}"/>
+							<h:graphicImage rendered="${not empty uni.imageId}"
+									value="/files?fileid=#{uni.imageId}"
+									title="#{msg.logo} #{uni.name}"
+									styleClass="logo"/>
+							<span class="info">
+							 	<h:outputText value="#{uni.shortName}" styleClass="content_font_normal"/>
+								<h:outputText value="#{uni.address}" styleClass="content_font_normal"/>
+								<h:outputText value="#{uni.postcode} #{uni.city}" styleClass="content_font_normal"/>
+								<h:outputFormat value="#{msg.university_information_telephone}" rendered="#{!empty uni.telephone}" styleClass="content_font_normal">								<f:param value="#{uni.telephone}" />
+								</h:outputFormat>
+								<h:outputFormat value="#{msg.university_information_telefax}" rendered="#{!empty uni.telefax}" styleClass="content_font_normal">
+									<f:param value="#{uni.telefax}" />
+								</h:outputFormat>
+							</span>
+						</o:link>
+					</div>
+					</td>
+	    	</t:dataList>
+	    	</tr>
+	       </table>
+		   
+    </o:block>
+
+</ui:composition>

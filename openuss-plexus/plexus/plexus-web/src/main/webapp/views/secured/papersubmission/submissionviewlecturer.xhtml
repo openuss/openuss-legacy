@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:fck="http://www.fck-faces.org/fck-faces"      
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><ui:insert name="title"/></title>
+        <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+        <!-- css-Datei mit Farbdefinitionen der Rubrik -->
+        <link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+    </head>
+
+    <body>      
+    <!-- text above will be ignored -->
+    <ui:composition template="/views/layout/layout.xhtml">
+        <ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{instituteInfo.name}"/></ui:define>
+        
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+        
+        <ui:define name="content">
+        	<t:saveState value="#{paperSubmissionInfo}"/>
+            <h:form id="submissionsTableView">
+                <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+	                <!-- lecturer-view -->
+	                <plexus:dataTable   
+	                    id="submissionfiles" 
+	                    label="#{msg['papersubmission_submissionfilestable_header']}" 
+	                    value="views$secured$papersubmission$submissionviewlecturer.dataSubmissionFiles" 
+	                    columnClasses="col_min_center, col_min_center, col_max_left, col_filesize, col_date, col_date"
+	                    var="bean" 
+	                    rows="20">  
+	                    
+	                  <t:column>
+				            <f:facet name="header">
+				                <h:selectBooleanCheckbox 
+				                    immediate="true" 
+				                    onchange="this.form.submit();" 
+				                    onclick="this.form.submit();" 
+				                    value="#{papersubmission_folderentry_selection.state}" 
+				                    valueChangeListener="#{papersubmission_folderentry_selection.switchSelection}"/>
+				            </f:facet>
+				            <h:selectBooleanCheckbox value="#{papersubmission_folderentry_selection.map[bean]}"/> 
+				        </t:column> 
+				        
+	                    <t:column> 
+				            <plexus:commandSortHeader columnName="extension"> #{msg['documents_main_column_type']} </plexus:commandSortHeader>
+				            <h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+								<h:graphicImage value="/images/filetypes/default.gif" 
+					                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+				        </t:column>
+	               
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="name">#{msg.documents_main_column_name}</plexus:commandSortHeader> 
+	                              				
+            				<o:link value="/files/#{bean.fileName}" title="#{bean.description}">
+								<f:param value="#{bean.id}" name="fileid" />
+								<h:outputText value="#{bean.name}"/>
+							</o:link>
+	                    </t:column>
+	                    
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="fileSize">#{msg.documents_main_column_size}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.sizeAsString}"/>
+	                    </t:column>
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="created">#{msg.documents_main_column_create}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.created}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
+	                    </t:column>
+	                    
+	                    <t:column>
+	                        <plexus:commandSortHeader columnName="modified">#{msg.documents_main_column_change}</plexus:commandSortHeader> 
+	                        <h:outputText value="#{bean.modified}">
+	                        	<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+	                        </h:outputText>
+	                    </t:column>
+	                     
+	                </plexus:dataTable> 
+	                
+	                <o:block>
+	                    <h:commandButton 
+						    id="download"
+							action="#{views$secured$papersubmission$submissionviewlecturer.download}" 
+							value="#{msg.documents_main_button_download}" 
+							title="#{msg.documents_main_button_download}"
+							styleClass="button_add"/>
+	               </o:block>
+	               
+	               <o:block label="#{msg.papersubmission_submission_comment_description}" styleClass="form_box">
+           	       		<div class="content_iframe">
+                        	<fck:editor value="#{paperSubmissionInfo.comment}" id="textEditor" toolbarSet="Basic" maxlength="250" height="200">
+                            	<f:converter converterId="xssFilter"/>
+                        	</fck:editor>
+                    	</div>           
+			       </o:block> 
+			       <o:block>   
+			            <t:commandButton id="saveComment" forceId="true"   action="#{views$secured$papersubmission$submissionviewlecturer.saveComment}" value="#{msg.save}" title="#{msg.save_hint}" styleClass="button_save" />
+			       </o:block>   
+				                
+	            </s:acl>
+            </h:form>	        
+        </ui:define>
+    </ui:composition>
+    <!-- text above will be ignored -->
+    </body>
+</html>

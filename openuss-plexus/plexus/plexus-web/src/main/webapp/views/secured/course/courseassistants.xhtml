@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/layout.xhtml">
+	<ui:define name="title">
+		<h:outputText
+			value="#{msg.course_main_title} - #{courseInfo.shortcut}" />
+	</ui:define>
+	<ui:define name="navigation">
+		<ui:include src="/views/commons/navigation/course.xhtml" />
+	</ui:define>
+	<ui:define name="content">
+		<!-- removed ACL tags -->
+
+		<h:form id="assistantsForm">
+			<ui:include src="courseassistantstable.xhtml" />
+			<o:block label="#{msg.course_members_command_head}" styleClass="form_box">
+					<c:if test="#{not empty views$secured$course$courseassistants.instituteMemberList}">
+						<h:outputLabel value="#{msg.course_command_add_institute_member}"
+							for="assistantSelectBox" styleClass="field_label" />
+						<h:selectOneMenu id="assistantSelectBox"
+							value="#{views$secured$course$courseassistants.userId}"
+							styleClass="pulldown_inline">
+							<f:selectItems value="#{views$secured$course$courseassistants.instituteMemberList}" />
+						</h:selectOneMenu>
+					</c:if>
+					<o:input entity="views$secured$course$courseassistants"
+						property="username" label="#{msg.course_command_add_user_as_assistant}"
+						styleClass="field">
+						<f:validator validatorId="userEmailExistValidator" />
+					</o:input>
+					<div class="inline_buttons">
+						<h:commandButton id="addMemberButton"
+							action="#{views$secured$course$courseassistants.addAssistant}"
+							value="#{msg.course_assistants_add}"
+							hint="#{msg.course_assistants_add_hint}" styleClass="button_add" />
+					</div>
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>

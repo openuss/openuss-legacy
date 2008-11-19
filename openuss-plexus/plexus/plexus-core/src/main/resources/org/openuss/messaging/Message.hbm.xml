@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.messaging.MessageImpl" table="MESSAGE_MESSAGE" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="senderName" type="java.lang.String">
+            <column name="SENDER_NAME" not-null="true" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="subject" type="java.lang.String">
+            <column name="SUBJECT" not-null="true" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <joined-subclass name="org.openuss.messaging.TextMessageImpl" table="MESSAGE_TEXTMESSAGE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="MESSAGE_TEXTMESSAGEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="text" type="org.andromda.persistence.hibernate.usertypes.HibernateStringClobType">
+                <column name="TEXT" not-null="true" unique="false" sql-type="BLOB"/>
+            </property>
+        </joined-subclass>
+        <joined-subclass name="org.openuss.messaging.TemplateMessageImpl" table="MESSAGE_TEMPLATEMESSAGE" dynamic-insert="false" dynamic-update="false" abstract="false">
+            <key foreign-key="MESSAGE_TEMPLATEMESSAGEIFKC">
+                <column name="ID" sql-type="BIGINT"/>
+            </key>
+            <property name="template" type="java.lang.String">
+                <column name="TEMPLATE" not-null="true" unique="false" sql-type="VARCHAR(64)"/>
+            </property>
+            <set name="parameters" order-by="TEMPLATE_FK" lazy="false" fetch="select" inverse="true" cascade="all,delete-orphan">
+                <cache usage="read-write" />
+                <key foreign-key="MESSAGE_TEMPLATEPARAMETER_TEMC">
+                    <column name="TEMPLATE_FK" sql-type="BIGINT"/>
+                </key>
+                <one-to-many class="org.openuss.messaging.TemplateParameterImpl"/>
+            </set>
+        </joined-subclass>
+    </class>
+</hibernate-mapping>

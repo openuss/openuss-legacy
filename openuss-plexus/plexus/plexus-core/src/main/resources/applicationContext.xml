@@ -1,0 +1,2398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- ========================= GENERAL DEFINITIONS ========================= -->
+
+    <!-- Message source for this context, loaded from localized "messages_xx" files -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"><value>messages</value></property>
+    </bean>
+
+    <!-- applicationContext merge-point -->
+    <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref bean="dataSource"/></property>
+        <property name="mappingResources">
+            <list>
+                <value>org/openuss/news/NewsItem.hbm.xml</value>
+                <value>org/openuss/documents/FolderEntry.hbm.xml</value>
+                <value>org/openuss/viewtracking/DomainViewState.hbm.xml</value>
+                <value>org/openuss/security/acl/ObjectIdentity.hbm.xml</value>
+                <value>org/openuss/security/acl/Permission.hbm.xml</value>
+                <value>org/openuss/security/Authority.hbm.xml</value>
+                <value>org/openuss/security/Membership.hbm.xml</value>
+                <value>org/openuss/security/ldap/RoleAttributeKey.hbm.xml</value>
+                <value>org/openuss/security/ldap/AttributeMapping.hbm.xml</value>
+                <value>org/openuss/security/ldap/AuthenticationDomain.hbm.xml</value>
+                <value>org/openuss/security/ldap/LdapServer.hbm.xml</value>
+                <value>org/openuss/security/ldap/UserDnPattern.hbm.xml</value>
+                <value>org/openuss/commands/Command.hbm.xml</value>
+                <value>org/openuss/commands/LastProcessedCommand.hbm.xml</value>
+                <value>org/openuss/braincontest/Answer.hbm.xml</value>
+                <value>org/openuss/braincontest/BrainContest.hbm.xml</value>
+                <value>org/openuss/repository/RepositoryFile.hbm.xml</value>
+                <value>org/openuss/lecture/CourseType.hbm.xml</value>
+                <value>org/openuss/lecture/Period.hbm.xml</value>
+                <value>org/openuss/lecture/Course.hbm.xml</value>
+                <value>org/openuss/lecture/CourseMember.hbm.xml</value>
+                <value>org/openuss/lecture/Organisation.hbm.xml</value>
+                <value>org/openuss/lecture/Application.hbm.xml</value>
+                <value>org/openuss/messaging/Recipient.hbm.xml</value>
+                <value>org/openuss/messaging/MessageJob.hbm.xml</value>
+                <value>org/openuss/messaging/TemplateParameter.hbm.xml</value>
+                <value>org/openuss/messaging/Message.hbm.xml</value>
+                <value>org/openuss/system/SystemProperty.hbm.xml</value>
+                <value>org/openuss/registration/ActivationCode.hbm.xml</value>
+                <value>org/openuss/discussion/Topic.hbm.xml</value>
+                <value>org/openuss/discussion/DiscussionWatch.hbm.xml</value>
+                <value>org/openuss/discussion/Formula.hbm.xml</value>
+                <value>org/openuss/discussion/Post.hbm.xml</value>
+                <value>org/openuss/discussion/ForumWatch.hbm.xml</value>
+                <value>org/openuss/discussion/Forum.hbm.xml</value>
+                <value>org/openuss/newsletter/Newsletter.hbm.xml</value>
+                <value>org/openuss/newsletter/Subscriber.hbm.xml</value>
+                <value>org/openuss/newsletter/Mail.hbm.xml</value>
+                <value>org/openuss/desktop/Desktop.hbm.xml</value>
+                <value>org/openuss/wiki/WikiSite.hbm.xml</value>
+                <value>org/openuss/wiki/WikiSiteVersion.hbm.xml</value>
+                <value>org/openuss/statistics/OnlineSession.hbm.xml</value>
+                <value>org/openuss/statistics/SystemStatistic.hbm.xml</value>
+                <value>org/openuss/chat/ChatRoom.hbm.xml</value>
+                <value>org/openuss/chat/ChatMessage.hbm.xml</value>
+                <value>org/openuss/chat/ChatUser.hbm.xml</value>
+                <value>org/openuss/collaboration/Workspace.hbm.xml</value>
+                <value>org/openuss/paperSubmission/Exam.hbm.xml</value>
+                <value>org/openuss/paperSubmission/PaperSubmission.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">auto</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.query_cache_factory">org.hibernate.cache.StandardQueryCacheFactory</prop>
+                <prop key="hibernate.format_sql">true</prop>
+        		<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+       			<prop key="hibernate.current_session_context_class">thread</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- The Hibernate interceptor -->
+    <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+
+    <!-- NewsItem Entity Proxy with inner NewsItem Entity implementation -->
+    <bean id="newsItemDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.news.NewsItemDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.news.NewsItemDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Folder Entity Proxy with inner Folder Entity implementation -->
+    <bean id="folderDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.documents.FolderDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.documents.FolderDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- FolderEntry Entity Proxy with inner FolderEntry Entity implementation -->
+    <bean id="folderEntryDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.documents.FolderEntryDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.documents.FolderEntryDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- FileEntry Entity Proxy with inner FileEntry Entity implementation -->
+    <bean id="fileEntryDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.documents.FileEntryDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.documents.FileEntryDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- DomainViewState Entity Proxy with inner DomainViewState Entity implementation -->
+    <bean id="domainViewStateDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.viewtracking.DomainViewStateDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.viewtracking.DomainViewStateDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Group Entity Proxy with inner Group Entity implementation -->
+    <bean id="groupDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.GroupDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.GroupDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- User Entity Proxy with inner User Entity implementation -->
+    <bean id="userDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.UserDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.UserDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ObjectIdentity Entity Proxy with inner ObjectIdentity Entity implementation -->
+    <bean id="objectIdentityDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.acl.ObjectIdentityDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.acl.ObjectIdentityDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Permission Entity Proxy with inner Permission Entity implementation -->
+    <bean id="permissionDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.acl.PermissionDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.acl.PermissionDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Authority Entity Proxy with inner Authority Entity implementation -->
+    <bean id="authorityDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.AuthorityDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.AuthorityDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Membership Entity Proxy with inner Membership Entity implementation -->
+    <bean id="membershipDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.MembershipDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.MembershipDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- RoleAttributeKey Entity Proxy with inner RoleAttributeKey Entity implementation -->
+    <bean id="roleAttributeKeyDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.ldap.RoleAttributeKeyDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.RoleAttributeKeyDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- AttributeMapping Entity Proxy with inner AttributeMapping Entity implementation -->
+    <bean id="attributeMappingDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.ldap.AttributeMappingDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.AttributeMappingDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- AuthenticationDomain Entity Proxy with inner AuthenticationDomain Entity implementation -->
+    <bean id="authenticationDomainDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.ldap.AuthenticationDomainDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.AuthenticationDomainDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- LdapServer Entity Proxy with inner LdapServer Entity implementation -->
+    <bean id="ldapServerDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.ldap.LdapServerDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.LdapServerDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- UserDnPattern Entity Proxy with inner UserDnPattern Entity implementation -->
+    <bean id="userDnPatternDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.security.ldap.UserDnPatternDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.UserDnPatternDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Command Entity Proxy with inner Command Entity implementation -->
+    <bean id="commandDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.commands.CommandDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.commands.CommandDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- LastProcessedCommand Entity Proxy with inner LastProcessedCommand Entity implementation -->
+    <bean id="lastProcessedCommandDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.commands.LastProcessedCommandDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.commands.LastProcessedCommandDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Answer Entity Proxy with inner Answer Entity implementation -->
+    <bean id="answerDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.braincontest.AnswerDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.braincontest.AnswerDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- BrainContest Entity Proxy with inner BrainContest Entity implementation -->
+    <bean id="brainContestDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.braincontest.BrainContestDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.braincontest.BrainContestDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- RepositoryFile Entity Proxy with inner RepositoryFile Entity implementation -->
+    <bean id="repositoryFileDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.repository.RepositoryFileDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.repository.RepositoryFileDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Institute Entity Proxy with inner Institute Entity implementation -->
+    <bean id="instituteDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.InstituteDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="departmentDao"><ref bean="departmentDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.InstituteDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- CourseType Entity Proxy with inner CourseType Entity implementation -->
+    <bean id="courseTypeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.CourseTypeDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="instituteDao"><ref bean="instituteDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.CourseTypeDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Period Entity Proxy with inner Period Entity implementation -->
+    <bean id="periodDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.PeriodDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="universityDao"><ref bean="universityDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.PeriodDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Course Entity Proxy with inner Course Entity implementation -->
+    <bean id="courseDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.CourseDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="periodDao"><ref bean="periodDao"/></property>
+                <property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.CourseDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- CourseMember Entity Proxy with inner CourseMember Entity implementation -->
+    <bean id="courseMemberDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.CourseMemberDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.CourseMemberDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Organisation Entity Proxy with inner Organisation Entity implementation -->
+    <bean id="organisationDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.OrganisationDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.OrganisationDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- University Entity Proxy with inner University Entity implementation -->
+    <bean id="universityDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.UniversityDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.UniversityDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Department Entity Proxy with inner Department Entity implementation -->
+    <bean id="departmentDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.DepartmentDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="universityDao"><ref bean="universityDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.DepartmentDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Application Entity Proxy with inner Application Entity implementation -->
+    <bean id="applicationDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.lecture.ApplicationDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="departmentDao"><ref bean="departmentDao"/></property>
+                <property name="userDao"><ref bean="userDao"/></property>
+                <property name="instituteDao"><ref bean="instituteDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.ApplicationDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Recipient Entity Proxy with inner Recipient Entity implementation -->
+    <bean id="recipientDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.RecipientDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.RecipientDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- MessageJob Entity Proxy with inner MessageJob Entity implementation -->
+    <bean id="messageJobDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.MessageJobDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.MessageJobDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- TemplateParameter Entity Proxy with inner TemplateParameter Entity implementation -->
+    <bean id="templateParameterDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.TemplateParameterDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.TemplateParameterDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- TextMessage Entity Proxy with inner TextMessage Entity implementation -->
+    <bean id="textMessageDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.TextMessageDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.TextMessageDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Message Entity Proxy with inner Message Entity implementation -->
+    <bean id="messageDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.MessageDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.MessageDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- TemplateMessage Entity Proxy with inner TemplateMessage Entity implementation -->
+    <bean id="templateMessageDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.messaging.TemplateMessageDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.TemplateMessageDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- SystemProperty Entity Proxy with inner SystemProperty Entity implementation -->
+    <bean id="systemPropertyDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.system.SystemPropertyDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.system.SystemPropertyDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- UserActivationCode Entity Proxy with inner UserActivationCode Entity implementation -->
+    <bean id="userActivationCodeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.registration.UserActivationCodeDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.registration.UserActivationCodeDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ActivationCode Entity Proxy with inner ActivationCode Entity implementation -->
+    <bean id="activationCodeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.registration.ActivationCodeDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.registration.ActivationCodeDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- InstituteActivationCode Entity Proxy with inner InstituteActivationCode Entity implementation -->
+    <bean id="instituteActivationCodeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.registration.InstituteActivationCodeDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.registration.InstituteActivationCodeDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- UserDeleteCode Entity Proxy with inner UserDeleteCode Entity implementation -->
+    <bean id="userDeleteCodeDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.registration.UserDeleteCodeDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.registration.UserDeleteCodeDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Topic Entity Proxy with inner Topic Entity implementation -->
+    <bean id="topicDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.TopicDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.TopicDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- DiscussionWatch Entity Proxy with inner DiscussionWatch Entity implementation -->
+    <bean id="discussionWatchDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.DiscussionWatchDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.DiscussionWatchDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Formula Entity Proxy with inner Formula Entity implementation -->
+    <bean id="formulaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.FormulaDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.FormulaDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Post Entity Proxy with inner Post Entity implementation -->
+    <bean id="postDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.PostDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.PostDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ForumWatch Entity Proxy with inner ForumWatch Entity implementation -->
+    <bean id="forumWatchDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.ForumWatchDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.ForumWatchDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Forum Entity Proxy with inner Forum Entity implementation -->
+    <bean id="forumDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.discussion.ForumDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.ForumDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Newsletter Entity Proxy with inner Newsletter Entity implementation -->
+    <bean id="newsletterDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.newsletter.NewsletterDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.newsletter.NewsletterDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Subscriber Entity Proxy with inner Subscriber Entity implementation -->
+    <bean id="subscriberDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.newsletter.SubscriberDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.newsletter.SubscriberDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Mail Entity Proxy with inner Mail Entity implementation -->
+    <bean id="mailDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.newsletter.MailDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.newsletter.MailDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Desktop Entity Proxy with inner Desktop Entity implementation -->
+    <bean id="desktopDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.desktop.DesktopDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+                <property name="userDao"><ref bean="userDao"/></property>
+                <property name="universityDao"><ref bean="universityDao"/></property>
+                <property name="departmentDao"><ref bean="departmentDao"/></property>
+                <property name="courseDao"><ref bean="courseDao"/></property>
+                <property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+                <property name="instituteDao"><ref bean="instituteDao"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.desktop.DesktopDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- WikiSite Entity Proxy with inner WikiSite Entity implementation -->
+    <bean id="wikiSiteDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.wiki.WikiSiteDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.wiki.WikiSiteDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- WikiSiteVersion Entity Proxy with inner WikiSiteVersion Entity implementation -->
+    <bean id="wikiSiteVersionDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.wiki.WikiSiteVersionDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.wiki.WikiSiteVersionDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- OnlineSession Entity Proxy with inner OnlineSession Entity implementation -->
+    <bean id="onlineSessionDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.statistics.OnlineSessionDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.statistics.OnlineSessionDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- SystemStatistic Entity Proxy with inner SystemStatistic Entity implementation -->
+    <bean id="systemStatisticDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.statistics.SystemStatisticDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.statistics.SystemStatisticDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ChatRoom Entity Proxy with inner ChatRoom Entity implementation -->
+    <bean id="chatRoomDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.chat.ChatRoomDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.chat.ChatRoomDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ChatMessage Entity Proxy with inner ChatMessage Entity implementation -->
+    <bean id="chatMessageDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.chat.ChatMessageDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.chat.ChatMessageDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ChatUser Entity Proxy with inner ChatUser Entity implementation -->
+    <bean id="chatUserDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.chat.ChatUserDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.chat.ChatUserDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Workspace Entity Proxy with inner Workspace Entity implementation -->
+    <bean id="workspaceDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.collaboration.WorkspaceDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.collaboration.WorkspaceDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Exam Entity Proxy with inner Exam Entity implementation -->
+    <bean id="examDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.paperSubmission.ExamDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.paperSubmission.ExamDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- PaperSubmission Entity Proxy with inner PaperSubmission Entity implementation -->
+    <bean id="paperSubmissionDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="org.openuss.paperSubmission.PaperSubmissionDaoImpl">
+                <property name="sessionFactory"><ref local="sessionFactory"/></property>
+            </bean>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.paperSubmission.PaperSubmissionDao</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ========================= Start of SERVICE DEFINITIONS ========================= -->
+
+    <!-- Service Transactional Interceptor -->
+    <bean id="serviceTransactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager"><ref bean="transactionManager"/></property>
+        <property name="transactionAttributeSource">
+            <value>
+                org.openuss.news.NewsService.getNewsItem=PROPAGATION_SUPPORTS
+                org.openuss.news.NewsService.saveNewsItem=PROPAGATION_REQUIRED
+                org.openuss.news.NewsService.deleteNewsItem=PROPAGATION_REQUIRED
+                org.openuss.news.NewsService.getNewsItems=PROPAGATION_SUPPORTS
+                org.openuss.news.NewsService.getCurrentNewsItems=PROPAGATION_SUPPORTS
+                org.openuss.news.NewsService.getPublishedNewsItems=PROPAGATION_SUPPORTS
+                org.openuss.news.NewsService.getPublishedNewsItemsCount=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.allFileEntries=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getFolder=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getFolderEntries=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.getFolderPath=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getFileEntry=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getFileEntries=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.isFolderOfDomainObject=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getParentFolder=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.getAllSubfolders=PROPAGATION_SUPPORTS
+                org.openuss.documents.DocumentService.createFileEntries=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.createFolder=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.createFileEntry=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.diffSave=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.moveFolderEntries=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.removeFolderEntry=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.removeFileEntries=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.removeFolderEntries=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.remove=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.saveFolder=PROPAGATION_REQUIRED
+                org.openuss.documents.DocumentService.saveFileEntry=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.setNew=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.setRead=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.setModified=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.getViewState=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.setViewState=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.remove=PROPAGATION_REQUIRED
+                org.openuss.viewtracking.TrackingService.getTopicViewStates=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.getAllUsers=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getAllGroups=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getUsers=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getUser=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getUserByName=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.createUser=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.changePassword=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.saveUser=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removeUser=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.addAuthorityToGroup=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removeAuthorityFromGroup=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.isValidUserName=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.isNonExistingEmailAddress=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getGroupByName=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getGroup=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.createGroup=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removeGroup=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.saveGroup=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.createObjectIdentity=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removeObjectIdentity=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removePermission=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.removeAllPermissions=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.setPermissions=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.getPermissions=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.setLoginTime=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.getUserByEmail=PROPAGATION_REQUIRED
+                org.openuss.security.SecurityService.getCurrentUser=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.hasPermission=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getUserObject=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.getGrantedAuthorities=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.removeUserPermanently=PROPAGATION_SUPPORTS
+                org.openuss.security.SecurityService.removePersonalInformation=PROPAGATION_SUPPORTS
+                org.openuss.security.MembershipService.addMember=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.removeMember=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.addAspirant=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.acceptAspirant=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.rejectAspirant=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.createGroup=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.removeGroup=PROPAGATION_REQUIRED
+                org.openuss.security.MembershipService.clearMembership=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getEnabledLdapServerConfigurations=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.createLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.deleteLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.saveLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getLdapServersByDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllLdapServers=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.createDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.deleteDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.saveDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllDomains=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.addServerToDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.removeServerFromDomain=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.createAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.deleteAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.saveAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllAttributeMappings=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.createRoleAttributeKey=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.deleteRoleAttributeKey=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.saveRoleAttributeKey=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.removeRoleAttributeKeyFromAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.addRoleAttributeKeyToAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllRoleAttributeKeys=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllRoleAttributeKeysByMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.removeDomainFromAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.addDomainToAttributeMapping=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.createUserDnPattern=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.saveUserDnPattern=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.deleteUserDnPattern=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.addUserDnPatternToLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.removeUserDnPatternFromLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllUserDnPatterns=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAllUserDnPatternsByLdapServer=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getDomainById=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getLdapServerById=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getRoleAttributeKeyById=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getAttributeMappingById=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.getUserDnPatternById=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.isValidRoleAttributeKey=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.isValidUserDnPattern=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.isValidAttributeMappingName=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.isValidAuthenticationDomainName=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationService.isValidURL=PROPAGATION_REQUIRED
+                org.openuss.security.ldap.LdapConfigurationNotifyService.reconfigure=PROPAGATION_REQUIRED
+                org.openuss.commands.CommandService.createEachCommand=PROPAGATION_REQUIRED
+                org.openuss.commands.CommandService.createOnceCommand=PROPAGATION_REQUIRED
+                org.openuss.commands.CommandService.setStartTime=PROPAGATION_REQUIRED
+                org.openuss.commands.CommandService.deleteCommand=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.getContests=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.getContest=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.createContest=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.saveContest=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.getAttachments=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.addAttachment=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.answer=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.removeAttachment=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.getAnswers=PROPAGATION_REQUIRED
+                org.openuss.braincontest.BrainContestService.removeContest=PROPAGATION_REQUIRED
+                org.openuss.repository.RepositoryService.saveContent=PROPAGATION_REQUIRED
+                org.openuss.repository.RepositoryService.loadContent=PROPAGATION_REQUIRED
+                org.openuss.repository.RepositoryService.removeContent=PROPAGATION_REQUIRED
+                org.openuss.repository.RepositoryService.setRepositoryLocation=PROPAGATION_SUPPORTS
+                org.openuss.repository.RepositoryService.getRepositoryLocation=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.removeMember=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.acceptAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.rejectAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.getAspirants=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.addAssistant=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.addAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.addParticipant=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.applyUser=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.removeAspirants=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.updateCourse=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.create=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.removeCourse=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.setCourseStatus=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseService.isNoneExistingCourseShortcut=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.getAssistants=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.getParticipants=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.getMemberInfo=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCourse=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByCourseType=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByPeriodAndInstitute=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByActivePeriods=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByInstituteAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByPeriodAndInstituteAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findCoursesByActivePeriodsAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findAllCoursesByInstitute=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findAllCoursesByDepartment=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.findAllCoursesByDepartmentAndPeriod=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseService.removeAssistant=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.createUniversity=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.createPeriod=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.update=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.removeUniversity=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.removeCompleteUniversityTree=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.removePeriod=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.removePeriodAndCourses=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.setUniversityStatus=PROPAGATION_REQUIRED
+                org.openuss.lecture.UniversityService.isActivePeriod=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findUniversity=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findAllUniversities=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findUniversitiesByEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findPeriod=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findPeriodsByUniversity=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findPeriodsByUniversityAndActivation=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findUniversitiesByTypeAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findUniversitiesByMemberAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findPeriodsByUniversityWithCourses=PROPAGATION_SUPPORTS
+                org.openuss.lecture.UniversityService.findPeriodsByInstituteWithCoursesOrActive=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.create=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.update=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.removeDepartment=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.removeCompleteDepartmentTree=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.acceptApplication=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.rejectApplication=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.signoffInstitute=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.setDepartmentStatus=PROPAGATION_REQUIRED
+                org.openuss.lecture.DepartmentService.findDepartment=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findDepartmentsByUniversity=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findDepartmentsByUniversityAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findDepartmentsByUniversityAndType=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findDepartmentsByUniversityAndTypeAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findApplication=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findDepartmentsByType=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findApplicationsByDepartment=PROPAGATION_SUPPORTS
+                org.openuss.lecture.DepartmentService.findApplicationsByDepartmentAndConfirmed=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.addMember=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.removeMember=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.addAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.acceptAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.rejectAspirant=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.createGroup=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.removeGroup=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.addUserToGroup=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.removeUserFromGroup=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.sendActivationCode=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.setOrganisationEnabled=PROPAGATION_REQUIRED
+                org.openuss.lecture.OrganisationService.findAllMembers=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findAllAspirants=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findGroup=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findDepartmentHierarchy=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findInstituteHierarchy=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findCourseHierarchy=PROPAGATION_SUPPORTS
+                org.openuss.lecture.OrganisationService.findGroupsByOrganisation=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.create=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.update=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.removeInstitute=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.applyAtDepartment=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.setInstituteStatus=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.removeCompleteInstituteTree=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.setGroupOfMember=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.resendActivationCode=PROPAGATION_REQUIRED
+                org.openuss.lecture.InstituteService.getInstituteSecurity=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findAllInstitutes=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findApplicationsByInstitute=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findApplicationByInstituteAndConfirmed=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findInstitute=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findInstitutesByDepartment=PROPAGATION_SUPPORTS
+                org.openuss.lecture.InstituteService.findInstitutesByDepartmentAndEnabled=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseTypeService.create=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseTypeService.update=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseTypeService.removeCourseType=PROPAGATION_REQUIRED
+                org.openuss.lecture.CourseTypeService.findCourseType=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseTypeService.findCourseTypesByInstitute=PROPAGATION_SUPPORTS
+                org.openuss.lecture.CourseTypeService.isNoneExistingCourseTypeName=PROPAGATION_SUPPORTS
+                org.openuss.search.IndexerService.createIndex=PROPAGATION_REQUIRED
+                org.openuss.search.IndexerService.updateIndex=PROPAGATION_REQUIRED
+                org.openuss.search.IndexerService.deleteIndex=PROPAGATION_REQUIRED
+                org.openuss.search.IndexerService.recreate=PROPAGATION_REQUIRED
+                org.openuss.messaging.MessageService.sendMessage=PROPAGATION_REQUIRED
+                org.openuss.messaging.MessageService.getJobState=PROPAGATION_REQUIRED
+                org.openuss.system.SystemService.persistProperties=PROPAGATION_REQUIRED
+                org.openuss.system.SystemService.persistProperty=PROPAGATION_REQUIRED
+                org.openuss.system.SystemService.getProperties=PROPAGATION_SUPPORTS
+                org.openuss.system.SystemService.getProperty=PROPAGATION_SUPPORTS
+                org.openuss.system.SystemService.getInstanceIdentity=PROPAGATION_SUPPORTS
+                org.openuss.system.SystemService.setInstanceIdentity=PROPAGATION_SUPPORTS
+                org.openuss.registration.RegistrationService.generateActivationCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.generateInstituteActivationCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.registrateUser=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.activateUserByCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.getCreateTime=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.loginUserByActivationCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.activateInstituteByCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.removeInstituteCodes=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.generateUserDeleteCode=PROPAGATION_REQUIRED
+                org.openuss.registration.RegistrationService.generateDeleteUserCommand=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.createTopic=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.deleteTopic=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addPost=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.deletePost=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.updatePost=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getPost=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getPosts=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getTopic=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getTopics=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addTopicWatch=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addForumWatch=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.removeTopicWatch=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.removeForumWatch=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addAttachment=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.removeAttachment=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addForum=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getForum=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.changeEditState=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.addHit=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.getAttachments=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.watchesForum=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.watchesTopic=PROPAGATION_REQUIRED
+                org.openuss.discussion.DiscussionService.removeUserFromDiscussions=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.sendPreview=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.getMails=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.getMail=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.sendMail=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.subscribe=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.unsubscribe=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.setBlockingState=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.getSubscribers=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.saveMail=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.deleteMail=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.addNewsletter=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.getNewsletter=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.updateNewsletter=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.updateMail=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.exportSubscribers=PROPAGATION_REQUIRED
+                org.openuss.course.newsletter.CourseNewsletterService.cancelSending=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.subscribe=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.unsubscribe=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.setBlockingState=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.saveMail=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.deleteMail=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.sendPreview=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.sendMail=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.addNewsletter=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.updateNewsletter=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.updateMail=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.exportSubscribers=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.cancelSending=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.markAsSend=PROPAGATION_REQUIRED
+                org.openuss.newsletter.NewsletterService.getSubscribers=PROPAGATION_SUPPORTS
+                org.openuss.newsletter.NewsletterService.getMails=PROPAGATION_SUPPORTS
+                org.openuss.newsletter.NewsletterService.getMail=PROPAGATION_SUPPORTS
+                org.openuss.newsletter.NewsletterService.getNewsletter=PROPAGATION_SUPPORTS
+                org.openuss.newsletter.NewsletterService.removeAllSubscriptions=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.createDesktop=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.updateDesktop=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.linkUniversity=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.linkDepartment=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.linkInstitute=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.linkCourseType=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.linkCourse=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkUniversity=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkDepartment=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkInstitute=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkCourseType=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkCourse=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkAllFromUniversity=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkAllFromDepartment=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkAllFromInstitute=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkAllFromCourseType=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.unlinkAllFromCourse=PROPAGATION_REQUIRED
+                org.openuss.desktop.DesktopService2.findLinkedDepartmentsByUserAndUniversity=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findAdditionalDepartmentsByUserAndUniversity=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findLinkedInstitutesByUserAndUniversity=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findAdditionalInstitutesByUserAndUniversity=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findLinkedCoursesByUserAndUniversity=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findDesktop=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.findDesktopByUser=PROPAGATION_SUPPORTS
+                org.openuss.desktop.DesktopService2.getMyUniInfo=PROPAGATION_SUPPORTS
+                org.openuss.wiki.WikiService.saveWikiSite=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.deleteWikiSite=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.deleteWikiSiteVersion=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.getWikiSite=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.getWikiSiteContent=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.getNewestWikiSiteContent=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.getNewestWikiSite=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.getNewestStableWikiSiteContent=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.findWikiSiteVersionsByWikiSite=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.findWikiSitesByDomainObject=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.findWikiSiteContentByDomainObjectAndName=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.saveImage=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.deleteImage=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.findImagesByDomainId=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.findAllExportableWikiCoursesByInstituteAndUser=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.importWikiVersions=PROPAGATION_REQUIRED
+                org.openuss.wiki.WikiService.importWikiSites=PROPAGATION_REQUIRED
+                org.openuss.statistics.OnlineStatisticService.logSessionStart=PROPAGATION_REQUIRED
+                org.openuss.statistics.OnlineStatisticService.logSessionEnd=PROPAGATION_REQUIRED
+                org.openuss.statistics.OnlineStatisticService.getOnlineInfo=PROPAGATION_REQUIRED
+                org.openuss.statistics.OnlineStatisticService.getActiveUsers=PROPAGATION_REQUIRED
+                org.openuss.statistics.OnlineStatisticService.getSystemStatistics=PROPAGATION_SUPPORTS
+                org.openuss.chat.ChatService.createRoom=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.deleteRoom=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getRooms=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.enterRoom=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.leaveRoom=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getMessages=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getChatUsers=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getRecentMessages=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.sendMessage=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getRoom=PROPAGATION_REQUIRED
+                org.openuss.chat.ChatService.getLastMessage=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.createWorkspace=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.removeWorkspace=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.updateWorkspace=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.updateWorkspaceMembers=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.findWorkspaceMembers=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.findWorkspacesByDomain=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.getWorkspace=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.findWorkspacesByDomainAndUser=PROPAGATION_REQUIRED
+                org.openuss.collaboration.WorkspaceService.findWorkspacesByUser=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.createExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.updateExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.removeExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.createPaperSubmission=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.updatePaperSubmission=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findExamsByDomainId=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findActiveExamsByDomainId=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findInactiveExamsByDomainId=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findPaperSubmissionsByExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findInTimePaperSubmissionsByExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.getExam=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.getPaperSubmission=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.findPaperSubmissionsByExamAndUser=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.getPaperSubmissionFiles=PROPAGATION_REQUIRED
+                org.openuss.paperSubmission.PaperSubmissionService.getMembersAsPaperSubmissionsByExam=PROPAGATION_REQUIRED
+            </value>
+        </property>
+    </bean>
+
+	
+    <!-- NewsService Service Proxy with inner NewsService Service Implementation -->
+	<bean id="newsServiceAbstract" abstract="true" class="org.openuss.news.NewsServiceImpl">
+		<property name="newsItemDao"><ref bean="newsItemDao"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="newsService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="newsServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.news.NewsService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- DocumentService Service Proxy with inner DocumentService Service Implementation -->
+	<bean id="documentServiceAbstract" abstract="true" class="org.openuss.documents.DocumentServiceImpl">
+		<property name="folderEntryDao"><ref bean="folderEntryDao"/></property>
+		<property name="folderDao"><ref bean="folderDao"/></property>
+		<property name="fileEntryDao"><ref bean="fileEntryDao"/></property>
+		<property name="repositoryService"><ref bean="repositoryService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="documentService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="documentServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.documents.DocumentService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- TrackingService Service Proxy with inner TrackingService Service Implementation -->
+	<bean id="trackingServiceAbstract" abstract="true" class="org.openuss.viewtracking.TrackingServiceImpl">
+		<property name="domainViewStateDao"><ref bean="domainViewStateDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="trackingService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="trackingServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.viewtracking.TrackingService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- SecurityService Service Proxy with inner SecurityService Service Implementation -->
+	<bean id="securityServiceAbstract" abstract="true" class="org.openuss.security.SecurityServiceImpl">
+		<property name="authorityDao"><ref bean="authorityDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="permissionDao"><ref bean="permissionDao"/></property>
+		<property name="objectIdentityDao"><ref bean="objectIdentityDao"/></property>
+		<property name="userCache"><ref bean="userCache"/></property>
+		<property name="aclCache"><ref bean="ehCacheBasedAclEntryCache"/></property>
+		<property name="commandService"><ref bean="commandService"/></property>
+    </bean>
+	
+    <bean id="securityService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="securityServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.SecurityService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- MembershipService Service Proxy with inner MembershipService Service Implementation -->
+	<bean id="membershipServiceAbstract" abstract="true" class="org.openuss.security.MembershipServiceImpl">
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="membershipDao"><ref bean="membershipDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="membershipService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="membershipServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.MembershipService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- LdapConfigurationService Service Proxy with inner LdapConfigurationService Service Implementation -->
+	<bean id="ldapConfigurationServiceAbstract" abstract="true" class="org.openuss.security.ldap.LdapConfigurationServiceImpl">
+		<property name="attributeMappingDao"><ref bean="attributeMappingDao"/></property>
+		<property name="roleAttributeKeyDao"><ref bean="roleAttributeKeyDao"/></property>
+		<property name="authenticationDomainDao"><ref bean="authenticationDomainDao"/></property>
+		<property name="ldapServerDao"><ref bean="ldapServerDao"/></property>
+		<property name="userDnPatternDao"><ref bean="userDnPatternDao"/></property>
+    </bean>
+	
+    <bean id="ldapConfigurationService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="ldapConfigurationServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.LdapConfigurationService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- LdapConfigurationNotifyService Service Proxy with inner LdapConfigurationNotifyService Service Implementation -->
+	<bean id="ldapConfigurationNotifyServiceAbstract" abstract="true" class="org.openuss.security.ldap.LdapConfigurationNotifyServiceImpl">
+		<property name="commandService"><ref bean="commandService"/></property>
+    </bean>
+	
+    <bean id="ldapConfigurationNotifyService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="ldapConfigurationNotifyServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.security.ldap.LdapConfigurationNotifyService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- CommandService Service Proxy with inner CommandService Service Implementation -->
+	<bean id="commandServiceAbstract" abstract="true" class="org.openuss.commands.CommandServiceImpl">
+		<property name="commandDao"><ref bean="commandDao"/></property>
+		<property name="clusterScheduler"><ref bean="scheduler"/></property>
+    </bean>
+	
+    <bean id="commandService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="commandServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.commands.CommandService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- BrainContestService Service Proxy with inner BrainContestService Service Implementation -->
+	<bean id="brainContestServiceAbstract" abstract="true" class="org.openuss.braincontest.BrainContestServiceImpl">
+		<property name="brainContestDao"><ref bean="brainContestDao"/></property>
+		<property name="answerDao"><ref bean="answerDao"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="brainContestService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="brainContestServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.braincontest.BrainContestService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- RepositoryService Service Proxy with inner RepositoryService Service Implementation -->
+	<bean id="repositoryServiceAbstract" abstract="true" class="org.openuss.repository.RepositoryServiceImpl">
+		<property name="repositoryFileDao"><ref bean="repositoryFileDao"/></property>
+    </bean>
+	
+    <bean id="repositoryService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="repositoryServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.repository.RepositoryService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- CourseService Service Proxy with inner CourseService Service Implementation -->
+	<bean id="courseServiceAbstract" abstract="true" class="org.openuss.lecture.CourseServiceImpl">
+		<property name="courseMemberDao"><ref bean="courseMemberDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="periodDao"><ref bean="periodDao"/></property>
+		<property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="messageService"><ref bean="messageService"/></property>
+		<property name="systemService"><ref bean="systemService"/></property>
+		<property name="organisationService"><ref bean="organisationService"/></property>
+		<property name="eventPublisher"><ref bean="domainEventPublisher"/></property>
+		<property name="discussionService"><ref bean="discussionService"/></property>
+		<property name="courseNewsletterService"><ref bean="courseNewsletterService"/></property>
+		<lookup-method name="getDesktopService2" bean="desktopService2"/>
+    </bean>
+	
+    <bean id="courseService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="courseServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.CourseService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- UniversityService Service Proxy with inner UniversityService Service Implementation -->
+	<bean id="universityServiceAbstract" abstract="true" class="org.openuss.lecture.UniversityServiceImpl">
+		<property name="universityDao"><ref bean="universityDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="periodDao"><ref bean="periodDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="organisationDao"><ref bean="organisationDao"/></property>
+		<property name="organisationService"><ref bean="organisationService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="membershipService"><ref bean="membershipService"/></property>
+		<property name="departmentService"><ref bean="departmentService"/></property>
+		<property name="instituteService"><ref bean="instituteService"/></property>
+		<property name="eventPublisher"><ref bean="domainEventPublisher"/></property>
+    </bean>
+	
+    <bean id="universityService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="universityServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.UniversityService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- DepartmentService Service Proxy with inner DepartmentService Service Implementation -->
+	<bean id="departmentServiceAbstract" abstract="true" class="org.openuss.lecture.DepartmentServiceImpl">
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="universityDao"><ref bean="universityDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="applicationDao"><ref bean="applicationDao"/></property>
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="organisationDao"><ref bean="organisationDao"/></property>
+		<property name="organisationService"><ref bean="organisationService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="membershipService"><ref bean="membershipService"/></property>
+		<property name="instituteService"><ref bean="instituteService"/></property>
+		<property name="eventPublisher"><ref bean="domainEventPublisher"/></property>
+    </bean>
+	
+    <bean id="departmentService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="departmentServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.DepartmentService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- OrganisationService Service Proxy with inner OrganisationService Service Implementation -->
+	<bean id="organisationServiceAbstract" abstract="true" class="org.openuss.lecture.OrganisationServiceImpl">
+		<property name="organisationDao"><ref bean="organisationDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="universityDao"><ref bean="universityDao"/></property>
+		<property name="membershipService"><ref bean="membershipService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="registrationService"><ref bean="registrationService"/></property>
+		<property name="messageService"><ref bean="messageService"/></property>
+    </bean>
+	
+    <bean id="organisationService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="organisationServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.OrganisationService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- InstituteService Service Proxy with inner InstituteService Service Implementation -->
+	<bean id="instituteServiceAbstract" abstract="true" class="org.openuss.lecture.InstituteServiceImpl">
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="applicationDao"><ref bean="applicationDao"/></property>
+		<property name="groupDao"><ref bean="groupDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="organisationDao"><ref bean="organisationDao"/></property>
+		<property name="universityDao"><ref bean="universityDao"/></property>
+		<property name="organisationService"><ref bean="organisationService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="membershipService"><ref bean="membershipService"/></property>
+		<property name="courseTypeService"><ref bean="courseTypeService"/></property>
+		<property name="eventPublisher"><ref bean="domainEventPublisher"/></property>
+    </bean>
+	
+    <bean id="instituteService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="instituteServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.InstituteService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- CourseTypeService Service Proxy with inner CourseTypeService Service Implementation -->
+	<bean id="courseTypeServiceAbstract" abstract="true" class="org.openuss.lecture.CourseTypeServiceImpl">
+		<property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="courseService"><ref bean="courseService"/></property>
+		<property name="eventPublisher"><ref bean="domainEventPublisher"/></property>
+    </bean>
+	
+    <bean id="courseTypeService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="courseTypeServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.lecture.CourseTypeService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- IndexerService Service Proxy with inner IndexerService Service Implementation -->
+	<bean id="indexerServiceAbstract" abstract="true" class="org.openuss.search.IndexerServiceImpl">
+		<property name="commandService"><ref bean="commandService"/></property>
+    </bean>
+	
+    <bean id="indexerService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="indexerServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.search.IndexerService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- MessageService Service Proxy with inner MessageService Service Implementation -->
+	<bean id="messageServiceAbstract" abstract="true" class="org.openuss.messaging.MessageServiceImpl">
+		<property name="messageJobDao"><ref bean="messageJobDao"/></property>
+		<property name="commandService"><ref bean="commandService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="messageService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="messageServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.messaging.MessageService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- SystemService Service Proxy with inner SystemService Service Implementation -->
+	<bean id="systemServiceAbstract" abstract="true" class="org.openuss.system.SystemServiceImpl">
+		<property name="systemPropertyDao"><ref bean="systemPropertyDao"/></property>
+    </bean>
+	
+    <bean id="systemService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="systemServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.system.SystemService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- RegistrationService Service Proxy with inner RegistrationService Service Implementation -->
+	<bean id="registrationServiceAbstract" abstract="true" class="org.openuss.registration.RegistrationServiceImpl">
+		<property name="userActivationCodeDao"><ref bean="userActivationCodeDao"/></property>
+		<property name="instituteActivationCodeDao"><ref bean="instituteActivationCodeDao"/></property>
+		<property name="userDeleteCodeDao"><ref bean="userDeleteCodeDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="commandService"><ref bean="commandService"/></property>
+    </bean>
+	
+    <bean id="registrationService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="registrationServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.registration.RegistrationService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- DiscussionService Service Proxy with inner DiscussionService Service Implementation -->
+	<bean id="discussionServiceAbstract" abstract="true" class="org.openuss.discussion.DiscussionServiceImpl">
+		<property name="forumWatchDao"><ref bean="forumWatchDao"/></property>
+		<property name="discussionWatchDao"><ref bean="discussionWatchDao"/></property>
+		<property name="topicDao"><ref bean="topicDao"/></property>
+		<property name="postDao"><ref bean="postDao"/></property>
+		<property name="forumDao"><ref bean="forumDao"/></property>
+		<property name="trackingService"><ref bean="trackingService"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="systemService"><ref bean="systemService"/></property>
+		<property name="messageService"><ref bean="messageService"/></property>
+    </bean>
+	
+    <bean id="discussionService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="discussionServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.discussion.DiscussionService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- CourseNewsletterService Service Proxy with inner CourseNewsletterService Service Implementation -->
+	<bean id="courseNewsletterServiceAbstract" abstract="true" class="org.openuss.course.newsletter.CourseNewsletterServiceImpl">
+		<property name="newsletterService"><ref bean="newsletterService"/></property>
+    </bean>
+	
+    <bean id="courseNewsletterService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="courseNewsletterServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.course.newsletter.CourseNewsletterService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- NewsletterService Service Proxy with inner NewsletterService Service Implementation -->
+	<bean id="newsletterServiceAbstract" abstract="true" class="org.openuss.newsletter.NewsletterServiceImpl">
+		<property name="newsletterDao"><ref bean="newsletterDao"/></property>
+		<property name="subscriberDao"><ref bean="subscriberDao"/></property>
+		<property name="mailDao"><ref bean="mailDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="commandService"><ref bean="commandService"/></property>
+		<property name="messageService"><ref bean="messageService"/></property>
+    </bean>
+	
+    <bean id="newsletterService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="newsletterServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.newsletter.NewsletterService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- DesktopService2 Service Proxy with inner DesktopService2 Service Implementation -->
+	<bean id="desktopService2Abstract" abstract="true" class="org.openuss.desktop.DesktopService2Impl">
+		<property name="instituteDao"><ref bean="instituteDao"/></property>
+		<property name="courseTypeDao"><ref bean="courseTypeDao"/></property>
+		<property name="universityDao"><ref bean="universityDao"/></property>
+		<property name="courseDao"><ref bean="courseDao"/></property>
+		<property name="desktopDao"><ref bean="desktopDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="departmentDao"><ref bean="departmentDao"/></property>
+		<property name="discussionService"><ref bean="discussionService"/></property>
+		<property name="courseNewsletterService"><ref bean="courseNewsletterService"/></property>
+		<lookup-method name="getCourseService" bean="courseService"/>
+    </bean>
+	
+    <bean id="desktopService2" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="desktopService2Abstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.desktop.DesktopService2</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- WikiService Service Proxy with inner WikiService Service Implementation -->
+	<bean id="wikiServiceAbstract" abstract="true" class="org.openuss.wiki.WikiServiceImpl">
+		<property name="wikiSiteVersionDao"><ref bean="wikiSiteVersionDao"/></property>
+		<property name="wikiSiteDao"><ref bean="wikiSiteDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="courseService"><ref bean="courseService"/></property>
+		<property name="instituteService"><ref bean="instituteService"/></property>
+    </bean>
+	
+    <bean id="wikiService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="wikiServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.wiki.WikiService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- OnlineStatisticService Service Proxy with inner OnlineStatisticService Service Implementation -->
+	<bean id="onlineStatisticServiceAbstract" abstract="true" class="org.openuss.statistics.OnlineStatisticServiceImpl">
+		<property name="onlineSessionDao"><ref bean="onlineSessionDao"/></property>
+		<property name="systemStatisticDao"><ref bean="systemStatisticDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="onlineStatisticService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="onlineStatisticServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.statistics.OnlineStatisticService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- ChatService Service Proxy with inner ChatService Service Implementation -->
+	<bean id="chatServiceAbstract" abstract="true" class="org.openuss.chat.ChatServiceImpl">
+		<property name="chatRoomDao"><ref bean="chatRoomDao"/></property>
+		<property name="chatMessageDao"><ref bean="chatMessageDao"/></property>
+		<property name="chatUserDao"><ref bean="chatUserDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+    </bean>
+	
+    <bean id="chatService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="chatServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.chat.ChatService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+	
+    <!-- WorkspaceService Service Proxy with inner WorkspaceService Service Implementation -->
+	<bean id="workspaceServiceAbstract" abstract="true" class="org.openuss.collaboration.WorkspaceServiceImpl">
+		<property name="workspaceDao"><ref bean="workspaceDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="courseService"><ref bean="courseService"/></property>
+    </bean>
+	
+    <bean id="workspaceService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="workspaceServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.collaboration.WorkspaceService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+	
+    <!-- PaperSubmissionService Service Proxy with inner PaperSubmissionService Service Implementation -->
+	<bean id="paperSubmissionServiceAbstract" abstract="true" class="org.openuss.paperSubmission.PaperSubmissionServiceImpl">
+		<property name="examDao"><ref bean="examDao"/></property>
+		<property name="paperSubmissionDao"><ref bean="paperSubmissionDao"/></property>
+		<property name="userDao"><ref bean="userDao"/></property>
+		<property name="securityService"><ref bean="securityService"/></property>
+		<property name="documentService"><ref bean="documentService"/></property>
+		<property name="courseService"><ref bean="courseService"/></property>
+    </bean>
+	
+    <bean id="paperSubmissionService" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+			<bean parent="paperSubmissionServiceAbstract"/>
+        </property>
+        <property name="proxyInterfaces">
+            <value>org.openuss.paperSubmission.PaperSubmissionService</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceSecurityInterceptor</value>
+                <value>serviceTransactionInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ========================= End of SERVICE DEFINITIONS ========================= -->
+
+    <!-- ================= Start of ACEGI SERVICE SECURITY DEFINITIONS ================ -->
+
+    <bean id="serviceSecurityInterceptor" class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+        <property name="accessDecisionManager"><ref bean="serviceAccessDecisionManager"/></property>
+        <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+        <property name="objectDefinitionSource">
+            <value>
+                org.openuss.repository.RepositoryService.saveContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.loadContent=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
+                org.openuss.repository.RepositoryService.removeContent=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.setRepositoryLocation=ROLE_USER, ROLE_ADMIN
+                org.openuss.repository.RepositoryService.getRepositoryLocation=ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS
+                org.openuss.lecture.UniversityService.createUniversity=ROLE_ADMIN
+                org.openuss.lecture.UniversityService.removeCompleteUniversityTree=ROLE_ADMIN
+                org.openuss.lecture.DepartmentService.removeCompleteDepartmentTree=ROLE_ADMIN
+                org.openuss.lecture.InstituteService.removeCompleteInstituteTree=ROLE_ADMIN
+            </value>
+        </property>
+    </bean>
+
+    <bean id="serviceAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+        <property name="allowIfAllAbstainDecisions">
+            <value>false</value>
+        </property>
+        <property name="decisionVoters">
+            <list>
+                <ref local="serviceDecisionVoter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="serviceDecisionVoter" class="org.acegisecurity.vote.RoleVoter">
+        <property name="rolePrefix"><value>ROLE_</value></property>
+    </bean>
+
+    <!-- ================== End of ACEGI SERVICE SECURITY DEFINITIONS ================= -->
+    
+	<!--  Service ConcurrentUpdate Interceptor -->
+	<bean id="concurrentUpdateInterceptor" class="org.openuss.framework.transaction.ConcurrentUpdateInterceptor">
+		<property name="maxTries" value="3"/>
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="concurrentAutoProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+<!--
+				<value>securityService</value>
+				<value>documentService</value>
+				<value>brainContestService</value>
+				<value>chatService</value>
+				<value>courseService</value>
+				<value>departmentService</value>
+				<value>courseNewsletterService</value>
+  -->
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>concurrentUpdateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+    
+
+</beans>

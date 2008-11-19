@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+	<h:form id="search">
+		<o:block label="#{msg.search}">
+			<p class="content_font_normal">
+				<script>
+					function enterPressed(evt) {
+					    var keycode;
+					    if (evt);
+					    else if (window.event) evt = window.event;
+					    else if (event) evt = event;
+					    else return true;
+					    if (evt.charCode)keycode = evt.charCode;
+					    else if (evt.keyCode) keycode = evt.keyCode;
+					    else if (evt.which)keycode = evt.which;
+					    else keycode = 0;
+					 	if (keycode==13) {
+					 		return oamSubmitForm('_id6:search','searchlink');
+					 	}
+					 	return true
+					 }
+				</script>
+				<t:inputText id="searchText" value="#{search_results.textToSearch}" styleClass="field_search"
+				 onkeypress="return enterPressed(event);" />
+				<t:commandLink 
+					id="searchlink"
+					styleClass="button_search" 
+					forceId="true"
+					action="#{views$public$search$search.search}">
+			 		<img class="search" src="#{theme.imagesPath}/search.jpg" title="search" alt="go"/>
+				</t:commandLink>
+				<br/>
+		  		<ul class="int">
+		  			<li>
+						<h:commandLink action="#{views$public$search$extendedsearch.initSearchForm}" value="${msg.extended_search_link}" class="search_ext"/>
+			  		</li>
+			  	</ul>
+			</p>
+		</o:block>
+	</h:form>
+</ui:composition>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.newsletter.NewsletterImpl" table="NEWSLETTER_NEWSLETTER" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(250)"/>
+        </property>
+        <property name="domainIdentifier" type="java.lang.Long">
+            <column name="DOMAIN_IDENTIFIER" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <set name="subscribers" order-by="NEWSLETTER_ID" lazy="extra" fetch="select" inverse="false">
+            <cache usage="read-write" />
+            <key foreign-key="NEWSLETTER_SUBSCRIBER_NEWSLETC">
+                <column name="NEWSLETTER_ID" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.newsletter.SubscriberImpl"/>
+        </set>
+        <set name="mailings" order-by="NEWSLETTER_FK" lazy="true" fetch="select" inverse="true">
+            <cache usage="read-write" />
+            <key foreign-key="NEWSLETTER_MAIL_NEWSLETTER_FKC">
+                <column name="NEWSLETTER_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.newsletter.MailImpl"/>
+        </set>
+    </class>
+</hibernate-mapping>

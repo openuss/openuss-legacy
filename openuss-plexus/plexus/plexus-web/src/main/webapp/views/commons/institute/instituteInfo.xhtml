@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+      
+    <div class="institute_info">
+    	<h:form id="institute_link">
+    		<h:commandLink action="/views/public/institute/institute.faces" >
+    			<f:param name="instituteInfo" value="#{instituteInfo.id}"/>
+			 	<h:outputText value="#{instituteInfo.shortName}" styleClass="header_font_normal"/>
+				<h:outputText value="#{instituteInfo.address}" styleClass="content_font_normal"/>
+				<h:outputText value="#{instituteInfo.postcode} #{instituteInfo.city}" styleClass="content_font_normal"/>
+				<h:outputFormat value="#{msg.institute_information_telephone}" rendered="#{!empty instituteInfo.telephone}" styleClass="content_font_normal">
+					<f:param value="#{instituteInfo.telephone}" styleClass="content_font_normal"/>
+				</h:outputFormat>
+				<h:outputFormat value="#{msg.institute_information_telefax}" rendered="#{!empty instituteInfo.telefax}" styleClass="content_font_normal">
+					<f:param value="#{instituteInfo.telefax}" />
+				</h:outputFormat>
+    		</h:commandLink>
+    	</h:form>
+	</div>
+
+</ui:composition>

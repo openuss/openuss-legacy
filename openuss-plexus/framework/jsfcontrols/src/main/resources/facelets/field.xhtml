@@ -1,0 +1,173 @@
+<!-- ##############################################################################################################	-->
+<!-- This commponent is used to display text fields for properties of type Char, VarChar etc.					-->
+<!-- 																												-->
+<!-- @see http://java.sun.com/jsf/html for details																	-->
+<!-- ############################################################################################################## -->
+<!-- Author:	isarsu @see: http://sourceforge.net/users/isarsu/ 													-->
+<!-- Created:	2006-06-21																							-->
+<!-- Company:	E-Learning Competence Center 																		-->
+<!-- 			University of Muenster																				-->
+<!-- ############################################################################################################## -->
+<!-- This composition allows you to display an input field for String components.									-->
+<!-- 														 	 													-->
+<!-- It has the following parameters:  																				-->
+<!-- ______________________________________________________________________________________________________________ -->
+<!-- PROPERTY			TYPE		DEFAULT VALUE			REQUIRED	DESCRIPTION	 								-->
+<!-- ______________________________________________________________________________________________________________ -->
+<!-- property 			String		None						Yes		The name of the property to be displayed. 	-->
+<!-- label				String		${property} 				No		The label to be displayed for this input 	-->
+<!-- 																	field. If not specified the given field 	-->
+<!-- 																	name will be used. Use this property to set	-->
+<!-- 																	a language specific field name.				-->
+<!-- entity				String		None						No		The entity which holds this property.		-->
+<!-- 																	If not set the input field will not be bind -->
+<!-- 																	the a property.								-->
+<!-- required			boolean		false						No		If set to true the user needs to provide an	-->
+<!-- 																	input for this field.						-->
+<!-- disabled			boolean		false						No		If set to true the field will be disabled	-->
+<!-- 																	and the user can not fill in any data.		-->
+<!-- type				String		None						No		Depending on the property a specific field 	-->
+<!-- 																	will be displayed.							-->
+<!-- 																	Possible fields are:						-->
+<!-- 																	- text: inputField of type text				-->
+<!-- 																	- memo: textarea field						-->
+<!-- 																	- date: tomahawk component of type 			-->
+<!-- 																			inputDate							-->
+<!-- 																	- password: inputField of type secret		-->
+<!-- 																	If nothing is specified, it will 			-->
+<!-- 																	automatically detect the type of the field  -->
+<!-- 																	and will display the corresponding 			-->
+<!-- 																	inputType									-->
+<!-- displayDateTime	String		date						No		Displays the published date of the			-->
+<!-- 																	news item depending on the type. 			-->
+<!-- 																	Allowable types are:						-->
+<!-- 																	"date":			displays date only			-->
+<!-- 																					e.g.  21 May 2006			-->
+<!-- 																	"time":			displays time only			-->
+<!-- 																					e.g. 12:30:00 				-->
+<!-- 																	"both":			displays the "date" than 	-->
+<!-- 																					the "time" component 		-->
+<!-- 																					without seconds.			-->
+<!-- 																	"full": 		like "both" with seconds	-->
+<!-- 																	"short_time":	displays the "time" without	-->
+<!-- 																					seconds.					-->
+<!-- showPopup			boolean		true						No		If sets to "true" a Calender will be 		-->
+<!-- 																	displayed in a Popup windows. Possible 		-->
+<!-- 																	values are:									-->
+<!-- 																	"true": 	the calendar will be displayed	-->
+<!-- 																	"false": 	no calendar popup will be 		-->
+<!-- 																				displayed.		 				-->
+<!-- AM_PM_24h			boolean 	false						No		If true, use 12hr times with AM/PM selector	-->
+<!-- 																	if false, use 24hr time.					-->
+<!-- ______________________________________________________________________________________________________________ -->
+<!-- ############################################################################################################## -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:oc="http://www.openuss.org/jsf-core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition>
+	<f:loadBundle basename="lang/jsfControls" var="lang_jsfControls" />
+	<c:if test="${empty required}">
+		<c:set var="required" value="false" />
+	</c:if>
+	<c:if test="${empty styleClass}">
+		<c:set var="styleClass" value="field" />
+	</c:if>
+	<c:if test="${empty label}">
+		<c:set var="label" value="#{oc:getFieldLabel(fieldName,namespace)}" />
+	</c:if>
+	<c:if test="${empty disabled}">
+		<c:set var="disabled" value="false" />
+	</c:if>
+	<c:if test="${!empty entity}">
+		<oc:setValueTypeBinding var="vb" valueBinding="#{entity[property]}" />
+		<c:set var="value" value="#{entity[property]}" />
+	</c:if>
+	<c:if test="${empty entity}">
+		<c:set var="value" value="" />
+	</c:if>
+	<h:outputLabel id="${property}Label" value="${label}" for="${property}"
+		styleClass="${styleClass}_label" />
+	<c:choose>
+		<c:when test="${type == 'password'}">
+			<h:inputSecret id="${property}" value="${value}"
+				required="${required}" styleClass="${styleClass}"
+				disabled="${disabled}" redisplay="true" size="${size}"
+				title="${title}">
+				<ui:insert />
+			</h:inputSecret>
+		</c:when>
+		<c:when test="${type == 'date'}">
+			<c:if test="${empty displayDateTime}">
+				<c:set var="displayDateTime" value="date" />
+			</c:if>
+			<c:if test="${empty popupCalendar}">
+				<c:set var="popupCalendar" value="true" />
+			</c:if>
+			<c:if test="${empty AM_PM_24h}">
+				<c:set var="AM_PM_24h" value="false" />
+			</c:if>
+			<c:if test="${value == ''}">
+				<t:inputDate id="${property}" type="${displayDateTime}"
+					popupCalendar="${popupCalendar}" ampm="${AM_PM_24h}"
+					required="${required}" styleClass="${styleClass}"
+					disabled="${disabled}">
+					<ui:insert />
+				</t:inputDate>
+			</c:if>
+			<c:if test="${!(value == '')}">
+				<t:inputDate id="${property}" value="${value}"
+					type="${displayDateTime}" popupCalendar="${popupCalendar}"
+					ampm="${AM_PM_24h}" required="${required}"
+					styleClass="${styleClass}" disabled="${disabled}">
+					<ui:insert />
+				</t:inputDate>
+			</c:if>
+		</c:when>
+		<c:when test="${type == 'memo'}">
+			<h:inputTextarea id="${property}" value="${value}"
+				required="${required}" styleClass="${styleClass}"
+				disabled="${disabled}" title="${title}">
+				<ui:insert />
+			</h:inputTextarea>
+		</c:when>
+		<c:when test="${type == 'auto'}">
+			<oc:isText id="vb">
+				<h:inputText id="${property}" value="${value}"
+					required="${required}" styleClass="${styleClass}" size="${size}"
+					title="${title}">
+					<ui:insert />
+				</h:inputText>
+			</oc:isText>
+
+			<oc:isBoolean id="vb">
+				<h:selectBooleanCheckbox id="${property}" value="${value}"
+					required="${required}" styleClass="${styleClass}" />
+			</oc:isBoolean>
+
+			<oc:isDate id="vb">
+				<t:inputDate id="${property}" value="${value}"
+					type="${displayDateTime}" popupCalendar="${popupCalendar}"
+					ampm="${AM_PM_24h}" required="${required}"
+					styleClass="${styleClass}" disabled="${disabled}">
+					<ui:insert />
+				</t:inputDate>
+			</oc:isDate>
+		</c:when>
+		<c:otherwise>
+			<h:inputText id="${property}" value="${value}" required="${required}"
+				styleClass="${styleClass}" disabled="${disabled}" size="${size}"
+				title="${title}">
+				<ui:insert />
+			</h:inputText>
+		</c:otherwise>
+	</c:choose>
+	<h:message id="${property}Error" for="${property}"
+		styleClass="${styleClass}_error" showDetail="true" showSummary="false" />
+</ui:composition>
+</html>

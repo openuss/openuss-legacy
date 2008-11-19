@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE facelet-taglib PUBLIC "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN" "facelet-taglib_1_0.dtd">
+<facelet-taglib>
+	<namespace>http://www.openuss.org/jsfcontrols</namespace>
+	<tag>
+        <tag-name>defaultAction</tag-name>
+        <component>
+            <component-type>org.openuss.framework.jsfcontrols.components.defaultAction</component-type>
+        </component>
+    </tag>
+    <tag>
+    	<tag-name>flexlist</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.flexlist</component-type>
+    	</component>
+    </tag>
+
+	<tag>
+    	<tag-name>courseflexlist</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.courseflexlist</component-type>
+    	</component>
+    </tag>
+
+    
+    <tag>
+    	<tag-name>flexlist_tabs</tag-name>
+    	<component>
+    		<component-type>org.openuss.framework.jsfcontrols.components.flexlist_tabs</component-type>
+    	</component>
+    </tag>
+    
+	<tag>
+        <tag-name>param</tag-name>
+        <component>
+            <component-type>org.openuss.framework.jsfcontrols.components.param</component-type>
+        </component>
+    </tag>
+	<tag>
+        <tag-name>idProxy</tag-name>
+        <component>
+            <component-type>org.openuss.framework.jsfcontrols.components.idProxy</component-type>
+        </component>
+    </tag>
+	
+	<tag>
+		<tag-name>link</tag-name>
+		<source>../facelets/link.xhtml</source>
+	</tag>		
+	<tag>
+		<tag-name>field</tag-name>
+		<source>../facelets/field.xhtml</source>
+	</tag>		
+	<tag>
+		<tag-name>input</tag-name>
+		<source>../facelets/input.xhtml</source>
+	</tag>		
+	<tag>
+		<tag-name>buttonOkCancel</tag-name>
+		<source>../facelets/buttonOkCancel.xhtml</source>
+	</tag>
+
+	<tag>
+		<tag-name>buttonSaveCancel</tag-name>
+		<source>../facelets/buttonSaveCancel.xhtml</source>
+	</tag>
+
+	<tag>
+		<tag-name>buttonUnknownCancel</tag-name>
+		<source>../facelets/buttonUnknownCancel.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>block</tag-name>
+		<source>../facelets/block.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>expandableBlock</tag-name>
+		<source>../facelets/expandableBlock.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>legend</tag-name>
+		<source>../facelets/legend.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>legendItem</tag-name>
+		<source>../facelets/legendItem.xhtml</source>
+	</tag>
+	
+	<tag>
+		<tag-name>breadCrumb</tag-name>
+		<source>../facelets/breadCrumb.xhtml</source>
+	</tag>
+
+    <tag>
+      <tag-name>selectManyPicklist</tag-name>
+      <component>
+         <component-type>org.openuss.components.HtmlSelectManyPicklist</component-type>
+         <renderer-type>org.openuss.framework.jsfcontrols.components.picklist.HtmlPicklistRenderer</renderer-type>
+      </component>
+   </tag>
+</facelet-taglib>

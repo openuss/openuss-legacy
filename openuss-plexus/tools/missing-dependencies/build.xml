@@ -1,0 +1,137 @@
+<project name="openuss :: tools :: install-mising-files" default="install-all" basedir=".">
+	<condition property="maven.executable" value="mvn.bat" else="mvn"><os family="windows" /></condition>
+	
+	<target name="install-all">
+		<antcall target="jaybird"/>
+		<antcall target="jaybird-2.1.1"/>
+		<antcall target="jta"/>
+		<antcall target="tomahawk"/>
+		<antcall target="tomahawk-javadoc"/>
+		<antcall target="el-api"/>
+		<antcall target="el-ri"/>
+		<antcall target="jsf-comp"/>
+		<antcall target="jenia4faces"/>
+	</target>
+	<target name="jaybird">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jaybird/jaybird-full-2.0.1.jar"/>
+			<arg value="-DgroupId=jaybird"/>
+			<arg value="-DartifactId=jaybird-full"/>
+			<arg value="-Dversion=2.0.1"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jaybird-2.1.1">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jaybird/jaybird-full-2.1.1.jar"/>
+			<arg value="-DgroupId=jaybird"/>
+			<arg value="-DartifactId=jaybird-full"/>
+			<arg value="-Dversion=2.1.1"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jta">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.transaction/jta-1.0.1B.jar"/>
+			<arg value="-DgroupId=javax.transaction"/>
+			<arg value="-DartifactId=jta"/>
+			<arg value="-Dversion=1.0.1B"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="tomahawk">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./myfaces/tomahawk-1.1.2.jar"/>
+			<arg value="-DgroupId=org.apache.myfaces.tomahawk"/>
+			<arg value="-DartifactId=tomahawk"/>
+			<arg value="-Dversion=1.1.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="tomahawk-javadoc">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./myfaces/tomahawk-1.1.2.jar"/>
+			<arg value="-DgroupId=org.apache.myfaces.tomahawk"/>
+			<arg value="-DartifactId=tomahawk"/>
+			<arg value="-Dversion=1.1.2"/>
+			<arg value="-Dpackaging=javadoc"/>
+		</exec>
+	</target>
+	<target name="javax.activation">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.activation/activation-1.0.2.jar"/>
+			<arg value="-DgroupId=javax.activation"/>
+			<arg value="-DartifactId=activation"/>
+			<arg value="-Dversion=1.0.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="javax.mail">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.mail/mail-1.3.2.jar"/>
+			<arg value="-DgroupId=javax.mail"/>
+			<arg value="-DartifactId=mail"/>
+			<arg value="-Dversion=1.3.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="el-api">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.el/el-api.jar"/>
+			<arg value="-DgroupId=javax.el"/>
+			<arg value="-DartifactId=el-api"/>
+			<arg value="-Dversion=1.0"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="el-ri">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./javax.el/el-ri.jar"/>
+			<arg value="-DgroupId=com.sun.el"/>
+			<arg value="-DartifactId=el-ri"/>
+			<arg value="-Dversion=1.0"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jsf-comp">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jsf-comp/acegi-jsf-1.1.2.jar"/>
+			<arg value="-DgroupId=jsf-comp"/>
+			<arg value="-DartifactId=acegi-jsf"/>
+			<arg value="-Dversion=1.1.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jenia4faces">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jenia4faces/jenia4faces_1.2.jar"/>
+			<arg value="-DgroupId=org.jenia.faces"/>
+			<arg value="-DartifactId=jenia4faces"/>
+			<arg value="-Dversion=1.2"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	<target name="jregex">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jregex/jregex1.2_01.jar"/>
+			<arg value="-DgroupId=jregex"/>
+			<arg value="-DartifactId=jregex"/>
+			<arg value="-Dversion=1.2_01"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
+	
+	
+</project>

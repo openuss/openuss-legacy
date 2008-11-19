@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+	<o:input entity="instituteRegistration.instituteInfo" property="name" maxlength="250" required="true"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="shortcut" maxlength="30" required="true">
+		<f:validator validatorId="filenameValidator"/>
+	</o:input>
+	
+	<h:outputLabel value="#{msg.instituteinfo_description}" for="descriptionEditor" styleClass="field_label"/>
+	<h:inputTextarea styleClass="pulldown" value="#{instituteRegistration.instituteInfo.description}" id="descriptionTextField" />
+	<o:input entity="instituteRegistration.instituteInfo" property="ownerName" maxlength="100" required="true"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="email" maxlength="100" required="true">
+		<t:validateEmail/>
+	</o:input>
+	<o:input entity="instituteRegistration.instituteInfo" property="address" maxlength="100"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="postcode" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="city" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="country" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="telephone" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="telefax" maxlength="50"/>
+	<o:input entity="instituteRegistration.instituteInfo" property="website" maxlength="200"/>
+	
+	<h:outputLabel value="#{msg.institute_locale}" for="languageSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="languageSelect" size="1" styleClass="pulldown" value="#{instituteRegistration.instituteInfo.locale}">
+	    <f:selectItems value="#{visit.supportedLocaleItems}"/>
+	</h:selectOneListbox>
+	
+	<!-- 
+	<h:outputLabel value="#{msg.institute_theme}" for="themeSelect" styleClass="field_label"/>
+	<h:selectOneListbox id="themeSelect" size="1" value="#{instituteRegistration.instituteInfo.theme}" styleClass="pulldown" >
+	    <f:selectItems value="#{applicationScope.themeManager.selectableThemes}"/>
+	</h:selectOneListbox>
+	 -->
+	
+</ui:composition>

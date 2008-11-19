@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    					
+	<bean id="mailSender" class="org.openuss.messaging.MailSenderFactoryBean" scope="prototype"/>
+
+	<bean id="messagePreparator" class="org.openuss.messaging.MessagePreparator" abstract="true">
+		<property name="systemService" ref="systemService"/>
+	</bean>
+
+	<bean id="textMessagePreparator"
+		class="org.openuss.messaging.TextMessagePreparator"
+		scope="prototype" parent="messagePreparator">
+	</bean>
+
+	<bean id="templateMessagePreparator"
+		class="org.openuss.messaging.TemplateMessagePreparator"
+		scope="prototype" parent="messagePreparator">
+		<property name="velocityEngine">
+			<ref local="velocityEngine"/> 
+		</property>
+	</bean>
+	
+	<bean id="smsMessagePreparator"
+		class="org.openuss.messaging.SmsMessagePreparator"
+		scope="prototype" parent="messagePreparator">
+	</bean>
+
+	<bean id="messageSendingCommmand" class="org.openuss.messaging.MessageSendingCommand" scope="prototype">
+		<property name="messageJobDao" ref="messageJobDao" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="commandService" ref="commandService"/>		
+	</bean>
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	                Configure Velocity for sending e-mail 
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">class</prop>
+				<prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader</prop>
+				<prop key="velocimacro.library"></prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

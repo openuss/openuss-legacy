@@ -1,0 +1,20 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS User Administration</font></h3>
+			A user has applied for <i>${coursename}</i>, please click on the following link to respond to his application:<br/>
+			<a href="${courseapplicantlink}">${courseapplicantlink}</a>
+		</p>
+		<p>
+			If the link above does not work, copy and paste the URL in a new browser window instead.
+		</p>
+		<p>
+			Thank you for using OpenUSS!
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>
+
+

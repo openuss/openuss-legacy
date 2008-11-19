@@ -1,0 +1,17 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Administración de usuarios</font></h3>
+			Estimado <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>,
+			su solicitud para unirse a este centro ${institutename} al departamento  
+			<i>${departmentname}</i> ha sido enviada con éxito a los administradores del departamento. Será informado cuando su
+			solicitud haya sido editada.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

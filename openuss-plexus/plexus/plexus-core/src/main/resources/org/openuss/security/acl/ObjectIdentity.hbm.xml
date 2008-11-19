@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.acl.ObjectIdentityImpl" table="SECURITY_OBJECT_IDENTITY" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="assigned">
+            </generator>
+        </id>
+        <many-to-one name="parent" class="org.openuss.security.acl.ObjectIdentityImpl" foreign-key="SECURITY_OBJECT_IDENTITY_PAREC" lazy="proxy" fetch="select">
+            <column name="PARENT_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+        <set name="child" order-by="PARENT_FK" lazy="true" fetch="select" inverse="true" cascade="all, delete-orphan">
+            <cache usage="read-write" />
+            <key foreign-key="SECURITY_OBJECT_IDENTITY_PAREC">
+                <column name="PARENT_FK" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.security.acl.ObjectIdentityImpl"/>
+        </set>
+        <set name="permissions" order-by="ACLOBJECTIDENTITY_ID" lazy="true" fetch="select" inverse="true" cascade="all, delete-orphan">
+            <cache usage="read-write" />
+            <key foreign-key="SECURITY_PERMISSION_ACLOBJECTC">
+                <column name="ACLOBJECTIDENTITY_ID" sql-type="BIGINT"/>
+            </key>
+            <one-to-many class="org.openuss.security.acl.PermissionImpl"/>
+        </set>
+    </class>
+</hibernate-mapping>

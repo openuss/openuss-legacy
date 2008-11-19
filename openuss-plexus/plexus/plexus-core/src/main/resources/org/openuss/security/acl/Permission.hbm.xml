@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.acl.PermissionImpl" table="SECURITY_PERMISSION" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <composite-id name="permissionPk" class="org.openuss.security.acl.PermissionPK">
+            <key-many-to-one name="aclObjectIdentity" class="org.openuss.security.acl.ObjectIdentityImpl" >
+                <column name="ACLOBJECTIDENTITY_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+            <key-many-to-one name="recipient" class="org.openuss.security.AuthorityImpl" >
+                <column name="RECIPIENT_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+        </composite-id>   
+        <property name="mask" type="java.lang.Integer">
+            <column name="MASK" not-null="true" unique="false" sql-type="INTEGER"/>
+        </property>
+    </class>
+</hibernate-mapping>

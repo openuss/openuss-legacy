@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.braincontest.AnswerImpl" table="BRAINCONTEST_ANSWER" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <composite-id name="answerPk" class="org.openuss.braincontest.AnswerPK">
+            <key-many-to-one name="solver" class="org.openuss.security.UserImpl" >
+                <column name="SOLVER_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+            <key-many-to-one name="contest" class="org.openuss.braincontest.BrainContestImpl" >
+                <column name="CONTEST_ID" sql-type="BIGINT"/>
+            </key-many-to-one>
+        </composite-id>   
+        <property name="answeredAt" type="java.util.Date">
+            <column name="ANSWERED_AT" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+    </class>
+</hibernate-mapping>

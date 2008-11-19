@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:include src="/views/commons/university/universityinfo.xhtml" />
+
+	<ui:include src="/views/commons/navigation/desktop.xhtml" />
+	
+	<s:authorize ifAllGranted="ROLE_USER">
+		<h:form id="universityNavigationForm">
+			<t:panelNavigation2 id="university_navigation" styleClass="navigation" layout="list" itemClass="nav_item" openItemClass="open_item" activeItemClass="active_item" separatorClass="item_separator">
+				<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+					<t:commandNavigation2 value="#{msg['university_navigation_header']}">
+								<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+									<t:commandNavigation2 action="university" activeOnViewIds="/views/public/university/university.xhtml">
+										<h:outputText value="#{msg['university_profile']}" ></h:outputText>
+									</t:commandNavigation2>
+								</s:acl>
+								<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+									<t:commandNavigation2 action="university_departments" activeOnViewIds="/views/secured/lecture/universitydepartments.xhtml">
+										<h:outputText value="#{msg['university_command_departments']}" ></h:outputText>
+									</t:commandNavigation2>
+								</s:acl>
+								<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+									<t:commandNavigation2 action="university_periods" activeOnViewIds="/views/secured/lecture/universityperiods.xhtml">
+										<h:outputText value="#{msg['university_command_periods']}" ></h:outputText>
+									</t:commandNavigation2>
+								</s:acl>
+								<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+									
+										<t:commandNavigation2 action="university_members" activeOnViewIds="/views/secured/lecture/auth/universitymembers.xhtml">
+											<h:outputText value="#{msg['university_command_authorisations']}" ></h:outputText>
+										</t:commandNavigation2>
+									
+								</s:acl>
+								<s:acl domainObject="#{universityInfo}" hasPermission="#{ACL.UNIVERSITY_ADMINISTRATION}">
+									<t:commandNavigation2 action="university_data" activeOnViewIds="/views/secured/lecture/universityoptions.xhtml">
+										<h:outputText value="#{msg['university_command_settings']}" ></h:outputText>
+									</t:commandNavigation2>
+								</s:acl>
+						</t:commandNavigation2>
+					</s:acl>
+			</t:panelNavigation2>	
+		</h:form>
+	</s:authorize>
+</ui:composition>

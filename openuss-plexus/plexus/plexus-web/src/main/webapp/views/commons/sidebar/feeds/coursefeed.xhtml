@@ -1,0 +1,56 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+	<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
+		<h:form>
+		    <div class="feed">
+				<o:expandableBlock id="rssFeeds" styleClass="option_box" label="#{msg.rss_sidebox_title}">
+					<ul class="int">
+						<li>
+							<o:link value="/rss/secured/course.xml"	title="#{msg['rss_course']}" >
+								<f:param name="course" value="#{courseInfo.id}"/>
+							   #{msg['rss_course']}
+							</o:link>
+								
+						</li>
+						<c:if test="#{courseInfo.discussion}">
+							<li>
+								<o:link value="/rss/secured/discussion.xml"	title="#{msg['rss_discussion']}" >
+								   <f:param name="course" value="#{courseInfo.id}"/>
+								   #{msg['rss_discussion']}
+								</o:link>
+							</li>
+						</c:if>
+						<c:if test="#{courseInfo.documents}">
+							<li>
+								<o:link value="/rss/secured/documents.xml" title="#{msg['rss_documents']}" >
+								   <f:param name="course" value="#{courseInfo.id}"/>
+								   #{msg['rss_documents']}
+								</o:link>
+									
+							</li>
+						</c:if>
+						<c:if test="#{courseInfo.newsletter}">							
+							<li>
+								<o:link value="/rss/secured/newsletter.xml" title="#{msg['rss_newsletter']}" >
+      							   <f:param name="course" value="#{courseInfo.id}"/>
+								   #{msg['rss_newsletter']}
+								</o:link>
+							</li>
+						</c:if>
+					</ul>
+				</o:expandableBlock>
+			</div>
+		</h:form>	
+	</s:acl>		
+</f:subview>

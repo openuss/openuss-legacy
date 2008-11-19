@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="ttp://www.openuss.org/plexus/jsf">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
+  		<ui:define name="title"><h:outputText value="#{msg.institute_maintitle} - #{instituteInfo.name}"/></ui:define>
+ 		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/institute.xhtml" />
+		</ui:define>
+  		<ui:define name="content">
+  			<t:saveState value="#{courseInfo}"/>
+  			<t:saveState value="#{courseMoveInfo}"/>
+  			
+	        <o:block rendered="#{!instituteInfo.enabled}" styleClass="status_box">	  								
+	  			<h:outputFormat value="#{msg.institute_not_activated}" styleClass="content_font_normal" />
+	  		</o:block>  
+  			
+  			<t:saveState id="course_moving" value="#{views$secured$lecture$institutecourses.moving}" />
+  			
+	  		<s:acl domainObject="#{instituteInfo}" hasPermission="#{ACL.MANAGE_COURSE_TYPES}" ifNot="error"/>
+	  		
+			<o:block label="#{msg.period_info_head}" styleClass="form_box">
+				<p class="content_font_normal">	  								
+					<h:outputFormat escape="false" value="#{msg.period_info}" styleClass="content_font_normal" />
+				</p>
+			</o:block>
+			 		
+  			<h:form id="periodsForm">
+				<o:block>
+					<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
+					<t:selectOneMenu id="periodSelection" forceId="true"
+						layout="pageDirection"  
+						value="#{periodInfo.id}" 
+						onchange="this.form.submit();"
+						valueChangeListener="#{views$secured$lecture$institutecourses.processPeriodSelectChanged}" 
+						immediate="true" 
+						styleClass="pulldown_inline">  
+						<f:selectItems value="#{views$secured$lecture$institutecourses.allPeriodsOfInstitute}"/>
+						<f:validator validatorId="coursePeriodSelectValidator"/>
+					</t:selectOneMenu>
+				</o:block>
+				<ui:include src="coursestable.xhtml"/>
+			</h:form>
+
+			<c:if test="#{!views$secured$lecture$institutecourses.moving}">			
+				<h:form id="courseForm">
+					<c:if test="#{empty views$secured$lecture$institutecourses.courseTypesOfInstitute}">
+						<o:block>
+							<p class="content_font_normal">
+								<h:commandLink action="institute_coursetypes">
+									<h:outputText value="#{msg.institute_no_coursetypes_defined_yet}"/>
+								</h:commandLink>
+							</p>
+						</o:block>
+					</c:if>
+				
+					<c:if test="#{!empty views$secured$lecture$institutecourses.courseTypesOfInstitute}">
+						<o:block>
+						    <h:outputLabel value="#{msg['period_header_add_course']}" for="courseTypeSelect" styleClass="field_label"/>
+						 	<t:selectOneListbox id="courseTypeSelect" forceId="true" size="1" styleClass="pulldown_inline" value="#{courseTypeInfo.id}">
+						    	<f:selectItems value="#{views$secured$lecture$institutecourses.courseTypesOfInstitute}"/>
+							</t:selectOneListbox>
+							<t:commandButton 
+							    id="addPeriod" forceId="true"
+								action="#{views$secured$lecture$institutecourses.addCourse}" 
+								value="#{msg.period_command_add_course}" 
+								title="#{msg.period_command_add_course_hint}"
+								styleClass="button_add"/>
+						</o:block>
+					</c:if>
+				</h:form>
+			</c:if>
+			<c:if test="#{views$secured$lecture$institutecourses.moving}">
+				<h:form id="moveForm">
+					<o:block label="#{msg.period_command_move_course_header}" styleClass="form_box">
+						<h:outputFormat value="#{msg.period_command_move_course_text}" styleClass="field_label">
+							<f:param value="#{courseMoveInfo.name}"/>
+						</h:outputFormat> <br/>
+						<h:outputText value="#{msg.institute_period_selection}" styleClass="header_font_normal"/>
+						<t:selectOneMenu id="targetPeriodSelection" forceId="true"
+							layout="pageDirection"  
+							value="#{courseMoveInfo.periodId}" 
+							styleClass="pulldown_inline">  
+								<f:selectItems value="#{views$secured$lecture$institutecourses.allPeriodsOfInstitute}"/>
+								<f:validator validatorId="coursePeriodSelectValidator"/>
+						</t:selectOneMenu>						
+					</o:block>
+					<o:block>	 
+						<t:commandButton id="moveCourse" forceId="true" action="#{views$secured$lecture$institutecourses.saveCourse}" value="#{msg.course_command_move}" styleClass="button_save" />
+						<t:commandButton id="cancelCourse" forceId="true" action="#{views$secured$lecture$institutecourses.cancelCourse}" value="#{msg.cancel}" immediate="true" styleClass="button_cancel"/>
+					</o:block>
+				</h:form>			
+			</c:if>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

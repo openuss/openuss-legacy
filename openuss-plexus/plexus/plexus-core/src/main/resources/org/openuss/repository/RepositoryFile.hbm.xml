@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.repository.RepositoryFileImpl" table="REPOSITORY_FILE" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="assigned">
+            </generator>
+        </id>
+        <property name="modified" type="java.util.Date">
+            <column name="MODIFIED" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="content" type="java.sql.Blob">
+            <column name="CONTENT" not-null="true" unique="false" sql-type="BLOB"/>
+        </property>
+        <property name="downloads" type="java.lang.Long">
+            <column name="DOWNLOADS" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+    </class>
+</hibernate-mapping>

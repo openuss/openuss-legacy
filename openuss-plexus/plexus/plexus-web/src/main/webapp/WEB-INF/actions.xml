@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean name="actionManager" class="org.openuss.framework.web.jsf.actions.PageActionManager">
+		<property name="actions">
+			<list>
+				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
+					<property name="viewId" value="/actions/public/user/activate.xhtml"/>
+					<property name="action" value="#{userActivate.activate}"/>
+				</bean>
+				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
+					<property name="viewId" value="/actions/public/user/delete.xhtml"/>
+					<property name="action" value="#{userDeleteAction.deleteUser}"/>
+				</bean>
+				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
+					<property name="viewId" value="/actions/public/user/password/change.xhtml"/>
+					<property name="action" value="#{passwordChangeAction.loginUserByCode}"/>
+				</bean>
+				<bean class="org.openuss.framework.web.jsf.actions.PageAction">
+					<property name="viewId" value="/actions/public/lecture/instituteactivation.xhtml"/>
+					<property name="action" value="#{instituteActivationAction.activateInstitute}"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

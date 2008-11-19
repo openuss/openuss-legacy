@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.security.ldap.UserDnPatternImpl" table="SECURITY_LDAP_USERDNPATTERN" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="true" sql-type="VARCHAR(250)"/>
+        </property>
+        <set name="ldapServers" table="SECURITY_LDAP_SERVER2DN" order-by="LDAP_SERVERS_FK" lazy="true" fetch="select" inverse="true">
+            <key foreign-key="SECURITY_LDAP_SERVER_USER_DN_C">
+                <column name="USER_DN_PATTERNS_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.ldap.LdapServerImpl" foreign-key="SECURITY_LDAP_USERDNPATTERN_LC">
+                <column name="LDAP_SERVERS_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

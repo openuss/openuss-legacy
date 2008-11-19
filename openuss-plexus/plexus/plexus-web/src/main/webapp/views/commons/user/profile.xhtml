@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:fck="http://www.fck-faces.org/fck-faces"
+	xmlns:ts="http://myfaces.apache.org/sandbox">
+
+	<div class="content_box">
+	     <div class="content_box">
+		    <div class="header_normal_left_bg"/>
+    		<div class="header_normal_right_bg"/>
+		    <div class="header_normal">
+		    	<p class="header_font_normal">
+					<h:outputFormat value="#{msg.user_profile_preview_heading}">
+						<f:param value="#{showuser.firstName}" />
+						<f:param value="#{showuser.lastName}" />
+						<f:param value="#{showuser.username}" />
+					</h:outputFormat>
+				</p>
+	       </div>
+	       <div class="content_normal">
+				<div class="userimage">
+					<c:if test="#{not empty showuser.imageId}">
+						<h:graphicImage styleClass="userphoto"
+							rendered="${not empty showuser.imageId}"
+							value="/files?fileid=#{showuser.imageId}"
+							alt="#{showuser.firstName} #{showuser.lastName}"
+							title="#{showuser.firstName} #{showuser.lastName}"/> 
+					</c:if>
+					<c:if test="#{empty showuser.imageId}">
+						<h:graphicImage 
+							styleClass="userphoto" 
+							value="/images/icons/no_pic.gif" 
+							alt="#{msg.user_profile_no_image}" 
+							title="#{msg.user_profile_no_image}"/>
+					</c:if>
+				</div>
+				<div class="usercontact">
+					<ul>
+						<c:if test="#{not empty showuser.title}">
+							<li>#{showuser.title}</li>
+						</c:if>
+						<li>#{showuser.firstName} &#160; #{showuser.lastName}</li>
+						<c:if test="#{not empty showuser.profession}">
+							<li>#{showuser.profession}</li>
+						</c:if>
+						<c:if test="#{showuser.addressPublic}">
+							<li>#{showuser.address}</li>
+							<li>#{showuser.postcode} #{showuser.city}</li>
+							<li>#{showuser.country}</li>
+						</c:if>
+						<c:if test="#{showuser.telephonePublic}">
+							<li>#{showuser.telephone}</li>
+						</c:if>
+						<c:if test="#{showuser.emailPublic}">
+							<li><h:outputLink value="mailto://#{showuser.email}" styleClass="email">#{showuser.email}</h:outputLink></li>
+						</c:if>
+					</ul>
+				</div>
+				<div class="content_font_normal">
+					<h:outputText value="#{showuser.portrait}" escape="false"/>
+				</div>
+		   </div>
+	       <div class="footer_normal_left_bg"/>
+	       <div class="footer_normal_right_bg"/>
+	       <div class="footer_normal">
+	       	  <c:if test="${!empty footer}">
+	       	  	<p class="${footerClass}">${footer}</p>
+	       	  </c:if>
+	       </div>
+	     </div>
+    </div>
+</ui:composition>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Reference Implementations</title>
+    </properties>
+
+    <body>
+		<a name="map"/>
+        <section name="Reference Installations">
+		<p>
+			We will list all of the instances or installed OpenUSS on the internet. 
+			Please send us an email, if you know another installed system of 
+			OpenUSS. We will put your OpenUSS instance in this list. <br/>
+			<i>(Great job Torsten for the graphic!!! - Now we are sure, 
+			where we all want to study ;-))</i>
+		</p>
+		<div align="center">
+			<img src="images/maps/germany.gif" width="464" height="591" border="0" usemap="#germany"/>
+            <map name="germany">
+              <area shape="circle" coords="107,223,10" alt="Institute for Political Science" href="http://e-education.uni-muenster.de:9000"/>
+              <area shape="circle" coords="57,294,11" href="http://www.idf.fh-koeln.de:9000" alt="Institute for Distance Learning and Further Education"/>
+              <area shape="circle" coords="58,261,10" href="http://lpf.tud.uni-essen.de:9000/Welcome.po" alt="Technologie und Didaktik der Technik"/>
+              <area shape="circle" coords="129,377,12" href="http://jsb.st.informatik.tu-darmstadt.de:9000" alt="Fachbereich Softwarekomponententechnologien"/>
+              <area shape="circle" coords="291,271,11" href="http://uss.imn.htwk-leipzig.de:9000" alt="HTWK - Leipzig"/>
+              <area shape="circle" coords="84,223,12" href="#openuss" alt="Institut fuer Wirtschaftsinformatik und Controlling"/>
+            </map>
+		</div>
+        </section>
+        <section name="List of all Reference Installations">
+        	<h4>
+        		Bielefield University - Institute of Sociology, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.uni-bielefeld.de/soz/we/politik/index.htm">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>HP 11 (Unix)</li>
+       			<li>Sun JDK 1.3.0</li>
+       			<li>2 PA-RISC 240 MHz Processors</li>
+       			<li>5 GB RAM</li>
+       			<li>59GB Harddisk</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/pgsql_hosted.gif" alt="Database: Postgres 7.6.2" title="Database: Postgres 7.6.2" width="125" height="50"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3"  title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+        		Fachhochschule Osnabrueck - University of Applied Sciences, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.wiso.fh-osnabrueck.de/">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>Windows</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3"  title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+				Fachhochschule Hagenberg, Austria
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://atlanta.fh-hagenberg.at/cbl/">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>Linux/Windows</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/hssql.gif" alt="Database: HypersonicSQL for test purpose" title="Database: HypersonicSQL for test purpose"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3" title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+				STIMIK Perbanas - Jakarta, Indonesia (LAN installation)
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.stibanas.ac.id/">main page</a> of the university.
+        	</p>
+        	<p><b>Information about the system:</b></p>
+       		<ul>
+       			<li>Linux</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/hssql.gif" alt="Database: HypersonicSQL for test purpose" title="Database: HypersonicSQL for test purpose"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3" title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+				National University of Pedagogy - Mexico City, Mexico
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.upn.mx/">main page</a> of the university.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>Linux Red Hat 7.3</li>
+       			<li>Sun JDK 1.3</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/pgsql_hosted.gif" alt="Database: Postgres 7.6.2" title="Database: Postgres 7.6.2" width="125" height="50"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3" title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+        		Institute for Political Science (K@iros) - University of Muenster, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://e-education.uni-muenster.de/">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>Windows 2000 Server</li>
+       			<li>Dual Pentium III 1000 Mhz</li>
+       			<li>512 MB RAM</li>
+       			<li>Sun JDK 1.3(.2)</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3" title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+        		Institute for Distance Learning and Further Education - Cologne, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.f10.fh-koeln.de/campus/institute/idf/index.html">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>SuSe Linux 7.3</li>
+       			<li>Dual Pentium III 1000 Mhz</li>
+       			<li>512 MB RAM</li>
+       			<li>30 GB Harddisk</li>
+       			<li>Sun JDK 1.3(.2)</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.4" title="EJB Server: JOnAs 2.4" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+        		Softwarekomponententechnologien - TU Darmstadt, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.st.informatik.tu-darmstadt.de/">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>SuSe Linux 7.1</li>
+       			<li>AMD Athlon 1000 Mhz</li>
+       			<li>512 MB RAM</li>
+       			<li>30 GB Harddisk</li>
+       			<li>Sun JDK 1.3</li>
+       		</ul>
+       		<p>
+      			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.3" title="EJB Server: JOnAs 2.3" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<h4>
+        		Hochschule fuer Technik, Wirtschaft und Kultur - Leipzig, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.htwk-leipzig.de/">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>SuSe Linux 7.3</li>
+       			<li>Athlon 1200 Mhz</li>
+       			<li>512 MB RAM</li>
+       			<li>40 GB Harddisk</li>
+       			<li>Sun JDK 1.3(.1)</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.4" title="EJB Server: JOnAs 2.4" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1" title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        	<a name="openuss"/>
+        	<h4>
+        		Lehrstuhl fuer Wirtschaftsinformatik und Controlling - University of Muenster, Germany
+        	</h4>
+        	<p>
+        		Please refer to the <a href="http://www.wi.uni-muenster.de/aw">main page</a> of the institute.
+        		<br/><b>Information about the system:</b>
+        	</p>
+       		<ul>
+       			<li>Two Windows 2000 Server (Servlet- and EJB-/Database-Server)</li>
+       			<li>Double Pentium III</li>
+       			<li>1 GB RAM</li>
+       			<li>30 GB Harddisk</li>
+       			<li>Sun JDK 1.3(.1)</li>
+       		</ul>
+       		<p>
+       			<img src="images/logos/ib6_header.gif" alt="Database: InterBase 6.0.1" title="Database: InterBase 6.0.1" width="217" height="61"/>
+       			<img src="images/logos/jonas.jpg" alt="EJB Server: JOnAs 2.4" title="EJB Server: JOnAs 2.4" width="100" height="81"/>
+       			<img src="images/logos/otter.gif" alt="Presentation: Enhydra 3.1"  title="Presentation: Enhydra 3.1" width="150" height="75"/>
+       		</p>
+        </section>
+    </body>
+</document>

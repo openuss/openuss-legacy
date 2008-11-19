@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->   
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content">
+			<h:form id="reg1Form">			
+				  <c:if test="#{not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}">
+					<o:block label="#{msg.ldap_ldapserver_registration_step1_headline}" styleClass="form_box">
+						<o:input entity="ldapServerInfo" property="providerUrl" maxlength="250" required="true">
+							<f:validator validatorId="providerUrlValidator" />
+						</o:input>
+						<o:input entity="ldapServerInfo" property="port" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="rootDn" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="authenticationType" maxlength="250" required="true"/>						
+						<o:input entity="ldapServerInfo" property="managerDn" maxlength="250" required="false"/>						
+						<o:input entity="ldapServerInfo" property="managerPassword" required="false" type="password" redisplay="false"/>
+						<h:outputLabel value="#{msg.ldap_server_managerpassword_confirm}" for="confirmPassword" styleClass="field_label" />
+						<h:inputSecret id="confirmPassword" styleClass="field" required="false" redisplay="false">
+							<t:validateEqual for="managerPassword" />
+						</h:inputSecret>
+						<h:message for="confirmPassword" styleClass="field_error"/>
+						<o:input entity="ldapServerInfo" property="description" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="ldapServerType" maxlength="250" required="true"/>	
+						<h:outputLabel value="#{msg.ldap_server_authenticationdomain_select}" for="ldapserver_authenticationdomain_listbox" styleClass="field_label" />
+						<h:selectOneListbox id="ldapserver_authenticationdomain_listbox" value="#{ldapServerInfo.authenticationDomainId}" required="true"
+							valueChangeListener="#{ldapServerRegistration.processValueChangeAuthenticationDomain}" styleClass="pulldown">
+							<f:selectItems value="#{ldapServerRegistration.allAuthenticationDomains}"/>
+						</h:selectOneListbox>
+						<h:outputLabel value="#{msg.ldap_server_userdnpattern_select}" for="ldapserver_userdnpattern_listbox" styleClass="field_label" />
+						<h:selectManyListbox id="ldapserver_userdnpattern_listbox" size="5" value="#{ldapServerInfo.userDnPatternIds}" required="true"
+							valueChangeListener="#{ldapServerRegistration.processValueChangeUserDnPattern}" styleClass="pulldown">
+  							<f:selectItems value="#{ldapServerRegistration.allUserDnPatterns}"/>
+  							<f:convertNumber />
+						</h:selectManyListbox>
+						<h:message id="ldapserver_userdnpattern_listbox_error" for="ldapserver_userdnpattern_listbox" styleClass="field_error" showDetail="true" showSummary="false" />
+						<h:outputLabel for="ldapServerType" value="#{msg.ldap_server_types_headline}" styleClass="field_label"/>						
+						<h:selectOneMenu id="ldapServerType" 
+							layout="pageDirection" 
+							value="#{ldapServerInfo.ldapServerType}" 
+							valueChangeListener="#{ldapServerRegistration.processValueChangeLdapServerType}"						
+							immediate="true" 
+							styleClass="pulldown">
+							<f:converter converterId="ldapServerTypeConverter" />
+							<f:selectItems value="#{ldapServerRegistration.ldapServerTypes}"/>
+						</h:selectOneMenu>
+						<h:message id="ldapServerType_error" for="ldapServerType_listbox" styleClass="field_error" showDetail="true" showSummary="false" />
+						
+						<o:input entity="ldapServerInfo" property="useConnectionPool" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="useLdapContext" maxlength="250" required="true"/>
+						<o:input entity="ldapServerInfo" property="enabled" maxlength="250" required="true"/>						
+					</o:block>
+				</c:if>
+				<c:if test="#{empty ldapServerRegistration.allUserDnPatterns}">
+					<o:block>
+						<h:outputLabel value="#{msg.error_ldap_userdnpattern_empty}" for="descriptionEditor" styleClass="field_error" />
+					</o:block>
+				</c:if>
+				<c:if test="#{empty ldapServerRegistration.allAuthenticationDomains}">
+					<o:block>
+						<h:outputLabel value="#{msg.error_ldap_domain_empty}" for="descriptionEditor" styleClass="field_error" />
+					</o:block>
+				</c:if>
+				<o:block>					
+		  			<h:commandButton value="${msg.back}" action="view:backward" styleClass="button_back" immediate="true"/>
+					<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.register}" styleClass="button" rendered="#{empty ldapServerInfo.id and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
+					<h:commandButton value="${msg.save}" action="#{ldapServerRegistration.save}" styleClass="button" rendered="#{not empty ldapServerInfo.id and not empty ldapServerRegistration.allUserDnPatterns and not empty ldapServerRegistration.allAuthenticationDomains}"/>
+				</o:block>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

@@ -1,0 +1,42 @@
+<!-- Default Sidebar -->
+<f:subview
+	xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:o="http://www.openuss.org/jsfcontrols"
+    xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:p="http://www.openuss.org/plexus/jsf"
+    xmlns:x="http://myfaces.apache.org/extensions">
+	
+		<h:form>
+			<t:saveState id="newsletter_abo" value="#{newsletter_newsletter.subscribed}"/>
+			<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.PARTICIPATE}">
+				<o:block label="#{msg.user_options_sidebar_header}" styleClass="option_box">
+					<h:outputText value="#{msg['newsletter_subscribe']}" styleClass="content_font_normal" rendered="#{not newsletter_newsletter.subscribed}" escape="false"></h:outputText>
+					<h:outputText value="#{msg['newsletter_unsubscribe']}" styleClass="content_font_normal" rendered="#{newsletter_newsletter.subscribed}" escape="false"></h:outputText>
+					<ul class="action_list">
+						<c:if test="#{not newsletter_newsletter.subscribed}">
+							<li class="newsletter_subscribe">
+								<h:commandLink value="" actionListener="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_subscribe']}</h:commandLink>
+							</li>
+						</c:if>
+						<c:if test="#{newsletter_newsletter.subscribed}">
+							<li class="newsletter_unsubscribe">
+								<h:commandLink value="" actionListener="#{views$secured$newsletter$newsletter.toggleNewsletterStatus}" ><span />#{msg['newsletter_button_unsubscribe']}</h:commandLink>
+							</li>
+						</c:if>
+						
+						<s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.ASSIST}">
+							<li class="newsletter_subscriberlist" >
+								<h:commandLink value="" action="newsletter_subscribers"><span />#{msg['newsletter_subscriberlist']}</h:commandLink>
+							</li>
+						</s:acl>
+					</ul>
+				</o:block>
+			</s:acl>					
+		</h:form>
+	
+</f:subview>

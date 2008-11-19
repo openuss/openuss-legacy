@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.commands.LastProcessedCommandImpl" table="COMMAND_LASTPROCESSED" dynamic-insert="false" dynamic-update="false">
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="assigned">
+            </generator>
+        </id>
+        <many-to-one name="last" class="org.openuss.commands.CommandImpl" cascade="save-update" foreign-key="COMMAND_LASTPROCESSED_LAST_FKC" lazy="proxy" fetch="select">
+            <column name="LAST_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

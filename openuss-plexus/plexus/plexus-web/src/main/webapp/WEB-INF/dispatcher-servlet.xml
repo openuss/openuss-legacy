@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+	<bean name="/secured/course.xml*" class="org.openuss.web.servlets.feedservlets.CourseFeedController">	
+		<property name="courseFeed"><ref bean="courseFeed"/></property>
+	</bean>
+	
+	<bean name="/public/institute.xml*" class="org.openuss.web.servlets.feedservlets.InstituteFeedController">	
+		<property name="instituteFeed"><ref bean="instituteFeed"/></property>
+	</bean>
+
+		
+	<bean name="/public/global.xml*" class="org.openuss.web.servlets.feedservlets.GlobalFeedController">	
+		<property name="globalFeed"><ref bean="globalFeed"/></property>
+	</bean>
+
+	<bean name="/secured/discussion.xml*" class="org.openuss.web.servlets.feedservlets.DiscussionFeedController">	
+		<property name="discussionFeed"><ref bean="discussionFeed"/></property>
+	</bean>
+
+	<bean name="/secured/newsletter.xml*" class="org.openuss.web.servlets.feedservlets.NewsletterFeedController">	
+		<property name="newsletterFeed"><ref bean="newsletterFeed"/></property>
+	</bean>
+
+	<bean name="/secured/documents.xml*" class="org.openuss.web.servlets.feedservlets.DocumentsFeedController">	
+		<property name="documentFeed"><ref bean="documentsFeed"/></property>
+	</bean>
+	
+	<bean name="feedTemplate" abstract="true">
+		<property name="systemService" ref="systemService"/>
+	</bean>
+
+	<bean name="courseFeed" class="org.openuss.web.feeds.CourseFeed" parent="feedTemplate">	
+		<property name="courseService" ref="courseService"/>
+		<property name="newsService" ref="newsService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="instituteFeed" class="org.openuss.web.feeds.InstituteFeed" parent="feedTemplate">	
+		<property name="instituteService" ref="instituteService"/>
+		<property name="newsService" ref="newsService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="globalFeed" class="org.openuss.web.feeds.GlobalFeed" parent="feedTemplate">
+		<property name="newsService" ref="newsService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="discussionFeed" class="org.openuss.web.feeds.DiscussionFeed" parent="feedTemplate">	
+		<property name="courseService" ref="courseService"/>
+		<property name="discussionService" ref="discussionService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="newsletterFeed" class="org.openuss.web.feeds.NewsletterFeed" parent="feedTemplate">	
+		<property name="courseService" ref="courseService"/>
+		<property name="courseNewsletterService" ref="courseNewsletterService"/>
+		<property name="securityService" ref="securityService"/>
+	</bean>
+
+	<bean name="documentsFeed" class="org.openuss.web.feeds.DocumentsFeed" parent="feedTemplate">	
+		<property name="courseService" ref="courseService"/>
+		<property name="documentService" ref="documentService"/>
+		<property name="securityService" ref="securityService"/>
+		<property name="viewUri" value="/views/secured/documents/documents.faces"/>
+	</bean>
+
+</beans>

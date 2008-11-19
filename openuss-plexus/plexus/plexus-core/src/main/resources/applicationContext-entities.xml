@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Security
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    
+    <bean id="user" class="org.openuss.security.UserInfo" scope="prototype"/>
+
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      Lecture
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+
+	<bean id="institute" class="org.openuss.lecture.InstituteImpl" scope="prototype"/>
+	<bean id="courseType" class="org.openuss.lecture.CourseTypeImpl" scope="prototype"/>
+	<bean id="period" class="org.openuss.lecture.PeriodImpl" scope="prototype"/>
+	<bean id="course" class="org.openuss.lecture.CourseImpl"  scope="prototype"/>
+	
+   	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		      News
+	  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->    
+    <bean id="newsItem" class="org.openuss.news.NewsItemImpl" scope="prototype"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				BrainContest
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<bean id="brainContest" class="org.openuss.braincontest.BrainContestImpl" scope="prototype"/>
+	<bean id="brainContestAnswer" class="org.openuss.braincontest.AnswerImpl"  scope="prototype"/>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    				Documents
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+ 	<bean id="folder" class="org.openuss.documents.FolderImpl"  scope="prototype"/>
+	<bean id="fileEntry" class="org.openuss.documents.FileEntryImpl" scope="prototype"/>
+	 
+	<bean id="newDocument" class="org.openuss.repository.RepositoryFileImpl" scope="prototype"/>
+	<bean id="newFolder" class="org.openuss.documents.FolderImpl" scope="prototype"/>
+</beans>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<document>
+
+    <properties>
+        <author email="isarsu[at]sourceforge[dot]net">Arne Sutor</author>
+        <title>Training</title>
+    </properties>
+
+    <body>
+		<a name="content"/>
+		<section name="Content of the introduction trainings">
+			<p>
+				The training service of the E-Learning Competence Center consits of the following modules:
+			</p>
+			<ol>
+				<li><b>Designing E-Learning Szenarios</b></li>
+				<li><b>Communication and Cooperation in the World Wide Web</b></li>
+				<li><b>Designing E-Learning Materials</b></li>
+			</ol>
+		<p>
+			The trainings are taking place twice a semester, one at the beginning and the other at the end.
+		</p>
+		<subsection name="1. Designing E-Learning Szenarios">
+			<p>
+				In this course the participants will get an overview about the different 
+				usage possibilities which E-Learning offers. On represantative examples you will 
+				get trained on how E-Learning can be used in your everyday life at university.
+				Along with didactic tips you will get hints on how teachers can offer a secure 
+				access to their materials.Additionally you will get an introduction to the xlx System.
+				With the xlx system theachers can offer electronic supported exercises along with theire 
+				courses.
+			</p>
+		</subsection>
+		<subsection name="2. Communication and Cooperation in the World Wide Web">
+			<p>
+				Electronic communication and cooperation with students is taking the center stage of this course.
+				The participants of the course are offered a possibillity on how to offer
+				E-Learning materials with the plattform OpenUSS and on 
+				how to communicate synchrone and assynchrone with your students.
+				In the second part of the course you will get an overview on how to use the content management plattform
+				HERBIE. With HERBIE students and teachers can work cooperative on science objects.
+			</p>
+		</subsection>
+		<subsection name="3. Designing E-Learning Materials">
+			<p>
+				Electronic materials offer multiple advantages for both teachers and students due 
+				to the multimedia content.
+				In this course the participants will learn how to use these adavantages on 
+				different learning channels.Furthermore you will get informed on the actual overview
+				on the judical site of how to design and use inoffensive materials.
+			</p>
+		</subsection>
+		</section>
+		<a name="contact"/>
+		<section name="Contact Information for Consulting, Service and Training">
+			<h4>
+				Australia
+			</h4>
+			<p>
+				<b><a href="http://www.atlassian.com/">Atlassian - Sydney (J2EE Experts)</a></b><br/>
+				Email: sales[at]atlassian[dot]com<br/>
+				Support: support[at]atlassian[dot]com<br/>
+				General Inquiries: info[at]atlassian[dot]com
+			</p>
+			<p>
+				Postal: Atlassian Software Services, Level 3, 342 Kent St Sydney, NSW 2000, Australia<br/>
+				Phone: +61 (2) 9552 3826<br/>
+				Fax: +61 (2) 9660 7442
+				Urgent Engineer Call: +61 (416) 106 090 (use this number if you need to contact an engineer urgently)
+			</p>
+			<h4>
+				Germany
+			</h4>
+			<p>
+				<b><a href="http://www.wi.uni-muenster.de/aw">Institut fuer Wirtschaftsinformatik Lehrstuhl fuer Wirtschaftsinformatik und Controlling</a></b><br/>
+				Dipl. Wirt.-Inform. Ingo Dueppe<br/>
+				E-Mail: openuss[at]e-learning.uni-muenster[dot]de<br/>
+				Leonardo-Campus 3, D-48149 Muenster
+			</p>
+			<p>
+				<b>Plattformuebergreifende Beratungsleistungen für die Themen 
+				- Controlling &amp; Steuerungssysteme - Prozessmodellierung - 
+				Prozessmonitoring von E-Learning-Plattformen werden bereitgestellt von:<br/>
+				<a href="http://www.horvath-partners.com">Horvath Customer Intelligence GmbH</a></b><br/>
+				Ansprechpartner: Dipl.-Kfm. André Coners<br/>
+				E-Mail: aconers@horvath-partners.com<br/>
+				Mendelstr. 11, D-48149 Münster<br/>
+				Phone: +49 (251) 980 1290<br/>
+				Fax: +49 (251) 980 1299
+			</p>
+			<h4>
+				Indonesia
+			</h4>
+			<p>
+				<a href="http://www.stibanas.ac.id"><b>Stimik Perbanas</b></a><br/>
+				Perbanas Building Unit II 3rd. floor, Jalan Perbanas Kuningan, Jakarta 12940, Indonesia <br/>
+				Phone: +62 (0)21 5278788<br/>
+				Fax: +62 (0)21 5278788
+			</p>	
+		</section>
+    </body>
+</document>

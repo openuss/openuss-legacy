@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.collaboration.WorkspaceImpl" table="WORKSPACE" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="domainId" type="java.lang.Long">
+            <column name="DOMAIN_ID" not-null="true" unique="false" sql-type="BIGINT"/>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" not-null="true" unique="false" sql-type="VARCHAR(100)"/>
+        </property>
+        <set name="user" table="USER2WORKSPACES" order-by="USER_FK" lazy="true" fetch="select" inverse="false">
+            <key foreign-key="SECURITY_USER_WORKSPACES_FKC">
+                <column name="WORKSPACES_FK" sql-type="BIGINT"/>
+            </key>
+            <many-to-many class="org.openuss.security.UserImpl" foreign-key="WORKSPACE_USER_FKC">
+                <column name="USER_FK" sql-type="BIGINT"/>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

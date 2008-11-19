@@ -1,0 +1,361 @@
+<?xml version="1.0"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN" "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+<faces-config>
+	
+	<managed-bean>
+		<managed-bean-name>ACL</managed-bean-name>
+		<managed-bean-class>org.openuss.security.acl.LectureAclEntry</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>newsBean</managed-bean-name>
+		<managed-bean-class>org.openuss.web.lecture.NewsBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>showuser</managed-bean-name>
+		<managed-bean-class>org.openuss.security.UserInfo</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<managed-bean>
+		<managed-bean-name>desktopInfo</managed-bean-name>
+		<managed-bean-class>org.openuss.desktop.DesktopInfo</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- DataTableModels -->
+ 	<managed-bean>
+ 		<managed-bean-name>applicationInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.ApplicationInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 		<managed-property>
+ 			<property-name>departmentInfo</property-name>
+ 			<value>#{applicationDeparment}</value>
+ 		</managed-property>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>applicationDeparment</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteSecurity</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteSecurity</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>accessType</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.AccessType</managed-bean-class>
+ 		<managed-bean-scope>application</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteMember</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteMember</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteGroup</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteGroup</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<converter>
+ 		<converter-id>instituteConverter</converter-id>
+ 		<converter-class>org.openuss.web.lecture.converter.InstituteConverter</converter-class>
+ 	</converter>
+ 	
+ 	<!-- Managed Beans -->
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>periodInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.PeriodInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>departmentInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.DepartmentInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>universityInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.UniversityInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>instituteInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.InstituteInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>courseInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>courseOptionsInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>courseMoveInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseInfo</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>courseTypeInfo</managed-bean-name>
+ 		<managed-bean-class>org.openuss.lecture.CourseTypeInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>documents_current_folder</managed-bean-name>
+ 		<managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>documents_selected_folder</managed-bean-name>
+ 		<managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>documents_selected_file</managed-bean-name>
+ 		<managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>documents_entry_selection</managed-bean-name>
+ 		<managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>discussion_discussionentry</managed-bean-name>
+ 		<managed-bean-class>org.openuss.discussion.PostInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>discussion_quote</managed-bean-name>
+ 		<managed-bean-class>org.openuss.discussion.PostInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>discussion_topic</managed-bean-name>
+ 		<managed-bean-class>org.openuss.discussion.TopicInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>braincontest_answer</managed-bean-name>
+ 		<managed-bean-class>org.openuss.web.braincontest.AnswerWebInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>braincontest_contest</managed-bean-name>
+ 		<managed-bean-class>org.openuss.braincontest.BrainContestInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>news_selected_newsitem</managed-bean-name>
+ 		<managed-bean-class>org.openuss.news.NewsItemInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>newsletter_newsletter</managed-bean-name>
+ 		<managed-bean-class>org.openuss.newsletter.NewsletterInfo</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	 		
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+ 		<managed-bean-name>newsletter_mail</managed-bean-name>
+ 		<managed-bean-class>org.openuss.newsletter.MailDetail</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope> 	 		
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>contest_attachments</managed-bean-name>
+ 		<managed-bean-class>java.util.ArrayList</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+ 	
+ 	 <managed-bean>
+ 		<managed-bean-name>submissionStatus</managed-bean-name>
+ 		<managed-bean-class>org.openuss.papersubmission.SubmissionStatus</managed-bean-class>
+ 		<managed-bean-scope>application</managed-bean-scope>
+ 	</managed-bean>
+ 	
+ 	<managed-bean>
+        <managed-bean-name>papersubmission_submission_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.papersubmission.PaperSubmissionSelection</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>papersubmission_selected_file</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>examInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.paperSubmission.ExamInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>paperSubmissionInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.paperSubmission.PaperSubmissionInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>papersubmission_current_folder</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>papersubmission_current_folder_entry_info</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderEntryInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>papersubmission_folderentry_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.papersubmission.PaperSubmissionFileSelection</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_current_folder</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_selected_folder</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_selected_file</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FileInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_entry_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.documents.FolderEntrySelection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>collaboration_member_selection</managed-bean-name>
+        <managed-bean-class>org.openuss.web.collaboration.WorkspaceMemberSelection</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>    
+    
+    <managed-bean>
+        <managed-bean-name>workspace</managed-bean-name>
+        <managed-bean-class>org.openuss.collaboration.WorkspaceInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>workspaceInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.collaboration.WorkspaceInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <!--  Wiki -->   
+    <managed-bean>
+        <managed-bean-name>wiki_image</managed-bean-name>
+        <managed-bean-class>org.openuss.documents.FolderEntryInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>wiki_current_site_version</managed-bean-name>
+        <managed-bean-class>org.openuss.wiki.WikiSiteContentInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>wiki_site_to_remove</managed-bean-name>
+        <managed-bean-class>org.openuss.wiki.WikiSiteInfo</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>coursenews_attachments</managed-bean-name>
+ 		<managed-bean-class>java.util.ArrayList</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>post_attachments</managed-bean-name>
+ 		<managed-bean-class>java.util.ArrayList</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+
+ 	<managed-bean>
+ 		<managed-bean-name>institutenews_attachments</managed-bean-name>
+ 		<managed-bean-class>java.util.ArrayList</managed-bean-class>
+ 		<managed-bean-scope>session</managed-bean-scope> 	 		
+ 	</managed-bean>
+ 	
+	<!-- LDAP Authentication -->
+	<managed-bean>
+        <managed-bean-name>roleAttributeKeyInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.RoleAttributeKeyInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+	
+	<managed-bean>
+        <managed-bean-name>attributeMappingInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.AttributeMappingInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>authenticationDomainInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.AuthenticationDomainInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>userDnPatternInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.UserDnPatternInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>ldapServerInfo</managed-bean-name>
+        <managed-bean-class>org.openuss.security.ldap.LdapServerInfo</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+</faces-config>

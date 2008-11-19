@@ -1,0 +1,15 @@
+<html>
+	<body>
+		<p>
+			<h3><font color="#003366">OpenUSS Administración de Usuarios</font></h3>
+			Usted, <i>${userfirstname} ${userlastname} (${username})</i>, ha sido eliminado de esta organización 
+			<i>${organisationname}</i>.
+		</p>
+		<p>
+			Gracias por utilizar OpenUSS.
+		</p>
+		<p>
+			<small>Este es solo un email informativo. Cualquier respuesta a este mensaje no será monitorizada ni respondida.</small>
+		</p>
+	</body>
+</html>

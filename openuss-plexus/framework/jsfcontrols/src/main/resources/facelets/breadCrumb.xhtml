@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<ui:composition>
+	<f:loadBundle basename="lang/jsfControls" var="lang_jsfControls" />
+	<c:if test="${empty styleClass}">
+		<c:set var="styleClass" value="conten_font_normal" />
+	</c:if>
+	<span class="header_font_normal"> <t:dataList
+		id="breadcrumb_links" styleClass="${styleClass}" var="crumb"
+		value="${value}" layout="simple" rowCountVar="rowCount"
+		rowIndexVar="rowIndex">
+		<h:outputLink
+			value="${facesContext.externalContext.requestContextPath}${crumb.link}"
+			styleClass="${styleClass}" title="${crumb.hint}"
+			rendered="#{(not empty crumb.link) and not ((rowIndex+1) == rowCount)}">
+					#{crumb.name}
+				</h:outputLink>
+		<h:outputText value="#{crumb.name}"
+			rendered="#{(empty crumb.link) or ((rowIndex+1) == rowCount)}" />
+		<h:outputText value=" > " rendered="#{(rowIndex + 1) lt rowCount}"
+			styleClass="${styleClass}" />
+	</t:dataList> </span>
+</ui:composition>
+</html>

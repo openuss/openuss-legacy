@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title">OpenUSS</ui:insert></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/dialog.xhtml">
+  		<ui:define name="content">
+ 			<h:form id="reg2Form">
+ 				<!--o:block>
+ 					<span class="header_font_normal">#{msg.user_registration3_Headline}</span>
+ 				</o:block -->
+ 				<o:block styleClass="form_box" label="#{msg.user_registration3_Subheading}">
+ 					<p class="content_font_normal">
+						<h:outputText value="#{msg.user_registration3_ConfirmText}" escape="false"/><br/>
+						<h:outputFormat value="#{msg.user_registration3_ConfirmEmail}" escape="false">
+							<f:param value="#{user.email}" />
+						</h:outputFormat>
+					</p>
+				</o:block>
+				<o:block>
+					<t:commandButton id="continue" forceId="true" value="#{msg.user_registration3_ConfirmButton}" action="#{registrationController.performRegistration}" styleClass="button_big"/>
+		  		</o:block>
+	  		</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

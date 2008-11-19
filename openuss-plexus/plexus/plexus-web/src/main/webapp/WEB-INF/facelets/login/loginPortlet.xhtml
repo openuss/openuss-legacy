@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- the following xmlns are for code complition only -->
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:x="http://myfaces.apache.org/extensions"
+      xmlns:sec="http://sourceforge.net/projects/jsf-comp/acegijsf">
+      
+<!-- Lines above that point will be ignored 														-->
+<!-- If you need specific namesspaces be sure that they will be included in the ui:composition tag 	-->
+<!-- or in the view class specified by the f:view tag 												-->	      
+	<f:loadBundle basename="resources" var="msg" />
+	<ui:composition>
+		<s:authorize ifNotGranted="ROLE_USER">
+			<c:if test="#{not empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}">
+				<o:block label="${msg.login_sso_headline}">
+					<h:form>
+						<p class="content_font_normal">
+							<h:outputText value="${msg.login_sso_can_be_used}" escape="false"/>		   			
+						</p>
+						<p class="content_font_normal">
+							<h:outputLink value="#{SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}#{SYSTEM_PROPERTIES.OPENUSS_SERVER_URL}" style="background:url(#{theme.imagesPath}/icons/lock_icon.png) left center no-repeat; padding-left:18px;">
+								<h:outputText value="#{msg.login_sso_linktext}"/>
+							</h:outputLink>
+						</p>
+					</h:form>
+				</o:block>
+			</c:if>						
+   			<o:block label="#{empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL? msg.login_headline : msg.login_headline_local_login}">
+		   		<h:form id="loginPortletLogin" >
+		   			<h:outputLabel for="j_username" value="#{msg.login_username}" styleClass="field_label"/> 
+		   			<t:inputText id="j_username" forceId="true" value="#{authenticationController.username}" title="${msg['login_username_hint']}" required="true" styleClass="field"/>
+		   			<h:message id="fieldError" for="j_username" styleClass="field_error" showDetail="true" showSummary="false" />
+		   			
+		   			<h:outputLabel for="j_username" value="#{msg.login_password}" styleClass="field_label"/> 
+		   			<t:inputSecret id="j_password" forceId="true" value="#{authenticationController.password}" title="${msg['login_password_hint']}" required="true" styleClass="field"/>
+		   			<h:message id="fieldError" for="j_password" styleClass="field_error" showDetail="true" showSummary="false" />
+		   		
+		   			<label class="field_rememberme">
+		   				<t:selectBooleanCheckbox id="j_rememberme" forceId="true" value="#{authenticationController.rememberMe}" styleClass="fieldCheckBox"/>
+		   				#{msg['login_remember_me']}
+		   			</label>
+			    	<t:commandButton id="loginButton" forceId="true" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button"/>
+		    	</h:form>
+				<h:form id="loginPortletRegister">
+					<ul class="int">
+						<li>
+							<t:commandLink id="register" forceId="true" value="${msg.register_link}" action="register_user" immediate="true"/>
+						</li>
+						<li>
+							<t:commandLink id="forgot_pwd" forceId="true" value="${msg.password_send_link}" action="forgot_password" immediate="true"/>
+						</li>
+					</ul>
+		   		</h:form>
+			</o:block>
+		</s:authorize>
+	</ui:composition>
+<!-- Lines below that point will be ignored -->	
+</html>

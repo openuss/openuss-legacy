@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security"      
+      xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><ui:insert name="title"/></title>
+        <link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+        <!-- css-Datei mit Farbdefinitionen der Rubrik -->
+        <link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+    </head>
+
+    <body>      
+    <!-- text above will be ignored -->
+    <ui:composition template="/views/layout/layout.xhtml">
+        <ui:define name="title"><h:outputText value="#{msg.course_main_title} - #{courseInfo.shortcut}"/></ui:define>
+        
+        <ui:define name="navigation">
+            <ui:include src="/views/commons/navigation/course.xhtml" />
+        </ui:define>
+        
+        <ui:define name="content">
+    		<t:saveState value="#{paperSubmissionInfo}"/>
+    		<t:saveState value="#{examInfo}"/>
+			<s:authorize ifAllGranted="ROLE_USER">
+				<s:acl domainObject="#{courseInfo}" hasNotPermission="#{ACL.READ}">
+					<!-- check if access type is AccessType.CLOSED -->
+					<c:if test="#{courseInfo.accessType.value == 2}">
+						<o:block label="#{msg.course_main_access}" styleClass="status_box">
+							<h:outputText value="#{msg.course_main_access_closed_text}" styleClass="content_font_normal"/>
+						</o:block>
+					</c:if>
+				
+					<!-- check if access type is AccessType.PASSWORD -->
+					<c:if test="#{courseInfo.accessType.value == 3}">
+						<h:form id="course_main_apply_password_form">
+							<o:block label="#{msg.course_main_access}" styleClass="form_box">
+								<p class="content_font_normal">
+									<h:outputText value="#{msg.course_main_access_passtext}"/>
+								</p> 
+								<h:outputLabel for="course_password"
+									value="#{msg.course_main_access_password}"
+									styleClass="field_label" />
+								<h:inputSecret id="course_password"
+									value="#{views$secured$course$main.password}"
+									styleClass="field" validator="#{views$secured$course$main.validatePassword}" required="true">
+								</h:inputSecret> 
+								<h:message for="course_password" styleClass="field_error" showDetail="true" showSummary="false"/>
+							</o:block>
+			
+							<o:block>
+								<h:commandButton action="#{views$secured$course$main.applyWithPassword}"
+									value ="#{msg['course_main_access']}"
+									title="#{msg['course_main_access']}" styleClass="button" />
+							</o:block>
+						</h:form>
+					</c:if>
+		
+					<!-- check if access type is AccessType.APPLICATION -->
+					<c:if test="#{courseInfo.accessType.value == 4}">
+						<c:if test="#{views$secured$course$main.aspirant}">
+							<o:block label="#{msg.course_main_access}" styleClass="status_box">
+								<h:outputText value="#{msg.course_main_access_application_running }" styleClass="content_font_normal"/>
+							</o:block>
+						</c:if>
+						<c:if test="#{!views$secured$course$main.aspirant}">
+							<h:form id="course_main_apply_form">
+								<o:block label="#{msg.course_main_access}" styleClass="status_box">
+									<h:outputText value="#{msg.course_main_access_applytext}" styleClass="content_font_normal"/>
+								</o:block>
+								<o:block>
+									<h:commandButton action="#{views$secured$course$main.apply}"
+										value="#{msg['course_main_access_applybutton']}"
+										title="#{msg['course_main_access_applybutton']}"
+										styleClass="button" />
+								</o:block>
+							</h:form>
+						</c:if>
+					</c:if> 
+				</s:acl>
+			</s:authorize>
+        
+            <s:acl domainObject="#{courseInfo}" hasPermission="#{ACL.READ}">
+	            <h:form id="submissionsTableView">
+	            
+	           		<o:block label="#{msg.papersubmission_exam_edit_description}" styleClass="form_box" rendered="#{!(empty examInfo.description)}">
+	                   <div class="content_font_normal">
+                            <h:outputText value="#{examInfo.description}" escape="false"/>
+                        </div>
+	                </o:block> 
+	                
+								
+					<f:subview rendered="#{!(empty requestScope.examInfo.attachments)}">
+						<o:block label="#{msg.papersubmission_materials}" styleClass="form_box">
+							<div class="content_font_normal">
+								<t:dataList 
+									var="attachment" 
+									value="#{requestScope.examInfo.attachments}" >
+									<o:link value="/files/#{attachment.fileName}" rendered="#{!empty attachment.id}">
+										<f:param value="#{attachment.id}" name="fileid" />
+										<h:graphicImage value="/images/filetypes/#{bean.extension}.gif" 
+								                rendered="#{views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+										<h:graphicImage value="/images/filetypes/default.gif" 
+							                            rendered="#{not views$secured$documents$documents.availableExtensions[bean.extension]}"/>
+								  		#{attachment.fileName} 
+								  	</o:link> 
+									<br/>	
+								</t:dataList>
+							</div>
+						</o:block>	
+					</f:subview>
+						                 
+	                <ui:include src="/views/secured/papersubmission/submissionviewtable.xhtml" />
+				</h:form>
+            </s:acl>	        
+        </ui:define>
+    </ui:composition>
+    <!-- text above will be ignored -->
+    </body>
+</html>

@@ -1,0 +1,12 @@
+<html>
+	<body>
+		<h3><font color="#003366">OpenUSS Email Application Notifier</font></h3>
+			Unfortunately, your application for <i>${coursename}</i> has been rejected!
+		<p>
+			Thank you for using OpenUSS!
+		</p>
+		<p>
+			<small>This is a post-only mailing. Replies to this message are not monitored or answered.</small>
+		</p>
+	</body>
+</html>

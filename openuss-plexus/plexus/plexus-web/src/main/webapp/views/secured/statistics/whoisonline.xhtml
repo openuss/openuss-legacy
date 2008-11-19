@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:news="http://www.openuss.org/news/jsf"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://www.openuss.org/jsfcontrols"
+	xmlns:s="http://www.openuss.org/jsf-security"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:plexus="http://www.openuss.org/plexus/jsf">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><ui:insert name="title" /></title>
+<link href="../../css/openuss.css" rel="stylesheet" type="text/css"
+	media="screen,screen" />
+<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css"
+	media="screen" />
+</head>
+
+<body>
+<!-- text above will be ignored -->
+<ui:composition template="/views/layout/dialog.xhtml">
+	<ui:define name="content">
+		<h:form id="whoIsOnlineForm">
+			<plexus:dataTable id="whoIsOnline"
+				label="#{msg.whoisonline_header}"
+				value="views$secured$statistics$whoisonline.data"
+		    	columnClasses="col_date, col_min_center, col_max_left"				
+				var="user" rows="20" rowIndex="index"
+				infoText="#{msg.table_info_text_users}">
+				<t:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['whoisonline_login']}" />
+					</f:facet>
+					<h:outputText value="#{user.startTime}" >
+						<f:convertDateTime type="both" timeZone="#{visit.timeZone}"/>
+					</h:outputText>
+				</t:column>
+
+				<t:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg['whoisonline_user_name']}" />
+					</f:facet>
+					<o:link value="/views/secured/user/userprofile.faces?showuser=#{user.userId}">
+						<h:graphicImage styleClass="userphoto"
+							value="/files?fileid=#{user.imageId}"
+							title="#{user.displayName}" rendered="#{not empty user.imageId}" />
+						<h:graphicImage styleClass="userphoto"
+							value="/images/icons/no_pic.gif" 
+							alt="#{msg.user_profile_no_image}"
+							title="#{msg.user_profile_no_image}"
+							rendered="#{empty user.imageId}" />
+					</o:link>
+				</t:column>
+				<t:column>
+					<o:link value="/views/secured/user/userprofile.faces?showuser=#{user.userId}">
+						<h:outputText value="#{user.displayName}" />
+					</o:link>
+				</t:column>
+
+			</plexus:dataTable>
+
+			<o:block>
+				<h:commandButton action="view:backward" value="#{msg.back}" styleClass="button_back"/>
+			</o:block>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+<!-- text above will be ignored -->
+
+</body>
+</html>

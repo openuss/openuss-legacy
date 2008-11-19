@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:s="http://www.openuss.org/jsf-security">
+      
+      
+    <plexus:dataTable 
+    	id="courses" 
+    	label="#{msg.desktop_courses_header}"
+    	value="views$secured$desktop$desktop.coursesProvider" 
+    	var="courseItem"
+    	styleClass="form_box" 
+    	rows="10"
+    	infoText="#{msg.table_info_text_courses}">
+		<t:column>
+			<plexus:commandSortHeader columnName="courseType.name">
+				<h:outputText value="#{msg.desktop_courses_colheader_name}"/>
+			</plexus:commandSortHeader>
+			<o:link value="/views/secured/course/main.faces" title="#{courseItem.courseType.description}">
+				<f:param value="#{courseItem.id}" name="course" />
+				<h:outputText value="#{courseItem.courseType.name} - #{courseItem.period.name} (#{courseItem.shortcut})"/>
+			</o:link>
+		</t:column>
+		 
+		<plexus:column header="#{msg.commands_header}">
+			<plexus:command
+				bean="#{views$secured$desktop$desktop}"
+				action="removeCourse"
+				label="#{msg.desktop_courses_command_remove}"
+				title="#{msg.desktop_courses_command_remove_hint}"
+				styleClass="button_unlink"/>
+		</plexus:column>
+	</plexus:dataTable>
+		  
+	
+</ui:composition>

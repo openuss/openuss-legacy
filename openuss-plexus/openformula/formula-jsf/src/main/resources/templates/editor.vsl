@@ -1,0 +1,42 @@
+<input type="text" name="${clientId}" >
+ <script type="text/javascript">
+   <!--
+    	function clearAll() {
+    		document.formulaEditor.reset();
+    	}
+    	function pass() {
+			document.formula.${clientId}.value=document.formulaEditor_${clientId}.getFormula();
+		}
+    	function sendData() {
+    		alert("sendData")
+    		var daten = "";
+    		for (var i = 0; i < document.applets.length; i++) {
+    			var get = document.applets[i].submit();
+    			if (get != "") {
+    				if (daten != "")
+    					daten = daten + ",";
+    				daten = daten + get;
+    			}
+    		}
+    		document.FileUpload.Ids.value = daten;
+    	}
+    	
+    	function construct_${clientId}(event) {
+    		alert("construct");
+    		addEvent(document.formula,'submit', sendData);
+    	}
+    	
+    	alert("load");
+    	addEventListener("load",construct_${clientId});
+    -->
+</script>
+</input>
+<red><h1>${clientId}</h1></red>
+<applet name="formulaEditor_${clientId}" code="org/openuss/openformula/io/FormulaApplet.class" archive="./applet/formula-editor-3.1.jar" width="${component.width}" height="${component.height}">
+#if ($component.value)
+ 	<param name="formula" value="${component.value}"/>
+#else
+	<param name="formula" value=""/>
+#end
+</applet> 
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-cascade="none">
+    <class name="org.openuss.wiki.WikiSiteVersionImpl" table="WIKI_WIKISITEVERSION" dynamic-insert="false" dynamic-update="false">
+        <cache usage="read-write" />
+        <id name="id" type="java.lang.Long" unsaved-value="null">
+            <column name="ID" sql-type="BIGINT"/>
+            <generator class="sequence">
+                <param name="sequence">GLOBAL_SEQUENCE</param>
+            </generator>
+        </id>
+        <property name="text" type="org.andromda.persistence.hibernate.usertypes.HibernateStringClobType" lazy="true">
+            <column name="TEXT" not-null="true" unique="false" sql-type="BLOB"/>
+        </property>
+        <property name="creationDate" type="java.util.Date">
+            <column name="CREATION_DATE" not-null="true" unique="false" sql-type="TIMESTAMP"/>
+        </property>
+        <property name="note" type="java.lang.String">
+            <column name="NOTE" not-null="false" unique="false" sql-type="VARCHAR(150)"/>
+        </property>
+        <property name="stable" type="java.lang.Boolean">
+            <column name="STABLE" not-null="true" unique="false" sql-type="SMALLINT"/>
+        </property>
+        <many-to-one name="wikiSite" class="org.openuss.wiki.WikiSiteImpl" cascade="none" foreign-key="WIKI_WIKISITEVERSION_WIKI_SITC" lazy="proxy" fetch="select">
+            <column name="WIKI_SITE_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+        <many-to-one name="author" class="org.openuss.security.UserImpl" foreign-key="WIKI_WIKISITEVERSION_AUTHOR_FC" lazy="proxy" fetch="select">
+            <column name="AUTHOR_FK" not-null="false" sql-type="BIGINT"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

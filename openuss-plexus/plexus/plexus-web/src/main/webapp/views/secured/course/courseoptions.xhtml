@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:news="http://www.openuss.org/news/jsf"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+	  xmlns:c="http://java.sun.com/jstl/core"      
+      xmlns:s="http://www.openuss.org/jsf-security"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:fck="http://www.fck-faces.org/fck-faces">
+      
+ 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title><ui:insert name="title"/></title>
+		<link href="../../css/openuss.css" rel="stylesheet" type="text/css" media="screen,screen" />
+		<!-- css-Datei mit Farbdefinitionen der Rubrik -->
+		<link href="../../css/openuss-typo.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+
+	<body>      
+	<!-- text above will be ignored -->
+	<ui:composition template="/views/layout/layout.xhtml">
+		<ui:define name="navigation">
+			<ui:include src="/views/commons/navigation/course.xhtml" />
+		</ui:define>
+ 		 
+  		<ui:define name="content">
+			<h:form id="courseOptionForm">
+				<t:saveState value="#{courseOptionsInfo}"/>
+	  			<o:block label="#{msg.course_options_headline} - #{courseOptionsInfo.name} - #{courseOptionsInfo.periodName}" styleClass="form_box">
+					<o:input entity="courseOptionsInfo" id="shortcut" forceId="true" property="shortcut" maxlength="30" required="true"/>
+					<h:outputLabel for="accessType" value="#{msg.course_options_access_headline}" styleClass="field_label"/>
+					<t:selectOneMenu id="accessType" forceId="true"
+						layout="pageDirection" 
+						value="#{courseOptionsInfo.accessType}" 
+						valueChangeListener="#{views$secured$course$courseoptions.processAccessTypeChanged}" 
+						onchange="this.form.submit();"
+						immediate="true" 
+						styleClass="pulldown">
+						<f:converter converterId="accessTypeConverter" />
+						<f:selectItems value="#{views$secured$course$courseoptions.accessTypes}"/>
+					</t:selectOneMenu>
+					<h:message for="accessType" styleClass="field_error"/>
+					<c:if test="#{courseOptionsInfo.accessType.value == 3}">
+		 				<o:input id="password" forceId="true" entity="courseOptionsInfo" property="password" required="true"/>
+	 				</c:if> 				
+					
+					<h:outputText value="#{msg.course_description}" styleClass="field_label"/>					
+					<div class="content_iframe">
+						<fck:editor value="#{courseOptionsInfo.description}" id="textEditor" toolbarSet="Description" width="100%" height="300">
+							<f:converter converterId="xssFilter"/>
+						</fck:editor>	 				
+					</div>
+	 				
+					<h:outputText value="#{msg.course_options_features_headline}" styleClass="header_font_normal"/>
+					<div class="content_font_normal">
+						<o:input entity="courseOptionsInfo" property="documents" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="discussion" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="newsletter" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="chat" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="braincontest" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="freestylelearning" forceId="true"/>
+						<o:input entity="courseOptionsInfo" property="wiki" forceId="true"/>
+						
+						<c:choose>
+							<c:when test="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" >
+								<o:input entity="courseOptionsInfo" property="papersubmission" label="#{msg.courseoptionsinfo_papersubmission}" forceId="true" />
+                       			<o:input entity="courseOptionsInfo" property="collaboration" label="#{msg.courseoptionsinfo_collaboration}" forceId="true" />
+                       		</c:when>
+                       		<c:otherwise>
+                       			<o:input entity="courseOptionsInfo" property="papersubmission" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+                       			<o:input entity="courseOptionsInfo" property="collaboration" disabled="#{courseOptionsInfo.accessType.value != 3 and courseOptionsInfo.accessType.value != 4}" forceId="true"/>
+                       		</c:otherwise>
+                       	</c:choose>
+					</div>
+				</o:block>
+				<o:block>
+					<t:commandButton 
+						id="save" forceId="true"
+						value="${msg.save}" 
+						action="#{views$secured$course$courseoptions.saveOptions}" 
+						styleClass="button"/>
+					<t:commandButton 
+						id="cancel" forceId="true"
+						value="${msg.cancel}" 
+						action="#{views$secured$course$courseoptions.cancelOptions}" 
+						immediate="true" 
+						styleClass="button"/>
+				</o:block>
+			</h:form>
+  		</ui:define>
+	</ui:composition>
+	<!-- text above will be ignored -->
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		Cluster Command Processor
+	 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	  
+	<bean id="clusterCommandProcessor" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<bean class="org.openuss.commands.ClusterCommandProcessor">
+				<property name="commandDao" ref="commandDao"/>
+				<property name="lastProcessedCommandDao" ref="lastProcessedCommandDao" />
+				<property name="systemService" ref="systemService" />
+			</bean>
+		</property>
+		<property name="proxyTargetClass" value="true"/>
+		<property name="interceptorNames">
+			<list>
+				<value>serviceTransactionInterceptor</value>
+				<value>hibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="clusterCommand" class="org.openuss.commands.ClusterCommand">
+		<property name="clusterCommandProcessor" ref="clusterCommandProcessor"/>
+	</bean>
+	
+	<!-- cluster command job detail definition -->
+
+	<bean id="clusterCommandJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="name" value="cluster_command"/>
+		<property name="durability" value="true"/>
+		<property name="requestsRecovery" value="true"/>
+		<property name="jobClass" value="org.openuss.commands.ClusterCommandJob"/>
+	</bean>
+	
+	<!-- node comand job definition -->
+	
+	<bean id="nodeCommandTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="nodeCommandJobDetail" />
+		<property name="startDelay" value="30000" />
+		<property name="repeatInterval" value="120000" />
+	</bean>
+
+	<bean id="nodeCommandJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="clusterCommand" />
+		<property name="targetMethod" value="processNodeCommands" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- statistic update job definition -->
+	
+	<bean id="statisticUpdateTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="statisticUpdateJobDetail" />
+		<property name="startDelay" value="120000" />
+		<property name="repeatInterval" value="3600000" />
+	</bean>
+
+	<bean id="statisticUpdateJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="name" value="statistic_update"/>
+		<property name="durability" value="true"/>
+		<property name="jobClass" value="org.openuss.statistics.StatisticUpdateJob"/>
+	</bean>
+	
+	<bean id="userDeleteCommand" class="org.openuss.security.UserDeleteCommand" scope="prototype">
+		<property name="commandService" ref="commandService"/>
+		<property name="securityService" ref="securityService"/>
+		<property name="discussionService" ref="discussionService"/>
+		<property name="newsletterService" ref="newsletterService"/>
+		<property name="documentService" ref="documentService"/>
+	</bean>
+
+</beans>

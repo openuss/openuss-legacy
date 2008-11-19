@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:o="http://www.openuss.org/jsfcontrols"
+      xmlns:x="http://myfaces.apache.org/extensions"
+      xmlns:plexus="http://www.openuss.org/plexus/jsf">
+      
+	<ui:composition template="/views/layout/dialog.xhtml">
+		<ui:define name="content">
+			<c:if test="#{not empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL}">
+				<h:form styleClass="form_box">
+					<o:block label="${msg.login_sso_headline}">
+					
+						<p class="content_font_normal">
+							<h:outputText value="${msg.login_sso_can_be_used}" escape="false"/>		   			
+						</p>
+						<p class="content_font_normal">
+							<h:outputLink value="#{views$public$login$login.ssoUrl}" style="background:url(#{theme.imagesPath}/icons/lock_icon.png) left center no-repeat; padding-left:18px;">
+								<h:outputText value="#{msg.login_sso_linktext}"/>
+							</h:outputLink>
+						</p>
+					
+					</o:block>
+				</h:form>
+			</c:if>
+	   		<h:form id="loginPortletLogin" styleClass="form_box">	   			
+	   			<o:block label="#{empty SYSTEM_PROPERTIES.SHIBBOLETH_START_AUTH_URL? msg.login_headline : msg.login_headline_local_login}">
+		   			<o:input entity="authenticationController" property="username" label="${msg['login_username']}" required="true" forceId="true"/>
+		   			<o:input entity="authenticationController" property="password" label="${msg['login_password']}" required="true" type="password" forceId="true"/>
+		   			<label class="field_label">
+		   				<t:selectBooleanCheckbox id="j_rememberme" forceId="true" value="#{authenticationController.rememberMe}"/>
+		   				#{msg['login_remember_me']}
+		   			</label>		   			
+		   		</o:block>
+		   		<o:block>
+			    	<t:commandButton id="loginButton" action="#{authenticationController.login}" value="${msg.login_button}" styleClass="button_login" forceId="true"/>
+			    </o:block>
+		   	</h:form>
+		 </ui:define>
+		 <ui:define name="navigation">
+			<h:form id="loginPortletRegister">
+				<o:block label="${msg['user_registration_headline']}">
+					<ul class="int">
+						<li>
+							<h:commandLink value="${msg.register_link}" action="register_user" immediate="true"/>
+						</li>
+						<li>
+							<h:commandLink value="${msg.password_send_link}" action="forgot_password" immediate="true"/>
+						</li>
+					</ul>
+				</o:block>
+	   		</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
