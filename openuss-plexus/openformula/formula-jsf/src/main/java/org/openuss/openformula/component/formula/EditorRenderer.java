@@ -30,9 +30,9 @@ public class EditorRenderer extends Renderer {
 	public EditorRenderer () {
 		super();
 		Properties properties = new Properties();
-		properties.put("file.resource.loader.path", "d:/development/workspaces/plexus-branches/openuss-plexus-3.1/openformula/formula-jsf/src/main/resources");
-//		properties.put("resource.loader", "class");
-//		properties.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+//		properties.put("file.resource.loader.path", "d/resources");
+		properties.put("resource.loader", "class");
+		properties.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 //		properties.put("velocimarco.lirary", "");
 		
 		try {
