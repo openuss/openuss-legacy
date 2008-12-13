@@ -1,0 +1,11 @@
+
+<soapenv:Envelope
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:lsf="http://cse.campussource.de/lsf/schema/LSFSynchronizationMessage">
+    <soapenv:Body>
+        <response xmlns:msgns="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns="">succeed</response>
+    </soapenv:Body>
+</soapenv:Envelope>

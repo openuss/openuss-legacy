@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:ns2="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation" xmlns:ns3="http://cse.campussource.de/cse/wsdl/Course" xmlns:ns4="http://cse.campussource/cse/bpel/CreateCourse" xmlns:ns5="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" xmlns:ns6="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage" version="1.0">
+    <service-assembly>
+        <identification>
+            <name>CSEImproveCA</name>
+            <description>Represents the Service Assembly of CSEImproveCA</description>
+        </identification>
+        <connections>
+            <connection>
+                <consumer endpoint-name="LSFSynchronizationMessagePort" service-name="ns1:LSFSynchronizationMessageService"/>
+                <provider endpoint-name="LSFSynchronizationMessagePortTypeRole_myRole" service-name="ns2:LSFPLink"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="CoursePortTypeBindingPort" service-name="ns3:CourseService"/>
+                <provider endpoint-name="CoursePortTypeRole_myRole" service-name="ns4:CoursePLink"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="SynchronizationMessagePort" service-name="ns5:SynchronizationMessageService"/>
+                <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns6:SyncMsgPLink"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" service-name="ns2:SyncMsgPLink"/>
+                <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns6:SyncMsgPLink"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="CoursePortTypeRole_partnerRole" service-name="ns6:CoursePLink"/>
+                <provider endpoint-name="CoursePortTypeRole_myRole" service-name="ns4:CoursePLink"/>
+            </connection>
+        </connections>
+    </service-assembly>
+</jbi>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<synchronizationMessage>
+	<isSyncMessage>false</isSyncMessage>
+	<semester>
+		<data>
+			<lsfId>20082</lsfId>
+			<shortName>WS 2008/09</shortName>
+			<name>Wintersemester 2008/09</name>
+			<start>01.10.2008</start>
+			<end>31.3.2009</end>
+			<lectureStart>01.10.2008</lectureStart>
+			<lectureEnd>31.03.2009</lectureEnd>
+		</data>
+	</semester>
+	<vvz rootKategorieId="1">
+		<kategorie>
+			<lsfId>1</lsfId>
+			<name>Root-Category</name>
+			<children>
+				<lsfId>10</lsfId>
+				<lsfId>20</lsfId>
+			</children>
+			<sort>1000</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>10</lsfId>
+			<name>Level1</name>
+			<children>
+			</children>
+			<sort>1010</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>20</lsfId>
+			<name>Level1 (deep)</name>
+			<children>
+				<lsfId>100</lsfId>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>100</lsfId>
+			<name>Level2 (deep)</name>
+			<children>
+				<lsfId>1000</lsfId>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>1000</lsfId>
+			<name>Level3 (deep)</name>
+			<children>
+				<lsfId>10000</lsfId>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>10000</lsfId>
+			<name>Level4 (deep)</name>
+			<children>
+				<lsfId>100000</lsfId>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>100000</lsfId>
+			<name>Level5 (deep)</name>
+			<children>
+				<lsfId>1000000</lsfId>
+				<lsfId>1000001</lsfId>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>1000000</lsfId>
+			<name>Level6 (deep)</name>
+			<children>
+			</children>
+			<sort>1020</sort>
+		</kategorie>
+		<kategorie>
+			<lsfId>1000001</lsfId>
+			<name>Level6-2 (deep)</name>
+			<children>
+			</children>
+ 			<sort>1000</sort>	
+		</kategorie>
+	</vvz>
+	<accounts>
+		<account>
+			<lsfId>1</lsfId>
+			<surname>Hansen</surname>
+			<firstName>Hans</firstName>
+			<academicTitle>Univ.-Prof. Dr. rer. pol.</academicTitle>
+			<gender>M</gender>
+			<emailAddress>hans.hansen@domain.xx</emailAddress>
+		</account>
+		<account>
+			<lsfId>2</lsfId>
+			<surname>Becker</surname>
+			<firstName>Bernd</firstName>
+			<academicTitle>Univ.-Prof. Dr. jur.</academicTitle>
+			<gender>M</gender>
+			<emailAddress>bernd.becker@domain.xx</emailAddress>
+		</account>
+	</accounts>
+	<lectures>
+		<lecture>
+			<lsfId>100000</lsfId>
+			<logicalNumber>100000</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100000</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<categories>
+				<category>
+					<lsfId>1</lsfId>
+					<sort>1</sort>
+				</category>
+			</categories>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100001</lsfId>
+			<logicalNumber>100001</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100001</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<categories>
+				<category>
+					<lsfId>1</lsfId>
+					<sort>2</sort>
+				</category>
+			</categories>
+			<accounts>
+				<account>
+					<lsfId>1</lsfId>
+					<roleName>dozent</roleName>
+				</account>
+				<account>
+					<lsfId>2</lsfId>
+					<roleName>dozent</roleName>
+				</account>
+			</accounts>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100002</lsfId>
+			<logicalNumber>100002</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100002</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<categories>
+				<category>
+					<lsfId>1</lsfId>
+					<sort>1</sort>
+				</category>
+			</categories>
+			<accounts>
+				<account>
+					<lsfId>1</lsfId>
+					<roleName>dozent</roleName>
+				</account>
+				<account>
+					<lsfId>2</lsfId>
+					<roleName>student</roleName>
+				</account>
+			</accounts>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100003</lsfId>
+			<logicalNumber>100003</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100003</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100004</lsfId>
+			<logicalNumber>100004</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100004</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100005</lsfId>
+			<logicalNumber>100005</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100005</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100006</lsfId>
+			<logicalNumber>100006</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100006</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100007</lsfId>
+			<logicalNumber>100007</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100007</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100008</lsfId>
+			<logicalNumber>100008</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100008</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100009</lsfId>
+			<logicalNumber>100009</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100009</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+		<lecture>
+			<lsfId>100010</lsfId>
+			<logicalNumber>100010</logicalNumber>
+			<type>Sonstiges</type>
+			<title>Kurs Nr. 100010</title>
+			<shortDescription />
+			<abbreviation />
+			<prerequisites />
+			<necessaryAssignment>N</necessaryAssignment>
+			<hyperlink />
+			<note />
+			<comment />
+			<semesterAsInt>20082</semesterAsInt>
+			<semesterPeriodsPerWeek />
+			<expectedRegistrations />
+			<maximumRegistrations />
+			<activityConfirmation />
+			<literature />
+			<lectureTypeId>83</lectureTypeId>
+			<semesterAbbr>WS 2008/09</semesterAbbr>
+			<semesterFull>WS 2008/09</semesterFull>
+			<groups />
+		</lecture>
+	</lectures>
+</synchronizationMessage>

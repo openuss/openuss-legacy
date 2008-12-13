@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:ns2="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" xmlns:ns3="http://cse.campussource.de/cse/wsdl/Course" xmlns:ns4="http://cse.campussource/cse/bpel/CreateCourse" xmlns:ns5="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage" xmlns:ns6="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation" xmlns:xlink="http://www.w3.org/2000/xlink">
+    <endpoints>
+        <endpoint endpoint-name="LSFSynchronizationMessagePort" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint1" service-name="ns1:LSFSynchronizationMessageService"/>
+        <endpoint endpoint-name="SynchronizationMessagePort" interface-name="ns2:SynchronizationMessagePortType" name="endpoint2" service-name="ns2:SynchronizationMessageService"/>
+        <endpoint endpoint-name="CoursePortTypeBindingPort" interface-name="ns3:CoursePortType" name="endpoint3" service-name="ns3:CourseService"/>
+        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_myRole" file-path="CSE\CreateCourse.bpel" interface-name="ns3:CoursePortType" name="endpoint4" process-name="CreateCourse" service-name="ns4:CoursePLink"/>
+        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_myRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint5" process-name="SplittSyncMessage" service-name="ns5:SyncMsgPLink"/>
+        <endpoint display-name="LSFPLink" endpoint-name="LSFSynchronizationMessagePortTypeRole_myRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint6" process-name="SyncMsgTransformation" service-name="ns6:LSFPLink"/>
+        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_partnerRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns3:CoursePortType" name="endpoint7" process-name="SplittSyncMessage" service-name="ns5:CoursePLink"/>
+        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint8" process-name="SyncMsgTransformation" service-name="ns6:SyncMsgPLink"/>
+    </endpoints>
+    <service-units>
+        <service-engine-service-unit artifacts-zip="CSEImprove.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="CSEImproveCA-CSEImprove" unit-name="CSEImprove" unknown="false" x="201" y="221">
+            <provides endpoint="endpoint4"/>
+            <provides endpoint="endpoint5"/>
+            <provides endpoint="endpoint6"/>
+            <consumes endpoint="endpoint7"/>
+            <consumes endpoint="endpoint8"/>
+        </service-engine-service-unit>
+        <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="CSEImproveCA-sun-http-binding" unit-name="sun-http-binding">
+            <ports>
+                <port x="0" y="-1">
+                    <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/Course.wsdl#xpointer(/definitions/service[@name='CourseService']/port[@name='CoursePortTypeBindingPort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint3"/>
+                    <provides endpoint="endpoint3"/>
+                </port>
+                <port x="0" y="-1">
+                    <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/service[@name='LSFSynchronizationMessageService']/port[@name='LSFSynchronizationMessagePort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint1"/>
+                    <provides endpoint="endpoint1"/>
+                </port>
+                <port x="0" y="-1">
+                    <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/service[@name='SynchronizationMessageService']/port[@name='SynchronizationMessagePort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint2"/>
+                    <provides endpoint="endpoint2"/>
+                </port>
+            </ports>
+        </binding-component-service-unit>
+    </service-units>
+    <connections>
+        <connection consumer="endpoint1" provider="endpoint6" state="unchanged"/>
+        <connection consumer="endpoint3" provider="endpoint4" state="unchanged"/>
+        <connection consumer="endpoint2" provider="endpoint5" state="unchanged"/>
+        <connection consumer="endpoint8" provider="endpoint5" state="unchanged"/>
+        <connection consumer="endpoint7" provider="endpoint4" state="unchanged"/>
+    </connections>
+    <porttypes>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/Course.wsdl#xpointer(/definitions/portType[@name='CoursePortType'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/portType[@name='LSFSynchronizationMessagePortType'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/portType[@name='SynchronizationMessagePortType'])" xlink:type="simple"/>
+    </porttypes>
+    <bindings>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/Course.wsdl#xpointer(/definitions/binding[@name='CoursePortTypeBinding'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/binding[@name='LSFSynchronizationMessageBinding'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/binding[@name='SynchronizationMessageBinding'])" xlink:type="simple"/>
+    </bindings>
+    <services>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/Course.wsdl#xpointer(/definitions/service[@name='CourseService'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/service[@name='LSFSynchronizationMessageService'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/service[@name='SynchronizationMessageService'])" xlink:type="simple"/>
+    </services>
+    <regions>
+        <region name="WSDL Endpoints" width="150"/>
+        <region name="JBI Modules" width="500"/>
+        <region name="External Modules" width="200"/>
+    </regions>
+</casa>
