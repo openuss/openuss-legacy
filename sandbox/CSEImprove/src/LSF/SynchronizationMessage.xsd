@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://cse.campussource.de/lsf/schema/SynchronizationMessage"
+    targetNamespace="http://cse.campussource.de/lsf/schema/SynchronizationMessage"
+    xmlns:cse="http://cse.campussource.de/cse/schema/DataTypes">
+
+  <xs:import schemaLocation="../CSE/DataTypes.xsd" namespace="http://cse.campussource.de/cse/schema/DataTypes"/>
+
+  <xs:element name="synchronizationMessage" type="tns:synchronizationMessageType"/>
+
+  <xs:complexType name="synchronizationMessageType">
+    <xs:sequence>
+      <xs:element name="isDebug" type="xs:boolean"/>
+      <xs:element name="isSyncMessage" type="xs:boolean"/>
+      <xs:element name="semesterName" type="xs:string" minOccurs="0"/>
+      <xs:element name="semesterLsfId" type="xs:string" minOccurs="0"/>
+      <xs:element name="rootCategoryId" type="xs:string" minOccurs="0"/>
+      <xs:element name="accounts" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="account" type="cse:accountType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="courseTypes" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="courseType" type="cse:courseTypeType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="courses" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="course" type="cse:courseType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="workgroups" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="workgroup" type="cse:workgroupType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="categories" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="category" type="cse:categoryType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="relations" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="relation" type="cse:mappedRelationType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="roles" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="role" type="cse:roleType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="coursesToDelete" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lsfId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="accountsToDelete" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lsfId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="courseTypesToDelete" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="lsfId" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

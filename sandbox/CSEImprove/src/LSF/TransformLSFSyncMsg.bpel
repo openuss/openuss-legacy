@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="SyncMsgTransformation"
+    targetNamespace="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:tns="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation"
+    xmlns:lsf="http://cse.campussource.de/lsf/schema/LSFSynchronizationMessage"
+    xmlns:cse="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage"
+    xmlns:lsfs="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage"
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+    <import namespace="http://cse.campussource.de/lsf/schema/LSFSynchronizationMessage" location="LSFSyncMessage.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://cse.campussource.de/lsf/schema/SynchronizationMessage" location="SynchronizationMessage.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" location="LSFSynchronizationMessage.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" location="SynchronizationMessage.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="SyncMsgPLink" xmlns:tns="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" partnerLinkType="tns:SynchronizationMessage" partnerRole="SynchronizationMessagePortTypeRole"/>
+        <partnerLink name="LSFPLink" partnerLinkType="lsfs:LSFSynchronizationMessage" myRole="LSFSynchronizationMessagePortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="SynchronizeOut" messageType="lsfs:synchronizeResponse"/>
+        <variable name="SynchronizeIn" messageType="lsfs:synchronizeRequest"/>
+        <variable name="transformed" messageType="cse:performRequest"/>
+    </variables>
+    <sequence>
+        <receive name="Receive" createInstance="yes" partnerLink="LSFPLink" operation="synchronize" portType="lsfs:LSFSynchronizationMessagePortType" variable="SynchronizeIn"/>
+        <assign name="transform">
+            <copy>
+                <from>bpws:doXslTransform('urn:stylesheets:transformation.xsl', $SynchronizeIn.message)</from>
+                <to variable="transformed" part="data"/>
+            </copy>
+        </assign>
+        <invoke name="SyncMsg" 
+            partnerLink="SyncMsgPLink"
+            operation="perform"
+            xmlns:tns="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage"
+            portType="tns:SynchronizationMessagePortType"
+            inputVariable="transformed"/>
+        <assign name="Response">
+            <copy>
+                <from>'succeed'</from>
+                <to variable="SynchronizeOut" part="response"/>
+            </copy>
+        </assign>
+        <reply name="Reply" partnerLink="LSFPLink" operation="synchronize" portType="lsfs:LSFSynchronizationMessagePortType" variable="SynchronizeOut"/>
+    </sequence>
+</process>

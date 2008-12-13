@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="SplittSyncMessage"
+    targetNamespace="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage"
+    xmlns:cse="http://cse.campussource.de/cse/schema/DataTypes"
+    xmlns:sync="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage">
+    <import namespace="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" location="SynchronizationMessage.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://cse.campussource.de/cse/schema/DataTypes" location="../CSE/DataTypes.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://cse.campussource.de/cse/wsdl/Course" location="../CSE/Course.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="CoursePLink" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" partnerLinkType="tns:Course" partnerRole="CoursePortTypeRole"/>
+        <partnerLink name="SyncMsgPLink" xmlns:tns="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" partnerLinkType="tns:SynchronizationMessage" myRole="SynchronizationMessagePortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="PerformIn" xmlns:tns="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" messageType="tns:performRequest"/>
+    </variables>
+    <sequence>
+        <receive name="ReceiveSyncMessage" createInstance="yes" partnerLink="SyncMsgPLink" operation="perform" xmlns:tns="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" portType="tns:SynchronizationMessagePortType" variable="PerformIn"/>
+        <empty name="NOP">
+            <sxt:trace>
+                <sxt:log level="info" location="onStart">
+                    <from>concat('--------------&gt;', $PerformIn.data/semesterName)</from>
+                </sxt:log>
+            </sxt:trace>
+        </empty>
+        <flow>
+            <forEach name="ForEachCourse" parallel="no" counterName="courseIndex">
+                <startCounterValue>1</startCounterValue>
+                <finalCounterValue>count($PerformIn.data/courses/course)</finalCounterValue>
+                <scope name="CreateSingleCourseScope">
+                    <variables>
+                        <variable name="CreateCourseOut" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationResponse"/>
+                        <variable name="CreateCourseIn" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationRequest"/>
+                        <variable name="course" type="cse:courseType"/>
+                    </variables>
+                    <sequence name="splitt_sequence">
+                        <assign name="ExtractCourse">
+                            <copy>
+                                <from>$PerformIn.data/courses/course[$courseIndex]</from>
+                                <to>$course</to>
+                            </copy>
+                        </assign>
+                        <assign name="Assign">
+                            <copy>
+                                <from variable="course"/>
+                                <to variable="CreateCourseIn" part="course"/>
+                            </copy>
+                        </assign>
+                        <invoke name="InvokeCreateCourse" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" inputVariable="CreateCourseIn" outputVariable="CreateCourseOut">
+                            <sxt:trace>
+                                <sxt:log level="info" location="onStart">
+                                    <from>concat('Fire Invoke Course:', $course/title, ' - ', $course/type)</from>
+                                </sxt:log>
+                            </sxt:trace>
+                        </invoke>
+                        <empty name="LogState">
+                            <sxt:trace>
+                                <sxt:log level="info" location="onStart">
+                                    <from>concat($CreateCourseOut.result/clientId, ',', $CreateCourseOut.result/status, ',', $CreateCourseOut.result/reason)</from>
+                                </sxt:log>
+                            </sxt:trace>
+                        </empty>
+                    </sequence>
+                </scope>
+            </forEach>
+            <forEach name="ForEachAccount" parallel="no" counterName="accountIndex">
+                <startCounterValue>1</startCounterValue>
+                <finalCounterValue>count($PerformIn.data/accounts/account)</finalCounterValue>
+                <scope name="account">
+                    <variables>
+                        <variable name="account" type="cse:accountType"/>
+                    </variables>
+                    <sequence name="splitt_sequence">
+                        <assign name="ExtractAccount">
+                            <copy>
+                                <from>$PerformIn.data/accounts/account[$accountIndex]</from>
+                                <to>$account</to>
+                            </copy>
+                        </assign>
+                        <empty name="create_account">
+                            <sxt:trace>
+                                <sxt:log level="info" location="onStart">
+                                    <from>concat('Create Account:', $account/surname, ', ', $account/firstName, ' (', $account/emailAddress, ' )')</from>
+                                </sxt:log>
+                            </sxt:trace>
+                        </empty>
+                    </sequence>
+                </scope>
+            </forEach>
+        </flow>
+    </sequence>
+</process>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Course" 
+    targetNamespace="http://cse.campussource.de/cse/wsdl/Course"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://cse.campussource.de/cse/wsdl/Course"
+    xmlns:crs="http://cse.campussource.de/cse/schema/Course" 
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://cse.campussource/cse/wsdl/Course">
+            <xsd:import namespace="http://cse.campussource.de/cse/schema/Course" schemaLocation="Course.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="CreateCourseOperationRequest">
+        <part name="course" element="crs:course"/>
+    </message>
+    <message name="CreateCourseOperationResponse">
+        <part name="result" element="crs:result"/>
+    </message>
+    <message name="UpdateCourseOperationRequest">
+        <part name="course" element="crs:course"/>
+    </message>
+    <message name="UpdateCourseOperationResponse">
+        <part name="result" element="crs:result"/>
+    </message>
+    <message name="DeleteCourseOperationRequest">
+        <part name="course" element="crs:course"/>
+    </message>
+    <message name="DeleteCourseOperationResponse">
+        <part name="result" element="crs:result"/>
+    </message>
+    <portType name="CoursePortType">
+        <operation name="createCourse">
+            <input name="inputCreateCourse" message="tns:CreateCourseOperationRequest"/>
+            <output name="outputCreateCourse" message="tns:CreateCourseOperationResponse"/>
+        </operation>
+        <operation name="updateCourse">
+            <input name="inputUpdateCourse" message="tns:UpdateCourseOperationRequest"/>
+            <output name="outputUpdateCourse" message="tns:UpdateCourseOperationResponse"/>
+        </operation>
+        <operation name="deleteCourse">
+            <input name="inputDeleteCourse" message="tns:DeleteCourseOperationRequest"/>
+            <output name="outputDeleteCourse" message="tns:DeleteCourseOperationResponse"/>
+        </operation>
+    </portType>
+    <binding name="CoursePortTypeBinding" type="tns:CoursePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="createCourse">
+            <soap:operation/>
+            <input name="inputCreateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputCreateCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="updateCourse">
+            <soap:operation/>
+            <input name="inputUpdateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputUpdateCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="deleteCourse">
+            <soap:operation/>
+            <input name="inputDeleteCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputDeleteCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="CourseService">
+        <port name="CoursePortTypeBindingPort" binding="tns:CoursePortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/CourseService/CoursePortTypeBindingPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="Course">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="CoursePortTypeRole" portType="tns:CoursePortType"/>
+    </plnk:partnerLinkType>
+</definitions>

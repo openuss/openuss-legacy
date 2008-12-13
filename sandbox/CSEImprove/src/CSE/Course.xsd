@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://cse.campussource.de/cse/schema/Course"
+            xmlns:tns="http://cse.campussource.de/cse/schema/Course"
+            elementFormDefault="qualified" 
+            xmlns:cdt="http://cse.campussource.de/cse/schema/DataTypes">
+    <xsd:import schemaLocation="DataTypes.xsd" namespace="http://cse.campussource.de/cse/schema/DataTypes"/>
+    <xsd:element name="course" type="cdt:courseType"/>
+    <xsd:element name="result" type="cdt:resultType"/>
+</xsd:schema>

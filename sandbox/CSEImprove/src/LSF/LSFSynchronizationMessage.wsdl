@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="LSFSynchronizationMessage"
+    targetNamespace="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage"
+    xmlns:tns="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage"
+    xmlns:lsf="http://cse.campussource.de/lsf/schema/LSFSynchronizationMessage"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage">
+            <xsd:import namespace="http://cse.campussource.de/lsf/schema/LSFSynchronizationMessage" schemaLocation="LSFSyncMessage.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="synchronizeRequest">
+        <part name="message" element="lsf:synchronizationMessage"/>
+    </message>
+    <message name="synchronizeResponse">
+        <part name="response" type="xsd:string"/>
+    </message>
+    <portType name="LSFSynchronizationMessagePortType">
+        <operation name="synchronize">
+            <input name="inputSyncMessage" message="tns:synchronizeRequest"/>
+            <output name="response" message="tns:synchronizeResponse"/>
+        </operation>
+    </portType>
+    <binding name="LSFSynchronizationMessageBinding" type="tns:LSFSynchronizationMessagePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="synchronize">
+            <soap:operation/>
+            <input name="inputSyncMessage">
+                <soap:body use="literal"/>
+            </input>
+            <output name="response">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="LSFSynchronizationMessageService">
+        <port name="LSFSynchronizationMessagePort" binding="tns:LSFSynchronizationMessageBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/LSFSynchronizationMessageService/LSFSynchronizationMessagePort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="LSFSynchronizationMessage">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="LSFSynchronizationMessagePortTypeRole" portType="tns:LSFSynchronizationMessagePortType"/>
+    </plnk:partnerLinkType>
+</definitions>

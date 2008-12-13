@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<synchronizationMessage xmlns="http://cse.campussource.de/lsf/schema/SynchronizationMessage">
+    <isSyncMessage>false</isSyncMessage>
+    <semesterName>WS 2008/09</semesterName>
+    <semesterLsfId>20082</semesterLsfId>
+    <rootCategoryId>category:1</rootCategoryId>
+    <accounts>
+        <account>
+            <clientId>account:1</clientId>
+            <globalRole>Tutor</globalRole>
+            <lsfId>1</lsfId>
+            <surname>Hansen</surname>
+            <firstName>Hans</firstName>
+            <academicTitle>Univ.-Prof. Dr. rer. pol.</academicTitle>
+            <gender>M</gender>
+            <emailAddress>hans.hansen@domain.xx</emailAddress>
+        </account>
+        <account>
+            <clientId>account:2</clientId>
+            <globalRole>Tutor</globalRole>
+            <lsfId>2</lsfId>
+            <surname>Becker</surname>
+            <firstName>Bernd</firstName>
+            <academicTitle>Univ.-Prof. Dr. jur.</academicTitle>
+            <gender>M</gender>
+            <emailAddress>bernd.becker@domain.xx</emailAddress>
+        </account>
+    </accounts>
+    <courseTypes/>
+    <courses>
+        <course>
+            <lsfId>100000</lsfId>
+            <logicalNumber>100000</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100000</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100000</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100001</lsfId>
+            <logicalNumber>100001</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100001</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100001</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100002</lsfId>
+            <logicalNumber>100002</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100002</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100002</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100003</lsfId>
+            <logicalNumber>100003</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100003</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100003</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100004</lsfId>
+            <logicalNumber>100004</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100004</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100004</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100005</lsfId>
+            <logicalNumber>100005</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100005</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100005</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100006</lsfId>
+            <logicalNumber>100006</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100006</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100006</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100007</lsfId>
+            <logicalNumber>100007</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100007</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100007</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100008</lsfId>
+            <logicalNumber>100008</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100008</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100008</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100009</lsfId>
+            <logicalNumber>100009</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100009</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100009</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+        <course>
+            <lsfId>100010</lsfId>
+            <logicalNumber>100010</logicalNumber>
+            <type>Sonstiges</type>
+            <title>Kurs Nr. 100010</title>
+            <shortDescription/>
+            <abbreviation/>
+            <prerequisites/>
+            <necessaryAssignment>N</necessaryAssignment>
+            <hyperlink/>
+            <note/>
+            <comment/>
+            <semesterAsInt>20082</semesterAsInt>
+            <semesterPeriodsPerWeek/>
+            <expectedRegistrations/>
+            <maximumRegistrations/>
+            <activityConfirmation/>
+            <literature/>
+            <semesterAbbr>WS 2008/09</semesterAbbr>
+            <semesterFull>WS 2008/09</semesterFull>
+            <courseTypeId>83</courseTypeId>
+            <clientId>course:100010</clientId>
+            <semesterId>20082</semesterId>
+            <startDate>01.10.2008</startDate>
+            <endDate>31.03.2009</endDate>
+        </course>
+    </courses>
+    <workgroups/>
+    <categories>
+        <category>
+            <clientId>category:1</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>1</lsfId>
+            <name>Root-Category</name>
+
+        </category>
+        <category>
+            <clientId>category:10</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>10</lsfId>
+            <name>Level1</name>
+
+        </category>
+        <category>
+            <clientId>category:20</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>20</lsfId>
+            <name>Level1 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:100</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>100</lsfId>
+            <name>Level2 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:1000</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>1000</lsfId>
+            <name>Level3 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:10000</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>10000</lsfId>
+            <name>Level4 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:100000</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>100000</lsfId>
+            <name>Level5 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:1000000</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>1000000</lsfId>
+            <name>Level6 (deep)</name>
+
+        </category>
+        <category>
+            <clientId>category:1000001</clientId>
+            <semesterId>20082</semesterId>
+            <lsfId>1000001</lsfId>
+            <name>Level6-2 (deep)</name>
+
+        </category>
+    </categories>
+    <relations>
+        <relation>
+            <clientId>relation:category:1:course:100000</clientId>
+            <relationType>category_to_courses</relationType>
+            <clientParentId>category:1</clientParentId>
+            <clientChildId>course:100000</clientChildId>
+            <childSort>1</childSort>
+        </relation>
+        <relation>
+            <clientId>relation:category:1:course:100001</clientId>
+            <relationType>category_to_courses</relationType>
+            <clientParentId>category:1</clientParentId>
+            <clientChildId>course:100001</clientChildId>
+            <childSort>2</childSort>
+        </relation>
+        <relation>
+            <clientId>relation:category:1:course:100002</clientId>
+            <relationType>category_to_courses</relationType>
+            <clientParentId>category:1</clientParentId>
+            <clientChildId>course:100002</clientChildId>
+            <childSort>1</childSort>
+        </relation>
+    </relations>
+    <roles>
+        <role>
+            <clientId>role:account:1:course:100001</clientId>
+            <name>course:dozent</name>
+            <clientAccountId>account:1</clientAccountId>
+            <clientObjectId>course:100001</clientObjectId>
+        </role>
+        <role>
+            <clientId>role:account:2:course:100001</clientId>
+            <name>course:dozent</name>
+            <clientAccountId>account:2</clientAccountId>
+            <clientObjectId>course:100001</clientObjectId>
+        </role>
+        <role>
+            <clientId>role:account:1:course:100002</clientId>
+            <name>course:dozent</name>
+            <clientAccountId>account:1</clientAccountId>
+            <clientObjectId>course:100002</clientObjectId>
+        </role>
+        <role>
+            <clientId>role:account:2:course:100002</clientId>
+            <name>course:student</name>
+            <clientAccountId>account:2</clientAccountId>
+            <clientObjectId>course:100002</clientObjectId>
+        </role>
+    </roles>
+    <coursesToDelete/>
+    <accountsToDelete/>
+    <courseTypesToDelete/>
+</synchronizationMessage>
