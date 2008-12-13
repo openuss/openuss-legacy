@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CSECourseWrapper" 
+    targetNamespace="http://cse.campussource.de/cse/wsdl/CourseWrapper"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://cse.campussource.de/cse/wsdl/CourseWrapper"
+    xmlns:crs="http://cse.campussource.de/cse/wsdl/Course">
+
+    <wsdl:import namespace="http://cse.campussource.de/cse/wsdl/Course" location="Course.wsdl"/>
+
+    <binding name="CoursePortTypeBinding" type="crs:CoursePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="createCourse">
+            <soap:operation/>
+            <input name="inputCreateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputCreateCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="updateCourse">
+            <soap:operation/>
+            <input name="inputUpdateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputUpdateCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="deleteCourse">
+            <soap:operation/>
+            <input name="inputDeleteCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputDeleteCourse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <service name="CourseService">
+        <port name="CoursePortTypeBindingPort" binding="tns:CoursePortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/CourseService/CoursePortTypeBindingPort"/>
+        </port>
+    </service>
+
+</definitions>

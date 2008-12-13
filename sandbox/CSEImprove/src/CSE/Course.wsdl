@@ -6,7 +6,7 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
     xmlns:tns="http://cse.campussource.de/cse/wsdl/Course"
     xmlns:crs="http://cse.campussource.de/cse/schema/Course" 
-    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
     <types>
         <xsd:schema targetNamespace="http://cse.campussource/cse/wsdl/Course">
             <xsd:import namespace="http://cse.campussource.de/cse/schema/Course" schemaLocation="Course.xsd"/>
@@ -44,41 +44,6 @@
             <output name="outputDeleteCourse" message="tns:DeleteCourseOperationResponse"/>
         </operation>
     </portType>
-    <binding name="CoursePortTypeBinding" type="tns:CoursePortType">
-        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <operation name="createCourse">
-            <soap:operation/>
-            <input name="inputCreateCourse">
-                <soap:body use="literal"/>
-            </input>
-            <output name="outputCreateCourse">
-                <soap:body use="literal"/>
-            </output>
-        </operation>
-        <operation name="updateCourse">
-            <soap:operation/>
-            <input name="inputUpdateCourse">
-                <soap:body use="literal"/>
-            </input>
-            <output name="outputUpdateCourse">
-                <soap:body use="literal"/>
-            </output>
-        </operation>
-        <operation name="deleteCourse">
-            <soap:operation/>
-            <input name="inputDeleteCourse">
-                <soap:body use="literal"/>
-            </input>
-            <output name="outputDeleteCourse">
-                <soap:body use="literal"/>
-            </output>
-        </operation>
-    </binding>
-    <service name="CourseService">
-        <port name="CoursePortTypeBindingPort" binding="tns:CoursePortTypeBinding">
-            <soap:address location="http://localhost:${HttpDefaultPort}/CourseService/CoursePortTypeBindingPort"/>
-        </port>
-    </service>
     <plnk:partnerLinkType name="Course">
         <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
 In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
