@@ -6,38 +6,66 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
-    xmlns:tns="http://cse.campussource/cse/bpel/CreateCourse">
-   <import namespace="http://cse.campussource.de/cse/wsdl/Course" location="Course.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-   <partnerLinks>
-      <partnerLink name="CoursePLink" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" partnerLinkType="tns:Course" myRole="CoursePortTypeRole"/>
-   </partnerLinks>
-   <variables>
-      <variable name="CreateCourseOut" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationResponse"/>
-      <variable name="CreateCourseIn" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationRequest"/>
-   </variables>
-   <sequence name="CreateCourse">
-      <receive name="Receive" createInstance="yes" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" variable="CreateCourseIn"/>
-      <empty name="InvokeLMS">
-         <sxt:trace>
-            <sxt:log level="info" location="onStart">
-               <from>concat('Invoke LMS to create course', $CreateCourseIn.course/title)</from>
-            </sxt:log>
-         </sxt:trace>
-      </empty>
-      <assign name="Assign">
-         <copy>
-            <from>$CreateCourseIn.course/clientId</from>
-            <to>$CreateCourseOut.result/clientId</to>
-         </copy>
-         <copy>
-            <from>'OK'</from>
-            <to>$CreateCourseOut.result/status</to>
-         </copy>
-         <copy>
-            <from>'OK'</from>
-            <to>$CreateCourseOut.result/reason</to>
-         </copy>
-      </assign>
-      <reply name="Reply" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" variable="CreateCourseOut"/>
-   </sequence>
+    xmlns:tns="http://cse.campussource/cse/bpel/CreateCourse" 
+    xmlns:adt="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter">
+    <import namespace="http://cse.campussource.de/cse/wsdl/Course" location="Course.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" location="LMSGenericAdapter.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="GeneryAdapterPLink" xmlns:tns="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" partnerLinkType="tns:LMSGenericAdapter" partnerRole="LMSGenericAdapterPortTypeRole"/>
+        <partnerLink name="CoursePLink" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" partnerLinkType="tns:Course" myRole="CoursePortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="CreateCourseOutAdapter" xmlns:tns="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" messageType="adt:courseResponse"/>
+        <variable name="CreateCourseInAdapter" xmlns:tns="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" messageType="adt:courseRequest"/>
+        <variable name="CreateCourseOut" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationResponse"/>
+        <variable name="CreateCourseIn" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" messageType="tns:CreateCourseOperationRequest"/>
+    </variables>
+    <sequence name="CreateCourse">
+        <receive name="Receive" createInstance="yes" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" variable="CreateCourseIn"/>
+        <assign name="Parameter">
+            <copy>
+                <from variable="CreateCourseIn" part="course"/>
+                <to variable="CreateCourseInAdapter" part="part"/>
+            </copy>
+        </assign>
+        <scope name="Scope1">
+            <faultHandlers>
+                <catchAll>
+                    <sequence name="SequenceError">
+                        <assign name="StateError">
+                            <copy>
+                                <from>$CreateCourseInAdapter.part/clientId</from>
+                                <to>$CreateCourseOut.result/clientId</to>
+                            </copy>
+                            <copy>
+                                <from>'Errror'</from>
+                                <to>$CreateCourseOut.result/status</to>
+                            </copy>
+                            <copy>
+                                <from>'Error'</from>
+                                <to>$CreateCourseOut.result/reason</to>
+                            </copy>
+                        </assign>
+                        <reply name="Reply" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" variable="CreateCourseOut"/>
+                    </sequence>
+                </catchAll>
+            </faultHandlers>
+            <invoke name="InvokeAdapter" partnerLink="GeneryAdapterPLink" operation="createCourse" portType="adt:LMSGenericAdapterPortType" inputVariable="CreateCourseInAdapter" outputVariable="CreateCourseOutAdapter"></invoke>
+        </scope>
+        <assign name="StateOK">
+            <copy>
+                <from>$CreateCourseInAdapter.part/clientId</from>
+                <to>$CreateCourseOut.result/clientId</to>
+            </copy>
+            <copy>
+                <from>'Ok'</from>
+                <to>$CreateCourseOut.result/status</to>
+            </copy>
+            <copy>
+                <from>'Ok'</from>
+                <to>$CreateCourseOut.result/reason</to>
+            </copy>
+        </assign>
+        <reply name="Reply" partnerLink="CoursePLink" operation="createCourse" xmlns:tns="http://cse.campussource.de/cse/wsdl/Course" portType="tns:CoursePortType" variable="CreateCourseOut"/>
+    </sequence>
 </process>

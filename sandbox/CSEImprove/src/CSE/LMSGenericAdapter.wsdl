@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="LMSGenericAdapter" 
+    targetNamespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter"
+    xmlns:adt="http://cse.campussource.de/cse/schema/LMSGenericAdapter"
+    xmlns:dtp="http://cse.campussource.de/cse/schema/DataTypes"
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+    <types>
+        <xsd:schema targetNamespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter">
+            <xsd:import namespace="http://cse.campussource.de/cse/schema/LMSGenericAdapter" schemaLocation="LMSGenericAdapter.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="courseRequest">
+        <part name="part" element="adt:course"/>
+    </message>
+    <message name="courseResponse">
+        <part name="part" element="adt:result"/>
+    </message>
+    <message name="courseFault">
+        <part name="part" element="adt:error"/>
+    </message>
+    <message name="accountRequest">
+        <part name="part" element="adt:account"/>
+    </message>
+    <message name="accountResponse">
+        <part name="part" element="adt:result"/>
+    </message>
+    <message name="accountFault">
+        <part name="part" element="adt:error"/>
+    </message>
+    <message name="categoryRequest">
+        <part name="part" element="adt:category"/>
+    </message>
+    <message name="categoryResponse">
+        <part name="part" element="adt:result"/>
+    </message>
+    <message name="categoryFault">
+        <part name="part" element="adt:error"/>
+    </message>
+    <portType name="LMSGenericAdapterPortType">
+        <operation name="createCourse">
+            <input name="inputCreateCourse" message="tns:courseRequest"/>
+            <output name="outputCreateCourse" message="tns:courseResponse"/>
+            <fault name="faultCreateCourse" message="tns:courseFault"/>
+        </operation>
+        <operation name="updateCourse">
+            <input name="inputUpdateCourse" message="tns:courseRequest"/>
+            <output name="outputUpdateCourse" message="tns:courseResponse"/>
+            <fault name="faultUpdateCourse" message="tns:courseFault"/>
+        </operation>
+        <operation name="deleteCourse">
+            <input name="inputDeleteCourse" message="tns:courseRequest"/>
+            <output name="outputDeleteCourse" message="tns:courseResponse"/>
+            <fault name="faultDeleteCourse" message="tns:courseFault"/>
+        </operation>
+        <operation name="createAccount">
+            <input name="inputCreateAccount" message="tns:accountRequest"/>
+            <output name="outputCreateAccount" message="tns:accountResponse"/>
+            <fault name="faultCreateAccount" message="tns:accountFault"/>
+        </operation>
+        <operation name="updateAccount">
+            <input name="inputUpdate" message="tns:accountRequest"/>
+            <output name="outputUpdate" message="tns:accountResponse"/>
+            <fault name="faultUpdate" message="tns:accountFault"/>
+        </operation>
+        <operation name="deleteAccount">
+            <input name="input1" message="tns:accountRequest"/>
+            <output name="output1" message="tns:accountResponse"/>
+            <fault name="fault1" message="tns:accountFault"/>
+        </operation>
+        <operation name="createCategory">
+            <input name="inputCreateCategory" message="tns:categoryRequest"/>
+            <output name="outputCreateCategory" message="tns:categoryResponse"/>
+            <fault name="faultCreateCategory" message="tns:categoryFault"/>
+        </operation>
+        <operation name="updateCategory">
+            <input name="inputUpdateCategory" message="tns:categoryRequest"/>
+            <output name="outputUpdateCategory" message="tns:categoryResponse"/>
+            <fault name="faultUpdateCategory" message="tns:categoryFault"/>
+        </operation>
+        <operation name="deleteCategory">
+            <input name="inputDeleteCategory" message="tns:categoryRequest"/>
+            <output name="outputDeleteCategory" message="tns:categoryResponse"/>
+            <fault name="faultDeleteCategory" message="tns:categoryFault"/>
+        </operation>
+    </portType>
+    <plnk:partnerLinkType name="LMSGenericAdapter">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="LMSGenericAdapterPortTypeRole" portType="tns:LMSGenericAdapterPortType"/>
+    </plnk:partnerLinkType>
+</definitions>

@@ -4,180 +4,195 @@
             targetNamespace="http://cse.campussource.de/cse/schema/DataTypes"
             xmlns:tns="http://cse.campussource.de/cse/schema/DataTypes">
 
-  <xs:complexType name="accountType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedEntityType">
+    <xs:complexType name="accountType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedEntityType">
+                <xs:sequence>
+                    <xs:element name="lsfId" type="xs:string"/>
+                    <xs:element name="surname" type="xs:string"/>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="emailAddress" type="xs:string"/>
+                    <xs:element name="login" type="xs:string"/>
+                    <xs:element name="password" type="xs:string"/>
+                    <xs:element name="globalRole" type="xs:string" minOccurs="0"/>
+                    <xs:element name="degree" type="xs:string" minOccurs="0"/>
+                    <xs:element name="academicTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="gender" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="mappedEntityType" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedObjectType">
+                <xs:sequence/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="mappedObjectType" abstract="true">
         <xs:sequence>
-          <xs:element name="lsfId" type="xs:string"/>
-          <xs:element name="surname" type="xs:string"/>
-          <xs:element name="firstName" type="xs:string"/>
-          <xs:element name="emailAddress" type="xs:string"/>
-          <xs:element name="login" type="xs:string"/>
-          <xs:element name="password" type="xs:string"/>
-          <xs:element name="globalRole" type="xs:string" minOccurs="0"/>
-          <xs:element name="degree" type="xs:string" minOccurs="0"/>
-          <xs:element name="academicTitle" type="xs:string" minOccurs="0"/>
-          <xs:element name="gender" type="xs:string" minOccurs="0"/>
+            <xs:element name="busId" type="xs:int"/>
+            <xs:element name="clientId" type="xs:string" minOccurs="0"/>
+            <xs:element name="operation" type="xs:string" minOccurs="0"/>
         </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    </xs:complexType>
 
-  <xs:complexType name="mappedEntityType" abstract="true">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedObjectType">
-        <xs:sequence/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    <xs:complexType name="courseTypeType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedEntityType">
+                <xs:sequence>
+                    <xs:element name="lsfId" type="xs:int"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
+                    <xs:element name="longDescription" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-  <xs:complexType name="mappedObjectType" abstract="true">
-    <xs:sequence>
-      <xs:element name="busId" type="xs:int"/>
-      <xs:element name="clientId" type="xs:string" minOccurs="0"/>
-      <xs:element name="operation" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
+    <xs:complexType name="courseType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedEntityType">
+                <xs:sequence>
+                    <xs:element name="dates" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="date" type="tns:dateType" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="active" type="xs:string" minOccurs="0"/>
+                    <xs:element name="abbreviation" type="xs:string" minOccurs="0"/>
+                    <xs:element name="lsfId" type="xs:string"/>
+                    <xs:element name="logicalNumber" type="xs:int"/>
+                    <xs:element name="type" type="xs:string" minOccurs="0"/>
+                    <xs:element name="title" type="xs:string"/>
+                    <xs:element name="semesterId" type="xs:string"/>
+                    <xs:element name="clientTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
+                    <xs:element name="prerequisites" type="xs:string" minOccurs="0"/>
+                    <xs:element name="necessaryAssignment" type="xs:string" minOccurs="0"/>
+                    <xs:element name="languageISO" type="xs:string" minOccurs="0"/>
+                    <xs:element name="languageFull" type="xs:string" minOccurs="0"/>
+                    <xs:element name="hyperlink" type="xs:string" minOccurs="0"/>
+                    <xs:element name="hyperlinkname" type="xs:string" minOccurs="0"/>
+                    <xs:element name="note" type="xs:string" minOccurs="0"/>
+                    <xs:element name="comment" type="xs:string" minOccurs="0"/>
+                    <xs:element name="semesterAsInt" type="xs:short"/>
+                    <xs:element name="semesterAbbr" type="xs:string" minOccurs="0"/>
+                    <xs:element name="semesterFull" type="xs:string" minOccurs="0"/>
+                    <xs:element name="semesterPeriodsPerWeek" type="xs:int"/>
+                    <xs:element name="expectedRegistrations" type="xs:int"/>
+                    <xs:element name="maximumRegistrations" type="xs:int"/>
+                    <xs:element name="activityConfirmation" type="xs:string" minOccurs="0"/>
+                    <xs:element name="literature" type="xs:string" minOccurs="0"/>
+                    <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+                    <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+                    <xs:element name="superRoleBusId" type="xs:int"/>
+                    <xs:element name="assignmentManagement" type="xs:string" minOccurs="0"/>
+                    <xs:element name="leadingSystemForAssigments" type="xs:string" minOccurs="0"/>
+                    <xs:element name="bookingType" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-  <xs:complexType name="courseTypeType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedEntityType">
+    <xs:complexType name="dateType">
         <xs:sequence>
-          <xs:element name="lsfId" type="xs:int"/>
-          <xs:element name="name" type="xs:string"/>
-          <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
-          <xs:element name="longDescription" type="xs:string" minOccurs="0"/>
+            <xs:element name="dateId" type="xs:int"/>
+            <xs:element name="startdate" type="xs:string" minOccurs="0"/>
+            <xs:element name="enddate" type="xs:string" minOccurs="0"/>
+            <xs:element name="starttime" type="xs:string" minOccurs="0"/>
+            <xs:element name="endtime" type="xs:string" minOccurs="0"/>
+            <xs:element name="stct" type="xs:string" minOccurs="0"/>
+            <xs:element name="dayofweek" type="xs:string" minOccurs="0"/>
+            <xs:element name="rythm" type="xs:string" minOccurs="0"/>
         </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    </xs:complexType>
 
-  <xs:complexType name="courseType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedEntityType">
-        <xs:sequence>
-          <xs:element name="dates" minOccurs="0">
-            <xs:complexType>
-              <xs:sequence>
-                <xs:element name="date" type="tns:dateType" minOccurs="0" maxOccurs="unbounded"/>
-              </xs:sequence>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="active" type="xs:string" minOccurs="0"/>
-          <xs:element name="abbreviation" type="xs:string" minOccurs="0"/>
-          <xs:element name="lsfId" type="xs:string"/>
-          <xs:element name="logicalNumber" type="xs:int"/>
-          <xs:element name="type" type="xs:string" minOccurs="0"/>
-          <xs:element name="title" type="xs:string"/>
-          <xs:element name="semesterId" type="xs:string"/>
-          <xs:element name="clientTitle" type="xs:string" minOccurs="0"/>
-          <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
-          <xs:element name="prerequisites" type="xs:string" minOccurs="0"/>
-          <xs:element name="necessaryAssignment" type="xs:string" minOccurs="0"/>
-          <xs:element name="languageISO" type="xs:string" minOccurs="0"/>
-          <xs:element name="languageFull" type="xs:string" minOccurs="0"/>
-          <xs:element name="hyperlink" type="xs:string" minOccurs="0"/>
-          <xs:element name="hyperlinkname" type="xs:string" minOccurs="0"/>
-          <xs:element name="note" type="xs:string" minOccurs="0"/>
-          <xs:element name="comment" type="xs:string" minOccurs="0"/>
-          <xs:element name="semesterAsInt" type="xs:short"/>
-          <xs:element name="semesterAbbr" type="xs:string" minOccurs="0"/>
-          <xs:element name="semesterFull" type="xs:string" minOccurs="0"/>
-          <xs:element name="semesterPeriodsPerWeek" type="xs:int"/>
-          <xs:element name="expectedRegistrations" type="xs:int"/>
-          <xs:element name="maximumRegistrations" type="xs:int"/>
-          <xs:element name="activityConfirmation" type="xs:string" minOccurs="0"/>
-          <xs:element name="literature" type="xs:string" minOccurs="0"/>
-          <xs:element name="startDate" type="xs:string" minOccurs="0"/>
-          <xs:element name="endDate" type="xs:string" minOccurs="0"/>
-          <xs:element name="superRoleBusId" type="xs:int"/>
-          <xs:element name="assignmentManagement" type="xs:string" minOccurs="0"/>
-          <xs:element name="leadingSystemForAssigments" type="xs:string" minOccurs="0"/>
-          <xs:element name="bookingType" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    <xs:complexType name="workgroupType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedEntityType">
+                <xs:sequence>
+                    <xs:element name="lsfId" type="xs:string"/>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="room" type="xs:string" minOccurs="0"/>
+                    <xs:element name="semesterId" type="xs:string"/>
+                    <xs:element name="clientTitle" type="xs:string" minOccurs="0"/>
+                    <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
+                    <xs:element name="languageISO" type="xs:string" minOccurs="0"/>
+                    <xs:element name="maximumRegistrations" type="xs:int"/>
+                    <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+                    <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-  <xs:complexType name="dateType">
-    <xs:sequence>
-      <xs:element name="dateId" type="xs:int"/>
-      <xs:element name="startdate" type="xs:string" minOccurs="0"/>
-      <xs:element name="enddate" type="xs:string" minOccurs="0"/>
-      <xs:element name="starttime" type="xs:string" minOccurs="0"/>
-      <xs:element name="endtime" type="xs:string" minOccurs="0"/>
-      <xs:element name="stct" type="xs:string" minOccurs="0"/>
-      <xs:element name="dayofweek" type="xs:string" minOccurs="0"/>
-      <xs:element name="rythm" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
+    <xs:complexType name="categoryType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedEntityType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="lsfId" type="xs:string"/>
+                    <xs:element name="sort" type="xs:int"/>
+                    <xs:element name="semesterId" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-  <xs:complexType name="workgroupType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedEntityType">
-        <xs:sequence>
-          <xs:element name="lsfId" type="xs:string"/>
-          <xs:element name="name" type="xs:string"/>
-          <xs:element name="room" type="xs:string" minOccurs="0"/>
-          <xs:element name="semesterId" type="xs:string"/>
-          <xs:element name="clientTitle" type="xs:string" minOccurs="0"/>
-          <xs:element name="shortDescription" type="xs:string" minOccurs="0"/>
-          <xs:element name="languageISO" type="xs:string" minOccurs="0"/>
-          <xs:element name="maximumRegistrations" type="xs:int"/>
-          <xs:element name="startDate" type="xs:string" minOccurs="0"/>
-          <xs:element name="endDate" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    <xs:complexType name="mappedRelationType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedObjectType">
+                <xs:sequence>
+                    <xs:element name="busParentId" type="xs:int"/>
+                    <xs:element name="busChildId" type="xs:int"/>
+                    <xs:element name="clientChildId" type="xs:string" minOccurs="0"/>
+                    <xs:element name="clientParentId" type="xs:string" minOccurs="0"/>
+                    <xs:element name="relationType" type="xs:string" minOccurs="0"/>
+                    <xs:element name="childSort" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-  <xs:complexType name="categoryType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedEntityType">
-        <xs:sequence>
-          <xs:element name="name" type="xs:string"/>
-          <xs:element name="lsfId" type="xs:string"/>
-          <xs:element name="sort" type="xs:int"/>
-          <xs:element name="semesterId" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="mappedRelationType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedObjectType">
-        <xs:sequence>
-          <xs:element name="busParentId" type="xs:int"/>
-          <xs:element name="busChildId" type="xs:int"/>
-          <xs:element name="clientChildId" type="xs:string" minOccurs="0"/>
-          <xs:element name="clientParentId" type="xs:string" minOccurs="0"/>
-          <xs:element name="relationType" type="xs:string" minOccurs="0"/>
-          <xs:element name="childSort" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="roleType">
-    <xs:complexContent>
-      <xs:extension base="tns:mappedObjectType">
-        <xs:sequence>
-          <xs:element name="name" type="xs:string"/>
-          <xs:element name="clientAccountId" type="xs:string" minOccurs="0"/>
-          <xs:element name="clientObjectId" type="xs:string" minOccurs="0"/>
-          <xs:element name="busAccountId" type="xs:int"/>
-          <xs:element name="busObjectId" type="xs:int"/>
-          <xs:element name="roleStatus" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+    <xs:complexType name="roleType">
+        <xs:complexContent>
+            <xs:extension base="tns:mappedObjectType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="clientAccountId" type="xs:string" minOccurs="0"/>
+                    <xs:element name="clientObjectId" type="xs:string" minOccurs="0"/>
+                    <xs:element name="busAccountId" type="xs:int"/>
+                    <xs:element name="busObjectId" type="xs:int"/>
+                    <xs:element name="roleStatus" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
     <xs:complexType name="resultType">
         <xs:sequence>
             <xs:element name="clientId" type="xs:string"/>
             <xs:element name="status" type="xs:string"/>
             <xs:element name="reason" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="errorType">
+        <xs:sequence>
+            <xs:element name="errorId" type="xs:string" />
+            <xs:element name="clientId" type="xs:string" nillable="true"/>
+            <xs:element name="reason" type="xs:string" />
+            <xs:element name="causedBy" >
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 </xs:schema>
