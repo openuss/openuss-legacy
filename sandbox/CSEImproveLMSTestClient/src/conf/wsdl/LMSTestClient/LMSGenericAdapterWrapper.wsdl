@@ -53,14 +53,14 @@
         </wsdl:operation>
         <wsdl:operation name="updateAccount">
             <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="updateAccount_action"/>
-            <wsdl:input name="inputUpdate">
+            <wsdl:input name="inputUpdateAccount">
                 <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
             </wsdl:input>
-            <wsdl:output name="outputUpdate">
+            <wsdl:output name="outputUpdateAccount">
                 <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
             </wsdl:output>
-            <wsdl:fault name="faultUpdate">
-                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultUpdate" use="literal"/>
+            <wsdl:fault name="faultUpdateAccount">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultUpdateAccount" use="literal"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="deleteAccount">
