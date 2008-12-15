@@ -35,26 +35,25 @@
 					<h:graphicImage value="/images/freestyle-learning.jpg" width="237px" height="100px"/>
 	
 					<p class="header_font_normal">
-					  Version 3.5
+					  Version 4.0.1
 					</p>
 					
-					<h:panelGrid columns="4">
+					<h:panelGrid columns="3">
 				        <h:outputText value="Plattform"/>
 				        <h:outputText value="mit Java VM"/>
 				        <h:outputText value="ohne Java VM"/>
-				        <h:outputText value="Anleitung"/>
-				        <h:outputText value="Windows"/>
-			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Windows/VM/fsl_setup.exe">Download (32.9 MB)</h:outputLink>
-			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Windows/NoVM/fsl_setup.exe">Download (17.9 MB)</h:outputLink>
-			            <h:outputLink value="#windows">view</h:outputLink>
+				        <h:outputText value="Windows XP"/>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/WinXP/fsl_setup.exe">Download (45.3 MB)</h:outputLink>
+			            <h:outputText value="-"/>
+				        <h:outputText value="Windows Vista"/>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/WinVista/fsl_vista.zip">Download (56.8 MB)</h:outputLink>
+			            <h:outputText value="-"/>
 				        <h:outputText value="Mac OS X"/>
 				        <h:outputText value="-"/>
-			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/MacOSX/fsl_setup.zip">Download (17.5 MB)</h:outputLink>
-			            <h:outputLink value="#macosx">view</h:outputLink>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/MacOSX/fsl_setup.zip">Download (19.7 MB)</h:outputLink>
 				        <h:outputText value="Linux"/>
-			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Linux/VM/fsl_setup.bin">Download (49.5 MB)</h:outputLink>
-			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/3.5/InstData/Linux/NoVM/fsl_setup.bin">Download (18.1 MB)</h:outputLink>
-			            <h:outputLink value="#linux">view</h:outputLink>
+			            <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/Linux/fsl_setup.bin">Download (69.2 MB)</h:outputLink>
+			            <h:outputText value="-"/>
 					</h:panelGrid>
 					<p class="header_font_normal">
 					  Handbücher
@@ -63,23 +62,22 @@
 				        <h:outputText value="Version"/>
 				        <h:outputText value="Deutsch"/>
 				        <h:outputText value="English"/>
-				        <h:outputText value="3.5"/>
-				        <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/manual_3.5/FSL-Manual_de.pdf">Download PDF (2.8 MB)</h:outputLink>
-						<h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/manual_3.5/FSL-Manual_en.pdf">Download PDF (2.2 MB)</h:outputLink>
+				        <h:outputText value="4.0.1"/>
+				        <h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/manuals/FSL-Manual_4.0.1_de.pdf">Download PDF (2.1 MB)</h:outputLink>
+						<h:outputLink value="http://www.wi.uni-muenster.de/aw/download/fsl/4.0.1/manuals/FSL-Manual_4.0.1_en.pdf">Download PDF (2.6 MB)</h:outputLink>
 					</h:panelGrid>
 					
+					<p class="header_font_normal">
+					  Installationsanleitung Windows XP
+					</p>
 					<p class="content_font_normal">
-						Nach dem Herunterladen bitte die Installationsanwendung starten und den Anweisungen folgen.
-						Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java VM verfügt, achten Sie bitte 
-						darauf, die Version mit integrierter VM herunterzuladen.
+						Nach dem Herunterladen starten Sie bitte die Installationsanwendung und folgenden den Anweisungen. Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java Runtime Enviroment (JRE) verfügt, achten Sie bitte darauf, die Version mit integrierter JRE / VM herunterzuladen.
 					</p>
 					<p class="header_font_normal">
-					  Installationsanleitung Windows
+					  Installationsanleitung Windows Vista
 					</p>
 					<p class="content_font_normal">
-						Nach dem Herunterladen bitte die Installationsanwendung starten und den Anweisungen folgen.
-						Wenn Sie nicht sicher sind, ob Ihr System bereits über eine Java VM verfügt, achten Sie bitte 
-						darauf, die Version mit integrierter VM herunterzuladen.
+						Die Freestyle Learning-Version für Microsoft Windows Vista beinhaltet keine automatische Installationsroutine. Sie können die herunter geladene zip-Datei an einen beliebigen Ort entpacken und die Software mit einem Doppelklick auf die Datei „start_vista“ aus dem Verzeichnis „bin“ starten.
 					</p>
 					<p class="header_font_normal">
 					 Installationsanleitung Mac OS X
@@ -92,8 +90,10 @@
 						 	<li>StuffIt Expander 6.0 oder höher (bei Bedarf herunterladbar unter <a href="http://www.aladdinsys.com/expander/index.html">http://www.aladdinsys.com/expander/index.html</a> )</li>
 						 </ul>
 					<p class="content_font_normal">
-						 Um Problemen vorzubeugen verwenden Sie bitte nur den StuffIt Expander!
-						 Sollten dennoch Probleme auftreten, wenden Sie sich bitte an den Support .
+						  Um Problemen vorzubeugen verwenden Sie bitte nur den StuffIt Expander !
+Sollten dennoch Probleme auftreten, wenden Sie sich bitte an den Support
+
+Sie starten Freestyle Learning über "./fsl_java.sh" aus dem Programmverzeichnis.
 					</p>
 					<p class="header_font_normal">
 						 Installationsanleitung Linux
