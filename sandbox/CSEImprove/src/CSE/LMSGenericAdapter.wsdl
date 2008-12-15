@@ -62,9 +62,9 @@
             <fault name="faultCreateAccount" message="tns:accountFault"/>
         </operation>
         <operation name="updateAccount">
-            <input name="inputUpdate" message="tns:accountRequest"/>
-            <output name="outputUpdate" message="tns:accountResponse"/>
-            <fault name="faultUpdate" message="tns:accountFault"/>
+            <input name="inputUpdateAccount" message="tns:accountRequest"/>
+            <output name="outputUpdateAccount" message="tns:accountResponse"/>
+            <fault name="faultUpdateAccount" message="tns:accountFault"/>
         </operation>
         <operation name="deleteAccount">
             <input name="inputDeleteAccount" message="tns:accountRequest"/>
