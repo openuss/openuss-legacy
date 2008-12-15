@@ -67,9 +67,9 @@
             <fault name="faultUpdate" message="tns:accountFault"/>
         </operation>
         <operation name="deleteAccount">
-            <input name="input1" message="tns:accountRequest"/>
-            <output name="output1" message="tns:accountResponse"/>
-            <fault name="fault1" message="tns:accountFault"/>
+            <input name="inputDeleteAccount" message="tns:accountRequest"/>
+            <output name="outputDeleteAccount" message="tns:accountResponse"/>
+            <fault name="faultDeleteAccount" message="tns:accountFault"/>
         </operation>
         <operation name="createCategory">
             <input name="inputCreateCategory" message="tns:categoryRequest"/>

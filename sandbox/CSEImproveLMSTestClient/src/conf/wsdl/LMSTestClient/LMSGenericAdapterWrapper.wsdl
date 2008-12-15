@@ -65,14 +65,14 @@
         </wsdl:operation>
         <wsdl:operation name="deleteAccount">
             <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="deleteAccount_action"/>
-            <wsdl:input name="input1">
+            <wsdl:input name="inputDeleteAccount">
                 <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
             </wsdl:input>
-            <wsdl:output name="output1">
+            <wsdl:output name="outputDeleteAccount">
                 <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
             </wsdl:output>
-            <wsdl:fault name="fault1">
-                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="fault1" use="literal"/>
+            <wsdl:fault name="faultDeleteAccount">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultDeleteAccount" use="literal"/>
             </wsdl:fault>
         </wsdl:operation>
         <wsdl:operation name="createCategory">
