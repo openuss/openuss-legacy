@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://cse.campussource.de/cse/schema/LMSGenericAdapter"
+    elementFormDefault="qualified"
+    xmlns:dtp="http://cse.campussource.de/cse/schema/DataTypes" xmlns:tns="http://cse.campussource.de/cse/schema/LMSGenericAdapter">
+    
+    <xsd:import schemaLocation="../CSE/DataTypes.xsd" namespace="http://cse.campussource.de/cse/schema/DataTypes"/>
+
+    <xsd:element name="result" type="dtp:resultType"/>
+    <xsd:element name="error" type="dtp:errorType"/>
+    <xsd:element name="course" type="dtp:courseType"/>
+    <xsd:element name="account" type="dtp:accountType"/>
+    <xsd:element name="category" type="dtp:categoryType"/>
+
+</xsd:schema>

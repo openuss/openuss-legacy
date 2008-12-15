@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" xmlns:adt="http://cse.campussource.de/cse/schema/LMSGenericAdapter" xmlns:dtp="http://cse.campussource.de/cse/schema/DataTypes" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" name="LMSGenericAdapter" targetNamespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter">
+    <wsdl:import namespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" location="LMSGenericAdapter.wsdl"/>
+    <wsdl:binding name="LMSGenericAdapterBinding" type="tns:LMSGenericAdapterPortType">
+        <soap:binding xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="createCourse">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="createCourse_action"/>
+            <wsdl:input name="inputCreateCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputCreateCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultCreateCourse">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultCreateCourse" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updateCourse">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="updateCourse_action"/>
+            <wsdl:input name="inputUpdateCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputUpdateCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultUpdateCourse">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultUpdateCourse" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteCourse">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="deleteCourse_action"/>
+            <wsdl:input name="inputDeleteCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputDeleteCourse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultDeleteCourse">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultDeleteCourse" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createAccount">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="createAccount_action"/>
+            <wsdl:input name="inputCreateAccount">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputCreateAccount">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultCreateAccount">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultCreateAccount" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updateAccount">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="updateAccount_action"/>
+            <wsdl:input name="inputUpdate">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputUpdate">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultUpdate">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultUpdate" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteAccount">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="deleteAccount_action"/>
+            <wsdl:input name="input1">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="output1">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="fault1">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="fault1" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createCategory">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="createCategory_action"/>
+            <wsdl:input name="inputCreateCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputCreateCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultCreateCategory">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultCreateCategory" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updateCategory">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="updateCategory_action"/>
+            <wsdl:input name="inputUpdateCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputUpdateCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultUpdateCategory">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultUpdateCategory" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteCategory">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction="deleteCategory_action"/>
+            <wsdl:input name="inputDeleteCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="outputDeleteCategory">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="faultDeleteCategory">
+                <soap:fault xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="faultDeleteCategory" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="LMSGenericAdapterService">
+        <wsdl:port name="LMSGenericAdapterPort" binding="tns:LMSGenericAdapterBinding">
+            <soap:address xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" location="REPLACE_WITH_ACTUAL_URL"/>
+        </wsdl:port>
+    </wsdl:service>
+</definitions>

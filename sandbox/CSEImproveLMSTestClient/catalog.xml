@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/Development/workspaces/workspace-netbeans/CSEImprove/src/CSE/Course.wsdl" uri="src/conf/xml-resources/web-services/CourseService/wsdl/Course.wsdl"/>
+    <system systemId="file:/D:/Development/workspaces/workspace-netbeans/CSEImprove/src/CSE/Course.xsd" uri="src/conf/xml-resources/web-services/CourseService/wsdl/Course.xsd"/>
+    <system systemId="file:/D:/Development/workspaces/workspace-netbeans/CSEImprove/src/CSE/LMSGenericAdapter.wsdl" uri="src/conf/xml-resources/web-services/LMSTestClient/wsdl/LMSGenericAdapter.wsdl"/>
+    <system systemId="file:/D:/Development/workspaces/workspace-netbeans/CSEImprove/src/CSE/LMSGenericAdapter.xsd" uri="src/conf/xml-resources/web-services/LMSTestClient/wsdl/LMSGenericAdapter.xsd"/>
+    <system systemId="file:/D:/Development/workspaces/workspace-netbeans/CSEImprove/src/CSE/DataTypes.xsd" uri="src/conf/xml-resources/web-services/LMSTestClient/CSE/DataTypes.xsd"/>
+</catalog>
