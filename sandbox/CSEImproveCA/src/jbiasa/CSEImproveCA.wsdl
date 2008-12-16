@@ -9,7 +9,7 @@
              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              targetNamespace="CSEImproveCA"
-             xmlns:tns="CSEImproveCA" xmlns:ns="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:file="http://schemas.sun.com/jbi/wsdl-extensions/file/" xmlns:ns1="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service" xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:wsrm="http://docs.oasis-open.org/ws-rx/wsrmp/200702" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization">
+             xmlns:tns="CSEImproveCA" xmlns:ns="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:file="http://schemas.sun.com/jbi/wsdl-extensions/file/" xmlns:ns1="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:fi="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service" xmlns:tcp="http://java.sun.com/xml/ns/wsit/2006/09/policy/soaptcp/service" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:wsrm="http://docs.oasis-open.org/ws-rx/wsrmp/200702" xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
     <import namespace="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" location="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl"/>
     <import namespace="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" location="../jbiServiceUnits/CSEImprove/CSE/LMSGenericAdapter.wsdl"/>
     <portType name="dummyCasaPortType"/>
@@ -25,9 +25,125 @@
             </output>
         </operation>
     </binding>
+    <binding name="casaBinding2" type="ns1:LMSGenericAdapterPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="createCourse">
+            <soap:operation soapAction="createCourse_action"/>
+            <input name="inputCreateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputCreateCourse">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultCreateCourse">
+                <soap:fault use="literal" name="faultCreateCourse"/>
+            </fault>
+        </operation>
+        <operation name="updateCourse">
+            <soap:operation soapAction="updateCourse_action"/>
+            <input name="inputUpdateCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputUpdateCourse">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultUpdateCourse">
+                <soap:fault use="literal" name="faultUpdateCourse"/>
+            </fault>
+        </operation>
+        <operation name="deleteCourse">
+            <soap:operation soapAction="deleteCourse_action"/>
+            <input name="inputDeleteCourse">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputDeleteCourse">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultDeleteCourse">
+                <soap:fault use="literal" name="faultDeleteCourse"/>
+            </fault>
+        </operation>
+        <operation name="createAccount">
+            <soap:operation soapAction="createAccount_action"/>
+            <input name="inputCreateAccount">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputCreateAccount">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultCreateAccount">
+                <soap:fault use="literal" name="faultCreateAccount"/>
+            </fault>
+        </operation>
+        <operation name="updateAccount">
+            <soap:operation soapAction="updateAccount_action"/>
+            <input name="inputUpdateAccount">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputUpdateAccount">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultUpdateAccount">
+                <soap:fault use="literal" name="faultUpdateAccount"/>
+            </fault>
+        </operation>
+        <operation name="deleteAccount">
+            <soap:operation soapAction="deleteAccount_action"/>
+            <input name="inputDeleteAccount">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputDeleteAccount">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultDeleteAccount">
+                <soap:fault use="literal" name="faultDeleteAccount"/>
+            </fault>
+        </operation>
+        <operation name="createCategory">
+            <soap:operation soapAction="createCategory_action"/>
+            <input name="inputCreateCategory">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputCreateCategory">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultCreateCategory">
+                <soap:fault use="literal" name="faultCreateCategory"/>
+            </fault>
+        </operation>
+        <operation name="updateCategory">
+            <soap:operation soapAction="updateCategory_action"/>
+            <input name="inputUpdateCategory">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputUpdateCategory">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultUpdateCategory">
+                <soap:fault use="literal" name="faultUpdateCategory"/>
+            </fault>
+        </operation>
+        <operation name="deleteCategory">
+            <soap:operation soapAction="deleteCategory_action"/>
+            <input name="inputDeleteCategory">
+                <soap:body use="literal"/>
+            </input>
+            <output name="outputDeleteCategory">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="faultDeleteCategory">
+                <soap:fault use="literal" name="faultDeleteCategory"/>
+            </fault>
+        </operation>
+    </binding>
     <service name="casaService1">
         <port name="FileImport" binding="tns:casaBinding1">
             <file:address fileDirectory="inbox" lockName="filebc.lck" workArea="filebc_tmp" seqName="filebc.seq" relativePath="true" pathRelativeTo="User Home"/>
+        </port>
+    </service>
+    <service name="LMSTestClientService">
+        <port name="LMSTestClientPort" binding="tns:casaBinding2">
+            <soap:address location="http://localhost:8080/LMSGenericAdapterService/LMSTestClient"/>
         </port>
     </service>
 </definitions>

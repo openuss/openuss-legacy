@@ -23,12 +23,16 @@
                 <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns7:SyncMsgPLink"/>
             </connection>
             <connection>
-                <consumer endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" service-name="ns2:SyncMsgPLink"/>
-                <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns7:SyncMsgPLink"/>
+                <consumer endpoint-name="LMSGenericAdapterPortTypeRole_partnerRole" service-name="ns5:GeneryAdapterPLink"/>
+                <provider endpoint-name="LMSTestClientPort" service-name="ns1:LMSTestClientService"/>
             </connection>
             <connection>
                 <consumer endpoint-name="CoursePortTypeRole_partnerRole" service-name="ns7:CoursePLink"/>
                 <provider endpoint-name="CoursePortTypeRole_myRole" service-name="ns5:CoursePLink"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" service-name="ns2:SyncMsgPLink"/>
+                <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns7:SyncMsgPLink"/>
             </connection>
         </connections>
         <connections xmlns="http://www.sun.com/jbi/qos">
