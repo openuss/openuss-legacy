@@ -23,10 +23,6 @@
                 <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns7:SyncMsgPLink"/>
             </connection>
             <connection>
-                <consumer endpoint-name="LMSGenericAdapterPortTypeRole_partnerRole" service-name="ns5:GeneryAdapterPLink"/>
-                <provider endpoint-name="LMSTestClient" service-name="ns1:LMSTestClientService"/>
-            </connection>
-            <connection>
                 <consumer endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" service-name="ns2:SyncMsgPLink"/>
                 <provider endpoint-name="SynchronizationMessagePortTypeRole_myRole" service-name="ns7:SyncMsgPLink"/>
             </connection>

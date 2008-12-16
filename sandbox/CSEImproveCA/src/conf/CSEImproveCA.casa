@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:ns2="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" xmlns:ns3="http://cse.campussource.de/cse/wsdl/CourseWrapper" xmlns:ns4="http://cse.campussource.de/cse/wsdl/Course" xmlns:ns5="CSEImproveCA" xmlns:ns6="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" xmlns:ns7="http://cse.campussource/cse/bpel/CreateCourse" xmlns:ns8="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage" xmlns:ns9="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation" xmlns:xlink="http://www.w3.org/2000/xlink">
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://cse.campussource.de/lsf/wsdl/LSFSynchronizationMessage" xmlns:ns2="http://cse.campussource.de/lsf/wsdl/SynchronizationMessage" xmlns:ns3="http://cse.campussource.de/cse/wsdl/CourseWrapper" xmlns:ns4="http://cse.campussource.de/cse/wsdl/Course" xmlns:ns5="CSEImproveCA" xmlns:ns6="http://cse.campussource/cse/bpel/CreateCourse" xmlns:ns7="http://enterprise.netbeans.org/bpel/CSEImprove/SplittSyncMessage" xmlns:ns8="http://cse.campussource.de/lsf/bpel/SyncMsgTransformation" xmlns:ns9="http://cse.campussource.de/cse/wsdl/LMSGenericAdapter" xmlns:xlink="http://www.w3.org/2000/xlink">
     <endpoints>
         <endpoint endpoint-name="LSFSynchronizationMessagePort" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint1" service-name="ns1:LSFSynchronizationMessageService"/>
         <endpoint endpoint-name="SynchronizationMessagePort" interface-name="ns2:SynchronizationMessagePortType" name="endpoint2" service-name="ns2:SynchronizationMessageService"/>
         <endpoint endpoint-name="CoursePortTypeBindingPort" interface-name="ns4:CoursePortType" name="endpoint3" service-name="ns3:CourseService"/>
         <endpoint endpoint-name="FileImport" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint4" service-name="ns5:casaService1"/>
-        <endpoint endpoint-name="LMSTestClient" interface-name="ns6:LMSGenericAdapterPortType" name="endpoint5" service-name="ns5:LMSTestClientService"/>
-        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_myRole" file-path="CSE\CreateCourse.bpel" interface-name="ns4:CoursePortType" name="endpoint6" process-name="CreateCourse" service-name="ns7:CoursePLink"/>
-        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_myRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint7" process-name="SplittSyncMessage" service-name="ns8:SyncMsgPLink"/>
-        <endpoint display-name="LSFPLink" endpoint-name="LSFSynchronizationMessagePortTypeRole_myRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint8" process-name="SyncMsgTransformation" service-name="ns9:LSFPLink"/>
-        <endpoint display-name="GeneryAdapterPLink" endpoint-name="LMSGenericAdapterPortTypeRole_partnerRole" file-path="CSE\CreateCourse.bpel" interface-name="ns6:LMSGenericAdapterPortType" name="endpoint9" process-name="CreateCourse" service-name="ns7:GeneryAdapterPLink"/>
-        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_partnerRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns4:CoursePortType" name="endpoint10" process-name="SplittSyncMessage" service-name="ns8:CoursePLink"/>
-        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint11" process-name="SyncMsgTransformation" service-name="ns9:SyncMsgPLink"/>
+        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_myRole" file-path="CSE\CreateCourse.bpel" interface-name="ns4:CoursePortType" name="endpoint5" process-name="CreateCourse" service-name="ns6:CoursePLink"/>
+        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_myRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint6" process-name="SplittSyncMessage" service-name="ns7:SyncMsgPLink"/>
+        <endpoint display-name="LSFPLink" endpoint-name="LSFSynchronizationMessagePortTypeRole_myRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns1:LSFSynchronizationMessagePortType" name="endpoint7" process-name="SyncMsgTransformation" service-name="ns8:LSFPLink"/>
+        <endpoint display-name="GeneryAdapterPLink" endpoint-name="LMSGenericAdapterPortTypeRole_partnerRole" file-path="CSE\CreateCourse.bpel" interface-name="ns9:LMSGenericAdapterPortType" name="endpoint8" process-name="CreateCourse" service-name="ns6:GeneryAdapterPLink"/>
+        <endpoint display-name="CoursePLink" endpoint-name="CoursePortTypeRole_partnerRole" file-path="LSF\SplittSyncMessage.bpel" interface-name="ns4:CoursePortType" name="endpoint9" process-name="SplittSyncMessage" service-name="ns7:CoursePLink"/>
+        <endpoint display-name="SyncMsgPLink" endpoint-name="SynchronizationMessagePortTypeRole_partnerRole" file-path="LSF\TransformLSFSyncMsg.bpel" interface-name="ns2:SynchronizationMessagePortType" name="endpoint10" process-name="SyncMsgTransformation" service-name="ns8:SyncMsgPLink"/>
     </endpoints>
     <service-units>
         <service-engine-service-unit artifacts-zip="CSEImprove.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="CSEImproveCA-CSEImprove" unit-name="CSEImprove" unknown="false" x="139" y="99">
+            <provides endpoint="endpoint5"/>
             <provides endpoint="endpoint6"/>
             <provides endpoint="endpoint7"/>
-            <provides endpoint="endpoint8"/>
+            <consumes endpoint="endpoint8"/>
             <consumes endpoint="endpoint9"/>
             <consumes endpoint="endpoint10"/>
-            <consumes endpoint="endpoint11"/>
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-file-binding.jar" component-name="sun-file-binding" description="Represents this Service Unit" name="CSEImproveCA-sun-file-binding" unit-name="sun-file-binding">
             <ports>
@@ -33,14 +32,6 @@
         </binding-component-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="CSEImproveCA-sun-http-binding" unit-name="sun-http-binding">
             <ports>
-                <port bindingType="soap" x="67" y="404">
-                    <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/service[@name='LMSTestClientService']/port[@name='LMSTestClient'])" xlink:type="simple"/>
-                    <consumes endpoint="endpoint5"/>
-                    <provides endpoint="endpoint5">
-                        <codegen xmlns="http://www.sun.com/jbi/descriptor/config-endpoint" disableInBC="false"/>
-                    </provides>
-                    <WsitCallback xmlns="http://www.sun.com/jbi/wsit/callbackproject" CallbackProject=""/>
-                </port>
                 <port x="67" y="197">
                     <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/CourseWrapper.wsdl#xpointer(/definitions/service[@name='CourseService']/port[@name='CoursePortTypeBindingPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint3"/>
@@ -60,7 +51,7 @@
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint4" provider="endpoint8" state="new">
+        <connection consumer="endpoint4" provider="endpoint7" state="new">
             <redelivery xmlns="http://www.sun.com/jbi/qos/redelivery" maxAttempts="-1" waitTime="1000">
                 <on-failure>
                     <delete/>
@@ -68,12 +59,11 @@
             </redelivery>
             <throttling xmlns="http://www.sun.com/jbi/qos/throttling" maximumConcurrencyLimit="1"/>
         </connection>
-        <connection consumer="endpoint1" provider="endpoint8" state="unchanged"/>
-        <connection consumer="endpoint3" provider="endpoint6" state="unchanged"/>
-        <connection consumer="endpoint2" provider="endpoint7" state="unchanged"/>
-        <connection consumer="endpoint9" provider="endpoint5" state="new"/>
-        <connection consumer="endpoint11" provider="endpoint7" state="unchanged"/>
+        <connection consumer="endpoint1" provider="endpoint7" state="unchanged"/>
+        <connection consumer="endpoint3" provider="endpoint5" state="unchanged"/>
+        <connection consumer="endpoint2" provider="endpoint6" state="unchanged"/>
         <connection consumer="endpoint10" provider="endpoint6" state="unchanged"/>
+        <connection consumer="endpoint9" provider="endpoint5" state="unchanged"/>
     </connections>
     <porttypes>
         <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/portType[@name='dummyCasaPortType'])" xlink:type="simple"/>
@@ -85,21 +75,17 @@
     </porttypes>
     <bindings>
         <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/binding[@name='casaBinding1'])" xlink:type="simple"/>
-        <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/binding[@name='casaBinding2'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/CourseWrapper.wsdl#xpointer(/definitions/binding[@name='CoursePortTypeBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/binding[@name='LSFSynchronizationMessageBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/binding[@name='SynchronizationMessageBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImproveCA.wsdl#xpointer(/definitions/binding[@name='casaBinding1'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/CSEImproveCA.wsdl#xpointer(/definitions/binding[@name='casaBinding2'])" xlink:type="simple"/>
     </bindings>
     <services>
         <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/service[@name='casaService1'])" xlink:type="simple"/>
-        <link xlink:href="../jbiasa/CSEImproveCA.wsdl#xpointer(/definitions/service[@name='LMSTestClientService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/CSE/CourseWrapper.wsdl#xpointer(/definitions/service[@name='CourseService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/LSFSynchronizationMessage.wsdl#xpointer(/definitions/service[@name='LSFSynchronizationMessageService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImprove/LSF/SynchronizationMessage.wsdl#xpointer(/definitions/service[@name='SynchronizationMessageService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/CSEImproveCA.wsdl#xpointer(/definitions/service[@name='casaService1'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/CSEImproveCA.wsdl#xpointer(/definitions/service[@name='LMSTestClientService'])" xlink:type="simple"/>
     </services>
     <regions>
         <region name="WSDL Endpoints" width="150"/>
