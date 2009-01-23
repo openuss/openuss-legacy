@@ -1,0 +1,10 @@
+<soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cor="http://j2ee.netbeans.org/wsdl/CorrelationClient" xmlns:cor1="http://xml.netbeans.org/schema/CorrelationTest">
+  <soapenv:Body>
+    <cor:CorrelationClientOperation>
+      <request>
+        <cor1:id>correlationId</cor1:id>
+        <cor1:param>parameter</cor1:param>
+      </request>
+    </cor:CorrelationClientOperation>
+  </soapenv:Body>
+</soapenv:Envelope>

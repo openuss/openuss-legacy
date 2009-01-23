@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://j2ee.netbeans.org/wsdl/CorrelationClient" xmlns:ns2="http://enterprise.netbeans.org/bpel/CorrelationTest/CorrelationClient" xmlns:ns3="http://j2ee.netbeans.org/wsdl/CorrelationProcess" xmlns:ns4="http://enterprise.netbeans.org/bpel/CorrelationTest/CorrelationProcess" version="1.0">
+    <service-assembly>
+        <identification>
+            <name>CorrelationTestCA</name>
+            <description>Represents the Service Assembly of CorrelationTestCA</description>
+        </identification>
+        <connections>
+            <connection>
+                <consumer endpoint-name="CorrelationClientPortTypeBindingPort" service-name="ns1:CorrelationClientService"/>
+                <provider endpoint-name="CorrelationClientPortTypeRole_myRole" service-name="ns2:PartnerLink1"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="CorrelationProcessPortTypeBindingPort" service-name="ns3:CorrelationProcessService"/>
+                <provider endpoint-name="CorrelationProcessPortTypeRole_myRole" service-name="ns4:PartnerLink3"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="CorrelationProcessPortTypeRole_partnerRole" service-name="ns2:PartnerLink2"/>
+                <provider endpoint-name="CorrelationProcessPortTypeBindingPort" service-name="ns3:CorrelationProcessService"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="CorrelationClientPortTypeRole_partnerRole" service-name="ns4:PartnerLink2"/>
+                <provider endpoint-name="CorrelationClientPortTypeRole_myRole" service-name="ns2:PartnerLink1"/>
+            </connection>
+        </connections>
+        <connections xmlns="http://www.sun.com/jbi/qos">
+            <connection>
+                <consumer endpoint-name="CorrelationProcessPortTypeRole_partnerRole" service-name="ns2:PartnerLink2"/>
+                <provider endpoint-name="CorrelationProcessPortTypeBindingPort" service-name="ns3:CorrelationProcessService"/>
+                <redelivery xmlns="http://www.sun.com/jbi/qos/redelivery" maxAttempts="20" waitTime="300">
+                <on-failure>
+                    <delete/>
+                </on-failure>
+            </redelivery>
+            </connection>
+        </connections>
+    </service-assembly>
+</jbi>
