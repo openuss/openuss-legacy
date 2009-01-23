@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="CorrelationProcess"
+    targetNamespace="http://enterprise.netbeans.org/bpel/CorrelationTest/CorrelationProcess"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace"
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/CorrelationTest/CorrelationProcess" 
+    xmlns:ns0="http://xml.netbeans.org/schema/CorrelationTest"
+    xmlns:ns1="http://j2ee.netbeans.org/wsdl/CorrelationProcess"
+    xmlns:ns2="http://j2ee.netbeans.org/wsdl/CorrelationClient">
+    <import namespace="http://j2ee.netbeans.org/wsdl/CorrelationProcess" location="CorrelationProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/CorrelationClient" location="CorrelationClient.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="PartnerLink3" partnerLinkType="ns1:CorrelationProcess" myRole="CorrelationProcessPortTypeRole"/>
+        <partnerLink name="PartnerLink2" partnerLinkType="ns2:CorrelationClient" partnerRole="CorrelationClientPortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="CorrelationProcessOperationIn" messageType="ns1:CorrelationProcessOperationRequest"/>
+        <variable name="CorrelationReceiveOutcomeOperationIn" messageType="ns2:CorrelationReceiveOutcomeRequest"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="ProcessCorrSet" properties="ns1:processCorrId"/>
+    </correlationSets>
+    <sequence>
+        <scope name="Scope1">
+            <faultHandlers>
+                <catchAll>
+                    <sequence name="FaultSequence">
+                        <empty name="Empty1">
+                            <sxt:trace>
+                                <sxt:log level="info" location="onStart">
+                                    <from>'Catch All - Inner Thread'</from>
+                                </sxt:log>
+                            </sxt:trace>
+                        </empty>
+                        <assign name="Assign2">
+                            <copy>
+                                <from>'FAULT'</from>
+                                <to>$CorrelationReceiveOutcomeOperationIn.request/ns0:id</to>
+                            </copy>
+                            <copy>
+                                <from>'FAULT'</from>
+                                <to>$CorrelationReceiveOutcomeOperationIn.request/ns0:param</to>
+                            </copy>
+                        </assign>
+                    </sequence>
+                </catchAll>
+            </faultHandlers>
+            <sequence name="Sequence1">
+                <receive name="Receive1" createInstance="yes" partnerLink="PartnerLink3" operation="CorrelationProcessOperation" portType="ns1:CorrelationProcessPortType" variable="CorrelationProcessOperationIn">
+                    <correlations>
+                            <correlation set="ProcessCorrSet" initiate="yes"/>
+                        </correlations>
+                </receive>
+                <assign name="Assign1">
+                    <copy>
+                            <from>$CorrelationProcessOperationIn.part1/ns0:id</from>
+                                <to>$CorrelationReceiveOutcomeOperationIn.request/ns0:id</to>
+                        </copy>
+                        <copy>
+                            <from>$CorrelationProcessOperationIn.part1/ns0:param</from>
+                                <to>$CorrelationReceiveOutcomeOperationIn.request/ns0:param</to>
+                        </copy>
+                </assign>
+                <invoke name="Invoke1" partnerLink="PartnerLink2" operation="CorrelationReceiveOutcomeOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/CorrelationClient" portType="tns:CorrelationClientPortType" inputVariable="CorrelationReceiveOutcomeOperationIn">
+                    <sxt:trace>
+                        <sxt:log level="info" location="onStart">
+                            <from>'Thread started'</from>
+                        </sxt:log>
+                        <sxt:log level="info" location="onComplete">
+                            <from>'Thread outcome successfully send'</from>
+                        </sxt:log>
+                    </sxt:trace>
+                </invoke>
+            </sequence>
+        </scope>
+
+    </sequence>
+</process>

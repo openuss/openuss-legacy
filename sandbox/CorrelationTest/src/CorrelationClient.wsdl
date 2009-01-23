@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CorrelationClient" targetNamespace="http://j2ee.netbeans.org/wsdl/CorrelationClient"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/CorrelationClient" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://xml.netbeans.org/schema/CorrelationTest" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop">
+    <types>
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/CorrelationClient">
+            <xsd:import namespace="http://xml.netbeans.org/schema/CorrelationTest" schemaLocation="CorrelationTest.xsd"/>
+        </xsd:schema>
+    </types>
+<!-- document style
+    <message name="CorrelationClientOperationRequest">
+        <part name="part1" element="ns0:request"/>
+    </message>
+    <message name="CorrelationClientOperationResponse">
+        <part name="part1" element="ns0:response"/>
+    </message>
+    <message name="CorrelationReceiveOutcomeRequest">
+        <part name="part1" element="ns0:request"/>
+    </message>
+-->
+<!-- rpc style -->
+    <message name="CorrelationClientOperationRequest">
+        <part name="request" type="ns0:request"/>
+    </message>
+    <message name="CorrelationClientOperationResponse">
+        <part name="response" type="ns0:response"/>
+    </message>
+    <message name="CorrelationReceiveOutcomeRequest">
+        <part name="request" type="ns0:request"/>
+    </message>
+
+    <portType name="CorrelationClientPortType">
+        <operation name="CorrelationClientOperation">
+            <input name="input1" message="tns:CorrelationClientOperationRequest"/>
+            <output name="output1" message="tns:CorrelationClientOperationResponse"/>
+        </operation>
+        <operation name="CorrelationReceiveOutcomeOperation">
+            <input name="input2" message="tns:CorrelationReceiveOutcomeRequest"/>
+        </operation>
+    </portType>
+    <binding name="CorrelationClientPortTypeBinding" type="tns:CorrelationClientPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="CorrelationClientOperation">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="CorrelationReceiveOutcomeOperation">
+            <soap:operation/>
+            <input name="input2">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+    </binding>
+    <service name="CorrelationClientService">
+        <port name="CorrelationClientPortTypeBindingPort" binding="tns:CorrelationClientPortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/CorrelationClientService/CorrelationClientPortTypeBindingPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="CorrelationClient">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes.
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="CorrelationClientPortTypeRole" portType="tns:CorrelationClientPortType"/>
+    </plnk:partnerLinkType>
+    <vprop:property name="clientCorrId" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:clientCorrId" messageType="tns:CorrelationClientOperationRequest" part="request">
+        <vprop:query>ns0:id</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:clientCorrId" messageType="tns:CorrelationReceiveOutcomeRequest" part="request">
+        <vprop:query>ns0:id</vprop:query>
+    </vprop:propertyAlias>
+</definitions>

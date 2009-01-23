@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CorrelationProcess" targetNamespace="http://j2ee.netbeans.org/wsdl/CorrelationProcess"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://j2ee.netbeans.org/wsdl/CorrelationProcess"
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+    xmlns:ns0="http://xml.netbeans.org/schema/CorrelationTest"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns1="http://j2ee.netbeans.org/wsdl/CorrelationClient">
+    <import namespace="http://j2ee.netbeans.org/wsdl/CorrelationClient" location="CorrelationClient.wsdl"/>
+    <types>
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/CorrelationProcess">
+            <xsd:import namespace="http://xml.netbeans.org/schema/CorrelationTest" schemaLocation="CorrelationTest.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="CorrelationProcessOperationRequest">
+        <part name="part1" element="ns0:processRequest"/>
+    </message>
+    <portType name="CorrelationProcessPortType">
+        <operation name="CorrelationProcessOperation">
+            <input name="input1" message="tns:CorrelationProcessOperationRequest"/>
+        </operation>
+    </portType>
+    <binding name="CorrelationProcessPortTypeBinding" type="tns:CorrelationProcessPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="CorrelationProcessOperation">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+    </binding>
+    <service name="CorrelationProcessService">
+        <port name="CorrelationProcessPortTypeBindingPort" binding="tns:CorrelationProcessPortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/CorrelationProcessService/CorrelationProcessPortTypeBindingPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="CorrelationProcess">
+        <plnk:role name="CorrelationProcessPortTypeRole" portType="tns:CorrelationProcessPortType"/>
+    </plnk:partnerLinkType>
+    <vprop:property name="processCorrId" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:processCorrId" messageType="tns:CorrelationProcessOperationRequest" part="part1">
+        <vprop:query>/ns0:processRequest/ns0:id</vprop:query>
+    </vprop:propertyAlias>
+</definitions>

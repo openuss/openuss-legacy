@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://xml.netbeans.org/schema/CorrelationTest"
+    xmlns:tns="http://xml.netbeans.org/schema/CorrelationTest"
+    elementFormDefault="qualified">
+    <xsd:element name="request" type="tns:request"/>
+    <xsd:element name="processRequest" type="tns:request" />
+    <xsd:element name="response" type="tns:response"/>
+    <xsd:complexType name="request">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="param" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="response">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="param" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
