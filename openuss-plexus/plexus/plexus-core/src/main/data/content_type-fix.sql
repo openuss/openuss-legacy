@@ -1,0 +1,1 @@
+alter table documents_fileentry alter column content_type type varchar(128);
