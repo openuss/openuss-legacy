@@ -9,7 +9,7 @@
 	<artifactId>plexus-core</artifactId>
 	<name>Plexus - Core</name>
 	<packaging>jar</packaging>
-
+<!--
 	<build>
 		<plugins>
 			<plugin>
@@ -63,10 +63,9 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
+-->
 	<dependencies>
 		<dependency>
 			<groupId>org.openuss.framework</groupId>

@@ -32,6 +32,16 @@
 			<arg value="-Dpackaging=jar"/>
 		</exec>
 	</target>
+	<target name="jaybird-2.1.6">
+		<exec executable="${maven.executable}">
+			<arg value="install:install-file"/>
+			<arg value="-Dfile=./jaybird/jaybird-full-2.1.6.jar"/>
+			<arg value="-DgroupId=jaybird"/>
+			<arg value="-DartifactId=jaybird-full"/>
+			<arg value="-Dversion=2.1.6"/>
+			<arg value="-Dpackaging=jar"/>
+		</exec>
+	</target>
 	<target name="jta">
 		<exec executable="${maven.executable}">
 			<arg value="install:install-file"/>
