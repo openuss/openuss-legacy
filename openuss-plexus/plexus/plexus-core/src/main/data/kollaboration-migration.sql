@@ -5,10 +5,11 @@ create table WIKI_WIKISITEVERSION (ID BIGINT not null, TEXT BLOB not null, CREAT
 create table WORKSPACE (ID BIGINT not null, DOMAIN_ID BIGINT not null, NAME VARCHAR(100) not null, primary key (ID));
 create table USER2WORKSPACES (WORKSPACES_FK BIGINT not null, USER_FK BIGINT not null, primary key (WORKSPACES_FK, USER_FK));
 
-
 alter table LECTURE_COURSE add COLLABORATION SMALLINT not null;
 alter table LECTURE_COURSE add PAPERSUBMISSION SMALLINT not null;
 alter table LECTURE_COURSE add WIKI SMALLINT not null;
+
+update LECTURE_COURSE set COLLABORATION=0, PAPERSUBMISSION=0, WIKI=0
 
 alter table PAPERSUBMISSION_PAPER add constraint PAPERSUBMISSION_PAPER_SENDER_C foreign key (SENDER_FK) references SECURITY_USER;
 alter table PAPERSUBMISSION_PAPER add constraint PAPERSUBMISSION_PAPER_EXAM_FKC foreign key (EXAM_FK) references PAPERSUBMISSION_EXAM;
