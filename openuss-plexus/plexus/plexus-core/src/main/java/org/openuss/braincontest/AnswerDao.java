@@ -1,5 +1,8 @@
 package org.openuss.braincontest;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @see org.openuss.braincontest.Answer
  */
@@ -41,7 +44,7 @@ public interface AnswerDao {
 	 * Converts this DAO's entity to a Collection of instances of type
 	 * {@link org.openuss.braincontest.AnswerInfo}.
 	 */
-	public void toAnswerInfoCollection(java.util.Collection entities);
+	public void toAnswerInfoCollection(Collection entities);
 
 	/**
 	 * Copies the fields of {@link org.openuss.braincontest.AnswerInfo} to the
@@ -52,26 +55,25 @@ public interface AnswerDao {
 	 *            entity if the value is NULL. If TRUE, it will be copied
 	 *            regardless of its value.
 	 */
-	public void answerInfoToEntity(org.openuss.braincontest.AnswerInfo sourceVO,
-			org.openuss.braincontest.Answer targetEntity, boolean copyIfNull);
+	public void answerInfoToEntity(AnswerInfo sourceVO, Answer targetEntity, boolean copyIfNull);
 
 	/**
 	 * Converts an instance of type {@link org.openuss.braincontest.AnswerInfo}
 	 * to this DAO's entity.
 	 */
-	public org.openuss.braincontest.Answer answerInfoToEntity(org.openuss.braincontest.AnswerInfo answerInfo);
+	public Answer answerInfoToEntity(AnswerInfo answerInfo);
 
 	/**
 	 * Converts a Collection of instances of type
 	 * {@link org.openuss.braincontest.AnswerInfo} to this DAO's entity.
 	 */
-	public void answerInfoToEntityCollection(java.util.Collection instances);
+	public void answerInfoToEntityCollection(Collection instances);
 
 	/**
 	 * Loads an instance of org.openuss.braincontest.Answer from the persistent
 	 * store.
 	 */
-	public org.openuss.braincontest.Answer load(org.openuss.braincontest.AnswerPK answerPk);
+	public Answer load(AnswerPK answerPk);
 
 	/**
 	 * <p>
@@ -96,7 +98,7 @@ public interface AnswerDao {
 	 * 
 	 * @return the loaded entities.
 	 */
-	public java.util.Collection<org.openuss.braincontest.Answer> loadAll();
+	public Collection<org.openuss.braincontest.Answer> loadAll();
 
 	/**
 	 * <p>
@@ -113,13 +115,13 @@ public interface AnswerDao {
 	 *            the flag indicating what transformation to use.
 	 * @return the loaded entities.
 	 */
-	public java.util.Collection loadAll(final int transform);
+	public Collection loadAll(final int transform);
 
 	/**
 	 * Creates an instance of org.openuss.braincontest.Answer and adds it to the
 	 * persistent store.
 	 */
-	public org.openuss.braincontest.Answer create(org.openuss.braincontest.Answer answer);
+	public Answer create(Answer answer);
 
 	/**
 	 * <p>
@@ -132,7 +134,7 @@ public interface AnswerDao {
 	 * value object for example). By default, transformation does not occur.
 	 * </p>
 	 */
-	public Object create(int transform, org.openuss.braincontest.Answer answer);
+	public Object create(int transform, Answer answer);
 
 	/**
 	 * Creates a new instance of org.openuss.braincontest.Answer and adds from
@@ -144,8 +146,7 @@ public interface AnswerDao {
 	 * 
 	 * @return the created instances.
 	 */
-	public java.util.Collection<org.openuss.braincontest.Answer> create(
-			java.util.Collection<org.openuss.braincontest.Answer> entities);
+	public Collection<Answer> create(Collection<Answer> entities);
 
 	/**
 	 * <p>
@@ -158,24 +159,24 @@ public interface AnswerDao {
 	 * value objects for example). By default, transformation does not occur.
 	 * </p>
 	 */
-	public java.util.Collection create(int transform, java.util.Collection<org.openuss.braincontest.Answer> entities);
+	public Collection create(int transform, Collection<Answer> entities);
 
 	/**
 	 * Updates the <code>answer</code> instance in the persistent store.
 	 */
-	public void update(org.openuss.braincontest.Answer answer);
+	public void update(Answer answer);
 
 	/**
 	 * Updates all instances in the <code>entities</code> collection in the
 	 * persistent store.
 	 */
-	public void update(java.util.Collection<org.openuss.braincontest.Answer> entities);
+	public void update(Collection<Answer> entities);
 
 	/**
 	 * Removes the instance of org.openuss.braincontest.Answer from the
 	 * persistent store.
 	 */
-	public void remove(org.openuss.braincontest.Answer answer);
+	public void remove(Answer answer);
 
 	/**
 	 * Removes the instance of org.openuss.braincontest.Answer having the given
@@ -192,7 +193,7 @@ public interface AnswerDao {
 	/**
  * 
      */
-	public org.openuss.braincontest.Answer findByContestAndSolver(Long solverId, Long contestId);
+	public Answer findByContestAndSolver(Long solverId, Long contestId);
 
 	/**
 	 * <p> Does the same thing as
@@ -202,8 +203,7 @@ public interface AnswerDao {
 	 * defined in
 	 * {@link #findByContestAndSolver(Long, Long)}. </p>
 	 */
-	public org.openuss.braincontest.Answer findByContestAndSolver(String queryString, Long solverId,
-			Long contestId);
+	public Answer findByContestAndSolver(String queryString, Long solverId,	Long contestId);
 
 	/**
 	 * <p>
@@ -234,8 +234,8 @@ public interface AnswerDao {
 			Long contestId);
 
 	/**
- * 
+	 * 	
      */
-	public java.util.List findBySolver(Long solverId);
+	public List findBySolver(Long solverId);
 
 }

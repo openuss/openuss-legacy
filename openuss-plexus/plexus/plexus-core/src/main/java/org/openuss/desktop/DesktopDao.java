@@ -1,5 +1,7 @@
 package org.openuss.desktop;
 
+import java.util.Collection;
+
 /**
  * @see org.openuss.desktop.Desktop
  */
@@ -42,7 +44,7 @@ public interface DesktopDao
     /**
      * Converts this DAO's entity to a Collection of instances of type {@link org.openuss.desktop.DesktopInfo}.
      */
-    public void toDesktopInfoCollection(java.util.Collection entities);
+    public void toDesktopInfoCollection(Collection entities);
     
     /**
      * Copies the fields of {@link org.openuss.desktop.DesktopInfo} to the specified entity.
