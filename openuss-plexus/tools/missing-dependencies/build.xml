@@ -4,6 +4,7 @@
 	<target name="install-all">
 		<antcall target="jaybird"/>
 		<antcall target="jaybird-2.1.1"/>
+        <antcall target="jaybird-2.1.6"/>
 		<antcall target="jta"/>
 		<antcall target="tomahawk"/>
 		<antcall target="tomahawk-javadoc"/>
