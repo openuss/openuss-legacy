@@ -9,7 +9,7 @@
 	<artifactId>plexus-core</artifactId>
 	<name>Plexus - Core</name>
 	<packaging>jar</packaging>
-<!--
+
 	<build>
 		<plugins>
 			<plugin>
@@ -65,7 +65,6 @@
 			</plugin>
 		</plugins>
 	</build>
--->
 	<dependencies>
 		<dependency>
 			<groupId>org.openuss.framework</groupId>
@@ -214,10 +213,12 @@
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-lucene</artifactId>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>edu.emory.mathcs</groupId>
 			<artifactId>backport-concurrency</artifactId>
 		</dependency>
+		-->
 	</dependencies>
 	
 </project>
