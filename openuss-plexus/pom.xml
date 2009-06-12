@@ -213,11 +213,14 @@
 		<module>plexus</module>
 	</modules>
 	<repositories>
+	<!--
+	
 		<repository>
 			<id>openuss</id>
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</repository>
+		-->
 		<repository>
 			<id>java-net</id>
 			<name>Java.Net</name>
@@ -226,11 +229,13 @@
 		</repository>		
 	</repositories>
 	<pluginRepositories>
+	<!--
 		<pluginRepository>
 			<id>openuss</id>
 			<name>OpenUSS Plexus</name>
 			<url>http://teamopenuss.uni-muenster.de/repository</url>
 		</pluginRepository>
+		-->
 		<pluginRepository>
 			<id>java-net</id>
 			<name>Java.Net</name>
