@@ -21,12 +21,6 @@ public class FLGPlatformSpecifics {
     private static final String CLASS = "class";
     private static final String JAR = "jar";
     // long system ids
-    private static final String WIN2K = "Windows 2000";
-    private static final String WINXP = "Windows XP";
-    private static final String WINNT = "Windows NT";
-    private static final String WINME = "Windows ME";
-    private static final String WIN98 = "Windows 98";
-    private static final String WIN95 = "Windows 95";
     private static final String LINUX = "Linux";
     private static final String MACOS_X = "Mac OS X";
     
@@ -98,7 +92,6 @@ public class FLGPlatformSpecifics {
     private static void startExternalApplicationWIN(String commandLine, String paramLine) {
         if (paramLine == null) paramLine = "";
         String extension = FLGFileUtility.getExtension(commandLine);
-        String osString = System.getProperty("os.name");
         if (commandLine.startsWith("http://")) {
             extension = "html";
         }
@@ -110,7 +103,7 @@ public class FLGPlatformSpecifics {
             return;
         }
         if (extension.equalsIgnoreCase(EXE)) {
-            if ((osString.equals(WIN95)) || (osString.equals(WIN98))) {
+            if (isWin95Compatible()) {
                 try {
                     new Thread(
                     new FLGPlatformSpecifics_Runnable("command.com /c " + commandLine + " " + paramLine, "")).start();
@@ -119,7 +112,7 @@ public class FLGPlatformSpecifics {
                     System.out.println("Exception: " + e);
                 }
             }
-            else if (osString.equals(WINNT) || osString.equals(WIN2K) || osString.equals(WINXP)) {
+            else if (isWinXPCompatible()) {
                 try {
                     new Thread(
                     new FLGPlatformSpecifics_Runnable("cmd.exe /c " + "\"" + commandLine + " " + paramLine + "\"", "")).start();
@@ -148,10 +141,10 @@ public class FLGPlatformSpecifics {
             String dir = commandLine.substring(0, i); // NL
             commandLine = commandLine.substring(i + 1, commandLine.length());
             String fullCmd = "";
-            if ((osString.equals(WIN95)) || (osString.equals(WIN98)) || (osString.equals(WINME))) {
+            if (isWin95Compatible()) {
                 fullCmd = "command.com /c " + jdkDir + " -cp \"" + dir + "\" -Duser.dir=\"" + dir + "\" " + "\"" + commandLine + "\"" + paramLine;
             }
-            else if (osString.equals(WINNT) || osString.equals(WIN2K) || osString.equals(WINXP)) {
+            else if (isWinXPCompatible()) {
                 fullCmd = "cmd.exe /c " + jdkDir + " -cp \"" + dir + "\" -Duser.dir=\"" + dir + "\" " + "\"" + commandLine + "\"" + paramLine;
             }
             else {
@@ -173,10 +166,10 @@ public class FLGPlatformSpecifics {
             }
             String dir = commandLine.substring(0, i);
             String fullCmd = "";
-            if ((osString.equals(WIN95)) || (osString.equals(WIN98)) || (osString.equals(WINME))) {
+            if (isWin95Compatible()) {
                 fullCmd = "command.com /c " + jdkDir + " -jar " + "\"" + commandLine + " \" " + paramLine;
             }
-            else if (osString.equals(WINNT) || osString.equals(WIN2K) || osString.equals(WINXP)) {
+            else if (isWinXPCompatible()) {
                 fullCmd = "cmd.exe /c " + jdkDir + " -jar " + "\"" + commandLine + " \" " + paramLine;
             }
             else {
@@ -193,13 +186,13 @@ public class FLGPlatformSpecifics {
             if (appPath != null) {
             	
                 appPath = "\"" + appPath + "\"";
-                if ((osString.equals(WIN95)) || (osString.equals(WIN98))) {
+                if (isWin95Compatible()) {
                     commandLine = appPath + " \"" + commandLine + " " + paramLine + "\"";
                     try {
                         new Thread(new FLGPlatformSpecifics_Runnable("command.com /c " + commandLine, "")).start();
                     }
                     catch (Exception e) { e.printStackTrace(); }
-                } else if (osString.equals(WINNT) || osString.equals(WIN2K) || osString.equals(WINXP)) {
+                } else if (isWinXPCompatible()) {
                 	if (extension.equals("pps")) {
                         commandLine = "\"" + appPath + " /s \"" + commandLine + " " + paramLine + "\"" + "\"";
                 	} else {
@@ -234,7 +227,17 @@ public class FLGPlatformSpecifics {
                 e.printStackTrace();
             }
     }
+
+    private static boolean isWin95Compatible() {
+    	String os_name = System.getProperty("os.name");
+    	return os_name.equalsIgnoreCase("Windows 98") || os_name.equalsIgnoreCase("Windows 95") || os_name.equalsIgnoreCase("Windows ME");
+    }
     
+    private static boolean isWinXPCompatible() {
+    	String os_name = System.getProperty("os.name");
+    	return (os_name.contains("Windows") ||  os_name.contains("windows")) && !isWin95Compatible();
+    }
+
     /**
      * This extension can be used to separate language propeties in a property file.
      * When asking for the property the key has to be build by combining the prefix with the
@@ -245,7 +248,7 @@ public class FLGPlatformSpecifics {
         String os_name = System.getProperty("os.name");
         if (os_name.equalsIgnoreCase("Windows 2000") || os_name.equalsIgnoreCase("Windows NT") ||
         os_name.equalsIgnoreCase("Windows XP") || os_name.equalsIgnoreCase("Windows 98") ||
-        os_name.equalsIgnoreCase("Windows 95"))
+        os_name.equalsIgnoreCase("Windows 95") || os_name.contains("Windows") ||  os_name.contains("windows"))
             return FLGPlatformSpecifics.WIN;
         return os_name;
     }
@@ -291,8 +294,7 @@ public class FLGPlatformSpecifics {
     }
     
     private static void runCommandWIN(String commandLine) {
-        String osString = System.getProperty("os.name");
-        if ((osString.equals(WIN95)) || (osString.equals(WIN98)) || (osString.equals(WINME))) {
+        if (isWin95Compatible()) {
             try {
                 new Thread(new FLGPlatformSpecifics_Runnable("command.com /c " + commandLine, "")).start();
             }
@@ -300,7 +302,7 @@ public class FLGPlatformSpecifics {
                 System.out.println("Exception: " + e);
             }
         }
-        else if (osString.equals(WINNT) || osString.equals(WIN2K) || osString.equals(WINXP)) {
+        else if (isWinXPCompatible()) {
             try {
                 String commandString = "cmd.exe /c " + "\"" + commandLine + "\"";
                 new Thread(new FLGPlatformSpecifics_Runnable(commandLine, "")).start();
