@@ -173,8 +173,8 @@ span.userinfo a, span.userinfo a:hover, span.userinfo a:active, span.userinfo a:
   	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 }
 
 #left_block input.button:hover{
@@ -1121,8 +1121,8 @@ td > input.button, .button_unlink, .button_link, .button_remove, .button_edit, .
   	font-weight: normal;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 	filter:DropShadow(color=#FFF, offx=1, offy=1)
 }
 
@@ -1143,8 +1143,8 @@ td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remov
   	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 }
 
 .button_save:hover, .button_send:hover, .button_cancel:hover, .button_back:hover, .button_continue:hover {
@@ -1164,8 +1164,8 @@ td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remov
   	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 }
 
 .button_warning:hover {
@@ -1186,8 +1186,8 @@ td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remov
   	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 }
 
 .button:hover, .button_add:hover, .button_login:hover {
@@ -1208,8 +1208,8 @@ td > input.button:hover, .button_unlink:hover, .button_link:hover, .button_remov
   	font-weight: bold;
 	overflow: hidden;
 	cursor: pointer;
-	cursor: hand; /* Handcursor für IE 5.x */
-	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschön */
+	cursor: hand; /* Handcursor fÃ¼r IE 5.x */
+	outline-style: none; /* gestrichelte Umrandung beim Klicken deaktivieren, da unschï¿½n */
 }
 
 .button_big:hover {

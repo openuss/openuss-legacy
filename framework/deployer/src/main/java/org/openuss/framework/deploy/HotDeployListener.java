@@ -1,7 +1,7 @@
 package org.openuss.framework.deploy;
 
 /**
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * 
  * Inspired by:
  * @author  Ivica Cardic

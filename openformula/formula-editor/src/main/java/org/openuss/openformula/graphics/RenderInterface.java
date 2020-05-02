@@ -12,8 +12,8 @@ import java.awt.*;
 
 
 /**
- * Schnittstelle, die - Abhängig von der verwendeten Java-Version - den Grafikkontext
- * anpasst, so dass Funktionen wie z.B. Antialaisting aktiviert werden können.
+ * Schnittstelle, die - Abhï¿½ngig von der verwendeten Java-Version - den Grafikkontext
+ * anpasst, so dass Funktionen wie z.B. Antialaisting aktiviert werden kÃ¶nnen.
  * */
 public interface RenderInterface {
     public void modifyGraphicsHandle(Graphics g);

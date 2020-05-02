@@ -4,7 +4,7 @@
 			<h3><font color="#003366">OpenUSS Diskussions-Benachrichtigungs Assistent</font></h3>
 		</p>
 		<p>
-			Sie bekommen diese Benachrichtigungsemail, weil es in dem Thema <i>${topicname}</i> des <i>${forumname}</i> Forums eine Veränderung gab. 
+			Sie bekommen diese Benachrichtigungsemail, weil es in dem Thema <i>${topicname}</i> des <i>${forumname}</i> Forums eine VerÃ„nderung gab.
 			Klicken Sie bitte auf den folgenden Link:<br/>
 			<a href="${topiclink}">${topiclink}</a>
 		</p>
@@ -13,11 +13,11 @@
 			Adressleiste Ihres Browser ein.
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS!
+			Viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kÃ¶nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

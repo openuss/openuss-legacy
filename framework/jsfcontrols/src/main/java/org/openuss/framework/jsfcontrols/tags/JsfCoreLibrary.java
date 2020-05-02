@@ -11,7 +11,7 @@ import org.openuss.framework.jsfcontrols.converter.TimestampConverter;
 /**
  * OpenUSS JSF Core Facelets Library
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @author Rick Hightower
  */
 public final class JsfCoreLibrary extends AbstractTagLibrary {

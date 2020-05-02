@@ -20,7 +20,7 @@ import org.openuss.web.Constants;
 
 /**
  * @author Kai Stettner
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @author Sebastian Roekens
  * 
  */

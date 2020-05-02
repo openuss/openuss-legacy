@@ -9,13 +9,13 @@
 package org.openuss.openformula.io;
 
 /**
- * Diese Klasse dient zum Umgehen von Sicherheitsbeschränkungen, die im Internet Explorer
- * das Übertragen des MathML-Code zum Server behindert.
- * In diesem wird der Sicherheitskontext vom Hauptthread vorübergehend geändert, wenn eine
- * Funktion des Applets von JavaScript aus aufgerufen wird. Dies macht es für kurze Zeit
- * unmöglich, mit externen Server zu kommunizieren.
- * Da diese Änderung des Sicherheitskontexts jedoch nicht für zusätzlich erzeugte bereits
- * laufende Threads gilt, übernimmt beim IE dieser die Datenübertragung.
+ * Diese Klasse dient zum Umgehen von Sicherheitsbeschrï¿½nkungen, die im Internet Explorer
+ * das Ã¼bertragen des MathML-Code zum Server behindert.
+ * In diesem wird der Sicherheitskontext vom Hauptthread vorÃ¼bergehend geï¿½ndert, wenn eine
+ * Funktion des Applets von JavaScript aus aufgerufen wird. Dies macht es fÃ¼r kurze Zeit
+ * unmï¿½glich, mit externen Server zu kommunizieren.
+ * Da diese Ã„nderung des Sicherheitskontexts jedoch nicht fÃ¼r zusï¿½tzlich erzeugte bereits
+ * laufende Threads gilt, Ã¼bernimmt beim IE dieser die DatenÃ¼bertragung.
  */
 public final class ParallelJobManager extends Thread {
     private final RunAsApplet app;
@@ -24,7 +24,7 @@ public final class ParallelJobManager extends Thread {
     private final int interval = 100;
 
     /**
-     * Erzeugt einen neuen Thread, der zur Datenübertragung beim IE benötigt wird.
+     * Erzeugt einen neuen Thread, der zur DatenÃ¼bertragung beim IE benÃ¶tigt wird.
      * @param app Das zugrunde liegende Applet
      */
     public ParallelJobManager(final RunAsApplet app) {
@@ -35,7 +35,7 @@ public final class ParallelJobManager extends Thread {
     }
 
     /**
-     * Informiert den Thread, dass die Daten übertragen werden müssen.
+     * Informiert den Thread, dass die Daten Ã¼bertragen werden mï¿½ssen.
      */
     public final void submitData() {
         doSubmit = true;
@@ -43,9 +43,9 @@ public final class ParallelJobManager extends Thread {
     }
 
     /**
-     * Die Run-Funktion des Threads. Überprüft alle 100 ms, ob die Daten gesendet werden müssen.
+     * Die Run-Funktion des Threads. Ã¼berprï¿½ft alle 100 ms, ob die Daten gesendet werden mï¿½ssen.
      * (Bedauerlicherweise kann man den Thread nicht einfach ewig schlafen lassen und ihn aufwecken,
-     * wenn man dies braucht, da dann der falsche Sicherheitskontext übernommen wird.)
+     * wenn man dies braucht, da dann der falsche Sicherheitskontext Ã¼bernommen wird.)
      */
     public final void run() {
         while (!doSubmit) {
@@ -63,7 +63,7 @@ public final class ParallelJobManager extends Thread {
     }
 
     /**
-     * Gibt die Identifier zurück. Wenn noch nicht gesendet werden konnte, ist die Rückgabe der leere String.
+     * Gibt die Identifier zurÃ¼ck. Wenn noch nicht gesendet werden konnte, ist die Rï¿½ckgabe der leere String.
      * @return Identifier der Formel
      */
     public final String getIdentifier() {

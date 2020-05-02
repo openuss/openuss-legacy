@@ -2,7 +2,7 @@
 ##
 ## Factory implementation of Business Delegate for the entity beans
 ##
-## Author: Ingo Düppe
+## Author: Ingo DÃ¼ppe
 ##
 ##------------------------------------------------------------------
 #set ($generatedFile = "META-INF/services/${class.packageName}.${class.name}.Factory")

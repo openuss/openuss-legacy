@@ -16,7 +16,7 @@ import java.awt.Graphics;
 
 
 /**
- * Diese von Canvas abgeleitete Klasse dient als Darstellungfläche für die Formel
+ * Diese von Canvas abgeleitete Klasse dient als Darstellungflï¿½che fÃ¼r die Formel
  * im Formeleditor & im Applet
  */
 public final class FormulaCanvas extends Canvas {
@@ -31,11 +31,11 @@ public final class FormulaCanvas extends Canvas {
     private final boolean leftLine;
 
     /**
-     * Erzeugt eine neue Zeichenfläche
-     * @param readonly Die Zeichenfläche soll nicht bearbeitebar sein.
+     * Erzeugt eine neue Zeichenflï¿½che
+     * @param readonly Die Zeichenflï¿½che soll nicht bearbeitebar sein.
      * @param leftLine Links soll ein grauer Balken eingeblendet werden
-     * @param startSize Größe des größten Buchstaben in Pixeln
-     * @param stopSize Buchstabengröße bei maximaler Verkleinerung in Pixeln
+     * @param startSize GrÃ¶ÃŸe des grï¿½ï¿½ten Buchstaben in Pixeln
+     * @param stopSize BuchstabengrÃ¶ÃŸe bei maximaler Verkleinerung in Pixeln
      */
     public FormulaCanvas(final boolean readonly, final boolean leftLine, 
                          final int startSize, final int stopSize) {
@@ -58,7 +58,7 @@ public final class FormulaCanvas extends Canvas {
 
     /**
      * Cursor-Objekt erfragen
-     * @return Cursor-Objekt der Zeichenfläche
+     * @return Cursor-Objekt der Zeichenflï¿½che
      */
     final Cursor getMyCursor() {
         return cursor;
@@ -84,13 +84,13 @@ public final class FormulaCanvas extends Canvas {
         g.setColor(Color.white);
         g.drawLine(0, 0, 3, 3);
                                     
-        // graphics-Objekt auflösen
+        // graphics-Objekt auflï¿½sen
         g.dispose();
     } //else
         //System.out.println("Can't paint!");
                                     
     //doBlinkingCursor.schedule(new BlinkCursor(), 500);
-    // Erneut eintragen. Stellt sicher, dass sich die Blink-Ereignisse nicht ansammeln können.
+    // Erneut eintragen. Stellt sicher, dass sich die Blink-Ereignisse nicht ansammeln kÃ¶nnen.
                                     
     //cursor.getComponent().requestFocusInWindow();
                                     

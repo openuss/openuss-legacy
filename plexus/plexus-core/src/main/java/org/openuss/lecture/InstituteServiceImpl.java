@@ -28,7 +28,7 @@ import org.openuss.security.acl.LectureAclEntry;
  * @see org.openuss.lecture.InstituteService
  * @author Ron Haus
  * @author Florian Dondorf
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class InstituteServiceImpl extends InstituteServiceBase {
 

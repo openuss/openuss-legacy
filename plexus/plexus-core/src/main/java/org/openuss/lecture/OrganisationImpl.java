@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * @see org.openuss.lecture.Organisation
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public abstract class OrganisationImpl extends OrganisationBase implements Organisation {
 	

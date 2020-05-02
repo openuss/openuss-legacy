@@ -12,7 +12,7 @@ import org.hibernate.HibernateException;
 
 /**
  * @see org.openuss.chat.ChatMessage
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class ChatMessageDaoImpl extends ChatMessageDaoBase {
 

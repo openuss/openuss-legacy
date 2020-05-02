@@ -6,7 +6,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 
 /**
- * @author Ingo Düppe Inspired by:
+ * @author Ingo DÃ¼ppe Inspired by:
  * @author Ivica Cardic
  * @author Brian Wing Shun Chan
  */

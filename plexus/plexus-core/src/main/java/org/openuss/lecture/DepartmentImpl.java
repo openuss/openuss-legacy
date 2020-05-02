@@ -11,7 +11,7 @@ import org.apache.commons.lang.Validate;
  * @see org.openuss.lecture.Department
  * @author Ron Haus
  * @author Florian Dondorf
- * @authro Ingo Düppe
+ * @authro Ingo DÃ¼ppe
  */
 public class DepartmentImpl extends DepartmentBase implements Department {
 	/** The serial version UID of this class. Needed for serialization. */

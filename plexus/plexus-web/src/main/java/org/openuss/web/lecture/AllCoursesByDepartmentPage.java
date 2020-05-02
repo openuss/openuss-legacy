@@ -37,7 +37,7 @@ import org.springframework.beans.support.PropertyComparator;
  * @author Matthias Krieft
  * @author Christian Peters
  * @author Adrian Schmidt
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * 
  */
 @Bean(name = "views$public$department$allcoursesbydepartment", scope = Scope.REQUEST)

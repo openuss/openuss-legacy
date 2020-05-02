@@ -40,44 +40,44 @@ import org.openuss.openformula.mathml.out.MathMLExport;
 
 
 /**
- * Verwaltet den Cursor, dient ausserdem als Listener des Objektes für Tasten- und Mauseingaben.
+ * Verwaltet den Cursor, dient ausserdem als Listener des Objektes fÃ¼r Tasten- und Mauseingaben.
  * Tasten- und Mauseingaben sollen also direkt an dieses Objekt weitergeleitet werden,
- * da sie hier korrekt verarbeitet werden können.
+ * da sie hier korrekt verarbeitet werden kÃ¶nnen.
  */
 public final class Cursor implements KeyListener, MouseListener,
                                      MouseMotionListener {
-    // Stellt den Cursor optisch da, verwaltet Eingaben über Tastatur und Maus
+    // Stellt den Cursor optisch da, verwaltet Eingaben Ã¼ber Tastatur und Maus
 
     /**
-     * Unicode-Nummer für Summenzeichen (es gibt mehrere, dieses sieht am besten aus.)
+     * Unicode-Nummer fÃ¼r Summenzeichen (es gibt mehrere, dieses sieht am besten aus.)
      */
     public final static char SumLetter = (char) 0x3A3;
 
     /**
-     * Unicode-Nummer für Faktorzeichen
+     * Unicode-Nummer fÃ¼r Faktorzeichen
      */
     public final static char FaktorLetter = (char) 0x3A0;
 
     /**
-     * Tatsächliche Nutzung der Höhe des Zeichens für Summe und Faktor
+     * Tatsï¿½chliche Nutzung der Hï¿½he des Zeichens fÃ¼r Summe und Faktor
      */
     public final static int SumFakPercentUsage = 77;
 
     /**
-     * Unicode-Nummer für Integralzeichen
+     * Unicode-Nummer fÃ¼r Integralzeichen
      */
     public final static char IntegralLetter = (char) 0x222B;
 
     /**
-     * Tatsächliche Nutzung der Höhe des Zeichens für das Integral
+     * Tatsï¿½chliche Nutzung der Hï¿½he des Zeichens fÃ¼r das Integral
      */
     public final static int IntegralPercentUsage = 100;
 
     /**
      * Realisation der Zwischenablage:
      * Da Browser beim Starten eines Appletes nur ein mal das Applet selbst in den Speicher laden
-     * kann über static-Strings kommuniziert werden, da alle Applets auf den gleichen String zugreifen
-     * ==> Perfekt für eine einfache Relaisation der Zwischenablage... :-)
+     * kann Ã¼ber static-Strings kommuniziert werden, da alle Applets auf den gleichen String zugreifen
+     * ==> Perfekt fÃ¼r eine einfache Relaisation der Zwischenablage... :-)
      */
     public static String Zwischenablage;
 
@@ -85,7 +85,7 @@ public final class Cursor implements KeyListener, MouseListener,
     private static boolean knowJavaVersion = false;
 
     // Ist veraltete Java-Version - gewisse Funktionen stehen nicht zur
-    // Verfügung und müssen umgangen werden.
+    // Verfï¿½gung und mï¿½ssen umgangen werden.
     private static boolean realyOldJavaVesion = true;
     private final Succession mainElement;
 
@@ -108,7 +108,7 @@ public final class Cursor implements KeyListener, MouseListener,
     // --Recycle Bin (20.01.04 18:37): protected String lastXMLCode;
     //final int sizeAbove = 33;
     //final int sizeUnder = 5;
-    private final String allowedLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-)(<> []{}?ÄÖÜöäü'";
+    private final String allowedLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-)(<> []{}?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'";
     private int mouseFromX;
     private int mouseFromY;
     private Succession parent;
@@ -139,10 +139,10 @@ public final class Cursor implements KeyListener, MouseListener,
 
     /**
      * Erzeugt ein neues Cursor-Objekt, das auf dem gegebenen Ausgabe-Interface zeichnet.
-     * Die Größe der Darstellung kann festgelegt werden.
+     * Die GrÃ¶ÃŸe der Darstellung kann festgelegt werden.
      * @param comp Ausgabe-Interface
-     * @param startSize Schriftgröße bei maximal-großer Darstellung in Pixeln.
-     * @param stopSize Schriftgröße bei minimal-großer Darstellung in Pixeln.
+     * @param startSize SchriftgrÃ¶ÃŸe bei maximal-groï¿½er Darstellung in Pixeln.
+     * @param stopSize SchriftgrÃ¶ÃŸe bei minimal-groï¿½er Darstellung in Pixeln.
      */
     public Cursor(final CursorDistribution comp, final int startSize, 
                   final int stopSize) {
@@ -161,8 +161,8 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Den Cursor als Linie zeichen. Diese Linie wird - abhängig vom Blinkstatus -
-     * entweder schwarz oder weiß gezeichnet. (Blinken ist zur Zeit nicht aktiviert.)
+     * Den Cursor als Linie zeichen. Diese Linie wird - abhï¿½ngig vom Blinkstatus -
+     * entweder schwarz oder weiï¿½ gezeichnet. (Blinken ist zur Zeit nicht aktiviert.)
      * @param g Grafikkontext
      */
     private void paint(final Graphics g) {
@@ -223,7 +223,7 @@ public final class Cursor implements KeyListener, MouseListener,
     // --Recycle Bin START (20.01.04 18:37):
     //    /**
     //     * Erfragen, ob der Cursor zur Zeit dargestellt wird.
-    //     * @return true : Cursor wird - falls möglich - eingezeichnet.
+    //     * @return true : Cursor wird - falls mï¿½glich - eingezeichnet.
     //     */
     //
     //    public final boolean getVisiblity() {
@@ -232,7 +232,7 @@ public final class Cursor implements KeyListener, MouseListener,
     // --Recycle Bin STOP (20.01.04 18:37)
 
     /**
-     * Erfragt, ob die zurückgegebenen Daten gecachet werden sollen
+     * Erfragt, ob die zurÃ¼ckgegebenen Daten gecachet werden sollen
      * @return true : Cache benutzen
      */
 
@@ -251,7 +251,7 @@ public final class Cursor implements KeyListener, MouseListener,
 
     /**
      * Das Objekt einem neuen "Parent" zuordnen - also das Objekt, das den Cursor zur Zeit hat.
-     * Das Objekt, dass den Cursor bisher hatte, wird von dieser Funktion über die Änderung informiert.
+     * Das Objekt, dass den Cursor bisher hatte, wird von dieser Funktion Ã¼ber die Ã„nderung informiert.
      * @param parent Neues
      */
     public final void setNewParent(final Succession parent) {
@@ -263,7 +263,7 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * An der Cursorposition wird dieses Objekt eingefügt.
+     * An der Cursorposition wird dieses Objekt eingefï¿½gt.
      * @param object
      */
     public final void insertObject(final Basic object) {
@@ -280,7 +280,7 @@ public final class Cursor implements KeyListener, MouseListener,
 
     /**
      * Setzt die Eigenschaft von "ReadOnly". Der Cursor wird nicht mehr dargestellt.
-     * Sonstige Änderungen gibt es nicht, externen Komponenten sollten beachten,
+     * Sonstige Ã„nderungen gibt es nicht, externen Komponenten sollten beachten,
      * nun keine Benutzereingaben mehr an diese Komponenten durchzustellen.
      * Einige Komponenten zeichnen sich mit diesem Flag etwas anders.
      * @param readonly Auf True wird Read-Only-Modus aktiviert.
@@ -292,14 +292,14 @@ public final class Cursor implements KeyListener, MouseListener,
     public final void keyPressed(final KeyEvent e) {
         final int code = e.getKeyCode();
 
-        // Wir gehen zuerst davon aus, dass sich was ändert.
-        // Wenn die Taste nicht ausgewertet wird, ändern wir diesen Status.
-        // Achtung: Bei Änderungen beachten, dass nicht nur der Cursor,
-        // sondern auch gewisse Markierungen/Auswahlen berücksichtigt werden
+        // Wir gehen zuerst davon aus, dass sich was ï¿½ndert.
+        // Wenn die Taste nicht ausgewertet wird, ï¿½ndern wir diesen Status.
+        // Achtung: Bei Ã„nderungen beachten, dass nicht nur der Cursor,
+        // sondern auch gewisse Markierungen/Auswahlen berÃ¼cksichtigt werden
         boolean somethingChanged = true;
         final int mod = e.getModifiers();
 
-        if (mod == 0) { // Keine Sondertaste wie SHIFT gedrückt
+        if (mod == 0) { // Keine Sondertaste wie SHIFT gedrï¿½ckt
 
             switch (code) {
             case KeyEvent.VK_RIGHT:
@@ -507,7 +507,7 @@ public final class Cursor implements KeyListener, MouseListener,
                 //System.out.println(Zwischenablage);
                 break;
 
-            // Einfügen
+            // EinfÃ¼gen
             case KeyEvent.VK_V:
                 parent.deleteSelection();
                 MathMLImport.parseMathML(Zwischenablage, 
@@ -523,7 +523,7 @@ public final class Cursor implements KeyListener, MouseListener,
 
                 break;
 
-            // Rückgängig
+            // Rï¿½ckgï¿½ngig
             case KeyEvent.VK_Z:
 
                 if (undoBuffer != null) {
@@ -639,7 +639,7 @@ public final class Cursor implements KeyListener, MouseListener,
             int x = e.getX();
             final int y = e.getY();
 
-            // todo: Anpassen auf endgültige Version (Startposition der Erfassung)
+            // todo: Anpassen auf endgï¿½ltige Version (Startposition der Erfassung)
             // z.B. Hinterlegung in Basic-Klasse oder so...
             final Graphics g = mainElement.getGraphicsHandle();
 
@@ -743,8 +743,8 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Erzeugt den MathML-Code für die gesamte Formel.
-     * @param insertCursor Zeigt an, ob Informationen über die Position des Cursors gespeichert werden sollen
+     * Erzeugt den MathML-Code fÃ¼r die gesamte Formel.
+     * @param insertCursor Zeigt an, ob Informationen Ã¼ber die Position des Cursors gespeichert werden sollen
      * @return MathML-Code
      */
     public final String generateMathMLCode(final boolean insertCursor) {
@@ -758,7 +758,7 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Erzeugt den MathML-Code für den ausgewählten (=markierten) Bereich.
+     * Erzeugt den MathML-Code fÃ¼r den ausgewï¿½hlten (=markierten) Bereich.
      * @return MathML-Code
      */
     public String generateMathMLCodeFromSelected() {
@@ -772,8 +772,8 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Den übergebenen MathML-Code parsen und einfügen. Repaint() wird nicht aufgerufen.
-     * @param mathMLCode Einzufügender MathMLCode
+     * Den Ã¼bergebenen MathML-Code parsen und einfÃ¼gen. Repaint() wird nicht aufgerufen.
+     * @param mathMLCode Einzufï¿½gender MathMLCode
      */
     public final void parse(final String mathMLCode) {
         mainElement.insertCursorAt(0);
@@ -790,8 +790,8 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Höhe des gesammt-Objektes bestimmen
-     * @return Notwenige Höhe
+     * Hï¿½he des gesammt-Objektes bestimmen
+     * @return Notwenige Hï¿½he
      */
     public final int getRequiredHeight() {
         return mainElement.getHeight(getGraphics());
@@ -807,7 +807,7 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Objekt an die übergebenen Koordinaten zeichen
+     * Objekt an die Ã¼bergebenen Koordinaten zeichen
      * @param x X-Koordinate
      * @param y Y-Koordinate
      */
@@ -826,7 +826,7 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Wenn sich irgendwas an der Objektstruktur verändert hat, muss der Undo-Buffer einen neuen
+     * Wenn sich irgendwas an der Objektstruktur verï¿½ndert hat, muss der Undo-Buffer einen neuen
      * "Abzug" der Datenstruktur ziehen
      */
     public final void somethingChanged() {
@@ -875,7 +875,7 @@ public final class Cursor implements KeyListener, MouseListener,
     }
 
     /**
-     * Falls sinnvoll und möglich, Windows-Fokus übertragen
+     * Falls sinnvoll und mï¿½glich, Windows-Fokus Ã¼bertragen
      */
     public final void requestFocus() {
         comp.requestFocus();
@@ -889,7 +889,7 @@ public final class Cursor implements KeyListener, MouseListener,
     } */
 
     /**
-     * Gibt das Succession-Objekt zurück, das sich am weitesten oben in der Hirachie befindet
+     * Gibt das Succession-Objekt zurÃ¼ck, das sich am weitesten oben in der Hirachie befindet
      * @return "Oberstes" Succession-Objekt
      */
     public final Succession getPrimaryElement() {
@@ -901,8 +901,8 @@ public final class Cursor implements KeyListener, MouseListener,
     }*/
 
     /**
-     * Die Java-Version überprüfen.
-     * @return true, wenn die Version gleich 1.1. ist. (Versionen kleiner 1.1. werden nicht unterstützt.)
+     * Die Java-Version Ã¼berprï¿½fen.
+     * @return true, wenn die Version gleich 1.1. ist. (Versionen kleiner 1.1. werden nicht unterstï¿½tzt.)
      */
     public static boolean isRealyOldJavaVersion() {
         //System.out.println("check!");

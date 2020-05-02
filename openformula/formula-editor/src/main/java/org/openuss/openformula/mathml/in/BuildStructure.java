@@ -10,23 +10,23 @@ package org.openuss.openformula.mathml.in;
 
 /**
  * Bietet die Schnittstelle zum Succession-Objekt, in das mit diesen Befehlen
- * Elemente eingefügt werden können.
+ * Elemente eingefï¿½gt werden kÃ¶nnen.
  */
 public interface BuildStructure {
     /**
-     * Das gegebene Element in der Struktur einfügen.
+     * Das gegebene Element in der Struktur einfÃ¼gen.
      * @param element
      */
     public void add(org.openuss.openformula.graphics.Basic element);
 
     /**
-     * Das übergeordnete Parent-Objekt erfragen.
+     * Das Ã¼bergeordnete Parent-Objekt erfragen.
      * @return Das Parent-Objekt
      */
     public org.openuss.openformula.graphics.Basic getParentObject();
 
     /**
-     * Der Cursor soll hier später eingefügt werden. Wird intern genutzt.
+     * Der Cursor soll hier spï¿½ter eingefï¿½gt werden. Wird intern genutzt.
      */
     public void insertCursor();
 }

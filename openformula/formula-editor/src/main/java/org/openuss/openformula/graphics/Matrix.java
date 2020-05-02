@@ -30,7 +30,7 @@ public final class Matrix extends Basic {
 
     /**
      * Eine Matrix (oder ein Vektor) mit der Ausdehnung countX, countY erstellen.
-     * @param parent Übergeordnetes Objekt
+     * @param parent Ã¼bergeordnetes Objekt
      * @param countX Anzahl der Elemente in horizontaler Richtung
      * @param countY Anzahl der Elemente in vertikaler Richtung
      */
@@ -142,7 +142,7 @@ public final class Matrix extends Basic {
         vLinePos[0] = vUnderLine[0]; // Abstand der Baseline von relativ 0,0
 
         for (int j = 1; j < countY; j++) {
-            // Abstand vom bisherigen Zeichen, dessen Höhe über der BaseLine, der Default-Abstand
+            // Abstand vom bisherigen Zeichen, dessen Hï¿½he Ã¼ber der BaseLine, der Default-Abstand
             // und des eigenen Abstandes unter der Baseline
             vLinePos[j] = vLinePos[j - 1] + vOverLine[j - 1] + AbstandY + 
                           vUnderLine[j];
@@ -397,8 +397,8 @@ public final class Matrix extends Basic {
 
     /**
      * Ermittelt aus den relativen Koordinaten x & y, die sich auf die linke untere Ecke der Matrix beziehen,
-     * die Koordinaten der Elemente (Index 0 für x und 2 für y) sowie die relative Verschiebung (Index 1 für x
-     * und 3 für y)
+     * die Koordinaten der Elemente (Index 0 fÃ¼r x und 2 fÃ¼r y) sowie die relative Verschiebung (Index 1 fÃ¼r x
+     * und 3 fÃ¼r y)
      * @param g Graphic-Handle
      * @param x X-Koordinate, relativ
      * @param y Y-Koordinate, relativ

@@ -17,7 +17,7 @@ package org.openuss.openformula.mathml.in;
  */
 /**
  * Markierungsklasse, dient nur zur Vermeidung von Fehlern.
- * Signalisiert, dass die zugehörige Klasse ein Token innerhalb einer <mrow>-Struktur ist.
+ * Signalisiert, dass die zugehÃ¶rige Klasse ein Token innerhalb einer <mrow>-Struktur ist.
  */
 public abstract class Statement extends InterpreterBasis {
     public void createStructure(final BuildStructure structure) {

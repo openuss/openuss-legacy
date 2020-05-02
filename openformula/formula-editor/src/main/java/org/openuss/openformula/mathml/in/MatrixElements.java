@@ -9,7 +9,7 @@
 package org.openuss.openformula.mathml.in;
 
 /**
- * Hat ein Matrixelement, weißt Verknüpfung zu nächsten Element auf. Wirkt umständlich,
+ * Hat ein Matrixelement, weiÃŸt VerknÃ¼pfung zu nÃ¤chsten Element auf. Wirkt umstÃ¤ndlich,
  * ist aber wegen der Struktur des Parsers notwendig.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */

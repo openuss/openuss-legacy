@@ -15,132 +15,132 @@ import org.openuss.openformula.io.Cursor;
 /**
  * Die Klasse bildet die Schnittstelle zwischen den Buttons und der grafischen Darstellung.
  * Die einzelnen Objekte dieser Klasse werden mit einer Konstante initialisiert, die beschreibt,
- * was einzufügen ist. Bei Aufruf von InsertNow() wird dieses Objekt erstellt und eingefügt.
- * Des weiteren stehen Funktionen zur Verfügung, die einzelne Zeichen einfügen können.
+ * was einzufï¿½gen ist. Bei Aufruf von InsertNow() wird dieses Objekt erstellt und eingefï¿½gt.
+ * Des weiteren stehen Funktionen zur Verfï¿½gung, die einzelne Zeichen einfÃ¼gen kÃ¶nnen.
  */
 public final class InsertSymbol {
     /**
-     * Konstante für "Bruch einfügen"
+     * Konstante fÃ¼r "Bruch einfÃ¼gen"
      */
     public final static int Fraction = 0;
 
     /**
-     * Konstante für "Summe einfügen"
+     * Konstante fÃ¼r "Summe einfÃ¼gen"
      */
     public final static int Sum = 1;
 
     /**
-     * Konstante für "Faktorzeichen einfügen"
+     * Konstante fÃ¼r "Faktorzeichen einfÃ¼gen"
      */
     public final static int Factor = 2;
 
     /**
-     * Konstante für "Integralzeichen einfügen"
+     * Konstante fÃ¼r "Integralzeichen einfÃ¼gen"
      */
     public final static int Integral = 3;
 
     /**
-     * Konstante für "Wurzel einfügen"
+     * Konstante fÃ¼r "Wurzel einfÃ¼gen"
      */
     public final static int SquareRoot = 4;
 
     /**
-     * Konstante für "Hochschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Hochschreiben-Objekt einfÃ¼gen"
      */
     public final static int SuperScript = 5;
 
     /**
-     * Konstante für "Tiefschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Tiefschreiben-Objekt einfÃ¼gen"
      */
     public final static int SubScript = 6;
 
     /**
-     * Konstante für "Hoch-&Tiefschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Hoch-&Tiefschreiben-Objekt einfÃ¼gen"
      */
     public final static int SubSuperScript = 7;
 
     /**
-     * Konstante für "Runde Klammer-Objekt einfügen"
+     * Konstante fÃ¼r "Runde Klammer-Objekt einfÃ¼gen"
      */
     public final static int Parenthesis = 8;
 
     /**
-     * Konstante für "Eckige Klammern-Objekt einfügen"
+     * Konstante fÃ¼r "Eckige Klammern-Objekt einfÃ¼gen"
      */
     public final static int SquareBracket = 9;
 
     /**
-     * Konstante für "Geschweifte-Klammer-Objekt einfügen"
+     * Konstante fÃ¼r "Geschweifte-Klammer-Objekt einfÃ¼gen"
      */
     public final static int CurlyBracket = 10;
 
     /**
-     * Konstante für "Linke Geschweifte-Klammer-Objekt einfügen"
+     * Konstante fÃ¼r "Linke Geschweifte-Klammer-Objekt einfÃ¼gen"
      */
     public final static int LeftCurlyBracket = 21;
 
     /**
-     * Konstante für "Rechte Geschweifte-Klammer-Objekt einfügen"
+     * Konstante fÃ¼r "Rechte Geschweifte-Klammer-Objekt einfÃ¼gen"
      */
     public final static int RightCurlyBracket = 22;
 
     /**
-         * Konstante für "Vertikale Linie einfügen"
+         * Konstante fÃ¼r "Vertikale Linie einfÃ¼gen"
          */
     public final static int VerticalLine = 23;
 
     /**
-     * Konstante für "Matrix einfügen"
+     * Konstante fÃ¼r "Matrix einfÃ¼gen"
      */
     public final static int Matrix = 11;
 
     /**
-     * Konstante für "Überschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Ã¼berschreiben-Objekt einfÃ¼gen"
      */
     public final static int UnderScript = 12;
 
     /**
-     * Konstante für "Unterschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Unterschreiben-Objekt einfÃ¼gen"
      */
     public final static int OverScript = 13;
 
     /**
-     * Konstante für "Über-&Unterschreiben-Objekt einfügen"
+     * Konstante fÃ¼r "Ã¼ber-&Unterschreiben-Objekt einfÃ¼gen"
      */
     public final static int UnderOverScript = 14;
 
     /**
-     * Konstante für "Punkt über letztem Zeichen anfügen"
+     * Konstante fÃ¼r "Punkt Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddDotToLetter = 15;
 
     /**
-     * Konstante für "Zwei Punkte über letztem Zeichen anfügen"
+     * Konstante fÃ¼r "Zwei Punkte Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddDoubleDotToLetter = 16;
 
     /**
-     * Konstante für "Drei Punkte über letztem Zeichen anfügen"
+     * Konstante fÃ¼r "Drei Punkte Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddTripleDotToLetter = 17;
 
     /**
-     * Konstante für "Hut über letztem Zeichen anfügen"
+     * Konstante fÃ¼r "Hut Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddHatToLetter = 18;
 
     /**
-     * Konstante für "Balken über letztem Zeichen anfügen"
+     * Konstante fÃ¼r "Balken Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddOverBarToLetter = 19;
 
     /**
-     * Tilde für "Balken über letztem Zeichen anfügen"
+     * Tilde fÃ¼r "Balken Ã¼ber letztem Zeichen anfï¿½gen"
      */
     public final static int AddTildeToLetter = 20;
 
     /**
-     * Konstante für "Sonderzeichen einfügen"
+     * Konstante fÃ¼r "Sonderzeichen einfÃ¼gen"
      */
     public final static int InsertSymbolChar = 1000;
     private int insertThis;
@@ -149,9 +149,9 @@ public final class InsertSymbol {
 
     /**
      * Erzeugt ein Objekt, das bei Aufruf von InsertNow() das hier eingestellte
-     * Objekt einfügt.
+     * Objekt einfï¿½gt.
      * @param insertThis Konstante, die informiert, was erstellt werden soll
-     * @param cursor Umgebung, in welcher das Objekt eingefügt werden soll.
+     * @param cursor Umgebung, in welcher das Objekt eingefï¿½gt werden soll.
      */
     public InsertSymbol(final int insertThis, final Cursor cursor) {
         if (insertThis >= 1000) {
@@ -164,7 +164,7 @@ public final class InsertSymbol {
 
     /**
      * Erzeugt ein Objekt, das bei Aufruf von InsertNow() das hier eingestellte
-     * Objekt einfügt. Erlaubt als zusätzlichen Parameter die Übergabe eines Zeichens.
+     * Objekt einfï¿½gt. Erlaubt als zusï¿½tzlichen Parameter die Ã¼bergabe eines Zeichens.
      * (Wird zur Zeit nur von "InsertCharSymbol" verwendet.)
      * @param insertThis
      * @param c
@@ -178,7 +178,7 @@ public final class InsertSymbol {
 
     /**
      * Erzeugt ein Objekt, mit dem durch Aufruf z.B. von InsertSymbolLetter Zeichen direkt
-     * eingefügt werden können. InsertNow() darf bei einem Objekt, dass mit diesem
+     * eingefï¿½gt werden kÃ¶nnen. InsertNow() darf bei einem Objekt, dass mit diesem
      * Konstruktor erzeugt wurde, nicht aufgerufen werden.
      * @param cursor
      */
@@ -188,8 +188,8 @@ public final class InsertSymbol {
     }
 
     /**
-     * Diese Methode erstellt ein Objekt gemäß der beim Konstruktor übergebenen
-     * Konstante und fügt das an der Cursorposition ein.
+     * Diese Methode erstellt ein Objekt gemï¿½ï¿½ der beim Konstruktor Ã¼bergebenen
+     * Konstante und fï¿½gt das an der Cursorposition ein.
      */
     public final void InsertNow() {
         final Succession parent = cursor.getParent();
@@ -302,7 +302,7 @@ public final class InsertSymbol {
         case AddTildeToLetter:
 
             final Basic b = parent.getObjectAtCursor();
-            final int type; // Unschön - aber wie soll man es besser machen ? Den Code n mal kopieren ? Auch doof!
+            final int type; // Unschï¿½n - aber wie soll man es besser machen ? Den Code n mal kopieren ? Auch doof!
 
             if (insertThis == AddDotToLetter) {
                 type = LetterIndication.Dot;
@@ -345,9 +345,9 @@ public final class InsertSymbol {
     }
 
     /**
-     * Das Symbol "c" wird an der Positon des Cursors eingefügt. "Symbole" sind Zeichen
+     * Das Symbol "c" wird an der Positon des Cursors eingefï¿½gt. "Symbole" sind Zeichen
      * wie z.B. griechische Zeichen oder Pfeile.
-     * @param c Einzufügendes Zeichen
+     * @param c Einzufï¿½gendes Zeichen
      */
     public final void InsertSymbolLetter(final char c) {
         switch (c) {
@@ -391,8 +391,8 @@ public final class InsertSymbol {
     }
 
     /**
-     * Fürt ein normales Zeichen an der Position des Cursors ein.
-     * @param c Einzufügendes Zeichen
+     * fÃ¼rt ein normales Zeichen an der Position des Cursors ein.
+     * @param c Einzufï¿½gendes Zeichen
      */
     public final void InsertLetter(final char c) {
         cursor.insertObject(new Letter(cursor.getParent(), c));
@@ -411,7 +411,7 @@ public final class InsertSymbol {
 
     // --Recycle Bin START (20.01.04 18:37):
     //    /**
-    //     * Gibt den Cursor zurück, mit dem das Objekt initialisiert wurde.
+    //     * Gibt den Cursor zurÃ¼ck, mit dem das Objekt initialisiert wurde.
     //     * @return Zeichnungskontext
     //     */
     //

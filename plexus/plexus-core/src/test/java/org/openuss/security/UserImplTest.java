@@ -7,7 +7,7 @@ import org.acegisecurity.GrantedAuthority;
 
 /**
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class UserImplTest extends TestCase {
 

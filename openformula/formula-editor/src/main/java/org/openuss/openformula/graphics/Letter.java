@@ -83,7 +83,7 @@ public class Letter extends Basic {
     }
 
     /*public void paintUncached(Graphics g, int atX, int atY) {
-        // So wird die Schriftgröße korrekt berücksichtigt
+        // So wird die SchriftgrÃ¶ÃŸe korrekt berÃ¼cksichtigt
         //Graphics gg = getGraphicsHandle();
         //gg.setColor(g.getColor());
                                     
@@ -102,7 +102,7 @@ public class Letter extends Basic {
         } */
 
     //gg.drawLine(atX,atY-gha,atX+gw,atY-gha);
-    //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?ÄÖÜöäü";
+    //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?Ã¤Ã¶Ã¼Ã„Ã–ÃœÃŸ";
     public void generateMathMLCode(final MathMLExport mmle) {
         final char c = letter;
 

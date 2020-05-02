@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 /**
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class GroupImplTest extends TestCase {
 	

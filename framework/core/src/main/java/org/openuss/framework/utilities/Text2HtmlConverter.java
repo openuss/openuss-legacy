@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
  * This is a Helper-Class for converting Text to HMTL
  * 
  * @author bodum
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class Text2HtmlConverter {
 

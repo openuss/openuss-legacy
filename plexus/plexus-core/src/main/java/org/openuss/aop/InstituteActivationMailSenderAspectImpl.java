@@ -23,7 +23,7 @@ import org.openuss.system.SystemService;
  * creation of institutes.
  * 
  * @author Florian Dondorf
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class InstituteActivationMailSenderAspectImpl {
 

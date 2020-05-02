@@ -3,14 +3,14 @@
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
 			Hallo, <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>, 
-			ihre Bewerbung für die Mitgliedschaft des Fachberechs <i>${departmentname}</i> wurde abgelehnt! 
+			ihre Bewerbung fÃ¼r die Mitgliedschaft des Fachberechs <i>${departmentname}</i> wurde abgelehnt!
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS!
+			Viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kÃ¶nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

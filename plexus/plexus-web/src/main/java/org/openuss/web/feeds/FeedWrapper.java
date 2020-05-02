@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @author Sebastian Roeckens
  */
 public class FeedWrapper  {

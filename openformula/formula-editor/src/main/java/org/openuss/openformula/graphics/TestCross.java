@@ -14,7 +14,7 @@ import org.openuss.openformula.mathml.out.MathMLExport;
 
 
 /**
- * TestCross, Klasse existiert für Debugzwecke. Sie stellt ein Rechteck mit einem
+ * TestCross, Klasse existiert fÃ¼r Debugzwecke. Sie stellt ein Rechteck mit einem
  * Kreuz dar.
  */
 public final class TestCross extends Basic {

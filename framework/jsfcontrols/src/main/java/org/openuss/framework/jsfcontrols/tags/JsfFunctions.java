@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * Functions to aid developing JSF applications.
  * 
  * @author Arne Sutor
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public final class JsfFunctions {
 

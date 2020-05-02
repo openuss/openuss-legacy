@@ -67,7 +67,7 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
  * images, but it can read from. GIF images will be saved as PNG.
  * 
  * @author Rafael Steil
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class ImageUtils {
 	public static final int IMAGE_UNKNOWN = -1;

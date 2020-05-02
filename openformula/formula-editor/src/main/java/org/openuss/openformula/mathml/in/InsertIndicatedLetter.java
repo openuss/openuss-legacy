@@ -14,7 +14,7 @@ import org.openuss.openformula.graphics.LetterIndication;
 
 
 /**
- * Ein markiertes hervorgehobenes Zeichen einfügen, z.B. ein a mit Hut: (â)
+ * Ein markiertes hervorgehobenes Zeichen einfÃ¼gen, z.B. ein a mit Hut: (ï¿½)
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertIndicatedLetter extends Statement {

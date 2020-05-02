@@ -980,6 +980,7 @@
 		<shale.version>1.0.4</shale.version>
 		<spring.version>2.0.8</spring.version>
 		<cxf.version>2.0.4-incubator</cxf.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	<!--
 		<maven.andromda.loggingConfigurationUri>
 		${project.dir}/tools/config/log4j.xml

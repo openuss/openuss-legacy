@@ -58,7 +58,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		period
 				.setDescription("Dies ist der Standard-Zeitraum der "
 						+ university.getName()
-						+ ". Er ist als Auffangbehälter für Veranstaltungen gedacht, die keinem anderen Zeitraum zugeordnet werden können.");
+						+ ". Er ist als Auffangbehï¿½lter fÃ¼r Veranstaltungen gedacht, die keinem anderen Zeitraum zugeordnet werden kÃ¶nnen.");
 		period.setStartdate(new Date(0)); // 1. January 1970, 00:00:00 GMT
 		Calendar cal = new GregorianCalendar();
 		cal.set(2050, 11, 31);// 31. December 2050, 00:00:00 GMT
@@ -74,7 +74,7 @@ public class UniversityServiceImpl extends org.openuss.lecture.UniversityService
 		department
 				.setDescription("Dies ist das (inoffizielle) Standard-Fachbereich der "
 						+ university.getName()
-						+ ". Es ist als Auffangbehälter für Institutionen gedacht, die noch keinem anderen Fachbereich zugeordnet werden können.");
+						+ ". Es ist als Auffangbehï¿½lter fÃ¼r Institutionen gedacht, die noch keinem anderen Fachbereich zugeordnet werden kÃ¶nnen.");
 		department.setOwnerName(university.getOwnerName());
 		department.setEnabled(false);
 		department.setMembership(Membership.Factory.newInstance());

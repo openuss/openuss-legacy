@@ -12,7 +12,7 @@ import java.util.Hashtable;
 
 
 /**
- * Stellt Sprachtabelle für Formeleditor zur Verfügung.
+ * Stellt Sprachtabelle fÃ¼r Formeleditor zur Verfï¿½gung.
  */
 public final class Language {
     private final Hashtable table;
@@ -29,8 +29,8 @@ public final class Language {
     }
 
     /**
-     * Gibt für den Parameter das Wort in der initialiesierten Sprache zurück.
-     * @param symbolName Schlüssel des Wortes
+     * Gibt fÃ¼r den Parameter das Wort in der initialiesierten Sprache zurÃ¼ck.
+     * @param symbolName Schlï¿½ssel des Wortes
      * @return Wort in initialisierter Sprache
      */
     public final String getWord(final String symbolName) {

@@ -6,7 +6,7 @@
 			der Nutzer <i>${username} (${userfirstname} ${userlastname})</i> wurde in ihre Organisation <i>${organisationname}</i> aufgenommen.
 		</p>
 		<p>
-			Sie können auf den folgenden Link klicken, um die Bewerbung zu bearbeiten:<br/>
+			Sie kÃ¶nnen auf den folgenden Link klicken, um die Bewerbung zu bearbeiten:<br/>
 			<a href="${organisationlink}">${organisationlink}</a>
 		</p>
 		<p>
@@ -14,11 +14,11 @@
 			Adressleiste Ihres Browser ein.
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS
+			Viel Spaï¿½ mit OpenUSS
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beanwortet.
+				Auf diese E-Mail kÃ¶nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beanwortet.
 			</small>
 		</p>
 	</body>

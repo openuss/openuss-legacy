@@ -15,7 +15,7 @@ import org.openuss.openformula.graphics.Superscript;
 
 
 /**
- * Ein Hochgestelltes, Tiefgestelltes oder Hoch-&Tiefgestelltes Objekt einfügen.
+ * Ein Hochgestelltes, Tiefgestelltes oder Hoch-&Tiefgestelltes Objekt einfÃ¼gen.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertSubSuperscript extends Statement {

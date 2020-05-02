@@ -1,7 +1,7 @@
 /**
  * Title:        OpenUSS - Open University Support System
  * Description:  Utility Class to find factories
- * Copyright:    Copyright (c) Ingo Düppe
+ * Copyright:    Copyright (c) Ingo DÃ¼ppe
  * Company:      University of Muenster
  */
 package org.openuss.framework.utilities;
@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 /**
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @version 1.0 - 25.11.2004
  */
 public class FactoryFinder {

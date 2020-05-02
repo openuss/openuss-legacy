@@ -8,7 +8,7 @@ package org.openuss.lecture;
 /**
  * @see org.openuss.lecture.Course
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class CourseDaoImpl extends org.openuss.lecture.CourseDaoBase {
 	/**

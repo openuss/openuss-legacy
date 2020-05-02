@@ -9,7 +9,7 @@
 package org.openuss.openformula.mathml.in;
 
 /**
- * Den Cursor einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Den Cursor einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertCursor extends Statement {
     public final void createStructure(final BuildStructure structure) {

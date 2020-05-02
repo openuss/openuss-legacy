@@ -15,7 +15,7 @@ import org.openuss.openformula.mathml.in.BuildStructure;
 
 /**
  * Zwischenklasse, die Objekte verwaltet, die ein Unterobjekt haben und bei einer
- * vertikalen Bewegung mit dem Cursor betreten werden können.
+ * vertikalen Bewegung mit dem Cursor betreten werden kÃ¶nnen.
  */
 public abstract class HorizontalEnter extends Basic {
     final Succession main;
@@ -32,7 +32,7 @@ public abstract class HorizontalEnter extends Basic {
     }
 
     /**
-     * Gibt ein BuildStructure-Objekt zurück, durch das auf das Haupt-Unterobjekt main zugegriffen werden
+     * Gibt ein BuildStructure-Objekt zurÃ¼ck, durch das auf das Haupt-Unterobjekt main zugegriffen werden
      * kann, um dies zu erweitern.
      * @return Objekt zum Zugriff auf Base
      */

@@ -12,7 +12,7 @@ import java.util.List;
  * Inspired by myfaces-wiki: 
  * <a href="http://wiki.apache.org/myfaces/WorkingWithLargeTables"/>working with large tables</a>
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * 
  */
 public class DataPage<T> implements Serializable{

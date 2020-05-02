@@ -13,7 +13,7 @@ import javax.faces.render.Renderer;
  * off of an example from David Geary on the MyFaces Mailing list.
  * 
  * @author Matt Raible
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class LabelRenderer extends Renderer {
 

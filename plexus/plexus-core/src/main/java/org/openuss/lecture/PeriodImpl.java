@@ -12,7 +12,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.time.DateUtils;
 
 /**
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * 
  * @see org.openuss.lecture.Period
  */

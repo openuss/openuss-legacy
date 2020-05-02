@@ -29,7 +29,7 @@ import org.openuss.openformula.mathml.in.MathMLImport;
  * grafische Komponente im oberen Teil dargestellt wird. <br>
  * Auf Wunsch kann im unteren Teil eine Beschreibung angegeben werden.<br>
  * Die grafische Komponente wird durch MathML-Code beschrieben.<br>
- * Es findet keine Überprüfung statt, ob die Komponente eingezeichnet werden kann.
+ * Es findet keine Ã¼berprï¿½fung statt, ob die Komponente eingezeichnet werden kann.
  */
 public final class NewFlxButton extends Canvas implements MouseListener {
     private static final long serialVersionUID = -2738227748833975846L;
@@ -76,7 +76,7 @@ public final class NewFlxButton extends Canvas implements MouseListener {
      * @param descr Die Beschreibung des Buttons. Wird im unteren Teil des Buttons zentriert angezeigt.
      * @param sizeX Horizontale Ausdehnung
      * @param sizeY Vertikale Ausdehnung
-     * @param symbol Vorgagang, der bei Betätigung dieses Knopfes ausgelöst werden soll.
+     * @param symbol Vorgagang, der bei Betï¿½tigung dieses Knopfes ausgelï¿½st werden soll.
      */
     public NewFlxButton(final String mathMLCode, final String descr, 
                         final int sizeX, final int sizeY, 

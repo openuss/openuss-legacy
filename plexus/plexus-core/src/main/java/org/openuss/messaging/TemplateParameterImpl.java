@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * @see org.openuss.messaging.TemplateParameter
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class TemplateParameterImpl extends TemplateParameterBase implements TemplateParameter {
 	/**

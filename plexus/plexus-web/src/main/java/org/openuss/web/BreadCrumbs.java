@@ -31,7 +31,7 @@ import org.openuss.lecture.UniversityService;
  * object and add their own view-specific crumbs afterwards.
  * 
  * @author Julian Reimann
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 @Bean(name = "breadcrumbs", scope = Scope.REQUEST)
 public class BreadCrumbs extends BaseBean {

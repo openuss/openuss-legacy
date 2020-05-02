@@ -2,8 +2,8 @@
 	<body>
 		<i>See an english version of this email below.</i><br/>
 		<p>Lieber OpenUSS-Nutzer,</p>
-		<p>wir freuen uns, Ihnen mitteilen zu können, dass OpenUSS 3.0 online ist. 
-		Die neue vollständig überarbeitete Version zeichnet sich durch ein neues Oberflächendesign und eine vereinfachte Navigationsstruktur aus. 
+		<p>wir freuen uns, Ihnen mitteilen zu kÃ¶nnen, dass OpenUSS 3.0 online ist.
+		Die neue vollstï¿½ndig Ã¼berarbeitete Version zeichnet sich durch ein neues Oberflï¿½chendesign und eine vereinfachte Navigationsstruktur aus.
 		Weitere Informationen finden Sie unter <a href="http://www.openuss.de">www.openuss.de</a>.
 		</p>
 		<p>Durch ein neues Rollenkonzept war eine Bereinigung der Nutzerdaten vorzunehmen.</p> 
@@ -19,20 +19,20 @@
 		<p>Aufgrund eines Konflikts mit einem anderen Benutzerkonto musste Ihre Benutzerkennung leider umbenannt werden.</p>
 #end
 	    <p>
-			Sie können sich in das System mit Ihrer Benutzerkennung <b>${username}</b> einloggen. 
-			Sie haben die Möglichkeit Ihre persönlichen Daten jederzeit unter <a href="http://www.openuss.de/views/secured/user/profile.faces">http://www.openuss.de/views/secured/user/profile.faces</a>
-			zu ändern.
+			Sie kÃ¶nnen sich in das System mit Ihrer Benutzerkennung <b>${username}</b> einloggen.
+			Sie haben die Mï¿½glichkeit Ihre persï¿½nlichen Daten jederzeit unter <a href="http://www.openuss.de/views/secured/user/profile.faces">http://www.openuss.de/views/secured/user/profile.faces</a>
+			zu ï¿½ndern.
 		</p>
 		<p>
-			Wir möchten Sie bitten, Ihr Benutzerkonto <b>${username}</b> erneut zu aktivieren. Hierzu klicken Sie bitte auf den folgenden Link.<br/>
+			Wir mï¿½chten Sie bitten, Ihr Benutzerkonto <b>${username}</b> erneut zu aktivieren. Hierzu klicken Sie bitte auf den folgenden Link.<br/>
 			<a href="http://www.openuss.de/actions/public/user/activate.faces?code=${code}">http://www.openuss.de/actions/public/user/activate.faces?code=${code}</a>
 		</p>
-		<p>Falls Sie Ihr Benutzerkonto nicht mehr verwenden möchten und Ihre Daten gelöscht werden sollen, 
+		<p>Falls Sie Ihr Benutzerkonto nicht mehr verwenden mï¿½chten und Ihre Daten gelï¿½scht werden sollen, 
 		   brauchen Sie nichts weiter zu unternehmen. Benutzerkonten, 
-		   die nicht innerhalb der nächsten vier Wochen erneut aktiviert werden, werden automatisch gelöscht.
+		   die nicht innerhalb der nÃ¤chsten vier Wochen erneut aktiviert werden, werden automatisch gelï¿½scht.
 		</p>
-		<p>Für Rückfragen stehen wir Ihnen gerne zur Verfügung.</p>
-		<p>Mit freundlichen Grüßen</p>
+		<p>fÃ¼r Rï¿½ckfragen stehen wir Ihnen gerne zur Verfï¿½gung.</p>
+		<p>Mit freundlichen GrÃ¶ÃŸen</p>
 		<p>Ihr OpenUSS-Team<br/><a href="mailto:openuss@e-learning.uni-muenster.de">openuss@e-learning.uni-muenster.de</a>
 
 		<p>---------------------------------------------------------------------------------------------------------</p>

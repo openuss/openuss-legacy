@@ -115,7 +115,7 @@ public final class PaintSymbol extends Symbol {
     public final void paint(final Graphics g, final int atX, final int atY) {
         //System.out.println("can "+g.getFont().canDisplay(letter));
         switch (letter) {
-        case 0x2200: // für alle
+        case 0x2200: // fÃ¼r alle
             paintLine(g, atX, atY, 0, 35, 25, 95);
             paintLine(g, atX, atY, 25, 95, 50, 35);
             paintLine(g, atX, atY, 12, 60, 38, 60);

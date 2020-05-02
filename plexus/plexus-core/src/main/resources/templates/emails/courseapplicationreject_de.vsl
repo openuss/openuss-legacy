@@ -2,14 +2,14 @@
 	<body>
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
-			Ihre Bewerbung für die Teilnahme an der Veranstaltung <i>${coursename}</i> wurde abgelehnt! 
+			Ihre Bewerbung fÃ¼r die Teilnahme an der Veranstaltung <i>${coursename}</i> wurde abgelehnt!
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS!
+			Viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kÃ¶nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

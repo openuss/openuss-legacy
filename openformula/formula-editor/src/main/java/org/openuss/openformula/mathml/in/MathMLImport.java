@@ -13,23 +13,23 @@ import java.io.StringReader;
 
 
 /**
-  * Diese Klasse ist für das Interpretieren von MathML-Code zuständig. Dazu wird der übergebene
+  * Diese Klasse ist fÃ¼r das Interpretieren von MathML-Code zustï¿½ndig. Dazu wird der Ã¼bergebene
  * Code gescannt und geparst, anschliessend wird der dabei entstandene Syntaxbaum in die
- * Objektstrutkut des Formeleditors überführt.
+ * Objektstrutkut des Formeleditors Ã¼berfï¿½hrt.
   */
 public final class MathMLImport {
     /**
-     * Den übergebenen mathml-Code übersetzen und die zur Abbildung notwendigen
-     * Objekte in die BuildStructure einfügen.
+     * Den Ã¼bergebenen mathml-Code Ã¼bersetzen und die zur Abbildung notwendigen
+     * Objekte in die BuildStructure einfÃ¼gen.
      * @param str Zu parsender mathml-Code
-     * @param structure Objekt, in das die aufzubauende Struktur eingefügt werden kann.
+     * @param structure Objekt, in das die aufzubauende Struktur eingefï¿½gt werden kann.
      */
     public static void parseMathML(String str, final BuildStructure structure) {
         // EditorFrame...
         if ((str == null) || str.equals("")) {
             return;
         } else {
-            // Header-Müll entfernen
+            // Header-Mï¿½ll entfernen
             int i = str.indexOf("<math");
 
             if (i == -1) {

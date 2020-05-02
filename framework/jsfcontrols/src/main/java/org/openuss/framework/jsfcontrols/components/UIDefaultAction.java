@@ -12,7 +12,7 @@ import javax.faces.component.UIComponent;
  * Default Action for a JSF Form see 
  * <a href="http://www.jsftutorials.net/defaultActionTag.html">JSF Tutorial</a>
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @author sim
  */
 public class UIDefaultAction extends UIOutput {

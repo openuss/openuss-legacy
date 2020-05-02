@@ -1,7 +1,7 @@
 /**
  * Title:        OpenUSS - Open University Support System
  * Description:  Utility Class to find factories
- * Copyright:    Copyright (c) Ingo Düppe
+ * Copyright:    Copyright (c) Ingo DÃ¼ppe
  * Company:      University of Muenster
  */
 package org.openuss.api.utilities;

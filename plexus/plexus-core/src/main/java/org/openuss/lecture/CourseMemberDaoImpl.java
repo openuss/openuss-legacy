@@ -12,7 +12,7 @@ import org.openuss.security.User;
 /**
  * @see org.openuss.lecture.CourseMember
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  */
 public class CourseMemberDaoImpl extends CourseMemberDaoBase {
 

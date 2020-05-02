@@ -21,7 +21,7 @@ import javax.faces.model.DataModel;
  * Inspired by myfaces-wiki: 
  * <a href="http://wiki.apache.org/myfaces/WorkingWithLargeTables"/>working with large tables</a>
  * 
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  *  
  */
 public abstract class PagedListDataModel<T> extends DataModel {

@@ -19,8 +19,8 @@ import org.openuss.openformula.design.language.Translation;
 
 
 /**
- * Stellt den eigentlichen Formeleditor in einem Fenster dar. Diese Routiene verfügt
- * über eine Main-Routine, mit der der Formeleditor direkt gestartet werden kann.
+ * Stellt den eigentlichen Formeleditor in einem Fenster dar. Diese Routiene verfï¿½gt
+ * Ã¼ber eine Main-Routine, mit der der Formeleditor direkt gestartet werden kann.
  */
 public final class EditorFrame extends Frame {
     private static final long serialVersionUID = -6758878254221495574L;
@@ -30,8 +30,8 @@ public final class EditorFrame extends Frame {
     private Cursor outputCursor;
 
     /**
-     * Konstruktor wird für zwei Zwecke genutzt: a) Nutzung des Formeleditors als
-     * eigenständiges Java-Programm. (Ausbaubedürftig.) b) Nutzung innerhalb des Applets
+     * Konstruktor wird fÃ¼r zwei Zwecke genutzt: a) Nutzung des Formeleditors als
+     * eigenstï¿½ndiges Java-Programm. (Ausbaubedï¿½rftig.) b) Nutzung innerhalb des Applets
      * als Editor.
      */
     public EditorFrame() {
@@ -60,7 +60,7 @@ public final class EditorFrame extends Frame {
     }
 
     /**
-     * Hauptfunktion - erstellt die Zeichenfläche
+     * Hauptfunktion - erstellt die Zeichenflï¿½che
      * @param args Argumente des Programmes - werden nicht ausgewertet
      */
     public static void main(final String[] args) {
@@ -73,14 +73,14 @@ public final class EditorFrame extends Frame {
     }
 
     /**
-     *  Überträgt den Focus auf das Fenster
+     *  Ã¼bertrï¿½gt den Focus auf das Fenster
      */
     public final void transferFocus() {
         draw.requestFocus();
     }
 
     /**
-     * Gibt den Cursor des Formulars zurück
+     * Gibt den Cursor des Formulars zurÃ¼ck
      * @return Cursor-Objekt
      */
     public final Cursor getFormulaCursor() {
@@ -96,7 +96,7 @@ public final class EditorFrame extends Frame {
     }
 
     /**
-     * Überprüft, ob das Fenster geschlossen wurde.
+     * Ã¼berprï¿½ft, ob das Fenster geschlossen wurde.
      * @return true, wenn das Fenster geschlossen wurde
      */
     public final boolean isClosed() {
@@ -104,7 +104,7 @@ public final class EditorFrame extends Frame {
     }
 
     /**
-     * Das Fenster schließen.
+     * Das Fenster schlieï¿½en.
      */
     public void close(boolean saveData) {
         removeAll();

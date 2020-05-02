@@ -1,7 +1,7 @@
 -- 
 -- DB Schema migration script from OpenUSS Plexus Version 3.0RC1 to current 3.1 Version
 --
--- author Ingo Düppe
+-- author Ingo DÃ¼ppe
 -- author Sebastian Roekens
 --
 -- Be aware that ibexpert logging on security_user table is switched of before. 

@@ -25,7 +25,7 @@ import org.openuss.web.Constants;
 
 /**
  * CourseType Administration Page
- * @author Ingo Düppe
+ * @author Ingo DÃ¼ppe
  * @author Kai Stettner
  * @author Sebastian Roekens
  * 

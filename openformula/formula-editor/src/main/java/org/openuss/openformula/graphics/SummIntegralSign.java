@@ -26,7 +26,7 @@ public final class SummIntegralSign extends Basic {
     private final int GenutzeFlaecheOberhalbProzent;
     private final int GenutzeFlaecheUnterhalbProzent = 25;
 
-    // usedPercent - gibt den prozentsatz der tatsächlichen Nutzung der Schrifthöhe an.
+    // usedPercent - gibt den prozentsatz der tatsÃ¤chlichen Nutzung der SchrifthÃ¶he an.
     public SummIntegralSign(final Basic parent, final char letter, 
                             final int usedPercent) {
         super(parent, parent.getMySizeClass() - 1);
