@@ -15,7 +15,7 @@ import org.openuss.openformula.mathml.out.MathMLExport;
 
 
 /**
- * Die Klasse dient zur Darstellung von Objekten, die überhalb und unterhalb von Objekten
+ * Die Klasse dient zur Darstellung von Objekten, die Ã¼berhalb und unterhalb von Objekten
  * dargestellt werden.
  */
 public final class UnderOverScript extends HorizontalEnter {
@@ -27,10 +27,10 @@ public final class UnderOverScript extends HorizontalEnter {
     private Succession above;
 
     /**
-     * Erzeugung eines Über/Unterscript-Objekt. Ein übergeordnetes Objekt wird eingezeichnet,
+     * Erzeugung eines Ã¼ber/Unterscript-Objekt. Ein Ã¼bergeordnetes Objekt wird eingezeichnet,
      * falls <code>above</code> <code>true</code> ist, ein untergeordnetes Objekt wird eingezeichnet, falls <code>unter</code> <code>true</code> ist.
-     * <code>above</code> und <code>under</code> dürfen nicht beide <code>false</code> sein.
-     * @param parent Übergeordnetes Objekt
+     * <code>above</code> und <code>under</code> dï¿½rfen nicht beide <code>false</code> sein.
+     * @param parent Ã¼bergeordnetes Objekt
      * @param above Hochgestelltes Objekt einzeichnen
      * @param under Tiefgestelltes Objekt einzeichnen
      */

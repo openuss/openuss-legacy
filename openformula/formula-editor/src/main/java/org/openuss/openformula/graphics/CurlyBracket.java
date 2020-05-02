@@ -25,7 +25,7 @@ public final class CurlyBracket extends HorizontalEnter {
         super(parent);
 
         if (!left && !right) {
-            throw new RuntimeException("Zumindest eine Klammer wird benötigt.");
+            throw new RuntimeException("Zumindest eine Klammer wird benÃ¶tigt.");
         }
 
         this.left = left;

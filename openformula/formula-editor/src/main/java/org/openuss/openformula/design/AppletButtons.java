@@ -22,7 +22,7 @@ import org.openuss.openformula.io.EditorFrame;
 
 /**
  * Erzeugt die Buttonleiste in der "einfachen" Ansicht im Formeleditor. Stellt
- * den Button für Kopieren und Editieren zur Verfügung.
+ * den Button fÃ¼r Kopieren und Editieren zur Verfï¿½gung.
  */
 public final class AppletButtons extends Panel implements ActionListener {
 	private static final long serialVersionUID = -2438405365904158196L;
@@ -38,7 +38,7 @@ public final class AppletButtons extends Panel implements ActionListener {
 	 * @param cursor
 	 *            Cursor-Objekt der Arbeitsumgebung
 	 * @param language
-	 *            Zu wählende Sprache
+	 *            Zu wï¿½hlende Sprache
 	 * @param readonly
 	 *            Bei true Darstellung im ReadOnly-Modus
 	 */

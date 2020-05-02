@@ -20,8 +20,8 @@ import org.openuss.openformula.mathml.out.MathMLExport;
 
 /**
  * Succession stellt ein Sammelobjekt dar. Hier werden horizontal "hintereinanderstehende" Objekte gespeichert
- * und können als ein Objekt dargestellt werden. Dieses Objekt ist einerseits immer das Objekt
- * in der höchsten Ebene, wird aber auch (fast) immer für Unterobjekte verwendet.
+ * und kÃ¶nnen als ein Objekt dargestellt werden. Dieses Objekt ist einerseits immer das Objekt
+ * in der hï¿½chsten Ebene, wird aber auch (fast) immer fÃ¼r Unterobjekte verwendet.
  */
 public final class Succession extends Basic implements BuildStructure {
     /**
@@ -42,9 +42,9 @@ public final class Succession extends Basic implements BuildStructure {
 
     // --Recycle Bin START (20.01.04 18:37):
     //    /**
-    //     * Erzeugt ein neues Succession-Objekt, die Größe des übergeordneten Objektes wird beibehalten.
+    //     * Erzeugt ein neues Succession-Objekt, die Grï¿½ï¿½e des Ã¼bergeordneten Objektes wird beibehalten.
     //     * Ein leeres Succession-Objekt wird nicht dargestellt.
-    //     * @param parent Übergeordnetes Objekt
+    //     * @param parent Ã¼bergeordnetes Objekt
     //     */
     //
     //    public Succession(final Basic parent) {
@@ -55,11 +55,11 @@ public final class Succession extends Basic implements BuildStructure {
     // --Recycle Bin STOP (20.01.04 18:37)
     // --Recycle Bin START (20.01.04 18:37):
     //    /**
-    //     * Erzeugt ein neues Succession-Objekt, die Größe des übergeordneten Objektes wird übernommen und
+    //     * Erzeugt ein neues Succession-Objekt, die Grï¿½ï¿½e des Ã¼bergeordneten Objektes wird Ã¼bernommen und
     //     * um <code>sizeClass</code> Stufen verkleinert.
     //     * Ein leeres Succession-Objekt wird nicht dargestellt.
-    //     * @param parent Übergeordnetes Objekt
-    //     * @param sizeClass Das Objekt um diese Anzahl von Stufen verkleinern. Die tatsächliche Verkleinerung ist Abhängig von der Verkleinerung des Ursprungsobhejtes.
+    //     * @param parent Ã¼bergeordnetes Objekt
+    //     * @param sizeClass Das Objekt um diese Anzahl von Stufen verkleinern. Die tatsï¿½chliche Verkleinerung ist Abhï¿½ngig von der Verkleinerung des Ursprungsobhejtes.
     //     */
     //
     //    public Succession(final Basic parent, final int sizeClass) {
@@ -71,15 +71,15 @@ public final class Succession extends Basic implements BuildStructure {
     /*
     *
                                     
-         * @param parent Übergeordnetes Objekt
+         * @param parent Ã¼bergeordnetes Objekt
          */
 
     /**
-     * Erzeugt ein neues Succession-Objekt, die Größe des übergeordneten Objektes wird beibehalten.
-     * Es kann festgelegt werden, dass, falls das Objekt keine Unterelemente enhält, es als rechteckiges
-     * kleines Kästchen dargestellt werden soll.
-     * @param parent Übergeordnetes Objekt
-     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kästchen anzeigen.
+     * Erzeugt ein neues Succession-Objekt, die Grï¿½ï¿½e des Ã¼bergeordneten Objektes wird beibehalten.
+     * Es kann festgelegt werden, dass, falls das Objekt keine Unterelemente enhï¿½lt, es als rechteckiges
+     * kleines Kï¿½stchen dargestellt werden soll.
+     * @param parent Ã¼bergeordnetes Objekt
+     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kï¿½stchen anzeigen.
      */
     public Succession(final Basic parent, final boolean showIfEmpty) {
         super(parent);
@@ -87,12 +87,12 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Erzeugt ein neues Succession-Objekt, die Größe des übergeordneten Objektes wird übernommen und
+     * Erzeugt ein neues Succession-Objekt, die Grï¿½ï¿½e des Ã¼bergeordneten Objektes wird Ã¼bernommen und
      * um <code>sizeClass</code> Stufen verkleinert.
-     * Es kann festgelegt werden, dass, falls das Objekt keine Unterelemente enhält, es als rechteckiges
-     * kleines Kästchen dargestellt werden soll.
-     * @param parent Übergeordnetes Objekt
-     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kästchen anzeigen.
+     * Es kann festgelegt werden, dass, falls das Objekt keine Unterelemente enhï¿½lt, es als rechteckiges
+     * kleines Kï¿½stchen dargestellt werden soll.
+     * @param parent Ã¼bergeordnetes Objekt
+     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kï¿½stchen anzeigen.
      */
     public Succession(final Basic parent, final int sizeClass, 
                       final boolean showIfEmpty) {
@@ -102,9 +102,9 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Primärer Konstrukor, wird bei Erzeugung des obersten Elementes der Baumstruktur aufgerufen.
-     * @param cursor Cursor-Objekt, gilt automatisch für alle untergeordneten Objekte
-     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kästchen anzeigen.
+     * Primï¿½rer Konstrukor, wird bei Erzeugung des obersten Elementes der Baumstruktur aufgerufen.
+     * @param cursor Cursor-Objekt, gilt automatisch fÃ¼r alle untergeordneten Objekte
+     * @param showIfEmpty Falls true: Wenn Objekt leer, rechteckiges Kï¿½stchen anzeigen.
      */
     public Succession(final Cursor cursor, final boolean showIfEmpty) {
         super(cursor, 40, 8);
@@ -113,12 +113,12 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Primärer Konstrukor, wird bei Erzeugung des obersten Elementes der Baumstruktur aufgerufen.
-     * Ermöglicht die Variation der Größe der Objekte.
-     * @param cursor Cursor-Objekt, gilt automatisch für alle untergeordneten Objekte
+     * Primï¿½rer Konstrukor, wird bei Erzeugung des obersten Elementes der Baumstruktur aufgerufen.
+     * Ermï¿½glicht die Variation der Grï¿½ï¿½e der Objekte.
+     * @param cursor Cursor-Objekt, gilt automatisch fÃ¼r alle untergeordneten Objekte
      * @param showIfEmpty Anzeigen, wenn Objekt leer ist.
-     * @param startSize (Buchstaben)größe in Pixeln der in der Hierachie höchsten Objekte
-     * @param stopSize (Buchstaben)Größe in Pixeln der untersten Objekte
+     * @param startSize (Buchstaben)grï¿½ï¿½e in Pixeln der in der Hierachie hï¿½chsten Objekte
+     * @param stopSize (Buchstaben)Grï¿½ï¿½e in Pixeln der untersten Objekte
      */
     public Succession(final Cursor cursor, final boolean showIfEmpty, 
                       final int startSize, final int stopSize) {
@@ -138,8 +138,8 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Fügt das Objekt hinten in der Liste an
-     * @param element Einzufügendes Objekt
+     * Fï¿½gt das Objekt hinten in der Liste an
+     * @param element EinzufÃ¼gendes Objekt
      */
     public final void add(final Basic element) {
         if (element instanceof Succession) {
@@ -153,7 +153,7 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Fügt den Cursor an die letzte Position an.
+     * Fï¿½gt den Cursor an die letzte Position an.
      */
     public final void insertCursor() {
         getCursor().setNewParent(this);
@@ -162,7 +162,7 @@ public final class Succession extends Basic implements BuildStructure {
 
     /**
      * Erzeugt ein BuildStructure-Objekt, dass im gegensatz zum direkten Succession-Interface
-     * das Objekt bei der Position des Cursors und nicht am Ende des Objektes einfügt.
+     * das Objekt bei der Position des Cursors und nicht am Ende des Objektes einfï¿½gt.
      *
      * Das Objekt muss bei Nutzung dieses Objektes den Cursor haben.
      * @return Variante des BuildStructure-Objekt
@@ -172,18 +172,18 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Normalerweise wird bei Anfragen an die Höhe ein Minimalwert zurückgegeben. Sollte dies
-     * nicht gewünscht werden, so kann dieses Verhalten hier deaktiviert werden
-     * @param flag mit true wird die korrekte Größe zurückgegeben.
+     * Normalerweise wird bei Anfragen an die HÃ¶he ein Minimalwert zurÃ¼ckgegeben. Sollte dies
+     * nicht gewï¿½nscht werden, so kann dieses Verhalten hier deaktiviert werden
+     * @param flag mit true wird die korrekte Grï¿½ï¿½e zurÃ¼ckgegeben.
      */
     public final void setUseCorrectSize(final boolean flag) {
         useCorrectSize = flag;
     }
 
     /**
-     * Gibt das übergeorndete Objekt zurück. Ergibt <code>null</code>, falls dieses Objekt
-     * das höchste in der Hirachie ist.
-     * @return Übergeordnetes Objekt.
+     * Gibt das Ã¼bergeorndete Objekt zurÃ¼ck. Ergibt <code>null</code>, falls dieses Objekt
+     * das hï¿½chste in der Hirachie ist.
+     * @return Ã¼bergeordnetes Objekt.
      */
     public final Basic getParentObject() {
         return this;
@@ -360,8 +360,8 @@ public final class Succession extends Basic implements BuildStructure {
                     "Succession: Element verbindet mit falschem Parent-Objekt!");
         }
 
-        // todo: Ggf. Objekt verlassen einfügen
-        if (!shift) { // Shift-Taste nicht gedrückt
+        // todo: Ggf. Objekt verlassen einfÃ¼gen
+        if (!shift) { // Shift-Taste nicht gedrï¿½ckt
             selStart = -1;
             selStop = -1;
 
@@ -382,7 +382,7 @@ public final class Succession extends Basic implements BuildStructure {
 
                 return;
             }
-        } else { // Shift-Taste gedrückt
+        } else { // Shift-Taste gedrï¿½ckt
 
             if (cursorPosition == 0) {
                 return;
@@ -412,10 +412,10 @@ public final class Succession extends Basic implements BuildStructure {
                     "Succession: Element verbindet mit falschem Parent-Objekt!");
         }
 
-        // xxxx Ggf. Objekt verlassen einfügen
+        // xxxx Ggf. Objekt verlassen einfÃ¼gen
         // if (cursorPosition == elements.size()) return;
         //cursorPosition++
-        // todo: Ggf. Objekt verlassen einfügen
+        // todo: Ggf. Objekt verlassen einfÃ¼gen
         if (!shift) {
             selStart = -1;
             selStop = -1;
@@ -637,8 +637,8 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Überprüft, ob die Objekte vor und hinter dem Cursor eine Bewegegung nach oben oder unten
-     * unterstützen. In diesem Fall wird moveUp von diesem Objekt aufgerufen, sonst wird direkt an den
+     * Ã¼berprï¿½ft, ob die Objekte vor und hinter dem Cursor eine Bewegegung nach oben oder unten
+     * unterstï¿½tzen. In diesem Fall wird moveUp von diesem Objekt aufgerufen, sonst wird direkt an den
      * Parent weitergegeben.
      * @param from Aufrufendes Objekt
      * @param toXPosition Horizontale Verschiebung
@@ -678,8 +678,8 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Überprüft, ob die Objekte vor und hinter dem Cursor eine Bewegegung nach oben oder unten
-     * unterstützen. In diesem Fall wird moveUp von diesem Objekt aufgerufen, sonst wird direkt an den
+     * Ã¼berprï¿½ft, ob die Objekte vor und hinter dem Cursor eine Bewegegung nach oben oder unten
+     * unterstï¿½tzen. In diesem Fall wird moveUp von diesem Objekt aufgerufen, sonst wird direkt an den
      * Parent weitergegeben.
      * @param from Aufrufendes Objekt
      * @param toXPosition Horizontale Verschiebung
@@ -874,8 +874,8 @@ public final class Succession extends Basic implements BuildStructure {
       }          */
 
     /**
-     * Ein Objekt wird beim Cursor eingefügt. Der Cursor wird hinter das neue Objekt verschoben.
-     * @param insert Einzufügendes Objekt.
+     * Ein Objekt wird beim Cursor eingefÃ¼gt. Der Cursor wird hinter das neue Objekt verschoben.
+     * @param insert EinzufÃ¼gendes Objekt.
      */
     public final void insertObjectAtCursor(final Basic insert) {
         String str = "";
@@ -908,8 +908,8 @@ public final class Succession extends Basic implements BuildStructure {
 
     // --Recycle Bin START (20.01.04 18:36):
     //    /**
-    //     * Ein Objekt wird an das Ende angefügt. Der Cursor wird nicht verschoben. Dient Debug-Zwecken.
-    //     * @param insert Einzufügendes Objekt.
+    //     * Ein Objekt wird an das Ende angefÃ¼gt. Der Cursor wird nicht verschoben. Dient Debug-Zwecken.
+    //     * @param insert EinzufÃ¼gendes Objekt.
     //     */
     //    public final void addObject(final Basic insert) {
     //
@@ -923,7 +923,7 @@ public final class Succession extends Basic implements BuildStructure {
     // --Recycle Bin STOP (20.01.04 18:36)
 
     /**
-     * Löscht alle markierten Zeichen. Muss in der Ebene aufgerufen werden, in der die
+     * Lï¿½scht alle markierten Zeichen. Muss in der Ebene aufgerufen werden, in der die
      * Zeichen markiert wurden.
      */
     public final void deleteSelection() {
@@ -1074,7 +1074,7 @@ public final class Succession extends Basic implements BuildStructure {
 
             posY += (above + (vertikalerAbstandZwischenElementen / 2));
 
-            if (count == 0) //Keine Elemente in Zeile - Kästchen zeichnen
+            if (count == 0) //Keine Elemente in Zeile - Kï¿½stchen zeichnen
             {
                 if (!useCorrectSize) {
                     final Color c = g.getColor();
@@ -1327,7 +1327,7 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Cursor freigeben. <br> <b>Achtung:</b> Der Cursor wird über die Änderung nicht informiert - das liegt daran,
+     * Cursor freigeben. <br> <b>Achtung:</b> Der Cursor wird Ã¼ber die ï¿½nderung nicht informiert - das liegt daran,
      * dass diese Funktion vom Cursor aufgerufen wird.
      */
     public final void deleteCursor() {
@@ -1338,8 +1338,8 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Den Cursor an die gegebene Positon einfügen. Sollte der Parameter kleiner null sein, so wird er am Anfang
-     * der Liste eingefügt. Bei einem Wert größer als die Länge der Liste wird er an das Ende der Liste angefügt.
+     * Den Cursor an die gegebene Positon einfÃ¼gen. Sollte der Parameter kleiner null sein, so wird er am Anfang
+     * der Liste eingefÃ¼gt. Bei einem Wert grï¿½ï¿½er als die Lï¿½nge der Liste wird er an das Ende der Liste angefÃ¼gt.
      * Falls der Cursor einem anderen Objekt zugeordnet war, so wird die Zuordnung angepasst.
      * @param position Neue Position des Cursors.
      */
@@ -1362,9 +1362,9 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Der Cursor wird links von diesem Objekt eingefügt. Das Objekt muss in der Liste der Unterobjekte existieren.
+     * Der Cursor wird links von diesem Objekt eingefÃ¼gt. Das Objekt muss in der Liste der Unterobjekte existieren.
      * Falls der Cursor einem anderen Objekt zugeordnet war, so wird die Zuordnung angepasst.
-     * @param object Objekt, neben dem der Cursor eingefügt werden soll.
+     * @param object Objekt, neben dem der Cursor eingefÃ¼gt werden soll.
      */
     public final void insertCurorLeftFromMe(final Basic object) {
         final int position = elements.indexOf(object);
@@ -1379,9 +1379,9 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Der Cursor wird rechts von diesem Objekt eingefügt. Das Objekt muss in der Liste der Unterobjekte existieren.
+     * Der Cursor wird rechts von diesem Objekt eingefÃ¼gt. Das Objekt muss in der Liste der Unterobjekte existieren.
      * Falls der Cursor einem anderen Objekt zugeordnet war, so wird die Zuordnung angepasst.
-     * @param object Objekt, neben dem der Cursor eingefügt werden soll.
+     * @param object Objekt, neben dem der Cursor eingefÃ¼gt werden soll.
      */
     public final void insertCurorRightFromMe(final Basic object) {
         insertCurorLeftFromMe(object);
@@ -1389,14 +1389,14 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Setzt den Cursor an die Position, zu der "am besten" die übergebenen relativen(!) <code>xPosition</code> passt.
+     * Setzt den Cursor an die Position, zu der "am besten" die Ã¼bergebenen relativen(!) <code>xPosition</code> passt.
      * Dabei werden die Objekte halbiert und der Cursor an die Positon gesetzt, die neben der
-     * Hälfte ist, in der die übergebenen Koordinate liegt. (Die Positon orientiert sich an der linken Kante des Objektes.)
-     * Falls eine Bewegung nach oben ausgeführt wird und ein Zeilenbruch vorhanden ist, wird der Cursor
-     * in der untersten Linie eingefügt.
+     * Hï¿½lfte ist, in der die Ã¼bergebenen Koordinate liegt. (Die Positon orientiert sich an der linken Kante des Objektes.)
+     * Falls eine Bewegung nach oben ausgefÃ¼hrt wird und ein Zeilenbruch vorhanden ist, wird der Cursor
+     * in der untersten Linie eingefÃ¼gt.
      * @param g Grafikkontext
      * @param xPosition relative XPosition.
-     * @param goUp Eine Bewegung nach oben wurde ausgeführt.
+     * @param goUp Eine Bewegung nach oben wurde ausgefÃ¼hrt.
      */
     public final void searchObjectAtRelativeXPosition(final Graphics g, 
                                                       int xPosition, 
@@ -1435,7 +1435,7 @@ public final class Succession extends Basic implements BuildStructure {
             }
 
 
-            // Die Halbschritte sorgen dafür, dass nicht der linke Rand, sondern die Mitte des Objektes
+            // Die Halbschritte sorgen dafÃ¼r, dass nicht der linke Rand, sondern die Mitte des Objektes
             // entscheidet, ob der Cursor links oder rechts positioniert wird.
             half = b.getWidth(g) / 2;
             xPosition -= half;
@@ -1460,7 +1460,7 @@ public final class Succession extends Basic implements BuildStructure {
 
     /**
      * Bewegt den Cursor an den Anfang des Objektes. Falls es bereits am Anfang steht, wird
-     * das darüberliegende Objekt aufgerufen.
+     * das darÃ¼berliegende Objekt aufgerufen.
      */
     public final void moveToFirstElement() {
         if ((cursorPosition == 0) && (parent != null)) {
@@ -1485,7 +1485,7 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Informiert, ob das Succession-Element Daten enthält
+     * Informiert, ob das Succession-Element Daten enthï¿½lt
      * @return true, wenn Daten vorhanden
      */
     public final boolean containsElements() {
@@ -1493,7 +1493,7 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Erzeugt den mathml-Code für alle Objekte im Feld
+     * Erzeugt den mathml-Code fÃ¼r alle Objekte im Feld
      * @param mmle MathMl-Exportier-Objekt
      */
     public final void generateMathMLCode(final MathMLExport mmle) {
@@ -1520,7 +1520,7 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Erzeugt den MahtML-Code für den markierten Bereich. Pratkisch für Zwischenablage.
+     * Erzeugt den MahtML-Code fÃ¼r den markierten Bereich. Pratkisch fÃ¼r Zwischenablage.
      * @param mmle MathMl-Exportier-Objekt
      */
     public final void generateMathMLCodeForSelected(final MathMLExport mmle) {
@@ -1541,10 +1541,10 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Tauscht das Objekt "out" gegen das Objekt "in" ein. Praktisch, um ein anderes Objekt "überzustülpen" -
-     * oder diese "Überstülpung" zu entfernen.
+     * Tauscht das Objekt "out" gegen das Objekt "in" ein. Praktisch, um ein anderes Objekt "Ã¼berzustï¿½lpen" -
+     * oder diese "Ã¼berstï¿½lpung" zu entfernen.
      * @param out zu entfernendes Objekt
-     * @param in einzufügendes Objekt
+     * @param in einzufÃ¼gendes Objekt
      */
     public final void exchangeObject(final Basic out, final Basic in) {
         final int k = elements.indexOf(out);
@@ -1560,7 +1560,7 @@ public final class Succession extends Basic implements BuildStructure {
 
     /**
      * Erfragt das Objekt beim Cursor. Wenn dieser ganz links ist, so wird das rechte Objekt
-     * zurückgegeben, ansonsten das davorliegende
+     * zurÃ¼ckgegeben, ansonsten das davorliegende
      * @return Objekt beim Cursor
      */
     public final Basic getObjectAtCursor() {
@@ -1638,12 +1638,12 @@ public final class Succession extends Basic implements BuildStructure {
     }
 
     /**
-     * Realisation des mit getImplementAtCursorStructure() benötigten Objektes.
+     * Realisation des mit getImplementAtCursorStructure() benÃ¶tigten Objektes.
      */
     protected final class InsertAtCursor implements BuildStructure {
         /**
-         * Fügt Objekt beim Cursor und nicht hinten an
-         * @param element Einzufügendes Element
+         * Fï¿½gt Objekt beim Cursor und nicht hinten an
+         * @param element EinzufÃ¼gendes Element
          */
         public final void add(final Basic element) {
             if (element instanceof Succession) {
@@ -1672,7 +1672,7 @@ public final class Succession extends Basic implements BuildStructure {
         }
 
         public final void insertCursor() {
-            throw new RuntimeException("Cursor einfügen hier nicht möglich.");
+            throw new RuntimeException("Cursor einfÃ¼gen hier nicht mï¿½glich.");
         }
     }
 

@@ -13,17 +13,17 @@ import java.awt.*;
 
 /**
  * Stellt eine Schnittstelle zwischen Cursor und verschiedenen grafischen Komponenten dar.
- * Ermöglicht das Rendern in ein Bild oder die Darstellung in einmen FormulaCanvas o.a.
+ * Ermï¿½glicht das Rendern in ein Bild oder die Darstellung in einmen FormulaCanvas o.a.
  */
 public interface CursorDistribution {
     /**
-     * Die Zeichenfläche der grafischen "Komponente" muss neu erstellt werden.
+     * Die ZeichenflÃ¤che der grafischen "Komponente" muss neu erstellt werden.
      * Dazu muss sie z.B. die Paint-Methode ihrer Haupt-Succession-Komponente aufrufen.
      */
     public void repaint();
 
     /**
-     * Der Grafik-Handle der Komponente muss erzeugt und zurückgegeben werden
+     * Der Grafik-Handle der Komponente muss erzeugt und zurÃ¼ckgegeben werden
      * @return Zugrundeliegender Grafikkontext, mit dem Cursor arbeiten soll
      */
     public Graphics getGraphics();

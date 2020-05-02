@@ -27,7 +27,7 @@ package org.openuss.openformula.mathml.in;
  * 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA                 *
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* §3.3 of the Java Language Specification :
+/* 3.3 of the Java Language Specification :
 
 UnicodeInputCharacter:
 

@@ -3,15 +3,15 @@
 		<p>
 		<h3><font color="#003366">OpenUSS Benutzerverwaltung</font></h3>
 			Hallo <i>${organisationname}</i> - Administratoren,
-			die Bewerbung des Benutzers <i>${username} (${userfirstname} ${userlastname})</i> für Ihre Organisation 
+			die Bewerbung des Benutzers <i>${username} (${userfirstname} ${userlastname})</i> fÃ¼r Ihre Organisation
 			<i>${organisationname}</i> wurde soeben abgelehnt.
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS!
+			Viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kï¿½nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

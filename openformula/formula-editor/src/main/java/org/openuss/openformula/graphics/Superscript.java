@@ -14,7 +14,7 @@ import org.openuss.openformula.mathml.out.MathMLExport;
 
 
 /**
- * Diese Klasse verwaltet höhergeschriebene Objekte
+ * Diese Klasse verwaltet hï¿½hergeschriebene Objekte
  */
 public final class Superscript extends HorizontalEnter {
     //final int posOverPercent = 110;
@@ -74,10 +74,10 @@ public final class Superscript extends HorizontalEnter {
     }
 
     /**
-     * Diese Methode scannt den Vorgänger im übergeordneten Succession-Objekt auf Änderungen.
-     * Falls diese vorliegen, wird ein objectChanged() ausgeführt.
+     * Diese Methode scannt den VorgÃ¤nger im Ã¼bergeordneten Succession-Objekt auf Ã„nderungen.
+     * Falls diese vorliegen, wird ein objectChanged() ausgefÃ¼hrt.
      * @param g Graphic-Kontext
-     * @return Höhe des Objektes
+     * @return HÃ¶he des Objektes
      */
     public final int getHeightAboveBaseline(final Graphics g) {
         final int prev = ((Succession) parent).getHeightAboveBaselineOfPreviousObject(g, 

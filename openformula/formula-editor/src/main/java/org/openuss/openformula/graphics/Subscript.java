@@ -17,7 +17,7 @@ import org.openuss.openformula.mathml.out.MathMLExport;
  * Die Klasse dient zur Darstellung von "Tiefergestelltem".
  */
 public final class Subscript extends HorizontalEnter {
-    // Todo: neues konzept zur Aufteilung - über "middle" positionieren
+    // Todo: neues konzept zur Aufteilung - Ã¼ber "middle" positionieren
     final static int increaseSizeClass = 3;
 
     // --Recycle Bin (20.01.04 18:37): final static int minPixelDif = 4;

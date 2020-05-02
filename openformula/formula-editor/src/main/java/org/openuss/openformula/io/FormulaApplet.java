@@ -106,7 +106,7 @@ public class FormulaApplet extends Applet {
 	}
 
 	/**
-	 * Das Applett auf den Ursprungszustand zurücksetzen. (Die ursprüngliche
+	 * Das Applett auf den Ursprungszustand zurÃ¼cksetzen. (Die ursprÃ¼ngliche
 	 * Formel wird wieder angezeigt.)
 	 */
 	public final void reset() {

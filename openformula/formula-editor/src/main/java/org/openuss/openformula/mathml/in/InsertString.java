@@ -12,7 +12,7 @@ import org.openuss.openformula.mathml.in.java_cup.runtime.Symbol;
 
 
 /**
- * Einen Text einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Einen Text einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertString extends Statement {
     private final String txt;

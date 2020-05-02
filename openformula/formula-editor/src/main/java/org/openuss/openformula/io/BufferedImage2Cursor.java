@@ -15,9 +15,9 @@ import org.openuss.openformula.graphics.Succession;
 
 
 /**
- * Nutzt für die Darstellung der Cursor-Komponente ein BufferdImage.
- * Das primäre Objekt muss an diese Klasse übergeben werden.
- * todo: Kann man doch ändern, oder ?
+ * Nutzt fÃ¼r die Darstellung der Cursor-Komponente ein BufferdImage.
+ * Das primï¿½re Objekt muss an diese Klasse Ã¼bergeben werden.
+ * todo: Kann man doch ï¿½ndern, oder ?
  */
 public final class BufferedImage2Cursor implements CursorDistribution {
     private BufferedImage image;

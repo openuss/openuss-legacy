@@ -12,13 +12,13 @@ import org.openuss.openformula.mathml.in.java_cup.runtime.Symbol;
 
 
 /**
- * Basisklasse für alle Bestandteile des Syntaxbaumes
+ * Basisklasse fÃ¼r alle Bestandteile des Syntaxbaumes
  */
 abstract class InterpreterBasis extends sym {
     Symbol firstSymbol;
 
     /**
-     * Ein Symbol zuordnen, um Fehlermeldungen anzeigen zu können.
+     * Ein Symbol zuordnen, um Fehlermeldungen anzeigen zu kï¿½nnen.
      * Dieses Symbol entspricht einem Token. Bei Fehlermeldungen wird auf
      * die Zeile und die Spalte dieses Symboles verwiesen.
      * @param firstSymbol
@@ -35,13 +35,13 @@ abstract class InterpreterBasis extends sym {
     }
 
     /**
-     * Die geparste mathml-Objektcode-Struktur in die interne Struktur des Formeleditors übertragen.
-     * @param structure Struktur zum Einfügen in die Formeleditorstruktur
+     * Die geparste mathml-Objektcode-Struktur in die interne Struktur des Formeleditors Ã¼bertragen.
+     * @param structure Struktur zum EinfÃ¼gen in die Formeleditorstruktur
      */
     public abstract void createStructure(BuildStructure structure);
 
     /**
-     * Line des Objektes ermitteln, nützlich zur Fehleranalyse
+     * Line des Objektes ermitteln, nÃ¼tzlich zur Fehleranalyse
      * @return Zeilennummer
      */
     public final int getLine() {
@@ -53,7 +53,7 @@ abstract class InterpreterBasis extends sym {
     }
 
     /**
-     * Spalte des Objektes ermitteln, nützlich zur Fehleranalyse
+     * Spalte des Objektes ermitteln, nÃ¼tzlich zur Fehleranalyse
      * @return Spaltennummer
      */
     public final int getColumn() {

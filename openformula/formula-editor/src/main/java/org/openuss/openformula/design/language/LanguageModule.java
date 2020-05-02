@@ -12,12 +12,12 @@ import java.util.Hashtable;
 
 
 /**
- * Basisinterface für die Sprachsteuerung.
+ * Basisinterface fÃ¼r die Sprachsteuerung.
  */
 public interface LanguageModule {
     /**
-     * In die übergebene Hastable müssen für folgende Schlüssel die Ausdrücke in der
-     * gewünschten Sprache als Wert eingetragen werden:
+     * In die Ã¼bergebene Hastable mï¿½ssen fÃ¼r folgende Schlï¿½ssel die Ausdrï¿½cke in der
+     * gewï¿½nschten Sprache als Wert eingetragen werden:
      * formula, exit, edit, undo, redo, cut, copy, insert, delete, selectAll,
      * fraction, sum, product, integral, root, matrix, startEdit, copyFormula
      * @param table Die zu bearbeitende Hashtable

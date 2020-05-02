@@ -36,7 +36,7 @@ import org.openuss.openformula.io.EditorFrame;
 
 
 /**
- * Klasse, die die Buttons im Formeleditor erzeugt und mit der Darstellungsfläche verküpft.
+ * Klasse, die die Buttons im Formeleditor erzeugt und mit der DarstellungsflÃ¤che verkï¿½pft.
  */
 public final class ButtonField extends Panel implements ActionListener {
     private static final long serialVersionUID = -7032868784523921463L;
@@ -72,8 +72,8 @@ public final class ButtonField extends Panel implements ActionListener {
     }
 
     /**
-     * Stellt das Menü zur Verfügung, dass von dem Formeleditor bereitgestellt wird.
-     * @param frame Zielframe, in dem das Menü eingefügt wird.
+     * Stellt das Menï¿½ zur Verfï¿½gung, dass von dem Formeleditor bereitgestellt wird.
+     * @param frame Zielframe, in dem das Menï¿½ eingefÃ¼gt wird.
      */
     public final void insertMenu(final Frame frame) {
         final MenuBar menuBar = new MenuBar();
@@ -179,7 +179,7 @@ final class BuildLine extends Panel {
 
     /**
      * Eine einzelne Button-Linie wird als Panel erzeugt
-     * @param line Auswahl der Linie. Gültig ist ein Wert zwischen 1 und 6 für die einzelnen Zeilen
+     * @param line Auswahl der Linie. Gï¿½ltig ist ein Wert zwischen 1 und 6 fÃ¼r die einzelnen Zeilen
      * @param cursor Die zu verwendene Cursor-Componente
      * @param language Sprachmodul
      */
@@ -287,7 +287,7 @@ final class BuildLine extends Panel {
 
         case 3:
             add(new NewFlxButton("<math><mrow><mo>&#8704;</mo></mrow></math>", 
-                                 "", widthSym, heightSym, // für alle
+                                 "", widthSym, heightSym, // fÃ¼r alle
                                  new org.openuss.openformula.graphics.InsertSymbol(
                                          org.openuss.openformula.graphics.InsertSymbol.InsertSymbolChar, 
                                          (char) 8704, cursor)));
@@ -332,7 +332,7 @@ final class BuildLine extends Panel {
                                          org.openuss.openformula.graphics.InsertSymbol.InsertSymbolChar, 
                                          (char) 0x2261, cursor)));
             add(new NewFlxButton("<math><mrow><mo>&#8776;</mo></mrow></math>", 
-                                 "", widthSym, heightSym, // ähnlich
+                                 "", widthSym, heightSym, // ï¿½hnlich
                                  new org.openuss.openformula.graphics.InsertSymbol(
                                          org.openuss.openformula.graphics.InsertSymbol.InsertSymbolChar, 
                                          (char) 0x2248, cursor)));
@@ -342,7 +342,7 @@ final class BuildLine extends Panel {
                                          org.openuss.openformula.graphics.InsertSymbol.InsertSymbolChar, 
                                          (char) 0x2264, cursor)));
             add(new NewFlxButton("<math><mrow><mo>&#8805;</mo></mrow></math>", 
-                                 "", widthSym, heightSym, // größer gleich
+                                 "", widthSym, heightSym, // grï¿½ï¿½er gleich
                                  new org.openuss.openformula.graphics.InsertSymbol(
                                          org.openuss.openformula.graphics.InsertSymbol.InsertSymbolChar, 
                                          (char) 0x2265, cursor)));
@@ -583,7 +583,7 @@ final class BuildLine extends Panel {
 } */
 
 /**
- * Stellt die Auswahlfelder für die griechischen Symbole bereit.
+ * Stellt die Auswahlfelder fÃ¼r die griechischen Symbole bereit.
  */
 final class SymbolChoice extends Choice implements ItemListener {
 	
@@ -600,8 +600,8 @@ final class SymbolChoice extends Choice implements ItemListener {
 
     /**
      * Stellt eins der Symbolfelder dar.
-     * @param map bei 1 kleingeschriebene , bei 2 großgeschriebene griechische Symbole
-     * @param sym Modul, in dem das Symbol eingefügt werden soll
+     * @param map bei 1 kleingeschriebene , bei 2 groï¿½geschriebene griechische Symbole
+     * @param sym Modul, in dem das Symbol eingefÃ¼gt werden soll
      */
     public SymbolChoice(final int map, 
                         final org.openuss.openformula.graphics.InsertSymbol sym) {

@@ -11,7 +11,7 @@ import org.openuss.documents.FileInfo;
 
 public class ZipFileImportTest extends TestCase {
 
-	 private String filename = "example/übungen/Dies ist eine böser langer Dateiname für den Test von Umlauten, und was sonst noch so an merkwürdigen Zeichen existieren, wie öäüÜÄÖ und ß.txt";
+	 private String filename = "example/ï¿½bungen/Dies ist eine bï¿½ser langer Dateiname fÃ¼r den Test von Umlauten, und was sonst noch so an merkwï¿½rdigen Zeichen existieren, wie ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ und ï¿½.txt";
 	
 	 public void testCreateFolderEntriesFromZip() throws IOException {
 		 URL url = this.getClass().getClassLoader().getResource("example.zip");

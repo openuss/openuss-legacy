@@ -28,9 +28,9 @@ public final class Fraction extends HorizontalEnter {
     }
 
     /**
-     * Ermöglicht Zugriff auf den "Nenner" des Bruches.
-     * (Die Main-Struktur ist der "Zähler".)
-     * @return Succession-Objekt des Zählers
+     * Ermï¿½glicht Zugriff auf den "Nenner" des Bruches.
+     * (Die Main-Struktur ist der "ZÃ¤hler".)
+     * @return Succession-Objekt des ZÃ¤hlers
      */
     public final BuildStructure getBaseStructure() {
         return base;

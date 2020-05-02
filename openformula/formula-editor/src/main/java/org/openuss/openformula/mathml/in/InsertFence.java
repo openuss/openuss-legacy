@@ -12,7 +12,7 @@ import org.openuss.openformula.graphics.*;
 
 
 /**
- * Eine Klammer einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Eine Klammer einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertFence extends Statement {
     private final String open;

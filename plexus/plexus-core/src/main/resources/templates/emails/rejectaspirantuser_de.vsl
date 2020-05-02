@@ -3,14 +3,14 @@
 		<p>
 			<h3><font color="#003366">OpenUSS User Administration</font></h3>
 			Hallo <i>${userfirstname} ${userlastname}</i>,
-			leider ist Ihre Bewerbung für die Organisation <i>${organisationname}</i> abgelehnt worden.
+			leider ist Ihre Bewerbung fÃ¼r die Organisation <i>${organisationname}</i> abgelehnt worden.
 		</p>
 		<p>
-			Trotzdem wünschen wir Ihnen weiterhin viel Spaß mit OpenUSS!
+			Trotzdem wï¿½nschen wir Ihnen weiterhin viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kï¿½nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

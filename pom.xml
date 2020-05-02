@@ -915,5 +915,6 @@
 		<spring.version>2.0.8</spring.version>
 		<cxf.version>2.1.3</cxf.version>
         <hibernate.version>3.2.6.ga</hibernate.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 </project>

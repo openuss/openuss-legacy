@@ -19,7 +19,7 @@ public final class IERendering implements RenderInterface {
     private final Basic basic;
 
     /**
-     * Erzeugt ein Konfigurationsobjekt für den Internet Explorer, das einem grafischen
+     * Erzeugt ein Konfigurationsobjekt fÃ¼r den Internet Explorer, das einem grafischen
      * Objekt zugeordnet werden kann.
      * @param basic Das zugrunde liegende Objekt
      */
@@ -28,8 +28,8 @@ public final class IERendering implements RenderInterface {
     }
 
     /**
-     * Führt die beim Internet Explorer einzig sinvolle Änderung am
-     * Grafikkontext durch - stellt die Schriftgröße richtig.
+     * Fï¿½hrt die beim Internet Explorer einzig sinvolle ï¿½nderung am
+     * Grafikkontext durch - stellt die Schriftgrï¿½ï¿½e richtig.
      * @param g Zu bearbeitender Grafikkontext
      */
     public final void modifyGraphicsHandle(final Graphics g) {

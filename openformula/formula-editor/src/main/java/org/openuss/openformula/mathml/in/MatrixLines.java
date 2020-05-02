@@ -9,7 +9,7 @@
 package org.openuss.openformula.mathml.in;
 
 /**
- * Hat eine Matrixlinie, weißt Verknüpfung zu nächsten Zeile auf. Wirkt umständlich,
+ * Hat eine Matrixlinie, weiï¿½t VerknÃ¼pfung zu nÃ¤chsten Zeile auf. Wirkt umstÃ¤ndlich,
  * ist aber wegen der Struktur des Parsers notwendig.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */

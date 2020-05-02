@@ -10,22 +10,22 @@ package org.openuss.openformula.mathml.out;
 
 /**
  * Diese Klasse wird zur Erzeugung des MathMLExport-Code verwendet. Sie stellt ein
- * Mehr-Ebenen-Konzept zur Verfügung, um den teilweise etwas komplexen Code richtig zu
- * erzeugen. (Siehe zugehörige Diplomarbeit.)
+ * Mehr-Ebenen-Konzept zur Verfï¿½gung, um den teilweise etwas komplexen Code richtig zu
+ * erzeugen. (Siehe zugehï¿½rige Diplomarbeit.)
  */
 public final class MathMLExport {
     /**
-     * Startsymbol für MathML-Code
+     * Startsymbol fÃ¼r MathML-Code
      */
     private final static String mathMlHeader = "<math>";
 
     /**
-         * Endsymbol für MathML-Code
+         * Endsymbol fÃ¼r MathML-Code
          */
     private final static String mathMlFooter = "</math>";
 
     /**
-     * Konstante, die bestimmt, ob "schöner" oder "platzsparender" MathML-Code erzeugt wird.
+     * Konstante, die bestimmt, ob "schï¿½ner" oder "platzsparender" MathML-Code erzeugt wird.
      */
     private final static boolean generateNiceXMLCode = false;
     private Layer current;
@@ -44,7 +44,7 @@ public final class MathMLExport {
 
     /**
      * Das gleiche wie oben, allerdings kann hier gesteuert werden, ob die Position des Cursors
-     * gespeichert werden soll. Das Tag <cursor> veranlasst später den Parser, den Cursor an diese
+     * gespeichert werden soll. Das Tag <cursor> veranlasst spÃ¤ter den Parser, den Cursor an diese
      * Position zu setzen.
      * @param insertCursor
      */
@@ -55,47 +55,47 @@ public final class MathMLExport {
     }
 
     /**
-     * Eine Ebene in der Baumstruktur nach oben gehen. Kann z.B. durch das einfügen eines
-     * zusätzlichen Leerzeichens vor dem MathMLExport-Code dargestellt werden.
+     * Eine Ebene in der Baumstruktur nach oben gehen. Kann z.B. durch das einfÃ¼gen eines
+     * zusï¿½tzlichen Leerzeichens vor dem MathMLExport-Code dargestellt werden.
      */
     public final void increaseLayer() {
         current.increaseLayer();
     }
 
     /**
-     * Reduziert die Ebene um eins. Gegenstück zu IncreaseLayer()
+     * Reduziert die Ebene um eins. Gegenstï¿½ck zu IncreaseLayer()
      */
     public final void decreaseLayer() {
         current.decreaseLayer();
     }
 
     /**
-     * Eine Textzeile in den temporären Buffer zufügen. Es wird kein unsichtbarer Operator eingefügt.
-     * @param str Die zuzufügende Zeile
+     * Eine Textzeile in den temporï¿½ren Buffer zufÃ¼gen. Es wird kein unsichtbarer Operator eingefÃ¼gt.
+     * @param str Die zuzufÃ¼gende Zeile
      */
     public final void addTextLine(final String str) {
         current.addTextLine(str);
     }
 
     /**
-     * Fügt ein einzelnes Zeichen ein. Es wird - soweit bekannt - automatisch korrekt codiert.
-     * Zahlen werden dabei zu einem String zusammengefügt
-     * @param c Einzufügendes Zeichen
+     * Fï¿½gt ein einzelnes Zeichen ein. Es wird - soweit bekannt - automatisch korrekt codiert.
+     * Zahlen werden dabei zu einem String zusammengefÃ¼gt
+     * @param c EinzufÃ¼gendes Zeichen
      */
     public final void addLetter(final char c) {
         current.addLetter(c);
     }
 
     /**
-     * Fügt einen Textblock zu.
-     * @param str Der zuzufügende Textblock
+     * Fï¿½gt einen Textblock zu.
+     * @param str Der zuzufÃ¼gende Textblock
      */
     public final void addText(final String str) {
         current.addText(str);
     }
 
     /**
-     * Fügt, falls das vorhergehende Zeichen kein Operator war, ein "unsichtbares
+     * Fï¿½gt, falls das vorhergehende Zeichen kein Operator war, ein "unsichtbares
      * Multiplikationssymbol" ein.
      */
     public final void ifNessesaryInsertInvisibleOperator() {
@@ -111,9 +111,9 @@ public final class MathMLExport {
          }*/
 
     /**
-     * Gibt den erzeugten XML-Code zurück. Die Bearbeitungsebene wird auf die
+     * Gibt den erzeugten XML-Code zurÃ¼ck. Die Bearbeitungsebene wird auf die
      * untere Ebene Verschoben
-     * @return Gibt den XML-Code zurück.
+     * @return Gibt den XML-Code zurÃ¼ck.
      */
     public final String getXMLCode() {
         // MathMLExport-Startcode
@@ -122,7 +122,7 @@ public final class MathMLExport {
 
     // --Recycle Bin START (20.01.04 18:37):
     //    /**
-    //     * Gibt den erzeugten XML-Code ohne Header und <math> bzw. </math>  und Footer zurück.
+    //     * Gibt den erzeugten XML-Code ohne Header und <math> bzw. </math>  und Footer zurÃ¼ck.
     //     * @return Interner XML-Code
     //     */
     //
@@ -132,8 +132,8 @@ public final class MathMLExport {
     // --Recycle Bin STOP (20.01.04 18:37)
 
     /**
-     * Das Element ist abgeschlossen, ab nun folgt das nächste Element.
-     * @param reqOperator Ein Zwischenoperator wird benötigt, also ein "unsichtbares"
+     * Das Element ist abgeschlossen, ab nun folgt das nÃ¤chste Element.
+     * @param reqOperator Ein Zwischenoperator wird benÃ¶tigt, also ein "unsichtbares"
      * Multiplikationszeichen
      */
     public final void nextElement(final boolean reqOperator) {
@@ -175,8 +175,8 @@ public final class MathMLExport {
     }
 
     /**
-     * Löscht das zuletzt eingegebene Element und gibt es als String zurück.
-     * Kann mit addText() wieder eingefügt werden.
+     * Lï¿½scht das zuletzt eingegebene Element und gibt es als String zurÃ¼ck.
+     * Kann mit addText() wieder eingefÃ¼gt werden.
      * @return Das letzte Element
      */
     public final String returnAndDelteteLastElement() {
@@ -198,7 +198,7 @@ public final class MathMLExport {
         //final static int digits = 1;
         boolean lastElementReqOperator = false;
 
-        //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?ÄÖÜöäü";
+        //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         final String operators = ",=|%/\\#*+~,.;:-_<>?" + 0xB1;
 
         public Layer() {
@@ -210,7 +210,7 @@ public final class MathMLExport {
         }
 
         public final void addTextLine(final String str) {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             cur.append(str);
 
@@ -220,13 +220,13 @@ public final class MathMLExport {
         }
 
         public final void addText(final String str) {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             cur.append(str);
         }
 
         public final void addText(final StringBuffer str) {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             cur.append(str.toString());
         }
@@ -258,7 +258,7 @@ public final class MathMLExport {
         }
 
         public final void decreaseLayer() {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             if (parent == null) {
                 throw new RuntimeException("Unterste Ebene erreicht.");
@@ -270,7 +270,7 @@ public final class MathMLExport {
         }
 
         public final StringBuffer getText() {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             if (parent != null) {
                 decreaseLayer();
@@ -282,9 +282,9 @@ public final class MathMLExport {
             }
         }
 
-        //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?ÄÖÜöäü";
+        //protected final String allowedLetters = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890=|!%/\\#*+~,.;:-_)(<> []?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         public final void ifNessesaryInsertInvisibleOperator() {
-            ifNessesaryAddDigits(); // Eigenes Objekt für Zahlen einfügen, wenn nötig
+            ifNessesaryAddDigits(); // Eigenes Objekt fÃ¼r Zahlen einfÃ¼gen, wenn nï¿½tig
 
             // todo: Problem: Steht so in Standard, geht aber so nirgendwo... ??!
             if (lastElementReqOperator) {
@@ -309,8 +309,8 @@ public final class MathMLExport {
                     Integer.parseInt(str);
 
 
-                    // Überprüfung, ob gültiger mathematischer Ausdruck
-                    // Falls nicht - unten Zeichen einzelnd einfügen
+                    // Ã¼berprï¿½fung, ob gï¿½ltiger mathematischer Ausdruck
+                    // Falls nicht - unten Zeichen einzelnd einfÃ¼gen
                     ifNessesaryInsertInvisibleOperator();
                     addTextLine("<mn>" + str + "</mn>");
                     nextElement(true);
@@ -341,37 +341,37 @@ public final class MathMLExport {
                 ifNessesaryInsertInvisibleOperator();
 
                 switch (c) {
-                case 'ä':
+                case 'Ã¤':
                     addTextLine("<mi>&auml;</mi>");
 
                     break;
 
-                case 'ö':
-                    addTextLine("<mi>&auml;</mi>");
+                case 'Ã¶':
+                    addTextLine("<mi>&ouml;</mi>");
 
                     break;
 
-                case 'ü':
+                case 'Ã¼':
                     addTextLine("<mi>&uuml;</mi>");
 
                     break;
 
-                case 'Ä':
+                case 'Ã„':
                     addTextLine("<mi>&Auml;</mi>");
 
                     break;
 
-                case 'Ö':
+                case 'Ã–':
                     addTextLine("<mi>&Ouml;</mi>");
 
                     break;
 
-                case 'Ü':
+                case 'Ãœ':
                     addTextLine("<mi>&Uuml;</mi>");
 
                     break;
 
-                case 'ß':
+                case 'ÃŸ':
                     addTextLine("<mi>&szlig;</mi>");
 
                     break;

@@ -12,7 +12,7 @@ import org.openuss.openformula.graphics.UnderOverScript;
 
 
 /**
- * Ein (grafisch) übergeordnetes und/oder untergeordnetes Objekt einfügen.
+ * Ein (grafisch) Ã¼bergeordnetes und/oder untergeordnetes Objekt einfÃ¼gen.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertUnderOver extends Statement {

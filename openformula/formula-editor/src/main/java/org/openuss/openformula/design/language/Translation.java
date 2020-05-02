@@ -24,21 +24,21 @@ public class Translation implements LanguageModule {
     public static int currentLanguage = 0;
 
     public final void initLanguage(final Hashtable table) {
-        // Menü
+        // Menï¿½
         switch (currentLanguage) {
         case GERMAN:
 
-            // Edit Area: Menü
+            // Edit Area: Menï¿½
             table.put("formula", "Formel");
-            table.put("deleteChanges", "Änderung verwerfen");
+            table.put("deleteChanges", "ï¿½nderung verwerfen");
             table.put("exit", "Beenden");
             table.put("edit", "Bearbeiten");
-            table.put("undo", "Rückgangig");
+            table.put("undo", "Rï¿½ckgangig");
             table.put("redo", "Wiederholen");
             table.put("cut", "Ausschneiden");
             table.put("copy", "Kopieren");
-            table.put("insert", "Einfügen");
-            table.put("delete", "Löschen");
+            table.put("insert", "EinfÃ¼gen");
+            table.put("delete", "Lï¿½schen");
             table.put("selectAll", "Alles markieren");
 
 
@@ -59,7 +59,7 @@ public class Translation implements LanguageModule {
 
         case ENGLISH:
 
-            // Edit Area: Menü
+            // Edit Area: Menï¿½
             table.put("formula", "Formula");
             table.put("deleteChanges", "Ignore changes");
             table.put("exit", "Exit");

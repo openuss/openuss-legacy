@@ -9,7 +9,7 @@
 package org.openuss.openformula.mathml.in;
 
 /**
- * Einen Bruch einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Einen Bruch einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertFraction extends Statement {
     private final Row main;

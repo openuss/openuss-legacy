@@ -9,7 +9,7 @@
 package org.openuss.openformula.mathml.in;
 
 /**
- * Eine Wurzel einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Eine Wurzel einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertSquareRoot extends Statement {
     private final Row main;

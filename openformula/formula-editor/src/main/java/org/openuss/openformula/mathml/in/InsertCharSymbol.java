@@ -11,7 +11,7 @@ package org.openuss.openformula.mathml.in;
 import org.openuss.openformula.io.Cursor;
 
 /**
- * Ein Zeichen einfügen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
+ * Ein Zeichen einfÃ¼gen. Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertCharSymbol extends Statement {
 	// private final String txt;
@@ -49,22 +49,22 @@ public final class InsertCharSymbol extends Statement {
                 } else if (str.equals("amp")) {
                     c = '&';
                 } else if (str.equals("auml")) {
-                    c = 'ä';
+                    c = 'ï¿½';
                 } else if (str.equals("uuml")) {
-                    c = 'ü';
+                    c = 'ï¿½';
                 } else if (str.equals("ouml")) {
-                    c = 'ö';
+                    c = 'ï¿½';
                 } else if (str.equals("Auml")) {
-                    c = 'ä';
+                    c = 'ï¿½';
                 } else if (str.equals("Uuml")) {
-                    c = 'ü';
+                    c = 'ï¿½';
                 } else if (str.equals("Ouml")) {
-                    c = 'ö';
-                } else if (str.equals("InvisibleTimes")) // Nix einfügen
+                    c = 'ï¿½';
+                } else if (str.equals("InvisibleTimes")) // Nix einfÃ¼gen
                 {
                     c = 0;
                 } else if (str.equals("szlig")) {
-                    c = 'ß';
+                    c = 'ï¿½';
                 } else {
                     throw new RuntimeException("Unbekanntes Symbol !");
                 }
@@ -100,7 +100,7 @@ public final class InsertCharSymbol extends Statement {
 
                     break;
 
-                case '*': // Sonderbehandlung für das hässliche '*'
+                case '*': // Sonderbehandlung fÃ¼r das hï¿½ssliche '*'
                     c = 0x22c5;
 
                 case 0x2200:

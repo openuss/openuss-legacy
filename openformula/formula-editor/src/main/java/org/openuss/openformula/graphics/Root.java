@@ -51,7 +51,7 @@ public final class Root extends HorizontalEnter {
         final int baseWidth = base.getWidth(g);
 
         final int l1y = (mySize * 2) / 5; // Entfernung der ersten Linie von BottomLine
-        int l1x = mySize / 10; // Länge der ersten Linie
+        int l1x = mySize / 10; // Lï¿½nge der ersten Linie
 
         if (l1x < (baseWidth + 3)) {
             l1x = baseWidth + 3;
@@ -65,27 +65,27 @@ public final class Root extends HorizontalEnter {
             l2y = underObject;
         }
 
-        int l2x = mySize / 10; // Vertikale länge der zweiten Linie
+        int l2x = mySize / 10; // Vertikale lï¿½nge der zweiten Linie
 
         if (l2x < 3) {
             l2x = 3;
         }
 
-        int l3x = mySize / 10; // Vertikale Länge der dritten Linie
+        int l3x = mySize / 10; // Vertikale Lï¿½nge der dritten Linie
 
         if (l3x < 3) {
             l3x = 3;
         }
 
-        final int l4x = mySize / 20; // Verlängerung über dritte Linie hinaus, bis Unterobjekt startet
+        final int l4x = mySize / 20; // Verlï¿½ngerung Ã¼ber dritte Linie hinaus, bis Unterobjekt startet
 
-        int l5x = mySize / 20; // Verlängerung nach Unterobjekt, bis Abschlusslinie beginnt
+        int l5x = mySize / 20; // Verlï¿½ngerung nach Unterobjekt, bis Abschlusslinie beginnt
 
         if (l5x < 3) {
             l5x = 3;
         }
 
-        final int l6y = mySize / 5; // Länge der Abschlusslinie
+        final int l6y = mySize / 5; // Lï¿½nge der Abschlusslinie
 
         if (l3x < 3) {
             l3x = 3;
@@ -123,26 +123,26 @@ public final class Root extends HorizontalEnter {
 
         final int baseWidth = base.getWidth(g);
 
-        int l1x = mySize / 10; // Länge der ersten Linie
+        int l1x = mySize / 10; // Lï¿½nge der ersten Linie
 
         if (l1x < (baseWidth + 3)) {
             l1x = baseWidth + 3;
         }
 
-        int l2x = mySize / 10; // Vertikale länge der zweiten Linie
+        int l2x = mySize / 10; // Vertikale lï¿½nge der zweiten Linie
 
         if (l2x < 3) {
             l2x = 3;
         }
 
-        int l3x = mySize / 10; // Vertikale Länge der dritten Linie
+        int l3x = mySize / 10; // Vertikale Lï¿½nge der dritten Linie
 
         if (l3x < 3) {
             l3x = 3;
         }
 
-        final int l4x = mySize / 20; // Verlängerung über dritte Linie hinaus, bis Unterobjekt startet
-        int l5x = mySize / 20; // Verlängerung nach Unterobjekt, bis Abschlusslinie beginnt
+        final int l4x = mySize / 20; // Verlï¿½ngerung Ã¼ber dritte Linie hinaus, bis Unterobjekt startet
+        int l5x = mySize / 20; // Verlï¿½ngerung nach Unterobjekt, bis Abschlusslinie beginnt
 
         if (l5x < 3) {
             l5x = 3;
@@ -151,7 +151,7 @@ public final class Root extends HorizontalEnter {
         return l1x + l2x + l3x + l4x + width + l5x;
     }
 
-    // Höhe über der Basislinie des Zeichens. (Basislinie ist die Unterkante eines 'a'. Der Bogen vcm 'g' liegt unterhalb der Basislinie.
+    // HÃ¶he Ã¼ber der Basislinie des Zeichens. (Basislinie ist die Unterkante eines 'a'. Der Bogen vcm 'g' liegt unterhalb der Basislinie.
     public final int getHeightAboveBaselineUncached(final Graphics g) {
         int mySize = main.getMySize();
 
@@ -178,7 +178,7 @@ public final class Root extends HorizontalEnter {
         return height + dist;
     }
 
-    // Höhe unterhalb der Basislinie, also z.B. der Bogen vom 'g'.
+    // HÃ¶he unterhalb der Basislinie, also z.B. der Bogen vom 'g'.
     public final int getHeightUnderBaselineUncached(final Graphics g) {
         final int mySize = main.getMySize();
         final int l2y = mySize / 7; // Tiefe der zweiten Linie unter BottomLine (von ende erster Linie)
@@ -200,7 +200,7 @@ public final class Root extends HorizontalEnter {
         final int mySize = main.getMySize();
         final int baseWidth = base.getWidth(g);
 
-        int l1x = mySize / 10; // Länge der ersten Linie
+        int l1x = mySize / 10; // Lï¿½nge der ersten Linie
 
         if (l1x < (baseWidth + 3)) {
             l1x = baseWidth + 3;
@@ -218,19 +218,19 @@ public final class Root extends HorizontalEnter {
             }
         } else if (fromX >= (currentX + l1x)) {
             if (toX >= (currentX + l1x)) {
-                int l2x = mySize / 10; // Vertikale länge der zweiten Linie
+                int l2x = mySize / 10; // Vertikale lï¿½nge der zweiten Linie
 
                 if (l2x < 3) {
                     l2x = 3;
                 }
 
-                int l3x = mySize / 10; // Vertikale Länge der dritten Linie
+                int l3x = mySize / 10; // Vertikale Lï¿½nge der dritten Linie
 
                 if (l3x < 3) {
                     l3x = 3;
                 }
 
-                final int l4x = mySize / 20; // Verlängerung über dritte Linie hinaus, bis Unterobjekt startet
+                final int l4x = mySize / 20; // Verlï¿½ngerung Ã¼ber dritte Linie hinaus, bis Unterobjekt startet
 
                 return main.findSelectedObjects(currentX + l1x + l2x + l3x + 
                                                 l4x, currentY, fromX, fromY, 

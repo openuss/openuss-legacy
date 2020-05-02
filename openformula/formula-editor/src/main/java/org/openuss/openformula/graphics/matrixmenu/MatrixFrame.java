@@ -25,7 +25,7 @@ import org.openuss.openformula.io.Cursor;
 
 
 /**
- * Klasse zur Erzeugung des Fensters, in der die Ausdehnung einer einzufügenden Matrix
+ * Klasse zur Erzeugung des Fensters, in der die Ausdehnung einer einzufÃ¼genden Matrix
  * einzugeben ist.
  */
 public final class MatrixFrame extends Frame implements ActionListener {
@@ -59,7 +59,7 @@ public final class MatrixFrame extends Frame implements ActionListener {
         add(textY);
         add(new Label(" Spalten "));
 
-        final Button b = new Button("Einfügen!");
+        final Button b = new Button("EinfÃ¼gen!");
         b.addActionListener(this);
         add(b);
 
@@ -76,7 +76,7 @@ public final class MatrixFrame extends Frame implements ActionListener {
     }
 
     /**
-     * Gibt die Komponente zurück, auf der der Fokus fixiert werden soll, wenn
+     * Gibt die Komponente zurÃ¼ck, auf der der Fokus fixiert werden soll, wenn
      * die Komponente angezeigt wird.
      * @return Zu fixierende Komponente
      */

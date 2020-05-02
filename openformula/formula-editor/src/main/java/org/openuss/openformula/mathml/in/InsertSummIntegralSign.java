@@ -14,7 +14,7 @@ import org.openuss.openformula.io.Cursor;
 
 
 /**
- * Ein Faktorzeichen, ein Summenzeichen oder ein Integralzeichen einfügen.
+ * Ein Faktorzeichen, ein Summenzeichen oder ein Integralzeichen einfÃ¼gen.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertSummIntegralSign extends Statement {

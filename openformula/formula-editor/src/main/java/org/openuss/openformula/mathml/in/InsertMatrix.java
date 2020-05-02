@@ -12,7 +12,7 @@ import org.openuss.openformula.graphics.Matrix;
 
 
 /**
- * Eine Matrix einfügen. Dies ist das oberste Element der Matrix - Struktur.
+ * Eine Matrix einfÃ¼gen. Dies ist das oberste Element der Matrix - Struktur.
  * Ist Bestandteil des durch den Parser erzeugten Syntaxbaumes.
  */
 public final class InsertMatrix extends Statement {

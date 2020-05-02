@@ -3,8 +3,8 @@
 		<h3><font color="#003366">OpenUSS Bewerbungs Assistent</font></h3>
 		<p>
 			Hallo <i>${applyinguserfirstname} ${applyinguserlastname} (${institutename})</i>, <br> 
-			ihre Bewerbung zur Mitgliedschaft für den Fachbereich <i>${departmentname}</i> wurde akzeptiert! 
-			Klicken Sie bitte auf den folgenden Link, um die Hauptseite des Fachbereichs zu öffnen:<br>
+			ihre Bewerbung zur Mitgliedschaft fÃ¼r den Fachbereich <i>${departmentname}</i> wurde akzeptiert!
+			Klicken Sie bitte auf den folgenden Link, um die Hauptseite des Fachbereichs zu ï¿½ffnen:<br>
 			<a href="${departmentapplicantlink}">${departmentapplicantlink}</a>
 		</p>
 		<p>
@@ -12,11 +12,11 @@
 			Adressleiste Ihres Browser ein.
 		</p>
 		<p>
-			Viel Spaß mit OpenUSS!
+			Viel Spaï¿½ mit OpenUSS!
 		</p>
 		<p>
 			<small>
-				Auf diese E-Mail können Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
+				Auf diese E-Mail kï¿½nnen Sie nicht antworten. Antworten auf diese Nachricht werden weder kontrolliert noch beantwortet.
 			</small>
 		</p>
 	</body>

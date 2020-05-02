@@ -32,7 +32,7 @@ import org.openuss.openformula.design.language.Translation;
  * Stellt das auf der Webseite abgebildete Applet dar.
  * 
  * @author Lofi Dewanto
- * @author Ingo Düppe
+ * @author Ingo Dï¿½ppe
  *          Update the application context
  */
 public final class RunAsApplet extends Applet implements ActionListener {
@@ -41,17 +41,17 @@ public final class RunAsApplet extends Applet implements ActionListener {
 	
 	/**
      * Aktuelle Build-Version des Formeleditors. Wird zur Abgrenzung von veralteten
-     * Versionen gelegentlich erhöht.
+     * Versionen gelegentlich erhï¿½ht.
      */
     public static final int formulaBuildNumber = 37;
     public static boolean versionShowed = false;
 
-    // Constants für formula configuration
+    // Constants fÃ¼r formula configuration
     static ResourceBundle formulaConfig = ResourceBundle.getBundle(
                                                   "org.openuss.openformula.io.FormulaConfig");
 
     /**
-     * Standard-MathML-Code für Fehlermeldungen.
+     * Standard-MathML-Code fÃ¼r Fehlermeldungen.
      */
     public static final String defaultErrorInMathML = "<math><mrow><mi>N</mi><mo>" + 
                                                       "&InvisibleTimes;</mo><mi>e</mi><mo>&InvisibleTimes;</mo><mi>t</mi><mo>" + 
@@ -74,7 +74,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
 
     /**
      * Initialiesiert das Applet, wird vom Browser aufgerufen.
-     * Als Parameter stehen zur Verfügung:
+     * Als Parameter stehen zur Verfï¿½gung:
      * <code>id        </code>Diese ID vom Server laden.
      * <code>readonly  </code>Das Applet im NurLese-Modus betreiben
      * <code>language  </code>Das Applet mit einer Sprache anzeigen, siehe Klasse Translation
@@ -133,7 +133,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
     /**
      * Liest die zur id passenden Daten aus der aktuellen Base-URL + "GetFormula.po"
      * und stellt sie im Formeleditor-Viewer da.
-     * Kann extern von JavaScript aufgerufen werden, wenn die Formel zurückgesetzt
+     * Kann extern von JavaScript aufgerufen werden, wenn die Formel zurÃ¼ckgesetzt
      * oder aktualiesiert werden soll.
      * @param id Die id der Formel.
      */
@@ -179,7 +179,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
     }
 
     /**
-     * Parameter des Applets ermitteln und zurückgeben
+     * Parameter des Applets ermitteln und zurÃ¼ckgeben
      * @return Applet-Parameter
      */
     public final String[][] getParameterInfo() {
@@ -203,8 +203,8 @@ public final class RunAsApplet extends Applet implements ActionListener {
     }
 
     /**
-     * Das Applett auf den Ursprungszustand zurücksetzen.
-     * (Die ursprüngliche Formel wird wieder angezeigt.)
+     * Das Applett auf den Ursprungszustand zurÃ¼cksetzen.
+     * (Die ursprÃ¼ngliche Formel wird wieder angezeigt.)
      */
     public final void reset() {
     	draw.getMyCursor().getPrimaryElement().selectAll();
@@ -214,7 +214,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
     }
 
     /**
-     * Die Daten vom Server übertragen. Funktioniert sowohl mit IE als auch mit Netscape/Mozilla
+     * Die Daten vom Server Ã¼bertragen. Funktioniert sowohl mit IE als auch mit Netscape/Mozilla
      * @return Neue ID der Formel
      */
     public final String submit() {
@@ -254,7 +254,7 @@ public final class RunAsApplet extends Applet implements ActionListener {
 
     /**
      * Save with Base URL + "SaveFormula.po"
-     * Die Daten zum Server übertragen. Sollte nicht durch JavaScript aufgerufen werden,
+     * Die Daten zum Server Ã¼bertragen. Sollte nicht durch JavaScript aufgerufen werden,
      * dazu sollte <code>submit</code> verwendet werden.
      * @return Neue id der Formel
      */
