@@ -6,3 +6,5 @@ target
 .project
 .name
 .classpath
+servers/tomcat/lib/framework-deployer.jar
+plexus/plexus-web/src/main/webapp/applet/formula-editor.jar
