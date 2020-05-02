@@ -228,38 +228,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<workspace>${basedir}</workspace>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<wtpversion>1.5</wtpversion>
-					<additionalProjectFacets>
-						<jst.utility>1.0</jst.utility>
-					</additionalProjectFacets>
-					<additionalProjectnatures>
-						<projectnature>
-							org.springframework.ide.eclipse.core.springnature
-						</projectnature>
-					</additionalProjectnatures>
-					<additionalProjectnatures>
-						<projectnature>
-							org.eclipse.wst.common.modulecore.ModuleCoreNature
-						</projectnature>
-					</additionalProjectnatures>
-					<additionalProjectnatures>
-						<projectnature>
-							org.eclipse.wst.common.project.facet.core.nature
-						</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>
-							org.springframework.ide.eclipse.core.springbuilder
-						</buildcommand>
-					</additionalBuildcommands>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
