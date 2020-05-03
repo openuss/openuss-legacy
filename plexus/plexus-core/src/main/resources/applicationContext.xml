@@ -70,7 +70,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">auto</prop>
                 <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
