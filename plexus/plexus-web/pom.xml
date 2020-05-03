@@ -23,6 +23,12 @@
 			<groupId>org.openuss.framework</groupId>
 			<artifactId>framework-core</artifactId>
 			<version>${pom.version}</version>
+			<exclusions>
+				<exclusion>
+          			<groupId>xml-apis</groupId>
+          			<artifactId>xml-apis</artifactId>
+        		</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.openuss.framework</groupId>
