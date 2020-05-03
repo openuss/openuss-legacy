@@ -180,55 +180,6 @@
 		<module>openformula</module>
 		<module>plexus</module>
 	</modules>
-	<repositories>
-		<repository>
-			<id>openuss</id>
-			<name>OpenUSS Plexus</name>
-			<url>http://teamopenuss.uni-muenster.de/repository</url>
-		</repository>
-		<repository>
-			<id>maven-repo</id>
-			<name>maven-repo</name>
-			<url>http://repo1.maven.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<!-- 
-		<repository>
-			<id>apache.incubation.releases</id>
-			<name>Apache Incubating Release Distribution Repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository</url>
-		</repository>
-		 -->
-		<repository>
-			<id>java-net</id>
-			<name>Java.Net</name>
-			<layout>legacy</layout>
-			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-		</repository>		
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>openuss</id>
-			<name>OpenUSS Plexus</name>
-			<url>http://teamopenuss.uni-muenster.de/repository</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>java-net</id>
-			<name>Java.Net</name>
-			<layout>legacy</layout>
-			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-		</pluginRepository>	
-        <pluginRepository>
-			<id>apache.incubation.releases</id>
-			<name>Apache Incubating Release Distribution Repository</name>
-			<url>http://people.apache.org/repo/m2-incubating-repository</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
