@@ -6,10 +6,10 @@
 		<Arg>jdbc/openuss30</Arg>
          <Arg>
               <New class="org.apache.commons.dbcp.BasicDataSource">
-                    <Set name="Url">jdbc:firebirdsql:localhost:openuss30</Set>
-                    <Set name="DriverClassName">org.firebirdsql.jdbc.FBDriver</Set>
-                    <Set name="Username">sysdba</Set>
-                    <Set name="Password">masterkey</Set>
+                    <Set name="Url">jdbc:postgresql://localhost:5432/openuss30</Set>
+                    <Set name="DriverClassName">org.postgresql.Driver</Set>
+                    <Set name="Username">postgres</Set>
+                    <Set name="Password">password</Set>
                     <Set name="MaxActive">30</Set>
                     <Set name="MaxIdle">10</Set>
                     <Set name="MinIdle">2</Set>

@@ -8,10 +8,10 @@
 	<!-- Local DataSource that works in any environment -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="maxActive" value="1"></property>
-        <property name="driverClassName"><value>org.firebirdsql.jdbc.FBDriver</value></property>
-        <property name="username"><value>sysdba</value></property>
-        <property name="password"><value>masterkey</value></property>
-        <property name="url"><value>jdbc:firebirdsql://localhost:3050/openuss30-test</value></property>
+        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+        <property name="username"><value>postgres</value></property>
+        <property name="password"><value>password</value></property>
+        <property name="url"><value>jdbc:postgresql://localhost:5432/openuss30-test</value></property>
     </bean>
     
     <!-- ===================== TRANSACTION MANAGER DEFINITION ========================= -->
