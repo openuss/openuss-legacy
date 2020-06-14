@@ -19,3 +19,5 @@ In the Docker container (CLI):
 psql -U postgres
 CREATE DATABASE openuss30;
 CREATE DATABASE openuss30test;
+
+Good article for the Database PostgreSQL with Docker: https://bit.ly/PostgreSQLDockerIntro and https://www.guru99.com/postgresql-create-database.html
