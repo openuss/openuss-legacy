@@ -110,22 +110,22 @@
 				Please choose the installer method. This makes things easier for you. Just follow the onscreen installation instructions.
 			</p>
 			<p>
-				OpenUSS requires two databases with the aliases: <code>openuss30</code>	and	<code>openuss30-test</code>
+				OpenUSS requires two databases with the aliases: <code>openuss30</code>	and	<code>openuss30test</code>
 				(During the process of migration you also need a third alias <code>openuss</code>).
 				<ul>
 					<li><code>openuss30</code> points to your main database for OpenUSS</li>
-					<li><code>openuss30-test</code>	points to your main test database for OpenUSS</li>
+					<li><code>openuss30test</code>	points to your main test database for OpenUSS</li>
 					<li><code>openuss</code> points to your old OpenUSS database (is only necessary for the migration)</li>
 				</ul>
 				The aliases specified above have to be defined in the <code>aliases.conf</code>	file in your firebird installation folder.
-				The database <code>openuss30-test</code> will created automatically during the Maven OpenUSS install process.<br />
+				The database <code>openuss30test</code> will created automatically during the Maven OpenUSS install process.<br />
 				But, the database <code>openuss30</code> has to be created manually before running the application. This can be achieved by
 				running an Ant script found in the project plexus-core AFTER you had run Maven at least once (so that the Java class <code>DatabaseCreater</code>
 				has been compiled).
 				The path therefore indicates where those databases should be created by Maven/Ant.
 				<ul>
 					<li><code>openuss30=D:\Path_to_your_databases\OPENUSS-30.FDB</code></li>
-					<li><code>openuss30-test=D:\Path_to_your_databases\OPENUSS-30-TEST.FDB</code></li>
+					<li><code>openuss30test=D:\Path_to_your_databases\OPENUSS-30-TEST.FDB</code></li>
 					<li><code>openuss=D:\Path_to_your_databases\OPENUSS-30.FDB</code></li>
 				</ul>
 			</p>

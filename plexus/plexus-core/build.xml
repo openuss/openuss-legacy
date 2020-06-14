@@ -100,10 +100,10 @@
 	</target>
 	
 	<target name="recreate-openuss30-test" depends="hibernate-schema">
-		<recreateDB dbserverurl="localhost" dbserverport="3050" dbname="openuss30-test" dbuser="sysdba" dbpassword="masterkey"/>
+		<recreateDB dbserverurl="localhost" dbserverport="3050" dbname="openuss30test" dbuser="sysdba" dbpassword="masterkey"/>
 		
 		<echo message="INFO: Creating database schemas..." />
-		<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30-test"
+		<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30test"
 			userid="sysdba"
 			password="masterkey"
 			autocommit="true">

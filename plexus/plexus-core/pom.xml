@@ -44,9 +44,9 @@
 <!--										<include name="**/*.hbm.xml" />-->
 <!--									</fileset>-->
 <!--								</schemaexport>-->
-<!--								<recreateDB dbserverurl="localhost" dbserverport="3050" dbname="openuss30-test" dbuser="sysdba" dbpassword="masterkey" />-->
+<!--								<recreateDB dbserverurl="localhost" dbserverport="3050" dbname="openuss30test" dbuser="sysdba" dbpassword="masterkey" />-->
 <!--								<echo message="INFO: Creating database schemas..." />-->
-<!--								<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30-test" userid="sysdba" password="masterkey" autocommit="true">-->
+<!--								<sql driver="org.firebirdsql.jdbc.FBDriver" url="jdbc:firebirdsql:localhost:openuss30test" userid="sysdba" password="masterkey" autocommit="true">-->
 <!--									<classpath>-->
 <!--										<pathelement location="${settings.localRepository}/jaybird/jaybird-full/2.1.1/jaybird-full-2.1.1.jar" />-->
 <!--									</classpath>-->
