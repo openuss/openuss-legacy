@@ -10,4 +10,12 @@ How to Build
 2. Change from Jaybird to PostgreSQL
 - Run the database with Docker: https://hub.docker.com/_/postgres
 - Command to run Docker image PostgreSQL
--- docker run -p 5432:5432 --name postgresdb -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+-- docker run -p 5432:5432 --name postgresdb -e POSTGRES_PASSWORD=password -d postgres
+- Create Databases: 
+-- openuss30
+-- openuss30test
+
+In the Docker container (CLI):
+psql -U postgres
+CREATE DATABASE openuss30;
+CREATE DATABASE openuss30test;
